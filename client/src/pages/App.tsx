@@ -1,60 +1,32 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Header } from 'components';
+import { TV } from 'pages/TV';
+import { Remote } from 'pages/Remote';
 
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
-    </div>
-  );
-}
-
-function About() {
-  return (
-    <div>
-      <h2>About</h2>
-    </div>
-  );
-}
-
-function Dashboard() {
-  return (
-    <div>
-      <h2>Dashboard</h2>
-    </div>
-  );
-}
-
-const App: React.FC = () => {
+export const App: React.FC = () => {
   return (
     <Router>
+      <Header>Hello world</Header>
       <div>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">TV</Link>
           </li>
           <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/remote">Remote</Link>
           </li>
         </ul>
         <hr />
         <Switch>
           <Route exact path="/">
-            <Home />
+            <TV />
           </Route>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/dashboard">
-            <Dashboard />
+          <Route path="/remote">
+            <Remote />
           </Route>
         </Switch>
       </div>
     </Router>
   );
 };
-
-export default App;
