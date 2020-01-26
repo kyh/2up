@@ -2,7 +2,7 @@ defmodule RemoteWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", RemoteWeb.RoomChannel
+  channel "room:*", RemoteWeb.RoomChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -30,4 +30,5 @@ defmodule RemoteWeb.UserSocket do
   #
   # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil
+
 end
