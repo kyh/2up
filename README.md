@@ -25,3 +25,37 @@ cd client
 npm i
 npm run start
 ```
+
+## Setting up the Server
+
+Install Erlang and Elixir
+
+```
+brew update
+brew install erlang
+brew install elixir
+```
+
+Install Hex package manager
+
+```
+mix local.hex
+```
+
+Install Phoenix
+
+```
+mix archive.install hex phx_new 1.4.12
+```
+
+Create db in config/dev.exs
+
+```
+mix ecto.create
+```
+
+Start phoenix server
+
+```
+mix phx.server
+```
