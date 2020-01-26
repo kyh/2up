@@ -60,6 +60,18 @@ Install dependencies
 mix deps.get
 ```
 
+Install the node.js dependencies:
+
+```
+cd assets && npm install && cd ..
+```
+
+Run migrations
+
+```
+mix ecto.migrate
+```
+
 Start phoenix server
 
 ```
