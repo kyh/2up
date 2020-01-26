@@ -13,7 +13,7 @@
 │       └── /utils               # Utility
 │── /design                      # Design assets
 │── /docs                        # App documentation
-└── /server                      # Pheonix server
+└── /server                      # Phoenix server
 ```
 
 ## Setting up the Client
