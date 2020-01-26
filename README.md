@@ -11,6 +11,7 @@
 │       ├── /pages               # App routes
 │       ├── /styles              # Theme and global styling
 │       └── /utils               # Utility
+│── /design                      # Design assets
 │── /docs                        # App documentation
 └── /server                      # Pheonix server
 ```
