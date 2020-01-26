@@ -11,5 +11,6 @@ export const theme: DefaultTheme = {
     black: '#1A1919',
     white: '#FFFFFF'
   },
+  space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   spacings: memoize(calculateSpacing)
 };
