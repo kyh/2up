@@ -54,6 +54,12 @@ Create db in config/dev.exs
 mix ecto.create
 ```
 
+Install dependencies
+
+```
+mix deps.get
+```
+
 Start phoenix server
 
 ```
