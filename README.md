@@ -48,16 +48,16 @@ Install Phoenix
 mix archive.install hex phx_new 1.4.12
 ```
 
-Create db in config/dev.exs
-
-```
-mix ecto.create
-```
-
 Install dependencies
 
 ```
 mix deps.get
+```
+
+Create db in config/dev.exs
+
+```
+mix ecto.create
 ```
 
 Install the node.js dependencies:
