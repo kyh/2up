@@ -1,8 +1,0 @@
-<div id="messages">
-</div>
-
-<div>
-  <input type="text" id="name" placeholder="Name" autofocus>
-  <input type="text" id="message" placeholder="Message">
-</div>
-
