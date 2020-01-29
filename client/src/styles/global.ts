@@ -1,8 +1,18 @@
 import styledNormalize from 'styled-normalize';
 import { createGlobalStyle } from 'styled-components';
 
+const publicUrl = process.env.PUBLIC_URL;
+
 export const GlobalStyle = createGlobalStyle`
   ${styledNormalize}
+
+  @font-face {
+    font-family: 'Chalkboard SE';
+    src: url('${publicUrl}/fonts/ChalkboardSE-Regular.woff2') format('woff2'),
+        url('${publicUrl}/fonts/ChalkboardSE-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
 
   html {
     box-sizing: border-box;
@@ -17,7 +27,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     color: ${({ theme }) => theme.colors.black};
     text-rendering: optimizeLegibility;
-    font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
+    font-family: 'Chalkboard SE', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
       'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   }
 
