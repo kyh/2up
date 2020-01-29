@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 import border from './border.svg';
-import borderHover from './border-hover.svg';
+import borderActive from './border-active.svg';
 
 export const Button = styled.button`
   padding: ${({ theme }) => theme.spacings(4)};
@@ -9,12 +9,11 @@ export const Button = styled.button`
   border-image-outset: 0;
   border-image-repeat: stretch stretch;
   border-image-source: url(${border});
-  transition: filter 0.1s ease;
+  transition: filter 0.2s ease;
   &:hover {
-    filter: invert(0.5) sepia(1) saturate(3.4) hue-rotate(200deg)
-      brightness(0.8);
+    filter: invert(1) brightness(0.4);
   }
   &:active {
-    border-image-source: url(${borderHover});
+    border-image-source: url(${borderActive});
   }
 `;
