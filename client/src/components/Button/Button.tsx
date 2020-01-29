@@ -1,8 +1,26 @@
+import React from 'react';
 import styled from 'styled-components/macro';
+import UIfx from 'uifx';
+import { SoundMap } from 'styles/sounds';
 import border from './border.svg';
 import borderActive from './border-active.svg';
 
-export const Button = styled.button`
+const clickSound = new UIfx(SoundMap.click);
+
+type Props = {
+  onClick?: () => void;
+  children?: React.ReactNode;
+};
+
+export const Button = ({ onClick = () => {}, ...rest }: Props) => {
+  const onButtonClick = () => {
+    clickSound.play();
+    onClick();
+  };
+  return <StyledButton onClick={onButtonClick} {...rest} />;
+};
+
+export const StyledButton = styled.button`
   padding: ${({ theme }) => theme.spacings(4)};
   border-image-slice: 4 4 3 5 fill;
   border-image-width: 5px;

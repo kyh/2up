@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'components';
+import { Box, Button, Input } from 'components';
 import { useMessages, actions, MessageType } from 'hooks/useMessages';
 
 export const Remote = () => {
@@ -19,22 +19,27 @@ export const Remote = () => {
           );
         })}
       </div>
-      <label>
-        Name:
-        <input
-          type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
-      </label>
-      <label>
-        Message:
-        <input
-          type="text"
-          value={message}
-          onChange={e => setMessage(e.target.value)}
-        />
-      </label>
+      <Box>
+        <label>
+          Name:
+          <Input
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+        </label>
+      </Box>
+      <Box>
+        <label>
+          Message:
+          <Input
+            type="text"
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+          />
+        </label>
+      </Box>
+
       <Button
         onClick={() => {
           broadcast(actions.shout, { name, message });
