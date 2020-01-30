@@ -1,3 +1,3 @@
-defmodule Remote.Theater do
+defmodule Remote.Stage do
   import Ecto.Adapters.SQL
 end
