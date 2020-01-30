@@ -1,9 +1,9 @@
-defmodule Remote.MixProject do
+defmodule Playhouse.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :remote,
+      app: :playhouse,
       version: "0.1.0",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule Remote.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Remote.Application, []},
+      mod: {Playhouse.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
