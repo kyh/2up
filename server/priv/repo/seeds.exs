@@ -15,6 +15,10 @@ alias Remote.Accounts.User
 alias Remote.Catalog.Play
 alias Remote.Catalog.Scene
 alias Remote.Catalog.Response
+alias Remote.Stage.Character
+alias Remote.Stage.Production
+alias Remote.Stage.Performance
+alias Remote.Stage.Interaction
 
 user =
   %User{}
@@ -25,7 +29,7 @@ user =
     })
   |> Repo.insert!
 
-%Play{
+play = %Play{
   name: "Hello world",
   user: user,
   scenes: [
@@ -72,4 +76,36 @@ user =
       ] 
     }
   ]
+} |> Repo.insert!
+
+production = %Production{
+  play: play,
+} |> Repo.insert!
+
+character1 = %Character{
+  name: "Andrew",
+  user: user,
+  production: production
+} |> Repo.insert!
+
+character2 = %Character{
+  name: "Kai",
+  production: production
+} |> Repo.insert!
+
+scenes = Repo.all(Scene)
+
+Enum.each scenes, fn scene -> 
+  %Performance{
+    scene: scene
+  } |> Repo.insert!
+end
+
+response = Repo.all(Response, limit: 1) |> List.first
+performance = Repo.all(Performance, limit: 1) |> List.first
+
+%Interaction{
+  response: response,
+  performance: performance,
+  character: character1
 } |> Repo.insert!
