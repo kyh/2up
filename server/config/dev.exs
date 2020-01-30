@@ -1,10 +1,10 @@
 use Mix.Config
 
 # Configure your database
-config :remote, Remote.Repo,
+config :playhouse, Playhouse.Repo,
   username: "postgres",
   password: "postgres",
-  database: "remote_dev",
+  database: "playhouse_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -15,7 +15,7 @@ config :remote, Remote.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :remote, RemoteWeb.Endpoint,
+config :playhouse, PlayhouseWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -55,13 +55,13 @@ config :remote, RemoteWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :remote, RemoteWeb.Endpoint,
+config :playhouse, PlayhouseWeb.Endpoint,
   live_reload: [
     patterns: [
       # ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       # ~r"priv/gettext/.*(po)$",
-      # ~r"lib/remote_web/(live|views)/.*(ex)$",
-      # ~r"lib/remote_web/templates/.*(eex)$"
+      # ~r"lib/playhouse_web/(live|views)/.*(ex)$",
+      # ~r"lib/playhouse_web/templates/.*(eex)$"
     ]
   ]
 

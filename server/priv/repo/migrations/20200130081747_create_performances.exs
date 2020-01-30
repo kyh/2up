@@ -1,4 +1,4 @@
-defmodule Remote.Repo.Migrations.CreatePerformances do
+defmodule Playhouse.Repo.Migrations.CreatePerformances do
   use Ecto.Migration
 
   def change do

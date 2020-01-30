@@ -5,20 +5,20 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     Remote.Repo.insert!(%Remote.SomeSchema{})
+#     Playhouse.Repo.insert!(%Playhouse.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Remote.Repo
-alias Remote.Accounts.User
-alias Remote.Catalog.Play
-alias Remote.Catalog.Scene
-alias Remote.Catalog.Response
-alias Remote.Stage.Character
-alias Remote.Stage.Production
-alias Remote.Stage.Performance
-alias Remote.Stage.Interaction
+alias Playhouse.Repo
+alias Playhouse.Accounts.User
+alias Playhouse.Catalog.Play
+alias Playhouse.Catalog.Scene
+alias Playhouse.Catalog.Response
+alias Playhouse.Stage.Character
+alias Playhouse.Stage.Production
+alias Playhouse.Stage.Performance
+alias Playhouse.Stage.Interaction
 
 user =
   %User{}

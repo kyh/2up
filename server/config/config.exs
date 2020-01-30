@@ -7,15 +7,15 @@
 # General application configuration
 use Mix.Config
 
-config :remote,
-  ecto_repos: [Remote.Repo]
+config :playhouse,
+  ecto_repos: [Playhouse.Repo]
 
 # Configures the endpoint
-config :remote, RemoteWeb.Endpoint,
+config :playhouse, PlayhouseWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "XvP1K4u3s6kkRTKp2k3ypqzuzbn5zjEIZNLQALc7m1ayOyXzVL0ZVt7pp28Dm9ye",
-  render_errors: [view: RemoteWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Remote.PubSub, adapter: Phoenix.PubSub.PG2]
+  render_errors: [view: PlayhouseWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Playhouse.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
