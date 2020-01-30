@@ -3,8 +3,8 @@ import { create } from '@storybook/theming';
 
 export const storyTheme = create({
   base: 'light',
-  brandTitle: 'Blankverse Design System',
-  brandUrl: 'https://github.com/tehkaiyu/remote-company',
+  brandTitle: 'Playhouse Design System',
+  brandUrl: 'https://github.com/tehkaiyu/playhouse',
   colorPrimary: '#3B475F',
   colorSecondary: '#3B475F'
 });

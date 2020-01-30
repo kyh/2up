@@ -27,11 +27,12 @@ export const StyledButton = styled.button`
   border-image-outset: 0;
   border-image-repeat: stretch stretch;
   border-image-source: url(${border});
-  transition: filter 0.2s ease;
+  transition: transform 0.2s ease;
   &:hover {
-    filter: invert(1) brightness(0.4);
+    border-image-source: url(${borderActive});
   }
   &:active {
+    transform: scale(0.9);
     border-image-source: url(${borderActive});
   }
 `;

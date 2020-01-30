@@ -13,6 +13,6 @@ export const variants = () => (
     <Box mb={3}>
       <Input />
     </Box>
-    <Input variant="round" />
+    <Input variant="rounded" />
   </>
 );
