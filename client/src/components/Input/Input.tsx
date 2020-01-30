@@ -2,8 +2,13 @@ import styled, { css } from 'styled-components/macro';
 import border from './border.svg';
 import borderRounded from './border-rounded.svg';
 
+enum Variants {
+  default = 'default',
+  rounded = 'rounded'
+}
+
 type Props = {
-  variant?: 'default' | 'round';
+  variant?: keyof typeof Variants;
 };
 
 const renderRegularStyles = () => {
@@ -29,8 +34,10 @@ const renderRoundedStyles = () => {
 
 export const Input = styled.input<Props>`
   padding: ${({ theme }) => theme.spacings(4)};
-  ${({ variant = 'default' }) =>
-    variant === 'default' ? renderRegularStyles() : renderRoundedStyles()}
+  ${({ variant = Variants.default }) =>
+    variant === Variants.default
+      ? renderRegularStyles()
+      : renderRoundedStyles()}
 
   &:focus {
     outline: none;

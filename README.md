@@ -1,4 +1,4 @@
-# Remote Company
+# Playhouse
 
 > Some description of this game
 
