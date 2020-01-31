@@ -20,7 +20,7 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-remote-*.tar
+playhouse-*.tar
 
 # If NPM crashes, it generates a log, let's ignore it too.
 npm-debug.log
@@ -31,4 +31,4 @@ npm-debug.log
 # Since we are building assets from assets/,
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
-/priv/static/
+# /priv/static/

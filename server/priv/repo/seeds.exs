@@ -5,16 +5,20 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     Remote.Repo.insert!(%Remote.SomeSchema{})
+#     Playhouse.Repo.insert!(%Playhouse.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Remote.Repo
-alias Remote.Accounts.User
-alias Remote.Catalog.Play
-alias Remote.Catalog.Scene
-alias Remote.Catalog.Response
+alias Playhouse.Repo
+alias Playhouse.Accounts.User
+alias Playhouse.Catalog.Play
+alias Playhouse.Catalog.Scene
+alias Playhouse.Catalog.Response
+alias Playhouse.Stage.Character
+alias Playhouse.Stage.Production
+alias Playhouse.Stage.Performance
+alias Playhouse.Stage.Interaction
 
 user =
   %User{}
@@ -25,7 +29,7 @@ user =
     })
   |> Repo.insert!
 
-%Play{
+play = %Play{
   name: "Hello world",
   user: user,
   scenes: [
@@ -72,4 +76,36 @@ user =
       ] 
     }
   ]
+} |> Repo.insert!
+
+production = %Production{
+  play: play,
+} |> Repo.insert!
+
+character1 = %Character{
+  name: "Andrew",
+  user: user,
+  production: production
+} |> Repo.insert!
+
+character2 = %Character{
+  name: "Kai",
+  production: production
+} |> Repo.insert!
+
+scenes = Repo.all(Scene)
+
+Enum.each scenes, fn scene -> 
+  %Performance{
+    scene: scene
+  } |> Repo.insert!
+end
+
+response = Repo.all(Response, limit: 1) |> List.first
+performance = Repo.all(Performance, limit: 1) |> List.first
+
+%Interaction{
+  response: response,
+  performance: performance,
+  character: character1
 } |> Repo.insert!

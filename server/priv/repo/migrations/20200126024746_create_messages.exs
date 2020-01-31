@@ -1,4 +1,4 @@
-defmodule Remote.Repo.Migrations.CreateMessages do
+defmodule Playhouse.Repo.Migrations.CreateMessages do
   use Ecto.Migration
 
   def change do
@@ -8,6 +8,5 @@ defmodule Remote.Repo.Migrations.CreateMessages do
 
       timestamps()
     end
-
   end
 end

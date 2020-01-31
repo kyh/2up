@@ -1,4 +1,4 @@
-# Remote
+# Playhouse
 
 To start your Phoenix server:
 
