@@ -8,16 +8,16 @@ import { RemoteScoringScene } from 'acts/trivia/remote/3-ScoringScene';
 export const Remote = () => {
   return (
     <Switch>
-      <Route path="/messaging">
+      <Route path="/remote/messaging">
         <MessageContainer />
       </Route>
-      <Route path="/trivia/prompt-scene">
+      <Route path="/remote/trivia/prompt-scene">
         <RemotePromptScene />
       </Route>
-      <Route path="/trivia/answer-scene">
+      <Route path="/remote/trivia/answer-scene">
         <RemoteAnswerScene />
       </Route>
-      <Route path="/trivia/scoring-scene">
+      <Route path="/remote/trivia/scoring-scene">
         <RemoteScoringScene />
       </Route>
     </Switch>

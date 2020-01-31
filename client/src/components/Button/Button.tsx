@@ -1,5 +1,8 @@
 import React from 'react';
-import styled from 'styled-components/macro';
+import styled, {
+  StyledComponentProps,
+  DefaultTheme
+} from 'styled-components/macro';
 import UIfx from 'uifx';
 import { SoundMap } from 'styles/sounds';
 import border from './border.svg';
@@ -7,12 +10,17 @@ import borderActive from './border-active.svg';
 
 const clickSound = new UIfx(SoundMap.click);
 
-type Props = {
-  onClick?: () => void;
-  children?: React.ReactNode;
-};
+type Props = StyledComponentProps<
+  'button',
+  DefaultTheme,
+  {
+    onClick?: () => void;
+    children?: React.ReactNode;
+  },
+  never
+>;
 
-export const Button = ({ onClick = () => {}, ...rest }: Props) => {
+export const Button: React.FC<Props> = ({ onClick = () => {}, ...rest }) => {
   const onButtonClick = () => {
     clickSound.play();
     onClick();

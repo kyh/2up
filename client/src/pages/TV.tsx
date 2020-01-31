@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { SoundMap } from 'styles/sounds';
 import { Button } from 'components';
 
 export const TV = () => {
+  const history = useHistory();
   return (
     <div>
       <h2>TV</h2>
@@ -13,12 +14,12 @@ export const TV = () => {
           themeSong.addEventListener('canplaythrough', () => {
             themeSong.loop = true;
             themeSong.play();
+            history.push('/remote/messaging');
           });
         }}
       >
-        Music go
+        Start
       </Button>
-      <Link to="/remote">Remote</Link>
     </div>
   );
 };
