@@ -11,9 +11,10 @@ defmodule Playhouse.Application do
       # Start the Ecto repository
       Playhouse.Repo,
       # Start the endpoint when the application starts
-      PlayhouseWeb.Endpoint
+      PlayhouseWeb.Endpoint,
       # Starts a worker by calling: Playhouse.Worker.start_link(arg)
       # {Playhouse.Worker, arg},
+      PlayhouseWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
