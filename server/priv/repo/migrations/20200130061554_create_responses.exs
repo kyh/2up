@@ -1,4 +1,4 @@
-defmodule Remote.Repo.Migrations.CreateResponses do
+defmodule Playhouse.Repo.Migrations.CreateResponses do
   use Ecto.Migration
 
   def change do

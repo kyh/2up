@@ -1,4 +1,4 @@
-defmodule Remote.DataCase do
+defmodule Playhouse.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -10,7 +10,7 @@ defmodule Remote.DataCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use Remote.DataCase, async: true`, although
+  by setting `use Playhouse.DataCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -18,20 +18,20 @@ defmodule Remote.DataCase do
 
   using do
     quote do
-      alias Remote.Repo
+      alias Playhouse.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Remote.DataCase
+      import Playhouse.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Remote.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Playhouse.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Remote.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Playhouse.Repo, {:shared, self()})
     end
 
     :ok
