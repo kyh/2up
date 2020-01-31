@@ -1,53 +1,25 @@
 import React from 'react';
-import { Box, Button, Input } from 'components';
-import { useMessages, actions, MessageType } from 'hooks/useMessages';
+import { Switch, Route } from 'react-router-dom';
+import { MessageContainer } from 'acts/messaging/MessageContainer';
+import { RemotePromptScene } from 'acts/trivia/remote/1-PromptScene';
+import { RemoteAnswerScene } from 'acts/trivia/remote/2-AnswerScene';
+import { RemoteScoringScene } from 'acts/trivia/remote/3-ScoringScene';
 
 export const Remote = () => {
-  const [state, broadcast] = useMessages();
-  const [message, setMessage] = React.useState('');
-  const [name, setName] = React.useState('');
-
   return (
-    <div>
-      <h2>Remote</h2>
-      <div>
-        {state.map((message: MessageType, i: number) => {
-          return (
-            <div key={i}>
-              {message.name}: {message.message}
-            </div>
-          );
-        })}
-      </div>
-      <Box>
-        <label>
-          Name:
-          <Input
-            type="text"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-        </label>
-      </Box>
-      <Box>
-        <label>
-          Message:
-          <Input
-            type="text"
-            value={message}
-            onChange={e => setMessage(e.target.value)}
-          />
-        </label>
-      </Box>
-
-      <Button
-        onClick={() => {
-          broadcast(actions.shout, { name, message });
-          setMessage('');
-        }}
-      >
-        Shout
-      </Button>
-    </div>
+    <Switch>
+      <Route path="/messaging">
+        <MessageContainer />
+      </Route>
+      <Route path="/trivia/prompt-scene">
+        <RemotePromptScene />
+      </Route>
+      <Route path="/trivia/answer-scene">
+        <RemoteAnswerScene />
+      </Route>
+      <Route path="/trivia/scoring-scene">
+        <RemoteScoringScene />
+      </Route>
+    </Switch>
   );
 };
