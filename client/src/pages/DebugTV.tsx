@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTrivia } from 'acts/trivia/useTrivia';
+import { useTrivia } from 'games/trivia/useTrivia';
 import Debug from 'components/Debug';
 
 export const DebugTV = () => {

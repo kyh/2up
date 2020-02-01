@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button, Input } from 'components';
-import { useMessages, actions } from 'acts/messaging/useMessages';
+import { useMessages, actions } from 'games/messaging/useMessages';
 
 export const MessageInput = () => {
   const [, broadcast] = useMessages();

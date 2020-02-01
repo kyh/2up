@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMessages, MessageType } from 'acts/messaging/useMessages';
+import { useMessages, MessageType } from 'games/messaging/useMessages';
 
 export const MessageList = () => {
   const [messages] = useMessages();
