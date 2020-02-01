@@ -1,25 +1,17 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { SoundMap } from 'styles/sounds';
-import { Button } from 'components';
+import { Switch, Route } from 'react-router-dom';
+import { MessageTV } from 'games/messaging/MessageTV';
+import { TriviaTV } from 'games/trivia/TriviaTV';
 
 export const TV = () => {
-  const history = useHistory();
   return (
-    <div>
-      <h2>TV</h2>
-      <Button
-        onClick={() => {
-          const themeSong = new Audio(SoundMap.theme);
-          themeSong.addEventListener('canplaythrough', () => {
-            themeSong.loop = true;
-            themeSong.play();
-            history.push('/remote/messaging');
-          });
-        }}
-      >
-        Start
-      </Button>
-    </div>
+    <Switch>
+      <Route path="/tv/messaging">
+        <MessageTV />
+      </Route>
+      <Route path="/tv/trivia">
+        <TriviaTV />
+      </Route>
+    </Switch>
   );
 };

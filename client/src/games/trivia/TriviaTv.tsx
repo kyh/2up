@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const TVScoringScene: React.FC = () => {
+export const TriviaTV: React.FC = () => {
   return (
     <div>
       <h2>Who was the 5th president of the United States?</h2>

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { Intro } from 'pages/Intro';
 import { TV } from 'pages/TV';
 import { Remote } from 'pages/Remote';
+
 // Used to test out back and forth with server
 // import { DebugTV } from 'pages/DebugTV';
 // import { DebugRemote } from 'pages/DebugRemote';
@@ -9,6 +11,9 @@ import { Remote } from 'pages/Remote';
 export const App: React.FC = () => {
   return (
     <Switch>
+      <Route path="/">
+        <Intro />
+      </Route>
       <Route path="/tv">
         <TV />
       </Route>
