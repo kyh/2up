@@ -1,19 +1,21 @@
 import { useChannel } from 'use-phoenix-channel';
+import { reducerLogger } from 'utils/reducerLogger';
 
 export type State = {
   act: number;
   scene: number;
   question: string;
   answer: string;
-  online: boolean;
+  connected: boolean;
 };
 export type Response = { event: any; payload: any };
 
 const channelName = 'game:trivia';
 
-const initialState = {
-  act: null,
-  scene: null,
+export const initialState = {
+  gameID: null,
+  act: 0,
+  scene: 0,
   question: '',
   answer: '',
   players: [],
@@ -22,46 +24,32 @@ const initialState = {
 };
 
 const reducer = (state: any, { event, payload }: Response) => {
-  let newState;
-
   switch (event) {
     case 'phx_reply':
-      newState = {
+      return {
         ...state,
         connected: true
       };
-      break;
     case 'game':
-      newState = {
+      return {
         ...state,
         ...payload
       };
-      break;
     case 'player:join':
-      newState = {
+      return {
         ...state,
         players: [...state.players, payload]
       };
-      break;
     case 'player:submit':
-      newState = {
+      return {
         ...state,
         submissions: [...state.submissions, payload]
       };
-      break;
     default:
       return state;
   }
-
-  console.log('REDUCER:', {
-    event,
-    payload,
-    newState
-  });
-
-  return newState;
 };
 
 export const useTrivia = () => {
-  return useChannel(channelName, reducer, initialState);
+  return useChannel(channelName, reducerLogger(reducer), initialState);
 };

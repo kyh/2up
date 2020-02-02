@@ -1,4 +1,4 @@
-defmodule Playhouse.Play do	
+defmodule Playhouse.Play do
   import Ecto.Query
 
   alias Playhouse.Repo
@@ -25,10 +25,11 @@ defmodule Playhouse.Play do
     players = players_all()
 
     %{
+      gameID: game.id,
       act: game.act,
       scene: game.scene,
       question: question.content,
-      players: players 
+      players: players
     }
   end
 end

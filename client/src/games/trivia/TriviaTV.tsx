@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
-import { useTrivia } from 'games/trivia/useTrivia';
+import React, { useContext } from 'react';
+
+import { TriviaContext } from './TriviaContext';
 
 export const TriviaTV: React.FC = () => {
-  const [state, broadcast] = useTrivia();
-
-  useEffect(() => {
-    if (state.connected) broadcast('game:join', {});
-  }, [state.connected, broadcast]);
+  const { state, broadcast } = useContext(TriviaContext);
 
   switch (state.scene) {
     case 1:
