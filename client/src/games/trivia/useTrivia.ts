@@ -40,12 +40,12 @@ const reducer = (state: any, { event, payload }: Response) => {
     case 'player:join':
       return {
         ...state,
-        players: [...state.players, ...payload.players]
+        players: [...state.players, payload]
       };
     case 'player:submit':
       return {
         ...state,
-        submissions: [...state.submissions, ...payload.submission]
+        submissions: [...state.submissions, payload]
       };
     default:
       return state;
