@@ -11,7 +11,7 @@ import { Remote } from 'pages/Remote';
 export const App: React.FC = () => {
   return (
     <Switch>
-      <Route path="/">
+      <Route exact path="/">
         <Intro />
       </Route>
       <Route path="/tv">
