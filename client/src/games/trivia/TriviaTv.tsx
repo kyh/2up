@@ -2,36 +2,36 @@ import React, { useEffect } from 'react';
 import { useTrivia } from 'games/trivia/useTrivia';
 
 export const TriviaTV: React.FC = () => {
-  return <Scene1 />;
-};
-
-const Scene1 = () => {
   const [state, broadcast] = useTrivia();
-
   useEffect(() => {
-    broadcast('broadcast', { message: 'scene1' });
-  }, [state?.isConnected])
+    broadcast();
+  }, [state.connected]);
 
-  if (state?.submissionCount > state?.players?.length - 1) {
-    return <Scene2 />
+  switch (state.scene) {
+    case 1:
+      return <Scene1 question={state.question} />;
+    case 2:
+      return (
+        <Scene2 question={state.question} submissions={state.submissions} />
+      );
+    case 3:
+      return <Scene3 />;
+    default:
+      return null;
   }
-
-  return (
-    <div>
-      <p>{state?.question}</p>
-      <p>{state?.players?.length}</p>
-    </div>
-  );
 };
 
-const Scene2 = () => {
+const Scene1 = ({ question }: { question: string }) => {
+  return <h1>{question}</h1>;
+};
+
+const Scene2 = ({ question, submissions }: any) => {
   return (
     <div>
-      <h2>Who was the 5th president of the United States?</h2>
-      <div>George Bush</div>
-      <div>yellowstone</div>
-      <div>Some guy</div>
-      <div>Rick Austin</div>
+      <h2>{question}</h2>
+      {submissions.map((s: any) => {
+        return <div>{s.content}</div>;
+      })}
     </div>
   );
 };

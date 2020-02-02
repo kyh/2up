@@ -6,18 +6,21 @@ import { Button } from 'components';
 export const Intro = () => {
   const history = useHistory();
 
-  const onClickStart = () => {
-    const themeSong = new Audio(SoundMap.theme);
-    themeSong.addEventListener('canplaythrough', () => {
-      themeSong.loop = true;
-      // themeSong.play();
-      history.push('/tv/trivia');
-    });
+  const onClickStart = (url: string) => {
+    return () => {
+      const themeSong = new Audio(SoundMap.theme);
+      themeSong.addEventListener('canplaythrough', () => {
+        themeSong.loop = true;
+        // themeSong.play();
+        history.push(`/${url}/trivia`);
+      });
+    };
   };
 
   return (
     <div>
-      <Button onClick={onClickStart}>Start TV</Button>
+      <Button onClick={onClickStart('tv')}>Start TV</Button>
+      <Button onClick={onClickStart('remote')}>Start Remote</Button>
     </div>
   );
 };
