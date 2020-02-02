@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { PageContainer } from 'components';
 
 import { TriviaProvider } from 'games/trivia/TriviaContext';
-import { TriviaLobby } from 'games/trivia/TriviaLobby';
+import { TriviaIntro } from 'games/trivia/TriviaIntro';
 import { TriviaTV } from 'games/trivia/TriviaTV';
 import { TriviaRemote } from 'games/trivia/TriviaRemote';
 
@@ -13,7 +13,7 @@ export const App: React.FC = () => {
       <Switch>
         <Route exact path="/">
           <PageContainer>
-            <TriviaLobby />
+            <TriviaIntro />
           </PageContainer>
         </Route>
         <Route path="/trivia/tv">
