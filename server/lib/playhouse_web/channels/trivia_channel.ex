@@ -12,8 +12,10 @@ defmodule PlayhouseWeb.TriviaChannel do
     {:reply, {:ok, payload}, socket}
   end
 
-  def handle_in("broadcast", %{"message" => "game:scene1"}, socket) do
+  def handle_in("game:start", _p, socket) do
     payload = %{
+      act: 1,
+      scene: 1,
       question: "Who won the NBA Finals in 2003?",
       players: [
         %{ name: "Andrew", score: 0},
@@ -21,12 +23,18 @@ defmodule PlayhouseWeb.TriviaChannel do
       ]
     }
 
-    broadcast socket, "game:scene1", payload
+    broadcast socket, "game", payload
     {:noreply, socket}
   end
 
-  def handle_in("broadcast", %{"message" => "player:submit", "submission" => submission}, socket) do
-    broadcast socket, "player:submit", %{submission: submission}
+  def handle_in("player:submit", payload, socket) do
+    broadcast socket, "player:submit", payload
+
+    # TODO: if submissions == amount of players
+    # broadcast socket, "game", payload
+
     {:noreply, socket}
   end
+
+  # TODO: player:join
 end
