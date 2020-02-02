@@ -1,9 +1,9 @@
-defmodule Playhouse.Question do
+defmodule Playhouse.Catalog.Question do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "questions" do
-    has_one :answer, Playhouse.Answer
+    has_one :answer, Playhouse.Catalog.Answer
 
     field :content, :string
 

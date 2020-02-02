@@ -1,11 +1,11 @@
-defmodule Playhouse.Submission do
+defmodule Playhouse.Play.Submission do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "submissions" do
-    belongs_to :player, Playhouse.Player
-    belongs_to :game_question, Playhouse.GameQuestion
-    has_many :endorsements, Playhouse.Endorsement
+    belongs_to :player, Playhouse.Play.Player
+    belongs_to :game_question, Playhouse.Play.GameQuestion
+    has_many :endorsements, Playhouse.Play.Endorsement
 
     field :content, :string
 

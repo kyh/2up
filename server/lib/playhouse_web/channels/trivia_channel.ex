@@ -4,9 +4,9 @@ defmodule PlayhouseWeb.TriviaChannel do
   import Ecto.Query
 
   alias Playhouse.Repo
-  alias Playhouse.Game
-  alias Playhouse.Player
-  alias Playhouse.Question
+  alias Playhouse.Play.Game
+  alias Playhouse.Play.Player
+  alias Playhouse.Catalog.Question
   alias PlayhouseWeb.Presence
 
   require Logger
@@ -31,16 +31,8 @@ defmodule PlayhouseWeb.TriviaChannel do
       } |> Repo.insert!
     end
 
-    query =
-      from Question,
-      order_by: fragment("RANDOM()") ,
-      limit: 1
-
-    question = Repo.one(query)
-
-    playersQuery = from q in Player, select: map(q, [:id, :name, :score])
-
-    players = Repo.all(playersQuery)
+    question = Playhouse.Catalog.random_question()
+    players = Playhouse.Play.players_all
 
     response = %{
       act: game.act,
@@ -50,6 +42,7 @@ defmodule PlayhouseWeb.TriviaChannel do
     }
 
     broadcast socket, "game", response
+    {:noreply, socket}
   end
 
   def handle_in("player:submit", payload, socket) do

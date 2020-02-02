@@ -1,10 +1,10 @@
-defmodule Playhouse.Answer do
+defmodule Playhouse.Catalog.Answer do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "answers" do
-    belongs_to :question, Playhouse.Question
-    has_many :endorsements, Playhouse.Endorsement
+    belongs_to :question, Playhouse.Catalog.Question
+    has_many :endorsements, Playhouse.Play.Endorsement
 
     field :content, :string
 

@@ -1,10 +1,10 @@
-defmodule Playhouse.Game do
+defmodule Playhouse.Play.Game do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "games" do
-    has_many :players, Playhouse.Player
-    has_many :game_questions, Playhouse.GameQuestion
+    has_many :players, Playhouse.Play.Player
+    has_many :game_questions, Playhouse.Play.GameQuestion
 
     field :act, :integer
     field :scene, :integer
