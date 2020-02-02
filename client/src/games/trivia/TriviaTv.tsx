@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useTrivia } from 'games/trivia/useTrivia';
 
 export const TriviaTV: React.FC = () => {
   return <Scene1 />;
 };
 
 const Scene1 = () => {
+  const [state, broadcast] = useTrivia();
+
+  const handleClick = () => {
+    broadcast('broadcast', { message: 'scene1' });
+  }
+
+  console.log('subissioncount', state?.submissionCount)
+  if (state?.submissionCount > state?.players?.length - 1) {
+    return <Scene2 />
+  }
+
   return (
     <div>
-      <h2>Who was the 5th president of the United States?</h2>
+      <p>{state?.question}</p>
+      <p>{state?.players?.length}</p>
+      <button onClick={handleClick}>Scene 1</button>
     </div>
   );
 };

@@ -22,6 +22,24 @@ defmodule PlayhouseWeb.RoomChannel do
     {:noreply, socket}
   end
 
+  def handle_in("broadcast", %{"message" => "scene1"}, socket) do
+    payload = %{
+      question: "Who won the NBA Finals in 2003?",
+      players: [
+        %{ name: "Andrew", score: 0},
+        %{ name: "Kai", score: 0},
+      ]
+    }
+
+    broadcast socket, "scene1", payload
+    {:noreply, socket}
+  end
+
+  def handle_in("broadcast", %{"message" => "player:submit"}, socket) do
+    broadcast socket, "player:submit", %{submission: %{content: "DUMMY", name: "NAME"}}
+    {:noreply, socket}
+  end
+
   def handle_in("broadcast", %{"message" => "join", "name" => name}, socket) do
     Presence.track(socket, name, %{
       online_at: inspect(System.system_time(:second))
