@@ -22,37 +22,44 @@ const initialState = {
 };
 
 const reducer = (state: any, { event, payload }: Response) => {
-  console.log('REDUCER:', {
-    event,
-    payload,
-    state
-  });
+  let newState;
 
   switch (event) {
-    case 'phx_reply': {
-      return {
+    case 'phx_reply':
+      newState = {
         ...state,
         connected: true
       };
-    }
+      break;
     case 'game':
-      return {
+      newState = {
         ...state,
         ...payload
       };
+      break;
     case 'player:join':
-      return {
+      newState = {
         ...state,
         players: [...state.players, payload]
       };
+      break;
     case 'player:submit':
-      return {
+      newState = {
         ...state,
         submissions: [...state.submissions, payload]
       };
+      break;
     default:
       return state;
   }
+
+  console.log('REDUCER:', {
+    event,
+    payload,
+    newState
+  });
+
+  return newState;
 };
 
 export const useTrivia = () => {
