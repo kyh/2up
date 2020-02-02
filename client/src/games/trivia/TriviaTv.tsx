@@ -6,7 +6,7 @@ export const TriviaTV: React.FC = () => {
 
   useEffect(() => {
     if (state.connected) broadcast('game:join');
-  }, [state.connected]);
+  }, [state.connected, broadcast]);
 
   switch (state.scene) {
     case 1:

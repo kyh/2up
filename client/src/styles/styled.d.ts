@@ -9,6 +9,7 @@ declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
       black: string;
+      lightGrey: string;
       white: string;
     };
     space: Array<number>;
