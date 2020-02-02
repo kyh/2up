@@ -12,7 +12,6 @@
 
 alias Playhouse.Repo
 alias Playhouse.Game
-alias Playhouse.Player
 alias Playhouse.GameQuestion
 alias Playhouse.Question
 alias Playhouse.Answer
