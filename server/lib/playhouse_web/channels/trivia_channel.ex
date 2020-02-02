@@ -61,6 +61,7 @@ defmodule PlayhouseWeb.TriviaChannel do
     # get all players
 
     # TODO: if submissions == amount of players
+    # move to the next scene
     # broadcast socket, "game", payload
 
     {:noreply, socket}
@@ -69,5 +70,9 @@ defmodule PlayhouseWeb.TriviaChannel do
   # TODO: player:join
   # TODO: game:create
   # TODO: player:endorse
+    # once endorsements == amount of players
+    # return game state (act, scene)
   # TODO: game:next
+    # create new game question
+    # return game state (act, scene)
 end
