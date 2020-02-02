@@ -12,8 +12,8 @@ export type Response = { event: any; payload: any };
 const channelName = 'game:trivia';
 
 const initialState = {
-  act: 1,
-  scene: 0,
+  act: null,
+  scene: null,
   question: '',
   answer: '',
   submissions: [],
@@ -31,11 +31,10 @@ const reducer = (state: any, { event, payload }: Response) => {
         connected: true
       };
     }
-    case 'game:scene1':
+    case 'game':
       return {
         ...state,
-        question: payload.question,
-        players: payload.players
+        ...payload
       };
     case 'player:join':
       return {
