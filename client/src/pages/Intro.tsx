@@ -10,8 +10,8 @@ export const Intro = () => {
     const themeSong = new Audio(SoundMap.theme);
     themeSong.addEventListener('canplaythrough', () => {
       themeSong.loop = true;
-      themeSong.play();
-      history.push('/tv/messaging');
+      // themeSong.play();
+      history.push('/tv/trivia');
     });
   };
 
