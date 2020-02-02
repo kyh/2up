@@ -1,31 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Flex, Input, Button } from 'components';
-import { useTrivia } from 'games/trivia/useTrivia';
+
+import { TriviaContext } from './TriviaContext';
 
 export const TriviaRemote: React.FC = () => {
-  const [state, broadcast] = useTrivia();
-
-  useEffect(() => {
-    if (state.connected) {
-      broadcast('game:join', {
-        name: localStorage.getItem('name')
-      });
-    }
-  }, [state.connected, broadcast]);
+  const { state, broadcast } = useContext(TriviaContext);
 
   switch (state.scene) {
     case 1:
-      return <Scene1 broadcast={broadcast} state={state} />;
+      return <Scene1 state={state} broadcast={broadcast} />;
     case 2:
-      return <Scene2 broadcast={broadcast} state={state} />;
+      return <Scene2 state={state} broadcast={broadcast} />;
     case 3:
-      return <Scene3 broadcast={broadcast} state={state} />;
+      return <Scene3 state={state} broadcast={broadcast} />;
     default:
       return null;
   }
 };
 
-const Scene1 = ({ broadcast }: any) => {
+const Scene1 = ({ state, broadcast }: any) => {
   const [value, setValue] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -39,6 +32,7 @@ const Scene1 = ({ broadcast }: any) => {
 
   return (
     <Flex alignItems="center" flexDirection="column">
+      <h1>{state.question}</h1>
       <Input
         value={value}
         onChange={e => {
