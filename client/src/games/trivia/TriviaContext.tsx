@@ -1,5 +1,9 @@
 import React from 'react';
-import { useTrivia, initialState } from 'games/trivia/useTrivia';
+import {
+  useTrivia,
+  initialState,
+  TriviaGameState
+} from 'games/trivia/useTrivia';
 
 export const TriviaContext = React.createContext({
   state: initialState,
@@ -14,3 +18,8 @@ export const TriviaProvider = ({ children }: { children: React.ReactNode }) => {
     </TriviaContext.Provider>
   );
 };
+
+export interface SceneProps {
+  state: TriviaGameState;
+  broadcast: (_eventName: string, _payload: any) => void;
+}

@@ -2,14 +2,14 @@ import { useChannel } from 'use-phoenix-channel';
 import { reducerLogger } from 'utils/reducerLogger';
 import { GameState, ServerResponse, Player } from 'games/types';
 
-interface State extends GameState {
+export interface TriviaGameState extends GameState {
   act: number;
   scene: number;
   question?: string;
   answer?: string;
   submissions: Submission[];
 }
-interface Submission {
+export interface Submission {
   playerName: string;
   content: string;
   endorsers: Player[];
@@ -17,7 +17,7 @@ interface Submission {
 
 const channelName = 'game:trivia';
 
-export const initialState: State = {
+export const initialState: TriviaGameState = {
   gameID: undefined,
   connected: false,
   players: [],
@@ -28,7 +28,10 @@ export const initialState: State = {
   submissions: []
 };
 
-const reducer = (state: State, { event, payload }: ServerResponse) => {
+const reducer = (
+  state: TriviaGameState,
+  { event, payload }: ServerResponse
+) => {
   switch (event) {
     case 'phx_reply':
       return {
