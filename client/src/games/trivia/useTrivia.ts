@@ -23,6 +23,7 @@ const initialState = {
 const reducer = (state: any, { event, payload }: Response) => {
   console.log('REDUCER EVENT', event);
   console.log('REDUCER PAYLOAD', payload);
+  console.log('REDUCER STATE', state);
 
   switch (event) {
     case 'phx_reply': {
