@@ -1,32 +1,40 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import { PageContainer } from 'components';
+import { Flex, Button, Input } from 'components';
 
-import { TriviaProvider } from 'games/trivia/TriviaContext';
-import { TriviaIntro } from 'games/trivia/TriviaIntro';
-import { TriviaTV } from 'games/trivia/TriviaTV';
-import { TriviaRemote } from 'games/trivia/TriviaRemote';
+import { TriviaPages } from './Trivia';
 
 export const App: React.FC = () => {
   return (
-    <TriviaProvider>
-      <Switch>
-        <Route exact path="/">
-          <PageContainer>
-            <TriviaIntro />
-          </PageContainer>
-        </Route>
-        <Route path="/trivia/tv">
-          <PageContainer variant="tv">
-            <TriviaTV />
-          </PageContainer>
-        </Route>
-        <Route path="/trivia/remote">
-          <PageContainer variant="remote">
-            <TriviaRemote />
-          </PageContainer>
-        </Route>
-      </Switch>
-    </TriviaProvider>
+    <Switch>
+      <Route exact path="/">
+        <PageContainer>
+          <AppIntro />
+        </PageContainer>
+      </Route>
+      <TriviaPages />
+    </Switch>
+  );
+};
+
+const AppIntro = () => {
+  const history = useHistory();
+  const [name, setName] = useState(localStorage.getItem('name') || '');
+
+  const onClickStart = () => {
+    localStorage.setItem('name', name);
+    history.push('/trivia');
+  };
+
+  return (
+    <Flex alignItems="center" flexDirection="column" mt={3}>
+      <Input
+        placeholder="Name"
+        value={name}
+        onChange={e => setName(e.target.value)}
+      />
+      <Button onClick={onClickStart}>Start</Button>
+    </Flex>
   );
 };
