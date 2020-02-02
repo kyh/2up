@@ -11,10 +11,10 @@
 # and so on) as they will fail if something goes wrong.
 
 alias Playhouse.Repo
-alias Playhouse.Game
-alias Playhouse.GameQuestion
-alias Playhouse.Question
-alias Playhouse.Answer
+alias Playhouse.Play.Game
+alias Playhouse.Play.GameQuestion
+alias Playhouse.Catalog.Question
+alias Playhouse.Catalog.Answer
 
 game = %Game{
   act: 1,
@@ -69,24 +69,4 @@ question5 = %Question{
 %GameQuestion{
   game: game,
   question: question1
-} |> Repo.insert!
-
-%GameQuestion{
-  game: game,
-  question: question2
-} |> Repo.insert!
-
-%GameQuestion{
-  game: game,
-  question: question3
-} |> Repo.insert!
-
-%GameQuestion{
-  game: game,
-  question: question4
-} |> Repo.insert!
-
-%GameQuestion{
-  game: game,
-  question: question5
 } |> Repo.insert!
