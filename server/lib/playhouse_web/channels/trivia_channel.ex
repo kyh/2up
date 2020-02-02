@@ -4,6 +4,7 @@ defmodule PlayhouseWeb.TriviaChannel do
   import Ecto.Query
 
   alias Playhouse.Repo
+  alias Playhouse.Play
   alias Playhouse.Play.Game
   alias Playhouse.Play.Player
   alias Playhouse.Catalog.Question
@@ -24,22 +25,10 @@ defmodule PlayhouseWeb.TriviaChannel do
     game = Repo.one(Game)
 
     if payload["name"] do
-      %Player{
-        game: game,
-        name: payload["name"],
-        score: 0
-      } |> Repo.insert!
+      Play.player_create(game, payload["name"])
     end
 
-    question = Playhouse.Catalog.random_question()
-    players = Playhouse.Play.players_all
-
-    response = %{
-      act: game.act,
-      scene: game.scene,
-      question: question.content,
-      players: players 
-    }
+    response = Play.game_state(game)
 
     broadcast socket, "game", response
     {:noreply, socket}
