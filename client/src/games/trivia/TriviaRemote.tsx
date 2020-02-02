@@ -15,7 +15,7 @@ export const TriviaRemote: React.FC = () => {
     case 2:
       return <Scene2 broadcast={broadcast} state={state} />;
     case 3:
-      return <Scene3 />;
+      return <Scene3 broadcast={broadcast} state={state} />;
     default:
       return null;
   }
@@ -37,7 +37,7 @@ const Scene1 = ({ broadcast }: any) => {
   );
 };
 
-const Scene2 = ({ state, broadcast }: any) => {
+const Scene2 = ({ state }: any) => {
   return (
     <div>
       <h2>{state?.question}</h2>
@@ -48,7 +48,7 @@ const Scene2 = ({ state, broadcast }: any) => {
   );
 };
 
-const Scene3 = () => {
+const Scene3 = ({ state }: any) => {
   return (
     <div>
       <h2>Your score</h2>
