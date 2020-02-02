@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Input, Button } from 'components';
 import { useTrivia } from 'games/trivia/useTrivia';
 
 export const TriviaRemote: React.FC = () => {
-  return <Scene1 />;
-};
-
-const Scene1 = () => {
   const [state, broadcast] = useTrivia();
 
-  const handleClick = () => {
-    broadcast('broadcast', {
-      message: 'player:submit',
-      submission: {
-        name: 'Kai',
-        submission: 'Lakers'
-      }
-    });
+  useEffect(() => {
+    broadcast('game:start');
+  }, [state.connected]);
+
+  switch (state.scene) {
+    case 1:
+      return <Scene1 broadcast={broadcast} state={state} />;
+    case 2:
+      return <Scene2 broadcast={broadcast} state={state} />;
+    case 3:
+      return <Scene3 />;
+    default:
+      return null;
   }
+};
+
+const Scene1 = ({ broadcast }: any) => {
+  const handleClick = () => {
+    broadcast('player:submit', {
+      name: 'Kai',
+      submission: 'Lakers'
+    });
+  };
 
   return (
     <div>
@@ -27,14 +37,13 @@ const Scene1 = () => {
   );
 };
 
-const Scene2 = () => {
+const Scene2 = ({ state, broadcast }: any) => {
   return (
     <div>
-      <h2>Who was the 5th president of the United States?</h2>
-      <Button>George Bush</Button>
-      <Button>yellowstone</Button>
-      <Button>Some guy</Button>
-      <Button>Rick Austin</Button>
+      <h2>{state?.question}</h2>
+      {state?.submissions.map((s: any) => {
+        return <Button>{s.content}</Button>;
+      })}
     </div>
   );
 };
