@@ -16,14 +16,17 @@ const initialState = {
   scene: null,
   question: '',
   answer: '',
+  players: [],
   submissions: [],
   connected: false
 };
 
 const reducer = (state: any, { event, payload }: Response) => {
-  console.log('REDUCER EVENT', event);
-  console.log('REDUCER PAYLOAD', payload);
-  console.log('REDUCER STATE', state);
+  console.log('REDUCER:', {
+    event,
+    payload,
+    state
+  });
 
   switch (event) {
     case 'phx_reply': {

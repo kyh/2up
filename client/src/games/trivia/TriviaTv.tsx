@@ -3,8 +3,9 @@ import { useTrivia } from 'games/trivia/useTrivia';
 
 export const TriviaTV: React.FC = () => {
   const [state, broadcast] = useTrivia();
+
   useEffect(() => {
-    broadcast('game:start');
+    if (state.connected) broadcast('game:join');
   }, [state.connected]);
 
   switch (state.scene) {

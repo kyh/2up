@@ -1,26 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SoundMap } from 'styles/sounds';
-import { Button } from 'components';
+import { Button, Input } from 'components';
 
 export const Intro = () => {
   const history = useHistory();
+  const [name, setName] = useState(localStorage.getItem('name') || '');
 
-  const onClickStart = (url: string) => {
-    return () => {
-      const themeSong = new Audio(SoundMap.theme);
-      themeSong.addEventListener('canplaythrough', () => {
-        themeSong.loop = true;
-        // themeSong.play();
-        history.push(`/${url}/trivia`);
-      });
-    };
+  const onClickStartTv = () => {
+    const themeSong = new Audio(SoundMap.theme);
+    themeSong.addEventListener('canplaythrough', () => {
+      themeSong.loop = true;
+      // themeSong.play();
+      history.push('/tv/trivia');
+    });
+  };
+
+  const onClickStartRemote = () => {
+    localStorage.setItem('name', name);
+    history.push('/remote/trivia');
   };
 
   return (
     <div>
-      <Button onClick={onClickStart('tv')}>Start TV</Button>
-      <Button onClick={onClickStart('remote')}>Start Remote</Button>
+      <Input value={name} onChange={e => setName(e.target.value)} />
+      <Button onClick={onClickStartTv}>Start TV</Button>
+      <Button onClick={onClickStartRemote}>Start Remote</Button>
     </div>
   );
 };
