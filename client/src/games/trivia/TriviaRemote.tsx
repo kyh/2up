@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Button } from 'components';
 import { useTrivia } from 'games/trivia/useTrivia';
 
@@ -6,7 +6,11 @@ export const TriviaRemote: React.FC = () => {
   const [state, broadcast] = useTrivia();
 
   useEffect(() => {
-    broadcast('game:start');
+    if (state.connected) {
+      broadcast('game:join', {
+        name: localStorage.getItem('name')
+      });
+    }
   }, [state.connected]);
 
   switch (state.scene) {
@@ -22,16 +26,22 @@ export const TriviaRemote: React.FC = () => {
 };
 
 const Scene1 = ({ broadcast }: any) => {
+  const [value, setValue] = useState('');
   const handleClick = () => {
     broadcast('player:submit', {
-      name: 'Kai',
-      submission: 'Lakers'
+      name: localStorage.getItem('name'),
+      submission: value
     });
   };
 
   return (
     <div>
-      <Input />
+      <Input
+        value={value}
+        onChange={e => {
+          setValue(e.target.value);
+        }}
+      />
       <Button onClick={handleClick}>Submit answer</Button>
     </div>
   );

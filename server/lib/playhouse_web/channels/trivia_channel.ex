@@ -12,7 +12,7 @@ defmodule PlayhouseWeb.TriviaChannel do
     {:reply, {:ok, payload}, socket}
   end
 
-  def handle_in("game:start", _p, socket) do
+  def handle_in("game:join", _p, socket) do
     payload = %{
       act: 1,
       scene: 1,
