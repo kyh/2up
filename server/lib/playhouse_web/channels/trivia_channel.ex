@@ -67,4 +67,7 @@ defmodule PlayhouseWeb.TriviaChannel do
   end
 
   # TODO: player:join
+  # TODO: game:create
+  # TODO: player:endorse
+  # TODO: game:next
 end
