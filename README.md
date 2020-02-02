@@ -60,7 +60,7 @@ Create db in config/dev.exs
 mix ecto.create
 ```
 
-Install the node.js dependencies:
+Install the node.js dependencies
 
 ```
 cd assets && npm install && cd ..
