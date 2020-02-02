@@ -8,11 +8,10 @@ export const TriviaTV: React.FC = () => {
 const Scene1 = () => {
   const [state, broadcast] = useTrivia();
 
-  const handleClick = () => {
+  useEffect(() => {
     broadcast('broadcast', { message: 'scene1' });
-  }
+  }, [state?.isConnected])
 
-  console.log('subissioncount', state?.submissionCount)
   if (state?.submissionCount > state?.players?.length - 1) {
     return <Scene2 />
   }
@@ -21,7 +20,6 @@ const Scene1 = () => {
     <div>
       <p>{state?.question}</p>
       <p>{state?.players?.length}</p>
-      <button onClick={handleClick}>Scene 1</button>
     </div>
   );
 };

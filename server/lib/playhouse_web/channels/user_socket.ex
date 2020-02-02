@@ -2,7 +2,7 @@ defmodule PlayhouseWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "room:*", PlayhouseWeb.RoomChannel
+  channel "game:trivia", PlayhouseWeb.TriviaChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
