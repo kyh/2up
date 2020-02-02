@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Flex, Input, Button } from 'components';
-
-import { TriviaContext } from './TriviaContext';
+import { TriviaContext, SceneProps } from 'games/trivia/TriviaContext';
 
 export const TriviaRemote: React.FC = () => {
   const { state, broadcast } = useContext(TriviaContext);
@@ -18,7 +17,7 @@ export const TriviaRemote: React.FC = () => {
   }
 };
 
-const Scene1 = ({ state, broadcast }: any) => {
+const Scene1 = ({ state, broadcast }: SceneProps) => {
   const [value, setValue] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -47,18 +46,18 @@ const Scene1 = ({ state, broadcast }: any) => {
   );
 };
 
-const Scene2 = ({ state }: any) => {
+const Scene2 = ({ state }: SceneProps) => {
   return (
     <div>
-      <h2>{state?.question}</h2>
-      {state?.submissions.map((s: any) => {
-        return <Button>{s.content}</Button>;
+      <h2>{state.question}</h2>
+      {state.submissions.map(submission => {
+        return <Button>{submission.content}</Button>;
       })}
     </div>
   );
 };
 
-const Scene3 = ({ state }: any) => {
+const Scene3 = ({ state }: SceneProps) => {
   return (
     <div>
       <h2>Your score</h2>

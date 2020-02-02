@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-
-import { TriviaContext } from './TriviaContext';
+import { TriviaContext, SceneProps } from 'games/trivia/TriviaContext';
 
 export const TriviaTV: React.FC = () => {
   const { state, broadcast } = useContext(TriviaContext);
@@ -17,31 +16,31 @@ export const TriviaTV: React.FC = () => {
   }
 };
 
-const Scene1 = ({ state }: any) => {
+const Scene1 = ({ state }: SceneProps) => {
   return <h1>{state.question}</h1>;
 };
 
-const Scene2 = ({ state }: any) => {
+const Scene2 = ({ state }: SceneProps) => {
   return (
     <div>
       <h2>{state.question}</h2>
-      {state.submissions.map((submission: any) => {
+      {state.submissions.map(submission => {
         return <div>{submission.content}</div>;
       })}
     </div>
   );
 };
 
-const Scene3 = ({ state }: any) => {
+const Scene3 = ({ state }: SceneProps) => {
   return (
     <div>
       <h2>{state.question}</h2>
-      {state.submissions.map((submission: any) => {
+      {state.submissions.map(submission => {
         return (
           <div>
             <p>{submission.content}</p>(
-            {submission.endorsements.map((endorsement: any) => {
-              return endorsement.player;
+            {submission.endorsers.map(player => {
+              return player.name;
             })}
             )
           </div>
