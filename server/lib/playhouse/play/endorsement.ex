@@ -1,10 +1,10 @@
-defmodule Playhouse.Endorsement do
+defmodule Playhouse.Play.Endorsement do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "endorsements" do
-    belongs_to :submission, Playhouse.Submission
-    belongs_to :answer, Playhouse.Answer
+    belongs_to :submission, Playhouse.Play.Submission
+    belongs_to :answer, Playhouse.Catalog.Answer
 
     timestamps()
   end
