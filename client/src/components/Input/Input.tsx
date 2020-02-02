@@ -42,4 +42,9 @@ export const Input = styled.input<Props>`
   &:focus {
     outline: none;
   }
+
+  &:read-only {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `;

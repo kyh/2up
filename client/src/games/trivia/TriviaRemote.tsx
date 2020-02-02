@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Button } from 'components';
+import { Flex, Input, Button } from 'components';
 import { useTrivia } from 'games/trivia/useTrivia';
 
 export const TriviaRemote: React.FC = () => {
@@ -11,7 +11,7 @@ export const TriviaRemote: React.FC = () => {
         name: localStorage.getItem('name')
       });
     }
-  }, [state.connected]);
+  }, [state.connected, broadcast]);
 
   switch (state.scene) {
     case 1:
@@ -27,23 +27,29 @@ export const TriviaRemote: React.FC = () => {
 
 const Scene1 = ({ broadcast }: any) => {
   const [value, setValue] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
   const handleClick = () => {
     broadcast('player:submit', {
       name: localStorage.getItem('name'),
       submission: value
     });
+    setSubmitted(true);
   };
 
   return (
-    <div>
+    <Flex alignItems="center" flexDirection="column">
       <Input
         value={value}
         onChange={e => {
           setValue(e.target.value);
         }}
+        readOnly={submitted}
       />
-      <Button onClick={handleClick}>Submit answer</Button>
-    </div>
+      <Button disabled={submitted} onClick={handleClick}>
+        Submit answer
+      </Button>
+    </Flex>
   );
 };
 
