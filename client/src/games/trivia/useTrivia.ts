@@ -10,7 +10,7 @@ export type State = {
 };
 export type Response = { event: any; payload: any };
 
-const channelName = 'room:lobby';
+const channelName = 'game:trivia';
 
 let submissionCount = 0
 
@@ -19,6 +19,12 @@ const reducer = (state: any, { event, payload }: any) => {
   console.log('REDUCER PAYLOAD', payload)
 
   switch (event) {
+    case 'phx_reply': {
+      return {
+        ...state,
+        isConnected: true
+      }
+    }
     case 'scene1':
       return {
         ...state,
@@ -68,7 +74,7 @@ const reducer = (state: any, { event, payload }: any) => {
       return state;
   }
 };
-const initialState = { act: 1, scene: 0, question: '', answer: '', isOnline: false };
+const initialState = { act: 1, scene: 0, question: '', answer: '', isConnected: false };
 
 export const useTrivia = () => {
   return useChannel(channelName, reducer, initialState);

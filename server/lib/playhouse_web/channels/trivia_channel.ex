@@ -1,9 +1,9 @@
-defmodule PlayhouseWeb.RoomChannel do
+defmodule PlayhouseWeb.TriviaChannel do
   use PlayhouseWeb, :channel
   alias PlayhouseWeb.Presence
   require Logger
 
-  def join("room:lobby", payload, socket) do
+  def join("game:trivia", payload, socket) do
     send(self(), :after_join)
     {:ok, socket}
   end
