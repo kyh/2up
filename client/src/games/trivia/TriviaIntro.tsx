@@ -8,21 +8,20 @@ export const TriviaIntro = () => {
   const history = useHistory();
   const { broadcast } = useContext(TriviaContext);
 
-  const [name, setName] = useState(localStorage.getItem('name') || '');
   const [gameIDToJoin, setGameIDtoJoin] = useState('');
+  const [name] = useState(localStorage.getItem('name'));
 
   const onClickStartTv = () => {
     const themeSong = new Audio(SoundMap.theme);
     themeSong.addEventListener('canplaythrough', () => {
       themeSong.loop = true;
       // themeSong.play();
-      broadcast('game:new', {});
+      broadcast('game:new', { name });
       history.push('/trivia/tv');
     });
   };
 
   const onClickStartRemote = () => {
-    localStorage.setItem('name', name);
     broadcast('game:join', { name, gameID: gameIDToJoin });
     history.push('/trivia/remote');
   };
@@ -34,11 +33,6 @@ export const TriviaIntro = () => {
       </Box>
       <hr />
       <Flex alignItems="center" flexDirection="column" mt={3}>
-        <Input
-          placeholder="Name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
         <Input
           placeholder="Game ID"
           value={gameIDToJoin}
