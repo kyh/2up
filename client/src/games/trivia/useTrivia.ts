@@ -11,20 +11,41 @@ export type State = {
 export type Response = { event: any; payload: any };
 
 const channelName = 'room:lobby';
+
+let submissionCount = 0
+
 const reducer = (state: any, { event, payload }: any) => {
+  console.log('REDUCER EVENT', event)
+  console.log('REDUCER PAYLOAD', payload)
+
   switch (event) {
+    case 'scene1':
+      return {
+        ...state,
+        question: payload.question,
+        players: payload.players
+      }
+    case 'player:submit':
+      submissionCount += 1
+      return {
+        ...state,
+        submissionCount,
+        submission: payload.submission
+      }
     case 'start':
       return {
         act: 1,
         scene: 1,
         question: acts[0].question,
         answer: acts[0].answer,
+        isOnline: true,
         players: state.players
       };
     case 'join':
       return {
         ...state,
-        players: payload.players
+        players: payload.players,
+        isOnline: true
       };
     case 'scene:next':
       return {
@@ -47,7 +68,7 @@ const reducer = (state: any, { event, payload }: any) => {
       return state;
   }
 };
-const initialState = { act: 1, scene: 0, question: '', answer: '' };
+const initialState = { act: 1, scene: 0, question: '', answer: '', isOnline: false };
 
 export const useTrivia = () => {
   return useChannel(channelName, reducer, initialState);
