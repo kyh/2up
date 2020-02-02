@@ -4,7 +4,7 @@ import { SoundMap } from 'styles/sounds';
 import { Flex, Box, Button, Input } from 'components';
 import { TriviaContext } from './TriviaContext';
 
-export const TriviaLobby = () => {
+export const TriviaIntro = () => {
   const history = useHistory();
   const { broadcast } = useContext(TriviaContext);
 
