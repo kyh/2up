@@ -12,7 +12,7 @@ defmodule PlayhouseWeb.TriviaChannel do
     {:reply, {:ok, payload}, socket}
   end
 
-  def handle_in("broadcast", %{"message" => "scene1"}, socket) do
+  def handle_in("broadcast", %{"message" => "game:scene1"}, socket) do
     payload = %{
       question: "Who won the NBA Finals in 2003?",
       players: [
@@ -21,7 +21,7 @@ defmodule PlayhouseWeb.TriviaChannel do
       ]
     }
 
-    broadcast socket, "scene1", payload
+    broadcast socket, "game:scene1", payload
     {:noreply, socket}
   end
 
