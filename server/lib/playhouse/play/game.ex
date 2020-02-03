@@ -8,6 +8,7 @@ defmodule Playhouse.Play.Game do
 
     field :act, :integer
     field :scene, :integer
+    field :code, :string
 
     timestamps()
   end
