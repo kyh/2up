@@ -19,6 +19,7 @@ const channelName = 'game:trivia';
 
 export const initialState: TriviaGameState = {
   gameID: undefined,
+  code: '',
   connected: false,
   players: [],
   act: 0,
