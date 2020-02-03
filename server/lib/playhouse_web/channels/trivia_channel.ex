@@ -12,46 +12,38 @@ defmodule PlayhouseWeb.TriviaChannel do
     {:ok, socket}
   end
 
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
-  end
-
   def handle_in("game:new", payload, socket) do
     game = Play.game_create()
-    Play.player_create(game, payload["name"])
-    game_state = Play.game_state(game)
+    Play.player_find_or_create(game, payload["name"])
 
-    broadcast socket, "game", game_state
+    broadcast socket, "game", Play.game_state(game)
     {:noreply, socket}
   end
 
   def handle_in("game:join", payload, socket) do
     game = Play.game_get(payload["gameID"])
-    game_state = Play.game_state(game)
+    Play.player_find_or_create(game, payload["name"])
 
-    broadcast socket, "game", game_state
+    broadcast socket, "game", Play.game_state(game)
     {:noreply, socket}
   end
 
   def handle_in("player:submit", payload, socket) do
-    broadcast socket, "player:submit", payload
-
-    player = Play.player_get(payload["name"])
+    player = Play.player_get(payload["name"], payload["gameID"])
     Play.submission_create(player, payload["submission"])
+
     submissions = Play.submission_list()
     players = Play.player_list()
 
     if length(submissions) == length(players) do
-      game = Repo.one(Game)
-      Play.game_scene_next(game)
-      broadcast socket, "game", payload
+      Play.game_get(payload["gameID"]) |> Play.game_scene_next
+      game = Play.game_get(payload["gameID"])
+      broadcast socket, "game", Play.game_state(game)
     end
 
     {:noreply, socket}
   end
 
-  # TODO: player:join
-  # TODO: game:create
   # TODO: player:endorse
     # once endorsements == amount of players
     # return game state (act, scene)
