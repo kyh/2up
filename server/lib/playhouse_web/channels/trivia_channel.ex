@@ -26,12 +26,7 @@ defmodule PlayhouseWeb.TriviaChannel do
   end
 
   def handle_in("game:join", payload, socket) do
-    game = Repo.one(Game)
-
-    if payload["name"] do
-      Play.player_create(game, payload["name"])
-    end
-
+    game = Play.game_get(payload["gameID"])
     game_state = Play.game_state(game)
 
     broadcast socket, "game", game_state

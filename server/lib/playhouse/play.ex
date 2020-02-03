@@ -62,6 +62,10 @@ defmodule Playhouse.Play do
     # increment scene counter
   end
 
+  def game_get(code) do
+    Repo.get_by(Game, code: code)
+  end
+
   def game_state(game) do
     question = Catalog.random_question()
     players = player_list()
