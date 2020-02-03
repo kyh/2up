@@ -1,14 +1,9 @@
 defmodule PlayhouseWeb.TriviaChannel do
   use PlayhouseWeb, :channel
 
-  alias Playhouse.Repo
   alias Playhouse.Play
-  alias Playhouse.Play.Game
-
-  require Logger
 
   def join("game:trivia", _payload, socket) do
-    send(self(), :after_join)
     {:ok, socket}
   end
 
