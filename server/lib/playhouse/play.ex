@@ -3,6 +3,7 @@ defmodule Playhouse.Play do
 
   alias Playhouse.Repo
   alias Playhouse.Catalog
+  alias Playhouse.Catalog.Question
   alias Playhouse.Play.Game
   alias Playhouse.Play.Player
   alias Playhouse.Play.Submission
@@ -79,7 +80,11 @@ defmodule Playhouse.Play do
   end
 
   def game_state(game) do
-    question = Catalog.random_question()
+    last_game_question =
+      Repo.one(from x in GameQuestion, order_by: [desc: x.inserted_at], limit: 1)
+
+    question = Repo.get_by(Question, id: last_game_question.question_id)
+
     players = player_list()
 
     %{
