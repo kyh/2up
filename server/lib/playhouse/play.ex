@@ -23,8 +23,19 @@ defmodule Playhouse.Play do
     } |> Repo.insert!
   end
 
-  def player_get(name) do
-    Repo.get_by(Player, name: name)
+  def player_get(name, code) do
+    game = game_get(code)
+    Repo.get_by(Player, name: name, game_id: game.id)
+  end
+
+  def player_find_or_create(game, name) do
+    existing_player = player_get(name, game.code)
+
+    if existing_player do
+      existing_player
+    else
+      player_create(game, name)
+    end
   end
 
   def submission_create(player, submission) do
@@ -40,7 +51,7 @@ defmodule Playhouse.Play do
 
   def submission_list do
     submissionsQuery =
-      from q in Submission, select: map(q, [:id, :content, :score])
+      from q in Submission, select: map(q, [:id, :content])
 
     Repo.all(submissionsQuery)
   end
@@ -57,9 +68,10 @@ defmodule Playhouse.Play do
     } |> Repo.insert!
   end
 
-  def game_scene_next(_game) do
-    Repo.one(Game)
-    # increment scene counter
+  def game_scene_next(game) do
+    game
+    |> Ecto.Changeset.change(%{ scene: 2 })
+    |> Repo.update()
   end
 
   def game_get(code) do
@@ -71,8 +83,7 @@ defmodule Playhouse.Play do
     players = player_list()
 
     %{
-      gameID: game.id,
-      code: game.code,
+      gameID: game.code,
       act: game.act,
       scene: game.scene,
       question: question.content,
