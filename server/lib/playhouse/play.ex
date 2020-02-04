@@ -61,12 +61,20 @@ defmodule Playhouse.Play do
     uuid = Ecto.UUID.generate
     four_char = String.slice(uuid, 0, 4)
     code = String.upcase(four_char)
+    question = Catalog.random_question()
 
-    %Game{
+    game = %Game{
       act: 1,
       scene: 1,
       code: code
     } |> Repo.insert!
+
+    %GameQuestion{
+      question: question,
+      game: game
+    } |> Repo.insert!
+
+    game
   end
 
   def game_scene_next(game) do
