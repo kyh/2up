@@ -28,6 +28,12 @@ export const initialState: TriviaGameState = {
   submissions: []
 };
 
+export const Events = {
+  game: 'game',
+  playerJoin: 'player:join',
+  playerSubmit: 'player:submit'
+};
+
 const reducer = (
   state: TriviaGameState,
   { event, payload }: ServerResponse
@@ -38,17 +44,22 @@ const reducer = (
         ...state,
         connected: true
       };
-    case 'game':
+    case 'phx_error':
+      return {
+        ...state,
+        connected: false
+      };
+    case Events.game:
       return {
         ...state,
         ...payload
       };
-    case 'player:join':
+    case Events.playerJoin:
       return {
         ...state,
         players: [...state.players, payload]
       };
-    case 'player:submit':
+    case Events.playerSubmit:
       return {
         ...state,
         submissions: [...state.submissions, payload]
@@ -58,6 +69,11 @@ const reducer = (
   }
 };
 
+const eventsList = Object.keys(Events);
 export const useTrivia = () => {
-  return useChannel(channelName, reducerLogger(reducer), initialState);
+  return useChannel(
+    channelName,
+    reducerLogger(reducer, eventsList),
+    initialState
+  );
 };

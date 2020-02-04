@@ -1,11 +1,15 @@
-export const reducerLogger = (reducer: any) => {
-  return (state: any, response: any) => {
+import { ServerResponse } from 'games/types';
+
+export const reducerLogger = (reducer: any, eventList: Array<string>) => {
+  return (state: any, response: ServerResponse) => {
     const newState = reducer(state, response);
-    console.log('REDUCER:', {
-      prevState: state,
-      serverResponse: response,
-      newState
-    });
+    if (eventList.includes(response.event)) {
+      console.log('REDUCER:', {
+        prevState: state,
+        serverResponse: response,
+        newState
+      });
+    }
     return newState;
   };
 };
