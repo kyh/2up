@@ -8,7 +8,7 @@ const calculateSpacing = (n: number): string => {
 
 export const theme: DefaultTheme = {
   colors: {
-    black: '#3B475F',
+    black: '#1A1919',
     lightGrey: '#cecece',
     white: '#FFFFFF'
   },
