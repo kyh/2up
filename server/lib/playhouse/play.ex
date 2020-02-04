@@ -4,6 +4,7 @@ defmodule Playhouse.Play do
   alias Playhouse.Repo
   alias Playhouse.Catalog
   alias Playhouse.Catalog.Question
+  alias Playhouse.Play
   alias Playhouse.Play.Game
   alias Playhouse.Play.Player
   alias Playhouse.Play.Submission
@@ -77,7 +78,7 @@ defmodule Playhouse.Play do
 
   def game_scene_next(game) do
     game
-    |> Ecto.Changeset.change(%{ scene: 2 })
+    |> Ecto.Changeset.change(%{ scene: game.scene + 1 })
     |> Repo.update()
   end
 
@@ -91,6 +92,7 @@ defmodule Playhouse.Play do
 
     question = Repo.get_by(Question, id: last_game_question.question_id)
 
+    submissions = Play.submission_list()
     players = player_list()
 
     %{
@@ -98,7 +100,8 @@ defmodule Playhouse.Play do
       act: game.act,
       scene: game.scene,
       question: question.content,
-      players: players
+      players: players,
+      submissions: submissions
     }
   end
 end
