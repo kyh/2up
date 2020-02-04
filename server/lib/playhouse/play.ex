@@ -10,11 +10,13 @@ defmodule Playhouse.Play do
   alias Playhouse.Play.Submission
   alias Playhouse.Play.GameQuestion
 
-  def player_list do
-    playersQuery =
-      from q in Player, select: map(q, [:id, :name, :score])
+  def player_list(game) do
+    query =
+      from player in Player,
+      select: map(player, [:id, :name, :score]),
+      where: player.game_id == ^game.id
 
-    Repo.all(playersQuery)
+    Repo.all(query)
   end
 
   def player_create(game, name) do
@@ -41,37 +43,30 @@ defmodule Playhouse.Play do
   end
 
   def submission_create(player, submission) do
-    last_game_question =
-      Repo.one(from x in GameQuestion, order_by: [desc: x.inserted_at], limit: 1)
+    game = Repo.get_by(Game, id: player.game_id)
 
     %Submission{
       player: player,
       content: submission,
-      game_question: last_game_question
+      game_question: last_game_question(game)
     } |> Repo.insert!
   end
 
-  def submission_list do
-    submissionsQuery =
-      from q in Submission, select: map(q, [:id, :content])
+  def submission_list(game_question) do
+    query =
+      from submission in Submission,
+      select: map(submission, [:id, :content]),
+      where: submission.game_question_id == ^game_question.id
 
-    Repo.all(submissionsQuery)
+    Repo.all(query)
   end
 
   def game_create() do
     code = Catalog.generate_code()
     question = Catalog.random_question()
 
-    game = %Game{
-      act: 1,
-      scene: 1,
-      code: code
-    } |> Repo.insert!
-
-    %GameQuestion{
-      question: question,
-      game: game
-    } |> Repo.insert!
+    game = %Game{ act: 1, scene: 1, code: code } |> Repo.insert!
+    %GameQuestion{ question: question, game: game } |> Repo.insert!
 
     game
   end
@@ -87,13 +82,10 @@ defmodule Playhouse.Play do
   end
 
   def game_state(game) do
-    last_game_question =
-      Repo.one(from x in GameQuestion, order_by: [desc: x.inserted_at], limit: 1)
-
-    question = Repo.get_by(Question, id: last_game_question.question_id)
-
-    submissions = Play.submission_list()
-    players = player_list()
+    game_question = last_game_question(game)
+    question = Repo.get_by(Question, id: game_question.question_id)
+    submissions = Play.submission_list(game_question)
+    players = player_list(game)
 
     %{
       gameID: game.code,
@@ -103,5 +95,15 @@ defmodule Playhouse.Play do
       players: players,
       submissions: submissions
     }
+  end
+
+  def last_game_question(game) do
+    query =
+      from game_question in GameQuestion,
+      where: game_question.game_id == ^game.id,
+      order_by: [desc: game_question.inserted_at],
+      limit: 1
+
+    Repo.one(query)
   end
 end

@@ -27,8 +27,10 @@ defmodule PlayhouseWeb.TriviaChannel do
     player = Play.player_get(payload["name"], payload["gameID"])
     Play.submission_create(player, payload["submission"])
 
-    submissions = Play.submission_list()
-    players = Play.player_list()
+    game = Play.game_get(payload["gameID"])
+    game_question = Play.last_game_question(game)
+    submissions = Play.submission_list(game_question)
+    players = Play.player_list(game)
 
     if length(submissions) == length(players) do
       Play.game_get(payload["gameID"]) |> Play.game_scene_next
