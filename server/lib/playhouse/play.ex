@@ -3,12 +3,9 @@ defmodule Playhouse.Play do
 
   alias Playhouse.Repo
   alias Playhouse.Catalog
-  alias Playhouse.Catalog.Question
+  alias Playhouse.Catalog.{ Question }
   alias Playhouse.Play
-  alias Playhouse.Play.Game
-  alias Playhouse.Play.Player
-  alias Playhouse.Play.Submission
-  alias Playhouse.Play.GameQuestion
+  alias Playhouse.Play.{ Game, Player, Submission, GameQuestion }
 
   def player_list(game) do
     query =
