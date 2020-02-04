@@ -1,56 +1,44 @@
 defmodule PlayhouseWeb.TriviaChannel do
   use PlayhouseWeb, :channel
 
-  import Ecto.Query
-
-  alias Playhouse.Repo
   alias Playhouse.Play
-  alias Playhouse.Play.Game
-  alias Playhouse.Play.Player
-  alias Playhouse.Catalog.Question
-  alias PlayhouseWeb.Presence
 
-  require Logger
-
-  def join("game:trivia", payload, socket) do
-    send(self(), :after_join)
+  def join("game:trivia", _payload, socket) do
     {:ok, socket}
   end
 
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
+  def handle_in("game:new", payload, socket) do
+    game = Play.game_create()
+    Play.player_find_or_create(game, payload["name"])
+
+    broadcast socket, "game", Play.game_state(game)
+    {:noreply, socket}
   end
 
   def handle_in("game:join", payload, socket) do
-    game = Repo.one(Game)
+    game = Play.game_get(payload["gameID"])
+    Play.player_find_or_create(game, payload["name"])
 
-    if payload["name"] do
-      Play.player_create(game, payload["name"])
-    end
-
-    response = Play.game_state(game)
-
-    broadcast socket, "game", response
+    broadcast socket, "game", Play.game_state(game)
     {:noreply, socket}
   end
 
   def handle_in("player:submit", payload, socket) do
-    broadcast socket, "player:submit", payload
+    player = Play.player_get(payload["name"], payload["gameID"])
+    Play.submission_create(player, payload["submission"])
 
-    # find user with name payload.name
-    # create submission
-    # get all submissions
-    # get all players
+    submissions = Play.submission_list()
+    players = Play.player_list()
 
-    # TODO: if submissions == amount of players
-    # move to the next scene
-    # broadcast socket, "game", payload
+    if length(submissions) == length(players) do
+      Play.game_get(payload["gameID"]) |> Play.game_scene_next
+      game = Play.game_get(payload["gameID"])
+      broadcast socket, "game", Play.game_state(game)
+    end
 
     {:noreply, socket}
   end
 
-  # TODO: player:join
-  # TODO: game:create
   # TODO: player:endorse
     # once endorsements == amount of players
     # return game state (act, scene)

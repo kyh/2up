@@ -24,6 +24,7 @@ const Scene1 = ({ state, broadcast }: SceneProps) => {
   const handleClick = () => {
     broadcast('player:submit', {
       name: localStorage.getItem('name'),
+      gameID: state.gameID,
       submission: value
     });
     setSubmitted(true);

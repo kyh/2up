@@ -18,7 +18,8 @@ alias Playhouse.Catalog.Answer
 
 game = %Game{
   act: 1,
-  scene: 1
+  scene: 1,
+  code: "1234"
 } |> Repo.insert!
 
 question1 = %Question{
