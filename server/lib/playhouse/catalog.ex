@@ -12,4 +12,10 @@ defmodule Playhouse.Catalog do
 
     Repo.one(query)
   end
+
+  def generate_code do
+    uuid = Ecto.UUID.generate
+    four_char = String.slice(uuid, 0, 4)
+    String.upcase(four_char)
+  end
 end

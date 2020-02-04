@@ -58,9 +58,7 @@ defmodule Playhouse.Play do
   end
 
   def game_create() do
-    uuid = Ecto.UUID.generate
-    four_char = String.slice(uuid, 0, 4)
-    code = String.upcase(four_char)
+    code = Catalog.generate_code()
     question = Catalog.random_question()
 
     game = %Game{
