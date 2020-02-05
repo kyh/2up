@@ -5,6 +5,7 @@ defmodule Playhouse.Play.Endorsement do
   schema "endorsements" do
     belongs_to :submission, Playhouse.Play.Submission
     belongs_to :answer, Playhouse.Catalog.Answer
+    belongs_to :player, Playhouse.Play.Player
 
     timestamps()
   end
