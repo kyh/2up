@@ -7,12 +7,20 @@ export interface TriviaGameState extends GameState {
   scene: number;
   question?: string;
   answer?: string;
+  players: Player[];
   submissions: Submission[];
+  endorsements: Endorsement[];
 }
 export interface Submission {
+  id: number;
   playerName: string;
   content: string;
-  endorsers: Player[];
+}
+interface Endorsement {
+  id: number;
+  player_id: number;
+  submission_id?: number
+  answer_id?: number
 }
 
 const channelName = 'game:trivia';
@@ -25,7 +33,8 @@ export const initialState: TriviaGameState = {
   scene: 0,
   question: '',
   answer: '',
-  submissions: []
+  submissions: [],
+  endorsements: []
 };
 
 export const Events = {

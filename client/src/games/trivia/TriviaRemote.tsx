@@ -47,13 +47,31 @@ const Scene1 = ({ state, broadcast }: SceneProps) => {
   );
 };
 
-const Scene2 = ({ state }: SceneProps) => {
+const Scene2 = ({ state, broadcast }: SceneProps) => {
   return (
     <div>
       <h2>{state.question}</h2>
       {state.submissions.map(submission => {
-        return <Button>{submission.content}</Button>;
+        return (
+          <Button
+            onClick={() => broadcast('player:endorse', {
+              name: localStorage.getItem('name'),
+              gameID: state.gameID,
+              submissionID: submission.id
+            })}
+          >
+            {submission.content}
+          </Button>
+        )
       })}
+      <Button
+        onClick={() => broadcast('player:answer', {
+          name: localStorage.getItem('name'),
+          gameID: state.gameID
+        })}
+      >
+        {state.answer}
+      </Button>
     </div>
   );
 };
@@ -61,8 +79,17 @@ const Scene2 = ({ state }: SceneProps) => {
 const Scene3 = ({ state }: SceneProps) => {
   return (
     <div>
-      <h2>Your score</h2>
-      <h1>3000</h1>
+      <h2>{state.question}</h2>
+      {state.endorsements.map(endorsement => {
+        return (
+          <div>
+            <p>{endorsement.id}</p>
+            <p>{endorsement.player_id}</p>
+            <p>{endorsement.submission_id}</p>
+            <p>{endorsement.answer_id}</p>
+          </div>
+        );
+      })}
     </div>
   );
 };
