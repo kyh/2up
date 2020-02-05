@@ -151,6 +151,11 @@ defmodule Playhouse.Play do
     Repo.one(query)
   end
 
+  def game_question_create(game) do
+    question = Catalog.random_question()
+    %GameQuestion{ question: question, game: game } |> Repo.insert!
+  end
+
   def setup_payload(payload) do
     player = Play.player_get(payload["name"], payload["gameID"])
     game = Play.game_get(payload["gameID"])
@@ -169,6 +174,7 @@ defmodule Playhouse.Play do
   def collected_all_endorsements(game, game_question) do
     endorsements = Play.endorsement_list(game_question)
     players = Play.player_list(game)
+
     length(endorsements) == length(players)
   end
 end

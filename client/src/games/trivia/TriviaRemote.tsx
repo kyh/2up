@@ -76,7 +76,7 @@ const Scene2 = ({ state, broadcast }: SceneProps) => {
   );
 };
 
-const Scene3 = ({ state }: SceneProps) => {
+const Scene3 = ({ state, broadcast }: SceneProps) => {
   return (
     <div>
       <h2>{state.question}</h2>
@@ -90,6 +90,13 @@ const Scene3 = ({ state }: SceneProps) => {
           </div>
         );
       })}
+      <Button
+        onClick={() => broadcast('game:next', {
+          gameID: state.gameID
+        })}
+      >
+        Next Act
+      </Button>
     </div>
   );
 };

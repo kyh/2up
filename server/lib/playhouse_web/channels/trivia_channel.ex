@@ -75,8 +75,12 @@ defmodule PlayhouseWeb.TriviaChannel do
   end
 
   def handle_in("game:next", payload, socket) do
+    game = Play.game_get(payload["gameID"])
+
+    game |> Play.game_question_create
+
     game_state =
-      Play.game_get(payload["gameID"])
+      game
       |> Play.game_act_next
       |> Play.game_state
 
