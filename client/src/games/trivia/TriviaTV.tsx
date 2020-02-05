@@ -35,14 +35,13 @@ const Scene3 = ({ state }: SceneProps) => {
   return (
     <div>
       <h2>{state.question}</h2>
-      {state.submissions.map(submission => {
+      {state.endorsements.map(endorsement => {
         return (
           <div>
-            <p>{submission.content}</p>(
-            {submission.endorsers.map(player => {
-              return player.name;
-            })}
-            )
+            <p>{endorsement.id}</p>
+            <p>{endorsement.player_id}</p>
+            <p>{endorsement.submission_id}</p>
+            <p>{endorsement.answer_id}</p>
           </div>
         );
       })}

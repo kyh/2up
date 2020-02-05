@@ -24,27 +24,63 @@ defmodule PlayhouseWeb.TriviaChannel do
   end
 
   def handle_in("player:submit", payload, socket) do
-    player = Play.player_get(payload["name"], payload["gameID"])
+    [player, game, game_question] = Play.setup_payload(payload)
     Play.submission_create(player, payload["submission"])
 
-    game = Play.game_get(payload["gameID"])
-    game_question = Play.last_game_question(game)
-    submissions = Play.submission_list(game_question)
-    players = Play.player_list(game)
+    if Play.collected_all_submissions(game, game_question) do
+      game_state =
+        Play.game_get(payload["gameID"])
+        |> Play.game_scene_next
+        |> Play.game_state
 
-    if length(submissions) == length(players) do
-      Play.game_get(payload["gameID"]) |> Play.game_scene_next
-      game = Play.game_get(payload["gameID"])
-      broadcast socket, "game", Play.game_state(game)
+      broadcast socket, "game", game_state
     end
 
     {:noreply, socket}
   end
 
-  # TODO: player:endorse
-    # once endorsements == amount of players
-    # return game state (act, scene)
-  # TODO: game:next
-    # create new game question
-    # return game state (act, scene)
+  def handle_in("player:endorse", payload, socket) do
+    [player, game, game_question] = Play.setup_payload(payload)
+    submission = Play.submission_get(payload["submissionID"])
+    Play.endorsement_create(player, submission)
+
+    if Play.collected_all_endorsements(game, game_question) do
+      game_state =
+        Play.game_get(payload["gameID"])
+        |> Play.game_scene_next
+        |> Play.game_state
+
+      broadcast socket, "game", game_state
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_in("player:answer", payload, socket) do
+    [player, game, game_question] = Play.setup_payload(payload)
+    submission = Play.submission_get(payload["submissionID"])
+
+    Play.endorsement_create(player, submission, game_question.question.answer)
+
+    if Play.collected_all_endorsements(game, game_question) do
+      game_state =
+        Play.game_get(payload["gameID"])
+        |> Play.game_scene_next
+        |> Play.game_state
+
+      broadcast socket, "game", Play.game_state(game_state)
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_in("game:next", payload, socket) do
+    game_state =
+      Play.game_get(payload["gameID"])
+      |> Play.game_act_next
+      |> Play.game_state
+
+    broadcast socket, "game", game_state
+    {:noreply, socket}
+  end
 end

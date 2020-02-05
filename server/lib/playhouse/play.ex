@@ -3,9 +3,15 @@ defmodule Playhouse.Play do
 
   alias Playhouse.Repo
   alias Playhouse.Catalog
-  alias Playhouse.Catalog.{ Question }
+  alias Playhouse.Catalog.{ Question, Answer }
   alias Playhouse.Play
-  alias Playhouse.Play.{ Game, Player, Submission, GameQuestion }
+  alias Playhouse.Play.{
+    Game,
+    Player,
+    Submission,
+    GameQuestion,
+    Endorsement
+  }
 
   def player_list(game) do
     query =
@@ -39,6 +45,10 @@ defmodule Playhouse.Play do
     end
   end
 
+  def submission_get(id) do
+    Repo.get_by(Submission, id: id)
+  end
+
   def submission_create(player, submission) do
     game = Repo.get_by(Game, id: player.game_id)
 
@@ -58,6 +68,31 @@ defmodule Playhouse.Play do
     Repo.all(query)
   end
 
+  def endorsement_list(game_question) do
+    query = 
+      from endorsement in Endorsement,
+      select: map(endorsement, [:id, :player_id, :submission_id, :answer_id]),
+      left_join: submission in assoc(endorsement, :submission),
+      where: submission.game_question_id == ^game_question.id
+
+    Repo.all(query)
+  end
+
+  def endorsement_create(player, submission) do
+    %Endorsement{
+      player: player,
+      submission: submission
+    } |> Repo.insert!
+  end
+
+  def endorsement_create(player, submission, answer) do
+    %Endorsement{
+      player: player,
+      submission: submission,
+      answer: answer
+    } |> Repo.insert!
+  end
+
   def game_create() do
     code = Catalog.generate_code()
     question = Catalog.random_question()
@@ -71,7 +106,15 @@ defmodule Playhouse.Play do
   def game_scene_next(game) do
     game
     |> Ecto.Changeset.change(%{ scene: game.scene + 1 })
-    |> Repo.update()
+    |> Repo.update
+    |> elem(1)
+  end
+
+  def game_act_next(game) do
+    game
+    |> Ecto.Changeset.change(%{ act: game.act + 1, scene: 1 })
+    |> Repo.update
+    |> elem(1)
   end
 
   def game_get(code) do
@@ -81,7 +124,9 @@ defmodule Playhouse.Play do
   def game_state(game) do
     game_question = last_game_question(game)
     question = Repo.get_by(Question, id: game_question.question_id)
+    answer = Repo.get_by(Answer, question_id: question.id)
     submissions = Play.submission_list(game_question)
+    endorsements = Play.endorsement_list(game_question)
     players = player_list(game)
 
     %{
@@ -89,8 +134,10 @@ defmodule Playhouse.Play do
       act: game.act,
       scene: game.scene,
       question: question.content,
+      answer: answer.content,
       players: players,
-      submissions: submissions
+      submissions: submissions,
+      endorsements: endorsements
     }
   end
 
@@ -102,5 +149,26 @@ defmodule Playhouse.Play do
       limit: 1
 
     Repo.one(query)
+  end
+
+  def setup_payload(payload) do
+    player = Play.player_get(payload["name"], payload["gameID"])
+    game = Play.game_get(payload["gameID"])
+    game_question = Play.last_game_question(game)
+
+    [player, game, game_question]
+  end
+
+  def collected_all_submissions(game, game_question) do
+    submissions = Play.submission_list(game_question)
+    players = Play.player_list(game)
+
+    length(submissions) == length(players)
+  end
+
+  def collected_all_endorsements(game, game_question) do
+    endorsements = Play.endorsement_list(game_question)
+    players = Play.player_list(game)
+    length(endorsements) == length(players)
   end
 end
