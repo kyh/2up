@@ -24,7 +24,7 @@ defmodule PlayhouseWeb.TriviaChannel do
   end
 
   def handle_in("player:submit", payload, socket) do
-    [player, game, game_question] = Play.setup_payload(payload)
+    [player, game, game_question, _answer] = Play.setup_payload(payload)
     Play.submission_create(player, payload["submission"])
 
     if Play.collected_all_submissions(game, game_question) do
@@ -40,7 +40,7 @@ defmodule PlayhouseWeb.TriviaChannel do
   end
 
   def handle_in("player:endorse", payload, socket) do
-    [player, game, game_question] = Play.setup_payload(payload)
+    [player, game, game_question, _answer] = Play.setup_payload(payload)
     submission = Play.submission_get(payload["submissionID"])
     Play.endorsement_create(player, submission)
 
@@ -57,10 +57,9 @@ defmodule PlayhouseWeb.TriviaChannel do
   end
 
   def handle_in("player:answer", payload, socket) do
-    [player, game, game_question] = Play.setup_payload(payload)
-    submission = Play.submission_get(payload["submissionID"])
+    [player, game, game_question, answer] = Play.setup_payload(payload)
 
-    Play.endorsement_create(player, submission, game_question.question.answer)
+    Play.endorsement_answer_create(player, answer)
 
     if Play.collected_all_endorsements(game, game_question) do
       game_state =
