@@ -72,8 +72,9 @@ defmodule Playhouse.Play do
     query = 
       from endorsement in Endorsement,
       select: map(endorsement, [:id, :player_id, :submission_id, :answer_id]),
-      left_join: submission in assoc(endorsement, :submission),
-      where: submission.game_question_id == ^game_question.id
+      left_join: submission in assoc(endorsement, :submission), on: endorsement.submission_id == submission.id,
+      left_join: answer in assoc(endorsement, :answer), on: endorsement.answer_id == answer.id,
+      where: submission.game_question_id == ^game_question.id or answer.question_id == ^game_question.question_id
 
     Repo.all(query)
   end
@@ -82,6 +83,13 @@ defmodule Playhouse.Play do
     %Endorsement{
       player: player,
       submission: submission
+    } |> Repo.insert!
+  end
+
+  def endorsement_answer_create(player, answer) do
+    %Endorsement{
+      player: player,
+      answer: answer
     } |> Repo.insert!
   end
 
@@ -146,6 +154,7 @@ defmodule Playhouse.Play do
       from game_question in GameQuestion,
       where: game_question.game_id == ^game.id,
       order_by: [desc: game_question.inserted_at],
+      preload: [:question],
       limit: 1
 
     Repo.one(query)
@@ -160,8 +169,16 @@ defmodule Playhouse.Play do
     player = Play.player_get(payload["name"], payload["gameID"])
     game = Play.game_get(payload["gameID"])
     game_question = Play.last_game_question(game)
+    question = game_question.question
 
-    [player, game, game_question]
+    query =
+      from answer in Answer,
+      where: answer.question_id == ^question.id,
+      limit: 1
+
+    answer = Repo.one(query)
+
+    [player, game, game_question, answer]
   end
 
   def collected_all_submissions(game, game_question) do
