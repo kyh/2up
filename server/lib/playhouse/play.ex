@@ -69,7 +69,7 @@ defmodule Playhouse.Play do
   end
 
   def endorsement_list(game_question) do
-    query = 
+    query =
       from endorsement in Endorsement,
       select: map(endorsement, [:id, :player_id, :submission_id, :answer_id]),
       left_join: submission in assoc(endorsement, :submission), on: endorsement.submission_id == submission.id,
@@ -105,7 +105,7 @@ defmodule Playhouse.Play do
     code = Catalog.generate_code()
     question = Catalog.random_question()
 
-    game = %Game{ act: 1, scene: 1, code: code } |> Repo.insert!
+    game = %Game{ act: 0, scene: 0, code: code } |> Repo.insert!
     %GameQuestion{ question: question, game: game } |> Repo.insert!
 
     game

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SoundMap } from 'styles/sounds';
 import { Flex, Box, Button, Input } from 'components';
@@ -6,7 +6,7 @@ import { TriviaContext } from './TriviaContext';
 
 export const TriviaIntro = () => {
   const history = useHistory();
-  const { broadcast } = useContext(TriviaContext);
+  const { state, broadcast } = useContext(TriviaContext);
 
   const [gameIDToJoin, setGameIDtoJoin] = useState('');
   const [name] = useState(localStorage.getItem('name'));
@@ -17,14 +17,18 @@ export const TriviaIntro = () => {
       themeSong.loop = true;
       // themeSong.play();
       broadcast('game:new', { name });
-      history.push('/trivia/tv');
     });
   };
 
   const onClickStartRemote = () => {
     broadcast('game:join', { name, gameID: gameIDToJoin });
-    history.push('/trivia/remote');
   };
+
+  useEffect(() => {
+    if (state.gameID) {
+      history.push('/trivia/lobby');
+    }
+  }, [state.gameID]);
 
   return (
     <Flex alignItems="center" flexDirection="column">
