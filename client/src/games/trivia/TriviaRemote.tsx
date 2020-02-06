@@ -48,27 +48,37 @@ const Scene1 = ({ state, broadcast }: SceneProps) => {
 };
 
 const Scene2 = ({ state, broadcast }: SceneProps) => {
+  const [submitted, setSubmitted] = useState(false);
   return (
     <div>
       <h2>{state.question}</h2>
       {state.submissions.map(submission => {
         return (
           <Button
-            onClick={() => broadcast('player:endorse', {
-              name: localStorage.getItem('name'),
-              gameID: state.gameID,
-              submissionID: submission.id
-            })}
+            key={submission.id}
+            disabled={submitted}
+            onClick={() => {
+              broadcast('player:endorse', {
+                name: localStorage.getItem('name'),
+                gameID: state.gameID,
+                submissionID: submission.id
+              });
+              setSubmitted(true);
+            }}
           >
             {submission.content}
           </Button>
-        )
+        );
       })}
       <Button
-        onClick={() => broadcast('player:answer', {
-          name: localStorage.getItem('name'),
-          gameID: state.gameID
-        })}
+        disabled={submitted}
+        onClick={() => {
+          broadcast('player:answer', {
+            name: localStorage.getItem('name'),
+            gameID: state.gameID
+          });
+          setSubmitted(true);
+        }}
       >
         {state.answer}
       </Button>
@@ -91,9 +101,11 @@ const Scene3 = ({ state, broadcast }: SceneProps) => {
         );
       })}
       <Button
-        onClick={() => broadcast('game:next', {
-          gameID: state.gameID
-        })}
+        onClick={() =>
+          broadcast('game:next', {
+            gameID: state.gameID
+          })
+        }
       >
         Next Act
       </Button>
