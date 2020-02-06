@@ -1,20 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Flex, Box, Button } from 'components';
 import { TriviaContext } from './TriviaContext';
 
 export const TriviaLobby = () => {
+  const history = useHistory();
   const { state, broadcast } = useContext(TriviaContext);
 
   const onClickStart = () => {
     broadcast('game:start', { gameID: state.gameID });
   };
 
+  useEffect(() => {
+    if (state.act) {
+      history.push('/trivia/remote');
+    }
+  }, [state.act]);
+
   return (
     <Flex alignItems="center" flexDirection="column">
       <h1>Waiting for players to join...</h1>
+      <Box>Game ID: {state.gameID}</Box>
       <Box>
         {state.players.map(p => {
-          return <span>{p.name}</span>;
+          return <div key={p.name}>{p.name}</div>;
         })}
       </Box>
       <Button onClick={onClickStart}>Start game</Button>
