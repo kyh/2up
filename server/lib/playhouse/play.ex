@@ -62,7 +62,7 @@ defmodule Playhouse.Play do
   def submission_list(game_question) do
     query =
       from submission in Submission,
-      select: map(submission, [:id, :content]),
+      preload: [:player],
       where: submission.game_question_id == ^game_question.id
 
     Repo.all(query)
@@ -137,6 +137,36 @@ defmodule Playhouse.Play do
     endorsements = Play.endorsement_list(game_question)
     players = player_list(game)
 
+    submissions_list = Enum.map submissions, fn submission -> 
+      player_ids =
+        Enum.filter(endorsements, fn x -> x.submission_id == submission.id end)
+        |> Enum.map(fn x -> x.player_id end)
+
+      players = Enum.filter(players, fn x -> Enum.member?(player_ids, x.id) end)
+
+      %{
+        id: submission.id,
+        name: submission.player.name,
+        content: submission.content,
+        endorsers: players
+      }
+    end
+
+    smart_player_ids =
+      Enum.filter(endorsements, fn x -> x.answer_id == answer.id end)
+      |> Enum.map(fn x -> x.player_id end)
+
+    smart_players = Enum.filter(players, fn x -> Enum.member?(smart_player_ids, x.id) end)
+
+    answer_submission = %{
+      id: answer.id,
+      name: "IS_ANSWER",
+      content: answer.content,
+      endorsers: smart_players
+    }
+
+    formatted_submissions = List.insert_at(submissions_list, 0, answer_submission)
+
     %{
       gameID: game.code,
       act: game.act,
@@ -144,8 +174,7 @@ defmodule Playhouse.Play do
       question: question.content,
       answer: answer.content,
       players: players,
-      submissions: submissions,
-      endorsements: endorsements
+      submissions: Enum.shuffle(formatted_submissions)
     }
   end
 

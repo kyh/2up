@@ -61,7 +61,8 @@ const Scene2 = ({ state, broadcast }: SceneProps) => {
               broadcast('player:endorse', {
                 name: localStorage.getItem('name'),
                 gameID: state.gameID,
-                submissionID: submission.id
+                submissionID: submission.id,
+                isAnswer: submission.name === "IS_ANSWER"
               });
               setSubmitted(true);
             }}
@@ -70,18 +71,6 @@ const Scene2 = ({ state, broadcast }: SceneProps) => {
           </Button>
         );
       })}
-      <Button
-        disabled={submitted}
-        onClick={() => {
-          broadcast('player:answer', {
-            name: localStorage.getItem('name'),
-            gameID: state.gameID
-          });
-          setSubmitted(true);
-        }}
-      >
-        {state.answer}
-      </Button>
     </div>
   );
 };
@@ -90,13 +79,18 @@ const Scene3 = ({ state, broadcast }: SceneProps) => {
   return (
     <div>
       <h2>{state.question}</h2>
-      {state.endorsements.map(endorsement => {
+      {state.submissions.map(submission => {
         return (
           <div>
-            <p>{endorsement.id}</p>
-            <p>{endorsement.player_id}</p>
-            <p>{endorsement.submission_id}</p>
-            <p>{endorsement.answer_id}</p>
+            <h2>Submission</h2>
+            <p>{submission.content}</p>
+            <p>By: {submission.name}</p>
+            <h2>Endorsements</h2>
+            {submission.endorsers.map((endorser) => {
+              return (
+                <p>{endorser.name}</p>
+              )
+            })}
           </div>
         );
       })}

@@ -9,18 +9,12 @@ export interface TriviaGameState extends GameState {
   answer?: string;
   players: Player[];
   submissions: Submission[];
-  endorsements: Endorsement[];
 }
 export interface Submission {
   id: number;
-  playerName: string;
+  name: string;
   content: string;
-}
-interface Endorsement {
-  id: number;
-  player_id: number;
-  submission_id?: number
-  answer_id?: number
+  endorsers: Player[];
 }
 
 const channelName = 'game:trivia';
@@ -34,7 +28,6 @@ export const initialState: TriviaGameState = {
   question: '',
   answer: '',
   submissions: [],
-  endorsements: []
 };
 
 export const Events = {
