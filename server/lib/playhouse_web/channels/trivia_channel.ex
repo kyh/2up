@@ -52,9 +52,14 @@ defmodule PlayhouseWeb.TriviaChannel do
   end
 
   def handle_in("player:endorse", payload, socket) do
-    [player, game, game_question, _answer] = Play.setup_payload(payload)
+    [player, game, game_question, answer] = Play.setup_payload(payload)
     submission = Play.submission_get(payload["submissionID"])
-    Play.endorsement_create(player, submission)
+
+    if payload["isAnswer"] == true do
+      Play.endorsement_answer_create(player, answer)
+    else
+      Play.endorsement_create(player, submission)
+    end
 
     if Play.collected_all_endorsements(game, game_question) do
       game_state =
@@ -63,23 +68,6 @@ defmodule PlayhouseWeb.TriviaChannel do
         |> Play.game_state
 
       broadcast socket, "game", game_state
-    end
-
-    {:noreply, socket}
-  end
-
-  def handle_in("player:answer", payload, socket) do
-    [player, game, game_question, answer] = Play.setup_payload(payload)
-
-    Play.endorsement_answer_create(player, answer)
-
-    if Play.collected_all_endorsements(game, game_question) do
-      game_state =
-        Play.game_get(payload["gameID"])
-        |> Play.game_scene_next
-        |> Play.game_state
-
-      broadcast socket, "game", Play.game_state(game_state)
     end
 
     {:noreply, socket}
