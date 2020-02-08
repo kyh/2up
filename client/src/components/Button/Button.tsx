@@ -46,19 +46,18 @@ export const StyledButton = styled.button<StyledProps>`
   transition: transform 0.2s ease;
   min-width: 100px;
   ${({ fullWidth }) => (fullWidth ? 'width: 100%;' : null)}
-
-  &:hover {
-    border-image-source: url("${borderActive}");
-  }
-  &:active {
-    transform: scale(0.9);
-    border-image-source: url("${borderActive}");
-  }
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     &:hover {
       border-image-source: url("${border}");
     }
+  }
+  &:hover {
+    border-image-source: url("${borderActive}");
+  }
+  &:active {
+    transform: scale(0.9);
+    border-image-source: url("${borderActive}");
   }
 `;

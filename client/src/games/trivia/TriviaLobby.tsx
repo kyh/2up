@@ -13,7 +13,11 @@ export const TriviaLobby = () => {
 
   useEffect(() => {
     if (state.act) {
-      history.push('/trivia/remote');
+      if (localStorage.getItem('isHost') === 'true') {
+        history.push('/trivia/tv');
+      } else {
+        history.push('/trivia/remote');
+      }
     }
   }, [state.act]);
 

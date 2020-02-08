@@ -62,7 +62,7 @@ const Scene2 = ({ state, broadcast }: SceneProps) => {
                 name: localStorage.getItem('name'),
                 gameID: state.gameID,
                 submissionID: submission.id,
-                isAnswer: submission.name === "IS_ANSWER"
+                isAnswer: submission.name === 'IS_ANSWER'
               });
               setSubmitted(true);
             }}
@@ -86,10 +86,8 @@ const Scene3 = ({ state, broadcast }: SceneProps) => {
             <p>{submission.content}</p>
             <p>By: {submission.name}</p>
             <h2>Endorsements</h2>
-            {submission.endorsers.map((endorser) => {
-              return (
-                <p>{endorser.name}</p>
-              )
+            {submission.endorsers.map(endorser => {
+              return <p>{endorser.name}</p>;
             })}
           </div>
         );
