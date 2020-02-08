@@ -8,7 +8,7 @@ import {
 
 export const TriviaContext = React.createContext({
   state: initialState,
-  broadcast: (_eventName: string, _payload: any) => {}
+  broadcast: (_eventName: string, _payload?: object) => {}
 });
 
 export const TriviaProvider = ({ children }: { children: React.ReactNode }) => {
@@ -30,5 +30,5 @@ export const TriviaProvider = ({ children }: { children: React.ReactNode }) => {
 
 export interface SceneProps {
   state: TriviaGameState;
-  broadcast: (_eventName: string, _payload: any) => void;
+  broadcast: (_eventName: string, _payload?: object) => void;
 }

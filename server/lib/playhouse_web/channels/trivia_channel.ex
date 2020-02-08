@@ -9,7 +9,6 @@ defmodule PlayhouseWeb.TriviaChannel do
 
   def handle_in("game:new", payload, socket) do
     game = Play.game_create()
-    Play.player_find_or_create(game, payload["name"])
 
     push socket, "game", Play.game_state(game)
     {:noreply, socket}

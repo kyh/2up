@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { TriviaContext, SceneProps } from 'games/trivia/TriviaContext';
+import { hashCode } from 'utils/stringUtils';
+import { SubmissionsContainer } from './components/SubmissionsContainer';
 
 export const TriviaTV: React.FC = () => {
   const { state, broadcast } = useContext(TriviaContext);
@@ -22,35 +24,43 @@ const Scene1 = ({ state }: SceneProps) => {
 
 const Scene2 = ({ state }: SceneProps) => {
   return (
-    <div>
+    <>
       <h2>{state.question}</h2>
-      {state.submissions.map(submission => {
-        return <div>{submission.content}</div>;
-      })}
-    </div>
+      <SubmissionsContainer>
+        {state.submissions.map(submission => {
+          const s = hashCode(submission.content);
+          return (
+            <div key={submission.id} className={`s${s % 10}`}>
+              {submission.content}
+            </div>
+          );
+        })}
+      </SubmissionsContainer>
+    </>
   );
 };
 
 const Scene3 = ({ state }: SceneProps) => {
-  console.log('state.submissions', state.submissions)
   return (
-    <div>
+    <>
       <h2>{state.question}</h2>
-      {state.submissions.map(submission => {
-        return (
-          <div>
-            <h2>Submission</h2>
-            <p>{submission.content}</p>
-            <p>By: {submission.name}</p>
-            <h2>Endorsements</h2>
-            {submission.endorsers.map((endorser) => {
-              return (
-                <p>{endorser.name}</p>
-              )
-            })}
-          </div>
-        );
-      })}
-    </div>
+      <SubmissionsContainer>
+        {state.submissions.map(submission => {
+          const s = hashCode(submission.content);
+          return (
+            <div key={submission.id} className={`s${s % 10}`}>
+              <div>
+                {submission.content} by {submission.name}
+              </div>
+              <div>
+                {submission.endorsers.map(endorser => {
+                  return <p key={endorser.id}>{endorser.name}</p>;
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </SubmissionsContainer>
+    </>
   );
 };
