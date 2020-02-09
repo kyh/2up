@@ -1,8 +1,5 @@
 import React from 'react';
-import styled, {
-  StyledComponentProps,
-  DefaultTheme
-} from 'styled-components/macro';
+import styled, { StyledComponentProps, DefaultTheme } from 'styled-components';
 import UIfx from 'uifx';
 import { SoundMap } from 'styles/sounds';
 
@@ -45,19 +42,19 @@ export const StyledButton = styled.button<StyledProps>`
   border-image-source: url("${border}");
   transition: transform 0.2s ease;
   min-width: 100px;
-  ${({ fullWidth }) => (fullWidth ? 'width: 100%;' : null)}
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    &:hover {
-      border-image-source: url("${border}");
-    }
-  }
+  width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
   &:hover {
     border-image-source: url("${borderActive}");
   }
   &:active {
     transform: scale(0.9);
     border-image-source: url("${borderActive}");
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    &:hover {
+      border-image-source: url("${border}");
+    }
   }
 `;

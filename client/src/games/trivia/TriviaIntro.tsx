@@ -31,7 +31,7 @@ export const TriviaIntro = () => {
     if (state.gameID) {
       history.push('/trivia/lobby');
     }
-  }, [state.gameID]);
+  }, [state.gameID, history]);
 
   return (
     <Flex alignItems="center" flexDirection="column">
