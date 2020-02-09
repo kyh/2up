@@ -19,7 +19,7 @@ export const TriviaLobby = () => {
         history.push('/trivia/remote');
       }
     }
-  }, [state.act]);
+  }, [state.act, history]);
 
   return (
     <Flex alignItems="center" flexDirection="column">
