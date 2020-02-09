@@ -7,13 +7,13 @@ defmodule Playhouse.Play.Player do
     has_many :submissions, Playhouse.Play.Submission
 
     field :name, :string
-    field :score, :integer
+    field :coins, :integer
 
     timestamps()
   end
 
   def changeset(player, attrs) do
-    required_fields = [:name, :score]
+    required_fields = [:name, :coins]
 
     player
     |> cast(attrs, required_fields)
