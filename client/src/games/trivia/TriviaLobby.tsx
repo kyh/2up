@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Button } from 'components';
+import { hashCode } from 'utils/stringUtils';
 import { TriviaContext } from './TriviaContext';
 
 export const TriviaLobby = () => {
@@ -21,7 +22,7 @@ export const TriviaLobby = () => {
         history.push('/trivia/remote');
       }
     }
-  }, [state.act, history]);
+  }, [state.act, isHost, history]);
 
   return (
     <LobbyContainer>
@@ -39,11 +40,12 @@ export const TriviaLobby = () => {
         <h1 className="title">Waiting for players to join...</h1>
       )}
       <LobbyPlayersContainer isHost={isHost}>
-        {state.players.map((p, i) => {
+        {state.players.map(p => {
+          const avatar = hashCode(p.name, 10);
           return (
             <div className="player" key={p.name}>
               <p>{p.name}</p>
-              <img src={`/avatars/${i + 1}.svg`} alt={p.name} />
+              <img src={`/avatars/${avatar}.svg`} alt={p.name} />
             </div>
           );
         })}
