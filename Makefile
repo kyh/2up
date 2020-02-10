@@ -15,3 +15,6 @@ deploy:
 
 deploy-force:
 	git push gigalixir `git subtree split --prefix server master`:master --force
+
+phoenix:
+	cd server && mix phx.server
