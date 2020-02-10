@@ -19,9 +19,15 @@ export const TriviaRemote: React.FC = () => {
 
 const Scene1 = ({ state, broadcast }: SceneProps) => {
   const [value, setValue] = useState('');
+  const [errorValue, setErrorValue] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const handleClick = () => {
+    if (value.toLowerCase() === state?.answer?.toLowerCase()) {
+      setErrorValue('You have selected the right answer. Please write a tricky wrong answer instead.')
+      return
+    }
+
     broadcast('player:submit', {
       name: localStorage.getItem('name'),
       gameID: state.gameID,
@@ -36,10 +42,12 @@ const Scene1 = ({ state, broadcast }: SceneProps) => {
       <Input
         value={value}
         onChange={e => {
+          setErrorValue('')
           setValue(e.target.value);
         }}
         readOnly={submitted}
       />
+      <p>{errorValue}</p>
       <Button disabled={submitted} onClick={handleClick}>
         Submit answer
       </Button>
