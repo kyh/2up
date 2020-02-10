@@ -1,4 +1,6 @@
 export { Flex, Box } from 'reflexbox';
 export { PageContainer } from './Page/PageContainer';
+export { EnterName } from './Page/EnterName';
 export { Button } from './Button/Button';
 export { Input } from './Input/Input';
+export { Card } from './Card/Card';
