@@ -16,7 +16,7 @@ defmodule Playhouse.Play do
   def player_list(game) do
     query =
       from player in Player,
-      select: map(player, [:id, :name, :score]),
+      select: map(player, [:id, :name, :coins]),
       where: player.game_id == ^game.id
 
     Repo.all(query)
@@ -26,7 +26,7 @@ defmodule Playhouse.Play do
     %Player{
       game: game,
       name: name,
-      score: 0
+      coins: 0
     } |> Repo.insert!
   end
 
@@ -222,5 +222,34 @@ defmodule Playhouse.Play do
     players = Play.player_list(game)
 
     length(endorsements) == length(players)
+  end
+
+  def coins_update(game, game_question, answer) do
+    submissions = Play.submission_list(game_question)
+    endorsements = Play.endorsement_list(game_question)
+
+    players = Play.player_list(game)
+
+    smart_player_ids =
+      Enum.filter(endorsements, fn x -> x.answer_id == answer.id end)
+      |> Enum.map(fn x -> x.player_id end)
+
+    Enum.each players, fn player ->
+      smart_player = Enum.find(smart_player_ids, fn x -> x == player.id end)
+
+      if smart_player do
+        smart_player
+        |> Ecto.Changeset.change(%{ coins: smart_player.coins + 1000 })
+        |> Repo.update
+      end
+
+      submission = Enum.find(submissions, fn x -> x.player_id == player.id end)
+
+      tricked_players = Enum.filter(endorsements, fn x -> x.submission_id == submission.id end)
+
+      player
+        |> Ecto.Changeset.change(%{ coins: player.coins + length(tricked_players) * 500 })
+        |> Repo.update
+    end
   end
 end

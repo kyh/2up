@@ -7,7 +7,7 @@ defmodule PlayhouseWeb.TriviaChannel do
     {:ok, socket}
   end
 
-  def handle_in("game:new", payload, socket) do
+  def handle_in("game:new", _payload, socket) do
     game = Play.game_create()
 
     push socket, "game", Play.game_state(game)
@@ -40,7 +40,7 @@ defmodule PlayhouseWeb.TriviaChannel do
 
     if Play.collected_all_submissions(game, game_question) do
       game_state =
-        Play.game_get(payload["gameID"])
+        game
         |> Play.game_scene_next
         |> Play.game_state
 
@@ -61,8 +61,10 @@ defmodule PlayhouseWeb.TriviaChannel do
     end
 
     if Play.collected_all_endorsements(game, game_question) do
+      # Play.coins_update(game, game_question, answer)
+
       game_state =
-        Play.game_get(payload["gameID"])
+        game
         |> Play.game_scene_next
         |> Play.game_state
 
