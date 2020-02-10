@@ -19,7 +19,7 @@ export const Scene1 = ({ state }: SceneProps) => {
 
 const SubmissionBox = styled.div`
   position: absolute;
-  top: 0;
+  top: ${({ theme }) => theme.spacings(3)};
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.black};
   padding: ${({ theme }) => theme.spacings(3)};
