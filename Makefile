@@ -18,3 +18,6 @@ deploy-force:
 
 phoenix:
 	cd server && mix phx.server
+
+react:
+	cd client && npm start
