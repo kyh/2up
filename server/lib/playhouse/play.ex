@@ -243,20 +243,20 @@ defmodule Playhouse.Play do
 
     Enum.each players, fn player ->
       smart_endorsement = Enum.find(smart_endorsements, fn x -> x.player_id == player.id end)
-
       if smart_endorsement do
-        smart_player = Repo.get(Player, smart_endorsement.player_id)
-        smart_player
-          |> Ecto.Changeset.change(%{ coins: smart_player.coins + 1000 })
+        player
+          |> Ecto.Changeset.change(%{ coins: player.coins + 1000 })
           |> Repo.update
       end
 
       submission = Enum.find(submissions, fn x -> x.player_id == player.id end)
-
       tricked_players = Enum.filter(endorsements, fn x -> x.submission_id == submission.id end)
 
-      player
-        |> Ecto.Changeset.change(%{ coins: player.coins + length(tricked_players) * 500 })
+      new_coins = length(tricked_players) * 500
+      reloaded_player = Repo.get(Player, player.id)
+
+      reloaded_player
+        |> Ecto.Changeset.change(%{ coins: reloaded_player.coins + new_coins })
         |> Repo.update
     end
   end
