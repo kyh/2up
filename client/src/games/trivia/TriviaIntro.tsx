@@ -23,10 +23,10 @@ export const TriviaIntro = () => {
     themeSong.addEventListener('canplaythrough', () => {
       themeSong.loop = true;
       // themeSong.play();
-      localStorage.setItem('isHost', 'true');
-      broadcast('game:new');
-      setShouldRedirect(true);
     });
+    localStorage.setItem('isHost', 'true');
+    broadcast('game:new');
+    setShouldRedirect(true);
   };
 
   const onClickJoin = () => {

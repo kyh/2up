@@ -39,14 +39,11 @@ defmodule PlayhouseWeb.TriviaChannel do
     Play.submission_create(player, payload["submission"])
 
     if Play.collected_all_submissions(game, game_question) do
-      game_state =
-        game
-        |> Play.game_scene_next
-        |> Play.game_state
-
-      broadcast socket, "game", game_state
+      Play.game_scene_next(game)
     end
 
+    reloaded_game = Play.game_get(payload["gameID"])
+    broadcast socket, "game", Play.game_state(reloaded_game)
     {:noreply, socket}
   end
 

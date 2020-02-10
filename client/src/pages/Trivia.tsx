@@ -22,7 +22,7 @@ export const TriviaPages: React.FC = () => {
         </PageContainer>
       </Route>
       <Route exact path="/trivia/tv">
-        <PageContainer size="large">
+        <PageContainer size="large" align="center">
           <TriviaTV />
         </PageContainer>
       </Route>
