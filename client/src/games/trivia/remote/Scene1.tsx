@@ -9,7 +9,9 @@ export const Scene1 = ({ state, broadcast }: SceneProps) => {
 
   const handleClick = () => {
     if (value.toLowerCase() === state?.answer?.toLowerCase()) {
-      setErrorValue('You have selected the right answer. Please write a tricky wrong answer instead.');
+      setErrorValue(
+        'You have selected the right answer. Please write a tricky wrong answer instead.'
+      );
       return;
     }
 
@@ -24,12 +26,12 @@ export const Scene1 = ({ state, broadcast }: SceneProps) => {
 
   return (
     <Flex alignItems="center" flexDirection="column">
-      <h1>{state.question}</h1>
+      <h2>{state.question}</h2>
       <Input
         value={value}
         onChange={e => {
-        setErrorValue('')
-        setValue(e.target.value);
+          setErrorValue('');
+          setValue(e.target.value);
         }}
         readOnly={submitted}
       />

@@ -4,11 +4,17 @@ export const SubmissionsContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+
   .submission {
     display: inline-flex;
     flex-direction: column;
     > button {
       opacity: 1;
+    }
+
+    &.full {
+      width: 100%;
+      margin-bottom: ${({ theme }) => theme.spacings(2)};
     }
   }
 

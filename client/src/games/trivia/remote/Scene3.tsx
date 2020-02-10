@@ -1,31 +1,33 @@
 import React from 'react';
 import { Button } from 'components';
 import { SceneProps } from 'games/trivia/TriviaContext';
+import { hashCode } from 'utils/stringUtils';
+import { SubmissionsContainer } from '../components/SubmissionsContainer';
 
 export const Scene3 = ({ state, broadcast }: SceneProps) => {
   return (
-    <div>
+    <section>
       <h2>{state.question}</h2>
-      {state.submissions.map(submission => {
-        return (
-          <div>
-            <h2>Submission</h2>
-            <p>{submission.content}</p>
-            <p>By: {submission.name}</p>
-            <h2>Endorsements</h2>
-            {submission.endorsers.map(endorser => {
-              return <p>{endorser.name}</p>;
-            })}
-          </div>
-        );
-      })}
-      <h2>Coins</h2>
-      {state.players.map(player => (
-        <div>
-          <h3>{player.name}</h3>
-          <h4>{player.coins}</h4>
-        </div>
-      ))}
+      <SubmissionsContainer>
+        {state.submissions.map(submission => {
+          return (
+            <div className="submission full" key={submission.id}>
+              <Button disabled>{submission.content}</Button>
+              <div className="endorsement-container">
+                {submission.endorsers.map(endorser => {
+                  const avatar = hashCode(endorser.name, 10);
+                  return (
+                    <div className="endorsement" key={endorser.id}>
+                      <img src={`/avatars/${avatar}.svg`} alt={endorser.name} />
+                      {endorser.name}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </SubmissionsContainer>
       <Button
         onClick={() =>
           broadcast('game:score', {
@@ -35,6 +37,6 @@ export const Scene3 = ({ state, broadcast }: SceneProps) => {
       >
         Next
       </Button>
-    </div>
+    </section>
   );
 };

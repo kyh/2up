@@ -5,7 +5,7 @@ import { SceneProps } from 'games/trivia/TriviaContext';
 export const Scene2 = ({ state, broadcast }: SceneProps) => {
   const [submitted, setSubmitted] = useState(false);
   return (
-    <div>
+    <section>
       <h2>{state.question}</h2>
       {state.submissions.map(submission => {
         return (
@@ -26,6 +26,6 @@ export const Scene2 = ({ state, broadcast }: SceneProps) => {
           </Button>
         );
       })}
-    </div>
+    </section>
   );
 };
