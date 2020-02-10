@@ -84,4 +84,14 @@ defmodule PlayhouseWeb.TriviaChannel do
     broadcast socket, "game", game_state
     {:noreply, socket}
   end
+
+  def handle_in("game:score", payload, socket) do
+    game_state =
+      Play.game_get(payload["gameID"])
+      |> Play.game_scene_next
+      |> Play.game_state
+
+    broadcast socket, "game", game_state
+    {:noreply, socket}
+  end
 end
