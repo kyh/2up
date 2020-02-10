@@ -4,6 +4,7 @@ import { Button } from 'components';
 import { hashCode } from 'utils/stringUtils';
 import { Question } from '../components/Question';
 import { SubmissionsContainer } from '../components/SubmissionsContainer';
+import correctSvg from '../components/correct.svg';
 
 export const Scene3 = ({ state }: SceneProps) => {
   return (

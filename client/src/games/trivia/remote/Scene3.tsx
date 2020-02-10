@@ -3,6 +3,7 @@ import { Button } from 'components';
 import { SceneProps } from 'games/trivia/TriviaContext';
 import { hashCode } from 'utils/stringUtils';
 import { SubmissionsContainer } from '../components/SubmissionsContainer';
+import correctSvg from '../components/correct.svg';
 
 export const Scene3 = ({ state, broadcast }: SceneProps) => {
   return (
