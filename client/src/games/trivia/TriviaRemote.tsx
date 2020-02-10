@@ -92,6 +92,13 @@ const Scene3 = ({ state, broadcast }: SceneProps) => {
           </div>
         );
       })}
+      <h2>Coins</h2>
+      {state.players.map(player => (
+        <div>
+          <h3>{player.name}</h3>
+          <h4>{player.coins}</h4>
+        </div>
+      ))}
       <Button
         onClick={() =>
           broadcast('game:next', {
