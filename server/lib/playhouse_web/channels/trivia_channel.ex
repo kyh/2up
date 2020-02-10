@@ -61,7 +61,7 @@ defmodule PlayhouseWeb.TriviaChannel do
     end
 
     if Play.collected_all_endorsements(game, game_question) do
-      # Play.coins_update(game, game_question, answer)
+      Play.coins_update(game, game_question, answer)
 
       game_state =
         game

@@ -22,6 +22,14 @@ defmodule Playhouse.Play do
     Repo.all(query)
   end
 
+  def players(game) do
+    query =
+      from player in Player,
+      where: player.game_id == ^game.id
+
+    Repo.all(query)
+  end
+
   def player_create(game, name) do
     %Player{
       game: game,
@@ -228,19 +236,19 @@ defmodule Playhouse.Play do
     submissions = Play.submission_list(game_question)
     endorsements = Play.endorsement_list(game_question)
 
-    players = Play.player_list(game)
-
-    smart_player_ids =
+    smart_endorsements =
       Enum.filter(endorsements, fn x -> x.answer_id == answer.id end)
-      |> Enum.map(fn x -> x.player_id end)
+
+    players = Play.players(game)
 
     Enum.each players, fn player ->
-      smart_player = Enum.find(smart_player_ids, fn x -> x == player.id end)
+      smart_endorsement = Enum.find(smart_endorsements, fn x -> x.player_id == player.id end)
 
-      if smart_player do
+      if smart_endorsement do
+        smart_player = Repo.get(Player, smart_endorsement.player_id)
         smart_player
-        |> Ecto.Changeset.change(%{ coins: smart_player.coins + 1000 })
-        |> Repo.update
+          |> Ecto.Changeset.change(%{ coins: smart_player.coins + 1000 })
+          |> Repo.update
       end
 
       submission = Enum.find(submissions, fn x -> x.player_id == player.id end)
