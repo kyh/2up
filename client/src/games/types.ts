@@ -12,5 +12,5 @@ export interface ServerResponse {
 export interface Player {
   id: string;
   name: string;
-  score: number;
+  coins: number;
 }
