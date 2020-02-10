@@ -36,7 +36,7 @@ export const Scene1 = ({ state, broadcast }: SceneProps) => {
         readOnly={submitted}
       />
       <p>{errorValue}</p>
-      <Button disabled={submitted} onClick={handleClick}>
+      <Button disabled={!value || submitted} onClick={handleClick}>
         Submit answer
       </Button>
     </Flex>

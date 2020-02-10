@@ -18,6 +18,7 @@ export const SubmissionsContainer = styled.div`
     }
 
     > button {
+      text-transform: uppercase;
       opacity: 1;
     }
 
