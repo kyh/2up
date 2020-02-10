@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { SoundMap } from 'styles/sounds';
-import { Button, Input, EnterName, Card } from 'components';
+import { Button, Input, Card } from 'components';
 import { TriviaContext } from './TriviaContext';
 
 const Screens = {
@@ -13,7 +13,9 @@ const Screens = {
 export const TriviaIntro = () => {
   const history = useHistory();
   const { state, broadcast } = useContext(TriviaContext);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
   const [gameIDToJoin, setGameIDtoJoin] = useState('');
+  const [name, setName] = useState(localStorage.getItem('name') || '');
   const [screen, setScreen] = useState(Screens.join);
 
   const onClickHost = () => {
@@ -23,6 +25,7 @@ export const TriviaIntro = () => {
       // themeSong.play();
       localStorage.setItem('isHost', 'true');
       broadcast('game:new');
+      setShouldRedirect(true);
     });
   };
 
@@ -32,36 +35,45 @@ export const TriviaIntro = () => {
     }
   };
 
-  const onSubmitName = (name: string) => {
+  const onSubmitName = () => {
     localStorage.setItem('isHost', 'false');
+    localStorage.setItem('name', name);
     broadcast('game:join', {
       name,
       gameID: gameIDToJoin
     });
+    setShouldRedirect(true);
   };
 
   useEffect(() => {
-    if (state.gameID) {
+    if (state.gameID && shouldRedirect) {
       history.push('/trivia/lobby');
     }
-  }, [state.gameID, history]);
+  }, [state.gameID, shouldRedirect, history]);
 
   return (
     <IntroContainer>
       <img src="/logo/logomark.svg" alt="Playhouse" />
       <IntroCard>
         {screen === Screens.name ? (
-          <EnterName onSubmit={onSubmitName} />
+          <InputContainer>
+            <Input
+              placeholder="Name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+            <Button onClick={onSubmitName}>Start</Button>
+          </InputContainer>
         ) : (
           <>
-            <JoinGameContainer>
+            <InputContainer>
               <Input
                 placeholder="Game ID"
                 value={gameIDToJoin}
                 onChange={e => setGameIDtoJoin(e.target.value)}
               />
               <Button onClick={onClickJoin}>Join existing game</Button>
-            </JoinGameContainer>
+            </InputContainer>
             <HostNewGameText>
               Or <button onClick={onClickHost}>host your own game</button>
             </HostNewGameText>
@@ -85,7 +97,7 @@ const IntroCard = styled(Card)`
   height: 260px;
 `;
 
-const JoinGameContainer = styled.div`
+const InputContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
