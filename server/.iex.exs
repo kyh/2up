@@ -10,3 +10,5 @@ alias Playhouse.Play.{
 alias Playhouse.Repo
 alias Playhouse.Catalog
 alias Playhouse.Play
+
+import Ecto.Query
