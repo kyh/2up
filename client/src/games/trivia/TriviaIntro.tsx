@@ -22,7 +22,7 @@ export const TriviaIntro = () => {
     const themeSong = new Audio(SoundMap.theme);
     themeSong.addEventListener('canplaythrough', () => {
       themeSong.loop = true;
-      // themeSong.play();
+      themeSong.play();
     });
     localStorage.setItem('isHost', 'true');
     broadcast('game:new');
