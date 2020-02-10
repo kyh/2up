@@ -21,3 +21,6 @@ phoenix:
 
 react:
 	cd client && npm start
+
+logs:
+	gigalixir logs
