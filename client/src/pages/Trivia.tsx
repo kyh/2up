@@ -12,22 +12,22 @@ export const TriviaPages: React.FC = () => {
   return (
     <TriviaProvider>
       <Route exact path="/trivia">
-        <PageContainer variant="tv">
+        <PageContainer size="large" align="center">
           <TriviaIntro />
         </PageContainer>
       </Route>
       <Route exact path="/trivia/lobby">
-        <PageContainer variant="tv">
+        <PageContainer size="full">
           <TriviaLobby />
         </PageContainer>
       </Route>
       <Route exact path="/trivia/tv">
-        <PageContainer variant="tv">
+        <PageContainer size="large">
           <TriviaTV />
         </PageContainer>
       </Route>
       <Route exact path="/trivia/remote">
-        <PageContainer variant="remote">
+        <PageContainer size="small">
           <TriviaRemote />
         </PageContainer>
       </Route>

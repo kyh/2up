@@ -6,6 +6,7 @@ declare module 'styled-components' {
       black: string;
       lightGrey: string;
       white: string;
+      purple: string;
     };
     space: Array<number>;
     spacings: (spacing: number) => string;
