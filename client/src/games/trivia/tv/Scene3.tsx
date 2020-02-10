@@ -12,8 +12,16 @@ export const Scene3 = ({ state }: SceneProps) => {
       <Question>{state.question}</Question>
       <SubmissionsContainer>
         {state.submissions.map(submission => {
+          const isRightAnswer = submission.content === state.answer;
           return (
             <div className="submission" key={submission.id}>
+              {isRightAnswer && (
+                <img
+                  className="correct"
+                  src={correctSvg}
+                  alt="Correct answer"
+                />
+              )}
               <Button disabled>{submission.content}</Button>
               <div className="endorsement-container">
                 {submission.endorsers.map(endorser => {

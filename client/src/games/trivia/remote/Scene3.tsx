@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { Button } from 'components';
 import { SceneProps } from 'games/trivia/TriviaContext';
 import { hashCode } from 'utils/stringUtils';
@@ -12,16 +12,17 @@ export const Scene3 = ({ state, broadcast }: SceneProps) => {
       <h2>{state.question}</h2>
       <SubmissionsContainer>
         {state.submissions.map(submission => {
-          const isRightAnswer = submission.content === state.answer
+          const isRightAnswer = submission.content === state.answer;
           return (
             <div className="submission full" key={submission.id}>
-              {isRightAnswer ? (
-                <Button disabled>
-                  <WinningText>{submission.content}</WinningText>
-                </Button>
-              ): (
-                <Button disabled>{submission.content}</Button>
+              {isRightAnswer && (
+                <img
+                  className="correct"
+                  src={correctSvg}
+                  alt="Correct answer"
+                />
               )}
+              <Button disabled>{submission.content}</Button>
               <div className="endorsement-container">
                 {submission.endorsers.map(endorser => {
                   const avatar = hashCode(endorser.name, 10);
@@ -50,8 +51,7 @@ export const Scene3 = ({ state, broadcast }: SceneProps) => {
   );
 };
 
-
 const WinningText = styled.span`
-  color: #7247C4 ;
+  color: #7247c4;
   font-weight: bold;
 `;

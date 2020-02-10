@@ -10,6 +10,13 @@ export const SubmissionsContainer = styled.div`
     position: relative;
     flex-direction: column;
 
+    .correct {
+      position: absolute;
+      left: -20px;
+      top: -20px;
+      height: 60px;
+    }
+
     > button {
       opacity: 1;
     }
