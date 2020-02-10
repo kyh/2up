@@ -40,7 +40,7 @@ export const TriviaIntro = () => {
     localStorage.setItem('name', name);
     broadcast('game:join', {
       name,
-      gameID: gameIDToJoin
+      gameID: gameIDToJoin.toUpperCase()
     });
     setShouldRedirect(true);
   };
