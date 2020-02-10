@@ -1,25 +1,24 @@
 import styled, { css } from 'styled-components';
 
-enum Variants {
-  tv = 'tv',
-  remote = 'remote'
+enum Size {
+  small = 'small',
+  large = 'large',
+  full = 'full'
 }
 
 type Props = {
-  variant?: keyof typeof Variants;
+  size?: keyof typeof Size;
+  align?: 'start' | 'center' | 'end' | 'stretch';
 };
 
-const renderTVStyles = () => {
-  return css`
-    max-width: 900px;
-    align-items: center;
-  `;
-};
-
-const renderRemoteStyles = () => {
-  return css`
-    max-width: 600px;
-  `;
+const renderSize = ({ size }: Props) => {
+  if (size === Size.small) {
+    return '600px';
+  }
+  if (size === Size.large) {
+    return '900px';
+  }
+  return 'none';
 };
 
 export const PageContainer = styled.section<Props>`
@@ -28,7 +27,6 @@ export const PageContainer = styled.section<Props>`
   margin: 0 auto;
   justify-content: center;
   height: 100vh;
-
-  ${({ variant }) =>
-    variant === Variants.tv ? renderTVStyles() : renderRemoteStyles()}
+  max-width: ${renderSize};
+  align-items: ${({ align }) => (align ? align : 'start')};
 `;
