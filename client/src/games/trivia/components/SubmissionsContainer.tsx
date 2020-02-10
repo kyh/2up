@@ -7,7 +7,9 @@ export const SubmissionsContainer = styled.div`
 
   .submission {
     display: inline-flex;
+    position: relative;
     flex-direction: column;
+
     > button {
       opacity: 1;
     }
