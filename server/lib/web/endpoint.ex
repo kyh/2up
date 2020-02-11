@@ -1,4 +1,4 @@
-defmodule PlayhouseWeb.Endpoint do
+defmodule Web.Endpoint do
   use Phoenix.Endpoint, otp_app: :playhouse
 
   # The session will be stored in the cookie and signed,
@@ -10,7 +10,7 @@ defmodule PlayhouseWeb.Endpoint do
     signing_salt: "VFmdAvO9"
   ]
 
-  socket "/socket", PlayhouseWeb.UserSocket,
+  socket "/socket", Web.UserSocket,
     websocket: true,
     longpoll: false
 
@@ -43,5 +43,5 @@ defmodule PlayhouseWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug PlayhouseWeb.Router
+  plug Web.Router
 end

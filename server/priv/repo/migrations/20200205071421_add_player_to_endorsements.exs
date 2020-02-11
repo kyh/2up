@@ -1,4 +1,4 @@
-defmodule Playhouse.Repo.Migrations.AddPlayerToEndorsements do
+defmodule Database.Repo.Migrations.AddPlayerToEndorsements do
   use Ecto.Migration
 
   def change do
