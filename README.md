@@ -14,7 +14,10 @@
 │── /design                      # Design assets
 │── /docs                        # App documentation
 └── /server                      # Phoenix server
-└── /trivia                      # Trivia game
+    └── /lib
+        ├── /database            # Database access
+        ├── /trivia              # Trivia game server
+        ├── /web                 # Channels and routes
 ```
 
 ## Setting up the Client
