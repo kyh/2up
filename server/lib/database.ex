@@ -1,6 +1,6 @@
-defmodule Playhouse do
+defmodule Database do
   @moduledoc """
-  Playhouse keeps the contexts that define your domain
+  Database keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless
