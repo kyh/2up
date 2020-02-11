@@ -1,11 +1,11 @@
-defmodule Playhouse.Play do
+defmodule Database.Play do
   import Ecto.Query
 
-  alias Playhouse.Repo
-  alias Playhouse.Catalog
-  alias Playhouse.Catalog.{ Question, Answer }
-  alias Playhouse.Play
-  alias Playhouse.Play.{
+  alias Database.Repo
+  alias Database.Catalog
+  alias Database.Catalog.{ Question, Answer }
+  alias Database.Play
+  alias Database.Play.{
     Game,
     Player,
     Submission,

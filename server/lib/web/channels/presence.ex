@@ -1,4 +1,4 @@
-defmodule PlayhouseWeb.Presence do
+defmodule Web.Presence do
   @moduledoc """
   Provides presence tracking to channels and processes.
 
@@ -9,9 +9,9 @@ defmodule PlayhouseWeb.Presence do
 
   Presences can be tracked in your channel after joining:
 
-      defmodule Playhouse.MyChannel do
-        use PlayhouseWeb, :channel
-        alias PlayhouseWeb.Presence
+      defmodule Database.MyChannel do
+        use Web, :channel
+        alias Web.Presence
 
         def join("some:topic", _params, socket) do
           send(self(), :after_join)
@@ -69,5 +69,5 @@ defmodule PlayhouseWeb.Presence do
   original presence data.
   """
   use Phoenix.Presence, otp_app: :playhouse,
-                        pubsub_server: Playhouse.PubSub
+                        pubsub_server: Database.PubSub
 end

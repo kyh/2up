@@ -1,4 +1,4 @@
-defmodule Playhouse.Repo.Migrations.RenameScoreToCoinsInPlayer do
+defmodule Database.Repo.Migrations.RenameScoreToCoinsInPlayer do
   use Ecto.Migration
 
   def change do
