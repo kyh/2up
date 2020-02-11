@@ -1,6 +1,6 @@
 # Playhouse
 
-> Some description of this game
+> Real-time multiplayer trivia game
 
 ## Directory Layout
 
