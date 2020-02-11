@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { parse } from 'query-string';
 import { SoundMap } from 'styles/sounds';
 import { Button, Input, Card } from 'components';
 import { TriviaContext } from './TriviaContext';
@@ -12,11 +13,16 @@ const Screens = {
 
 export const TriviaIntro = () => {
   const history = useHistory();
+  const location = useLocation();
+  const { gameID: queryGameID } = parse(location.search);
+
   const { state, broadcast } = useContext(TriviaContext);
   const [shouldRedirect, setShouldRedirect] = useState(false);
-  const [gameIDToJoin, setGameIDtoJoin] = useState('');
+  const [gameIDToJoin, setGameIDtoJoin] = useState(queryGameID || '');
   const [name, setName] = useState(localStorage.getItem('name') || '');
-  const [screen, setScreen] = useState(Screens.join);
+  const [screen, setScreen] = useState(
+    queryGameID ? Screens.name : Screens.join
+  );
 
   const onClickHost = () => {
     const themeSong = new Audio(SoundMap.theme);
@@ -36,11 +42,17 @@ export const TriviaIntro = () => {
   };
 
   const onSubmitName = () => {
+    const gameID =
+      typeof gameIDToJoin === 'string'
+        ? gameIDToJoin.toUpperCase()
+        : gameIDToJoin[0].toUpperCase();
+
     localStorage.setItem('isHost', 'false');
     localStorage.setItem('name', name);
+
     broadcast('game:join', {
       name,
-      gameID: gameIDToJoin.toUpperCase()
+      gameID
     });
     setShouldRedirect(true);
   };
