@@ -50,8 +50,3 @@ export const Scene3 = ({ state, broadcast }: SceneProps) => {
     </section>
   );
 };
-
-const WinningText = styled.span`
-  color: #7247c4;
-  font-weight: bold;
-`;

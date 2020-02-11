@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Button } from 'components';
 import { hashCode } from 'utils/stringUtils';
@@ -50,10 +50,14 @@ export const TriviaLobby = () => {
           );
         })}
       </LobbyPlayersContainer>
-      {!isHost && (
+      {!isHost ? (
         <Button className="start-game-button" onClick={onClickStart}>
           Start game
         </Button>
+      ) : (
+        <Link className="join-button" to={`/trivia?gameID=${state.gameID}`}>
+          Or join the room on this device
+        </Link>
       )}
     </LobbyContainer>
   );
@@ -87,6 +91,12 @@ const LobbyContainer = styled.section`
   }
   .start-game-button {
     margin: ${({ theme }) => theme.spacings(4)} auto;
+  }
+  .join-button {
+    display: block;
+    text-align: center;
+    text-decoration: underline;
+    margin-top: auto;
   }
 `;
 
