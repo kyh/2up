@@ -7,7 +7,7 @@ defmodule GameTest do
   setup do
     [
       players: [1, 2],
-      questions: [
+      question_sets: [
         ['What is blue?', 'Sky'],
         ['What is green?', 'Grass'],
         ['What is red?', 'Ketchup']
@@ -18,10 +18,11 @@ defmodule GameTest do
   describe "creating a game" do
     test "with questions and players", context do
       player_count = Enum.count(context.players)
-      question_count = Enum.count(context.questions)
-      game = Game.new(context.questions, context.players)
+      question_set_count = Enum.count(context.question_sets)
 
-      assert Enum.count(game.questions) == question_count
+      game = Game.new(context.question_sets, context.players)
+
+      assert Enum.count(game.acts) == question_set_count
       assert Enum.count(game.players) == player_count
     end
   end
