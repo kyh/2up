@@ -24,3 +24,6 @@ react:
 
 logs:
 	gigalixir logs
+
+test:
+	cd server && mix test
