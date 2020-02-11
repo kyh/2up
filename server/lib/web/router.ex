@@ -1,5 +1,5 @@
-defmodule PlayhouseWeb.Router do
-  use PlayhouseWeb, :router
+defmodule Web.Router do
+  use Web, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,14 +13,14 @@ defmodule PlayhouseWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", PlayhouseWeb do
+  scope "/", Web do
     pipe_through :browser
 
     get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", PlayhouseWeb do
+  # scope "/api", Web do
   #   pipe_through :api
   # end
 end

@@ -1,4 +1,4 @@
-defmodule Playhouse.MixProject do
+defmodule Database.MixProject do
   use Mix.Project
 
   def project do
@@ -19,7 +19,7 @@ defmodule Playhouse.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Playhouse.Application, []},
+      mod: {Database.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

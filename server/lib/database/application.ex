@@ -1,4 +1,4 @@
-defmodule Playhouse.Application do
+defmodule Database.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -9,24 +9,24 @@ defmodule Playhouse.Application do
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository
-      Playhouse.Repo,
+      Database.Repo,
       # Start the endpoint when the application starts
-      PlayhouseWeb.Endpoint,
-      # Starts a worker by calling: Playhouse.Worker.start_link(arg)
-      # {Playhouse.Worker, arg},
-      PlayhouseWeb.Presence
+      Web.Endpoint,
+      # Starts a worker by calling: Database.Worker.start_link(arg)
+      # {Database.Worker, arg},
+      Web.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Playhouse.Supervisor]
+    opts = [strategy: :one_for_one, name: Database.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    PlayhouseWeb.Endpoint.config_change(changed, removed)
+    Web.Endpoint.config_change(changed, removed)
     :ok
   end
 end

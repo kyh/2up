@@ -1,12 +1,12 @@
-defmodule PlayhouseWeb do
+defmodule Web do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use PlayhouseWeb, :controller
-      use PlayhouseWeb, :view
+      use Web, :controller
+      use Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,11 +19,11 @@ defmodule PlayhouseWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: PlayhouseWeb
+      use Phoenix.Controller, namespace: Web
 
       import Plug.Conn
-      import PlayhouseWeb.Gettext
-      alias PlayhouseWeb.Router.Helpers, as: Routes
+      import Web.Gettext
+      alias Web.Router.Helpers, as: Routes
     end
   end
 
@@ -38,7 +38,7 @@ defmodule PlayhouseWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import PlayhouseWeb.Gettext
+      import Web.Gettext
     end
   end
 

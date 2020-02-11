@@ -8,14 +8,14 @@
 use Mix.Config
 
 config :playhouse,
-  ecto_repos: [Playhouse.Repo]
+  ecto_repos: [Database.Repo]
 
 # Configures the endpoint
-config :playhouse, PlayhouseWeb.Endpoint,
+config :playhouse, Web.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "XvP1K4u3s6kkRTKp2k3ypqzuzbn5zjEIZNLQALc7m1ayOyXzVL0ZVt7pp28Dm9ye",
-  render_errors: [view: PlayhouseWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Playhouse.PubSub, adapter: Phoenix.PubSub.PG2]
+  render_errors: [view: Web.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Database.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,

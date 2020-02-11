@@ -1,5 +1,5 @@
-alias Playhouse.Catalog.{Answer, Question}
-alias Playhouse.Play.{
+alias Database.Catalog.{Answer, Question}
+alias Database.Play.{
   Endorsement,
   GameQuestion,
   Game,
@@ -7,8 +7,8 @@ alias Playhouse.Play.{
   Submission
 }
 
-alias Playhouse.Repo
-alias Playhouse.Catalog
-alias Playhouse.Play
+alias Database.Repo
+alias Database.Catalog
+alias Database.Play
 
 import Ecto.Query
