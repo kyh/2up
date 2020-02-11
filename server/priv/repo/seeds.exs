@@ -5,14 +5,14 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     Playhouse.Repo.insert!(%Playhouse.SomeSchema{})
+#     Database.Repo.insert!(%Database.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Playhouse.Repo
-alias Playhouse.Catalog.Question
-alias Playhouse.Catalog.Answer
+alias Database.Repo
+alias Database.Catalog.Question
+alias Database.Catalog.Answer
 
 questions = [
   ["Who won the NBA finals in 2003?", "San Antonio Spurs"],

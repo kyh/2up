@@ -1,8 +1,8 @@
-defmodule Playhouse.Catalog do	
+defmodule Database.Catalog do	
   import Ecto.Query
 
-  alias Playhouse.Repo
-  alias Playhouse.Catalog.Question
+  alias Database.Repo
+  alias Database.Catalog.Question
 
   def random_question do
     query =

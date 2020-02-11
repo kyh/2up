@@ -1,7 +1,7 @@
-defmodule PlayhouseWeb.TriviaChannel do
-  use PlayhouseWeb, :channel
+defmodule Web.TriviaChannel do
+  use Web, :channel
 
-  alias Playhouse.Play
+  alias Database.Play
 
   def join("game:trivia", _payload, socket) do
     {:ok, socket}

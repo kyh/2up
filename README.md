@@ -1,6 +1,6 @@
 # Playhouse
 
-> Some description of this game
+> Real-time multiplayer trivia game
 
 ## Directory Layout
 
@@ -14,6 +14,10 @@
 │── /design                      # Design assets
 │── /docs                        # App documentation
 └── /server                      # Phoenix server
+    └── /lib
+        ├── /database            # Database access
+        ├── /trivia              # Trivia game server
+        ├── /web                 # Channels and routes
 ```
 
 ## Setting up the Client
@@ -28,52 +32,11 @@ npm run start
 
 ## Setting up the Server
 
-Install Erlang and Elixir
+The server is bootstrapped with `mix phx.new`. To get started:
 
 ```
-brew update
-brew install erlang
-brew install elixir
-```
-
-Install Hex package manager
-
-```
-mix local.hex
-```
-
-Install Phoenix
-
-```
-mix archive.install hex phx_new 1.4.12
-```
-
-Install dependencies
-
-```
+cd server
 mix deps.get
-```
-
-Create db in config/dev.exs
-
-```
-mix ecto.create
-```
-
-Install the node.js dependencies
-
-```
-cd assets && npm install && cd ..
-```
-
-Run migrations
-
-```
-mix ecto.migrate
-```
-
-Start phoenix server
-
-```
+mix ecto.setup
 mix phx.server
 ```

@@ -1,10 +1,10 @@
-defmodule Playhouse.Play.Player do
+defmodule Database.Play.Player do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "players" do
-    belongs_to :game, Playhouse.Play.Game
-    has_many :submissions, Playhouse.Play.Submission
+    belongs_to :game, Database.Play.Game
+    has_many :submissions, Database.Play.Submission
 
     field :name, :string
     field :coins, :integer

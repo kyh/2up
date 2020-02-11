@@ -1,4 +1,4 @@
-defmodule Playhouse.Repo.Migrations.CreateQuestions do
+defmodule Database.Repo.Migrations.CreateQuestions do
   use Ecto.Migration
 
   def change do

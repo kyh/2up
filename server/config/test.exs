@@ -1,7 +1,7 @@
 use Mix.Config
 
 # Configure your database
-config :playhouse, Playhouse.Repo,
+config :playhouse, Database.Repo,
   username: "postgres",
   password: "postgres",
   database: "playhouse_test",
@@ -10,7 +10,7 @@ config :playhouse, Playhouse.Repo,
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :playhouse, PlayhouseWeb.Endpoint,
+config :playhouse, Web.Endpoint,
   http: [port: 4002],
   server: false
 
