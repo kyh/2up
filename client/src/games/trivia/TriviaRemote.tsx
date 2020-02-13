@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { TriviaContext } from 'games/trivia/TriviaContext';
 import { Scene1 } from './remote/Scene1';
 import { Scene2 } from './remote/Scene2';
@@ -7,6 +7,10 @@ import { Scene4 } from './remote/Scene4';
 
 export const TriviaRemote: React.FC = () => {
   const { state, broadcast } = useContext(TriviaContext);
+
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, [state.scene]);
 
   switch (state.scene) {
     case 1:
