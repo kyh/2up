@@ -2,7 +2,7 @@ defmodule Web.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "game:trivia", Web.TriviaChannel
+  channel "game:*", Web.TriviaChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
