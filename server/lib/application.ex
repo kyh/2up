@@ -1,4 +1,4 @@
-defmodule Database.Application do
+defmodule Playhouse.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -14,12 +14,13 @@ defmodule Database.Application do
       Web.Endpoint,
       # Starts a worker by calling: Database.Worker.start_link(arg)
       # {Database.Worker, arg},
-      Web.Presence
+      Web.Presence,
+      Trivia
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Database.Supervisor]
+    opts = [strategy: :one_for_one, name: Playhouse.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
