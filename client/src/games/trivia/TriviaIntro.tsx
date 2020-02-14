@@ -11,6 +11,11 @@ const Screens = {
   name: 'name'
 };
 
+const themeSong = new Audio(SoundMap.theme);
+themeSong.addEventListener('canplaythrough', () => {
+  themeSong.loop = true;
+});
+
 export const TriviaIntro = () => {
   const history = useHistory();
   const location = useLocation();
@@ -25,11 +30,7 @@ export const TriviaIntro = () => {
   );
 
   const onClickHost = () => {
-    const themeSong = new Audio(SoundMap.theme);
-    themeSong.addEventListener('canplaythrough', () => {
-      themeSong.loop = true;
-      themeSong.play();
-    });
+    themeSong.play();
     localStorage.setItem('isHost', 'true');
     broadcast('game:new');
     setShouldRedirect(true);
