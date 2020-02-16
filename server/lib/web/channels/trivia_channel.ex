@@ -1,8 +1,8 @@
 defmodule Web.TriviaChannel do
   use Web, :channel
 
-  alias Database.{Play, Catalog}
-  alias Trivia.{GameSupervisor, GameServer}
+  alias Database.{Catalog}
+  alias Trivia.{GameSupervisor}
 
   def join("trivia", _payload, socket) do
     {:ok, socket}
@@ -17,7 +17,7 @@ defmodule Web.TriviaChannel do
 
     case GameSupervisor.start_game(code, questions) do
       {:ok, _game_pid} ->
-        push socket, "game", %{ gameID: code }
+        push socket, "new_game", %{ gameID: code }
         {:noreply, socket}
 
       {:error, _error} ->

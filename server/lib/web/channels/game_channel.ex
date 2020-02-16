@@ -16,6 +16,16 @@ defmodule Web.GameChannel do
     end
   end
 
+  def handle_in("new_player", payload, socket) do
+    push(socket, "presence_state", Presence.list(socket))
+
+    Presence.track(socket, payload[:name], %{
+      online_at: inspect(System.system_time(:seconds))
+    })
+
+    {:noreply, socket}
+  end
+
   def handle_info({:after_join, game_code}, socket) do
     state = GameServer.state(game_code)
 
