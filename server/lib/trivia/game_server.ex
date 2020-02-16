@@ -27,17 +27,14 @@ defmodule Trivia.GameServer do
   end
 
   def init({game_code, questions}) do
-    game = Trivia.Game.new(questions, [])
+    game = case :ets.lookup(:games_table, game_code) do
+      [] ->
+        game = Trivia.Game.new(questions, [])
+        :ets.insert(:games_table, {game_code, game})
+        game
 
-    game = 
-      case :ets.lookup(:games_table, game_code) do
-        [] -> 
-          game = Trivia.Game.new(questions, [])
-          :ets.insert(:games_table, {game_code, game})
-          game
-
-        [{^game_code, game}] -> 
-          game
+      [{^game_code, game}] ->
+        game
     end
 
     Logger.info("Spawned game server process named '#{game_code}'.")
