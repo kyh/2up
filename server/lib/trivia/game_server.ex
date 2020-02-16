@@ -16,6 +16,10 @@ defmodule Trivia.GameServer do
     GenServer.call(via_tuple(game_code), :game_state)
   end
 
+  def game_start(game_code) do
+    GenServer.call(via_tuple(game_code), :game_start)
+  end
+
   def player_new(game_code, player) do
     GenServer.call(via_tuple(game_code), {:player_new, player})
   end
@@ -47,10 +51,15 @@ defmodule Trivia.GameServer do
   end
 
   def get_game_state(game) do
+    current_act = Enum.at(game.acts, game.act - 1)
+    %{question: question, answer: answer} = current_act
+
     %{
       act: game.act,
       scene: game.scene,
-      players: game.players
+      players: game.players,
+      question: question,
+      answer: answer
     }
   end
 
@@ -60,6 +69,14 @@ defmodule Trivia.GameServer do
 
   def handle_call({:player_new, player}, _from, game) do
     updated_game = Trivia.Game.player_new(game, player)
+
+    :ets.insert(:games_table, {my_game_code(), updated_game})
+
+    {:reply, get_game_state(updated_game), updated_game, @timeout}
+  end
+
+  def handle_call(:game_start, _from, game) do
+    updated_game = Trivia.Game.start(game)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 
