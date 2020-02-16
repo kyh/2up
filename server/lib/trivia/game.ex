@@ -21,4 +21,10 @@ defmodule Trivia.Game do
     new_players = game.players ++ [player]
     %{game | players: new_players}
   end
+
+  def start(game) do
+    starting_act = Enum.at(game.acts, 0)
+    %{question: question, answer: answer} = starting_act
+    %{game | act: 1, scene: 1}
+  end
 end
