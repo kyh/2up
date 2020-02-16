@@ -1,6 +1,6 @@
 export interface GameState {
   gameID?: string;
-  players: Player[];
+  players: string[];
   connected: boolean;
 }
 

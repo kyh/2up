@@ -16,4 +16,9 @@ defmodule Trivia.Game do
 
     %Game{acts: acts, players: players}
   end
+
+  def player_new(game, player) do
+    new_players = game.players ++ [player]
+    %{game | players: new_players}
+  end
 end

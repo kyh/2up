@@ -13,8 +13,12 @@ export const TriviaLobby = () => {
   const code = queryParams.get('code');
   const isHost = localStorage.getItem('isHost') === 'true';
 
+  const onClickEnter = () => {
+    broadcast('new_player', { name: localStorage.getItem('name')});
+  };
+
   const onClickStart = () => {
-    broadcast('game:start', { gameID: state.gameID });
+    broadcast('start', { gameID: state.gameID });
   };
 
   useEffect(() => {
@@ -44,19 +48,24 @@ export const TriviaLobby = () => {
       )}
       <LobbyPlayersContainer isHost={isHost}>
         {state.players.map(p => {
-          const avatar = hashCode(p.name, 10);
+          const avatar = hashCode(p, 10);
           return (
-            <div className="player" key={p.name}>
-              <p>{p.name}</p>
-              <img src={`/avatars/${avatar}.svg`} alt={p.name} />
+            <div className="player" key={p}>
+              <p>{p}</p>
+              <img src={`/avatars/${avatar}.svg`} alt={p} />
             </div>
           );
         })}
       </LobbyPlayersContainer>
       {!isHost ? (
-        <Button className="start-game-button" onClick={onClickStart}>
-          Start game
-        </Button>
+        <>
+          <Button className="start-game-button" onClick={onClickEnter}>
+            Enter game
+          </Button>
+          <Button className="start-game-button" onClick={onClickStart}>
+            Start game
+          </Button>
+        </>
       ) : (
         <Link className="join-button" to={`/trivia?gameID=${code}`}>
           Or join the room on this device
