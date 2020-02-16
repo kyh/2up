@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   useTrivia,
   initialState,
@@ -11,9 +11,15 @@ export const TriviaContext = React.createContext({
   broadcast: (_eventName: string, _payload?: object) => {}
 });
 
+const useQueryParams = () => {
+  return new URLSearchParams(useLocation().search);
+}
+
 export const TriviaProvider = ({ children }: { children: React.ReactNode }) => {
   const history = useHistory();
-  const [state, broadcast] = useTrivia();
+  const queryParams = useQueryParams();
+  const code = queryParams.get('code');
+  const [state, broadcast] = useTrivia(code || '');
 
   useEffect(() => {
     if (!state.connected) {

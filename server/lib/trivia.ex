@@ -13,7 +13,6 @@ defmodule Trivia do
     Supervisor.start_link(children, opts)
   end
 
-
   def child_spec(_opts) do
     %{
       id: __MODULE__,
