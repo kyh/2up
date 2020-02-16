@@ -19,7 +19,7 @@ defmodule Web.GameChannel do
   def handle_in("new_player", payload, socket) do
     push(socket, "presence_state", Presence.list(socket))
 
-    Presence.track(socket, payload[:name], %{
+    Presence.track(socket, payload["name"], %{
       online_at: inspect(System.system_time(:seconds))
     })
 
