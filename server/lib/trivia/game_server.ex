@@ -13,7 +13,7 @@ defmodule Trivia.GameServer do
   end
 
   def state(game_code) do
-    GenServer.call(game_code, :state)
+    GenServer.call(via_tuple(game_code), :state)
   end
 
   def game_pid(game_code) do
@@ -40,5 +40,15 @@ defmodule Trivia.GameServer do
     Logger.info("Spawned game server process named '#{game_code}'.")
 
     {:ok, game, @timeout}
+  end
+
+  def handle_call(:state, _from, game) do
+    game_state = %{
+      gameID: game.code,
+      act: game.act,
+      scene: game.scene
+    }
+
+    {:reply, get_state(game), game, @timeout}
   end
 end
