@@ -7,7 +7,7 @@ export interface TriviaGameState extends GameState {
   scene: number;
   question?: string;
   answer?: string;
-  players: string[];
+  players: Player[];
   submissions: Submission[];
 }
 export interface Submission {

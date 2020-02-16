@@ -20,12 +20,27 @@ defmodule Web.GameChannel do
     {:noreply, socket}
   end
 
-  def handle_in("new_player", %{"name" => name}, socket) do
+  def handle_in("player_new", %{"name" => name}, socket) do
     "game:" <> game_code = socket.topic
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        game_state = GameServer.player_new(game_code, name)
+        player = %{ id: Ecto.UUID.generate, name: name, coins: 0 }
+        game_state = GameServer.player_new(game_code, player)
+        broadcast!(socket, "game_state", game_state)
+        {:noreply, socket}
+
+      nil ->
+        {:reply, {:error, %{reason: "Game does not exist"}}, socket}
+    end
+  end
+
+  def handle_in("start", _payload, socket) do
+    "game:" <> game_code = socket.topic
+
+    case GameServer.game_pid(game_code) do
+      pid when is_pid(pid) ->
+        game_state = GameServer.game_start(game_code)
         broadcast!(socket, "game_state", game_state)
         {:noreply, socket}
 

@@ -14,7 +14,7 @@ export const TriviaLobby = () => {
   const isHost = localStorage.getItem('isHost') === 'true';
 
   const onClickEnter = () => {
-    broadcast('new_player', { name: localStorage.getItem('name')});
+    broadcast('player_new', { name: localStorage.getItem('name')});
   };
 
   const onClickStart = () => {
@@ -48,11 +48,11 @@ export const TriviaLobby = () => {
       )}
       <LobbyPlayersContainer isHost={isHost}>
         {state.players.map(p => {
-          const avatar = hashCode(p, 10);
+          const avatar = hashCode(p.name, 10);
           return (
-            <div className="player" key={p}>
-              <p>{p}</p>
-              <img src={`/avatars/${avatar}.svg`} alt={p} />
+            <div className="player" key={p.id}>
+              <p>{p.name}</p>
+              <img src={`/avatars/${avatar}.svg`} alt={p.name} />
             </div>
           );
         })}
