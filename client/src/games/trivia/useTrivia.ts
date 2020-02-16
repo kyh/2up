@@ -7,7 +7,7 @@ export interface TriviaGameState extends GameState {
   scene: number;
   question?: string;
   answer?: string;
-  players: Player[];
+  players: string[];
   submissions: Submission[];
 }
 export interface Submission {
@@ -48,6 +48,13 @@ const reducer = (
       return {
         ...state,
         connected: false
+      };
+    case 'game_state':
+      console.log('PAYLOAD', payload)
+      // return state;
+      return {
+        ...state,
+        ...payload
       };
     case Events.game:
       return {

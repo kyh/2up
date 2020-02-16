@@ -1,9 +1,7 @@
 defmodule Web.GameChannel do
   use Web, :channel
 
-  alias Web.{Presence}
-  alias Database.{Play, Catalog}
-  alias Trivia.{GameSupervisor, GameServer}
+  alias Trivia.{GameServer}
 
   def join("game:" <> game_code, _payload, socket) do
     case GameServer.game_pid(game_code) do
@@ -16,20 +14,23 @@ defmodule Web.GameChannel do
     end
   end
 
-  def handle_in("new_player", payload, socket) do
-    push(socket, "presence_state", Presence.list(socket))
-
-    Presence.track(socket, payload["name"], %{
-      online_at: inspect(System.system_time(:seconds))
-    })
-
+  def handle_info({:after_join, game_code}, socket) do
+    game_state = GameServer.game_state(game_code)
+    push(socket, "game_state", game_state)
     {:noreply, socket}
   end
 
-  def handle_info({:after_join, game_code}, socket) do
-    state = GameServer.state(game_code)
+  def handle_in("new_player", %{"name" => name}, socket) do
+    "game:" <> game_code = socket.topic
 
-    push(socket, "game_state", state)
-    {:noreply, socket}
+    case GameServer.game_pid(game_code) do
+      pid when is_pid(pid) ->
+        game_state = GameServer.player_new(game_code, name)
+        broadcast!(socket, "game_state", game_state)
+        {:noreply, socket}
+
+      nil ->
+        {:reply, {:error, %{reason: "Game does not exist"}}, socket}
+    end
   end
 end

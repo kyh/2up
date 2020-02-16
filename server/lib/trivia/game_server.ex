@@ -12,8 +12,12 @@ defmodule Trivia.GameServer do
                          name: via_tuple(game_code))
   end
 
-  def state(game_code) do
-    GenServer.call(via_tuple(game_code), :state)
+  def game_state(game_code) do
+    GenServer.call(via_tuple(game_code), :game_state)
+  end
+
+  def player_new(game_code, player) do
+    GenServer.call(via_tuple(game_code), {:player_new, player})
   end
 
   def game_pid(game_code) do
@@ -42,12 +46,27 @@ defmodule Trivia.GameServer do
     {:ok, game, @timeout}
   end
 
-  def handle_call(:state, _from, game) do
-    game_state = %{
+  def get_game_state(game) do
+    %{
       act: game.act,
-      scene: game.scene
+      scene: game.scene,
+      players: game.players
     }
+  end
 
-    {:reply, game_state, game, @timeout}
+  def handle_call(:game_state, _from, game) do
+    {:reply, get_game_state(game), game, @timeout}
+  end
+
+  def handle_call({:player_new, player}, _from, game) do
+    updated_game = Trivia.Game.player_new(game, player)
+
+    :ets.insert(:games_table, {my_game_code(), updated_game})
+
+    {:reply, get_game_state(updated_game), updated_game, @timeout}
+  end
+
+  defp my_game_code do
+    Registry.keys(Trivia.GameRegistry, self()) |> List.first
   end
 end
