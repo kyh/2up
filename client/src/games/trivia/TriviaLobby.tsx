@@ -4,10 +4,13 @@ import styled, { css } from 'styled-components';
 import { Button } from 'components';
 import { hashCode } from 'utils/stringUtils';
 import { TriviaContext } from './TriviaContext';
+import { useQueryParams } from 'games/trivia/useQueryParams'
 
 export const TriviaLobby = () => {
   const history = useHistory();
   const { state, broadcast } = useContext(TriviaContext);
+  const queryParams = useQueryParams();
+  const code = queryParams.get('code');
   const isHost = localStorage.getItem('isHost') === 'true';
 
   const onClickStart = () => {
@@ -34,7 +37,7 @@ export const TriviaLobby = () => {
             </h1>
             <h1 className="title">and enter the room code:</h1>
           </div>
-          <div className="game-id">{state.gameID}</div>
+          <div className="game-id">{code}</div>
         </>
       ) : (
         <h1 className="title">Waiting for players to join...</h1>
@@ -55,7 +58,7 @@ export const TriviaLobby = () => {
           Start game
         </Button>
       ) : (
-        <Link className="join-button" to={`/trivia?gameID=${state.gameID}`}>
+        <Link className="join-button" to={`/trivia?gameID=${code}`}>
           Or join the room on this device
         </Link>
       )}
