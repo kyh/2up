@@ -44,11 +44,10 @@ defmodule Trivia.GameServer do
 
   def handle_call(:state, _from, game) do
     game_state = %{
-      gameID: game.code,
       act: game.act,
       scene: game.scene
     }
 
-    {:reply, get_state(game), game, @timeout}
+    {:reply, game_state, game, @timeout}
   end
 end
