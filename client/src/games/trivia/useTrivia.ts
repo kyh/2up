@@ -77,7 +77,7 @@ const reducer = (
 const eventsList = Object.keys(Events);
 export const useTrivia = (code: string) => {
   return useChannel(
-    `game:${code}`,
+    `trivia:${code}`,
     reducerLogger(reducer, eventsList),
     initialState
   );
