@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   useTrivia,
   initialState,
   TriviaGameState
 } from 'games/trivia/useTrivia';
-import { useQueryParams } from 'games/trivia/useQueryParams'
+import { useQueryParams } from 'games/trivia/useQueryParams';
 
 export const TriviaContext = React.createContext({
   state: initialState,
   broadcast: (_eventName: string, _payload?: object) => {}
 });
 
-export const TriviaProvider = ({ children }: { children: React.ReactNode }) => {
+export const TriviaProvider: React.FC = ({ children }) => {
   const history = useHistory();
   const queryParams = useQueryParams();
   const code = queryParams.get('code');

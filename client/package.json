@@ -13,6 +13,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.2.5",
     "lodash": "^4.17.15",
+    "phoenix": "^1.4.13",
     "query-string": "^6.10.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -22,8 +23,7 @@
     "reflexbox": "^4.0.6",
     "styled-components": "^5.0.0",
     "styled-normalize": "^8.0.6",
-    "uifx": "^2.0.7",
-    "use-phoenix-channel": "^1.1.1"
+    "uifx": "^2.0.7"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^5.3.9",
@@ -39,6 +39,7 @@
     "@types/jest": "^24.0.0",
     "@types/lodash": "^4.14.149",
     "@types/node": "^12.12.27",
+    "@types/phoenix": "^1.4.3",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-modal": "^3.10.4",

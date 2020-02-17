@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
-import { SocketProvider } from 'use-phoenix-channel';
+import { SocketProvider } from 'context/Socket';
 import { debounce } from 'lodash';
 import { store } from 'redux/store';
 import { theme } from 'styles/theme';
