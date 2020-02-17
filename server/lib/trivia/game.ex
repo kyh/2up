@@ -104,6 +104,14 @@ defmodule Trivia.Game do
     %{game | acts: new_acts, scene: current_scene}
   end
 
+  def scene_next(game) do
+    %{game | scene: game.scene + 1}
+  end
+
+  def act_next(game) do
+    %{game | act: game.act + 1, scene: 1}
+  end
+
   def start(game) do
     %{game | act: 1, scene: 1}
   end
