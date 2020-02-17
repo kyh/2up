@@ -42,7 +42,7 @@ defmodule Trivia.Game do
       game.acts
       |> Enum.with_index
       |> Enum.map(fn {x,i} ->
-        case i == 0 do
+        case i == current_index do
           true -> updated_act
           false -> x
         end
@@ -125,7 +125,6 @@ defmodule Trivia.Game do
         false -> updated_game.scene 
       end
 
-    # scoring
     %{updated_game | acts: new_acts, scene: current_scene}
   end
 
