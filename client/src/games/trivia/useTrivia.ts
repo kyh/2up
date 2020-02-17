@@ -50,8 +50,6 @@ const reducer = (
         connected: false
       };
     case 'game_state':
-      console.log('PAYLOAD', payload)
-      // return state;
       return {
         ...state,
         ...payload
