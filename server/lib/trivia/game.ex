@@ -22,9 +22,36 @@ defmodule Trivia.Game do
     %{game | players: new_players}
   end
 
+  def player_submit(game, submission) do
+    new_submission = [submission]
+    current_index = game.act - 1
+    current_act = Enum.at(game.acts, current_index)
+    current_submissions = current_act.submissions
+    new_submissions = current_submissions ++ new_submission 
+    updated_act = %{current_act | submissions: new_submissions}
+
+    new_acts =
+    game.acts
+    |> Enum.with_index
+    |> Enum.map(fn {x,i} ->
+      if i == 0 do
+        updated_act
+      else
+        x
+      end
+    end)
+
+    current_scene = 
+    if length(new_submissions) === length(game.players) do
+      game.scene + 1
+    else
+      game.scene
+    end
+
+    %{game | acts: new_acts, scene: current_scene}
+  end
+
   def start(game) do
-    starting_act = Enum.at(game.acts, 0)
-    %{question: question, answer: answer} = starting_act
     %{game | act: 1, scene: 1}
   end
 end
