@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory, useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
-import { SoundMap } from 'styles/sounds';
+import { useMusic } from 'hooks/useMusic';
 import { Button, Input, Card } from 'components';
 import { TriviaContext } from './TriviaContext';
 
@@ -10,11 +10,6 @@ const Screens = {
   join: 'join',
   name: 'name'
 };
-
-const themeSong = new Audio(SoundMap.theme);
-themeSong.addEventListener('canplaythrough', () => {
-  themeSong.loop = true;
-});
 
 export const TriviaIntro = () => {
   const history = useHistory();
@@ -29,8 +24,10 @@ export const TriviaIntro = () => {
     queryGameID ? Screens.name : Screens.join
   );
 
+  const { playMusic } = useMusic();
+
   const onClickHost = () => {
-    themeSong.play();
+    playMusic();
     localStorage.setItem('isHost', 'true');
     broadcast('game:new');
     setShouldRedirect(true);

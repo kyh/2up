@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import { SocketProvider } from 'use-phoenix-channel';
+import { debounce } from 'lodash';
 
 import { App } from 'pages/App';
 import { theme } from 'styles/theme';
@@ -10,8 +11,14 @@ import { GlobalStyle } from 'styles/global';
 
 import * as serviceWorker from './serviceWorker';
 
-const vh = window.innerHeight * 0.01;
-document.documentElement.style.setProperty('--vh', `${vh}px`);
+const onResize = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+
+const debouncedResize = debounce(onResize, 100);
+window.addEventListener('resize', debouncedResize);
+onResize();
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>

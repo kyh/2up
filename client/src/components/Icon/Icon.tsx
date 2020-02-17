@@ -4,6 +4,7 @@ import styled, {
   StyledComponentProps,
   DefaultTheme
 } from 'styled-components';
+import raw from 'raw.macro';
 
 type Props = StyledComponentProps<
   'div',
@@ -18,14 +19,15 @@ type Props = StyledComponentProps<
 >;
 
 export const iconMap = {
-  setting: require('!raw-loader!./svgs/setting.svg')
+  setting: raw('./svgs/setting.svg'),
+  close: raw('./svgs/close.svg')
 };
 
 export type IconType = keyof typeof iconMap;
 export type IconSizeType = 'xs' | 'sm' | 'md' | 'lg' | number;
 
 export const Icon: React.FC<Props> = ({ icon, color, size, rotate }) => {
-  const iconSvg = iconMap[icon]?.default;
+  const iconSvg = iconMap[icon];
   if (!iconSvg) return null;
   return (
     <StyledIcon
