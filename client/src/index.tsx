@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import { SocketProvider } from 'context/Socket';
 import { debounce } from 'lodash';
-import { store } from 'redux/store';
+import { store } from 'app/store';
 import { theme } from 'styles/theme';
 import { GlobalStyle } from 'styles/global';
 
@@ -21,7 +21,7 @@ window.addEventListener('resize', debouncedResize);
 onResize();
 
 const render = () => {
-  const { App } = require('./pages/App');
+  const { App } = require('./app/App');
 
   ReactDOM.render(
     <ThemeProvider theme={theme}>
@@ -46,5 +46,5 @@ render();
 serviceWorker.unregister();
 
 if (process.env.NODE_ENV === 'development' && module.hot) {
-  module.hot.accept('./pages/App', render);
+  module.hot.accept('./app/App', render);
 }
