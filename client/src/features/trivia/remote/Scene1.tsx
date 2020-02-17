@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Flex, Input, Button } from 'components';
-import { SceneProps } from 'games/trivia/TriviaContext';
+import { SceneProps } from 'features/trivia/TriviaContext';
 
 export const Scene1 = ({ state, broadcast }: SceneProps) => {
   const [value, setValue] = useState('');

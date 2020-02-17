@@ -1,20 +1,20 @@
 import React from 'react';
-import { SceneProps } from 'games/trivia/TriviaContext';
+import styled from 'styled-components';
 import { Button } from 'components';
+import { SceneProps } from 'features/trivia/TriviaContext';
 import { hashCode } from 'utils/stringUtils';
-import { Question } from '../components/Question';
 import { SubmissionsContainer } from '../components/SubmissionsContainer';
 import correctSvg from '../components/correct.svg';
 
-export const Scene3 = ({ state }: SceneProps) => {
+export const Scene3 = ({ state, broadcast }: SceneProps) => {
   return (
     <section>
-      <Question>{state.question}</Question>
+      <h2>{state.question}</h2>
       <SubmissionsContainer>
         {state.submissions.map(submission => {
           const isRightAnswer = submission.content === state.answer;
           return (
-            <div className="submission" key={submission.id}>
+            <div className="submission full" key={submission.id}>
               {isRightAnswer && (
                 <img
                   className="correct"
@@ -38,6 +38,7 @@ export const Scene3 = ({ state }: SceneProps) => {
           );
         })}
       </SubmissionsContainer>
+      <Button onClick={() => broadcast('scene:next')}>Next</Button>
     </section>
   );
 };

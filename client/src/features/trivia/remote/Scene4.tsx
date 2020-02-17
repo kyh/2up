@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'components';
-import { SceneProps } from 'games/trivia/TriviaContext';
+import { SceneProps } from 'features/trivia/TriviaContext';
 
 export const Scene4 = ({ state, broadcast }: SceneProps) => {
   return (
@@ -12,9 +12,7 @@ export const Scene4 = ({ state, broadcast }: SceneProps) => {
           <h4>{player.coins}</h4>
         </div>
       ))}
-      <Button onClick={() => broadcast('act:next')}>
-        Next Question
-      </Button>
+      <Button onClick={() => broadcast('act:next')}>Next Question</Button>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { TriviaContext } from 'games/trivia/TriviaContext';
+import { TriviaContext } from 'features/trivia/TriviaContext';
 import { Scene0 } from './tv/Scene0';
 import { Scene1 } from './tv/Scene1';
 import { Scene2 } from './tv/Scene2';

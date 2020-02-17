@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from 'components';
-import { SceneProps } from 'games/trivia/TriviaContext';
+import { SceneProps } from 'features/trivia/TriviaContext';
 
 export const Scene2 = ({ state, broadcast }: SceneProps) => {
   const [submitted, setSubmitted] = useState(false);
