@@ -38,13 +38,7 @@ export const Scene3 = ({ state, broadcast }: SceneProps) => {
           );
         })}
       </SubmissionsContainer>
-      <Button
-        onClick={() =>
-          broadcast('game:score', {
-            gameID: state.gameID
-          })
-        }
-      >
+      <Button onClick={() => broadcast('scene_next')}>
         Next
       </Button>
     </section>
