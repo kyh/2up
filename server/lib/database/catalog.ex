@@ -18,4 +18,17 @@ defmodule Database.Catalog do
     four_char = String.slice(uuid, 0, 4)
     String.upcase(four_char)
   end
+
+  def random_formatted_questions(size) do
+    query =
+      from Question,
+      preload: [:answer],
+      order_by: fragment("RANDOM()"),
+      limit: ^size
+
+    Repo.all(query)
+    |> Enum.map(fn x -> 
+      [x.content, x.answer.content]
+    end)
+  end
 end

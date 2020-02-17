@@ -14,11 +14,10 @@ export const Scene2 = ({ state, broadcast }: SceneProps) => {
             key={submission.id}
             disabled={submitted}
             onClick={() => {
-              broadcast('player:endorse', {
+              broadcast('endorse', {
                 name: localStorage.getItem('name'),
-                gameID: state.gameID,
-                submissionID: submission.id,
-                isAnswer: submission.name === 'IS_ANSWER'
+                submission_id: submission.id,
+                is_answer: submission.name === 'IS_ANSWER'
               });
               setSubmitted(true);
             }}
