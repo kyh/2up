@@ -1,6 +1,9 @@
 console:
 	cd server && iex -S mix
 
+console-prod:
+	gigalixir ps:remote_console
+
 reset:
 	cd server && mix ecto.reset
 
