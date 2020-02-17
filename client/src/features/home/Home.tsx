@@ -10,7 +10,7 @@ const Screens = {
   name: 'name'
 };
 
-export const TriviaIntro = () => {
+export const Home = () => {
   const history = useHistory();
   const { gameID: queryGameID } = useQueryParams();
   const [state, broadcast] = useChannel('playhouse', state => state.app);

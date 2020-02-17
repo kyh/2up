@@ -1,5 +1,5 @@
 import { useChannel } from 'context/Socket';
-import { GameState, ServerResponse, Player } from 'games/types';
+import { GameState, ServerResponse, Player } from 'features/types';
 
 export interface TriviaGameState extends GameState {
   act: number;

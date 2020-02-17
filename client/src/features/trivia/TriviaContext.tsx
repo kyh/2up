@@ -4,7 +4,7 @@ import {
   useTrivia,
   initialState,
   TriviaGameState
-} from 'games/trivia/useTrivia';
+} from 'features/trivia/useTrivia';
 import { useQueryParams } from 'utils/queryUtils';
 
 export const TriviaContext = React.createContext({
