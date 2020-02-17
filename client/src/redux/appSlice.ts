@@ -1,14 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { themeSong } from 'styles/sound';
 
-interface CurrentSettings {
-  isMusicOn: boolean;
-  isSFXOn: boolean;
-}
-
 type CurrentAppState = {
   userId: string | null;
-} & CurrentSettings;
+  isMusicOn: boolean;
+  isSFXOn: boolean;
+};
 
 let initialState: CurrentAppState = {
   userId: null,
@@ -37,5 +34,4 @@ const appSlice = createSlice({
 });
 
 export const { toggleMusic, toggleSFX } = appSlice.actions;
-
-export default appSlice.reducer;
+export const appReducer = appSlice.reducer;

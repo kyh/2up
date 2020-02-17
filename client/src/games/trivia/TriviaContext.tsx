@@ -5,7 +5,7 @@ import {
   initialState,
   TriviaGameState
 } from 'games/trivia/useTrivia';
-import { useQueryParams } from 'games/trivia/useQueryParams';
+import { useQueryParams } from 'utils/queryUtils';
 
 export const TriviaContext = React.createContext({
   state: initialState,
@@ -14,9 +14,8 @@ export const TriviaContext = React.createContext({
 
 export const TriviaProvider: React.FC = ({ children }) => {
   const history = useHistory();
-  const queryParams = useQueryParams();
-  const code = queryParams.get('code');
-  const [state, broadcast] = useTrivia(code || '');
+  const { code } = useQueryParams();
+  const [state, broadcast] = useTrivia(typeof code === 'string' ? code : '');
 
   useEffect(() => {
     if (!state.connected) {

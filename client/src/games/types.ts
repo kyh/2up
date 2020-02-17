@@ -5,7 +5,7 @@ export interface GameState {
 }
 
 export interface ServerResponse {
-  event: any;
+  event: string;
   payload: any;
 }
 

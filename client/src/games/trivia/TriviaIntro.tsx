@@ -1,25 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useHistory, useLocation } from 'react-router-dom';
-import { parse } from 'query-string';
+import { useHistory } from 'react-router-dom';
+import { useQueryParams } from 'utils/queryUtils';
 import { Button, Input, Card } from 'components';
-import { ServerResponse } from 'games/types';
-
 import { useChannel } from 'context/Socket';
-
-type TriviaState = { gameID: undefined };
-const initialState: TriviaState = { gameID: undefined };
-const reducer = (state: TriviaState, { event, payload }: ServerResponse) => {
-  switch (event) {
-    case 'new_game':
-      return {
-        ...state,
-        ...payload
-      };
-    default:
-      return state;
-  }
-};
 
 const Screens = {
   join: 'join',
@@ -28,10 +12,8 @@ const Screens = {
 
 export const TriviaIntro = () => {
   const history = useHistory();
-  const location = useLocation();
-  const { gameID: queryGameID } = parse(location.search);
-
-  const [state, broadcast] = useChannel('playhouse', reducer, initialState);
+  const { gameID: queryGameID } = useQueryParams();
+  const [state, broadcast] = useChannel('playhouse', state => state.app);
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [gameIDToJoin, setGameIDtoJoin] = useState(queryGameID || '');
   const [name, setName] = useState(localStorage.getItem('name') || '');

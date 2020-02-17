@@ -1,5 +1,4 @@
 import { useChannel } from 'context/Socket';
-import { reducerLogger } from 'utils/reducerLogger';
 import { GameState, ServerResponse, Player } from 'games/types';
 
 export interface TriviaGameState extends GameState {
@@ -74,11 +73,6 @@ const reducer = (
   }
 };
 
-const eventsList = Object.keys(Events);
 export const useTrivia = (code: string) => {
-  return useChannel(
-    `trivia:${code}`,
-    reducerLogger(reducer, eventsList),
-    initialState
-  );
+  return useChannel(`trivia:${code}`, state => state.app);
 };
