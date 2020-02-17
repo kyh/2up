@@ -2,6 +2,7 @@ defmodule Web.TriviaChannel do
   use Web, :channel
 
   alias Trivia.{GameServer}
+  alias Database.{Play}
 
   def join("trivia:" <> game_code, _payload, socket) do
     case GameServer.game_pid(game_code) do
@@ -44,6 +45,20 @@ defmodule Web.TriviaChannel do
         broadcast!(socket, "game_state", game_state)
         {:noreply, socket}
 
+      nil ->
+        {:reply, {:error, %{reason: "Game does not exist"}}, socket}
+    end
+  end
+
+  def handle_in("end", _payload, socket) do
+    "trivia:" <> game_code = socket.topic
+
+    case GameServer.game_pid(game_code) do
+      pid when is_pid(pid) ->
+        end_game_state = GameServer.game_end(game_code)
+        Play.game_save(end_game_state)
+
+        {:noreply, socket}
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
     end
