@@ -16,8 +16,7 @@ export const Scene2 = ({ state, broadcast }: SceneProps) => {
             onClick={() => {
               broadcast('endorse', {
                 name: localStorage.getItem('name'),
-                submission_id: submission.id,
-                is_answer: submission.name === 'IS_ANSWER'
+                submission_id: submission.id
               });
               setSubmitted(true);
             }}
