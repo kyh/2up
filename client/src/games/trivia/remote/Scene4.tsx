@@ -12,7 +12,7 @@ export const Scene4 = ({ state, broadcast }: SceneProps) => {
           <h4>{player.coins}</h4>
         </div>
       ))}
-      <Button onClick={() => broadcast('act_next')}>
+      <Button onClick={() => broadcast('act:next')}>
         Next Question
       </Button>
     </div>
