@@ -48,4 +48,24 @@ defmodule Web.GameChannel do
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
     end
   end
+
+  def handle_in("submit", %{"name" => name, "submission" => submission}, socket) do
+    "game:" <> game_code = socket.topic
+
+    case GameServer.game_pid(game_code) do
+      pid when is_pid(pid) ->
+        submission = %{
+          id: Ecto.UUID.generate,
+          name: name,
+          content: submission,
+          endorsers: []
+        }
+
+        game_state = GameServer.player_submit(game_code, submission)
+        broadcast!(socket, "game_state", game_state)
+        {:noreply, socket}
+      nil ->
+        {:reply, {:error, %{reason: "Game does not exist"}}, socket}
+    end
+  end
 end

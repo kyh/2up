@@ -24,9 +24,9 @@ export const TriviaLobby = () => {
   useEffect(() => {
     if (state.act) {
       if (isHost) {
-        history.push('/trivia/tv');
+        history.push(`/trivia/tv?code=${code}`);
       } else {
-        history.push('/trivia/remote');
+        history.push(`/trivia/remote?code=${code}`);
       }
     }
   }, [state.act, isHost, history]);

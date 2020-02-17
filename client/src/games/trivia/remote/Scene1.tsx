@@ -15,9 +15,8 @@ export const Scene1 = ({ state, broadcast }: SceneProps) => {
       return;
     }
 
-    broadcast('player:submit', {
+    broadcast('submit', {
       name: localStorage.getItem('name'),
-      gameID: state.gameID,
       submission: value
     });
 
