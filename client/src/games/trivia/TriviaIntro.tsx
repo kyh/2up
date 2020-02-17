@@ -40,7 +40,7 @@ export const TriviaIntro = () => {
   const location = useLocation();
   const { gameID: queryGameID } = parse(location.search);
 
-  const [state, broadcast] = useChannel('trivia', reducer, initialState);
+  const [state, broadcast] = useChannel('playhouse', reducer, initialState);
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [gameIDToJoin, setGameIDtoJoin] = useState(queryGameID || '');
   const [name, setName] = useState(localStorage.getItem('name') || '');

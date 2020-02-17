@@ -14,7 +14,7 @@ export const TriviaLobby = () => {
   const isHost = localStorage.getItem('isHost') === 'true';
 
   const onClickEnter = () => {
-    broadcast('player_new', { name: localStorage.getItem('name')});
+    broadcast('player:new', { name: localStorage.getItem('name')});
   };
 
   const onClickStart = () => {
