@@ -1,7 +1,7 @@
 import React, { useEffect, createContext, useContext, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Socket } from 'phoenix';
-import { RootState } from 'redux/rootReducer';
+import { RootState } from 'app/rootReducer';
 
 export const SocketContext = createContext({} as Socket);
 

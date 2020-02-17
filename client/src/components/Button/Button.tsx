@@ -5,7 +5,7 @@ import styled, {
   StyledComponentProps,
   DefaultTheme
 } from 'styled-components';
-import { RootState } from 'redux/rootReducer';
+import { RootState } from 'app/rootReducer';
 import { clickSound } from 'styles/sound';
 import { border, borderActive, fabBorder, fabBorderActive } from './borders';
 

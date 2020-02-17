@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { RootState } from 'redux/rootReducer';
-import { toggleMusic, toggleSFX } from 'redux/appSlice';
+import { RootState } from 'app/rootReducer';
+import { toggleMusic, toggleSFX } from 'app/appSlice';
 
 import { Box } from 'reflexbox';
 import { Icon } from 'components/Icon/Icon';
