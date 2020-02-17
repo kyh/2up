@@ -1,4 +1,4 @@
-import { useChannel } from 'use-phoenix-channel';
+import { useChannel } from 'context/Socket';
 import { reducerLogger } from 'utils/reducerLogger';
 import { GameState, ServerResponse, Player } from 'games/types';
 
@@ -25,7 +25,7 @@ export const initialState: TriviaGameState = {
   scene: 0,
   question: '',
   answer: '',
-  submissions: [],
+  submissions: []
 };
 
 export const Events = {

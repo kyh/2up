@@ -5,7 +5,7 @@ import { parse } from 'query-string';
 import { Button, Input, Card } from 'components';
 import { ServerResponse } from 'games/types';
 
-import { useChannel } from 'use-phoenix-channel';
+import { useChannel } from 'context/Socket';
 
 type TriviaState = { gameID: undefined };
 const initialState: TriviaState = { gameID: undefined };
