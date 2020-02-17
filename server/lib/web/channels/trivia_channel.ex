@@ -95,15 +95,7 @@ defmodule Web.TriviaChannel do
     end
   end
 
-  def handle_in(
-    "endorse",
-    %{
-      "name" => name,
-      "submission_id" => submission_id,
-      "is_answer" => is_answer
-    },
-    socket
-  ) do
+  def handle_in("endorse", %{"name" => name, "submission_id" => submission_id}, socket) do
     "trivia:" <> game_code = socket.topic
 
     case GameServer.game_pid(game_code) do
