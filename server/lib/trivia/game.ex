@@ -35,7 +35,7 @@ defmodule Trivia.Game do
     current_index = game.act - 1
     current_act = Enum.at(game.acts, current_index)
     current_submissions = current_act.submissions
-    new_submissions = current_submissions ++ new_submission 
+    new_submissions = Enum.shuffle(current_submissions ++ new_submission)
     updated_act = %{current_act | submissions: new_submissions}
 
     new_acts =
