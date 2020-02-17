@@ -133,7 +133,10 @@ defmodule Trivia.Game do
   end
 
   def act_next(game) do
-    %{game | act: game.act + 1, scene: 1}
+    case length(game.acts) == game.act do
+      true -> %{game | act: 0, scene: 0}
+      false -> %{game | act: game.act + 1, scene: 1}
+    end
   end
 
   def start(game) do
