@@ -10,28 +10,30 @@ import { TriviaRemote } from 'games/trivia/TriviaRemote';
 
 export const TriviaPages: React.FC = () => {
   return (
-    <TriviaProvider>
+    <>
       <Navigation />
       <Route exact path="/trivia">
         <PageContainer size="large" align="center">
           <TriviaIntro />
         </PageContainer>
       </Route>
-      <Route exact path="/trivia/lobby">
-        <PageContainer size="full">
-          <TriviaLobby />
-        </PageContainer>
-      </Route>
-      <Route exact path="/trivia/tv">
-        <PageContainer size="large" align="center">
-          <TriviaTV />
-        </PageContainer>
-      </Route>
-      <Route exact path="/trivia/remote">
-        <PageContainer size="small">
-          <TriviaRemote />
-        </PageContainer>
-      </Route>
-    </TriviaProvider>
+      <TriviaProvider>
+        <Route exact path="/trivia/lobby">
+          <PageContainer size="full">
+            <TriviaLobby />
+          </PageContainer>
+        </Route>
+        <Route exact path="/trivia/tv">
+          <PageContainer size="large" align="center">
+            <TriviaTV />
+          </PageContainer>
+        </Route>
+        <Route exact path="/trivia/remote">
+          <PageContainer size="small">
+            <TriviaRemote />
+          </PageContainer>
+        </Route>
+      </TriviaProvider>
+    </>
   );
 };

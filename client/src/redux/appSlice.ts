@@ -22,14 +22,16 @@ const appSlice = createSlice({
   reducers: {
     toggleMusic(state) {
       state.isMusicOn = !state.isMusicOn;
-      if (!state.isMusicOn) {
-        themeSong.pause();
-      } else {
+      if (state.isMusicOn) {
         themeSong.play();
+      } else {
+        themeSong.pause();
       }
+      localStorage.setItem('isMusicOn', state.isMusicOn.toString());
     },
     toggleSFX(state) {
       state.isSFXOn = !state.isSFXOn;
+      localStorage.setItem('isSFXOn', state.isSFXOn.toString());
     }
   }
 });

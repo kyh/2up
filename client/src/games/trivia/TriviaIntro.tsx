@@ -1,10 +1,25 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory, useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
-import { useMusic } from 'hooks/useMusic';
 import { Button, Input, Card } from 'components';
-import { TriviaContext } from './TriviaContext';
+import { ServerResponse } from 'games/types';
+
+import { useChannel } from 'use-phoenix-channel';
+
+type TriviaState = { gameID: undefined };
+const initialState: TriviaState = { gameID: undefined };
+const reducer = (state: TriviaState, { event, payload }: ServerResponse) => {
+  switch (event) {
+    case 'new_game':
+      return {
+        ...state,
+        ...payload
+      };
+    default:
+      return state;
+  }
+};
 
 const Screens = {
   join: 'join',
@@ -16,7 +31,7 @@ export const TriviaIntro = () => {
   const location = useLocation();
   const { gameID: queryGameID } = parse(location.search);
 
-  const { state, broadcast } = useContext(TriviaContext);
+  const [state, broadcast] = useChannel('trivia', reducer, initialState);
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [gameIDToJoin, setGameIDtoJoin] = useState(queryGameID || '');
   const [name, setName] = useState(localStorage.getItem('name') || '');
@@ -24,12 +39,9 @@ export const TriviaIntro = () => {
     queryGameID ? Screens.name : Screens.join
   );
 
-  const { playMusic } = useMusic();
-
   const onClickHost = () => {
-    playMusic();
     localStorage.setItem('isHost', 'true');
-    broadcast('game:new');
+    broadcast('trivia:new');
     setShouldRedirect(true);
   };
 
@@ -40,26 +52,17 @@ export const TriviaIntro = () => {
   };
 
   const onSubmitName = () => {
-    const gameID =
-      typeof gameIDToJoin === 'string'
-        ? gameIDToJoin.toUpperCase()
-        : gameIDToJoin[0].toUpperCase();
-
     localStorage.setItem('isHost', 'false');
     localStorage.setItem('name', name);
 
-    broadcast('game:join', {
-      name,
-      gameID
-    });
-    setShouldRedirect(true);
+    history.push(`/trivia/lobby?code=${gameIDToJoin}`);
   };
 
   useEffect(() => {
     if (state.gameID && shouldRedirect) {
-      history.push('/trivia/lobby');
+      history.push(`/trivia/lobby?code=${state.gameID}`);
     }
-  }, [state.gameID, shouldRedirect, history]);
+  }, [state.gameID, shouldRedirect]);
 
   return (
     <IntroContainer>

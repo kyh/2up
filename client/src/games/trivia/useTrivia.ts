@@ -17,8 +17,6 @@ export interface Submission {
   endorsers: Player[];
 }
 
-const channelName = 'game:trivia';
-
 export const initialState: TriviaGameState = {
   gameID: undefined,
   connected: false,
@@ -51,6 +49,11 @@ const reducer = (
         ...state,
         connected: false
       };
+    case 'game_state':
+      return {
+        ...state,
+        ...payload
+      };
     case Events.game:
       return {
         ...state,
@@ -72,9 +75,9 @@ const reducer = (
 };
 
 const eventsList = Object.keys(Events);
-export const useTrivia = () => {
+export const useTrivia = (code: string) => {
   return useChannel(
-    channelName,
+    `game:${code}`,
     reducerLogger(reducer, eventsList),
     initialState
   );
