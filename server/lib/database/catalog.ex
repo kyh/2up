@@ -14,9 +14,8 @@ defmodule Database.Catalog do
   end
 
   def generate_code do
-    uuid = Ecto.UUID.generate
-    four_char = String.slice(uuid, 0, 4)
-    String.upcase(four_char)
+    :io_lib.format("~4..0B", [:rand.uniform(10_000) - 1])
+    |> List.to_string
   end
 
   def random_formatted_questions(size) do
