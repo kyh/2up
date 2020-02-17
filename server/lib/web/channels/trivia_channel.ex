@@ -10,10 +10,7 @@ defmodule Web.TriviaChannel do
 
   def handle_in("trivia:new", _payload, socket) do
     code = Catalog.generate_code()
-    questions = [
-      ["What is 2 + 2", "4"],
-      ["What is 2 + 3", "5"]
-    ]
+    questions = Catalog.random_formatted_questions(3)
 
     case GameSupervisor.start_game(code, questions) do
       {:ok, _game_pid} ->
