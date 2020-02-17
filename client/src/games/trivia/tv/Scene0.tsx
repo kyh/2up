@@ -3,8 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { Button } from 'components';
 import { SceneProps } from 'games/trivia/TriviaContext';
 
-export const Scene0 = ({ state }: SceneProps) => {
+export const Scene0 = ({ state, broadcast }: SceneProps) => {
   const history = useHistory();
+  const handleEnd = () => {
+    broadcast('end');
+    history.push('/trivia')
+  }
+
   return (
     <div>
       <h2>End</h2>
@@ -14,7 +19,7 @@ export const Scene0 = ({ state }: SceneProps) => {
           <h4>{player.coins}</h4>
         </div>
       ))}
-      <Button onClick={() => history.push("/trivia")}>
+      <Button onClick={handleEnd}>
         Lobby
       </Button>
     </div>
