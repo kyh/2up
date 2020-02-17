@@ -37,7 +37,7 @@ export const SubmissionsContainer = styled.div`
       display: inline-flex;
       flex-direction: column;
       padding: 10px;
-      background: #fff;
+      background: ${({ theme }) => theme.colors.white};
       justify-content: center;
       align-items: center;
       border: 2px solid;

@@ -6,3 +6,8 @@ declare module 'use-phoenix-channel' {
   exports = SocketProvider;
   exports = useChannel;
 }
+
+declare module 'raw.macro' {
+  const raw: any;
+  export default raw;
+}

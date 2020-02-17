@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { PageContainer } from 'components';
+import { PageContainer, Navigation } from 'components';
 
 import { TriviaProvider } from 'games/trivia/TriviaContext';
 import { TriviaIntro } from 'games/trivia/TriviaIntro';
@@ -11,6 +11,7 @@ import { TriviaRemote } from 'games/trivia/TriviaRemote';
 export const TriviaPages: React.FC = () => {
   return (
     <TriviaProvider>
+      <Navigation />
       <Route exact path="/trivia">
         <PageContainer size="large" align="center">
           <TriviaIntro />
