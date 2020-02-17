@@ -1,10 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled, {
   css,
   StyledComponentProps,
   DefaultTheme
 } from 'styled-components';
-import { useMusic } from 'hooks/useMusic';
+import { RootState } from 'redux/rootReducer';
+import { clickSound } from 'styles/sound';
 import { border, borderActive, fabBorder, fabBorderActive } from './borders';
 
 enum Variants {
@@ -25,9 +27,11 @@ type Props = StyledComponentProps<
 >;
 
 export const Button: React.FC<Props> = ({ onClick = () => {}, ...rest }) => {
-  const { playClick } = useMusic();
+  const { isSFXOn } = useSelector((state: RootState) => state.app);
   const onButtonClick = () => {
-    playClick();
+    if (isSFXOn) {
+      clickSound.play();
+    }
     onClick();
   };
   return <StyledButton onClick={onButtonClick} {...rest} />;
