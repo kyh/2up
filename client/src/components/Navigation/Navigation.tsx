@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { RootState } from 'redux/rootReducer';
+import { toggleMusic, toggleSFX } from 'redux/appSlice';
+
 import { Box } from 'reflexbox';
 import { Icon } from 'components/Icon/Icon';
 import { Modal } from 'components/Modal/Modal';
 import { Button } from 'components/Button/Button';
-import { useMusic } from 'hooks/useMusic';
 
 export const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { toggleMusic, musicOn, toggleSFX, SFXOn } = useMusic();
+  const dispatch = useDispatch();
+  const { isMusicOn, isSFXOn } = useSelector((state: RootState) => state.app);
 
   return (
     <StyledNav>
@@ -28,14 +33,14 @@ export const Navigation: React.FC = () => {
         <SettingsContainer>
           <SettingItem>
             <span>Game music</span>
-            <Button fullWidth onClick={toggleMusic}>
-              {musicOn ? 'ON' : 'OFF'}
+            <Button fullWidth onClick={() => dispatch(toggleMusic())}>
+              {isMusicOn ? 'ON' : 'OFF'}
             </Button>
           </SettingItem>
           <SettingItem>
             <span>SFX</span>
-            <Button fullWidth onClick={toggleSFX}>
-              {SFXOn ? 'ON' : 'OFF'}
+            <Button fullWidth onClick={() => dispatch(toggleSFX())}>
+              {isSFXOn ? 'ON' : 'OFF'}
             </Button>
           </SettingItem>
         </SettingsContainer>
