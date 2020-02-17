@@ -28,6 +28,10 @@ defmodule Trivia.GameServer do
     GenServer.call(via_tuple(game_code), {:player_submit, submission})
   end
 
+  def player_endorse(game_code, name, submission_id) do
+    GenServer.call(via_tuple(game_code), {:player_endorse, name, submission_id})
+  end
+
   def game_pid(game_code) do
     game_code
     |> via_tuple
@@ -87,6 +91,15 @@ defmodule Trivia.GameServer do
 
     {:reply, get_game_state(updated_game), updated_game, @timeout}
   end
+
+  def handle_call({:player_endorse, name, submission_id}, _from, game) do
+    updated_game = Trivia.Game.player_endorse(game, name, submission_id)
+
+    :ets.insert(:games_table, {my_game_code(), updated_game})
+
+    {:reply, get_game_state(updated_game), updated_game, @timeout}
+  end
+
 
   def handle_call(:game_start, _from, game) do
     updated_game = Trivia.Game.start(game)
