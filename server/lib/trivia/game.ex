@@ -42,19 +42,17 @@ defmodule Trivia.Game do
     game.acts
     |> Enum.with_index
     |> Enum.map(fn {x,i} ->
-      if i == 0 do
-        updated_act
-      else
-        x
+      case i == 0 do
+        true -> updated_act
+        false -> x
       end
     end)
 
     current_scene = 
-    if length(new_submissions) === length(game.players) + 1 do
-      game.scene + 1
-    else
-      game.scene
-    end
+      case length(new_submissions) == length(game.players) + 1 do
+        true -> game.scene + 1
+        false -> game.scene
+      end
 
     %{game | acts: new_acts, scene: current_scene}
   end
@@ -75,35 +73,33 @@ defmodule Trivia.Game do
     new_submission = %{submission | endorsers: new_endorsers}
 
     new_submissions =
-    current_act.submissions
-    |> Enum.map(fn x ->
-      if x.id === submission_id do
-        new_submission
-      else
-        x
-      end
-    end)
+      current_act.submissions
+      |> Enum.map(fn x ->
+        case x.id == submission_id do
+          true -> new_submission
+          false -> x
+        end
+      end)
 
     new_acts =
-    game.acts
-    |> Enum.with_index
-    |> Enum.map(fn {x,i} ->
-      if i === current_index do
-        %{x | submissions: new_submissions}
-      else
-        x
-      end
-    end)
+      game.acts
+      |> Enum.with_index
+      |> Enum.map(fn {x,i} ->
+        case i == current_index do
+          true -> %{x | submissions: new_submissions}
+          false -> x
+        end
+      end)
 
-    endorsement_length = Enum.map(new_submissions, fn x -> length(x.endorsers) end)
-    |> Enum.sum
+    endorsement_length =
+      Enum.map(new_submissions, fn x -> length(x.endorsers) end)
+      |> Enum.sum
 
     current_scene = 
-    if endorsement_length === length(game.players) do
-      game.scene + 1
-    else
-      game.scene
-    end
+      case endorsement_length == length(game.players) do
+        true -> game.scene + 1
+        false -> game.scene 
+      end
 
     %{game | acts: new_acts, scene: current_scene}
   end
