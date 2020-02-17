@@ -1,10 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import appSlice from './appSlice';
+import { appReducer } from './appSlice';
 // import triviaSlice from 'games/trivia/triviaSlice';
 
 const rootReducer = combineReducers({
-  app: appSlice
+  app: appReducer
   // trivia: triviaSlice
 });
 

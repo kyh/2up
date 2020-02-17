@@ -4,17 +4,16 @@ import styled, { css } from 'styled-components';
 import { Button } from 'components';
 import { hashCode } from 'utils/stringUtils';
 import { TriviaContext } from './TriviaContext';
-import { useQueryParams } from 'games/trivia/useQueryParams'
+import { useQueryParams } from 'utils/queryUtils';
 
 export const TriviaLobby = () => {
   const history = useHistory();
   const { state, broadcast } = useContext(TriviaContext);
-  const queryParams = useQueryParams();
-  const code = queryParams.get('code');
+  const { code } = useQueryParams();
   const isHost = localStorage.getItem('isHost') === 'true';
 
   const onClickEnter = () => {
-    broadcast('player:new', { name: localStorage.getItem('name')});
+    broadcast('player:new', { name: localStorage.getItem('name') });
   };
 
   const onClickStart = () => {
