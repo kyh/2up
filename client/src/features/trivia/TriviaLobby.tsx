@@ -4,36 +4,36 @@ import styled, { css } from 'styled-components';
 import { Button } from 'components';
 import { hashCode } from 'utils/stringUtils';
 import { useTriviaChannel } from 'context/TriviaChannel';
-import { useAppState } from 'context/PlayhouseChannel';
+import { usePlayhouseChannel } from 'context/PlayhouseChannel';
 
 export const TriviaLobby = () => {
   const history = useHistory();
-  const { state, broadcast } = useTriviaChannel();
-  const appState = useAppState();
+  const { state: triviaState, broadcast } = useTriviaChannel();
+  const { state: playhouseState } = usePlayhouseChannel();
   // TODO(kai): Hacky way to get around double joining
   const [joined, setJoined] = useState(false);
 
   const onClickStart = () => {
-    broadcast('start', { gameID: state.gameID });
+    broadcast('start', { gameID: triviaState.gameID });
   };
 
   useEffect(() => {
-    if (!appState.isHost && !joined) {
-      broadcast('player:new', { name: appState.name });
+    if (!playhouseState.isHost && !joined) {
+      broadcast('player:new', { name: playhouseState.name });
       setJoined(true);
     }
-    if (state.act) {
-      if (appState.isHost) {
-        history.push(`/trivia/${state.gameID}/tv`);
+    if (triviaState.act) {
+      if (playhouseState.isHost) {
+        history.push(`/trivia/${triviaState.gameID}/tv`);
       } else {
-        history.push(`/trivia/${state.gameID}/remote`);
+        history.push(`/trivia/${triviaState.gameID}/remote`);
       }
     }
-  }, [joined, state.gameID, state.act, appState.isHost]);
+  }, [joined, triviaState.gameID, triviaState.act, playhouseState.isHost]);
 
   return (
     <LobbyContainer>
-      {appState.isHost ? (
+      {playhouseState.isHost ? (
         <>
           <div className="title-container">
             <h1 className="title">
@@ -41,13 +41,13 @@ export const TriviaLobby = () => {
             </h1>
             <h1 className="title">and enter the room code:</h1>
           </div>
-          <div className="game-id">{state.gameID}</div>
+          <div className="game-id">{triviaState.gameID}</div>
         </>
       ) : (
         <h1 className="title">Waiting for players to join...</h1>
       )}
-      <LobbyPlayersContainer isHost={appState.isHost}>
-        {state.players.map(p => {
+      <LobbyPlayersContainer isHost={playhouseState.isHost}>
+        {triviaState.players.map(p => {
           const avatar = hashCode(p.name, 10);
           return (
             <div className="player" key={p.id}>
@@ -57,7 +57,7 @@ export const TriviaLobby = () => {
           );
         })}
       </LobbyPlayersContainer>
-      {!appState.isHost ? (
+      {!playhouseState.isHost ? (
         <>
           <Button className="start-game-button" onClick={onClickStart}>
             Start game

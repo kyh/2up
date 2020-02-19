@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
-import { appActions } from 'app/appSlice';
+import { playhouseActions } from 'features/home/playhouseSlice';
 import { usePlayhouseChannel } from 'context/PlayhouseChannel';
-import { useTriviaState } from 'context/TriviaChannel';
+import { useTrivia } from 'context/TriviaChannel';
 import { Button, Input, Card } from 'components';
 
 const Screens = {
@@ -14,19 +14,19 @@ const Screens = {
 
 export const Home = () => {
   const history = useHistory();
-  const { state: appState, broadcast, dispatch } = usePlayhouseChannel();
-  const triviaState = useTriviaState();
+  const { state: playhouseState, broadcast, dispatch } = usePlayhouseChannel();
+  const { state: triviaState } = useTrivia();
 
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [screen, setScreen] = useState(
     triviaState.gameID ? Screens.name : Screens.join
   );
-  const [gameID, setGameID] = useState(triviaState.gameID || '');
-  const [name, setName] = useState(appState.name);
+  const [gameID, setGameID] = useState(triviaState.gameID);
+  const [name, setName] = useState(playhouseState.name);
 
   const onClickHost = () => {
     broadcast('trivia:new');
-    dispatch(appActions.updateUser({ isHost: true }));
+    dispatch(playhouseActions.updateUser({ isHost: true }));
     setShouldRedirect(true);
   };
 
@@ -37,7 +37,7 @@ export const Home = () => {
   };
 
   const onSubmitName = () => {
-    dispatch(appActions.updateUser({ name, isHost: false }));
+    dispatch(playhouseActions.updateUser({ name, isHost: false }));
     setShouldRedirect(true);
   };
 

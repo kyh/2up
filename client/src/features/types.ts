@@ -1,5 +1,5 @@
 export interface GameState {
-  gameID: string | null;
+  gameID: string;
   players: Player[];
 }
 

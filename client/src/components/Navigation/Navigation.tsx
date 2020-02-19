@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
 
-import { RootState } from 'app/rootReducer';
-import { appActions } from 'app/appSlice';
+import { playhouseActions } from 'features/home/playhouseSlice';
+import { usePlayhouseChannel } from 'context/PlayhouseChannel';
 
 import { Box } from 'reflexbox';
 import { Icon } from 'components/Icon/Icon';
@@ -12,8 +11,8 @@ import { Button } from 'components/Button/Button';
 
 export const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const dispatch = useDispatch();
-  const { isMusicOn, isSFXOn } = useSelector((state: RootState) => state.app);
+  const { state, dispatch } = usePlayhouseChannel();
+  const { isMusicOn, isSFXOn } = state;
 
   return (
     <StyledNav>
@@ -35,14 +34,17 @@ export const Navigation: React.FC = () => {
             <span>Game music</span>
             <Button
               fullWidth
-              onClick={() => dispatch(appActions.toggleMusic())}
+              onClick={() => dispatch(playhouseActions.toggleMusic())}
             >
               {isMusicOn ? 'ON' : 'OFF'}
             </Button>
           </SettingItem>
           <SettingItem>
             <span>SFX</span>
-            <Button fullWidth onClick={() => dispatch(appActions.toggleSFX())}>
+            <Button
+              fullWidth
+              onClick={() => dispatch(playhouseActions.toggleSFX())}
+            >
               {isSFXOn ? 'ON' : 'OFF'}
             </Button>
           </SettingItem>

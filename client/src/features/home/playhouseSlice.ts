@@ -17,8 +17,8 @@ export const initialState: CurrentAppState = {
   isSFXOn: localStorage.getItem('isSFXOn') === 'true'
 };
 
-const appSlice = createSlice({
-  name: 'app',
+const playhouseSlice = createSlice({
+  name: 'playhouse',
   initialState,
   reducers: {
     toggleMusic(state) {
@@ -38,9 +38,13 @@ const appSlice = createSlice({
       state.userId = payload.userId ?? state.userId;
       state.name = payload.name ?? state.name;
       state.isHost = payload.isHost ?? state.isHost;
+
+      if (state.name) {
+        localStorage.setItem('name', state.name);
+      }
     }
   }
 });
 
-export const appActions = appSlice.actions;
-export const appReducer = appSlice.reducer;
+export const playhouseActions = playhouseSlice.actions;
+export const playhouseReducer = playhouseSlice.reducer;

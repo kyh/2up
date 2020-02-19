@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
 import { useChannel } from 'context/Socket';
-import { RootState } from 'app/rootReducer';
-import { initialState } from 'app/appSlice';
+import { initialState } from 'features/home/playhouseSlice';
 
 export const PlayhouseContext = React.createContext({
   state: initialState,
@@ -13,7 +11,7 @@ export const PlayhouseContext = React.createContext({
 export const PlayhouseProvider: React.FC = ({ children }) => {
   const [state, broadcast, dispatch] = useChannel(
     'playhouse',
-    state => state.app
+    state => state.playhouse
   );
 
   return (
@@ -25,8 +23,4 @@ export const PlayhouseProvider: React.FC = ({ children }) => {
 
 export const usePlayhouseChannel = () => {
   return useContext(PlayhouseContext);
-};
-
-export const useAppState = () => {
-  return useSelector((state: RootState) => state.app);
 };
