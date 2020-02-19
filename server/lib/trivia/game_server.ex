@@ -4,7 +4,7 @@ defmodule Trivia.GameServer do
 
   require Logger
 
-  @timeout :timer.hours(3)
+  @timeout :timer.hours(1)
 
   def start_link(game_code, questions) do
     GenServer.start_link(__MODULE__, 
@@ -18,6 +18,10 @@ defmodule Trivia.GameServer do
 
   def game_start(game_code) do
     GenServer.call(via_tuple(game_code), :game_start)
+  end
+
+  def game_end(game_code) do
+    GenServer.call(via_tuple(game_code), :game_end)
   end
 
   def player_new(game_code, player) do
@@ -80,6 +84,14 @@ defmodule Trivia.GameServer do
     }
   end
 
+  def get_end_game_state(game) do
+    %{
+      act: game.act,
+      scene: game.scene,
+      players: game.players
+    }
+  end
+
   def handle_call(:game_state, _from, game) do
     {:reply, get_game_state(game), game, @timeout}
   end
@@ -116,6 +128,10 @@ defmodule Trivia.GameServer do
     {:reply, get_game_state(updated_game), updated_game, @timeout}
   end
 
+  def handle_call(:game_end, _from, game) do
+    {:reply, get_end_game_state(game), game, @timeout}
+  end
+
   def handle_call(:act_next, _from, game) do
     updated_game = Trivia.Game.act_next(game)
 
@@ -130,6 +146,19 @@ defmodule Trivia.GameServer do
     :ets.insert(:games_table, {my_game_code(), updated_game})
 
     {:reply, get_game_state(updated_game), updated_game, @timeout}
+  end
+
+  def handle_info(:timeout, game) do
+    {:stop, {:shutdown, :timeout}, game}
+  end
+
+  def terminate({:shutdown, :timeout}, _game) do
+    :ets.delete(:games_table, my_game_code())
+    :ok
+  end
+
+  def terminate(_reason, _game) do
+    :ok
   end
 
   defp my_game_code do
