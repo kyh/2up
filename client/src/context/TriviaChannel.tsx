@@ -1,12 +1,13 @@
 import React, { useContext, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useChannel } from 'context/Socket';
 import { RootState } from 'app/rootReducer';
 import { initialState, triviaActions } from 'features/trivia/triviaSlice';
 
 export const TriviaContext = React.createContext({
   state: initialState,
-  broadcast: (_eventName: string, _payload?: object) => {}
+  broadcast: (_eventName: string, _payload?: object) => {},
+  dispatch: (_action: object) => {}
 });
 
 export const TriviaProvider: React.FC<{ gameID?: string }> = ({
@@ -26,7 +27,7 @@ export const TriviaProvider: React.FC<{ gameID?: string }> = ({
 
   if (!connected) return null;
   return (
-    <TriviaContext.Provider value={{ state, broadcast }}>
+    <TriviaContext.Provider value={{ state, broadcast, dispatch }}>
       {children}
     </TriviaContext.Provider>
   );
@@ -36,6 +37,8 @@ export const useTriviaChannel = () => {
   return useContext(TriviaContext);
 };
 
-export const useTriviaState = () => {
-  return useSelector((state: RootState) => state.trivia);
+export const useTrivia = () => {
+  const state = useSelector((state: RootState) => state.trivia);
+  const dispatch = useDispatch();
+  return { state, dispatch };
 };

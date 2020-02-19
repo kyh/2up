@@ -23,7 +23,7 @@ export interface SceneProps {
 }
 
 export const initialState: TriviaGameState = {
-  gameID: null,
+  gameID: '',
   players: [],
   act: 0,
   scene: 0,

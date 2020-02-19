@@ -27,7 +27,7 @@ type Props = StyledComponentProps<
 >;
 
 export const Button: React.FC<Props> = ({ onClick = () => {}, ...rest }) => {
-  const { isSFXOn } = useSelector((state: RootState) => state.app);
+  const { isSFXOn } = useSelector((state: RootState) => state.playhouse);
   const onButtonClick = () => {
     if (isSFXOn) {
       clickSound.play();
