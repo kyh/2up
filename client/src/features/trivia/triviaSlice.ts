@@ -24,7 +24,6 @@ export interface SceneProps {
 
 export const initialState: TriviaGameState = {
   gameID: null,
-  connected: false,
   players: [],
   act: 0,
   scene: 0,
@@ -37,16 +36,16 @@ const triviaSlice = createSlice({
   name: 'trivia',
   initialState,
   reducers: {
-    phx_reply(state, { payload }) {
-      console.log('phx_reply', payload);
-      state.connected = true;
-    },
-    phx_error(state) {
-      state.connected = false;
+    new_game(state, { payload }) {
+      state.gameID = payload.gameID;
     },
     game_state(state, { payload }) {
-      console.log('new game state', payload);
-      state = { ...state, ...payload };
+      state.players = payload.players ?? state.players;
+      state.act = payload.act ?? state.act;
+      state.scene = payload.scene ?? state.scene;
+      state.question = payload.question ?? state.question;
+      state.answer = payload.answer ?? state.answer;
+      state.submissions = payload.submissions ?? state.submissions;
     }
   }
 });

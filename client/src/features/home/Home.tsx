@@ -26,6 +26,7 @@ export const Home = () => {
 
   const onClickHost = () => {
     broadcast('trivia:new');
+    dispatch(appActions.updateUser({ isHost: true }));
     setShouldRedirect(true);
   };
 
@@ -36,7 +37,7 @@ export const Home = () => {
   };
 
   const onSubmitName = () => {
-    dispatch(appActions.updateUser({ name }));
+    dispatch(appActions.updateUser({ name, isHost: false }));
     setShouldRedirect(true);
   };
 
@@ -63,6 +64,7 @@ export const Home = () => {
           <>
             <InputContainer>
               <Input
+                type="tel"
                 placeholder="Game ID"
                 value={gameID}
                 onChange={e => setGameID(e.target.value)}

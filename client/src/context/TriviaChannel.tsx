@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useChannel } from 'context/Socket';
 import { RootState } from 'app/rootReducer';
-import { initialState } from 'features/trivia/triviaSlice';
+import { initialState, triviaActions } from 'features/trivia/triviaSlice';
 
 export const TriviaContext = React.createContext({
   state: initialState,
@@ -13,11 +13,18 @@ export const TriviaProvider: React.FC<{ gameID?: string }> = ({
   children,
   gameID
 }) => {
-  const [state, broadcast] = useChannel(
+  const [state, broadcast, dispatch, connected] = useChannel(
     `trivia:${gameID}`,
     state => state.trivia
   );
 
+  useEffect(() => {
+    if (!state.gameID) {
+      dispatch(triviaActions.new_game({ gameID: gameID }));
+    }
+  }, [state.gameID]);
+
+  if (!connected) return null;
   return (
     <TriviaContext.Provider value={{ state, broadcast }}>
       {children}
