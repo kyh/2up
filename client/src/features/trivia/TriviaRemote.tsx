@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react';
-import { TriviaContext } from 'features/trivia/TriviaContext';
+import React, { useEffect } from 'react';
+import { useTriviaChannel } from 'context/TriviaChannel';
 import { Scene0 } from './remote/Scene0';
 import { Scene1 } from './remote/Scene1';
 import { Scene2 } from './remote/Scene2';
@@ -7,7 +7,7 @@ import { Scene3 } from './remote/Scene3';
 import { Scene4 } from './remote/Scene4';
 
 export const TriviaRemote: React.FC = () => {
-  const { state, broadcast } = useContext(TriviaContext);
+  const { state, broadcast } = useTriviaChannel();
 
   useEffect(() => {
     window.scroll(0, 0);

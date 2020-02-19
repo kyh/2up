@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'components';
-import { SceneProps } from 'features/trivia/TriviaContext';
+import { SceneProps } from 'features/trivia/triviaSlice';
 
 export const Scene4 = ({ state, broadcast }: SceneProps) => {
   return (

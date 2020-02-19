@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { useQueryParams } from 'utils/queryUtils';
+
+import { appActions } from 'app/appSlice';
+import { usePlayhouseChannel } from 'context/PlayhouseChannel';
+import { useTriviaState } from 'context/TriviaChannel';
 import { Button, Input, Card } from 'components';
-import { useChannel } from 'context/Socket';
 
 const Screens = {
   join: 'join',
@@ -12,39 +14,37 @@ const Screens = {
 
 export const Home = () => {
   const history = useHistory();
-  const { gameID: queryGameID } = useQueryParams();
-  const [state, broadcast] = useChannel('playhouse', state => state.app);
+  const { state: appState, broadcast, dispatch } = usePlayhouseChannel();
+  const triviaState = useTriviaState();
+
   const [shouldRedirect, setShouldRedirect] = useState(false);
-  const [gameIDToJoin, setGameIDtoJoin] = useState(queryGameID || '');
-  const [name, setName] = useState(localStorage.getItem('name') || '');
   const [screen, setScreen] = useState(
-    queryGameID ? Screens.name : Screens.join
+    triviaState.gameID ? Screens.name : Screens.join
   );
+  const [gameID, setGameID] = useState(triviaState.gameID || '');
+  const [name, setName] = useState(appState.name);
 
   const onClickHost = () => {
-    localStorage.setItem('isHost', 'true');
     broadcast('trivia:new');
     setShouldRedirect(true);
   };
 
   const onClickJoin = () => {
-    if (gameIDToJoin) {
+    if (gameID) {
       setScreen(Screens.name);
     }
   };
 
   const onSubmitName = () => {
-    localStorage.setItem('isHost', 'false');
-    localStorage.setItem('name', name);
-
-    history.push(`/trivia/lobby?code=${gameIDToJoin}`);
+    dispatch(appActions.updateUser({ name }));
+    setShouldRedirect(true);
   };
 
   useEffect(() => {
-    if (state.gameID && shouldRedirect) {
-      history.push(`/trivia/lobby?code=${state.gameID}`);
+    if (triviaState.gameID && shouldRedirect) {
+      history.push(`/trivia/${triviaState.gameID}/lobby`);
     }
-  }, [state.gameID, shouldRedirect]);
+  }, [triviaState.gameID, shouldRedirect, history]);
 
   return (
     <IntroContainer>
@@ -64,8 +64,8 @@ export const Home = () => {
             <InputContainer>
               <Input
                 placeholder="Game ID"
-                value={gameIDToJoin}
-                onChange={e => setGameIDtoJoin(e.target.value)}
+                value={gameID}
+                onChange={e => setGameID(e.target.value)}
               />
               <Button onClick={onClickJoin}>Join existing game</Button>
             </InputContainer>

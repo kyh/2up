@@ -3,12 +3,16 @@ import { themeSong } from 'styles/sound';
 
 type CurrentAppState = {
   userId: string | null;
+  name: string;
+  isHost: boolean;
   isMusicOn: boolean;
   isSFXOn: boolean;
 };
 
-let initialState: CurrentAppState = {
+export const initialState: CurrentAppState = {
   userId: null,
+  name: localStorage.getItem('name') || '',
+  isHost: false,
   isMusicOn: localStorage.getItem('isMusicOn') === 'true',
   isSFXOn: localStorage.getItem('isSFXOn') === 'true'
 };
@@ -29,9 +33,15 @@ const appSlice = createSlice({
     toggleSFX(state) {
       state.isSFXOn = !state.isSFXOn;
       localStorage.setItem('isSFXOn', state.isSFXOn.toString());
+    },
+    updateUser(state, { payload }) {
+      console.log('update user:', payload);
+      state.userId = payload.userId || state.userId;
+      state.name = payload.name || state.name;
+      state.isHost = payload.isHost || state.isHost;
     }
   }
 });
 
-export const { toggleMusic, toggleSFX } = appSlice.actions;
+export const appActions = appSlice.actions;
 export const appReducer = appSlice.reducer;

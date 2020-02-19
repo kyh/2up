@@ -1,20 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Button } from 'components';
 import { hashCode } from 'utils/stringUtils';
-import { TriviaContext } from './TriviaContext';
-import { useQueryParams } from 'utils/queryUtils';
+import { useTriviaChannel } from 'context/TriviaChannel';
+import { useAppState } from 'context/PlayhouseChannel';
 
 export const TriviaLobby = () => {
   const history = useHistory();
-  const { state, broadcast } = useContext(TriviaContext);
-  const { code } = useQueryParams();
-  const isHost = localStorage.getItem('isHost') === 'true';
-
-  const onClickEnter = () => {
-    broadcast('player:new', { name: localStorage.getItem('name') });
-  };
+  const { state, broadcast } = useTriviaChannel();
+  const appState = useAppState();
 
   const onClickStart = () => {
     broadcast('start', { gameID: state.gameID });
@@ -22,17 +17,17 @@ export const TriviaLobby = () => {
 
   useEffect(() => {
     if (state.act) {
-      if (isHost) {
-        history.push(`/trivia/tv?code=${code}`);
+      if (appState.isHost) {
+        history.push(`/trivia/${state.gameID}/tv`);
       } else {
-        history.push(`/trivia/remote?code=${code}`);
+        history.push(`/trivia/${state.gameID}/remote`);
       }
     }
-  }, [state.act, isHost, history]);
+  }, [state.gameID, state.act, appState.isHost, history]);
 
   return (
     <LobbyContainer>
-      {isHost ? (
+      {appState.isHost ? (
         <>
           <div className="title-container">
             <h1 className="title">
@@ -40,12 +35,12 @@ export const TriviaLobby = () => {
             </h1>
             <h1 className="title">and enter the room code:</h1>
           </div>
-          <div className="game-id">{code}</div>
+          <div className="game-id">{state.gameID}</div>
         </>
       ) : (
         <h1 className="title">Waiting for players to join...</h1>
       )}
-      <LobbyPlayersContainer isHost={isHost}>
+      <LobbyPlayersContainer isHost={appState.isHost}>
         {state.players.map(p => {
           const avatar = hashCode(p.name, 10);
           return (
@@ -56,17 +51,14 @@ export const TriviaLobby = () => {
           );
         })}
       </LobbyPlayersContainer>
-      {!isHost ? (
+      {!appState.isHost ? (
         <>
-          <Button className="start-game-button" onClick={onClickEnter}>
-            Enter game
-          </Button>
           <Button className="start-game-button" onClick={onClickStart}>
             Start game
           </Button>
         </>
       ) : (
-        <Link className="join-button" to={`/trivia?gameID=${code}`}>
+        <Link className="join-button" to="/">
           Or join the room on this device
         </Link>
       )}

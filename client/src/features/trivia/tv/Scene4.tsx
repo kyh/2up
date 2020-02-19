@@ -1,5 +1,5 @@
 import React from 'react';
-import { SceneProps } from 'features/trivia/TriviaContext';
+import { SceneProps } from 'features/trivia/triviaSlice';
 
 export const Scene4 = ({ state }: SceneProps) => {
   return (
