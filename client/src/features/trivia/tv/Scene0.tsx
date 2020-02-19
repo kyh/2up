@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'components';
-import { SceneProps } from 'features/trivia/TriviaContext';
+import { SceneProps } from 'features/trivia/triviaSlice';
 
 export const Scene0 = ({ state }: SceneProps) => {
   const history = useHistory();

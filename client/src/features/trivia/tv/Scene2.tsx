@@ -1,5 +1,5 @@
 import React from 'react';
-import { SceneProps } from 'features/trivia/TriviaContext';
+import { SceneProps } from 'features/trivia/triviaSlice';
 import { Button } from 'components';
 import { Question } from '../components/Question';
 import { SubmissionsContainer } from '../components/SubmissionsContainer';

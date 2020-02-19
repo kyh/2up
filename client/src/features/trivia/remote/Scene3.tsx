@@ -1,7 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Button } from 'components';
-import { SceneProps } from 'features/trivia/TriviaContext';
+import { SceneProps } from 'features/trivia/triviaSlice';
 import { hashCode } from 'utils/stringUtils';
 import { SubmissionsContainer } from '../components/SubmissionsContainer';
 import correctSvg from '../components/correct.svg';

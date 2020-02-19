@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import { BrowserRouter } from 'react-router-dom';
 import { SocketProvider } from 'context/Socket';
 import { debounce } from 'lodash';
 import { store } from 'app/store';
@@ -28,9 +27,7 @@ const render = () => {
       <GlobalStyle />
       <Provider store={store}>
         <SocketProvider wsUrl={`${process.env.REACT_APP_SOCKET_URL}/socket`}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <App />
         </SocketProvider>
       </Provider>
     </ThemeProvider>,

@@ -19,7 +19,7 @@ export const SocketProvider: React.FC<Props> = ({
 
   useEffect(() => {
     socket.connect();
-  }, [options, wsUrl]);
+  }, [options, wsUrl, socket]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
@@ -61,9 +61,9 @@ export const useChannel = (
     return () => {
       channel.leave();
     };
-  }, [channelTopic]);
+  }, [channelTopic, dispatch, initialPayload, socket]);
 
-  return [state, broadcast];
+  return [state, broadcast, dispatch];
 };
 
 const mustJoinChannelWarning = () => () =>

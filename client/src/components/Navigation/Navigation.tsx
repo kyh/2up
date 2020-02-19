@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from 'app/rootReducer';
-import { toggleMusic, toggleSFX } from 'app/appSlice';
+import { appActions } from 'app/appSlice';
 
 import { Box } from 'reflexbox';
 import { Icon } from 'components/Icon/Icon';
@@ -33,13 +33,16 @@ export const Navigation: React.FC = () => {
         <SettingsContainer>
           <SettingItem>
             <span>Game music</span>
-            <Button fullWidth onClick={() => dispatch(toggleMusic())}>
+            <Button
+              fullWidth
+              onClick={() => dispatch(appActions.toggleMusic())}
+            >
               {isMusicOn ? 'ON' : 'OFF'}
             </Button>
           </SettingItem>
           <SettingItem>
             <span>SFX</span>
-            <Button fullWidth onClick={() => dispatch(toggleSFX())}>
+            <Button fullWidth onClick={() => dispatch(appActions.toggleSFX())}>
               {isSFXOn ? 'ON' : 'OFF'}
             </Button>
           </SettingItem>
