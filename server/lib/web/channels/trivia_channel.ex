@@ -17,7 +17,7 @@ defmodule Web.TriviaChannel do
 
   def handle_info({:after_join, game_code}, socket) do
     game_state = GameServer.game_state(game_code)
-    push(socket, "game_state", game_state)
+    push(socket, "trivia/game_state", game_state)
     {:noreply, socket}
   end
 
@@ -28,7 +28,7 @@ defmodule Web.TriviaChannel do
       pid when is_pid(pid) ->
         player = %{ id: Ecto.UUID.generate, name: name, coins: 0 }
         game_state = GameServer.player_new(game_code, player)
-        broadcast!(socket, "game_state", game_state)
+        broadcast!(socket, "trivia/game_state", game_state)
         {:noreply, socket}
 
       nil ->
@@ -42,7 +42,7 @@ defmodule Web.TriviaChannel do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         game_state = GameServer.game_start(game_code)
-        broadcast!(socket, "game_state", game_state)
+        broadcast!(socket, "trivia/game_state", game_state)
         {:noreply, socket}
 
       nil ->
@@ -70,7 +70,7 @@ defmodule Web.TriviaChannel do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         game_state = GameServer.scene_next(game_code)
-        broadcast!(socket, "game_state", game_state)
+        broadcast!(socket, "trivia/game_state", game_state)
         {:noreply, socket}
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
@@ -83,7 +83,7 @@ defmodule Web.TriviaChannel do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         game_state = GameServer.act_next(game_code)
-        broadcast!(socket, "game_state", game_state)
+        broadcast!(socket, "trivia/game_state", game_state)
         {:noreply, socket}
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
@@ -103,7 +103,7 @@ defmodule Web.TriviaChannel do
         }
 
         game_state = GameServer.player_submit(game_code, submission)
-        broadcast!(socket, "game_state", game_state)
+        broadcast!(socket, "trivia/game_state", game_state)
         {:noreply, socket}
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
@@ -117,7 +117,7 @@ defmodule Web.TriviaChannel do
       pid when is_pid(pid) ->
         game_state = GameServer.player_endorse(game_code, name, submission_id)
 
-        broadcast!(socket, "game_state", game_state)
+        broadcast!(socket, "trivia/game_state", game_state)
         {:noreply, socket}
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}

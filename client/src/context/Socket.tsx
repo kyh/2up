@@ -19,7 +19,7 @@ export const SocketProvider: React.FC<Props> = ({
 
   useEffect(() => {
     socket.connect();
-  }, [options, wsUrl, socket]);
+  }, [options, wsUrl]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
@@ -31,6 +31,7 @@ export const useChannel = (
   selector: (state: RootState) => any,
   initialPayload = {}
 ) => {
+  const [connected, setConnected] = useState(false);
   const socket = useContext(SocketContext);
   const dispatch = useDispatch();
   const state = useSelector(selector);
@@ -49,21 +50,23 @@ export const useChannel = (
 
     channel
       .join()
-      .receive('ok', ({ messages }: any) =>
-        console.log('successfully joined channel', messages || '')
-      )
-      .receive('error', ({ reason }: any) =>
-        console.error('failed to join channel', reason)
-      );
+      .receive('ok', ({ messages }: any) => {
+        setConnected(true);
+        console.log('successfully joined channel', messages || '');
+      })
+      .receive('error', ({ reason }: any) => {
+        setConnected(false);
+        console.error('failed to join channel', reason);
+      });
 
     setBroadcast(() => channel.push.bind(channel));
 
     return () => {
       channel.leave();
     };
-  }, [channelTopic, dispatch, initialPayload, socket]);
+  }, [channelTopic]);
 
-  return [state, broadcast, dispatch];
+  return [state, broadcast, dispatch, connected];
 };
 
 const mustJoinChannelWarning = () => () =>

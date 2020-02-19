@@ -35,10 +35,9 @@ const appSlice = createSlice({
       localStorage.setItem('isSFXOn', state.isSFXOn.toString());
     },
     updateUser(state, { payload }) {
-      console.log('update user:', payload);
-      state.userId = payload.userId || state.userId;
-      state.name = payload.name || state.name;
-      state.isHost = payload.isHost || state.isHost;
+      state.userId = payload.userId ?? state.userId;
+      state.name = payload.name ?? state.name;
+      state.isHost = payload.isHost ?? state.isHost;
     }
   }
 });

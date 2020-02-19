@@ -54,6 +54,7 @@ export const Modal: React.FC<Props> = ({
         onRequestClose={onRequestClose}
         className="modal"
         overlayClassName="modal-overlay"
+        ariaHideApp={false}
         style={{
           content: {
             maxWidth: maxWidth

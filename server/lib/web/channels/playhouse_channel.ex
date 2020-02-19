@@ -14,7 +14,7 @@ defmodule Web.PlayhouseChannel do
 
     case GameSupervisor.start_game(code, questions) do
       {:ok, _game_pid} ->
-        push socket, "new_game", %{ gameID: code }
+        push socket, "trivia/new_game", %{ gameID: code }
         {:noreply, socket}
 
       {:error, _error} ->
