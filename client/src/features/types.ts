@@ -1,15 +1,15 @@
-export interface GameState {
+export type GameState = {
   gameID: string;
   players: Player[];
-}
+};
 
-export interface ServerResponse {
+export type ServerResponse = {
   event: string;
   payload: any;
-}
+};
 
-export interface Player {
+export type Player = {
   id: string;
   name: string;
   coins: number;
-}
+};

@@ -1,5 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { themeSong } from 'styles/sound';
+
+type UserPayload = {
+  userId?: string;
+  name?: string;
+  isHost?: boolean;
+};
 
 type CurrentAppState = {
   userId: string | null;
@@ -34,7 +40,7 @@ const playhouseSlice = createSlice({
       state.isSFXOn = !state.isSFXOn;
       localStorage.setItem('isSFXOn', state.isSFXOn.toString());
     },
-    updateUser(state, { payload }) {
+    updateUser(state, { payload }: PayloadAction<UserPayload>) {
       state.userId = payload.userId ?? state.userId;
       state.name = payload.name ?? state.name;
       state.isHost = payload.isHost ?? state.isHost;

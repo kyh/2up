@@ -21,7 +21,7 @@ export const TriviaProvider: React.FC<{ gameID?: string }> = ({
 
   useEffect(() => {
     if (!state.gameID) {
-      dispatch(triviaActions.new_game({ gameID: gameID }));
+      dispatch(triviaActions.new_game({ gameID: gameID! }));
     }
   }, [state.gameID]);
 
