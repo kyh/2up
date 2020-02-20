@@ -19,10 +19,10 @@ deploy:
 deploy-force:
 	git push gigalixir `git subtree split --prefix server master`:master --force
 
-phoenix:
+server:
 	cd server && mix phx.server
 
-react:
+client:
 	cd client && npm start
 
 logs:
