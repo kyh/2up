@@ -30,3 +30,6 @@ logs:
 
 test:
 	cd server && mix test
+
+install:
+	cd server && mix deps.get
