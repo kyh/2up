@@ -29,5 +29,21 @@ declare module 'styled-components' {
     };
     space: Array<number>;
     spacings: (spacing: number) => string;
+    ui: {
+      text: string;
+      background: string;
+      card: {
+        border: string;
+      };
+      button: {
+        color: string;
+        background: string;
+        border: string;
+      };
+      modal: {
+        border: string;
+        background: string;
+      };
+    };
   }
 }

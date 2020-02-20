@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import { Provider } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
 import { SocketProvider } from 'utils/Socket';
+import { PlayhouseProvider } from 'features/home/PlayhouseChannel';
+import { BrowserRouter } from 'react-router-dom';
+
 import { debounce } from 'lodash';
 import { store } from 'app/store';
-import { theme } from 'styles/theme';
-import { GlobalStyle } from 'styles/global';
-
 import * as serviceWorker from './serviceWorker';
 
 const onResize = () => {
@@ -23,14 +23,15 @@ const render = () => {
   const { App } = require('./app/App');
 
   ReactDOM.render(
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Provider store={store}>
-        <SocketProvider wsUrl={`${process.env.REACT_APP_SOCKET_URL}/socket`}>
-          <App />
-        </SocketProvider>
-      </Provider>
-    </ThemeProvider>,
+    <Provider store={store}>
+      <SocketProvider wsUrl={`${process.env.REACT_APP_SOCKET_URL}/socket`}>
+        <PlayhouseProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </PlayhouseProvider>
+      </SocketProvider>
+    </Provider>,
     document.getElementById('root')
   );
 };

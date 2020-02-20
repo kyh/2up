@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useChannel } from 'utils/Socket';
+import { RootState } from 'app/rootReducer';
 import { initialState } from 'features/home/playhouseSlice';
 
 export const PlayhouseContext = React.createContext({
@@ -23,4 +25,10 @@ export const PlayhouseProvider: React.FC = ({ children }) => {
 
 export const usePlayhouseChannel = () => {
   return useContext(PlayhouseContext);
+};
+
+export const usePlayhouse = () => {
+  const state = useSelector((state: RootState) => state.playhouse);
+  const dispatch = useDispatch();
+  return { state, dispatch };
 };

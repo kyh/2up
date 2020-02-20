@@ -16,7 +16,8 @@ const renderRegularStyles = () => {
     border-image-width: 5px;
     border-image-outset: 0;
     border-image-repeat: stretch stretch;
-    border-image-source: url("${border}");
+    border-image-source: ${({ theme }) =>
+      `url("${border(theme.ui.button.border)}")`};
   `;
 };
 
@@ -27,12 +28,15 @@ const renderRoundedStyles = () => {
     border-image-width: 5px;
     border-image-outset: 0;
     border-image-repeat: stretch stretch;
-    border-image-source: url("${borderRounded}");
+    border-image-source: ${({ theme }) =>
+      `url("${borderRounded(theme.ui.button.border)}")`};
   `;
 };
 
 export const Input = styled.input<Props>`
   padding: ${({ theme }) => theme.spacings(4)};
+  color: ${({ theme }) => theme.ui.button.color};
+  background-color: ${({ theme }) => theme.ui.button.background};
   ${({ variant = Variants.default }) =>
     variant === Variants.default
       ? renderRegularStyles()
