@@ -4,13 +4,11 @@ import { themeSong } from 'styles/sound';
 type UserPayload = {
   userId?: string;
   name?: string;
-  isHost?: boolean;
 };
 
 type CurrentAppState = {
   userId: string | null;
   name: string;
-  isHost: boolean;
   isMusicOn: boolean;
   isSFXOn: boolean;
 };
@@ -18,7 +16,6 @@ type CurrentAppState = {
 export const initialState: CurrentAppState = {
   userId: null,
   name: localStorage.getItem('name') || '',
-  isHost: false,
   isMusicOn: localStorage.getItem('isMusicOn') === 'true',
   isSFXOn: localStorage.getItem('isSFXOn') === 'true'
 };
@@ -27,7 +24,7 @@ const playhouseSlice = createSlice({
   name: 'playhouse',
   initialState,
   reducers: {
-    toggleMusic(state) {
+    toggle_music(state) {
       state.isMusicOn = !state.isMusicOn;
       if (state.isMusicOn) {
         themeSong.play();
@@ -36,17 +33,19 @@ const playhouseSlice = createSlice({
       }
       localStorage.setItem('isMusicOn', state.isMusicOn.toString());
     },
-    toggleSFX(state) {
+    toggle_SFX(state) {
       state.isSFXOn = !state.isSFXOn;
       localStorage.setItem('isSFXOn', state.isSFXOn.toString());
     },
-    updateUser(state, { payload }: PayloadAction<UserPayload>) {
+    update_user(state, { payload }: PayloadAction<UserPayload>) {
       state.userId = payload.userId ?? state.userId;
       state.name = payload.name ?? state.name;
-      state.isHost = payload.isHost ?? state.isHost;
 
       if (state.name) {
         localStorage.setItem('name', state.name);
+      }
+      if (state.userId) {
+        localStorage.setItem('userId', state.userId);
       }
     }
   }

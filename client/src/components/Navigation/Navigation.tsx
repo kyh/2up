@@ -34,7 +34,7 @@ export const Navigation: React.FC = () => {
             <span>Game music</span>
             <Button
               fullWidth
-              onClick={() => dispatch(playhouseActions.toggleMusic())}
+              onClick={() => dispatch(playhouseActions.toggle_music())}
             >
               {isMusicOn ? 'ON' : 'OFF'}
             </Button>
@@ -43,7 +43,7 @@ export const Navigation: React.FC = () => {
             <span>SFX</span>
             <Button
               fullWidth
-              onClick={() => dispatch(playhouseActions.toggleSFX())}
+              onClick={() => dispatch(playhouseActions.toggle_SFX())}
             >
               {isSFXOn ? 'ON' : 'OFF'}
             </Button>

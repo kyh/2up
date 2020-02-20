@@ -18,22 +18,22 @@ export const TriviaLobby = () => {
   };
 
   useEffect(() => {
-    if (!playhouseState.isHost && !joined) {
+    if (!triviaState.isHost && !joined) {
       broadcast('player:new', { name: playhouseState.name });
       setJoined(true);
     }
     if (triviaState.act) {
-      if (playhouseState.isHost) {
+      if (triviaState.isHost) {
         history.push(`/trivia/${triviaState.gameID}/tv`);
       } else {
         history.push(`/trivia/${triviaState.gameID}/remote`);
       }
     }
-  }, [joined, triviaState.gameID, triviaState.act, playhouseState.isHost]);
+  }, [joined, triviaState.gameID, triviaState.act, triviaState.isHost]);
 
   return (
     <LobbyContainer>
-      {playhouseState.isHost ? (
+      {triviaState.isHost ? (
         <>
           <div className="title-container">
             <h1 className="title">
@@ -46,7 +46,7 @@ export const TriviaLobby = () => {
       ) : (
         <h1 className="title">Waiting for players to join...</h1>
       )}
-      <LobbyPlayersContainer isHost={playhouseState.isHost}>
+      <LobbyPlayersContainer isHost={triviaState.isHost}>
         {triviaState.players.map(p => {
           const avatar = hashCode(p.name, 10);
           return (
@@ -57,7 +57,7 @@ export const TriviaLobby = () => {
           );
         })}
       </LobbyPlayersContainer>
-      {!playhouseState.isHost ? (
+      {!triviaState.isHost ? (
         <>
           <Button className="start-game-button" onClick={onClickStart}>
             Start game

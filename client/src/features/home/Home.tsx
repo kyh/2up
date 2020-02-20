@@ -27,7 +27,7 @@ export const Home = () => {
 
   const onClickHost = () => {
     broadcast('trivia:new');
-    dispatch(playhouseActions.updateUser({ isHost: true }));
+    dispatch(triviaActions.toggle_host(true));
     setShouldRedirect(true);
   };
 
@@ -39,7 +39,8 @@ export const Home = () => {
 
   const onSubmitName = () => {
     dispatch(triviaActions.new_game({ gameID }));
-    dispatch(playhouseActions.updateUser({ name, isHost: false }));
+    dispatch(triviaActions.toggle_host(false));
+    dispatch(playhouseActions.update_user({ name }));
     setShouldRedirect(true);
   };
 
