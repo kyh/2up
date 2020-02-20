@@ -4,10 +4,10 @@ defmodule Web.TriviaChannel do
   alias Trivia.{GameServer}
   alias Database.{Play}
 
-  def join("trivia:" <> game_code, _payload, socket) do
+  def join("trivia:" <> game_code, payload, socket) do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        send(self(), {:after_join, game_code})
+        send(self(), {:after_join, game_code, payload["name"], payload["isHost"]})
         {:ok, socket}
 
       nil ->
@@ -15,25 +15,17 @@ defmodule Web.TriviaChannel do
     end
   end
 
-  def handle_info({:after_join, game_code}, socket) do
-    game_state = GameServer.game_state(game_code)
-    push(socket, "trivia/game_state", game_state)
+  def handle_info({:after_join, game_code, name, is_host}, socket) do
+    game_state =
+      case is_host == true do
+        true -> GameServer.game_state(game_code)
+        false ->
+          player = %{ id: Ecto.UUID.generate, name: name, coins: 0 }
+          GameServer.player_new(game_code, player)
+      end
+
+    broadcast!(socket, "trivia/game_state", game_state)
     {:noreply, socket}
-  end
-
-  def handle_in("player:new", %{"name" => name}, socket) do
-    "trivia:" <> game_code = socket.topic
-
-    case GameServer.game_pid(game_code) do
-      pid when is_pid(pid) ->
-        player = %{ id: Ecto.UUID.generate, name: name, coins: 0 }
-        game_state = GameServer.player_new(game_code, player)
-        broadcast!(socket, "trivia/game_state", game_state)
-        {:noreply, socket}
-
-      nil ->
-        {:reply, {:error, %{reason: "Game does not exist"}}, socket}
-    end
   end
 
   def handle_in("start", _payload, socket) do

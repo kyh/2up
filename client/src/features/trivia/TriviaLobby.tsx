@@ -1,27 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Button } from 'components';
 import { hashCode } from 'utils/stringUtils';
 import { useTriviaChannel } from 'features/trivia/TriviaChannel';
-import { usePlayhouseChannel } from 'features/home/PlayhouseChannel';
 
 export const TriviaLobby = () => {
   const history = useHistory();
   const { state: triviaState, broadcast } = useTriviaChannel();
-  const { state: playhouseState } = usePlayhouseChannel();
-  // TODO(kai): Hacky way to get around double joining
-  const [joined, setJoined] = useState(false);
 
   const onClickStart = () => {
     broadcast('start', { gameID: triviaState.gameID });
   };
 
   useEffect(() => {
-    if (!triviaState.isHost && !joined) {
-      broadcast('player:new', { name: playhouseState.name });
-      setJoined(true);
-    }
     if (triviaState.act) {
       if (triviaState.isHost) {
         history.push(`/trivia/${triviaState.gameID}/tv`);
@@ -29,7 +21,7 @@ export const TriviaLobby = () => {
         history.push(`/trivia/${triviaState.gameID}/remote`);
       }
     }
-  }, [joined, triviaState.gameID, triviaState.act, triviaState.isHost]);
+  }, [triviaState.gameID, triviaState.act, triviaState.isHost]);
 
   return (
     <LobbyContainer>
