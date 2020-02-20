@@ -30,4 +30,8 @@ defmodule Database.Catalog do
       [x.content, x.answer.content]
     end)
   end
+
+  def list_questions() do
+    Repo.all(Question)	
+  end
 end
