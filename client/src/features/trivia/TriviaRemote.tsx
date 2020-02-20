@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useTriviaChannel } from 'context/TriviaChannel';
+import { useTriviaChannel } from 'features/trivia/TriviaChannel';
 import { Scene0 } from './remote/Scene0';
 import { Scene1 } from './remote/Scene1';
 import { Scene2 } from './remote/Scene2';

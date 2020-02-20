@@ -4,8 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 import { playhouseActions } from 'features/home/playhouseSlice';
 import { triviaActions } from 'features/trivia/triviaSlice';
-import { usePlayhouseChannel } from 'context/PlayhouseChannel';
-import { useTrivia } from 'context/TriviaChannel';
+import { usePlayhouseChannel } from 'features/home/PlayhouseChannel';
+import { useTrivia } from 'features/trivia/TriviaChannel';
 import { Button, Input, Card } from 'components';
 
 const Screens = {

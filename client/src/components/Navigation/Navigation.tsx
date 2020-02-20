@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { playhouseActions } from 'features/home/playhouseSlice';
-import { usePlayhouseChannel } from 'context/PlayhouseChannel';
+import { usePlayhouseChannel } from 'features/home/PlayhouseChannel';
 
 import { Box } from 'reflexbox';
 import { Icon } from 'components/Icon/Icon';

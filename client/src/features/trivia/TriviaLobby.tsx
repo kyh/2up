@@ -3,8 +3,8 @@ import { useHistory, Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Button } from 'components';
 import { hashCode } from 'utils/stringUtils';
-import { useTriviaChannel } from 'context/TriviaChannel';
-import { usePlayhouseChannel } from 'context/PlayhouseChannel';
+import { useTriviaChannel } from 'features/trivia/TriviaChannel';
+import { usePlayhouseChannel } from 'features/home/PlayhouseChannel';
 
 export const TriviaLobby = () => {
   const history = useHistory();

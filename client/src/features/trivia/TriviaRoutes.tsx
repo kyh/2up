@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, useParams } from 'react-router-dom';
 import { PageContainer } from 'components';
 
-import { TriviaProvider } from 'context/TriviaChannel';
+import { TriviaProvider } from 'features/trivia/TriviaChannel';
 import { TriviaLobby } from 'features/trivia/TriviaLobby';
 import { TriviaTV } from 'features/trivia/TriviaTV';
 import { TriviaRemote } from 'features/trivia/TriviaRemote';

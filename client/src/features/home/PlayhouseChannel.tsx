@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useChannel } from 'context/Socket';
+import { useChannel } from 'utils/Socket';
 import { initialState } from 'features/home/playhouseSlice';
 
 export const PlayhouseContext = React.createContext({
