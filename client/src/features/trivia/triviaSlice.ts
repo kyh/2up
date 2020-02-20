@@ -26,6 +26,7 @@ export type SceneProps = {
 
 export const initialState: TriviaGameState = {
   gameID: '',
+  isHost: localStorage.getItem('isHost') === 'true',
   players: [],
   act: 0,
   scene: 0,
@@ -48,6 +49,10 @@ const triviaSlice = createSlice({
       state.question = payload.question ?? state.question;
       state.answer = payload.answer ?? state.answer;
       state.submissions = payload.submissions ?? state.submissions;
+    },
+    toggle_host(state, { payload }: PayloadAction<boolean>) {
+      state.isHost = payload;
+      localStorage.setItem('isHost', state.isHost.toString());
     }
   }
 });

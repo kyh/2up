@@ -16,14 +16,18 @@ export const TriviaProvider: React.FC<{ gameID?: string }> = ({
 }) => {
   const [state, broadcast, dispatch, connected] = useChannel(
     `trivia:${gameID}`,
-    state => state.trivia
+    state => state.trivia,
+    {
+      name: localStorage.getItem('name'),
+      isHost: localStorage.getItem('isHost') === 'true'
+    }
   );
 
   useEffect(() => {
     if (!state.gameID) {
       dispatch(triviaActions.new_game({ gameID: gameID! }));
     }
-  }, [state.gameID]);
+  }, [state.gameID, gameID]);
 
   if (!connected) return null;
   return (

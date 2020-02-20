@@ -1,6 +1,7 @@
 export type GameState = {
   gameID: string;
   players: Player[];
+  isHost: boolean;
 };
 
 export type ServerResponse = {
