@@ -45,7 +45,8 @@ defmodule Database.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:absinthe, "~> 1.4.2"},
       {:absinthe_plug, "~> 1.4.0"},
-      {:dataloader, "~> 1.0.0"}
+      {:dataloader, "~> 1.0.0"},
+      {:pbkdf2_elixir, "~> 1.0"}
     ]
   end
 

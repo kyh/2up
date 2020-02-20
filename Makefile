@@ -13,6 +13,9 @@ migrate:
 migrate-gen:
 	cd server && mix ecto.gen.migration $(NAME)
 
+migrate-prod:
+	gigalixir run mix ecto.migrate
+
 deploy:
 	git subtree push --prefix server gigalixir master
 
