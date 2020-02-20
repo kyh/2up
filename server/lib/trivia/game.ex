@@ -26,7 +26,10 @@ defmodule Trivia.Game do
   end
 
   def player_new(game, player) do
-    new_players = game.players ++ [player]
+    new_players =
+      game.players ++ [player]
+      |> Enum.uniq_by(fn player -> player.name end)
+
     %{game | players: new_players}
   end
 
