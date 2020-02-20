@@ -63,7 +63,8 @@ const getSvgStyles = (props: StyledProps) => {
     width: ${iconSize ? getDimensions(iconSize) : 'initial'};
     height: ${iconSize ? getDimensions(iconSize) : 'intial'};
     path {
-      fill: ${({ theme }) => (iconColor ? theme.colors[iconColor] : 'initial')};
+      fill: ${({ theme }) =>
+        iconColor ? theme.colors[iconColor] : theme.ui.text};
     }
     transform: rotate(${rotate});
     transition: fill 0.23s ease;

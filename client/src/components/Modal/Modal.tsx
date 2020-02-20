@@ -20,7 +20,7 @@ const ModalStyle = createGlobalStyle`
     top: 40px;
     left: 20px;
     right: 20px;
-    border: 2px solid ${({ theme }) => theme.colors.black};
+    border: 2px solid ${({ theme }) => theme.ui.modal.border};
     max-width: 600px;
     background: ${({ theme }) => theme.colors.darkGrey};
     border-radius: ${({ theme }) => theme.border.wavyRadius};
@@ -77,7 +77,7 @@ const CloseButton = styled(Button)`
   position: absolute;
   right: -20px;
   top: -20px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.ui.modal.background};
   border-radius: 100%;
 `;
 
@@ -94,8 +94,8 @@ const ModalHeader = styled.header`
 
 const ModalBody = styled.section`
   height: 100%;
-  background: ${({ theme }) => theme.colors.white};
-  border: 2px solid ${({ theme }) => theme.colors.black};
+  background: ${({ theme }) => theme.ui.modal.background};
+  border: 2px solid ${({ theme }) => theme.ui.modal.border};
   padding: ${({ theme }) => theme.spacings(3)};
   margin: 0 ${({ theme }) => `${theme.spacings(3)} ${theme.spacings(3)}`};
   border-radius: ${({ theme }) => theme.border.wavyRadius};

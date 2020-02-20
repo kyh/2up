@@ -12,7 +12,7 @@ import { Button } from 'components/Button/Button';
 export const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { state, dispatch } = usePlayhouseChannel();
-  const { isMusicOn, isSFXOn } = state;
+  const { isMusicOn, isSFXOn, isDarkMode } = state;
 
   return (
     <StyledNav>
@@ -27,7 +27,12 @@ export const Navigation: React.FC = () => {
         closeButton
       >
         <Box mb={2}>
-          <Button fullWidth>Login</Button>
+          <Button
+            onClick={() => dispatch(playhouseActions.toggle_dark_mode())}
+            fullWidth
+          >
+            {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+          </Button>
         </Box>
         <SettingsContainer>
           <SettingItem>

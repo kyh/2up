@@ -11,13 +11,15 @@ type CurrentAppState = {
   name: string;
   isMusicOn: boolean;
   isSFXOn: boolean;
+  isDarkMode: boolean;
 };
 
 export const initialState: CurrentAppState = {
   userId: null,
   name: localStorage.getItem('name') || '',
   isMusicOn: localStorage.getItem('isMusicOn') === 'true',
-  isSFXOn: localStorage.getItem('isSFXOn') === 'true'
+  isSFXOn: localStorage.getItem('isSFXOn') === 'true',
+  isDarkMode: localStorage.getItem('isDarkMode') === 'true'
 };
 
 const playhouseSlice = createSlice({
@@ -36,6 +38,10 @@ const playhouseSlice = createSlice({
     toggle_SFX(state) {
       state.isSFXOn = !state.isSFXOn;
       localStorage.setItem('isSFXOn', state.isSFXOn.toString());
+    },
+    toggle_dark_mode(state) {
+      state.isDarkMode = !state.isDarkMode;
+      localStorage.setItem('isDarkMode', state.isDarkMode.toString());
     },
     update_user(state, { payload }: PayloadAction<UserPayload>) {
       state.userId = payload.userId ?? state.userId;

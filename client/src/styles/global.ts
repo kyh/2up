@@ -25,7 +25,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.ui.text};
+    background-color: ${({ theme }) => theme.ui.background};
     text-rendering: optimizeLegibility;
     font-family: 'Chalkboard SE', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
       'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
