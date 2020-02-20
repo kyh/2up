@@ -1,11 +1,11 @@
 defmodule Web.GraphQL.Schema do
   use Absinthe.Schema
-  alias Database.{Catalog}
+  alias Web.GraphQL.Resolvers.{Catalog}
 
   query do
     @desc "Get a list of questions"
     field :questions, list_of(:question) do
-      resolve &Web.Resolvers.Catalog.questions/3
+      resolve &Catalog.questions/3
     end
   end
 
