@@ -1,3 +1,4 @@
+alias Database.Accounts.{User}
 alias Database.Catalog.{Answer, Question}
 alias Database.Play.{
   Endorsement,
@@ -7,8 +8,6 @@ alias Database.Play.{
   Submission
 }
 
-alias Database.Repo
-alias Database.Catalog
-alias Database.Play
+alias Database.{Repo, Catalog, Play, Accounts}
 
 import Ecto.Query
