@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { PageContainer, Navigation } from 'components';
 
-import { PlayhouseProvider } from 'context/PlayhouseChannel';
+import { PlayhouseProvider } from 'features/home/PlayhouseChannel';
 import { Home } from 'features/home/Home';
 import { TriviaRoutes } from 'features/trivia/TriviaRoutes';
 

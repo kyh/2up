@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useChannel } from 'context/Socket';
+import { useChannel } from 'utils/Socket';
 import { RootState } from 'app/rootReducer';
 import { initialState, triviaActions } from 'features/trivia/triviaSlice';
 

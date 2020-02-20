@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import { SocketProvider } from 'context/Socket';
+import { SocketProvider } from 'utils/Socket';
 import { debounce } from 'lodash';
 import { store } from 'app/store';
 import { theme } from 'styles/theme';
