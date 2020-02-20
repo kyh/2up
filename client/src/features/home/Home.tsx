@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
 import { playhouseActions } from 'features/home/playhouseSlice';
+import { triviaActions } from 'features/trivia/triviaSlice';
 import { usePlayhouseChannel } from 'context/PlayhouseChannel';
 import { useTrivia } from 'context/TriviaChannel';
 import { Button, Input, Card } from 'components';
@@ -37,6 +38,7 @@ export const Home = () => {
   };
 
   const onSubmitName = () => {
+    dispatch(triviaActions.new_game({ gameID }));
     dispatch(playhouseActions.updateUser({ name, isHost: false }));
     setShouldRedirect(true);
   };
