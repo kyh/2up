@@ -1,4 +1,4 @@
-defmodule Web.Resolvers.Catalog do
+defmodule Web.GraphQL.Resolvers.Catalog do
   alias Database.Catalog
 
   def questions(_, _, _) do
