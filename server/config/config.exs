@@ -11,7 +11,7 @@ config :playhouse,
   ecto_repos: [Database.Repo]
 
 config :cors_plug,
-  origin: ["http://localhost:3000"],
+  origin: ["http://localhost:3000", "https://playhouse.gg"],
   max_age: 86400,
   methods: ["GET", "POST"]
 
