@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export const Dashboard = () => {
+  const [questions, setQuestions] = useState([])
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
       method: 'POST',
@@ -11,9 +13,16 @@ export const Dashboard = () => {
       body: JSON.stringify({query: "{ questions { id content } }"})
     })
       .then(r => r.json())
-      .then(data => console.log('data returned:', data));
+      .then(res => setQuestions(res.data.questions));
   })
   return (
-    <h1>Dashboard</h1>
+    <>
+      <h1>Dashboard</h1>
+      <div>
+        {questions.map((question: any) => (
+          <div key={question.id}>{question.content}</div>
+        ))}
+      </div>
+    </>
   )
 }
