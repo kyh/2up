@@ -36,3 +36,6 @@ test:
 
 install:
 	cd server && mix deps.get
+
+seeds:
+	cd server && mix run priv/repo/seeds.exs

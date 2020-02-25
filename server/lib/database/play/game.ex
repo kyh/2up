@@ -6,15 +6,13 @@ defmodule Database.Play.Game do
     has_many :players, Database.Play.Player
     has_many :game_questions, Database.Play.GameQuestion
 
-    field :act, :integer
-    field :scene, :integer
     field :code, :string
 
     timestamps()
   end
 
   def changeset(game, attrs) do
-    required_fields = [:act, :scene]
+    required_fields = [:code]
 
     game
     |> cast(attrs, required_fields)

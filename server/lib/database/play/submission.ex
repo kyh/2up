@@ -5,7 +5,7 @@ defmodule Database.Play.Submission do
   schema "submissions" do
     belongs_to :player, Database.Play.Player
     belongs_to :game_question, Database.Play.GameQuestion
-    has_many :endorsements, Database.Play.Endorsement
+    has_many :endorsers, Database.Play.Player
 
     field :content, :string
 

@@ -21,13 +21,12 @@ defmodule Database.Catalog do
   def random_formatted_questions(size) do
     query =
       from Question,
-      preload: [:answer],
       order_by: fragment("RANDOM()"),
       limit: ^size
 
     Repo.all(query)
     |> Enum.map(fn x -> 
-      [x.content, x.answer.content]
+      [x.content, x.answer]
     end)
   end
 
