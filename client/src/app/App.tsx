@@ -9,6 +9,7 @@ import { lightTheme, darkTheme } from 'styles/theme';
 import { GlobalStyle } from 'styles/global';
 
 import { Home } from 'features/home/Home';
+import { Dashboard } from 'features/dashboard/Dashboard';
 import { TriviaRoutes } from 'features/trivia/TriviaRoutes';
 
 export const App: React.FC = () => {
@@ -21,6 +22,11 @@ export const App: React.FC = () => {
         <Route exact path="/">
           <PageContainer size="large" align="center">
             <Home />
+          </PageContainer>
+        </Route>
+        <Route exact path="/dashboard">
+          <PageContainer size="large" align="center">
+            <Dashboard />
           </PageContainer>
         </Route>
         <Route path="/trivia/:gameID">
