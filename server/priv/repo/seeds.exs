@@ -12,7 +12,6 @@
 
 alias Database.Repo
 alias Database.Catalog.Question
-alias Database.Catalog.Answer
 
 questions = [
   ["Who won the NBA finals in 2003?", "San Antonio Spurs"],
@@ -121,12 +120,8 @@ questions = [
 ]
 
 Enum.each questions, fn question -> 
-  [q | a] = question
-
-  %Answer{
-    question: %Question{
-      content: q
-    },
-    content: Enum.at(a, 0)
+  %Question{
+    content: Enum.at(question, 0),
+    answer: Enum.at(question, 1)
   } |> Repo.insert!
 end

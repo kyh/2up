@@ -3,9 +3,8 @@ defmodule Database.Catalog.Question do
   import Ecto.Changeset
 
   schema "questions" do
-    has_one :answer, Database.Catalog.Answer
-
     field :content, :string
+    field :answer, :string
 
     timestamps()
   end
