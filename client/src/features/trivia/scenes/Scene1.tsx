@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Flex, Input, Button } from 'components';
+import { Alert, Flex, Input, Button, Timer } from 'components';
 import { SceneProps } from 'features/trivia/triviaSlice';
 import { Question } from '../components/Question';
 
@@ -39,6 +39,7 @@ export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
       <Button disabled={!value || submitted} onClick={handleClick}>
         Submit answer
       </Button>
+      <Timer initialSeconds={30} onTimeout={handleClick} />
     </Flex>
   );
 };
@@ -51,6 +52,7 @@ export const Scene1TV = ({ state }: SceneProps) => {
         <Alert>{submissions} players have submitted their answers</Alert>
       )}
       <Question>{state.question}</Question>
+      <Timer initialSeconds={30} />
     </>
   );
 };
