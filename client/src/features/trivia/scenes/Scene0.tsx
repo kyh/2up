@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Button } from 'components';
 import { SceneProps } from 'features/trivia/triviaSlice';
 
-export const Scene0 = ({ state, broadcast }: SceneProps) => {
+export const Scene0Remote = ({ state, broadcast }: SceneProps) => {
   const history = useHistory();
   const handleEnd = () => {
     broadcast('end');
@@ -23,3 +23,5 @@ export const Scene0 = ({ state, broadcast }: SceneProps) => {
     </div>
   );
 };
+
+export const Scene0TV = Scene0Remote;

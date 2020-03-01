@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Flex, Input, Button } from 'components';
+import { Alert, Flex, Input, Button } from 'components';
 import { SceneProps } from 'features/trivia/triviaSlice';
+import { Question } from '../components/Question';
 
-export const Scene1 = ({ state, broadcast }: SceneProps) => {
+export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
   const [value, setValue] = useState('');
   const [errorValue, setErrorValue] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -39,5 +40,17 @@ export const Scene1 = ({ state, broadcast }: SceneProps) => {
         Submit answer
       </Button>
     </Flex>
+  );
+};
+
+export const Scene1TV = ({ state }: SceneProps) => {
+  const submissions = state.submissions.length - 1;
+  return (
+    <>
+      {!!submissions && (
+        <Alert>{submissions} players have submitted their answers</Alert>
+      )}
+      <Question>{state.question}</Question>
+    </>
   );
 };

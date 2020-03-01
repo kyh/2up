@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const SubmissionCountBox = styled.div`
+export const Alert = styled.div`
   position: absolute;
   top: ${({ theme }) => theme.spacings(3)};
   color: ${({ theme }) => theme.colors.white};
