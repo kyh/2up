@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Button } from 'components';
+import { Timer, Button } from 'components';
 import { SceneProps } from 'features/trivia/triviaSlice';
 
 import { Question } from '../components/Question';
@@ -8,6 +8,15 @@ import { SubmissionsContainer } from '../components/SubmissionsContainer';
 
 export const Scene2Remote = ({ state, broadcast }: SceneProps) => {
   const [submitted, setSubmitted] = useState(false);
+
+  const endorse = (submissionId: number) => {
+    broadcast('endorse', {
+      name: localStorage.getItem('name'),
+      submission_id: submissionId
+    });
+    setSubmitted(true);
+  };
+
   return (
     <section>
       <h2>{state.question}</h2>
@@ -16,18 +25,22 @@ export const Scene2Remote = ({ state, broadcast }: SceneProps) => {
           <EndorsementButtons
             key={submission.id}
             disabled={submitted}
-            onClick={() => {
-              broadcast('endorse', {
-                name: localStorage.getItem('name'),
-                submission_id: submission.id
-              });
-              setSubmitted(true);
-            }}
+            onClick={() => endorse(submission.id)}
           >
             {submission.content}
           </EndorsementButtons>
         );
       })}
+      <Timer
+        initialSeconds={30}
+        onTimeout={() => {
+          const submission =
+            state.submissions[
+              Math.floor(Math.random() * state.submissions.length)
+            ];
+          endorse(submission.id);
+        }}
+      />
     </section>
   );
 };
@@ -48,6 +61,7 @@ export const Scene2TV = ({ state }: SceneProps) => {
             </div>
           );
         })}
+        <Timer initialSeconds={30} />
       </SubmissionsContainer>
     </section>
   );
