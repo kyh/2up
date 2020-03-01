@@ -54,7 +54,9 @@ defmodule Trivia.GameServer do
     {:via, Registry, {Trivia.GameRegistry, game_code}}
   end
 
-  def init({game_code, questions}) do
+  def init({game_code, _questions}) do
+    questions = Trivia.QuestionCache.get_questions()
+
     game = case :ets.lookup(:games_table, game_code) do
       [] ->
         game = Trivia.Game.new(questions, [])

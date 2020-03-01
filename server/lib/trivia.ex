@@ -4,6 +4,7 @@ defmodule Trivia do
   def start(_type, _args) do
     children = [
       {Registry, keys: :unique, name: Trivia.GameRegistry},
+      Trivia.QuestionCache,
       Trivia.GameSupervisor
     ]
 

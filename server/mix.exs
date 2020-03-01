@@ -47,7 +47,9 @@ defmodule Database.MixProject do
       {:absinthe_plug, "~> 1.4.0"},
       {:dataloader, "~> 1.0.0"},
       {:pbkdf2_elixir, "~> 1.0"},
-      {:cors_plug, "~> 2.0"}
+      {:cors_plug, "~> 2.0"},
+      {:httpoison, "~> 1.6"},
+      {:poison, "~> 3.1"}
     ]
   end
 
