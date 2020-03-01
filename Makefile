@@ -1,5 +1,5 @@
 console:
-	cd server && iex -S mix
+	source .env && cd server && iex -S mix
 
 console-prod:
 	gigalixir ps:remote_console

@@ -1,7 +1,7 @@
 defmodule Trivia.QuestionCache do
   use GenServer
 
-  @refresh_interval :timer.minutes(5)
+  @refresh_interval :timer.minutes(1)
 
   def start_link(_arg) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
@@ -32,11 +32,11 @@ defmodule Trivia.QuestionCache do
     {:noreply, state}
   end
 
-  defp schedule_refresh do
+  def schedule_refresh do
     Process.send_after(self(), :refresh, @refresh_interval)    
   end
 
-  defp load_questions() do
+  def load_questions() do
     key = System.get_env("AIRTABLE_KEY")
     url = "https://api.airtable.com/v0/appOUKhim5DD45JMb/Question%20Bank\?api_key\=#{key}"
     response = HTTPoison.get!(url)
@@ -46,6 +46,9 @@ defmodule Trivia.QuestionCache do
     Enum.map(records, fn x ->
       fields = x["fields"]
       [fields["Question"], fields["Answer"], fields["Pack"]]
+    end)
+    |> Enum.filter(fn y ->
+      Enum.at(y, 0) != nil && Enum.at(y, 1) && Enum.at(y, 2)
     end)
   end
 end
