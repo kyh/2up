@@ -1,7 +1,7 @@
 defmodule Trivia.QuestionCache do
   use GenServer
 
-  @refresh_interval :timer.minutes(5)
+  @refresh_interval :timer.minutes(1)
 
   def start_link(_arg) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
