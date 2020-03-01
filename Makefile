@@ -22,7 +22,7 @@ deploy:
 deploy-force:
 	git push gigalixir `git subtree split --prefix server master`:master --force
 
-phoenix:
+phx:
 	cd server && mix phx.server
 
 react:
