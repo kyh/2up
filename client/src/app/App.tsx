@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { PageContainer, Navigation } from 'components';
@@ -32,6 +32,7 @@ export const App: React.FC = () => {
             <GameMaster />
           </PageContainer>
         </Route>
+        <Redirect to="/" />
       </Switch>
     </ThemeProvider>
   );
