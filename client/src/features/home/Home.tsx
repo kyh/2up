@@ -6,7 +6,7 @@ import { playhouseActions } from 'features/home/playhouseSlice';
 import { triviaActions } from 'features/trivia/triviaSlice';
 import { usePlayhouseChannel } from 'features/home/PlayhouseChannel';
 import { useTrivia } from 'features/trivia/TriviaChannel';
-import { Button, Input, Card } from 'components';
+import { Button, Input, Card, Modal } from 'components';
 
 const Screens = {
   join: 'join',
@@ -24,9 +24,10 @@ export const Home = () => {
   );
   const [gameID, setGameID] = useState(triviaState.gameID);
   const [name, setName] = useState(playhouseState.name);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const onClickHost = () => {
-    broadcast('trivia:new');
+  const onClickHost = (pack: string) => {
+    broadcast('trivia:new', { pack });
     dispatch(triviaActions.toggle_host(true));
     setShouldRedirect(true);
   };
@@ -75,11 +76,31 @@ export const Home = () => {
               <Button onClick={onClickJoin}>Join existing game</Button>
             </InputContainer>
             <HostNewGameText>
-              Or <button onClick={onClickHost}>host your own game</button>
+              Or <button onClick={() => setIsOpen(true)}>host your own game</button>
             </HostNewGameText>
           </>
         )}
       </IntroCard>
+      <Modal
+        open={isOpen}
+        title="Select a pack"
+        onRequestClose={() => setIsOpen(false)}
+        maxWidth={300}
+        closeButton
+      >
+        <Button
+          fullWidth
+          onClick={() => onClickHost("Bachelor")}
+        >
+          Bachelor
+        </Button>
+        <Button
+          fullWidth
+          onClick={() => onClickHost("Basketball")}
+        >
+          Basketball
+        </Button>
+      </Modal>
     </IntroContainer>
   );
 };
