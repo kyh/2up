@@ -32,7 +32,7 @@ defmodule Trivia.QuestionCache do
   end
 
   def load_questions() do
-    key = Application.get_env(:playhouse, :airtable_key)
+    key = System.get_env("AIRTABLE_KEY")
     url = "https://api.airtable.com/v0/appOUKhim5DD45JMb/Question%20Bank\?api_key\=#{key}"
     response = HTTPoison.get!(url)
     req = Poison.decode!(response.body)
