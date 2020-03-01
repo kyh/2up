@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled, { keyframes } from 'styled-components';
 import raw from 'raw.macro';
+import dust from './dust.svg';
 
 type Props = {
   initialSeconds: number;
@@ -30,8 +31,11 @@ export const Timer: React.FC<Props> = ({
 
   return ReactDOM.createPortal(
     <TimerContainer initialSeconds={initialSeconds}>
-      <Snail dangerouslySetInnerHTML={{ __html: snail }} />
-      <div>{seconds} seconds remaining</div>
+      <SnailContainer>
+        <Snail dangerouslySetInnerHTML={{ __html: snail }} />
+        <Dust />
+      </SnailContainer>
+      <TimerText>{seconds} seconds remaining</TimerText>
     </TimerContainer>,
     document.body
   );
@@ -54,6 +58,25 @@ const moveAnimation = keyframes`
   to { transform: translate(0vw) }
 `;
 
+const dustAnimation = keyframes`
+  100% {
+    background-position-x: right;
+  }
+`;
+
+const TimerContainer = styled.div<{ initialSeconds: number }>`
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  animation: ${moveAnimation} ${({ initialSeconds }) => initialSeconds}s linear
+    infinite;
+  animation-iteration-count: 1;
+`;
+
+const SnailContainer = styled.div`
+  display: flex;
+`;
+
 const Snail = styled.div`
   .right-eye {
     animation: ${eyeAnimation} 1s ease infinite;
@@ -68,11 +91,17 @@ const Snail = styled.div`
   }
 `;
 
-const TimerContainer = styled.div<{ initialSeconds: number }>`
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  animation: ${moveAnimation} ${({ initialSeconds }) => initialSeconds}s linear
-    infinite;
-  animation-iteration-count: 1;
+const Dust = styled.div`
+  width: 197px;
+  height: 66px;
+  background-image: url('${dust}');
+  background-size: 5910px 67px;
+  animation-name: ${dustAnimation};
+  animation-duration: 1s;
+  animation-timing-function: steps(29);
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  transform: translate(-20px, 10px);
 `;
+
+const TimerText = styled.div``;
