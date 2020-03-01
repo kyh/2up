@@ -83,7 +83,7 @@ export const Home = () => {
       </IntroCard>
       <Modal
         open={isOpen}
-        title="Packs"
+        title="Select a pack"
         onRequestClose={() => setIsOpen(false)}
         maxWidth={300}
         closeButton
