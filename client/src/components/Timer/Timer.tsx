@@ -70,7 +70,7 @@ const Snail = styled.div`
 
 const TimerContainer = styled.div<{ initialSeconds: number }>`
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   left: 0;
   animation: ${moveAnimation} ${({ initialSeconds }) => initialSeconds}s linear
     infinite;
