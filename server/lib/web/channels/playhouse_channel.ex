@@ -8,11 +8,10 @@ defmodule Web.PlayhouseChannel do
     {:ok, socket}
   end
 
-  def handle_in("trivia:new", _payload, socket) do
+  def handle_in("trivia:new", payload, socket) do
     code = Catalog.generate_code()
-    questions = Catalog.random_formatted_questions(10)
 
-    case GameSupervisor.start_game(code, questions) do
+    case GameSupervisor.start_game(code, payload["pack"]) do
       {:ok, _game_pid} ->
         push socket, "trivia/new_game", %{ gameID: code }
         {:noreply, socket}

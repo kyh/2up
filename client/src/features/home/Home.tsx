@@ -26,7 +26,7 @@ export const Home = () => {
   const [name, setName] = useState(playhouseState.name);
 
   const onClickHost = () => {
-    broadcast('trivia:new');
+    broadcast('trivia:new', { pack: "Bachelor" });
     dispatch(triviaActions.toggle_host(true));
     setShouldRedirect(true);
   };
