@@ -100,6 +100,12 @@ export const Home = () => {
         >
           Basketball
         </Button>
+        <Button
+          fullWidth
+          onClick={() => onClickHost("Startups")}
+        >
+          Startups
+        </Button>
       </Modal>
     </IntroContainer>
   );
