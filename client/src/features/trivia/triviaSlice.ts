@@ -25,8 +25,9 @@ export type SceneProps = {
 };
 
 export const initialState: TriviaGameState = {
-  gameID: '',
   isHost: localStorage.getItem('isHost') === 'true',
+  packs: [],
+  gameID: '',
   players: [],
   act: 0,
   scene: 0,
@@ -41,6 +42,9 @@ const triviaSlice = createSlice({
   reducers: {
     new_game(state, { payload }: PayloadAction<{ gameID: string }>) {
       state.gameID = payload.gameID;
+    },
+    packs(state, { payload }: PayloadAction<string[]>) {
+      state.packs = Object.keys(payload);
     },
     game_state(state, { payload }: PayloadAction<TriviaState>) {
       state.players = payload.players ?? state.players;
