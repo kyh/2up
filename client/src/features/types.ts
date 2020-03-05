@@ -2,6 +2,7 @@ export type GameState = {
   gameID: string;
   players: Player[];
   isHost: boolean;
+  packs: string[];
 };
 
 export type ServerResponse = {
