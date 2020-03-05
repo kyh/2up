@@ -2,10 +2,9 @@ import React from 'react';
 import { Button } from 'components';
 import { SceneProps } from 'features/trivia/triviaSlice';
 import { hashCode } from 'utils/stringUtils';
-
-import { Question } from '../components/Question';
-import { SubmissionsContainer } from '../components/SubmissionsContainer';
-import correctSvg from '../components/correct.svg';
+import { Question } from 'features/trivia/components/Question';
+import { SubmissionsContainer } from 'features/trivia/components/SubmissionsContainer';
+import correctSvg from 'features/trivia/components/correct.svg';
 
 export const Scene3Remote = ({ state, broadcast }: SceneProps) => {
   return (

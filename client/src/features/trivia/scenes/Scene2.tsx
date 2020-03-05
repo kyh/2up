@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Timer, Button } from 'components';
 import { SceneProps } from 'features/trivia/triviaSlice';
-
-import { Question } from '../components/Question';
-import { SubmissionsContainer } from '../components/SubmissionsContainer';
+import { Question } from 'features/trivia/components/Question';
+import { SubmissionsContainer } from 'features/trivia/components/SubmissionsContainer';
 
 export const Scene2Remote = ({ state, broadcast }: SceneProps) => {
   const [submitted, setSubmitted] = useState(false);
