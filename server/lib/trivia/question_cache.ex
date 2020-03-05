@@ -18,11 +18,15 @@ defmodule Trivia.QuestionCache do
   end
 
   def handle_call({:get_questions, pack}, _from, state) do
-    questions = Enum.filter(state, fn x ->
-      pack_field = Enum.at(x, 2)
-      pack_name = Enum.at(pack_field, 0)
-      pack_name == pack
-    end)
+    questions =
+      Enum.filter(state, fn x ->
+        pack_field = Enum.at(x, 2)
+        pack_name = Enum.at(pack_field, 0)
+        pack_name == pack
+      end)
+      |> Enum.shuffle
+      |> Enum.take(10)
+
     {:reply, questions, state}
   end
 
