@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Flex, Input, Button, Timer } from 'components';
 import { SceneProps } from 'features/trivia/triviaSlice';
-import { Question } from '../components/Question';
+import { Question } from 'features/trivia/components/Question';
 
 export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
   const [value, setValue] = useState('');

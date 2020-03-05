@@ -12,7 +12,7 @@ export const Scene0Remote = ({ state, broadcast }: SceneProps) => {
 
   return (
     <div>
-      <h2>End</h2>
+      <h2>Game Finished</h2>
       {state.players.map(player => (
         <div key={player.id}>
           <h3>{player.name}</h3>
