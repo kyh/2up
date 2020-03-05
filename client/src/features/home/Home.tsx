@@ -26,16 +26,21 @@ export const Home = () => {
   const [name, setName] = useState(playhouseState.name);
   const [isOpen, setIsOpen] = useState(false);
 
-  const onClickHost = (pack: string) => {
-    broadcast('trivia:new', { pack });
-    dispatch(triviaActions.toggle_host(true));
-    setShouldRedirect(true);
+  const onClickHost = () => {
+    broadcast('trivia:packs');
+    setIsOpen(true);
   };
 
   const onClickJoin = () => {
     if (gameID) {
       setScreen(Screens.name);
     }
+  };
+
+  const onSelectPack = (pack: string) => {
+    broadcast('trivia:new', { pack });
+    dispatch(triviaActions.toggle_host(true));
+    setShouldRedirect(true);
   };
 
   const onSubmitName = () => {
@@ -76,7 +81,7 @@ export const Home = () => {
               <Button onClick={onClickJoin}>Join existing game</Button>
             </InputContainer>
             <HostNewGameText>
-              Or <button onClick={() => setIsOpen(true)}>host your own game</button>
+              Or <button onClick={onClickHost}>host your own game</button>
             </HostNewGameText>
           </>
         )}
@@ -88,24 +93,13 @@ export const Home = () => {
         maxWidth={300}
         closeButton
       >
-        <Button
-          fullWidth
-          onClick={() => onClickHost("Bachelor")}
-        >
-          Bachelor
-        </Button>
-        <Button
-          fullWidth
-          onClick={() => onClickHost("Basketball")}
-        >
-          Basketball
-        </Button>
-        <Button
-          fullWidth
-          onClick={() => onClickHost("Startups")}
-        >
-          Startups
-        </Button>
+        <PackModalBody>
+          {triviaState.packs.map(pack => (
+            <Button key={pack} fullWidth onClick={() => onSelectPack(pack)}>
+              {pack}
+            </Button>
+          ))}
+        </PackModalBody>
       </Modal>
     </IntroContainer>
   );
@@ -145,4 +139,8 @@ const HostNewGameText = styled.div`
     margin-left: ${({ theme }) => theme.spacings(1.2)};
     text-decoration: underline;
   }
+`;
+
+const PackModalBody = styled.div`
+  min-height: 180px;
 `;
