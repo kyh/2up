@@ -20,6 +20,7 @@ export const Scene2Remote = ({ state, broadcast }: SceneProps) => {
     <section>
       <h2>{state.question}</h2>
       {state.submissions.map(submission => {
+        if (!submission.content) return null;
         return (
           <EndorsementButtons
             key={submission.id}
