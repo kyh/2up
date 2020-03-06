@@ -20,4 +20,9 @@ defmodule Web.PlayhouseChannel do
         {:error, %{reason: "Server error"}}
     end
   end
+
+  def handle_in("trivia:packs", _payload, socket) do
+    push socket, "trivia/packs", %{ Startups: "Startups", Bachelor: "Bachelor", Basketball: "Basketball"}
+    {:noreply, socket}
+  end
 end

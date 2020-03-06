@@ -94,6 +94,7 @@ const ModalHeader = styled.header`
 
 const ModalBody = styled.section`
   height: 100%;
+  max-height: 550px;
   background: ${({ theme }) => theme.ui.modal.background};
   border: 2px solid ${({ theme }) => theme.ui.modal.border};
   padding: ${({ theme }) => theme.spacings(3)};
