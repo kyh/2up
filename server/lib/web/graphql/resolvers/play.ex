@@ -1,4 +1,4 @@
-defmodule Web.GraphQL.Resolvers.Live do
+defmodule Web.GraphQL.Resolvers.Play do
   alias Database.Catalog
   alias Trivia.GameSupervisor
 

@@ -1,6 +1,6 @@
 defmodule Web.GraphQL.Schema do
   use Absinthe.Schema
-  alias Web.GraphQL.Resolvers.{Catalog, Accounts, Live}
+  alias Web.GraphQL.Resolvers.{Catalog, Accounts, Play}
 
   query do
     @desc "Get a list of questions"
@@ -27,7 +27,7 @@ defmodule Web.GraphQL.Schema do
 
     @desc "Create new live game"
     field :trivia_new, :code do
-      resolve &Live.trivia_new/3
+      resolve &Play.trivia_new/3
     end
   end
 
