@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from 'app/rootReducer';
 import { themeSong } from 'styles/sound';
 
 type UserPayload = {
@@ -59,3 +61,8 @@ const playhouseSlice = createSlice({
 
 export const playhouseActions = playhouseSlice.actions;
 export const playhouseReducer = playhouseSlice.reducer;
+export const usePlayhouse = () => {
+  const state = useSelector((state: RootState) => state.playhouse);
+  const dispatch = useDispatch();
+  return { state, dispatch };
+};

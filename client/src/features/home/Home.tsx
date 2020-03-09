@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import gql from 'graphql-tag';
 import { useHistory } from 'react-router-dom';
-
-import { playhouseActions } from 'features/home/playhouseSlice';
-import { triviaActions } from 'features/trivia/triviaSlice';
-import { usePlayhouseChannel } from 'features/home/PlayhouseChannel';
-import { useTrivia } from 'features/trivia/TriviaChannel';
-import { Button, Input, Card, Modal } from 'components';
+import { useMutation } from '@apollo/react-hooks';
+import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
+import { triviaActions, useTrivia } from 'features/trivia/triviaSlice';
+import { Button, Input, Card } from 'components';
 
 const Screens = {
   join: 'join',
   name: 'name'
 };
 
+const TRIVIA_NEW = gql`
+  mutation TriviaNew {
+    triviaNew {
+      code
+    }
+  }
+`;
+
 export const Home = () => {
   const history = useHistory();
-  const { state: playhouseState, broadcast, dispatch } = usePlayhouseChannel();
+  const [triviaNew] = useMutation(TRIVIA_NEW);
+  const { state: playhouseState, dispatch } = usePlayhouse();
   const { state: triviaState } = useTrivia();
 
   const [shouldRedirect, setShouldRedirect] = useState(false);
@@ -24,23 +32,19 @@ export const Home = () => {
   );
   const [gameID, setGameID] = useState(triviaState.gameID);
   const [name, setName] = useState(playhouseState.name);
-  const [isOpen, setIsOpen] = useState(false);
 
-  const onClickHost = () => {
-    broadcast('trivia:packs');
-    setIsOpen(true);
+  const onClickHost = async () => {
+    const { data } = await triviaNew();
+    if (data.error) return;
+    dispatch(triviaActions.toggle_host(true));
+    dispatch(triviaActions.new_game({ gameID: data.triviaNew.code }));
+    setShouldRedirect(true);
   };
 
   const onClickJoin = () => {
     if (gameID) {
       setScreen(Screens.name);
     }
-  };
-
-  const onSelectPack = (pack: string) => {
-    broadcast('trivia:new', { pack });
-    dispatch(triviaActions.toggle_host(true));
-    setShouldRedirect(true);
   };
 
   const onSubmitName = () => {
@@ -86,21 +90,6 @@ export const Home = () => {
           </>
         )}
       </IntroCard>
-      <Modal
-        open={isOpen}
-        title="Select a pack"
-        onRequestClose={() => setIsOpen(false)}
-        maxWidth={300}
-        closeButton
-      >
-        <PackModalBody>
-          {triviaState.packs.map(pack => (
-            <Button key={pack} fullWidth onClick={() => onSelectPack(pack)}>
-              {pack}
-            </Button>
-          ))}
-        </PackModalBody>
-      </Modal>
     </IntroContainer>
   );
 };
@@ -139,8 +128,4 @@ const HostNewGameText = styled.div`
     margin-left: ${({ theme }) => theme.spacings(1.2)};
     text-decoration: underline;
   }
-`;
-
-const PackModalBody = styled.div`
-  min-height: 180px;
 `;

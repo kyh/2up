@@ -1,7 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useChannel } from 'utils/Socket';
-import { RootState } from 'app/rootReducer';
 import { initialState, triviaActions } from 'features/trivia/triviaSlice';
 
 export const TriviaContext = React.createContext({
@@ -39,10 +37,4 @@ export const TriviaProvider: React.FC<{ gameID?: string }> = ({
 
 export const useTriviaChannel = () => {
   return useContext(TriviaContext);
-};
-
-export const useTrivia = () => {
-  const state = useSelector((state: RootState) => state.trivia);
-  const dispatch = useDispatch();
-  return { state, dispatch };
 };

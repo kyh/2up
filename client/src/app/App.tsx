@@ -4,10 +4,10 @@ import { ThemeProvider } from 'styled-components';
 
 import { PageContainer, Navigation } from 'components';
 
-import { usePlayhouse } from 'features/home/PlayhouseChannel';
 import { lightTheme, darkTheme } from 'styles/theme';
 import { GlobalStyle } from 'styles/global';
 
+import { usePlayhouse } from 'features/home/playhouseSlice';
 import { Home } from 'features/home/Home';
 import { GameMaster } from 'features/gamemaster/GameMaster';
 import { TriviaRoutes } from 'features/trivia/TriviaRoutes';

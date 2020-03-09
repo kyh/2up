@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import { Provider } from 'react-redux';
+import { ApolloProvider } from '@apollo/react-hooks';
+import { Provider as ReduxProvider } from 'react-redux';
 import { SocketProvider } from 'utils/Socket';
-import { PlayhouseProvider } from 'features/home/PlayhouseChannel';
 import { BrowserRouter } from 'react-router-dom';
 
 import { debounce } from 'lodash';
 import { store } from 'app/store';
+import { client } from 'app/apollo';
 import * as serviceWorker from './serviceWorker';
 
 const onResize = () => {
@@ -23,15 +23,15 @@ const render = () => {
   const { App } = require('./app/App');
 
   ReactDOM.render(
-    <Provider store={store}>
-      <SocketProvider wsUrl={`${process.env.REACT_APP_SOCKET_URL}/socket`}>
-        <PlayhouseProvider>
-          <BrowserRouter>
+    <BrowserRouter>
+      <ReduxProvider store={store}>
+        <SocketProvider wsUrl={`${process.env.REACT_APP_SOCKET_URL}/socket`}>
+          <ApolloProvider client={client}>
             <App />
-          </BrowserRouter>
-        </PlayhouseProvider>
-      </SocketProvider>
-    </Provider>,
+          </ApolloProvider>
+        </SocketProvider>
+      </ReduxProvider>
+    </BrowserRouter>,
     document.getElementById('root')
   );
 };
