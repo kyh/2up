@@ -32,6 +32,7 @@ export const useChannel = (
   initialPayload = {}
 ) => {
   const [connected, setConnected] = useState(false);
+  const [error, setError] = useState(null);
   const socket = useContext(SocketContext);
   const dispatch = useDispatch();
   const state = useSelector(selector);
@@ -52,10 +53,12 @@ export const useChannel = (
       .join()
       .receive('ok', ({ messages }: any) => {
         setConnected(true);
+        setError(null);
         console.log('successfully joined channel', messages || '');
       })
       .receive('error', ({ reason }: any) => {
         setConnected(false);
+        setError(reason);
         console.error('failed to join channel', reason);
       });
 
@@ -66,7 +69,7 @@ export const useChannel = (
     };
   }, [channelTopic]);
 
-  return [state, broadcast, dispatch, connected];
+  return [state, broadcast, dispatch, connected, error];
 };
 
 const mustJoinChannelWarning = () => () =>
