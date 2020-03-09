@@ -7,8 +7,9 @@
 ```
 ├── /client                      # ReactJS client
 |   └── /src
+│       ├── /app                 # Root app setup files
 │       ├── /components          # React components
-│       ├── /pages               # App routes
+│       ├── /features            # App routes
 │       ├── /styles              # Theme and global styling
 │       └── /utils               # Utility
 │── /design                      # Design assets
@@ -20,23 +21,28 @@
         ├── /web                 # Channels and routes
 ```
 
-## Setting up the Client
+## Setting up
 
-The client is bootstrapped with `create-react-app`. To get started:
+Client: The web client is a React/Redux application bootstrapped with `create-react-app`
 
+Server: Backend server is an Elixir/Pheonix api server
+
+#### To set up your local instance:
+- grab a `.env` from another playhouse member and add it to the root, then run:
+
+```bash
+make setup
 ```
-cd client
-npm i
-npm run start
+
+## Running the app locally
+
+```bash
+# Start the api server
+make phx
+
+# In a seperate terminal window,
+make react
 ```
 
-## Setting up the Server
-
-The server is bootstrapped with `mix phx.new`. To get started:
-
-```
-cd server
-mix deps.get
-mix ecto.setup
-mix phx.server
-```
+## Deployment
+Any code merged into master will autodeploy wiht Netlify
