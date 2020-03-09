@@ -6,7 +6,7 @@ import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
 import { Box } from 'reflexbox';
 import { Icon } from 'components/Icon/Icon';
 import { Modal } from 'components/Modal/Modal';
-import { Button } from 'components/Button/Button';
+import { Button, ButtonLink } from 'components/Button/Button';
 
 export const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,7 +59,14 @@ export const Navigation: React.FC = () => {
             <Button fullWidth>FAQ</Button>
           </SettingItem>
           <SettingItem>
-            <Button fullWidth>Contact Us</Button>
+            <ButtonLink
+              fullWidth
+              href="https://join.slack.com/t/playhouse-gg/shared_invite/zt-cmze8pmv-g7Z1ceutMlfLri2hfwo~5A"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Contact Us
+            </ButtonLink>
           </SettingItem>
         </SettingsContainer>
       </Modal>
