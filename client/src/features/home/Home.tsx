@@ -20,9 +20,19 @@ const TRIVIA_NEW = gql`
   }
 `;
 
+const TRIVIA_CHECK = gql`
+  mutation TriviaCheck {
+    triviaCheck {
+      code
+    }
+  }
+`;
+
 export const Home = () => {
   const history = useHistory();
   const [triviaNew] = useMutation(TRIVIA_NEW);
+  const [triviaCheck] = useMutation(TRIVIA_CHECK);
+
   const { state: playhouseState, dispatch } = usePlayhouse();
   const { state: triviaState } = useTrivia();
 
@@ -35,22 +45,24 @@ export const Home = () => {
 
   const onClickHost = async () => {
     const { data } = await triviaNew();
+    // Need better error handling
     if (data.error) return;
     dispatch(triviaActions.toggle_host(true));
     dispatch(triviaActions.new_game({ gameID: data.triviaNew.code }));
     setShouldRedirect(true);
   };
 
-  const onClickJoin = () => {
-    if (gameID) {
-      setScreen(Screens.name);
-    }
+  const onClickJoin = async () => {
+    // const { data } = await triviaCheck({ variables: { code: gameID } });
+    // Need better error handling
+    // if (data.error) return;
+    dispatch(triviaActions.new_game({ gameID }));
+    setScreen(Screens.name);
   };
 
   const onSubmitName = () => {
-    dispatch(triviaActions.new_game({ gameID }));
-    dispatch(triviaActions.toggle_host(false));
     dispatch(playhouseActions.update_user({ name }));
+    dispatch(triviaActions.toggle_host(false));
     setShouldRedirect(true);
   };
 
@@ -58,7 +70,7 @@ export const Home = () => {
     if (triviaState.gameID && shouldRedirect) {
       history.push(`/trivia/${triviaState.gameID}/lobby`);
     }
-  }, [triviaState.gameID, shouldRedirect, history]);
+  }, [triviaState.gameID, shouldRedirect]);
 
   return (
     <IntroContainer>
