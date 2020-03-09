@@ -44,6 +44,10 @@ declare module 'styled-components' {
         border: string;
         background: string;
       };
+      alert: {
+        text: string;
+        background: string;
+      };
     };
   }
 }

@@ -39,7 +39,7 @@ export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
       <Button disabled={!value || submitted} onClick={handleClick}>
         Submit answer
       </Button>
-      <Timer initialSeconds={30} onTimeout={handleClick} />
+      <Timer onTimeout={handleClick} />
     </Flex>
   );
 };
@@ -52,7 +52,7 @@ export const Scene1TV = ({ state }: SceneProps) => {
         <Alert>{submissions} players have submitted their answers</Alert>
       )}
       <Question>{state.question}</Question>
-      <Timer initialSeconds={30} />
+      <Timer />
     </>
   );
 };

@@ -32,7 +32,6 @@ export const Scene2Remote = ({ state, broadcast }: SceneProps) => {
         );
       })}
       <Timer
-        initialSeconds={30}
         onTimeout={() => {
           const submission =
             state.submissions[
@@ -61,7 +60,7 @@ export const Scene2TV = ({ state }: SceneProps) => {
             </div>
           );
         })}
-        <Timer initialSeconds={30} />
+        <Timer />
       </SubmissionsContainer>
     </section>
   );
