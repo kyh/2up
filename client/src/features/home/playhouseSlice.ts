@@ -28,7 +28,7 @@ const playhouseSlice = createSlice({
   name: 'playhouse',
   initialState,
   reducers: {
-    toggle_music(state) {
+    toggle_music: state => {
       state.isMusicOn = !state.isMusicOn;
       if (state.isMusicOn) {
         themeSong.play();
@@ -37,15 +37,15 @@ const playhouseSlice = createSlice({
       }
       localStorage.setItem('isMusicOn', state.isMusicOn.toString());
     },
-    toggle_SFX(state) {
+    toggle_SFX: state => {
       state.isSFXOn = !state.isSFXOn;
       localStorage.setItem('isSFXOn', state.isSFXOn.toString());
     },
-    toggle_dark_mode(state) {
+    toggle_dark_mode: state => {
       state.isDarkMode = !state.isDarkMode;
       localStorage.setItem('isDarkMode', state.isDarkMode.toString());
     },
-    update_user(state, { payload }: PayloadAction<UserPayload>) {
+    update_user: (state, { payload }: PayloadAction<UserPayload>) => {
       state.userId = payload.userId ?? state.userId;
       state.name = payload.name ?? state.name;
 

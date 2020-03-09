@@ -5,14 +5,14 @@ import raw from 'raw.macro';
 import dust from './dust.svg';
 
 type Props = {
-  initialSeconds: number;
+  initialSeconds?: number;
   onTimeout?: () => void;
 };
 
 const snail = raw('./snail.svg');
 
 export const Timer: React.FC<Props> = ({
-  initialSeconds,
+  initialSeconds = 40,
   onTimeout = () => {}
 }) => {
   const [seconds, setSeconds] = useState(initialSeconds);

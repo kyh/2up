@@ -43,10 +43,10 @@ const triviaSlice = createSlice({
   name: 'trivia',
   initialState,
   reducers: {
-    new_game(state, { payload }: PayloadAction<{ gameID: string }>) {
+    new_game: (state, { payload }: PayloadAction<{ gameID: string }>) => {
       state.gameID = payload.gameID;
     },
-    game_state(state, { payload }: PayloadAction<TriviaState>) {
+    game_state: (state, { payload }: PayloadAction<TriviaState>) => {
       state.players = payload.players ?? state.players;
       state.act = payload.act ?? state.act;
       state.scene = payload.scene ?? state.scene;
@@ -55,10 +55,11 @@ const triviaSlice = createSlice({
       state.answer = payload.answer ?? state.answer;
       state.submissions = payload.submissions ?? state.submissions;
     },
-    toggle_host(state, { payload }: PayloadAction<boolean>) {
+    toggle_host: (state, { payload }: PayloadAction<boolean>) => {
       state.isHost = payload;
       localStorage.setItem('isHost', state.isHost.toString());
-    }
+    },
+    reset: () => ({ ...initialState, isHost: false })
   }
 });
 

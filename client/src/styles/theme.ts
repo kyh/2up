@@ -50,6 +50,10 @@ export const lightTheme: DefaultTheme = {
     modal: {
       border: colors.black,
       background: colors.white
+    },
+    alert: {
+      text: colors.white,
+      background: colors.black
     }
   }
 };
@@ -70,6 +74,10 @@ export const darkTheme: DefaultTheme = {
     modal: {
       border: colors.lightGrey,
       background: colors.black
+    },
+    alert: {
+      text: colors.black,
+      background: colors.white
     }
   }
 };

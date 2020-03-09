@@ -1,5 +1,5 @@
 export { Flex, Box } from 'reflexbox';
-export { Alert } from './Alert/Alert';
+export { Alert, ReactAlertTemplate } from './Alert/Alert';
 export { PageContainer } from './Page/PageContainer';
 export { Button } from './Button/Button';
 export { Input } from './Input/Input';
