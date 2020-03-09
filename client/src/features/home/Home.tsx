@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { useHistory } from 'react-router-dom';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useLazyQuery } from '@apollo/react-hooks';
+import { useAlert } from 'react-alert';
+
 import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
 import { triviaActions, useTrivia } from 'features/trivia/triviaSlice';
 import { Button, Input, Card } from 'components';
@@ -21,17 +23,18 @@ const TRIVIA_NEW = gql`
 `;
 
 const TRIVIA_CHECK = gql`
-  mutation TriviaCheck {
-    triviaCheck {
-      code
+  query TriviaCheck($code: String!) {
+    game(code: $code) {
+      isValid
     }
   }
 `;
 
 export const Home = () => {
+  const alert = useAlert();
   const history = useHistory();
   const [triviaNew] = useMutation(TRIVIA_NEW);
-  const [triviaCheck] = useMutation(TRIVIA_CHECK);
+  const [triviaCheck] = useLazyQuery(TRIVIA_CHECK);
 
   const { state: playhouseState, dispatch } = usePlayhouse();
   const { state: triviaState } = useTrivia();
@@ -45,8 +48,7 @@ export const Home = () => {
 
   const onClickHost = async () => {
     const { data } = await triviaNew();
-    // Need better error handling
-    if (data.error) return;
+    if (data.error) return alert.show(data.error);
     dispatch(triviaActions.toggle_host(true));
     dispatch(triviaActions.new_game({ gameID: data.triviaNew.code }));
     setShouldRedirect(true);
@@ -54,8 +56,7 @@ export const Home = () => {
 
   const onClickJoin = async () => {
     // const { data } = await triviaCheck({ variables: { code: gameID } });
-    // Need better error handling
-    // if (data.error) return;
+    // if (data.error) return alert.show(data.error)
     dispatch(triviaActions.new_game({ gameID }));
     setScreen(Screens.name);
   };

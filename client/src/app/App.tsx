@@ -36,9 +36,7 @@ export const App: React.FC = () => {
             <TriviaRoutes />
           </Route>
           <Route exact path="/gamemaster">
-            <PageContainer size="large" align="center">
-              <GameMaster />
-            </PageContainer>
+            <GameMaster />
           </Route>
           <Redirect to="/" />
         </Switch>
