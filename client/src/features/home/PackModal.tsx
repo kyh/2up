@@ -11,8 +11,7 @@ export const PackModal = ({
   setIsPackModalOpen = (_isOpen: boolean) => {},
   onSelectPack = (_pack: string) => {}
 }) => {
-  // const { data } = useQuery();
-  const packs: any[] = [];
+  const { data } = useQuery(GET_PACKS);
   return (
     <Modal
       open={isPackModalOpen}
@@ -22,7 +21,7 @@ export const PackModal = ({
       closeButton
     >
       <PackModalBody>
-        {packs.map(pack => (
+        {data?.packs?.map((pack: string) => (
           <Button key={pack} fullWidth onClick={() => onSelectPack(pack)}>
             {pack}
           </Button>
