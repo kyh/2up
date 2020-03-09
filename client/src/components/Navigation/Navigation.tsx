@@ -56,7 +56,7 @@ export const Navigation: React.FC = () => {
         <h3>Support</h3>
         <SettingsContainer>
           <SettingItem>
-            <Button fullWidth>FAQ</Button>
+            <Button fullWidth>Careers</Button>
           </SettingItem>
           <SettingItem>
             <ButtonLink
