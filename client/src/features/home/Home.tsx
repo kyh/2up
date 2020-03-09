@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
+import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
-import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import { useAlert } from 'react-alert';
 
@@ -32,7 +32,6 @@ const TRIVIA_CHECK = gql`
 
 export const Home = () => {
   const alert = useAlert();
-  const history = useHistory();
   const [triviaNew] = useMutation(TRIVIA_NEW);
   const [triviaCheck] = useMutation(TRIVIA_CHECK);
 
@@ -46,6 +45,7 @@ export const Home = () => {
   const [gameID, setGameID] = useState(triviaState.gameID);
   const [name, setName] = useState(playhouseState.name);
 
+  // Creating a new game:
   const onClickHost = async () => {
     const { data } = await triviaNew();
     if (data.error) {
@@ -57,7 +57,9 @@ export const Home = () => {
     setShouldRedirect(true);
   };
 
-  const onClickJoin = async () => {
+  // Joining an existing game:
+  const onSubmitGameCode = async (event: SyntheticEvent) => {
+    event.preventDefault();
     const { data } = await triviaCheck({
       variables: { code: gameID }
     });
@@ -70,46 +72,48 @@ export const Home = () => {
     setScreen(Screens.name);
   };
 
-  const onSubmitName = () => {
+  const onSubmitName = (event: SyntheticEvent) => {
+    event.preventDefault();
     dispatch(triviaActions.toggle_host(false));
     dispatch(playhouseActions.update_user({ name }));
     setShouldRedirect(true);
   };
 
-  useEffect(() => {
-    if (triviaState.gameID && shouldRedirect) {
-      history.push(`/trivia/${triviaState.gameID}/lobby`);
-    }
-  }, [triviaState.gameID, shouldRedirect]);
+  if (triviaState.gameID && shouldRedirect) {
+    return <Redirect to={`/trivia/${triviaState.gameID}/lobby`} />;
+  }
 
   return (
     <IntroContainer>
       <img src="/logo/logomark.svg" alt="Playhouse" />
       <IntroCard>
-        {screen === Screens.name ? (
-          <InputContainer>
-            <Input
-              placeholder="Name"
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
-            <Button onClick={onSubmitName}>Start</Button>
-          </InputContainer>
-        ) : (
+        {screen === Screens.join ? (
           <>
-            <InputContainer>
+            <InputContainer onSubmit={onSubmitGameCode}>
               <Input
                 type="tel"
                 placeholder="Game ID"
                 value={gameID}
                 onChange={e => setGameID(e.target.value)}
               />
-              <Button onClick={onClickJoin}>Join existing game</Button>
+              <Button>Join existing game</Button>
             </InputContainer>
             <HostNewGameText>
-              Or <button onClick={onClickHost}>host your own game</button>
+              Or{' '}
+              <button type="button" onClick={onClickHost}>
+                host your own game
+              </button>
             </HostNewGameText>
           </>
+        ) : (
+          <InputContainer onSubmit={onSubmitName}>
+            <Input
+              placeholder="Name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+            <Button>Start</Button>
+          </InputContainer>
         )}
       </IntroCard>
     </IntroContainer>
@@ -129,7 +133,7 @@ const IntroCard = styled(Card)`
   height: 260px;
 `;
 
-const InputContainer = styled.div`
+const InputContainer = styled.form`
   display: flex;
   align-items: center;
   flex-direction: column;
