@@ -1,3 +1,17 @@
+# Makefile conventions
+# Targets: verb or verb-noun
+# Constants: CAPS_WITH_UNDERSCORES
+
+.PHONY: \
+	setup build test deploy console
+
+setup: install
+	cd server mix ecto.setup
+
+install:
+	cd client && npm i
+	cd server && mix deps.get
+
 console:
 	source .env && cd server && iex -S mix
 
@@ -19,9 +33,6 @@ migrate-prod:
 deploy:
 	git subtree push --prefix server gigalixir master
 
-deploy-force:
-	git push gigalixir `git subtree split --prefix server master`:master --force
-
 phx:
 	source .env && cd server && mix phx.server
 
@@ -33,9 +44,6 @@ logs:
 
 test:
 	cd server && mix test
-
-install:
-	cd server && mix deps.get
 
 seeds:
 	cd server && mix run priv/repo/seeds.exs
