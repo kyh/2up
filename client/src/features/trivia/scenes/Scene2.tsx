@@ -54,6 +54,7 @@ export const Scene2TV = ({ state }: SceneProps) => {
       <Question>{state.question}</Question>
       <SubmissionsContainer>
         {state.submissions.map(submission => {
+          if (!submission.content) return null;
           return (
             <div className="submission" key={submission.id}>
               <Button disabled>{submission.content}</Button>
