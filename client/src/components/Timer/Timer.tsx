@@ -12,7 +12,7 @@ type Props = {
 const snail = raw('./snail.svg');
 
 export const Timer: React.FC<Props> = ({
-  initialSeconds = 40,
+  initialSeconds = 45,
   onTimeout = () => {}
 }) => {
   const [seconds, setSeconds] = useState(initialSeconds);

@@ -112,7 +112,7 @@ export const Home = () => {
               value={name}
               onChange={e => setName(e.target.value)}
             />
-            <Button>Start</Button>
+            <Button disabled={!name}>Start</Button>
           </InputContainer>
         )}
       </IntroCard>
