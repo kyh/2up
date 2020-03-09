@@ -12,6 +12,7 @@ export const Scene3Remote = ({ state, broadcast }: SceneProps) => {
       <h2>{state.question}</h2>
       <SubmissionsContainer>
         {state.submissions.map(submission => {
+          if (!submission.content) return null;
           const isRightAnswer = submission.content === state.answer;
           return (
             <div className="submission full" key={submission.id}>
@@ -49,6 +50,7 @@ export const Scene3TV = ({ state }: SceneProps) => {
       <Question>{state.question}</Question>
       <SubmissionsContainer>
         {state.submissions.map(submission => {
+          if (!submission.content) return null;
           const isRightAnswer = submission.content === state.answer;
           return (
             <div className="submission" key={submission.id}>

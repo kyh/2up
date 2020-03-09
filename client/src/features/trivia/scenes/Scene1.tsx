@@ -9,10 +9,7 @@ export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
   const [submitted, setSubmitted] = useState(false);
 
   const handleClick = () => {
-    if (submitted) {
-      return;
-    }
-
+    if (submitted) return;
     if (value.toLowerCase() === state?.answer?.toLowerCase()) {
       setErrorValue(
         'You have selected the right answer. Please write a tricky wrong answer instead.'
