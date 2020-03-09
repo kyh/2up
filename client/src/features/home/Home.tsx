@@ -63,7 +63,7 @@ export const Home = () => {
     const { data } = await triviaCheck({
       variables: { code: gameID }
     });
-    if (!data.isValid || data.error) {
+    if (data.error || (data && !data.game.isValid)) {
       alert.show('Game code does not exist');
       setGameID('');
       return;
