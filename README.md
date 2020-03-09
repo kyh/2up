@@ -1,6 +1,6 @@
 # Playhouse
 
-> Real-time multiplayer trivia game
+> Real-time multiplayer guessing game
 
 ## Directory Layout
 
@@ -23,11 +23,12 @@
 
 ## Setting up
 
-Client: The web client is a React/Redux application bootstrapped with `create-react-app`
+**Client**: The web client is a React/Redux application bootstrapped with `create-react-app`
 
-Server: Backend server is an Elixir/Pheonix api server
+**Server**: Backend server is an Elixir/Pheonix api server
 
 #### To set up your local instance:
+
 - grab a `.env` from another playhouse member and add it to the root, then run:
 
 ```bash
@@ -40,9 +41,10 @@ make setup
 # Start the api server
 make phx
 
-# In a seperate terminal window,
+# In a seperate terminal window
 make react
 ```
 
 ## Deployment
-Any code merged into master will autodeploy wiht Netlify
+
+Any code merged into master will autodeploy with Netlify
