@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Timer, Button } from 'components';
 import { SceneProps } from 'features/trivia/triviaSlice';
-import { Question } from 'features/trivia/components/Question';
+import {
+  TVQuestionConatiner,
+  Question
+} from 'features/trivia/components/Question';
 import { SubmissionsContainer } from 'features/trivia/components/SubmissionsContainer';
 
 export const Scene2Remote = ({ state, broadcast }: SceneProps) => {
@@ -18,7 +21,7 @@ export const Scene2Remote = ({ state, broadcast }: SceneProps) => {
 
   return (
     <section>
-      <h2>{state.question}</h2>
+      <Question>{state.question}</Question>
       {state.submissions.map(submission => {
         if (!submission.content) return null;
         return (
@@ -45,13 +48,17 @@ export const Scene2Remote = ({ state, broadcast }: SceneProps) => {
 };
 
 const EndorsementButtons = styled(Button)`
+  display: block;
+  width: 100%;
   text-transform: uppercase;
 `;
 
 export const Scene2TV = ({ state }: SceneProps) => {
   return (
     <section>
-      <Question>{state.question}</Question>
+      <TVQuestionConatiner>
+        <Question>{state.question}</Question>
+      </TVQuestionConatiner>
       <SubmissionsContainer>
         {state.submissions.map(submission => {
           if (!submission.content) return null;

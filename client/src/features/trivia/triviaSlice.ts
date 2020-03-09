@@ -34,7 +34,8 @@ export const initialState: TriviaGameState = {
   act: 0,
   scene: 0,
   question: '',
-  instruction: '',
+  // TODO(kai): Send from backend.
+  instruction: 'Give a one line description of this startup',
   answer: '',
   submissions: []
 };

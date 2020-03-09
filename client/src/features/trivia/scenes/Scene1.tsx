@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Alert, Flex, Input, Button, Timer } from 'components';
 import { SceneProps } from 'features/trivia/triviaSlice';
-import { Question } from 'features/trivia/components/Question';
+import {
+  TVQuestionConatiner,
+  QuestionInstructions,
+  Question
+} from 'features/trivia/components/Question';
 
 export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
   const [value, setValue] = useState('');
@@ -27,7 +31,8 @@ export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
 
   return (
     <Flex alignItems="center" flexDirection="column">
-      <h2>{state.question}</h2>
+      <QuestionInstructions>{state.instruction}</QuestionInstructions>
+      <Question>{state.question}</Question>
       <Input
         value={value}
         onChange={e => {
@@ -52,7 +57,10 @@ export const Scene1TV = ({ state }: SceneProps) => {
       {!!submissions && (
         <Alert>{submissions} players have submitted their answers</Alert>
       )}
-      <Question>{state.question}</Question>
+      <TVQuestionConatiner>
+        <QuestionInstructions>{state.instruction}</QuestionInstructions>
+        <Question>{state.question}</Question>
+      </TVQuestionConatiner>
       <Timer />
     </>
   );
