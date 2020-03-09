@@ -105,3 +105,10 @@ export const StyledButton = styled.button<StyledProps>`
   ${({ variant = Variants.default }) =>
     variant === Variants.default ? renderRegularStyles() : renderFabStyles()}
 `;
+
+export const ButtonLink = styled.a<StyledProps>`
+  transition: transform 0.2s ease;
+  width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
+  ${({ variant = Variants.default }) =>
+    variant === Variants.default ? renderRegularStyles() : renderFabStyles()}
+`;
