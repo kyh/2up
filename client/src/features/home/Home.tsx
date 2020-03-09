@@ -56,13 +56,13 @@ export const Home = () => {
     // const { data } = await triviaCheck({ variables: { code: gameID } });
     // Need better error handling
     // if (data.error) return;
+    dispatch(triviaActions.toggle_host(false));
     dispatch(triviaActions.new_game({ gameID }));
     setScreen(Screens.name);
   };
 
   const onSubmitName = () => {
     dispatch(playhouseActions.update_user({ name }));
-    dispatch(triviaActions.toggle_host(false));
     setShouldRedirect(true);
   };
 
