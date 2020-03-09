@@ -7,6 +7,12 @@ defmodule Web.GraphQL.Schema do
     field :questions, list_of(:question) do
       resolve &Catalog.questions/3
     end
+
+    @desc "Get info about live game"
+    field :game, :game do
+      arg :code, non_null(:string)
+      resolve &Play.game_validate/3
+    end
   end
 
   mutation do
@@ -48,5 +54,9 @@ defmodule Web.GraphQL.Schema do
 
   object :code do
     field :code, non_null(:string)
+  end
+
+  object :game do
+    field :is_valid, non_null(:boolean)
   end
 end
