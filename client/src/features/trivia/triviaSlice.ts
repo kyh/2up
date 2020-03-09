@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { useSelector, useDispatch } from 'react-redux';
 import { GameState, Player } from 'features/types';
+import { RootState } from 'app/rootReducer';
 
 export type TriviaState = {
   act: number;
@@ -63,3 +65,8 @@ const triviaSlice = createSlice({
 
 export const triviaActions = triviaSlice.actions;
 export const triviaReducer = triviaSlice.reducer;
+export const useTrivia = () => {
+  const state = useSelector((state: RootState) => state.trivia);
+  const dispatch = useDispatch();
+  return { state, dispatch };
+};

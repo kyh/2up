@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { playhouseActions } from 'features/home/playhouseSlice';
-import { usePlayhouseChannel } from 'features/home/PlayhouseChannel';
+import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
 
 import { Box } from 'reflexbox';
 import { Icon } from 'components/Icon/Icon';
@@ -11,7 +10,7 @@ import { Button } from 'components/Button/Button';
 
 export const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { state, dispatch } = usePlayhouseChannel();
+  const { state, dispatch } = usePlayhouse();
   const { isMusicOn, isSFXOn, isDarkMode } = state;
 
   return (
