@@ -30,8 +30,6 @@ export const GlobalStyle = createGlobalStyle`
     text-rendering: optimizeLegibility;
     font-family: 'Chalkboard SE', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
       'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-    max-width: 100%;
-    overflow: hidden;
   }
 
   a {
