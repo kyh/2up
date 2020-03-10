@@ -30,7 +30,7 @@ export const Navigation: React.FC = () => {
             onClick={() => dispatch(playhouseActions.toggle_dark_mode())}
             fullWidth
           >
-            {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+            {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           </Button>
         </Box>
         <SettingsContainer>
@@ -53,7 +53,7 @@ export const Navigation: React.FC = () => {
             </Button>
           </SettingItem>
         </SettingsContainer>
-        <h3>Support</h3>
+        <h3>Contact us</h3>
         <SettingsContainer>
           <SettingItem>
             <ButtonLink
@@ -72,7 +72,7 @@ export const Navigation: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Contact Us
+              Slack
             </ButtonLink>
           </SettingItem>
         </SettingsContainer>

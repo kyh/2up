@@ -6,6 +6,7 @@ import dust from './dust.svg';
 
 type Props = {
   initialSeconds?: number;
+  shouldCallTimeout?: boolean;
   onTimeout?: () => void;
 };
 
@@ -13,6 +14,7 @@ const snail = raw('./snail.svg');
 
 export const Timer: React.FC<Props> = ({
   initialSeconds = 45,
+  shouldCallTimeout = true,
   onTimeout = () => {}
 }) => {
   const [seconds, setSeconds] = useState(initialSeconds);
@@ -22,7 +24,9 @@ export const Timer: React.FC<Props> = ({
       if (seconds !== 1) {
         setSeconds(seconds => seconds - 1);
       } else {
-        onTimeout();
+        if (shouldCallTimeout) {
+          onTimeout();
+        }
         clearInterval(interval);
       }
     }, 1000);
