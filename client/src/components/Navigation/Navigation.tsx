@@ -56,7 +56,14 @@ export const Navigation: React.FC = () => {
         <h3>Support</h3>
         <SettingsContainer>
           <SettingItem>
-            <Button fullWidth>Careers</Button>
+            <ButtonLink
+              fullWidth
+              href="https://github.com/tehkaiyu/playhouse"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Github
+            </ButtonLink>
           </SettingItem>
           <SettingItem>
             <ButtonLink
