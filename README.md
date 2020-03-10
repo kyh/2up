@@ -29,10 +29,10 @@
 
 #### To set up your local instance:
 
-- grab a `.env` from another playhouse member and add it to the root, then run:
-
 ```bash
 make setup
+# If you want, you can seed some questions
+make seeds
 ```
 
 ## Running the app locally
