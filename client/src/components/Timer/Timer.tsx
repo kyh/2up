@@ -30,13 +30,15 @@ export const Timer: React.FC<Props> = ({
   }, [seconds]);
 
   return ReactDOM.createPortal(
-    <TimerContainer initialSeconds={initialSeconds}>
-      <SnailContainer>
-        <Snail dangerouslySetInnerHTML={{ __html: snail }} />
-        <Dust />
-      </SnailContainer>
-      <TimerText>{seconds} seconds remaining</TimerText>
-    </TimerContainer>,
+    <Container>
+      <TimerContainer initialSeconds={initialSeconds}>
+        <SnailContainer>
+          <Snail dangerouslySetInnerHTML={{ __html: snail }} />
+          <Dust />
+        </SnailContainer>
+        <TimerText>{seconds} seconds remaining</TimerText>
+      </TimerContainer>
+    </Container>,
     document.body
   );
 };
@@ -64,10 +66,15 @@ const dustAnimation = keyframes`
   }
 `;
 
-const TimerContainer = styled.div<{ initialSeconds: number }>`
+const Container = styled.div`
   position: absolute;
   bottom: 20px;
   left: 0;
+  right: 0;
+  overflow: hidden;
+`;
+
+const TimerContainer = styled.div<{ initialSeconds: number }>`
   animation: ${moveAnimation} ${({ initialSeconds }) => initialSeconds}s linear
     infinite;
   animation-iteration-count: 1;
