@@ -13,7 +13,6 @@ export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
   const [submitted, setSubmitted] = useState(false);
 
   const handleClick = () => {
-    if (submitted) return;
     if (value.toLowerCase() === state?.answer?.toLowerCase()) {
       setErrorValue(
         'You have selected the right answer. Please write a tricky wrong answer instead.'
@@ -45,7 +44,7 @@ export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
       <Button disabled={!value || submitted} onClick={handleClick}>
         Submit answer
       </Button>
-      <Timer onTimeout={handleClick} />
+      <Timer shouldCallTimeout={!submitted} onTimeout={handleClick} />
     </Flex>
   );
 };

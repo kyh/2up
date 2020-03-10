@@ -107,6 +107,7 @@ export const StyledButton = styled.button<StyledProps>`
 `;
 
 export const ButtonLink = styled.a<StyledProps>`
+  text-align: center;
   transition: transform 0.2s ease;
   width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
   ${({ variant = Variants.default }) =>

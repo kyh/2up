@@ -35,6 +35,7 @@ export const Scene2Remote = ({ state, broadcast }: SceneProps) => {
         );
       })}
       <Timer
+        shouldCallTimeout={!submitted}
         onTimeout={() => {
           const submission =
             state.submissions[
