@@ -1,10 +1,17 @@
 defmodule Web.TriviaChannel do
+  @moduledoc """
+  Channel clients join via game code to play trivia game
+  """
+
   use Web, :channel
 
   alias Web.Presence
   alias Trivia.GameServer
   alias Database.Play
 
+  @doc """
+  Join game with game code
+  """
   def join("trivia:" <> game_code, payload, socket) do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
@@ -15,6 +22,9 @@ defmodule Web.TriviaChannel do
     end
   end
 
+  @doc """
+  Presence is tracked and initial game state broadcasted
+  """
   def handle_info({:after_join, game_code, name, is_host}, socket) do
     push(socket, "presence_state", Presence.list(socket))
 
@@ -34,6 +44,9 @@ defmodule Web.TriviaChannel do
     {:noreply, socket}
   end
 
+  @doc """
+  Triggered from lobby once everyone has joined
+  """
   def handle_in("start", _payload, socket) do
     "trivia:" <> game_code = socket.topic
 
@@ -48,6 +61,10 @@ defmodule Web.TriviaChannel do
     end
   end
 
+  @doc """
+  Triggered on last scene of game. In future this will take game state
+  and store it into database.
+  """
   def handle_in("end", _payload, socket) do
     "trivia:" <> game_code = socket.topic
 
@@ -62,6 +79,9 @@ defmodule Web.TriviaChannel do
     end
   end
 
+  @doc """
+  Increments scene in game state
+  """
   def handle_in("scene:next", _payload, socket) do
     "trivia:" <> game_code = socket.topic
 
@@ -75,6 +95,9 @@ defmodule Web.TriviaChannel do
     end
   end
 
+  @doc """
+  Increments act in game state
+  """
   def handle_in("act:next", _payload, socket) do
     "trivia:" <> game_code = socket.topic
 
@@ -88,6 +111,9 @@ defmodule Web.TriviaChannel do
     end
   end
 
+  @doc """
+  Player's guess to the question
+  """
   def handle_in("submit", %{"name" => name, "submission" => submission}, socket) do
     "trivia:" <> game_code = socket.topic
 
@@ -108,6 +134,9 @@ defmodule Web.TriviaChannel do
     end
   end
 
+  @doc """
+  Player's choice out of all submissions for the question
+  """
   def handle_in("endorse", %{"name" => name, "submission_id" => submission_id}, socket) do
     "trivia:" <> game_code = socket.topic
 
@@ -122,6 +151,10 @@ defmodule Web.TriviaChannel do
     end
   end
 
+  @doc """
+  List of actively connected players used to determine if everyone is
+  done submitting or endorsing
+  """
   defp player_count(socket) do
     Presence.list(socket)
       |> Map.keys
