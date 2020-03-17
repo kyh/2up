@@ -1,21 +1,27 @@
 defmodule Web.TriviaChannel do
   use Web, :channel
 
-  alias Trivia.{GameServer}
-  alias Database.{Play}
+  alias Web.Presence
+  alias Trivia.GameServer
+  alias Database.Play
 
   def join("trivia:" <> game_code, payload, socket) do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         send(self(), {:after_join, game_code, payload["name"], payload["isHost"]})
-        {:ok, socket}
-
+        {:ok, assign(socket, :name, payload["name"])}
       nil ->
         {:error, %{reason: "Game does not exist"}}
     end
   end
 
   def handle_info({:after_join, game_code, name, is_host}, socket) do
+    push(socket, "presence_state", Presence.list(socket))
+
+    {:ok, _} = Presence.track(socket, socket.assigns.name, %{
+      online_at: inspect(System.system_time(:second))
+    })
+
     game_state =
       case is_host == true do
         true -> GameServer.game_state(game_code)
