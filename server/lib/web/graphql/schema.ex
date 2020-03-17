@@ -1,4 +1,11 @@
 defmodule Web.GraphQL.Schema do
+  @moduledoc """
+  Currently only `trivia_new` and `game` mutations are used
+
+  In process of building out schema to allow users to
+  create and share their own collections of questions
+  """
+
   use Absinthe.Schema
   alias Web.GraphQL.Resolvers.{Catalog, Accounts, Play}
 
