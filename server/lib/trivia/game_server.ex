@@ -1,4 +1,9 @@
 defmodule Trivia.GameServer do
+  @moduledoc """
+  Process that persists state for a live game for amount of time
+
+  Uses ets to store instance of game
+  """
 
   use GenServer
 

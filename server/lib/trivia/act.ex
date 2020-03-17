@@ -1,4 +1,9 @@
 defmodule Trivia.Act do	
+  @moduledoc """
+  Act is one full life cycle of a question
+  Submission -> Endorsement -> Results
+  """
+
   defstruct question: '', answer: '', submissions: [], endorsements: []	
 
   alias Trivia.{Act}	

@@ -1,4 +1,8 @@
 defmodule Trivia.QuestionCache do
+  @moduledoc """
+  Pings Airtable every minute to get questions and store/sync results
+  """
+
   use GenServer
 
   @refresh_interval :timer.minutes(1)

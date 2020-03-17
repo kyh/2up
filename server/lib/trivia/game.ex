@@ -1,4 +1,10 @@
 defmodule Trivia.Game do
+  @moduledoc """
+  Main game logic
+
+  TODO: Change coins to score
+  """
+
   alias Trivia.{Act, Game, Player}
 
   defstruct act: 0, scene: 0, acts: [], players: []
