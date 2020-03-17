@@ -155,7 +155,7 @@ defmodule Web.TriviaChannel do
   List of actively connected players used to determine if everyone is
   done submitting or endorsing
   """
-  defp player_count(socket) do
+  def player_count(socket) do
     Presence.list(socket)
       |> Map.keys
       |> Enum.count
