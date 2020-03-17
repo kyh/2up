@@ -28,12 +28,12 @@ defmodule Trivia.GameServer do
     GenServer.call(via_tuple(game_code), {:player_new, player})
   end
 
-  def player_submit(game_code, submission) do
-    GenServer.call(via_tuple(game_code), {:player_submit, submission})
+  def player_submit(game_code, submission, player_count) do
+    GenServer.call(via_tuple(game_code), {:player_submit, submission, player_count})
   end
 
-  def player_endorse(game_code, name, submission_id) do
-    GenServer.call(via_tuple(game_code), {:player_endorse, name, submission_id})
+  def player_endorse(game_code, name, submission_id, player_count) do
+    GenServer.call(via_tuple(game_code), {:player_endorse, name, submission_id, player_count})
   end
 
   def scene_next(game_code) do
@@ -106,16 +106,16 @@ defmodule Trivia.GameServer do
     {:reply, get_game_state(updated_game), updated_game, @timeout}
   end
 
-  def handle_call({:player_submit, submission}, _from, game) do
-    updated_game = Trivia.Game.player_submit(game, submission)
+  def handle_call({:player_submit, submission, player_count}, _from, game) do
+    updated_game = Trivia.Game.player_submit(game, submission, player_count)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 
     {:reply, get_game_state(updated_game), updated_game, @timeout}
   end
 
-  def handle_call({:player_endorse, name, submission_id}, _from, game) do
-    updated_game = Trivia.Game.player_endorse(game, name, submission_id)
+  def handle_call({:player_endorse, name, submission_id, player_count}, _from, game) do
+    updated_game = Trivia.Game.player_endorse(game, name, submission_id, player_count)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 

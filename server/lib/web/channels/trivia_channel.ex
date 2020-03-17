@@ -100,7 +100,7 @@ defmodule Web.TriviaChannel do
           endorsers: []
         }
 
-        game_state = GameServer.player_submit(game_code, submission)
+        game_state = GameServer.player_submit(game_code, submission, player_count(socket))
         broadcast!(socket, "trivia/game_state", game_state)
         {:noreply, socket}
       nil ->
@@ -113,12 +113,18 @@ defmodule Web.TriviaChannel do
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        game_state = GameServer.player_endorse(game_code, name, submission_id)
+        game_state = GameServer.player_endorse(game_code, name, submission_id, player_count(socket))
 
         broadcast!(socket, "trivia/game_state", game_state)
         {:noreply, socket}
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
     end
+  end
+
+  defp player_count(socket) do
+    Presence.list(socket)
+      |> Map.keys
+      |> Enum.count
   end
 end

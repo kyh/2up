@@ -33,7 +33,7 @@ defmodule Trivia.Game do
     %{game | players: new_players}
   end
 
-  def player_submit(game, submission) do
+  def player_submit(game, submission, player_count) do
     new_submission = [submission]
     current_index = game.act - 1
     current_act = Enum.at(game.acts, current_index)
@@ -52,7 +52,8 @@ defmodule Trivia.Game do
       end)
 
     current_scene = 
-      case length(new_submissions) == length(game.players) + 1 do
+      # Extra player count for correct answer submission
+      case length(new_submissions) >= player_count + 1 do
         true -> game.scene + 1
         false -> game.scene
       end
@@ -78,7 +79,7 @@ defmodule Trivia.Game do
     %{game | players: new_players}
   end
 
-  def player_endorse(game, name, submission_id) do
+  def player_endorse(game, name, submission_id, player_count) do
     current_index = game.act - 1
     current_act = Enum.at(game.acts, current_index)
 
@@ -123,7 +124,7 @@ defmodule Trivia.Game do
       |> Enum.sum
 
     current_scene = 
-      case endorsement_length == length(updated_game.players) do
+      case endorsement_length >= player_count do
         true -> updated_game.scene + 1
         false -> updated_game.scene 
       end
