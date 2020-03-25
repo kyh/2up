@@ -29,7 +29,8 @@ defmodule Web.TriviaChannel do
     push(socket, "presence_state", Presence.list(socket))
 
     {:ok, _} = Presence.track(socket, socket.assigns.name, %{
-      online_at: inspect(System.system_time(:second))
+      online_at: inspect(System.system_time(:second)),
+      name: name
     })
 
     game_state =
