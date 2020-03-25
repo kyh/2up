@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Timer, Button } from 'components';
+import { Alert, Timer, Button } from 'components';
 import { SceneProps } from 'features/trivia/triviaSlice';
 import {
   TVQuestionConatiner,
@@ -8,43 +8,58 @@ import {
 } from 'features/trivia/components/Question';
 import { SubmissionsContainer } from 'features/trivia/components/SubmissionsContainer';
 
-export const Scene2Remote = ({ state, broadcast }: SceneProps) => {
+export const Scene2Remote = ({
+  state,
+  broadcast,
+  userId,
+  name
+}: SceneProps) => {
   const [submitted, setSubmitted] = useState(false);
+
+  const submissions = state.submissions.reduce((sum, s) => {
+    return (sum += s.endorsers.length);
+  }, 0);
+  const players = state.players.length;
+  const waiting = players - submissions;
 
   const endorse = (submissionId: number) => {
     broadcast('endorse', {
-      name: localStorage.getItem('name'),
+      userId,
+      name,
       submission_id: submissionId
     });
     setSubmitted(true);
   };
 
   return (
-    <section>
-      <Question>{state.question}</Question>
-      {state.submissions.map(submission => {
-        if (!submission.content) return null;
-        return (
-          <EndorsementButtons
-            key={submission.id}
-            disabled={submitted}
-            onClick={() => endorse(submission.id)}
-          >
-            {submission.content}
-          </EndorsementButtons>
-        );
-      })}
-      <Timer
-        shouldCallTimeout={!submitted}
-        onTimeout={() => {
-          const submission =
-            state.submissions[
-              Math.floor(Math.random() * state.submissions.length)
-            ];
-          endorse(submission.id);
-        }}
-      />
-    </section>
+    <>
+      {submitted && <Alert>Waiting for {waiting} players</Alert>}
+      <section>
+        <Question>{state.question}</Question>
+        {state.submissions.map(submission => {
+          if (!submission.content) return null;
+          return (
+            <EndorsementButtons
+              key={submission.id}
+              disabled={submitted}
+              onClick={() => endorse(submission.id)}
+            >
+              {submission.content}
+            </EndorsementButtons>
+          );
+        })}
+        <Timer
+          shouldCallTimeout={!submitted}
+          onTimeout={() => {
+            const submission =
+              state.submissions[
+                Math.floor(Math.random() * state.submissions.length)
+              ];
+            endorse(submission.id);
+          }}
+        />
+      </section>
+    </>
   );
 };
 
@@ -55,8 +70,14 @@ const EndorsementButtons = styled(Button)`
 `;
 
 export const Scene2TV = ({ state }: SceneProps) => {
+  const submissions = state.submissions.reduce((sum, s) => {
+    return (sum += s.endorsers.length);
+  }, 0);
   return (
     <section>
+      {!!submissions && (
+        <Alert>{submissions} players have submitted their answers</Alert>
+      )}
       <TVQuestionConatiner>
         <Question>{state.question}</Question>
       </TVQuestionConatiner>

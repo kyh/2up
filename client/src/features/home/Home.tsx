@@ -40,9 +40,9 @@ export const Home = () => {
 
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [screen, setScreen] = useState(
-    triviaState.gameID ? Screens.name : Screens.join
+    triviaState.gameId ? Screens.name : Screens.join
   );
-  const [gameID, setGameID] = useState(triviaState.gameID);
+  const [gameId, setgameId] = useState(triviaState.gameId);
   const [name, setName] = useState(playhouseState.name);
 
   // Creating a new game:
@@ -53,7 +53,7 @@ export const Home = () => {
       return;
     }
     dispatch(triviaActions.toggle_host(true));
-    dispatch(triviaActions.new_game({ gameID: data.triviaNew.code }));
+    dispatch(triviaActions.new_game({ gameId: data.triviaNew.code }));
     setShouldRedirect(true);
   };
 
@@ -61,14 +61,14 @@ export const Home = () => {
   const onSubmitGameCode = async (event: SyntheticEvent) => {
     event.preventDefault();
     const { data } = await triviaCheck({
-      variables: { code: gameID }
+      variables: { code: gameId }
     });
     if (data.error || (data && !data.game.isValid)) {
       alert.show('Game code does not exist');
-      setGameID('');
+      setgameId('');
       return;
     }
-    dispatch(triviaActions.new_game({ gameID }));
+    dispatch(triviaActions.new_game({ gameId }));
     setScreen(Screens.name);
   };
 
@@ -79,8 +79,8 @@ export const Home = () => {
     setShouldRedirect(true);
   };
 
-  if (triviaState.gameID && shouldRedirect) {
-    return <Redirect to={`/trivia/${triviaState.gameID}/lobby`} />;
+  if (triviaState.gameId && shouldRedirect) {
+    return <Redirect to={`/trivia/${triviaState.gameId}/lobby`} />;
   }
 
   return (
@@ -93,8 +93,8 @@ export const Home = () => {
               <Input
                 type="tel"
                 placeholder="Game ID"
-                value={gameID}
-                onChange={e => setGameID(e.target.value)}
+                value={gameId}
+                onChange={e => setgameId(e.target.value)}
               />
               <Button>Join existing game</Button>
             </InputContainer>
