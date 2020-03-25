@@ -26,6 +26,11 @@ export const SocketProvider: React.FC<Props> = ({
   );
 };
 
+const PRESENCE_EVENTS = {
+  state: 'presence_state',
+  diff: 'presence_diff'
+};
+
 export const useChannel = (
   channelTopic: string,
   selector: (state: RootState) => any,
@@ -50,9 +55,9 @@ export const useChannel = (
     channel.onMessage = (event: string, payload: any) => {
       if (
         presenceAction &&
-        (event === 'presence_diff' || event === 'presence_state')
+        (event === PRESENCE_EVENTS.diff || event === PRESENCE_EVENTS.state)
       ) {
-        if (event === 'presence_state') {
+        if (event === PRESENCE_EVENTS.state) {
           presences = payload;
         } else {
           presences = Presence.syncDiff(presences, payload);

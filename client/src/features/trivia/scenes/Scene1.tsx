@@ -7,10 +7,19 @@ import {
   Question
 } from 'features/trivia/components/Question';
 
-export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
+export const Scene1Remote = ({
+  state,
+  broadcast,
+  userId,
+  name
+}: SceneProps) => {
   const [value, setValue] = useState('');
   const [errorValue, setErrorValue] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  const submissions = state.submissions.length - 1;
+  const players = state.players.length;
+  const waiting = players - submissions;
 
   const handleClick = () => {
     if (value.toLowerCase() === state?.answer?.toLowerCase()) {
@@ -21,7 +30,8 @@ export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
     }
 
     broadcast('submit', {
-      name: localStorage.getItem('name'),
+      userId,
+      name,
       submission: value
     });
 
@@ -30,6 +40,7 @@ export const Scene1Remote = ({ state, broadcast }: SceneProps) => {
 
   return (
     <Flex alignItems="center" flexDirection="column">
+      {submitted && <Alert>Waiting for {waiting} players</Alert>}
       <QuestionInstructions>{state.instruction}</QuestionInstructions>
       <Question>{state.question}</Question>
       <Input

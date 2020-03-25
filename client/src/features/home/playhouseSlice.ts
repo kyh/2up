@@ -9,7 +9,7 @@ type UserPayload = {
 };
 
 type CurrentAppState = {
-  userId: string | null;
+  userId: string;
   name: string;
   isMusicOn: boolean;
   isSFXOn: boolean;
@@ -17,7 +17,7 @@ type CurrentAppState = {
 };
 
 export const initialState: CurrentAppState = {
-  userId: null,
+  userId: localStorage.getItem('userId') || '',
   name: localStorage.getItem('name') || '',
   isMusicOn: localStorage.getItem('isMusicOn') === 'true',
   isSFXOn: localStorage.getItem('isSFXOn') === 'true',

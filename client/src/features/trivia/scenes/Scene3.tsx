@@ -9,7 +9,8 @@ import {
 import { SubmissionsContainer } from 'features/trivia/components/SubmissionsContainer';
 import correctSvg from 'features/trivia/components/correct.svg';
 
-export const Scene3Remote = ({ state, broadcast }: SceneProps) => {
+export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
+  const firstPlayer = state.players[0];
   return (
     <section>
       <Question>{state.question}</Question>
@@ -42,7 +43,12 @@ export const Scene3Remote = ({ state, broadcast }: SceneProps) => {
           );
         })}
       </SubmissionsContainer>
-      <Button onClick={() => broadcast('scene:next')}>Next</Button>
+      <Button
+        disabled={firstPlayer.name !== name}
+        onClick={() => broadcast('scene:next')}
+      >
+        {firstPlayer.name === name ? 'Next' : `Waiting for ${firstPlayer.name}`}
+      </Button>
     </section>
   );
 };
