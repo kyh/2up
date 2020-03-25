@@ -30,7 +30,8 @@ defmodule Web.TriviaChannel do
 
     {:ok, _} = Presence.track(socket, socket.assigns.name, %{
       online_at: inspect(System.system_time(:second)),
-      name: name
+      name: name,
+      isHost: is_host
     })
 
     game_state =

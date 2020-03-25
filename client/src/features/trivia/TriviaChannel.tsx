@@ -22,7 +22,8 @@ export const TriviaProvider: React.FC<{ gameID?: string }> = ({
     {
       name: localStorage.getItem('name'),
       isHost: localStorage.getItem('isHost') === 'true'
-    }
+    },
+    'trivia/players'
   );
 
   useEffect(() => {

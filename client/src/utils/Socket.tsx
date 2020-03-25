@@ -29,7 +29,8 @@ export const SocketProvider: React.FC<Props> = ({
 export const useChannel = (
   channelTopic: string,
   selector: (state: RootState) => any,
-  initialPayload = {}
+  initialPayload = {},
+  presenceAction = ''
 ) => {
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState(null);
@@ -47,14 +48,19 @@ export const useChannel = (
     });
 
     channel.onMessage = (event: string, payload: any) => {
-      if (event === 'presence_diff' || event === 'presence_state') {
+      if (
+        presenceAction &&
+        (event === 'presence_diff' || event === 'presence_state')
+      ) {
         if (event === 'presence_state') {
           presences = payload;
         } else {
           presences = Presence.syncDiff(presences, payload);
         }
-        const players = Presence.list(presences).map(p => p.metas[0]);
-        dispatch({ type: 'trivia/players', payload: { players } });
+        const players = Presence.list(presences)
+          .map(p => p.metas[0])
+          .filter(p => !p.isHost);
+        dispatch({ type: presenceAction, payload: { players } });
       } else {
         dispatch({ type: event, payload });
       }
