@@ -34,6 +34,7 @@ defmodule Web.GraphQL.Schema do
 
     @desc "Create new live game"
     field :game_new, :code do
+      arg :pack, non_null(:string)
       resolve &Play.game_new/3
     end
 

@@ -36,8 +36,7 @@ export const initialState: GameState = {
   act: 0,
   scene: 0,
   question: '',
-  // TODO(kai): Send from backend.
-  instruction: 'Give a one line description of this startup',
+  instruction: '',
   answer: '',
   submissions: []
 };
@@ -56,6 +55,7 @@ const gameSlice = createSlice({
       state.instruction = payload.instruction ?? state.instruction;
       state.answer = payload.answer ?? state.answer;
       state.submissions = payload.submissions ?? state.submissions;
+      state.instruction = payload.instruction ?? state.instruction;
     },
     toggle_host: (state, { payload }: PayloadAction<boolean>) => {
       state.isHost = payload;

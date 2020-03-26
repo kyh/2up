@@ -8,6 +8,7 @@ import { useAlert } from 'react-alert';
 import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
 import { gameActions, useGame } from 'features/game/gameSlice';
 import { Button, Input, Card } from 'components';
+import { PackModal } from 'features/home/PackModal';
 
 const Screens = {
   join: 'join',
@@ -15,8 +16,8 @@ const Screens = {
 };
 
 const TRIVIA_NEW = gql`
-  mutation GameNew {
-    gameNew {
+  mutation GameNew($pack: String!) {
+    gameNew(pack: $pack) {
       code
     }
   }
@@ -44,17 +45,10 @@ export const Home = () => {
   );
   const [gameId, setgameId] = useState(gameState.gameId);
   const [name, setName] = useState(playhouseState.name);
+  const [isPackModalOpen, setIsPackModalOpen] = useState(false);
 
-  // Creating a new game:
   const onClickHost = async () => {
-    const { data } = await gameNew();
-    if (data.error) {
-      alert.show(data.error);
-      return;
-    }
-    dispatch(gameActions.toggle_host(true));
-    dispatch(gameActions.new_game({ gameId: data.gameNew.code }));
-    setShouldRedirect(true);
+    setIsPackModalOpen(true);
   };
 
   // Joining an existing game:
@@ -76,6 +70,20 @@ export const Home = () => {
     event.preventDefault();
     dispatch(gameActions.toggle_host(false));
     dispatch(playhouseActions.update_user({ name }));
+    setShouldRedirect(true);
+  };
+
+  // Creating a new game:
+  const onSelectPack = async (pack: string) => {
+    const { data } = await gameNew({
+      variables: { pack }
+    });
+    if (data.error) {
+      alert.show(data.error);
+      return;
+    }
+    dispatch(gameActions.toggle_host(true));
+    dispatch(gameActions.new_game({ gameId: data.gameNew.code }));
     setShouldRedirect(true);
   };
 
@@ -116,6 +124,11 @@ export const Home = () => {
           </InputContainer>
         )}
       </IntroCard>
+      <PackModal
+        isPackModalOpen={isPackModalOpen}
+        setIsPackModalOpen={setIsPackModalOpen}
+        onSelectPack={onSelectPack}
+      />
     </IntroContainer>
   );
 };

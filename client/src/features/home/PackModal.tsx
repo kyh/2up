@@ -1,17 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+// import gql from 'graphql-tag';
+// import { useQuery } from '@apollo/react-hooks';
 import { Button, Modal } from 'components';
 
-const GET_PACKS = gql``;
+// const GET_PACKS = gql``;
 
 export const PackModal = ({
   isPackModalOpen = false,
   setIsPackModalOpen = (_isOpen: boolean) => {},
   onSelectPack = (_pack: string) => {}
 }) => {
-  const { data } = useQuery(GET_PACKS);
+  // TODO: uncomment once we migrate off of Airtable
+  // const { data } = useQuery(GET_PACKS);
+  const data = { packs: ['Startups', 'SAT'] };
+
   return (
     <Modal
       open={isPackModalOpen}
