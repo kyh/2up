@@ -24,11 +24,13 @@ export type Submission = {
 export type SceneProps = {
   state: TriviaGameState;
   broadcast: (_eventName: string, _payload?: object) => void;
+  userId?: string;
+  name?: string;
 };
 
 export const initialState: TriviaGameState = {
   isHost: localStorage.getItem('isHost') === 'true',
-  gameID: '',
+  gameId: '',
   players: [],
   act: 0,
   scene: 0,
@@ -43,8 +45,8 @@ const triviaSlice = createSlice({
   name: 'trivia',
   initialState,
   reducers: {
-    new_game: (state, { payload }: PayloadAction<{ gameID: string }>) => {
-      state.gameID = payload.gameID;
+    new_game: (state, { payload }: PayloadAction<{ gameId: string }>) => {
+      state.gameId = payload.gameId;
     },
     game_state: (state, { payload }: PayloadAction<TriviaState>) => {
       state.act = payload.act ?? state.act;

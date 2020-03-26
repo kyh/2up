@@ -32,7 +32,7 @@ export const App: React.FC = () => {
               <Home />
             </PageContainer>
           </Route>
-          <Route path="/trivia/:gameID">
+          <Route path="/trivia/:gameId">
             <TriviaRoutes />
           </Route>
           <Route exact path="/gamemaster">
