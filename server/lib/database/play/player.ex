@@ -7,13 +7,13 @@ defmodule Database.Play.Player do
     has_many :submissions, Database.Play.Submission
 
     field :name, :string
-    field :coins, :integer
+    field :score, :integer
 
     timestamps()
   end
 
   def changeset(player, attrs) do
-    required_fields = [:name, :coins]
+    required_fields = [:name, :score]
 
     player
     |> cast(attrs, required_fields)

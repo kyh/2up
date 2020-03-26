@@ -32,14 +32,14 @@ defmodule Web.TriviaChannel do
       online_at: inspect(System.system_time(:second)),
       name: name,
       isHost: is_host,
-      coins: 0
+      score: 0
     })
 
     game_state =
       case is_host == true do
         true -> GameServer.game_state(game_code)
         false ->
-          player = %{ id: Ecto.UUID.generate, name: name, coins: 0 }
+          player = %{ id: Ecto.UUID.generate, name: name, score: 0 }
           GameServer.player_new(game_code, player)
       end
 
@@ -164,10 +164,10 @@ defmodule Web.TriviaChannel do
 
   # Update player's score based on game state
   defp player_score_update(socket, name, players) do
-    coins =
+    score =
       Enum.filter(players, fn x -> x.name === name end)
       |> Enum.at(0)
-      |> Map.get(:coins)
+      |> Map.get(:score)
 
     player =
       Presence.list(socket)
@@ -175,6 +175,6 @@ defmodule Web.TriviaChannel do
       |> Map.get(:metas)
       |> Enum.at(0)
 
-    Presence.update(socket, name, %{player | coins: coins})
+    Presence.update(socket, name, %{player | score: score})
   end
 end
