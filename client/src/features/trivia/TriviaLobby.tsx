@@ -49,7 +49,7 @@ export const TriviaLobby = () => {
         {triviaState.players.map(p => {
           const avatar = hashCode(p.name, 10);
           return (
-            <div className="player" key={p.id}>
+            <div className="player" key={p.name}>
               <p>{p.name}</p>
               <img src={`/avatars/${avatar}.svg`} alt={p.name} />
             </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, createContext, useContext, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Socket } from 'phoenix';
+import { Socket, Presence } from 'phoenix';
 import { RootState } from 'app/rootReducer';
 
 export const SocketContext = createContext({} as Socket);
@@ -29,7 +29,8 @@ export const SocketProvider: React.FC<Props> = ({
 export const useChannel = (
   channelTopic: string,
   selector: (state: RootState) => any,
-  initialPayload = {}
+  initialPayload = {},
+  presenceAction = ''
 ) => {
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState(null);
@@ -39,13 +40,30 @@ export const useChannel = (
   const [broadcast, setBroadcast] = useState(mustJoinChannelWarning);
 
   useEffect(() => {
+    let presences = {};
+
     const channel = socket.channel(channelTopic, {
       client: 'browser',
       ...initialPayload
     });
 
     channel.onMessage = (event: string, payload: any) => {
-      dispatch({ type: event, payload });
+      if (
+        presenceAction &&
+        (event === 'presence_diff' || event === 'presence_state')
+      ) {
+        if (event === 'presence_state') {
+          presences = payload;
+        } else {
+          presences = Presence.syncDiff(presences, payload);
+        }
+        const players = Presence.list(presences)
+          .map(p => p.metas[0])
+          .filter(p => !p.isHost);
+        dispatch({ type: presenceAction, payload: { players } });
+      } else {
+        dispatch({ type: event, payload });
+      }
       return payload;
     };
 
