@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useTriviaChannel } from 'features/trivia/TriviaChannel';
+import { useGameChannel } from 'features/game/GameChannel';
 import { usePlayhouse } from 'features/home/playhouseSlice';
 import { Scene0Remote } from './scenes/Scene0';
 import { Scene1Remote } from './scenes/Scene1';
@@ -7,11 +7,11 @@ import { Scene2Remote } from './scenes/Scene2';
 import { Scene3Remote } from './scenes/Scene3';
 import { Scene4Remote } from './scenes/Scene4';
 
-export const TriviaRemote: React.FC = () => {
+export const GameRemote: React.FC = () => {
   const {
     state: { userId, name }
   } = usePlayhouse();
-  const { state, broadcast } = useTriviaChannel();
+  const { state, broadcast } = useGameChannel();
 
   useEffect(() => {
     window.scroll(0, 0);

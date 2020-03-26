@@ -1,7 +1,7 @@
-defmodule Trivia.GameSupervisor do
+defmodule Game.GameSupervisor do
   use DynamicSupervisor
 
-  alias Trivia.GameServer
+  alias Game.GameServer
 
   def start_link(_arg) do
     DynamicSupervisor.start_link(__MODULE__, :ok, name: __MODULE__)

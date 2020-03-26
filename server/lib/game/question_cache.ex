@@ -1,4 +1,4 @@
-defmodule Trivia.QuestionCache do
+defmodule Game.QuestionCache do
   @moduledoc """
   Pings Airtable every minute to get questions and store/sync results
   """

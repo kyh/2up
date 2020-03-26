@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from 'components';
-import { SceneProps } from 'features/trivia/triviaSlice';
+import { SceneProps } from 'features/game/gameSlice';
 import { hashCode } from 'utils/stringUtils';
 import {
   TVQuestionConatiner,
   Question
-} from 'features/trivia/components/Question';
-import { SubmissionsContainer } from 'features/trivia/components/SubmissionsContainer';
-import correctSvg from 'features/trivia/components/correct.svg';
+} from 'features/game/components/Question';
+import { SubmissionsContainer } from 'features/game/components/SubmissionsContainer';
+import correctSvg from 'features/game/components/correct.svg';
 
 export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
   const firstPlayer = state.players[0];

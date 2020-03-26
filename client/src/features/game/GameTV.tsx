@@ -1,13 +1,13 @@
 import React from 'react';
-import { useTriviaChannel } from 'features/trivia/TriviaChannel';
+import { useGameChannel } from 'features/game/GameChannel';
 import { Scene0TV } from './scenes/Scene0';
 import { Scene1TV } from './scenes/Scene1';
 import { Scene2TV } from './scenes/Scene2';
 import { Scene3TV } from './scenes/Scene3';
 import { Scene4TV } from './scenes/Scene4';
 
-export const TriviaTV: React.FC = () => {
-  const { state, broadcast } = useTriviaChannel();
+export const GameTV: React.FC = () => {
+  const { state, broadcast } = useGameChannel();
 
   switch (state.scene) {
     case 0:

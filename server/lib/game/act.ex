@@ -1,4 +1,4 @@
-defmodule Trivia.Act do	
+defmodule Game.Act do	
   @moduledoc """
   Act is one full life cycle of a question
   Submission -> Endorsement -> Results
@@ -6,7 +6,7 @@ defmodule Trivia.Act do
 
   defstruct question: '', answer: '', submissions: [], endorsements: []	
 
-  alias Trivia.{Act}	
+  alias Game.{Act}	
 
   def new(question, answer, submissions, endorsements) do	
     %Act{	

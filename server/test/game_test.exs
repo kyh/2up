@@ -1,8 +1,8 @@
 defmodule GameTest do
   use ExUnit.Case, async: true
-  doctest Trivia.Game
+  doctest Game.Game
 
-  alias Trivia.{Game}
+  alias Game.{Game}
 
   setup do
     [

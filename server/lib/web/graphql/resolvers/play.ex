@@ -1,9 +1,9 @@
 defmodule Web.GraphQL.Resolvers.Play do
   alias Database.Catalog
-  alias Trivia.GameSupervisor
-  alias Trivia.GameServer
+  alias Game.GameSupervisor
+  alias Game.GameServer
 
-  def trivia_new(_, _, _) do
+  def game_new(_, _, _) do
     code = Catalog.generate_code()
 
     case GameSupervisor.start_game(code, "Startups") do

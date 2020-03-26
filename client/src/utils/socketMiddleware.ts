@@ -1,4 +1,4 @@
-const WHITELIST_EVENTS = ['playhouse', 'trivia'].join('|');
+const WHITELIST_EVENTS = ['playhouse', 'game'].join('|');
 
 export const socketMiddleware = (_store: any) => (next: any) => (
   action: any

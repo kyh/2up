@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Alert, Timer, Button } from 'components';
-import { SceneProps } from 'features/trivia/triviaSlice';
+import { SceneProps } from 'features/game/gameSlice';
 import {
   TVQuestionConatiner,
   Question
-} from 'features/trivia/components/Question';
-import { SubmissionsContainer } from 'features/trivia/components/SubmissionsContainer';
+} from 'features/game/components/Question';
+import { SubmissionsContainer } from 'features/game/components/SubmissionsContainer';
 
 export const Scene2Remote = ({
   state,

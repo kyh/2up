@@ -1,18 +1,18 @@
-defmodule Web.TriviaChannel do
+defmodule Web.GameChannel do
   @moduledoc """
-  Channel clients join via game code to play trivia game
+  Channel clients join via game code to play game game
   """
 
   use Web, :channel
 
   alias Web.Presence
-  alias Trivia.GameServer
+  alias Game.GameServer
   alias Database.Play
 
   @doc """
   Join game with game code
   """
-  def join("trivia:" <> game_code, payload, socket) do
+  def join("game:" <> game_code, payload, socket) do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         send(self(), {:after_join, game_code, payload["name"], payload["isHost"]})
@@ -42,7 +42,7 @@ defmodule Web.TriviaChannel do
           GameServer.player_new(game_code, player)
       end
 
-    broadcast!(socket, "trivia/game_state", game_state)
+    broadcast!(socket, "game/game_state", game_state)
     {:noreply, socket}
   end
 
@@ -50,12 +50,12 @@ defmodule Web.TriviaChannel do
   Triggered from lobby once everyone has joined
   """
   def handle_in("start", _payload, socket) do
-    "trivia:" <> game_code = socket.topic
+    "game:" <> game_code = socket.topic
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         game_state = GameServer.game_start(game_code)
-        broadcast!(socket, "trivia/game_state", game_state)
+        broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
 
       nil ->
@@ -68,7 +68,7 @@ defmodule Web.TriviaChannel do
   and store it into database.
   """
   def handle_in("end", _payload, socket) do
-    "trivia:" <> game_code = socket.topic
+    "game:" <> game_code = socket.topic
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
@@ -85,12 +85,12 @@ defmodule Web.TriviaChannel do
   Increments scene in game state
   """
   def handle_in("scene:next", _payload, socket) do
-    "trivia:" <> game_code = socket.topic
+    "game:" <> game_code = socket.topic
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         game_state = GameServer.scene_next(game_code)
-        broadcast!(socket, "trivia/game_state", game_state)
+        broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
@@ -101,12 +101,12 @@ defmodule Web.TriviaChannel do
   Increments act in game state
   """
   def handle_in("act:next", _payload, socket) do
-    "trivia:" <> game_code = socket.topic
+    "game:" <> game_code = socket.topic
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         game_state = GameServer.act_next(game_code)
-        broadcast!(socket, "trivia/game_state", game_state)
+        broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
@@ -117,7 +117,7 @@ defmodule Web.TriviaChannel do
   Player's guess to the question
   """
   def handle_in("submit", %{"name" => name, "submission" => submission}, socket) do
-    "trivia:" <> game_code = socket.topic
+    "game:" <> game_code = socket.topic
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
@@ -129,7 +129,7 @@ defmodule Web.TriviaChannel do
         }
 
         game_state = GameServer.player_submit(game_code, submission, player_count(socket))
-        broadcast!(socket, "trivia/game_state", game_state)
+        broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
@@ -140,13 +140,13 @@ defmodule Web.TriviaChannel do
   Player's choice out of all submissions for the question
   """
   def handle_in("endorse", %{"name" => name, "submission_id" => submission_id}, socket) do
-    "trivia:" <> game_code = socket.topic
+    "game:" <> game_code = socket.topic
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         game_state = GameServer.player_endorse(game_code, name, submission_id, player_count(socket))
         player_score_update(socket, name, game_state.players)
-        broadcast!(socket, "trivia/game_state", game_state)
+        broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}

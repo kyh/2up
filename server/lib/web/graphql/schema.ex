@@ -1,6 +1,6 @@
 defmodule Web.GraphQL.Schema do
   @moduledoc """
-  Currently only `trivia_new` and `game` mutations are used
+  Currently only `game_new` and `game` mutations are used
 
   In process of building out schema to allow users to
   create and share their own collections of questions
@@ -33,8 +33,8 @@ defmodule Web.GraphQL.Schema do
     end
 
     @desc "Create new live game"
-    field :trivia_new, :code do
-      resolve &Play.trivia_new/3
+    field :game_new, :code do
+      resolve &Play.game_new/3
     end
 
     @desc "Get info about live game"
