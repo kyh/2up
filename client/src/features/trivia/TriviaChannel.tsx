@@ -10,14 +10,14 @@ export const TriviaContext = React.createContext({
   dispatch: (_action: object) => {}
 });
 
-export const TriviaProvider: React.FC<{ gameID?: string }> = ({
+export const TriviaProvider: React.FC<{ gameId?: string }> = ({
   children,
-  gameID
+  gameId
 }) => {
   const history = useHistory();
   const alert = useAlert();
   const [state, broadcast, dispatch, connected, error] = useChannel(
-    `trivia:${gameID}`,
+    `trivia:${gameId}`,
     state => state.trivia,
     {
       name: localStorage.getItem('name'),
@@ -27,15 +27,15 @@ export const TriviaProvider: React.FC<{ gameID?: string }> = ({
   );
 
   useEffect(() => {
-    if (!state.gameID) {
-      dispatch(triviaActions.new_game({ gameID: gameID! }));
+    if (!state.gameId) {
+      dispatch(triviaActions.new_game({ gameId: gameId! }));
     }
     if (error) {
       dispatch(triviaActions.reset());
       alert.show(error);
       history.push('/');
     }
-  }, [state.gameID, gameID, error]);
+  }, [state.gameId, gameId, error]);
 
   if (!connected) return null;
   return (

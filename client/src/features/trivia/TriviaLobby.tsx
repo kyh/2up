@@ -19,18 +19,18 @@ export const TriviaLobby = () => {
   };
 
   const onStart = () => {
-    broadcast('start', { gameID: triviaState.gameID });
+    broadcast('start', { gameId: triviaState.gameId });
   };
 
   useEffect(() => {
     if (triviaState.act) {
       if (triviaState.isHost) {
-        history.push(`/trivia/${triviaState.gameID}/tv`);
+        history.push(`/trivia/${triviaState.gameId}/tv`);
       } else {
-        history.push(`/trivia/${triviaState.gameID}/remote`);
+        history.push(`/trivia/${triviaState.gameId}/remote`);
       }
     }
-  }, [triviaState.gameID, triviaState.act, triviaState.isHost]);
+  }, [triviaState.gameId, triviaState.act, triviaState.isHost]);
 
   return (
     <LobbyContainer>
@@ -40,7 +40,7 @@ export const TriviaLobby = () => {
             Go to <span className="highlight">playhouse.gg</span>
           </h1>
           <h1 className="title">and enter the room code:</h1>
-          <div className="game-id">{triviaState.gameID}</div>
+          <div className="game-id">{triviaState.gameId}</div>
         </TitleContainer>
       ) : (
         <h1 className="title">Waiting for players to join...</h1>
@@ -78,7 +78,7 @@ export const TriviaLobby = () => {
                   <span className="highlight">playhouse.gg</span>
                 </h3>
                 <h3 className="title">and enter the room code:</h3>
-                <div className="game-id">{triviaState.gameID}</div>
+                <div className="game-id">{triviaState.gameId}</div>
               </TitleContainer>
               <Button className="start-game-button" onClick={onStart}>
                 Start anyways

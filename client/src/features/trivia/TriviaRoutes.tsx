@@ -8,20 +8,20 @@ import { TriviaTV } from 'features/trivia/TriviaTV';
 import { TriviaRemote } from 'features/trivia/TriviaRemote';
 
 export const TriviaRoutes: React.FC = () => {
-  const { gameID } = useParams();
+  const { gameId } = useParams();
   return (
-    <TriviaProvider gameID={gameID}>
-      <Route exact path={`/trivia/${gameID}/lobby`}>
+    <TriviaProvider gameId={gameId}>
+      <Route exact path={`/trivia/${gameId}/lobby`}>
         <PageContainer size="full">
           <TriviaLobby />
         </PageContainer>
       </Route>
-      <Route exact path={`/trivia/${gameID}/tv`}>
+      <Route exact path={`/trivia/${gameId}/tv`}>
         <PageContainer size="large" align="center">
           <TriviaTV />
         </PageContainer>
       </Route>
-      <Route exact path={`/trivia/${gameID}/remote`}>
+      <Route exact path={`/trivia/${gameId}/remote`}>
         <PageContainer size="small">
           <TriviaRemote />
         </PageContainer>
