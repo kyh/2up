@@ -16,7 +16,7 @@ export const Scene0Remote = ({ state, broadcast }: SceneProps) => {
       {state.players.map(player => (
         <div key={player.name}>
           <h3>{player.name}</h3>
-          <h4>{player.coins}</h4>
+          <h4>{player.score}</h4>
         </div>
       ))}
       <Button onClick={handleEnd}>Lobby</Button>

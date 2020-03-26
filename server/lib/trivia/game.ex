@@ -1,8 +1,6 @@
 defmodule Trivia.Game do
   @moduledoc """
   Main game logic
-
-  TODO: Change coins to score
   """
 
   alias Trivia.{Act, Game, Player}
@@ -67,12 +65,12 @@ defmodule Trivia.Game do
     %{game | acts: new_acts, scene: current_scene}
   end
 
-  def player_add_coins(game, name, coins) do
+  def player_add_score(game, name, score) do
     player =
       Enum.filter(game.players, fn x -> x.name === name end)
       |> Enum.at(0)
     
-    new_player = %{player | coins: player.coins + coins}
+    new_player = %{player | score: player.score + score}
 
     new_players =
       Enum.map(game.players, fn x ->
@@ -95,8 +93,8 @@ defmodule Trivia.Game do
 
     updated_game =
       case submission.name == "IS_ANSWER" do
-        true -> player_add_coins(game, name, 1000)
-        false -> player_add_coins(game, submission.name, 500)
+        true -> player_add_score(game, name, 1000)
+        false -> player_add_score(game, submission.name, 500)
       end
 
     player =

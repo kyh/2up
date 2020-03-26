@@ -31,14 +31,15 @@ defmodule Web.TriviaChannel do
     {:ok, _} = Presence.track(socket, socket.assigns.name, %{
       online_at: inspect(System.system_time(:second)),
       name: name,
-      isHost: is_host
+      isHost: is_host,
+      score: 0
     })
 
     game_state =
       case is_host == true do
         true -> GameServer.game_state(game_code)
         false ->
-          player = %{ id: Ecto.UUID.generate, name: name, coins: 0 }
+          player = %{ id: Ecto.UUID.generate, name: name, score: 0 }
           GameServer.player_new(game_code, player)
       end
 
@@ -145,7 +146,7 @@ defmodule Web.TriviaChannel do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         game_state = GameServer.player_endorse(game_code, name, submission_id, player_count(socket))
-
+        player_score_update(socket, name, game_state.players)
         broadcast!(socket, "trivia/game_state", game_state)
         {:noreply, socket}
       nil ->
@@ -153,13 +154,27 @@ defmodule Web.TriviaChannel do
     end
   end
 
-  @doc """
-  List of actively connected players used to determine if everyone is
-  done submitting or endorsing
-  """
-  def player_count(socket) do
+  # List of actively connected players used to determine if everyone is
+  # done submitting or endorsing
+  defp player_count(socket) do
     Presence.list(socket)
       |> Map.keys
       |> Enum.count
+  end
+
+  # Update player's score based on game state
+  defp player_score_update(socket, name, players) do
+    score =
+      Enum.filter(players, fn x -> x.name === name end)
+      |> Enum.at(0)
+      |> Map.get(:score)
+
+    player =
+      Presence.list(socket)
+      |> Map.get(name)
+      |> Map.get(:metas)
+      |> Enum.at(0)
+
+    Presence.update(socket, name, %{player | score: score})
   end
 end

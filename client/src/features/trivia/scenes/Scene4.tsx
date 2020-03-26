@@ -10,7 +10,7 @@ export const Scene4Remote = ({ state, broadcast, name }: SceneProps) => {
       {state.players.map(player => (
         <div key={player.name}>
           <h3>{player.name}</h3>
-          <h4>{player.coins}</h4>
+          <h4>{player.score}</h4>
         </div>
       ))}
       <Button
@@ -32,7 +32,7 @@ export const Scene4TV = ({ state }: SceneProps) => {
       {state.players.map(player => (
         <div key={player.id}>
           <h3>{player.name}</h3>
-          <h4>{player.coins}</h4>
+          <h4>{player.score}</h4>
         </div>
       ))}
     </div>
