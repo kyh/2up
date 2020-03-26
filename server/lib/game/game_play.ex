@@ -5,9 +5,9 @@ defmodule Game.GamePlay do
 
   alias Game.{Act, GamePlay, Player}
 
-  defstruct act: 0, scene: 0, acts: [], players: []
+  defstruct act: 0, scene: 0, acts: [], players: [], instruction: ""
 
-  def new(question_sets, player_ids) do
+  def new(question_sets, player_ids, instruction) do
     players = Enum.map player_ids, fn player_id ->
       %Player{id: player_id}
     end
@@ -26,7 +26,7 @@ defmodule Game.GamePlay do
       %Act{ question: question, answer: answer, submissions: [submission] }
     end
 
-    %GamePlay{acts: acts, players: players}
+    %GamePlay{acts: acts, players: players, instruction: instruction}
   end
 
   def player_new(game, player) do

@@ -3,10 +3,10 @@ defmodule Web.GraphQL.Resolvers.Play do
   alias Game.GameSupervisor
   alias Game.GameServer
 
-  def game_new(_, _, _) do
+  def game_new(_, %{pack: pack}, _) do
     code = Catalog.generate_code()
 
-    case GameSupervisor.start_game(code, "Startups") do
+    case GameSupervisor.start_game(code, pack) do
       {:ok, _game_pid} ->
         {:ok, %{code: code}}
       {:error, _error} ->

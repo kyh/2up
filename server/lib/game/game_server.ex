@@ -60,11 +60,18 @@ defmodule Game.GameServer do
   end
 
   def init({game_code, pack}) do
+    # TODO: Get questions and pack data from DB once we migrate away from Airtable
     questions = Game.QuestionCache.get_questions(pack)
+
+    pack_map = %{
+      "Startups": "Give a one line description of this startup",
+      "SAT": "Give a short definition of this word"
+    }
 
     game = case :ets.lookup(:games_table, game_code) do
       [] ->
-        game = Game.GamePlay.new(questions, [])
+        instruction = Map.get(pack_map, String.to_atom(pack))
+        game = Game.GamePlay.new(questions, [], instruction)
         :ets.insert(:games_table, {game_code, game})
         game
 
@@ -87,7 +94,8 @@ defmodule Game.GameServer do
       players: game.players,
       question: question,
       answer: answer,
-      submissions: current_act.submissions
+      submissions: current_act.submissions,
+      instruction: game.instruction
     }
   end
 
