@@ -12,5 +12,5 @@ export type ServerResponse = {
 export type Player = {
   id: string;
   name: string;
-  coins: number;
+  score: number;
 };
