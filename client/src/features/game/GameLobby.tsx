@@ -3,15 +3,15 @@ import { useHistory, Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Button, Modal } from 'components';
 import { hashCode } from 'utils/stringUtils';
-import { useTriviaChannel } from 'features/trivia/TriviaChannel';
+import { useGameChannel } from 'features/game/GameChannel';
 
-export const TriviaLobby = () => {
+export const GameLobby = () => {
   const history = useHistory();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { state: triviaState, broadcast } = useTriviaChannel();
+  const { state: gameState, broadcast } = useGameChannel();
 
   const onClickStart = () => {
-    if (triviaState.players.length < 2) {
+    if (gameState.players.length < 2) {
       setIsModalOpen(true);
     } else {
       onStart();
@@ -19,34 +19,34 @@ export const TriviaLobby = () => {
   };
 
   const onStart = () => {
-    broadcast('start', { gameId: triviaState.gameId });
+    broadcast('start', { gameId: gameState.gameId });
   };
 
   useEffect(() => {
-    if (triviaState.act) {
-      if (triviaState.isHost) {
-        history.push(`/trivia/${triviaState.gameId}/tv`);
+    if (gameState.act) {
+      if (gameState.isHost) {
+        history.push(`/game/${gameState.gameId}/tv`);
       } else {
-        history.push(`/trivia/${triviaState.gameId}/remote`);
+        history.push(`/game/${gameState.gameId}/remote`);
       }
     }
-  }, [triviaState.gameId, triviaState.act, triviaState.isHost]);
+  }, [gameState.gameId, gameState.act, gameState.isHost]);
 
   return (
     <LobbyContainer>
-      {triviaState.isHost ? (
+      {gameState.isHost ? (
         <TitleContainer>
           <h1 className="title">
             Go to <span className="highlight">playhouse.gg</span>
           </h1>
           <h1 className="title">and enter the room code:</h1>
-          <div className="game-id">{triviaState.gameId}</div>
+          <div className="game-id">{gameState.gameId}</div>
         </TitleContainer>
       ) : (
         <h1 className="title">Waiting for players to join...</h1>
       )}
-      <LobbyPlayersContainer isHost={triviaState.isHost}>
-        {triviaState.players.map(p => {
+      <LobbyPlayersContainer isHost={gameState.isHost}>
+        {gameState.players.map(p => {
           const avatar = hashCode(p.name, 10);
           return (
             <div className="player" key={p.name}>
@@ -56,7 +56,7 @@ export const TriviaLobby = () => {
           );
         })}
       </LobbyPlayersContainer>
-      {!triviaState.isHost ? (
+      {!gameState.isHost ? (
         <>
           <Button className="start-game-button" onClick={onClickStart}>
             Start game
@@ -78,7 +78,7 @@ export const TriviaLobby = () => {
                   <span className="highlight">playhouse.gg</span>
                 </h3>
                 <h3 className="title">and enter the room code:</h3>
-                <div className="game-id">{triviaState.gameId}</div>
+                <div className="game-id">{gameState.gameId}</div>
               </TitleContainer>
               <Button className="start-game-button" onClick={onStart}>
                 Start anyways

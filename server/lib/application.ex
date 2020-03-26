@@ -15,7 +15,7 @@ defmodule Playhouse.Application do
       # Starts a worker by calling: Database.Worker.start_link(arg)
       # {Database.Worker, arg},
       Web.Presence,
-      Trivia
+      Game
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

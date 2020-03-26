@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useSelector, useDispatch } from 'react-redux';
-import { GameState, Player } from 'features/types';
+import { Player } from 'features/types';
 import { RootState } from 'app/rootReducer';
 
-export type TriviaState = {
+export type GameState = {
+  gameId: string;
+  players: Player[];
+  isHost: boolean;
   act: number;
   scene: number;
   question?: string;
@@ -11,8 +14,6 @@ export type TriviaState = {
   answer?: string;
   submissions: Submission[];
 };
-
-export type TriviaGameState = TriviaState & GameState;
 
 export type Submission = {
   id: number;
@@ -22,13 +23,13 @@ export type Submission = {
 };
 
 export type SceneProps = {
-  state: TriviaGameState;
+  state: GameState;
   broadcast: (_eventName: string, _payload?: object) => void;
   userId?: string;
   name?: string;
 };
 
-export const initialState: TriviaGameState = {
+export const initialState: GameState = {
   isHost: localStorage.getItem('isHost') === 'true',
   gameId: '',
   players: [],
@@ -41,14 +42,14 @@ export const initialState: TriviaGameState = {
   submissions: []
 };
 
-const triviaSlice = createSlice({
-  name: 'trivia',
+const gameSlice = createSlice({
+  name: 'game',
   initialState,
   reducers: {
     new_game: (state, { payload }: PayloadAction<{ gameId: string }>) => {
       state.gameId = payload.gameId;
     },
-    game_state: (state, { payload }: PayloadAction<TriviaState>) => {
+    game_state: (state, { payload }: PayloadAction<GameState>) => {
       state.act = payload.act ?? state.act;
       state.scene = payload.scene ?? state.scene;
       state.question = payload.question ?? state.question;
@@ -67,10 +68,10 @@ const triviaSlice = createSlice({
   }
 });
 
-export const triviaActions = triviaSlice.actions;
-export const triviaReducer = triviaSlice.reducer;
-export const useTrivia = () => {
-  const state = useSelector((state: RootState) => state.trivia);
+export const gameActions = gameSlice.actions;
+export const gameReducer = gameSlice.reducer;
+export const useGame = () => {
+  const state = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
   return { state, dispatch };
 };

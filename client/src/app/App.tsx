@@ -11,7 +11,7 @@ import { GlobalStyle } from 'styles/global';
 import { usePlayhouse } from 'features/home/playhouseSlice';
 import { Home } from 'features/home/Home';
 import { GameMaster } from 'features/gamemaster/GameMaster';
-import { TriviaRoutes } from 'features/trivia/TriviaRoutes';
+import { GameRoutes } from 'features/game/GameRoutes';
 
 const alertOptions = {
   position: positions.TOP_CENTER,
@@ -32,8 +32,8 @@ export const App: React.FC = () => {
               <Home />
             </PageContainer>
           </Route>
-          <Route path="/trivia/:gameId">
-            <TriviaRoutes />
+          <Route path="/game/:gameId">
+            <GameRoutes />
           </Route>
           <Route exact path="/gamemaster">
             <GameMaster />

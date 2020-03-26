@@ -1,9 +1,9 @@
-defmodule Trivia.Game do
+defmodule Game.GamePlay do
   @moduledoc """
   Main game logic
   """
 
-  alias Trivia.{Act, Game, Player}
+  alias Game.{Act, GamePlay, Player}
 
   defstruct act: 0, scene: 0, acts: [], players: []
 
@@ -26,7 +26,7 @@ defmodule Trivia.Game do
       %Act{ question: question, answer: answer, submissions: [submission] }
     end
 
-    %Game{acts: acts, players: players}
+    %GamePlay{acts: acts, players: players}
   end
 
   def player_new(game, player) do

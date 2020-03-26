@@ -17,7 +17,7 @@
 └── /server                      # Phoenix server
     └── /lib
         ├── /database            # Database access
-        ├── /trivia              # Trivia game server
+        ├── /game                # Game server
         ├── /web                 # Channels and routes
 ```
 

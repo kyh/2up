@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'components';
-import { SceneProps } from 'features/trivia/triviaSlice';
+import { SceneProps } from 'features/game/gameSlice';
 
 export const Scene0Remote = ({ state, broadcast }: SceneProps) => {
   const history = useHistory();

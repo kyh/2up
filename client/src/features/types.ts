@@ -1,9 +1,3 @@
-export type GameState = {
-  gameId: string;
-  players: Player[];
-  isHost: boolean;
-};
-
 export type ServerResponse = {
   event: string;
   payload: any;

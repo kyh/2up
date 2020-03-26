@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { useAlert } from 'react-alert';
 
 import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
-import { triviaActions, useTrivia } from 'features/trivia/triviaSlice';
+import { gameActions, useGame } from 'features/game/gameSlice';
 import { Button, Input, Card } from 'components';
 
 const Screens = {
@@ -15,15 +15,15 @@ const Screens = {
 };
 
 const TRIVIA_NEW = gql`
-  mutation TriviaNew {
-    triviaNew {
+  mutation GameNew {
+    gameNew {
       code
     }
   }
 `;
 
 const TRIVIA_CHECK = gql`
-  mutation TriviaCheck($code: String!) {
+  mutation GameCheck($code: String!) {
     game(code: $code) {
       isValid
     }
@@ -32,35 +32,35 @@ const TRIVIA_CHECK = gql`
 
 export const Home = () => {
   const alert = useAlert();
-  const [triviaNew] = useMutation(TRIVIA_NEW);
-  const [triviaCheck] = useMutation(TRIVIA_CHECK);
+  const [gameNew] = useMutation(TRIVIA_NEW);
+  const [gameCheck] = useMutation(TRIVIA_CHECK);
 
   const { state: playhouseState, dispatch } = usePlayhouse();
-  const { state: triviaState } = useTrivia();
+  const { state: gameState } = useGame();
 
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [screen, setScreen] = useState(
-    triviaState.gameId ? Screens.name : Screens.join
+    gameState.gameId ? Screens.name : Screens.join
   );
-  const [gameId, setgameId] = useState(triviaState.gameId);
+  const [gameId, setgameId] = useState(gameState.gameId);
   const [name, setName] = useState(playhouseState.name);
 
   // Creating a new game:
   const onClickHost = async () => {
-    const { data } = await triviaNew();
+    const { data } = await gameNew();
     if (data.error) {
       alert.show(data.error);
       return;
     }
-    dispatch(triviaActions.toggle_host(true));
-    dispatch(triviaActions.new_game({ gameId: data.triviaNew.code }));
+    dispatch(gameActions.toggle_host(true));
+    dispatch(gameActions.new_game({ gameId: data.gameNew.code }));
     setShouldRedirect(true);
   };
 
   // Joining an existing game:
   const onSubmitGameCode = async (event: SyntheticEvent) => {
     event.preventDefault();
-    const { data } = await triviaCheck({
+    const { data } = await gameCheck({
       variables: { code: gameId }
     });
     if (data.error || (data && !data.game.isValid)) {
@@ -68,19 +68,19 @@ export const Home = () => {
       setgameId('');
       return;
     }
-    dispatch(triviaActions.new_game({ gameId }));
+    dispatch(gameActions.new_game({ gameId }));
     setScreen(Screens.name);
   };
 
   const onSubmitName = (event: SyntheticEvent) => {
     event.preventDefault();
-    dispatch(triviaActions.toggle_host(false));
+    dispatch(gameActions.toggle_host(false));
     dispatch(playhouseActions.update_user({ name }));
     setShouldRedirect(true);
   };
 
-  if (triviaState.gameId && shouldRedirect) {
-    return <Redirect to={`/trivia/${triviaState.gameId}/lobby`} />;
+  if (gameState.gameId && shouldRedirect) {
+    return <Redirect to={`/game/${gameState.gameId}/lobby`} />;
   }
 
   return (

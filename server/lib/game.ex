@@ -1,16 +1,16 @@
-defmodule Trivia do
+defmodule Game do
   use Application
 
   def start(_type, _args) do
     children = [
-      {Registry, keys: :unique, name: Trivia.GameRegistry},
-      Trivia.QuestionCache,
-      Trivia.GameSupervisor
+      {Registry, keys: :unique, name: Game.GameRegistry},
+      Game.QuestionCache,
+      Game.GameSupervisor
     ]
 
     :ets.new(:games_table, [:public, :named_table])
 
-    opts = [strategy: :one_for_one, name: Trivia.Supervisor]
+    opts = [strategy: :one_for_one, name: Game.Supervisor]
     Supervisor.start_link(children, opts)
   end
 

@@ -1,7 +1,7 @@
-defmodule Trivia.Player do	
+defmodule Game.Player do	
   defstruct id: 0, score: 0	
 
-  alias Trivia.{Player}	
+  alias Game.{Player}	
 
   def new(id, score) do	
     %Player{id: id, score: score}	

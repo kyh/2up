@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'components';
-import { SceneProps } from 'features/trivia/triviaSlice';
+import { SceneProps } from 'features/game/gameSlice';
 
 export const Scene4Remote = ({ state, broadcast, name }: SceneProps) => {
   const firstPlayer = state.players[0];

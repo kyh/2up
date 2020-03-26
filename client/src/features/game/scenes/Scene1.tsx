@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Alert, Flex, Input, Button, Timer } from 'components';
-import { SceneProps } from 'features/trivia/triviaSlice';
+import { SceneProps } from 'features/game/gameSlice';
 import {
   TVQuestionConatiner,
   QuestionInstructions,
   Question
-} from 'features/trivia/components/Question';
+} from 'features/game/components/Question';
 
 export const Scene1Remote = ({
   state,

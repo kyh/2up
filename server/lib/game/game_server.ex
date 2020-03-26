@@ -1,4 +1,4 @@
-defmodule Trivia.GameServer do
+defmodule Game.GameServer do
   @moduledoc """
   Process that persists state for a live game for amount of time
 
@@ -56,15 +56,15 @@ defmodule Trivia.GameServer do
   end
 
   def via_tuple(game_code) do
-    {:via, Registry, {Trivia.GameRegistry, game_code}}
+    {:via, Registry, {Game.GameRegistry, game_code}}
   end
 
   def init({game_code, pack}) do
-    questions = Trivia.QuestionCache.get_questions(pack)
+    questions = Game.QuestionCache.get_questions(pack)
 
     game = case :ets.lookup(:games_table, game_code) do
       [] ->
-        game = Trivia.Game.new(questions, [])
+        game = Game.GamePlay.new(questions, [])
         :ets.insert(:games_table, {game_code, game})
         game
 
@@ -104,7 +104,7 @@ defmodule Trivia.GameServer do
   end
 
   def handle_call({:player_new, player}, _from, game) do
-    updated_game = Trivia.Game.player_new(game, player)
+    updated_game = Game.GamePlay.player_new(game, player)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 
@@ -112,7 +112,7 @@ defmodule Trivia.GameServer do
   end
 
   def handle_call({:player_submit, submission, player_count}, _from, game) do
-    updated_game = Trivia.Game.player_submit(game, submission, player_count)
+    updated_game = Game.GamePlay.player_submit(game, submission, player_count)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 
@@ -120,7 +120,7 @@ defmodule Trivia.GameServer do
   end
 
   def handle_call({:player_endorse, name, submission_id, player_count}, _from, game) do
-    updated_game = Trivia.Game.player_endorse(game, name, submission_id, player_count)
+    updated_game = Game.GamePlay.player_endorse(game, name, submission_id, player_count)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 
@@ -128,7 +128,7 @@ defmodule Trivia.GameServer do
   end
 
   def handle_call(:game_start, _from, game) do
-    updated_game = Trivia.Game.start(game)
+    updated_game = Game.GamePlay.start(game)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 
@@ -140,7 +140,7 @@ defmodule Trivia.GameServer do
   end
 
   def handle_call(:act_next, _from, game) do
-    updated_game = Trivia.Game.act_next(game)
+    updated_game = Game.GamePlay.act_next(game)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 
@@ -148,7 +148,7 @@ defmodule Trivia.GameServer do
   end
 
   def handle_call(:scene_next, _from, game) do
-    updated_game = Trivia.Game.scene_next(game)
+    updated_game = Game.GamePlay.scene_next(game)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 
@@ -169,6 +169,6 @@ defmodule Trivia.GameServer do
   end
 
   defp my_game_code do
-    Registry.keys(Trivia.GameRegistry, self()) |> List.first
+    Registry.keys(Game.GameRegistry, self()) |> List.first
   end
 end
