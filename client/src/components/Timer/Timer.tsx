@@ -76,6 +76,7 @@ const Container = styled.div`
   left: 0;
   right: 0;
   overflow: hidden;
+  pointer-events: none;
 `;
 
 const TimerContainer = styled.div<{ initialSeconds: number }>`
