@@ -37,13 +37,13 @@ export const SubmissionsContainer = styled.div`
       display: inline-flex;
       flex-direction: column;
       padding: 10px;
-      background: ${({ theme }) => theme.colors.white};
+      background: ${({ theme }) => theme.ui.background};
       justify-content: center;
       align-items: center;
       border: 2px solid;
       border-radius: 100%;
 
-      img {
+      svg {
         width: 20px;
         height: 20px;
       }
