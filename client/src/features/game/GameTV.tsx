@@ -7,11 +7,13 @@ import { Scene3TV } from './scenes/Scene3';
 import { Scene4TV } from './scenes/Scene4';
 
 export const GameTV: React.FC = () => {
-  const { state, broadcast } = useGameChannel();
+  const { state, broadcast, dispatch } = useGameChannel();
 
   switch (state.scene) {
     case 0:
-      return <Scene0TV broadcast={broadcast} state={state} />;
+      return (
+        <Scene0TV broadcast={broadcast} state={state} dispatch={dispatch} />
+      );
     case 1:
       return <Scene1TV broadcast={broadcast} state={state} />;
     case 2:

@@ -1,11 +1,16 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'components';
-import { SceneProps } from 'features/game/gameSlice';
+import { gameActions, SceneProps } from 'features/game/gameSlice';
 
-export const Scene0Remote = ({ state, broadcast }: SceneProps) => {
+type Props = SceneProps & {
+  dispatch: (_action: object) => void;
+};
+
+export const Scene0Remote = ({ state, broadcast, dispatch }: Props) => {
   const history = useHistory();
   const handleEnd = () => {
+    dispatch(gameActions.reset());
     broadcast('end');
     history.push('/');
   };
