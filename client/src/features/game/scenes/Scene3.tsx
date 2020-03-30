@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'components';
+import { AvatarImage, Button } from 'components';
 import { SceneProps } from 'features/game/gameSlice';
 import { hashCode } from 'utils/stringUtils';
 import {
@@ -33,7 +33,7 @@ export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
                   const avatar = hashCode(endorser.name, 10);
                   return (
                     <div className="endorsement" key={endorser.id}>
-                      <img src={`/avatars/${avatar}.svg`} alt={endorser.name} />
+                      <AvatarImage avatar={avatar} />
                       {endorser.name}
                     </div>
                   );
@@ -78,7 +78,7 @@ export const Scene3TV = ({ state }: SceneProps) => {
                   const avatar = hashCode(endorser.name, 10);
                   return (
                     <div className="endorsement" key={endorser.id}>
-                      <img src={`/avatars/${avatar}.svg`} alt={endorser.name} />
+                      <AvatarImage avatar={avatar} />
                       {endorser.name}
                     </div>
                   );

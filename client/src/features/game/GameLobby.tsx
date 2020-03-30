@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { Button, Modal } from 'components';
+import { AvatarImage, Button, Modal } from 'components';
 import { hashCode } from 'utils/stringUtils';
 import { useGameChannel } from 'features/game/GameChannel';
 
@@ -51,7 +51,7 @@ export const GameLobby = () => {
           return (
             <div className="player" key={p.name}>
               <p>{p.name}</p>
-              <img src={`/avatars/${avatar}.svg`} alt={p.name} />
+              <AvatarImage avatar={avatar} />
             </div>
           );
         })}
@@ -120,8 +120,8 @@ const TitleContainer = styled.div`
     color: ${({ theme }) => theme.colors.purple};
   }
   .game-id {
-    color: #fff;
-    background: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.ui.alert.text};
+    background: ${({ theme }) => theme.ui.alert.background};
     font-size: 7rem;
     display: flex;
     justify-content: center;
@@ -146,7 +146,7 @@ const renderTvStyles = () => {
 
     .player {
       text-align: center;
-      img {
+      svg {
         width: 70%;
       }
     }
@@ -165,8 +165,8 @@ const renderRemoteStyles = () => {
         margin-right: auto;
       }
 
-      img {
-        height: 50px;
+      svg {
+        max-height: 50px;
         margin-right: ${({ theme }) => theme.spacings(2)};
       }
     }
