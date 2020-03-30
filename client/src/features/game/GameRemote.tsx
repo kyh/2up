@@ -11,7 +11,7 @@ export const GameRemote: React.FC = () => {
   const {
     state: { userId, name }
   } = usePlayhouse();
-  const { state, broadcast } = useGameChannel();
+  const { state, broadcast, dispatch } = useGameChannel();
 
   useEffect(() => {
     window.scroll(0, 0);
@@ -23,6 +23,7 @@ export const GameRemote: React.FC = () => {
         <Scene0Remote
           state={state}
           broadcast={broadcast}
+          dispatch={dispatch}
           userId={userId}
           name={name}
         />

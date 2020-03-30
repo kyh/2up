@@ -13,7 +13,6 @@ const AlertTemplate = styled.div`
 export const Alert = styled(AlertTemplate)`
   position: absolute;
   top: ${({ theme }) => theme.spacings(3)};
-  color: ${({ theme }) => theme.colors.white};
 `;
 
 export const ReactAlertTemplate = ({ style, message, close }: any) => {
