@@ -41,6 +41,16 @@ export const initialState: GameState = {
   submissions: []
 };
 
+const sortByName = (a: Player, b: Player) => {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  return 0;
+};
+
 const gameSlice = createSlice({
   name: 'game',
   initialState,
@@ -62,7 +72,7 @@ const gameSlice = createSlice({
       localStorage.setItem('isHost', state.isHost.toString());
     },
     players: (state, { payload }: PayloadAction<{ players: Player[] }>) => {
-      state.players = payload.players.sort() ?? state.players;
+      state.players = payload.players.sort(sortByName) ?? state.players;
     },
     reset: () => ({ ...initialState, isHost: false })
   }
