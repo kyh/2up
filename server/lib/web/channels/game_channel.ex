@@ -158,6 +158,7 @@ defmodule Web.GameChannel do
   defp player_count(socket) do
     Presence.list(socket)
       |> Map.keys
+      |> Enum.filter(fn x -> x !== "" end) # don't include TV
       |> Enum.count
   end
 
