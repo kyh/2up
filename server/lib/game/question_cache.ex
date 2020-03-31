@@ -16,7 +16,7 @@ defmodule Game.QuestionCache do
   end
 
   def init(:ok) do
-    state = load_questions()
+    state = load_questions("")
     schedule_refresh()
     {:ok, state}
   end
@@ -35,7 +35,7 @@ defmodule Game.QuestionCache do
   end
 
   def handle_info(:refresh, _state) do
-    state = load_questions()
+    state = load_questions("")
     schedule_refresh()
     {:noreply, state}
   end
@@ -44,13 +44,7 @@ defmodule Game.QuestionCache do
     Process.send_after(self(), :refresh, @refresh_interval)    
   end
 
-  def load_questions() do
-    key = System.get_env("AIRTABLE_KEY")
-    url = "https://api.airtable.com/v0/appOUKhim5DD45JMb/Question%20Bank\?api_key\=#{key}"
-    response = HTTPoison.get!(url)
-    req = Poison.decode!(response.body)
-    records = req["records"]
-
+  def format_records(records) do
     Enum.map(records, fn x ->
       fields = x["fields"]
       [fields["Question"], fields["Answer"], fields["Pack"]]
@@ -58,5 +52,28 @@ defmodule Game.QuestionCache do
     |> Enum.filter(fn y ->
       Enum.at(y, 0) != nil && Enum.at(y, 1) && Enum.at(y, 2)
     end)
+  end
+
+  @doc """
+  Recursive fn to get all paginated results. Starts with "" offset and end
+  with nil offset
+  """
+  def load_questions(offset) do
+    key = System.get_env("AIRTABLE_KEY")
+    all_questions = []
+
+    case offset == nil do
+      true -> []
+      false ->
+        url = "https://api.airtable.com/v0/appOUKhim5DD45JMb/Question%20Bank\?api_key\=#{key}\&offset\=#{offset}"
+        response = HTTPoison.get!(url)
+
+        body = Poison.decode!(response.body)
+        records = body["records"]
+        new_offset = body["offset"]
+
+        all_questions = Enum.concat(all_questions, format_records(records))
+        Enum.concat(all_questions, load_questions(new_offset))
+    end
   end
 end
