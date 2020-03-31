@@ -62,7 +62,7 @@ const gameSlice = createSlice({
       localStorage.setItem('isHost', state.isHost.toString());
     },
     players: (state, { payload }: PayloadAction<{ players: Player[] }>) => {
-      state.players = payload.players ?? state.players;
+      state.players = payload.players.sort() ?? state.players;
     },
     reset: () => ({ ...initialState, isHost: false })
   }
