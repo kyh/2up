@@ -49,7 +49,7 @@ const playhouseSlice = createSlice({
       state.userId = payload.userId ?? state.userId;
       state.name = payload.name ?? state.name;
 
-      if (state.name) {
+      if (state.name !== undefined) {
         localStorage.setItem('name', state.name);
       }
       if (state.userId) {

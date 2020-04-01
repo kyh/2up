@@ -83,6 +83,7 @@ export const Home = () => {
       return;
     }
     dispatch(gameActions.toggle_host(true));
+    dispatch(playhouseActions.update_user({ name: '' }));
     dispatch(gameActions.new_game({ gameId: data.gameNew.code }));
     setShouldRedirect(true);
   };
