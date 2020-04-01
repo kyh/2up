@@ -12,8 +12,8 @@ defmodule Game.GameServer do
   @timeout :timer.hours(1)
 
   def start_link(game_code, questions) do
-    GenServer.start_link(__MODULE__, 
-                         {game_code, questions}, 
+    GenServer.start_link(__MODULE__,
+                         {game_code, questions},
                          name: via_tuple(game_code))
   end
 
@@ -63,15 +63,9 @@ defmodule Game.GameServer do
     # TODO: Get questions and pack data from DB once we migrate away from Airtable
     questions = Game.QuestionCache.get_questions(pack)
 
-    pack_map = %{
-      "Startups": "Give a one line description of this startup",
-      "SAT": "Give a short definition of this word"
-    }
-
     game = case :ets.lookup(:games_table, game_code) do
       [] ->
-        instruction = Map.get(pack_map, String.to_atom(pack))
-        game = Game.GamePlay.new(questions, [], instruction)
+        game = Game.GamePlay.new(questions, [], pack)
         :ets.insert(:games_table, {game_code, game})
         game
 
@@ -86,16 +80,22 @@ defmodule Game.GameServer do
 
   def get_game_state(game) do
     current_act = Enum.at(game.acts, game.act - 1)
-    %{question: question, answer: answer} = current_act
+    %{
+      question: question,
+      answer: answer,
+      pack: pack,
+      instruction: instruction
+    } = current_act
 
     %{
       act: game.act,
       scene: game.scene,
       players: game.players,
+      pack: pack,
       question: question,
       answer: answer,
       submissions: current_act.submissions,
-      instruction: game.instruction
+      instruction: instruction
     }
   end
 

@@ -22,15 +22,7 @@ defmodule Game.QuestionCache do
   end
 
   def handle_call({:get_questions, pack}, _from, state) do
-    questions =
-      Enum.filter(state, fn x ->
-        pack_field = Enum.at(x, 2)
-        pack_name = Enum.at(pack_field, 0)
-        pack_name == pack
-      end)
-      |> Enum.shuffle
-      |> Enum.take(10)
-
+    questions = get_questions(state, pack)
     {:reply, questions, state}
   end
 
@@ -40,8 +32,25 @@ defmodule Game.QuestionCache do
     {:noreply, state}
   end
 
+  def get_questions(questions, pack) do
+    case pack == "Variety" do
+      true -> 
+        questions |> get_random_questions(10)
+      false -> 
+        Enum.filter(questions, fn x ->
+          pack_field = Enum.at(x, 2)
+          pack_name = Enum.at(pack_field, 0)
+          pack_name == pack
+        end) |> get_random_questions(10)
+    end
+  end
+
+  def get_random_questions(questions, count) do
+    questions |> Enum.shuffle |> Enum.take(count)
+  end
+
   def schedule_refresh do
-    Process.send_after(self(), :refresh, @refresh_interval)    
+    Process.send_after(self(), :refresh, @refresh_interval)
   end
 
   def format_records(records) do

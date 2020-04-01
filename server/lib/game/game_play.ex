@@ -5,9 +5,15 @@ defmodule Game.GamePlay do
 
   alias Game.{Act, GamePlay, Player}
 
-  defstruct act: 0, scene: 0, acts: [], players: [], instruction: ""
+  defstruct act: 0, scene: 0, acts: [], players: [], pack: ""
 
-  def new(question_sets, player_ids, instruction) do
+  # TODO: Move out once we migrate off of Airtable
+  @pack_map %{
+    "Startups": "Give a one line description of this startup",
+    "SAT": "Give a short definition of this word"
+  }
+
+  def new(question_sets, player_ids, initial_pack) do
     players = Enum.map player_ids, fn player_id ->
       %Player{id: player_id}
     end
@@ -15,6 +21,8 @@ defmodule Game.GamePlay do
     acts = Enum.map question_sets, fn question_set ->
       question = Enum.at(question_set, 0)
       answer = Enum.at(question_set, 1)
+      pack = Enum.at(question_set, 2) |> Enum.at(0)
+      instruction = Map.get(@pack_map, String.to_atom(pack))
 
       submission = %{
         id: Ecto.UUID.generate,
@@ -23,10 +31,16 @@ defmodule Game.GamePlay do
         endorsers: []
       }
 
-      %Act{ question: question, answer: answer, submissions: [submission] }
+      %Act{
+        question: question,
+        answer: answer,
+        pack: pack,
+        instruction: instruction,
+        submissions: [submission]
+      }
     end
 
-    %GamePlay{acts: acts, players: players, instruction: instruction}
+    %GamePlay{acts: acts, players: players, pack: initial_pack}
   end
 
   def player_new(game, player) do
@@ -55,7 +69,7 @@ defmodule Game.GamePlay do
         end
       end)
 
-    current_scene = 
+    current_scene =
       # Extra player count for correct answer submission
       case length(new_submissions) >= player_count + 1 do
         true -> game.scene + 1
@@ -69,7 +83,7 @@ defmodule Game.GamePlay do
     player =
       Enum.filter(game.players, fn x -> x.name === name end)
       |> Enum.at(0)
-    
+
     new_player = %{player | score: player.score + score}
 
     new_players =
@@ -79,7 +93,7 @@ defmodule Game.GamePlay do
           false -> x
         end
       end)
-    
+
     %{game | players: new_players}
   end
 
@@ -127,10 +141,10 @@ defmodule Game.GamePlay do
       Enum.map(new_submissions, fn x -> length(x.endorsers) end)
       |> Enum.sum
 
-    current_scene = 
+    current_scene =
       case endorsement_length >= player_count do
         true -> updated_game.scene + 1
-        false -> updated_game.scene 
+        false -> updated_game.scene
       end
 
     %{updated_game | acts: new_acts, scene: current_scene}
