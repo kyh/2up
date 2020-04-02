@@ -10,8 +10,10 @@ export type GameState = {
   act: number;
   scene: number;
   question?: string;
+  questionType?: string;
   instruction?: string;
   answer?: string;
+  answerType?: string;
   submissions: Submission[];
 };
 
@@ -36,8 +38,10 @@ export const initialState: GameState = {
   act: 0,
   scene: 0,
   question: '',
+  questionType: '',
   instruction: '',
   answer: '',
+  answerType: '',
   submissions: []
 };
 
@@ -66,6 +70,8 @@ const gameSlice = createSlice({
       state.answer = payload.answer ?? state.answer;
       state.submissions = payload.submissions ?? state.submissions;
       state.instruction = payload.instruction ?? state.instruction;
+      state.questionType = payload.questionType ?? state.questionType;
+      state.answerType = payload.answerType ?? state.answerType;
     },
     toggle_host: (state, { payload }: PayloadAction<boolean>) => {
       state.isHost = payload;

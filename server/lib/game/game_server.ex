@@ -84,7 +84,9 @@ defmodule Game.GameServer do
       question: question,
       answer: answer,
       pack: pack,
-      instruction: instruction
+      instruction: instruction,
+      question_type: question_type,
+      answer_type: answer_type
     } = current_act
 
     %{
@@ -93,7 +95,9 @@ defmodule Game.GameServer do
       players: game.players,
       pack: pack,
       question: question,
+      questionType: question_type,
       answer: answer,
+      answerType: answer_type,
       submissions: current_act.submissions,
       instruction: instruction
     }
