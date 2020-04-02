@@ -6,7 +6,7 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   end
 
   def question_types(_, _, _) do
-    {:ok, ["TEXT", "COLOR", "MAP", "BUTTON", "MATH"]}
+    {:ok, ["TEXT", "COLOR", "MAP", "MATH", "IMAGE"]}
   end
 
   def answer_types(_, _, _) do
