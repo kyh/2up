@@ -33,7 +33,9 @@ defmodule Game.GamePlay do
 
       %Act{
         question: question,
+        question_type: "TEXT",
         answer: answer,
+        answer_type: "TEXT",
         pack: pack,
         instruction: instruction,
         submissions: [submission]

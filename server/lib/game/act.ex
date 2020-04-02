@@ -5,22 +5,13 @@ defmodule Game.Act do
   """
 
   defstruct question: '',
+    question_type: '',
     answer: '',
+    answer_type: '',
     pack: '',
     instruction: '',
     submissions: [],
     endorsements: []
 
-  alias Game.{Act}
 
-  def new(question, answer, pack, instruction, submissions, endorsements) do
-    %Act{
-      question: question,
-      answer: answer,
-      pack: pack,
-      instruction: instruction,
-      submissions: submissions,
-      endorsements: endorsements
-    }
-  end
 end
