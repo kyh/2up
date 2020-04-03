@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { Input, Button } from 'components';
+import React, { Component, useState } from 'react';
+import styled from 'styled-components';
+import { ChromePicker } from 'react-color';
+import CanvasDraw from 'react-canvas-draw';
+import { Box, Input, Button } from 'components';
 
 type AnswerProps = {
   answer?: string;
   answerType?: string;
   submitted?: boolean;
-  onSubmit: (_value: string) => void;
+  onSubmit: (_value: any) => void;
 };
 
 export const Answer: React.FC<AnswerProps> = ({
@@ -16,7 +19,9 @@ export const Answer: React.FC<AnswerProps> = ({
 }) => {
   switch (answerType) {
     case 'drawing':
-      return <AnswerCanvas />;
+      return <AnswerCanvas submitted={submitted} onSubmit={onSubmit} />;
+    case 'color':
+      return <AnswerColor submitted={submitted} onSubmit={onSubmit} />;
     default:
       return (
         <AnswerText answer={answer} submitted={submitted} onSubmit={onSubmit} />
@@ -56,6 +61,62 @@ const AnswerText: React.FC<AnswerProps> = ({ answer, submitted, onSubmit }) => {
   );
 };
 
-const AnswerCanvas = () => {
-  return null;
+class AnswerCanvas extends Component<AnswerProps> {
+  private canvas = React.createRef<CanvasDraw>();
+
+  handleClick = () => {
+    const data = this.canvas?.current?.getSaveData();
+    this.props.onSubmit(data);
+  };
+
+  render() {
+    return (
+      <>
+        <Box mb={3}>
+          <CanvasDraw
+            ref={this.canvas}
+            brushRadius={5}
+            lazyRadius={5}
+            canvasWidth={window.innerWidth}
+            canvasHeight={window.innerHeight - 250}
+          />
+        </Box>
+        <Button disabled={this.props.submitted} onClick={this.handleClick}>
+          Submit answer
+        </Button>
+      </>
+    );
+  }
+}
+
+const AnswerColor: React.FC<AnswerProps> = ({ submitted, onSubmit }) => {
+  const [color, setColor] = useState('#ffffff');
+
+  const handleChange = (c: any) => setColor(c.hex);
+  const handleClick = () => {
+    onSubmit(color);
+  };
+
+  return (
+    <ColorPickerContainer>
+      <ChromePicker
+        color={color}
+        onChange={handleChange}
+        onChangeComplete={handleChange}
+        disableAlpha
+      />
+      <Button disabled={!color || submitted} onClick={handleClick}>
+        Submit answer
+      </Button>
+    </ColorPickerContainer>
+  );
 };
+
+const ColorPickerContainer = styled.div`
+  .chrome-picker {
+    .flexbox-fix + .flexbox-fix {
+      display: none !important;
+    }
+    margin-bottom: ${({ theme }) => theme.spacings(2)};
+  }
+`;
