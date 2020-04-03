@@ -35,7 +35,11 @@ export const Scene2Remote = ({
     <>
       {submitted && <Alert>Waiting for {waiting} players</Alert>}
       <section>
-        <Question>{state.question}</Question>
+        <Question
+          question={state.question}
+          instruction={state.instruction}
+          questionType={state.questionType}
+        />
         {state.submissions.map(submission => {
           if (!submission.content) return null;
           return (
@@ -79,7 +83,11 @@ export const Scene2TV = ({ state }: SceneProps) => {
         <Alert>{submissions} players have submitted their answers</Alert>
       )}
       <TVQuestionConatiner>
-        <Question>{state.question}</Question>
+        <Question
+          question={state.question}
+          instruction={state.instruction}
+          questionType={state.questionType}
+        />
       </TVQuestionConatiner>
       <SubmissionsContainer>
         {state.submissions.map(submission => {
