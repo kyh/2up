@@ -33,16 +33,55 @@ defmodule Game.GamePlay do
 
       %Act{
         question: question,
-        question_type: "TEXT",
+        question_type: "text",
         answer: answer,
-        answer_type: "TEXT",
+        answer_type: "text",
         pack: pack,
         instruction: instruction,
         submissions: [submission]
       }
     end
 
-    %GamePlay{acts: acts, players: players, pack: initial_pack}
+    case initial_pack do
+      "Variety" ->
+        acts = List.replace_at(acts, 0, generate_color_act())
+        %GamePlay{acts: acts, players: players, pack: initial_pack}
+      "Color" ->
+        acts = Enum.map(0..9, fn _ -> generate_color_act() end)
+        %GamePlay{acts: acts, players: players, pack: initial_pack}
+      _ -> 
+        %GamePlay{acts: acts, players: players, pack: initial_pack}
+    end
+  end
+
+  def generate_random_color() do
+    letters = "0123456789ABCDEF"
+    color = letters
+      |> String.split("", trim: true)
+      |> Enum.shuffle
+      |> Enum.take(6)
+      |> Enum.join("")
+    "#" <> color
+  end
+
+  def generate_color_act() do
+    random_color = generate_random_color()
+    %Act{
+      question: random_color,
+      question_type: "text",
+      answer: random_color,
+      answer_type: "color",
+      pack: "Color",
+      instruction: "What is the color of this hex?",
+      submissions: [
+        %{
+          id: Ecto.UUID.generate,
+          name: "IS_ANSWER",
+          content: random_color,
+          endorsers: []
+        }
+      ]
+    }
   end
 
   def player_new(game, player) do

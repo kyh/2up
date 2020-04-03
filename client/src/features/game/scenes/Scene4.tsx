@@ -13,14 +13,16 @@ export const Scene4Remote = ({ state, broadcast, name }: SceneProps) => {
           <span>{player.score}</span>
         </Flex>
       ))}
-      <Button
-        disabled={firstPlayer.name !== name}
-        onClick={() => broadcast('act:next')}
-      >
-        {firstPlayer.name === name
-          ? 'Next Question'
-          : `Waiting for ${firstPlayer.name}`}
-      </Button>
+      {firstPlayer && (
+        <Button
+          disabled={firstPlayer.name !== name}
+          onClick={() => broadcast('act:next')}
+        >
+          {firstPlayer.name === name
+            ? 'Next Question'
+            : `Waiting for ${firstPlayer.name}`}
+        </Button>
+      )}
     </div>
   );
 };
