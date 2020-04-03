@@ -13,7 +13,6 @@ export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
   const firstPlayer = state.players[0];
   return (
     <section>
-      <Question>{state.question}</Question>
       <SubmissionsContainer>
         {state.submissions.map(submission => {
           if (!submission.content) return null;
@@ -56,9 +55,6 @@ export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
 export const Scene3TV = ({ state }: SceneProps) => {
   return (
     <section>
-      <TVQuestionConatiner>
-        <Question>{state.question}</Question>
-      </TVQuestionConatiner>
       <SubmissionsContainer>
         {state.submissions.map(submission => {
           if (!submission.content) return null;
