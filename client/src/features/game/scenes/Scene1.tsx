@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Alert, Flex, Input, Button, Timer } from 'components';
+import { Alert, Flex, Timer } from 'components';
 import { SceneProps } from 'features/game/gameSlice';
 import {
   TVQuestionConatiner,
-  QuestionInstructions,
   Question
 } from 'features/game/components/Question';
+import { Answer } from 'features/game/components/Answer';
 
 export const Scene1Remote = ({
   state,
@@ -13,49 +13,37 @@ export const Scene1Remote = ({
   userId,
   name
 }: SceneProps) => {
-  const [value, setValue] = useState('');
-  const [errorValue, setErrorValue] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const submissions = state.submissions.length - 1;
   const players = state.players.length;
   const waiting = players - submissions;
 
-  const handleClick = () => {
-    if (value.toLowerCase() === state?.answer?.toLowerCase()) {
-      setErrorValue(
-        'You have selected the right answer. Please write a tricky wrong answer instead.'
-      );
-      return;
-    }
-
+  const onSubmit = (value = '') => {
+    if (submitted) return;
+    setSubmitted(true);
     broadcast('submit', {
       userId,
       name,
       submission: value
     });
-
-    setSubmitted(true);
   };
 
   return (
     <Flex alignItems="center" flexDirection="column">
       {submitted && <Alert>Waiting for {waiting} players</Alert>}
-      <QuestionInstructions>{state.instruction}</QuestionInstructions>
-      <Question>{state.question}</Question>
-      <Input
-        value={value}
-        onChange={e => {
-          setErrorValue('');
-          setValue(e.target.value);
-        }}
-        readOnly={submitted}
+      <Question
+        question={state.question}
+        instruction={state.instruction}
+        questionType={state.questionType}
       />
-      <p>{errorValue}</p>
-      <Button disabled={!value || submitted} onClick={handleClick}>
-        Submit answer
-      </Button>
-      <Timer shouldCallTimeout={!submitted} onTimeout={handleClick} />
+      <Answer
+        answer={state.answer}
+        answerType={state.answerType}
+        submitted={submitted}
+        onSubmit={onSubmit}
+      />
+      <Timer shouldCallTimeout={!submitted} onTimeout={onSubmit} />
     </Flex>
   );
 };
@@ -68,8 +56,11 @@ export const Scene1TV = ({ state }: SceneProps) => {
         <Alert>{submissions} players have submitted their answers</Alert>
       )}
       <TVQuestionConatiner>
-        <QuestionInstructions>{state.instruction}</QuestionInstructions>
-        <Question>{state.question}</Question>
+        <Question
+          question={state.question}
+          instruction={state.instruction}
+          questionType={state.questionType}
+        />
       </TVQuestionConatiner>
       <Timer />
     </>
