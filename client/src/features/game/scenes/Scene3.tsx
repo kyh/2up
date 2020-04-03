@@ -8,6 +8,7 @@ import {
 } from 'features/game/components/Question';
 import { SubmissionsContainer } from 'features/game/components/SubmissionsContainer';
 import correctSvg from 'features/game/components/correct.svg';
+import { HexColor } from 'features/game/components/Answer';
 
 export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
   const firstPlayer = state.players[0];
@@ -17,6 +18,12 @@ export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
         {state.submissions.map(submission => {
           if (!submission.content) return null;
           const isRightAnswer = submission.content === state.answer;
+          let content;
+          if (state.pack === "Color") {
+            content = <HexColor hex={submission.content} />;
+          } else {
+            content = submission.content
+          }
           return (
             <div className="submission full" key={submission.id}>
               {isRightAnswer && (
@@ -26,7 +33,7 @@ export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
                   alt="Correct answer"
                 />
               )}
-              <Button disabled>{submission.content}</Button>
+              <Button disabled>{content}</Button>
               <div className="endorsement-container">
                 {submission.endorsers.map(endorser => {
                   const avatar = hashCode(endorser.name, 10);
@@ -42,12 +49,14 @@ export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
           );
         })}
       </SubmissionsContainer>
-      <Button
-        disabled={firstPlayer.name !== name}
-        onClick={() => broadcast('scene:next')}
-      >
-        {firstPlayer.name === name ? 'Next' : `Waiting for ${firstPlayer.name}`}
-      </Button>
+      {firstPlayer && (
+        <Button
+          disabled={firstPlayer.name !== name}
+          onClick={() => broadcast('scene:next')}
+        >
+          {firstPlayer.name === name ? 'Next' : `Waiting for ${firstPlayer.name}`}
+        </Button>
+      )}
     </section>
   );
 };

@@ -15,6 +15,7 @@ export type GameState = {
   answer?: string;
   answerType?: string;
   submissions: Submission[];
+  pack: string;
 };
 
 export type Submission = {
@@ -42,7 +43,8 @@ export const initialState: GameState = {
   instruction: '',
   answer: '',
   answerType: '',
-  submissions: []
+  submissions: [],
+  pack: ''
 };
 
 const sortByName = (a: Player, b: Player) => {
@@ -72,6 +74,7 @@ const gameSlice = createSlice({
       state.instruction = payload.instruction ?? state.instruction;
       state.questionType = payload.questionType ?? state.questionType;
       state.answerType = payload.answerType ?? state.answerType;
+      state.pack = payload.pack ?? payload.pack;
     },
     toggle_host: (state, { payload }: PayloadAction<boolean>) => {
       state.isHost = payload;

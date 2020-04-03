@@ -120,3 +120,10 @@ const ColorPickerContainer = styled.div`
     margin-bottom: ${({ theme }) => theme.spacings(2)};
   }
 `;
+
+export const HexColor = styled.div<{hex: string}>`
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  background-color: ${props => (props.hex ?? 'transparent')}
+`
