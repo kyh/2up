@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect, createRef } from 'react';
 import styled from 'styled-components';
 import { ChromePicker } from 'react-color';
 import CanvasDraw from 'react-canvas-draw';
@@ -121,9 +121,40 @@ const ColorPickerContainer = styled.div`
   }
 `;
 
-export const HexColor = styled.div<{hex: string}>`
+const HexColor = styled.div<{hex: string}>`
   width: 30px;
   height: 30px;
   border-radius: 30px;
   background-color: ${props => (props.hex ?? 'transparent')}
 `
+
+const CanvasDisplay = ({ saveData }: { saveData: string }) => {
+  const canvas = createRef<CanvasDraw>();
+
+  useEffect(() => {
+    canvas?.current?.loadSaveData(saveData);
+  })
+
+  return (
+    <CanvasDraw
+      ref={canvas}
+      brushRadius={5}
+      lazyRadius={5}
+      canvasWidth={window.innerWidth / 4}
+      canvasHeight={(window.innerHeight - 250) / 4}
+    />
+  );
+}
+
+export const renderContent = (pack: string, rawContent: string) => {
+  let content: string | JSX.Element = rawContent;
+  if (pack === "Color") {
+    content = <HexColor hex={content} />;
+  } else if (pack === "Drawing") {
+    content = (
+      <CanvasDisplay saveData={content} />
+    );
+  }
+
+  return content;
+};

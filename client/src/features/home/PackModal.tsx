@@ -13,7 +13,7 @@ export const PackModal = ({
 }) => {
   // TODO: uncomment once we migrate off of Airtable
   // const { data } = useQuery(GET_PACKS);
-  const data = { packs: ['Startups', 'SAT', 'Color', 'Variety'] };
+  const data = { packs: ['Startups', 'SAT', 'Color', 'Drawing', 'Variety'] };
 
   return (
     <Modal

@@ -57,6 +57,12 @@ defmodule Game.QuestionCache do
     Enum.map(records, fn x ->
       fields = x["fields"]
       [fields["Question"], fields["Answer"], fields["Pack"]]
+      case Map.has_key?(fields, "Answer") do
+        true ->
+          [fields["Question"], fields["Answer"], fields["Pack"]]
+        false ->
+          [fields["Question"], "", fields["Pack"]]
+      end
     end)
     |> Enum.filter(fn y ->
       Enum.at(y, 0) != nil && Enum.at(y, 1) && Enum.at(y, 2)
