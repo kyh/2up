@@ -10,7 +10,8 @@ defmodule Game.GamePlay do
   # TODO: Move out once we migrate off of Airtable
   @pack_map %{
     "Startups": "Give a one line description of this startup",
-    "SAT": "Give a short definition of this word"
+    "SAT": "Give a short definition of this word",
+    "Drawing": "Draw this"
   }
 
   def new(question_sets, player_ids, initial_pack) do
