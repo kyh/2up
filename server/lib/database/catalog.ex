@@ -18,15 +18,25 @@ defmodule Database.Catalog do
     |> List.to_string
   end
 
-  def random_formatted_questions(size) do
-    query =
-      from Question,
-      order_by: fragment("RANDOM()"),
-      limit: ^size
+  def random_formatted_questions(size, pack \\ nil)
+  def random_formatted_questions(size, pack) do
+    query = 
+      case pack == nil || pack == "Variety" do
+        true -> 
+          from(Question,
+            order_by: fragment("RANDOM()"),
+            limit: ^size)
+
+        false -> 
+          from(q in Question,
+            where: [pack: ^pack],
+            order_by: fragment("RANDOM()"),
+            limit: ^size)
+      end
 
     Repo.all(query)
     |> Enum.map(fn x -> 
-      [x.content, x.answer]
+      [x.content, x.answer, [x.pack]]
     end)
   end
 

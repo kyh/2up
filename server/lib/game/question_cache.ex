@@ -33,15 +33,18 @@ defmodule Game.QuestionCache do
   end
 
   def get_questions(questions, pack) do
-    case pack == "Variety" do
-      true -> 
-        questions |> get_random_questions(10)
-      false -> 
-        Enum.filter(questions, fn x ->
-          pack_field = Enum.at(x, 2)
-          pack_name = Enum.at(pack_field, 0)
-          pack_name == pack
-        end) |> get_random_questions(10)
+    case Enum.empty?(questions) do 
+      true -> Database.Catalog.random_formatted_questions(10, pack)
+      false ->
+        case pack == "Variety" do
+          true -> questions |> get_random_questions(10)
+          false -> 
+            Enum.filter(questions, fn x ->
+                  pack_field = Enum.at(x, 2)
+                  pack_name = Enum.at(pack_field, 0)
+                  pack_name == pack
+                end) |> get_random_questions(10)
+        end
     end
   end
 
@@ -74,10 +77,9 @@ defmodule Game.QuestionCache do
   with nil offset
   """
   def load_questions(offset) do
-    key = System.get_env("AIRTABLE_KEY")
+    key = System.get_env("AIRTABLE_KEY", "")
     all_questions = []
-
-    case offset == nil do
+    case key == "" || offset == nil do
       true -> []
       false ->
         url = "https://api.airtable.com/v0/appOUKhim5DD45JMb/Question%20Bank\?api_key\=#{key}\&offset\=#{offset}"

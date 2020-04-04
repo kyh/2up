@@ -5,7 +5,8 @@ defmodule Database.Catalog.Question do
   schema "questions" do
     field :content, :string
     field :answer, :string
-
+    field :pack, :string
+    
     timestamps()
   end
 
