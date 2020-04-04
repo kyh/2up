@@ -2,8 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :playhouse, Database.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("POSTGRES_USER", "postgres"),
+  password: System.get_env("POSTGRES_PASS", "postgres"),
   database: "playhouse_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,

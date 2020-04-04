@@ -6,7 +6,7 @@
 	setup build test deploy console
 
 setup: install
-	cd server mix ecto.setup
+	cd server && mix ecto.setup
 
 install:
 	cd client && npm i
