@@ -7,7 +7,7 @@ import {
   Question
 } from 'features/game/components/Question';
 import { SubmissionsContainer } from 'features/game/components/SubmissionsContainer';
-import { HexColor } from 'features/game/components/Answer';
+import { renderContent } from 'features/game/components/Answer';
 
 export const Scene2Remote = ({
   state,
@@ -43,20 +43,13 @@ export const Scene2Remote = ({
         />
         {state.submissions.map(submission => {
           if (!submission.content) return null;
-          let content;
-          if (state.pack === "Color") {
-            content = <HexColor hex={submission.content} />;
-          } else {
-            content = submission.content
-          }
-
           return (
             <EndorsementButtons
               key={submission.id}
               disabled={submitted}
               onClick={() => endorse(submission.id)}
             >
-              {content}
+              {renderContent(state.pack, submission.content)}
             </EndorsementButtons>
           );
         })}
@@ -102,7 +95,7 @@ export const Scene2TV = ({ state }: SceneProps) => {
           if (!submission.content) return null;
           return (
             <div className="submission" key={submission.id}>
-              <Button disabled>{submission.content}</Button>
+              <Button disabled>{renderContent(state.pack, submission.content)}</Button>
             </div>
           );
         })}

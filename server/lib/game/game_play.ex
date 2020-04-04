@@ -31,11 +31,13 @@ defmodule Game.GamePlay do
         endorsers: []
       }
 
-      %Act{
+      answer_type = get_answer_type(pack)
+
+      act = %Act{
         question: question,
         question_type: "text",
         answer: answer,
-        answer_type: "text",
+        answer_type: answer_type,
         pack: pack,
         instruction: instruction,
         submissions: [submission]
@@ -44,13 +46,21 @@ defmodule Game.GamePlay do
 
     case initial_pack do
       "Variety" ->
-        acts = List.replace_at(acts, 0, generate_color_act())
+        acts = List.replace_at(acts, 1, generate_color_act())
+          |> List.replace_at(7, generate_color_act())
         %GamePlay{acts: acts, players: players, pack: initial_pack}
       "Color" ->
         acts = Enum.map(0..9, fn _ -> generate_color_act() end)
         %GamePlay{acts: acts, players: players, pack: initial_pack}
       _ -> 
         %GamePlay{acts: acts, players: players, pack: initial_pack}
+    end
+  end
+
+  def get_answer_type(pack) do
+    case pack do
+      "Drawing" -> "drawing"
+      _ -> "text"
     end
   end
 
