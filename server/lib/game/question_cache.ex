@@ -87,8 +87,12 @@ defmodule Game.QuestionCache do
         records = body["records"]
         new_offset = body["offset"]
 
-        all_questions = Enum.concat(all_questions, format_records(records))
-        Enum.concat(all_questions, load_questions(new_offset))
+        case records == nil do
+          true -> all_questions
+          false ->
+            all_questions = Enum.concat(all_questions, format_records(records))
+            Enum.concat(all_questions, load_questions(new_offset))
+        end
     end
   end
 end

@@ -1,0 +1,51 @@
+schema {
+  query: RootQueryType
+  mutation: RootMutationType
+}
+
+type Code {
+  code: String!
+}
+
+type Game {
+  isValid: Boolean!
+}
+
+type Question {
+  content: String!
+  id: ID!
+}
+
+type RootMutationType {
+  """Get info about live game"""
+  game(code: String!): Game
+
+  """Create new live game"""
+  gameNew(pack: String!): Code
+
+  """Sign in user"""
+  signin(password: String!, username: String!): Session
+
+  """Create user"""
+  signup(email: String!, password: String!, username: String!): Session
+}
+
+type RootQueryType {
+  answerTypes: [String]
+  packs: [String]
+  questionTypes: [String]
+
+  """Get a list of questions"""
+  questions: [Question]
+}
+
+type Session {
+  token: String!
+  user: User!
+}
+
+type User {
+  email: String!
+  username: String!
+}
+

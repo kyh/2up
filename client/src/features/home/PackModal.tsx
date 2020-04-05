@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
-// import gql from 'graphql-tag';
-// import { useQuery } from '@apollo/react-hooks';
+import graphql from 'babel-plugin-relay/macro';
+import { useLazyLoadQuery } from 'react-relay/hooks';
 import { Button, Modal } from 'components';
+import { PackModalPacksQuery } from './__generated__/PackModalPacksQuery.graphql';
 
-// const GET_PACKS = gql``;
-
+const PacksQuery = graphql`
+  query PackModalPacksQuery {
+    packs
+  }
+`
 export const PackModal = ({
   isPackModalOpen = false,
   setIsPackModalOpen = (_isOpen: boolean) => {},
   onSelectPack = (_pack: string) => {}
 }) => {
-  // TODO: uncomment once we migrate off of Airtable
-  // const { data } = useQuery(GET_PACKS);
-  const data = { packs: ['Startups', 'SAT', 'Color', 'Drawing', 'Variety'] };
+  const data = useLazyLoadQuery<PackModalPacksQuery>(PacksQuery, {});
 
   return (
     <Modal
@@ -24,11 +26,16 @@ export const PackModal = ({
       closeButton
     >
       <PackModalBody>
-        {data?.packs?.map((pack: string) => (
-          <Button key={pack} fullWidth onClick={() => onSelectPack(pack)}>
-            {pack}
-          </Button>
-        ))}
+        {data?.packs?.map((pack) => {
+          if (!pack) {
+            return null;
+          }
+          return (
+            <Button key={pack} fullWidth onClick={() => onSelectPack(pack)}>
+              {pack}
+            </Button>
+            )
+        })}
       </PackModalBody>
     </Modal>
   );
