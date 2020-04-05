@@ -14,6 +14,6 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   end
 
   def packs(_, _, _) do
-    {:ok, ["Startups", "SAT", "Variety"]}
+    {:ok, ["Startups", "SAT", "Color", "Drawing", "Variety"]}
   end
 end

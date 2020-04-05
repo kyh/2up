@@ -1,40 +1,41 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { Redirect } from 'react-router-dom';
+import graphql from 'babel-plugin-relay/macro';
 import styled from 'styled-components';
-import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
 import { useAlert } from 'react-alert';
 
+import { useBaseMutation } from 'utils/useBaseMutation';
 import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
 import { gameActions, useGame } from 'features/game/gameSlice';
 import { Button, Input, Card } from 'components';
 import { PackModal } from 'features/home/PackModal';
+
+import { HomeGameNewMutation } from './__generated__/HomeGameNewMutation.graphql';
+import { HomeGameCheckMutation } from './__generated__/HomeGameCheckMutation.graphql';
 
 const Screens = {
   join: 'join',
   name: 'name'
 };
 
-const TRIVIA_NEW = gql`
-  mutation GameNew($pack: String!) {
-    gameNew(pack: $pack) {
-      code
-    }
-  }
-`;
-
-const TRIVIA_CHECK = gql`
-  mutation GameCheck($code: String!) {
+const GameCheck = graphql`
+  mutation HomeGameCheckMutation($code: String!) {
     game(code: $code) {
       isValid
     }
   }
 `;
 
+const GameNew = graphql`
+  mutation HomeGameNewMutation($pack: String!) {
+    gameNew(pack: $pack) {
+      code
+    }
+  }
+`;
+
 export const Home = () => {
   const alert = useAlert();
-  const [gameNew] = useMutation(TRIVIA_NEW);
-  const [gameCheck] = useMutation(TRIVIA_CHECK);
 
   const { state: playhouseState, dispatch } = usePlayhouse();
   const { state: gameState } = useGame();
@@ -47,23 +48,32 @@ export const Home = () => {
   const [name, setName] = useState(playhouseState.name);
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);
 
-  const onClickHost = async () => {
+  const gameCheck = useBaseMutation<HomeGameCheckMutation>(GameCheck);
+  const gameNew = useBaseMutation<HomeGameNewMutation>(GameNew);
+
+  const onClickHost = () => {
     setIsPackModalOpen(true);
   };
 
   // Joining an existing game:
   const onSubmitGameCode = async (event: SyntheticEvent) => {
     event.preventDefault();
-    const { data } = await gameCheck({
-      variables: { code: gameId }
-    });
-    if (data.error || (data && !data.game.isValid)) {
-      alert.show('Game code does not exist');
-      setgameId('');
-      return;
-    }
-    dispatch(gameActions.new_game({ gameId }));
-    setScreen(Screens.name);
+
+    gameCheck({
+      variables: { code: gameId },
+      onCompleted: (data) => {
+        if (!data.game?.isValid) {
+          alert.show('Game code does not exist');
+          setgameId('');
+          return;
+        }
+        dispatch(gameActions.new_game({ gameId }));
+        setScreen(Screens.name);
+      },
+      onError: (error: Error) => {
+        alert.show(error);
+      }
+    })
   };
 
   const onSubmitName = (event: SyntheticEvent) => {
@@ -74,18 +84,22 @@ export const Home = () => {
   };
 
   // Creating a new game:
-  const onSelectPack = async (pack: string) => {
-    const { data } = await gameNew({
-      variables: { pack }
-    });
-    if (data.error) {
-      alert.show(data.error);
-      return;
-    }
-    dispatch(gameActions.toggle_host(true));
-    dispatch(playhouseActions.update_user({ name: '' }));
-    dispatch(gameActions.new_game({ gameId: data.gameNew.code }));
-    setShouldRedirect(true);
+  const onSelectPack = (pack: string) => {
+    gameNew({
+      variables: { pack },
+      onCompleted: (data) => {
+        if (!data || !data.gameNew) {
+          return;
+        }
+        dispatch(gameActions.toggle_host(true));
+        dispatch(playhouseActions.update_user({ name: '' }));
+        dispatch(gameActions.new_game({ gameId: data.gameNew.code }));
+        setShouldRedirect(true);
+      },
+      onError: (error: Error) => {
+        alert.show(error);
+      }
+    })
   };
 
   if (gameState.gameId && shouldRedirect) {
@@ -125,11 +139,13 @@ export const Home = () => {
           </InputContainer>
         )}
       </IntroCard>
-      <PackModal
-        isPackModalOpen={isPackModalOpen}
-        setIsPackModalOpen={setIsPackModalOpen}
-        onSelectPack={onSelectPack}
-      />
+      <React.Suspense fallback="">
+        <PackModal
+          isPackModalOpen={isPackModalOpen}
+          setIsPackModalOpen={setIsPackModalOpen}
+          onSelectPack={onSelectPack}
+        />
+      </React.Suspense>
     </IntroContainer>
   );
 };
