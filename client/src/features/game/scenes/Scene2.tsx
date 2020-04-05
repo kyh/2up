@@ -7,7 +7,7 @@ import {
   Question
 } from 'features/game/components/Question';
 import { SubmissionsContainer } from 'features/game/components/SubmissionsContainer';
-import { renderContent } from 'features/game/components/Answer';
+import { Answer } from 'features/game/components/Answer';
 
 export const Scene2Remote = ({
   state,
@@ -44,13 +44,13 @@ export const Scene2Remote = ({
         {state.submissions.map(submission => {
           if (!submission.content) return null;
           return (
-            <EndorsementButtons
+            <Answer
               key={submission.id}
-              disabled={submitted}
-              onClick={() => endorse(submission.id)}
-            >
-              {renderContent(state.pack, submission.content)}
-            </EndorsementButtons>
+              answerType={`endorse_${state.answerType}`}
+              answer={submission.content}
+              onSubmit={() => endorse(submission.id)}
+              submitted={submitted}
+            />
           );
         })}
         <Timer
@@ -67,12 +67,6 @@ export const Scene2Remote = ({
     </>
   );
 };
-
-const EndorsementButtons = styled(Button)`
-  display: block;
-  width: 100%;
-  text-transform: uppercase;
-`;
 
 export const Scene2TV = ({ state }: SceneProps) => {
   const submissions = state.submissions.reduce((sum, s) => {
@@ -95,7 +89,12 @@ export const Scene2TV = ({ state }: SceneProps) => {
           if (!submission.content) return null;
           return (
             <div className="submission" key={submission.id}>
-              <Button disabled>{renderContent(state.pack, submission.content)}</Button>
+              <Answer
+                answerType={`endorse_${state.answerType}`}
+                answer={submission.content}
+                onSubmit={() => {}}
+                submitted
+              />
             </div>
           );
         })}
