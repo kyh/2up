@@ -8,6 +8,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { debounce } from 'lodash';
 import { store } from 'app/store';
 import { client } from 'app/apollo';
+import { environment } from 'app/environment';
+import { RelayEnvironmentProvider, } from 'react-relay/hooks';
 import * as serviceWorker from './serviceWorker';
 
 const onResize = () => {
@@ -27,7 +29,9 @@ const render = () => {
       <ReduxProvider store={store}>
         <SocketProvider wsUrl={`${process.env.REACT_APP_SOCKET_URL}/socket`}>
           <ApolloProvider client={client}>
-            <App />
+            <RelayEnvironmentProvider environment={environment}>
+              <App />
+            </RelayEnvironmentProvider>
           </ApolloProvider>
         </SocketProvider>
       </ReduxProvider>
