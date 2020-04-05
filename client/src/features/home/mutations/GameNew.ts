@@ -8,7 +8,7 @@ import {
   GameNewMutationResponse
 } from './__generated__/GameNewMutation.graphql';
 
-const GameNewMutation = graphql`
+const GameNew = graphql`
   mutation GameNewMutation($pack: String!) {
     gameNew(pack: $pack) {
       code
@@ -29,7 +29,7 @@ export const useGameNew = () => {
     commitMutation<GameNewMutation>(
       environment,
       {
-        mutation: GameNewMutation,
+        mutation: GameNew,
         variables,
         onCompleted,
         onError

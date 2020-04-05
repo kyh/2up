@@ -8,7 +8,7 @@ import {
   GameCheckMutationResponse
 } from './__generated__/GameCheckMutation.graphql';
 
-const GameCheckMutation = graphql`
+const GameCheck = graphql`
   mutation GameCheckMutation($code: String!) {
     game(code: $code) {
       isValid
@@ -29,7 +29,7 @@ export const useGameCheck = () => {
     commitMutation<GameCheckMutation>(
       environment,
       {
-        mutation: GameCheckMutation,
+        mutation: GameCheck,
         variables,
         onCompleted,
         onError
@@ -37,4 +37,3 @@ export const useGameCheck = () => {
     );
   }
 }
-
