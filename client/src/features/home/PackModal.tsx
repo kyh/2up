@@ -1,9 +1,7 @@
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import graphql from 'babel-plugin-relay/macro';
-import {
-  useLazyLoadQuery,
-} from 'react-relay/hooks';
+import { useLazyLoadQuery } from 'react-relay/hooks';
 import { Button, Modal } from 'components';
 import { PackModalPacksQuery } from './__generated__/PackModalPacksQuery.graphql';
 

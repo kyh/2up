@@ -1,13 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ApolloProvider } from '@apollo/react-hooks';
 import { Provider as ReduxProvider } from 'react-redux';
 import { SocketProvider } from 'utils/Socket';
 import { BrowserRouter } from 'react-router-dom';
 
 import { debounce } from 'lodash';
 import { store } from 'app/store';
-import { client } from 'app/apollo';
 import { environment } from 'app/environment';
 import { RelayEnvironmentProvider, } from 'react-relay/hooks';
 import * as serviceWorker from './serviceWorker';
@@ -28,11 +26,9 @@ const render = () => {
     <BrowserRouter>
       <ReduxProvider store={store}>
         <SocketProvider wsUrl={`${process.env.REACT_APP_SOCKET_URL}/socket`}>
-          <ApolloProvider client={client}>
-            <RelayEnvironmentProvider environment={environment}>
-              <App />
-            </RelayEnvironmentProvider>
-          </ApolloProvider>
+          <RelayEnvironmentProvider environment={environment}>
+            <App />
+          </RelayEnvironmentProvider>
         </SocketProvider>
       </ReduxProvider>
     </BrowserRouter>,

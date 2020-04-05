@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import graphql from 'babel-plugin-relay/macro';
+import { useLazyLoadQuery } from 'react-relay/hooks';
+import { GameMasterQuestionsQuery } from './__generated__/GameMasterQuestionsQuery.graphql';
 
-const GET_QUESTIONS = gql`
-  query GetQuestions {
+
+const QuestionsQuery = graphql`
+  query GameMasterQuestionsQuery {
     questions {
       id
       content
@@ -13,19 +15,27 @@ const GET_QUESTIONS = gql`
 `;
 
 export const GameMaster = () => {
-  const { data, loading } = useQuery(GET_QUESTIONS);
-  if (loading) return null;
+
   return (
     <Page>
       <h1>Game Master view</h1>
-      <div>
-        {data.questions.map((question: any) => (
-          <div key={question.id}>{question.content}</div>
-        ))}
-      </div>
+      <Suspense fallback="Loading...">
+        <Questions />
+      </Suspense>
     </Page>
   );
 };
+
+const Questions = () => {
+  const data = useLazyLoadQuery<GameMasterQuestionsQuery>(QuestionsQuery, {});
+  return (
+    <div>
+      {data?.questions?.map((question: any) => (
+        <div key={question.id}>{question.content}</div>
+      ))}
+    </div>
+  )
+}
 
 const Page = styled.section`
   overflow: auto;
