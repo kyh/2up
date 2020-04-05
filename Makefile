@@ -49,4 +49,5 @@ seeds:
 	cd server && mix run priv/repo/seeds.exs
 
 gql-gen:
-	cd server && get-graphql-schema http://localhost:4000/graphql > ../client/schema.graphql
+	cd client && get-graphql-schema http://localhost:4000/graphql > schema.graphql
+	cd client && npm run relay
