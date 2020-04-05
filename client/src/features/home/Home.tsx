@@ -1,21 +1,38 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { Redirect } from 'react-router-dom';
-
+import graphql from 'babel-plugin-relay/macro';
 import styled from 'styled-components';
-
 import { useAlert } from 'react-alert';
 
+import { useBaseMutation } from 'utils/useBaseMutation';
 import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
 import { gameActions, useGame } from 'features/game/gameSlice';
 import { Button, Input, Card } from 'components';
 import { PackModal } from 'features/home/PackModal';
-import { useGameCheck } from 'features/home/mutations/GameCheck';
-import { useGameNew } from 'features/home/mutations/GameNew';
+
+import { HomeGameNewMutation } from './__generated__/HomeGameNewMutation.graphql';
+import { HomeGameCheckMutation } from './__generated__/HomeGameCheckMutation.graphql';
 
 const Screens = {
   join: 'join',
   name: 'name'
 };
+
+const GameCheck = graphql`
+  mutation HomeGameCheckMutation($code: String!) {
+    game(code: $code) {
+      isValid
+    }
+  }
+`;
+
+const GameNew = graphql`
+  mutation HomeGameNewMutation($pack: String!) {
+    gameNew(pack: $pack) {
+      code
+    }
+  }
+`;
 
 export const Home = () => {
   const alert = useAlert();
@@ -31,8 +48,8 @@ export const Home = () => {
   const [name, setName] = useState(playhouseState.name);
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);
 
-  const gameCheck = useGameCheck();
-  const gameNew = useGameNew();
+  const gameCheck = useBaseMutation<HomeGameCheckMutation>(GameCheck);
+  const gameNew = useBaseMutation<HomeGameNewMutation>(GameNew);
 
   const onClickHost = async () => {
     setIsPackModalOpen(true);
