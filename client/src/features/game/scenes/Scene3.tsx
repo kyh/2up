@@ -2,13 +2,9 @@ import React from 'react';
 import { AvatarImage, Button } from 'components';
 import { SceneProps } from 'features/game/gameSlice';
 import { hashCode } from 'utils/stringUtils';
-import {
-  TVQuestionConatiner,
-  Question
-} from 'features/game/components/Question';
 import { SubmissionsContainer } from 'features/game/components/SubmissionsContainer';
+import { Answer } from 'features/game/components/Answer';
 import correctSvg from 'features/game/components/correct.svg';
-import { renderContent } from 'features/game/components/Answer';
 
 export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
   const firstPlayer = state.players[0];
@@ -27,7 +23,13 @@ export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
                   alt="Correct answer"
                 />
               )}
-              <Button disabled>{renderContent(state.pack, submission.content)}</Button>
+              <Answer
+                key={submission.id}
+                answerType={`endorse_${state.answerType}`}
+                answer={submission.content}
+                onSubmit={() => {}}
+                submitted
+              />
               <div className="endorsement-container">
                 {submission.endorsers.map(endorser => {
                   const avatar = hashCode(endorser.name, 10);
@@ -48,7 +50,9 @@ export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
           disabled={firstPlayer.name !== name}
           onClick={() => broadcast('scene:next')}
         >
-          {firstPlayer.name === name ? 'Next' : `Waiting for ${firstPlayer.name}`}
+          {firstPlayer.name === name
+            ? 'Next'
+            : `Waiting for ${firstPlayer.name}`}
         </Button>
       )}
     </section>
@@ -71,7 +75,13 @@ export const Scene3TV = ({ state }: SceneProps) => {
                   alt="Correct answer"
                 />
               )}
-              <Button disabled>{renderContent(state.pack, submission.content)}</Button>
+              <Answer
+                key={submission.id}
+                answerType={`endorse_${state.answerType}`}
+                answer={submission.content}
+                onSubmit={() => {}}
+                submitted
+              />
               <div className="endorsement-container">
                 {submission.endorsers.map(endorser => {
                   const avatar = hashCode(endorser.name, 10);

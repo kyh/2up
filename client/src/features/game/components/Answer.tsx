@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect, createRef } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import styled from 'styled-components';
 import { ChromePicker } from 'react-color';
 import CanvasDraw from 'react-canvas-draw';
@@ -20,8 +20,32 @@ export const Answer: React.FC<AnswerProps> = ({
   switch (answerType) {
     case 'drawing':
       return <AnswerCanvas submitted={submitted} onSubmit={onSubmit} />;
+    case 'endorse_drawing':
+      return (
+        <EndorseCanvas
+          answer={answer}
+          submitted={submitted}
+          onSubmit={onSubmit}
+        />
+      );
     case 'color':
       return <AnswerColor submitted={submitted} onSubmit={onSubmit} />;
+    case 'endorse_color':
+      return (
+        <EndorseColor
+          answer={answer}
+          submitted={submitted}
+          onSubmit={onSubmit}
+        />
+      );
+    case 'endorse_text':
+      return (
+        <EndorseText
+          answer={answer}
+          submitted={submitted}
+          onSubmit={onSubmit}
+        />
+      );
     default:
       return (
         <AnswerText answer={answer} submitted={submitted} onSubmit={onSubmit} />
@@ -44,7 +68,7 @@ const AnswerText: React.FC<AnswerProps> = ({ answer, submitted, onSubmit }) => {
   };
 
   return (
-    <>
+    <Box textAlign="center">
       <Input
         value={value}
         onChange={e => {
@@ -57,37 +81,71 @@ const AnswerText: React.FC<AnswerProps> = ({ answer, submitted, onSubmit }) => {
       <Button disabled={!value || submitted} onClick={handleClick}>
         Submit answer
       </Button>
-    </>
+    </Box>
   );
 };
 
-class AnswerCanvas extends Component<AnswerProps> {
-  private canvas = React.createRef<CanvasDraw>();
+const EndorseText: React.FC<AnswerProps> = ({
+  answer,
+  submitted,
+  onSubmit
+}) => {
+  return (
+    <EndorsementButtons disabled={submitted} onClick={() => onSubmit(answer)}>
+      {answer}
+    </EndorsementButtons>
+  );
+};
 
-  handleClick = () => {
-    const data = this.canvas?.current?.getSaveData();
-    this.props.onSubmit(data);
+const AnswerCanvas: React.FC<AnswerProps> = ({ submitted, onSubmit }) => {
+  const canvas = createRef<CanvasDraw>();
+
+  const handleClick = () => {
+    const data = canvas?.current?.getSaveData();
+    onSubmit(data);
   };
 
-  render() {
-    return (
-      <>
-        <Box mb={3}>
-          <CanvasDraw
-            ref={this.canvas}
-            brushRadius={5}
-            lazyRadius={5}
-            canvasWidth={window.innerWidth}
-            canvasHeight={window.innerHeight - 250}
-          />
-        </Box>
-        <Button disabled={this.props.submitted} onClick={this.handleClick}>
-          Submit answer
-        </Button>
-      </>
-    );
-  }
-}
+  return (
+    <Box textAlign="center">
+      <Box mb={3}>
+        <CanvasDraw
+          ref={canvas}
+          brushRadius={5}
+          lazyRadius={5}
+          canvasWidth={window.innerWidth}
+          canvasHeight={window.innerHeight - 250}
+        />
+      </Box>
+      <Button disabled={submitted} onClick={handleClick}>
+        Submit answer
+      </Button>
+    </Box>
+  );
+};
+
+const EndorseCanvas: React.FC<AnswerProps> = ({
+  answer,
+  submitted,
+  onSubmit
+}) => {
+  const canvas = createRef<CanvasDraw>();
+
+  useEffect(() => {
+    canvas?.current?.loadSaveData(answer!);
+  });
+
+  return (
+    <EndorsementButtons disabled={submitted} onClick={() => onSubmit(answer)}>
+      <CanvasDraw
+        ref={canvas}
+        brushRadius={5}
+        lazyRadius={5}
+        canvasWidth={window.innerWidth / 4}
+        canvasHeight={(window.innerHeight - 250) / 4}
+      />
+    </EndorsementButtons>
+  );
+};
 
 const AnswerColor: React.FC<AnswerProps> = ({ submitted, onSubmit }) => {
   const [color, setColor] = useState('#ffffff');
@@ -112,7 +170,20 @@ const AnswerColor: React.FC<AnswerProps> = ({ submitted, onSubmit }) => {
   );
 };
 
+const EndorseColor: React.FC<AnswerProps> = ({
+  answer,
+  submitted,
+  onSubmit
+}) => {
+  return (
+    <EndorsementButtons disabled={submitted} onClick={() => onSubmit(answer)}>
+      <HexColor hex={answer} />
+    </EndorsementButtons>
+  );
+};
+
 const ColorPickerContainer = styled.div`
+  text-align: center;
   .chrome-picker {
     .flexbox-fix + .flexbox-fix {
       display: none !important;
@@ -121,40 +192,16 @@ const ColorPickerContainer = styled.div`
   }
 `;
 
-const HexColor = styled.div<{hex: string}>`
+const HexColor = styled.div<{ hex?: string }>`
   width: 30px;
   height: 30px;
   border-radius: 30px;
-  background-color: ${props => (props.hex ?? 'transparent')}
-`
+  background-color: ${props => props.hex ?? 'transparent'};
+  margin: 0 auto;
+`;
 
-const CanvasDisplay = ({ saveData }: { saveData: string }) => {
-  const canvas = createRef<CanvasDraw>();
-
-  useEffect(() => {
-    canvas?.current?.loadSaveData(saveData);
-  })
-
-  return (
-    <CanvasDraw
-      ref={canvas}
-      brushRadius={5}
-      lazyRadius={5}
-      canvasWidth={window.innerWidth / 4}
-      canvasHeight={(window.innerHeight - 250) / 4}
-    />
-  );
-}
-
-export const renderContent = (pack: string, rawContent: string) => {
-  let content: string | JSX.Element = rawContent;
-  if (pack === "Color") {
-    content = <HexColor hex={content} />;
-  } else if (pack === "Drawing") {
-    content = (
-      <CanvasDisplay saveData={content} />
-    );
-  }
-
-  return content;
-};
+const EndorsementButtons = styled(Button)`
+  display: block;
+  width: 100%;
+  text-transform: uppercase;
+`;
