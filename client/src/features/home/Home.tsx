@@ -2,8 +2,6 @@ import React, { useState, SyntheticEvent } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import styled from 'styled-components';
-import graphql from 'babel-plugin-relay/macro';
-import { commitMutation } from 'react-relay';
 
 import { useAlert } from 'react-alert';
 
@@ -11,77 +9,13 @@ import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
 import { gameActions, useGame } from 'features/game/gameSlice';
 import { Button, Input, Card } from 'components';
 import { PackModal } from 'features/home/PackModal';
-
-import { HomeGameCheckMutationVariables, HomeGameCheckMutation, HomeGameCheckMutationResponse } from './__generated__/HomeGameCheckMutation.graphql';
-import { HomeGameNewMutationVariables, HomeGameNewMutation, HomeGameNewMutationResponse } from './__generated__/HomeGameNewMutation.graphql';
-
-import { useRelayEnvironment } from 'react-relay/hooks';
+import { useGameCheck } from 'features/home/mutations/GameCheck';
+import { useGameNew } from 'features/home/mutations/GameNew';
 
 const Screens = {
   join: 'join',
   name: 'name'
 };
-
-const GameNewMutation = graphql`
-  mutation HomeGameNewMutation($pack: String!) {
-    gameNew(pack: $pack) {
-      code
-    }
-  }
-`;
-
-const GameCheckMutation = graphql`
-  mutation HomeGameCheckMutation($code: String!) {
-    game(code: $code) {
-      isValid
-    }
-  }
-`;
-
-
-type GameNewConfig = {
-  variables: HomeGameNewMutationVariables;
-  onCompleted(response: HomeGameNewMutationResponse): void;
-  onError(error: any): void;
-}
-
-function useGameNew() {
-  const environment = useRelayEnvironment();
-
-  return ({ variables, onCompleted, onError }: GameNewConfig) => {
-    commitMutation<HomeGameNewMutation>(
-      environment,
-      {
-        mutation: GameNewMutation,
-        variables,
-        onCompleted,
-        onError
-      },
-    );
-  }
-}
-
-type GameCheckConfig = {
-  variables: HomeGameCheckMutationVariables;
-  onCompleted(response: HomeGameCheckMutationResponse, errors: any): void;
-  onError?(error: any): void;
-}
-
-function useGameCheck() {
-  const environment = useRelayEnvironment();
-
-  return ({ variables, onCompleted, onError }: GameCheckConfig) => {
-    commitMutation<HomeGameCheckMutation>(
-      environment,
-      {
-        mutation: GameCheckMutation,
-        variables,
-        onCompleted,
-        onError
-      },
-    );
-  }
-}
 
 export const Home = () => {
   const alert = useAlert();

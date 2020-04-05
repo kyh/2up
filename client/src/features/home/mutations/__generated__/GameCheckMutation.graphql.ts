@@ -1,25 +1,25 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 41ac9e9ca1affc29b8dedd60aa68b6f7 */
+/* @relayHash c5f4063cff0b42b5637e8dabc800ed9c */
 
 import { ConcreteRequest } from "relay-runtime";
-export type HomeGameCheckMutationVariables = {
+export type GameCheckMutationVariables = {
     code: string;
 };
-export type HomeGameCheckMutationResponse = {
+export type GameCheckMutationResponse = {
     readonly game: {
         readonly isValid: boolean;
     } | null;
 };
-export type HomeGameCheckMutation = {
-    readonly response: HomeGameCheckMutationResponse;
-    readonly variables: HomeGameCheckMutationVariables;
+export type GameCheckMutation = {
+    readonly response: GameCheckMutationResponse;
+    readonly variables: GameCheckMutationVariables;
 };
 
 
 
 /*
-mutation HomeGameCheckMutation(
+mutation GameCheckMutation(
   $code: String!
 ) {
   game(code: $code) {
@@ -67,7 +67,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "HomeGameCheckMutation",
+    "name": "GameCheckMutation",
     "type": "RootMutationType",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -75,18 +75,18 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "HomeGameCheckMutation",
+    "name": "GameCheckMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "mutation",
-    "name": "HomeGameCheckMutation",
+    "name": "GameCheckMutation",
     "id": null,
-    "text": "mutation HomeGameCheckMutation(\n  $code: String!\n) {\n  game(code: $code) {\n    isValid\n  }\n}\n",
+    "text": "mutation GameCheckMutation(\n  $code: String!\n) {\n  game(code: $code) {\n    isValid\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '4049a07f4552ce5e94046970e513262e';
+(node as any).hash = '9660e7439127aefe5847b2a5f912d721';
 export default node;

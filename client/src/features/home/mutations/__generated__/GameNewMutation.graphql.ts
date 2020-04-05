@@ -1,25 +1,25 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a8c19e87c6ea212f7d6f2d4b8d49468f */
+/* @relayHash e50c86b74ac3407b1b718da1f61d12f1 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type HomeGameNewMutationVariables = {
+export type GameNewMutationVariables = {
     pack: string;
 };
-export type HomeGameNewMutationResponse = {
+export type GameNewMutationResponse = {
     readonly gameNew: {
         readonly code: string;
     } | null;
 };
-export type HomeGameNewMutation = {
-    readonly response: HomeGameNewMutationResponse;
-    readonly variables: HomeGameNewMutationVariables;
+export type GameNewMutation = {
+    readonly response: GameNewMutationResponse;
+    readonly variables: GameNewMutationVariables;
 };
 
 
 
 /*
-mutation HomeGameNewMutation(
+mutation GameNewMutation(
   $pack: String!
 ) {
   gameNew(pack: $pack) {
@@ -67,7 +67,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "HomeGameNewMutation",
+    "name": "GameNewMutation",
     "type": "RootMutationType",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -75,18 +75,18 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "HomeGameNewMutation",
+    "name": "GameNewMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "mutation",
-    "name": "HomeGameNewMutation",
+    "name": "GameNewMutation",
     "id": null,
-    "text": "mutation HomeGameNewMutation(\n  $pack: String!\n) {\n  gameNew(pack: $pack) {\n    code\n  }\n}\n",
+    "text": "mutation GameNewMutation(\n  $pack: String!\n) {\n  gameNew(pack: $pack) {\n    code\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '85e0e8f1d3f99291ee3969ba165db985';
+(node as any).hash = '6b99b1a87a24fe9794a19085d820cfbd';
 export default node;
