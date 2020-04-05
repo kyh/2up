@@ -34,7 +34,7 @@ defmodule Game.GamePlay do
 
       answer_type = get_answer_type(pack)
 
-      act = %Act{
+      %Act{
         question: question,
         question_type: "text",
         answer: answer,
