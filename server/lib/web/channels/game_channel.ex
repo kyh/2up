@@ -7,7 +7,6 @@ defmodule Web.GameChannel do
 
   alias Web.Presence
   alias Game.GameServer
-  alias Database.Play
 
   @doc """
   Join game with game code
@@ -73,7 +72,6 @@ defmodule Web.GameChannel do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         end_game_state = GameServer.game_end(game_code)
-        Play.game_save(end_game_state)
 
         {:noreply, socket}
       nil ->
