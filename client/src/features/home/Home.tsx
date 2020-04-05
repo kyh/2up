@@ -51,7 +51,7 @@ export const Home = () => {
   const gameCheck = useBaseMutation<HomeGameCheckMutation>(GameCheck);
   const gameNew = useBaseMutation<HomeGameNewMutation>(GameNew);
 
-  const onClickHost = async () => {
+  const onClickHost = () => {
     setIsPackModalOpen(true);
   };
 
@@ -84,7 +84,7 @@ export const Home = () => {
   };
 
   // Creating a new game:
-  const onSelectPack = async (pack: string) => {
+  const onSelectPack = (pack: string) => {
     gameNew({
       variables: { pack },
       onCompleted: (data) => {
