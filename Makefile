@@ -47,3 +47,6 @@ test:
 
 seeds:
 	cd server && mix run priv/repo/seeds.exs
+
+gql-gen:
+	cd server && get-graphql-schema http://localhost:4000/graphql > ../client/schema.graphql
