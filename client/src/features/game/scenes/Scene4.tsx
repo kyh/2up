@@ -30,7 +30,7 @@ export const Scene4Remote = ({ state, broadcast, name }: SceneProps) => {
 export const Scene4TV = ({ state }: SceneProps) => {
   return (
     <div>
-      <h2>Coins</h2>
+      <h2>Question: {state.act} / 10</h2>
       {state.players.map(player => (
         <div key={player.id}>
           <h3>{player.name}</h3>
