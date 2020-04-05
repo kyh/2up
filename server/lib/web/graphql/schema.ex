@@ -7,6 +7,7 @@ defmodule Web.GraphQL.Schema do
   """
 
   use Absinthe.Schema
+  use Absinthe.Relay.Schema, :modern
   alias Web.GraphQL.Resolvers.{Catalog, Accounts, Play}
 
   query do
