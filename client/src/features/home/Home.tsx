@@ -1,8 +1,10 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { Redirect } from 'react-router-dom';
+
 import styled from 'styled-components';
-import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
+import graphql from 'babel-plugin-relay/macro';
+import { commitMutation } from 'react-relay';
+
 import { useAlert } from 'react-alert';
 
 import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
@@ -10,31 +12,79 @@ import { gameActions, useGame } from 'features/game/gameSlice';
 import { Button, Input, Card } from 'components';
 import { PackModal } from 'features/home/PackModal';
 
+import { HomeGameCheckMutationVariables, HomeGameCheckMutation, HomeGameCheckMutationResponse } from './__generated__/HomeGameCheckMutation.graphql';
+import { HomeGameNewMutationVariables, HomeGameNewMutation, HomeGameNewMutationResponse } from './__generated__/HomeGameNewMutation.graphql';
+
+import { useRelayEnvironment } from 'react-relay/hooks';
+
 const Screens = {
   join: 'join',
   name: 'name'
 };
 
-const TRIVIA_NEW = gql`
-  mutation GameNew($pack: String!) {
+const GameNewMutation = graphql`
+  mutation HomeGameNewMutation($pack: String!) {
     gameNew(pack: $pack) {
       code
     }
   }
 `;
 
-const TRIVIA_CHECK = gql`
-  mutation GameCheck($code: String!) {
+const GameCheckMutation = graphql`
+  mutation HomeGameCheckMutation($code: String!) {
     game(code: $code) {
       isValid
     }
   }
 `;
 
+
+type GameNewConfig = {
+  variables: HomeGameNewMutationVariables;
+  onCompleted(response: HomeGameNewMutationResponse): void;
+  onError(error: any): void;
+}
+
+function useGameNew() {
+  const environment = useRelayEnvironment();
+
+  return ({ variables, onCompleted, onError }: GameNewConfig) => {
+    commitMutation<HomeGameNewMutation>(
+      environment,
+      {
+        mutation: GameNewMutation,
+        variables,
+        onCompleted,
+        onError
+      },
+    );
+  }
+}
+
+type GameCheckConfig = {
+  variables: HomeGameCheckMutationVariables;
+  onCompleted(response: HomeGameCheckMutationResponse, errors: any): void;
+  onError?(error: any): void;
+}
+
+function useGameCheck() {
+  const environment = useRelayEnvironment();
+
+  return ({ variables, onCompleted, onError }: GameCheckConfig) => {
+    commitMutation<HomeGameCheckMutation>(
+      environment,
+      {
+        mutation: GameCheckMutation,
+        variables,
+        onCompleted,
+        onError
+      },
+    );
+  }
+}
+
 export const Home = () => {
   const alert = useAlert();
-  const [gameNew] = useMutation(TRIVIA_NEW);
-  const [gameCheck] = useMutation(TRIVIA_CHECK);
 
   const { state: playhouseState, dispatch } = usePlayhouse();
   const { state: gameState } = useGame();
@@ -47,6 +97,9 @@ export const Home = () => {
   const [name, setName] = useState(playhouseState.name);
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);
 
+  const gameCheck = useGameCheck();
+  const gameNew = useGameNew();
+
   const onClickHost = async () => {
     setIsPackModalOpen(true);
   };
@@ -54,16 +107,22 @@ export const Home = () => {
   // Joining an existing game:
   const onSubmitGameCode = async (event: SyntheticEvent) => {
     event.preventDefault();
-    const { data } = await gameCheck({
-      variables: { code: gameId }
-    });
-    if (data.error || (data && !data.game.isValid)) {
-      alert.show('Game code does not exist');
-      setgameId('');
-      return;
-    }
-    dispatch(gameActions.new_game({ gameId }));
-    setScreen(Screens.name);
+
+    gameCheck({
+      variables: { code: gameId },
+      onCompleted: (data) => {
+        if (!data.game?.isValid) {
+          alert.show('Game code does not exist');
+          setgameId('');
+          return;
+        }
+        dispatch(gameActions.new_game({ gameId }));
+        setScreen(Screens.name);
+      },
+      onError: (error: Error) => {
+        alert.show(error);
+      }
+    })
   };
 
   const onSubmitName = (event: SyntheticEvent) => {
@@ -75,17 +134,21 @@ export const Home = () => {
 
   // Creating a new game:
   const onSelectPack = async (pack: string) => {
-    const { data } = await gameNew({
-      variables: { pack }
-    });
-    if (data.error) {
-      alert.show(data.error);
-      return;
-    }
-    dispatch(gameActions.toggle_host(true));
-    dispatch(playhouseActions.update_user({ name: '' }));
-    dispatch(gameActions.new_game({ gameId: data.gameNew.code }));
-    setShouldRedirect(true);
+    gameNew({
+      variables: { pack },
+      onCompleted: (data) => {
+        if (!data || !data.gameNew) {
+          return;
+        }
+        dispatch(gameActions.toggle_host(true));
+        dispatch(playhouseActions.update_user({ name: '' }));
+        dispatch(gameActions.new_game({ gameId: data.gameNew.code }));
+        setShouldRedirect(true);
+      },
+      onError: (error: Error) => {
+        alert.show(error);
+      }
+    })
   };
 
   if (gameState.gameId && shouldRedirect) {
@@ -125,11 +188,13 @@ export const Home = () => {
           </InputContainer>
         )}
       </IntroCard>
-      <PackModal
-        isPackModalOpen={isPackModalOpen}
-        setIsPackModalOpen={setIsPackModalOpen}
-        onSelectPack={onSelectPack}
-      />
+      <React.Suspense fallback="">
+        <PackModal
+          isPackModalOpen={isPackModalOpen}
+          setIsPackModalOpen={setIsPackModalOpen}
+          onSelectPack={onSelectPack}
+        />
+      </React.Suspense>
     </IntroContainer>
   );
 };
