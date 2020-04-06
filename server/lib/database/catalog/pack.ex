@@ -1,6 +1,5 @@
 defmodule Database.Catalog.Pack do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Database.Model
 
   schema "packs" do
     belongs_to :user, Database.Catalog.User
