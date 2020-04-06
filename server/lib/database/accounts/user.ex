@@ -1,8 +1,11 @@
 defmodule Database.Accounts.User do
-  use Ecto.Schema
+  use Database.Schema
   import Ecto.Changeset
 
   schema "users" do
+    has_many :plays, Database.Catalog.Play
+    has_many :acts, Database.Catalog.Act
+
     field :username, :string
     field :email, :string
     field :password_hash, :string
