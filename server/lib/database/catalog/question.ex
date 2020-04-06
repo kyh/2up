@@ -1,6 +1,5 @@
 defmodule Database.Catalog.Question do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Database.Model
 
   schema "questions" do
     belongs_to :user, Database.Catalog.User

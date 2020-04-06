@@ -1,6 +1,5 @@
 defmodule Database.Catalog.Play do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Database.Model
 
   schema "plays" do
     belongs_to :user, Database.Accounts.User

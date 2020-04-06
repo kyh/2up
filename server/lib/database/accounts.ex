@@ -1,7 +1,5 @@
 defmodule Database.Accounts do
-  import Ecto.Query, warn: false
-  alias Database.Repo
-  alias Database.Accounts.User
+  use Database.Context
 
   def get_user(id) do
     Repo.get(User, id)
