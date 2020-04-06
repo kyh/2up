@@ -1,12 +1,6 @@
 defmodule Database.Catalog.Answer do
-  use Database.Schema
+  use Ecto.Schema
   import Ecto.Changeset
-
-  @answer_types %{
-    text: 0,
-    color: 1,
-    drawing: 2
-  }
 
   schema "answers" do
     belongs_to :question, Database.Catalog.Question

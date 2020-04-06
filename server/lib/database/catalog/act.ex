@@ -1,12 +1,6 @@
 defmodule Database.Catalog.Act do
-  use Database.Schema
+  use Ecto.Schema
   import Ecto.Changeset
-
-  @endorsement_types %{
-    text: 0,
-    color: 1,
-    drawing: 2
-  }
 
   schema "acts" do
     belongs_to :user, Database.Accounts.User

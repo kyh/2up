@@ -1,5 +1,5 @@
 defmodule Database.Catalog.Pack do
-  use Database.Schema
+  use Ecto.Schema
   import Ecto.Changeset
 
   schema "packs" do

@@ -2,46 +2,34 @@ defmodule Database.Repo.Migrations.CreateGamemasterTables do
   use Ecto.Migration
 
   def change do
-    create table(:plays, primary_key: false) do
-      add :id, :uuid, primary_key: true
-
+    create table(:plays) do
       add :name, :string, null: false
 
       timestamps()
     end
 
-    create table(:packs, primary_key: false) do
-      add :id, :uuid, primary_key: true
-
+    create table(:packs) do
       add :name, :string, null: false
       add :instruction, :string, null: false
 
       timestamps()
     end
 
-    create table(:acts, primary_key: false) do
-      add :id, :uuid, primary_key: true
-
+    create table(:acts) do
       add :endorsement_type, :integer, null: false
 
       timestamps()
     end
 
-    create table(:play_acts, primary_key: false) do
-      add :id, :uuid, primary_key: true
-
+    create table(:play_acts) do
       timestamps()
     end
 
-    create table(:act_questions, primary_key: false) do
-      add :id, :uuid, primary_key: true
-
+    create table(:act_questions) do
       timestamps()
     end
 
-    create table(:answers, primary_key: false) do
-      add :id, :uuid, primary_key: true
-
+    create table(:answers) do
       add :content, :string, null: false
       add :answer_type, :integer, null: false
 
