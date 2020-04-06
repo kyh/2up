@@ -1,6 +1,5 @@
 defmodule Database.Catalog.Act do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Database.Model
 
   schema "acts" do
     belongs_to :user, Database.Accounts.User

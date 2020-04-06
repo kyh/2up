@@ -1,8 +1,5 @@
 defmodule Database.Catalog do	
-  import Ecto.Query
-
-  alias Database.Repo
-  alias Database.Catalog.Question
+  use Database.Context
 
   def random_question do
     query =
