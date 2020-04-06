@@ -33,4 +33,27 @@ defmodule Database.Catalog do
   def list_questions() do
     Repo.all(Question)	
   end
+
+  def question_types do
+    %{
+      text: 0,
+      image: 1
+    }
+  end
+
+  def answer_types do
+    %{
+      text: 0,
+      color: 1,
+      drawing: 2
+    }
+  end
+
+  def endorsement_types do
+    %{
+      text: 0,
+      color: 1,
+      drawing: 2
+    }
+  end
 end
