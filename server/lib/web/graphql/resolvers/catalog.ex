@@ -13,8 +13,12 @@ defmodule Web.GraphQL.Resolvers.Catalog do
     {:ok, ["TEXT", "COLOR", "MAP", "BUTTON", "MATH"]}
   end
 
-  def packs(_, _, _) do
-    {:ok, ["Startups", "SAT", "Color", "Drawing", "Variety"]}
+  def play_list(_, _, _) do
+    {:ok, Catalog.play_list()}
+  end
+
+  def pack_list(_, _, _) do
+    {:ok, Catalog.pack_list()}
   end
 
   def pack_create(_, args, %{context: %{current_user: user}}) do
