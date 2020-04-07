@@ -75,7 +75,7 @@ export const Home = () => {
         setScreen(Screens.name);
       },
       onError: (error: Error) => {
-        alert.show(error);
+        alert.show(error.message);
       },
     });
   };
@@ -101,7 +101,7 @@ export const Home = () => {
         setShouldRedirect(true);
       },
       onError: (error: Error) => {
-        alert.show(error);
+        alert.show(error.message);
       },
     });
   };
