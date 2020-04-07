@@ -11,4 +11,6 @@ defmodule Web.GraphQL.Types.CatalogTypes do
     field :id, non_null(:id)
     field :content, non_null(:string)
   end
+
+  connection node_type: :pack
 end

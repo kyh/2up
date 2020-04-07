@@ -31,6 +31,14 @@ defmodule Database.Catalog do
     Repo.all(Question)	
   end
 
+  def pack_list() do
+    Repo.all(Pack)	
+  end
+
+  def play_list() do
+    ["Startups", "SAT", "Color", "Drawing", "Variety"]
+  end
+
   def question_types do
     %{
       text: 0,

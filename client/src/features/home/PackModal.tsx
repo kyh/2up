@@ -3,20 +3,21 @@ import styled from "styled-components";
 import graphql from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay/hooks";
 import { Button, Modal } from "components";
-import { PackModalPacksQuery } from "./__generated__/PackModalPacksQuery.graphql";
+import { PackModalPlaysQuery } from "./__generated__/PackModalPlaysQuery.graphql";
 
-const PacksQuery = graphql`
-  query PackModalPacksQuery {
-    packs
+const PlaysQuery = graphql`
+  query PackModalPlaysQuery {
+    plays
   }
 `;
+
 export const PackModal = ({
   isPackModalOpen = false,
   isLoading = false,
   setIsPackModalOpen = (_isOpen: boolean) => {},
   onSelectPack = (_pack: string) => {},
 }) => {
-  const data = useLazyLoadQuery<PackModalPacksQuery>(PacksQuery, {});
+  const data = useLazyLoadQuery<PackModalPlaysQuery>(PlaysQuery, {});
 
   return (
     <Modal
@@ -27,18 +28,18 @@ export const PackModal = ({
       closeButton
     >
       <PackModalBody>
-        {data?.packs?.map((pack) => {
-          if (!pack) {
+        {data?.plays?.map((play) => {
+          if (!play) {
             return null;
           }
           return (
             <Button
-              key={pack}
+              key={play}
               fullWidth
               disabled={isLoading}
-              onClick={() => onSelectPack(pack)}
+              onClick={() => onSelectPack(play)}
             >
-              {pack}
+              {play}
             </Button>
           );
         })}

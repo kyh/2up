@@ -2,6 +2,7 @@ defmodule Web.GraphQL.Types.QueryType do
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation, :modern
   alias Web.GraphQL.Resolvers.Catalog
+  alias Web.GraphQL.Middleware.Authenticate
 
   object :query_type do
     field :questions, list_of(:question) do
@@ -16,8 +17,13 @@ defmodule Web.GraphQL.Types.QueryType do
       resolve &Catalog.answer_types/3
     end
 
-    field :packs, list_of(:string) do
-      resolve &Catalog.packs/3
+    field :plays, list_of(:string) do
+      resolve &Catalog.play_list/3
+    end
+
+    connection field :packs, node_type: :pack do
+      middleware Authenticate
+      resolve &Catalog.pack_list/3
     end
   end
 end
