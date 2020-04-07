@@ -3,6 +3,7 @@ defmodule Web.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Web.GraphQL.Plugs.SetCurrentUser
   end
 
   scope "/" do
