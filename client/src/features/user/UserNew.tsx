@@ -8,8 +8,8 @@ import { useBaseMutation } from 'utils/useBaseMutation';
 import { UserNewUserCreateMutation } from './__generated__/UserNewUserCreateMutation.graphql';
 
 const userCreateMutation = graphql`
-  mutation UserNewUserCreateMutation($email: String!, $password: String!, $username: String!) {
-    userCreate(username: $username, email: $email, password: $password) {
+  mutation UserNewUserCreateMutation($input: UserCreateInput!) {
+    userCreate(input: $input) {
       user {
         username
         email
@@ -18,6 +18,7 @@ const userCreateMutation = graphql`
     }
   }
 `
+
 export const UserNew = () => {
   const alert = useAlert();
 
@@ -43,7 +44,7 @@ export const UserNew = () => {
     event.preventDefault();
 
     userCreate({
-      variables: { username, email, password },
+      variables: { input: { username, email, password } },
       onCompleted: (data) => {
         console.log('data', data)
         const token = data?.userCreate?.token;

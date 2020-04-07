@@ -24,16 +24,16 @@ const Screens = {
 };
 
 const GameCheckMutation = graphql`
-  mutation HomeGameCheckMutation($code: String!) {
-    game(code: $code) {
+  mutation HomeGameCheckMutation($input: GameInput!) {
+    game(input: $input) {
       isValid
     }
   }
 `;
 
 const GameCreateMutation = graphql`
-  mutation HomeGameCreateMutation($pack: String!) {
-    gameCreate(pack: $pack) {
+  mutation HomeGameCreateMutation($input: GameCreateInput!) {
+    gameCreate(input: $input) {
       code
     }
   }
@@ -72,7 +72,7 @@ export const Home = () => {
     event.preventDefault();
 
     gameCheck({
-      variables: { code: gameId },
+      variables: { input: { code: gameId } },
       onCompleted: (data) => {
         if (!data.game?.isValid) {
           alert.show("Game code does not exist");
@@ -98,7 +98,7 @@ export const Home = () => {
   // Creating a new game:
   const onSelectPack = (pack: string) => {
     gameCreate({
-      variables: { pack },
+      variables: { input: { pack } },
       onCompleted: (data) => {
         if (!data || !data.gameCreate) {
           return;

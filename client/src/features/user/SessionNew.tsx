@@ -8,8 +8,8 @@ import { useBaseMutation } from 'utils/useBaseMutation';
 import { SessionNewSessionCreateMutation } from './__generated__/SessionNewSessionCreateMutation.graphql';
 
 const sessionCreateMutation = graphql`
-  mutation SessionNewSessionCreateMutation($username: String!, $password: String!) {
-    sessionCreate(username: $username, password: $password) {
+  mutation SessionNewSessionCreateMutation($input: SessionCreateInput!) {
+    sessionCreate(input: $input) {
       user {
         username
         email
@@ -39,7 +39,7 @@ export const SessionNew = () => {
     event.preventDefault();
 
     sessionCreate({
-      variables: { username, password },
+      variables: { input: { username, password } },
       onCompleted: (data) => {
         console.log('data', data)
         const token = data?.sessionCreate?.token;
