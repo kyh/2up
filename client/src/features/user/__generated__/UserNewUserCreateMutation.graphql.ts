@@ -1,12 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e9acc2e00899cf44712dac279a2e0f86 */
+/* @relayHash a9b2b8076bb0e29674621f41b2368e1c */
 
 import { ConcreteRequest } from "relay-runtime";
-export type UserNewUserCreateMutationVariables = {
+export type UserCreateInput = {
     email: string;
     password: string;
     username: string;
+};
+export type UserNewUserCreateMutationVariables = {
+    input: UserCreateInput;
 };
 export type UserNewUserCreateMutationResponse = {
     readonly userCreate: {
@@ -26,11 +29,9 @@ export type UserNewUserCreateMutation = {
 
 /*
 mutation UserNewUserCreateMutation(
-  $email: String!
-  $password: String!
-  $username: String!
+  $input: UserCreateInput!
 ) {
-  userCreate(username: $username, email: $email, password: $password) {
+  userCreate(input: $input) {
     user {
       username
       email
@@ -44,20 +45,8 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "email",
-    "type": "String!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "password",
-    "type": "String!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "username",
-    "type": "String!",
+    "name": "input",
+    "type": "UserCreateInput!",
     "defaultValue": null
   }
 ],
@@ -70,21 +59,11 @@ v1 = [
     "args": [
       {
         "kind": "Variable",
-        "name": "email",
-        "variableName": "email"
-      },
-      {
-        "kind": "Variable",
-        "name": "password",
-        "variableName": "password"
-      },
-      {
-        "kind": "Variable",
-        "name": "username",
-        "variableName": "username"
+        "name": "input",
+        "variableName": "input"
       }
     ],
-    "concreteType": "Session",
+    "concreteType": "UserCreatePayload",
     "plural": false,
     "selections": [
       {
@@ -142,10 +121,10 @@ return {
     "operationKind": "mutation",
     "name": "UserNewUserCreateMutation",
     "id": null,
-    "text": "mutation UserNewUserCreateMutation(\n  $email: String!\n  $password: String!\n  $username: String!\n) {\n  userCreate(username: $username, email: $email, password: $password) {\n    user {\n      username\n      email\n    }\n    token\n  }\n}\n",
+    "text": "mutation UserNewUserCreateMutation(\n  $input: UserCreateInput!\n) {\n  userCreate(input: $input) {\n    user {\n      username\n      email\n    }\n    token\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c71915eb56bd9dcd47c66eaed5e35a4a';
+(node as any).hash = '3dd6567b7aba05064bfa6d491b26616b';
 export default node;

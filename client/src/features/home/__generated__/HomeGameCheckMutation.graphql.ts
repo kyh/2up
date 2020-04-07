@@ -1,10 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 41ac9e9ca1affc29b8dedd60aa68b6f7 */
+/* @relayHash 03fa6730a6dde5a60bb24a694340889a */
 
 import { ConcreteRequest } from "relay-runtime";
+export type GameInput = {
+    code: string;
+};
 export type HomeGameCheckMutationVariables = {
-  code: string;
+    input: GameInput;
 };
 export type HomeGameCheckMutationResponse = {
   readonly game: {
@@ -18,74 +21,73 @@ export type HomeGameCheckMutation = {
 
 /*
 mutation HomeGameCheckMutation(
-  $code: String!
+  $input: GameInput!
 ) {
-  game(code: $code) {
+  game(input: $input) {
     isValid
   }
 }
 */
 
-const node: ConcreteRequest = (function () {
-  var v0 = [
+const node: ConcreteRequest = (function(){
+var v0 = [
+  {
+    "kind": "LocalArgument",
+    "name": "input",
+    "type": "GameInput!",
+    "defaultValue": null
+  }
+],
+v1 = [
+  {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "game",
+    "storageKey": null,
+    "args": [
       {
-        kind: "LocalArgument",
-        name: "code",
-        type: "String!",
-        defaultValue: null,
-      },
+        "kind": "Variable",
+        "name": "input",
+        "variableName": "input"
+      }
     ],
-    v1 = [
+    "concreteType": "GamePayload",
+    "plural": false,
+    "selections": [
       {
-        kind: "LinkedField",
-        alias: null,
-        name: "game",
-        storageKey: null,
-        args: [
-          {
-            kind: "Variable",
-            name: "code",
-            variableName: "code",
-          },
-        ],
-        concreteType: "Game",
-        plural: false,
-        selections: [
-          {
-            kind: "ScalarField",
-            alias: null,
-            name: "isValid",
-            args: null,
-            storageKey: null,
-          },
-        ],
-      },
-    ];
-  return {
-    kind: "Request",
-    fragment: {
-      kind: "Fragment",
-      name: "HomeGameCheckMutation",
-      type: "RootMutationType",
-      metadata: null,
-      argumentDefinitions: v0 /*: any*/,
-      selections: v1 /*: any*/,
-    },
-    operation: {
-      kind: "Operation",
-      name: "HomeGameCheckMutation",
-      argumentDefinitions: v0 /*: any*/,
-      selections: v1 /*: any*/,
-    },
-    params: {
-      operationKind: "mutation",
-      name: "HomeGameCheckMutation",
-      id: null,
-      text:
-        "mutation HomeGameCheckMutation(\n  $code: String!\n) {\n  game(code: $code) {\n    isValid\n  }\n}\n",
-      metadata: {},
-    },
-  };
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "isValid",
+        "args": null,
+        "storageKey": null
+      }
+    ]
+  }
+];
+return {
+  "kind": "Request",
+  "fragment": {
+    "kind": "Fragment",
+    "name": "HomeGameCheckMutation",
+    "type": "RootMutationType",
+    "metadata": null,
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "operation": {
+    "kind": "Operation",
+    "name": "HomeGameCheckMutation",
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "HomeGameCheckMutation",
+    "id": null,
+    "text": "mutation HomeGameCheckMutation(\n  $input: GameInput!\n) {\n  game(input: $input) {\n    isValid\n  }\n}\n",
+    "metadata": {}
+  }
+};
 })();
-(node as any).hash = "4049a07f4552ce5e94046970e513262e";
+(node as any).hash = 'cf7a936043205bbdcc1e23caeda65b8d';
 export default node;

@@ -3,11 +3,19 @@ schema {
   mutation: RootMutationType
 }
 
-type Code {
+input GameCreateInput {
+  pack: String!
+}
+
+type GameCreatePayload {
   code: String!
 }
 
-type Game {
+input GameInput {
+  code: String!
+}
+
+type GamePayload {
   isValid: Boolean!
 }
 
@@ -17,19 +25,17 @@ type Question {
 }
 
 type RootMutationType {
-  """
-  Get info about live game
-  """
-  game(code: String!): Game
+  """Get info about live game"""
+  game(input: GameInput!): GamePayload
 
   """Create new live game"""
-  gameCreate(pack: String!): Code
+  gameCreate(input: GameCreateInput!): GameCreatePayload
 
   """Sign in user"""
-  sessionCreate(password: String!, username: String!): Session
+  sessionCreate(input: SessionCreateInput!): SessionCreatePayload
 
   """Create user"""
-  userCreate(email: String!, password: String!, username: String!): Session
+  userCreate(input: UserCreateInput!): UserCreatePayload
 }
 
 type RootQueryType {
@@ -43,7 +49,12 @@ type RootQueryType {
   questions: [Question]
 }
 
-type Session {
+input SessionCreateInput {
+  password: String!
+  username: String!
+}
+
+type SessionCreatePayload {
   token: String!
   user: User!
 }
@@ -52,3 +63,15 @@ type User {
   email: String!
   username: String!
 }
+
+input UserCreateInput {
+  email: String!
+  password: String!
+  username: String!
+}
+
+type UserCreatePayload {
+  token: String!
+  user: User!
+}
+

@@ -31,29 +31,59 @@ defmodule Web.GraphQL.Schema do
 
   mutation do
     @desc "Create user"
-    field :user_create, :session do
-      arg :username, non_null(:string)
-      arg :email, non_null(:string)
-      arg :password, non_null(:string)
+    payload field :user_create do
+      input do
+        field :username, non_null(:string)
+        field :email, non_null(:string)
+        field :password, non_null(:string)
+      end
+
+      output do
+        field :user, non_null(:user)
+        field :token, non_null(:string)
+      end
+
       resolve &Accounts.signup/3
     end
 
     @desc "Sign in user"
-    field :session_create, :session do
-      arg :username, non_null(:string)
-      arg :password, non_null(:string)
-      resolve &Accounts.signin/3
+    payload field :session_create do
+      input do
+        field :username, non_null(:string)
+        field :password, non_null(:string)
+      end
+
+      output do
+        field :user, non_null(:user)
+        field :token, non_null(:string)
+      end
+
+      resolve &Accounts.signup/3
     end
 
     @desc "Create new live game"
-    field :game_create, :code do
-      arg :pack, non_null(:string)
+    payload field :game_create do
+      input do
+        field :pack, non_null(:string)
+      end
+
+      output do
+        field :code, non_null(:string)
+      end
+
       resolve &Play.game_create/3
     end
 
     @desc "Get info about live game"
-    field :game, :game do
-      arg :code, non_null(:string)
+    payload field :game do
+      input do
+        field :code, non_null(:string)
+      end
+
+      output do
+        field :is_valid, non_null(:boolean)
+      end
+
       resolve &Play.game_validate/3
     end
   end
