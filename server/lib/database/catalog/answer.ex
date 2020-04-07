@@ -2,7 +2,7 @@ defmodule Database.Catalog.Answer do
   use Database.Model
 
   schema "answers" do
-    belongs_to :question, Database.Catalog.Question
+    belongs_to :question, Question
 
     field :content, :string
 

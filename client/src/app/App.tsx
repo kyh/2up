@@ -8,11 +8,11 @@ import { PageContainer, Navigation, ReactAlertTemplate } from "components";
 import { lightTheme, darkTheme } from "styles/theme";
 import { GlobalStyle } from "styles/global";
 
-import { usePlayhouse } from 'features/home/playhouseSlice';
-import { Home } from 'features/home/Home';
-import { GameMasterRoutes } from 'features/gamemaster/GameMasterRoutes';
-import { GameRoutes } from 'features/game/GameRoutes';
-import { Enter } from 'features/user/Enter';
+import { usePlayhouse } from "features/home/playhouseSlice";
+import { Home } from "features/home/Home";
+import { GameMasterRoutes } from "features/gamemaster/GameMasterRoutes";
+import { GameRoutes } from "features/game/GameRoutes";
+import { Enter } from "features/user/Enter";
 
 const alertOptions = {
   position: positions.TOP_CENTER,

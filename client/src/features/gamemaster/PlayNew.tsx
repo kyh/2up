@@ -1,5 +1,3 @@
-import React from 'react';
+import React from "react";
 
-export const PlayNew = () => (
-  <h1>PlayNew</h1>
-);
+export const PlayNew = () => <h1>PlayNew</h1>;

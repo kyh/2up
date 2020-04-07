@@ -7,7 +7,6 @@ defmodule Database.Catalog.Play do
       join_through: Database.Catalog.PlayAct
 
     field :name, :string
-    field :instruction, :string
 
     timestamps()
   end

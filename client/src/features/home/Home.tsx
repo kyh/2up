@@ -10,13 +10,8 @@ import { gameActions, useGame } from "features/game/gameSlice";
 import { Button, Input, Card } from "components";
 import { PackModal } from "features/home/PackModal";
 
-<<<<<<< HEAD
-import { HomeGameNewMutation } from "./__generated__/HomeGameNewMutation.graphql";
+import { HomeGameCreateMutation } from "./__generated__/HomeGameCreateMutation.graphql";
 import { HomeGameCheckMutation } from "./__generated__/HomeGameCheckMutation.graphql";
-=======
-import { HomeGameCreateMutation } from './__generated__/HomeGameCreateMutation.graphql';
-import { HomeGameCheckMutation } from './__generated__/HomeGameCheckMutation.graphql';
->>>>>>> Initial skeletons of dashboard
 
 const Screens = {
   join: "join",
@@ -53,15 +48,12 @@ export const Home = () => {
   const [name, setName] = useState(playhouseState.name);
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);
 
-<<<<<<< HEAD
   const [gameCheck, isCheckingGame] = useMutation<HomeGameCheckMutation>(
-    GameCheck
+    GameCheckMutation
   );
-  const [gameNew, isCreatingGame] = useMutation<HomeGameNewMutation>(GameNew);
-=======
-  const gameCheck = useBaseMutation<HomeGameCheckMutation>(GameCheckMutation);
-  const gameCreate = useBaseMutation<HomeGameCreateMutation>(GameCreateMutation);
->>>>>>> Initial skeletons of dashboard
+  const [gameCreate, isCreatingGame] = useMutation<HomeGameCreateMutation>(
+    GameCreateMutation
+  );
 
   const onClickHost = () => {
     setIsPackModalOpen(true);

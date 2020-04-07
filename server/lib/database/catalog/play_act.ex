@@ -2,8 +2,8 @@ defmodule Database.Catalog.PlayAct do
   use Database.Model
 
   schema "play_acts" do
-    belongs_to :play, Database.Catalog.Play
-    belongs_to :act, Database.Catalog.Act
+    belongs_to :play, Play
+    belongs_to :act, Act
 
     timestamps()
   end

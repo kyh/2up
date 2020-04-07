@@ -58,7 +58,7 @@ defmodule Web.GraphQL.Schema do
         field :token, non_null(:string)
       end
 
-      resolve &Accounts.signup/3
+      resolve &Accounts.signin/3
     end
 
     @desc "Create new live game"
@@ -86,6 +86,31 @@ defmodule Web.GraphQL.Schema do
 
       resolve &Play.game_validate/3
     end
+
+    @desc "Create new pack"
+    payload field :pack_create do
+      input do
+        field :name, non_null(:string)
+      end
+
+      output do
+        field :pack, non_null(:pack)
+      end
+
+      resolve &Catalog.pack_create/3
+    end
+  end
+
+  node interface do
+    resolve_type fn
+      %Database.Catalog.Pack{}, _ ->
+        :pack
+    end
+  end
+
+  node object :pack do
+    field :name, non_null(:string)
+    field :user, :user
   end
 
   object :question do

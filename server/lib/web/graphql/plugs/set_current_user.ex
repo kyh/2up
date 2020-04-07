@@ -11,9 +11,10 @@ defmodule Web.GraphQL.Plugs.SetCurrentUser do
   end
 
   defp build_context(conn) do
-    with ["Bearer " <> token] <- get_req_header(conn, "Authorization"),
+    with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
          {:ok, %{id: id}} <- Web.Token.verify(token),
          %{} = user <- Database.Accounts.get_user(id) do
+
       %{current_user: user}
     else
       _ -> %{}

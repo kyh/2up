@@ -1,5 +1,3 @@
-import React from 'react';
+import React from "react";
 
-export const QuestionList = () => (
-  <h1>QuestionList</h1>
-);
+export const QuestionList = () => <h1>QuestionList</h1>;

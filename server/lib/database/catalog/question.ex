@@ -2,9 +2,9 @@ defmodule Database.Catalog.Question do
   use Database.Model
 
   schema "questions" do
-    belongs_to :user, Database.Catalog.User
-    belongs_to :pack, Database.Catalog.Pack
-    has_many :answers, Database.Catalog.Answer
+    belongs_to :user, User
+    belongs_to :pack, Pack
+    has_many :answers, Answer
 
     field :content, :string
     field :instruction, :string

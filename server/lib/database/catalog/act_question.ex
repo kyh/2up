@@ -2,8 +2,8 @@ defmodule Database.Catalog.ActQuestion do
   use Database.Model
 
   schema "act_questions" do
-    belongs_to :act, Database.Catalog.Act
-    belongs_to :question, Database.Catalog.Question
+    belongs_to :act, Act
+    belongs_to :question, Question
 
     timestamps()
   end
