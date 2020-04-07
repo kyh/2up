@@ -18,7 +18,7 @@
     "lodash": "^4.17.15",
     "phoenix": "^1.4.16",
     "react": "^16.13.1",
-    "react-alert": "^6.0.1",
+    "react-alert": "^7.0.0",
     "react-canvas-draw": "^1.1.0",
     "react-dom": "^16.13.1",
     "react-modal": "^3.11.2",
