@@ -31,7 +31,7 @@ defmodule Web.GraphQL.Schema do
 
   mutation do
     @desc "Create user"
-    field :signup, :session do
+    field :user_create, :session do
       arg :username, non_null(:string)
       arg :email, non_null(:string)
       arg :password, non_null(:string)
@@ -39,16 +39,16 @@ defmodule Web.GraphQL.Schema do
     end
 
     @desc "Sign in user"
-    field :signin, :session do
+    field :session_create, :session do
       arg :username, non_null(:string)
       arg :password, non_null(:string)
       resolve &Accounts.signin/3
     end
 
     @desc "Create new live game"
-    field :game_new, :code do
+    field :game_create, :code do
       arg :pack, non_null(:string)
-      resolve &Play.game_new/3
+      resolve &Play.game_create/3
     end
 
     @desc "Get info about live game"

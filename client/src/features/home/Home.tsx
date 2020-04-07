@@ -10,15 +10,20 @@ import { gameActions, useGame } from "features/game/gameSlice";
 import { Button, Input, Card } from "components";
 import { PackModal } from "features/home/PackModal";
 
+<<<<<<< HEAD
 import { HomeGameNewMutation } from "./__generated__/HomeGameNewMutation.graphql";
 import { HomeGameCheckMutation } from "./__generated__/HomeGameCheckMutation.graphql";
+=======
+import { HomeGameCreateMutation } from './__generated__/HomeGameCreateMutation.graphql';
+import { HomeGameCheckMutation } from './__generated__/HomeGameCheckMutation.graphql';
+>>>>>>> Initial skeletons of dashboard
 
 const Screens = {
   join: "join",
   name: "name",
 };
 
-const GameCheck = graphql`
+const GameCheckMutation = graphql`
   mutation HomeGameCheckMutation($code: String!) {
     game(code: $code) {
       isValid
@@ -26,9 +31,9 @@ const GameCheck = graphql`
   }
 `;
 
-const GameNew = graphql`
-  mutation HomeGameNewMutation($pack: String!) {
-    gameNew(pack: $pack) {
+const GameCreateMutation = graphql`
+  mutation HomeGameCreateMutation($pack: String!) {
+    gameCreate(pack: $pack) {
       code
     }
   }
@@ -48,10 +53,15 @@ export const Home = () => {
   const [name, setName] = useState(playhouseState.name);
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);
 
+<<<<<<< HEAD
   const [gameCheck, isCheckingGame] = useMutation<HomeGameCheckMutation>(
     GameCheck
   );
   const [gameNew, isCreatingGame] = useMutation<HomeGameNewMutation>(GameNew);
+=======
+  const gameCheck = useBaseMutation<HomeGameCheckMutation>(GameCheckMutation);
+  const gameCreate = useBaseMutation<HomeGameCreateMutation>(GameCreateMutation);
+>>>>>>> Initial skeletons of dashboard
 
   const onClickHost = () => {
     setIsPackModalOpen(true);
@@ -87,15 +97,15 @@ export const Home = () => {
 
   // Creating a new game:
   const onSelectPack = (pack: string) => {
-    gameNew({
+    gameCreate({
       variables: { pack },
       onCompleted: (data) => {
-        if (!data || !data.gameNew) {
+        if (!data || !data.gameCreate) {
           return;
         }
         dispatch(gameActions.toggle_host(true));
         dispatch(playhouseActions.update_user({ name: "" }));
-        dispatch(gameActions.new_game({ gameId: data.gameNew.code }));
+        dispatch(gameActions.new_game({ gameId: data.gameCreate.code }));
         setShouldRedirect(true);
       },
       onError: (error: Error) => {
