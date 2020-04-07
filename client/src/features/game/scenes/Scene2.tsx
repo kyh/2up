@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import { Alert, Timer, Button } from "components";
+import { Alert, Timer } from "components";
 import { SceneProps } from "features/game/gameSlice";
 import {
   TVQuestionConatiner,
