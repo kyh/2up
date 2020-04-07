@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { Alert, Flex, Timer } from 'components';
-import { SceneProps } from 'features/game/gameSlice';
+import React, { useState } from "react";
+import { Alert, Flex, Timer } from "components";
+import { SceneProps } from "features/game/gameSlice";
 import {
   TVQuestionConatiner,
-  Question
-} from 'features/game/components/Question';
-import { Answer } from 'features/game/components/Answer';
+  Question,
+} from "features/game/components/Question";
+import { Answer } from "features/game/components/Answer";
 
 export const Scene1Remote = ({
   state,
   broadcast,
   userId,
-  name
+  name,
 }: SceneProps) => {
   const [submitted, setSubmitted] = useState(false);
 
@@ -19,13 +19,13 @@ export const Scene1Remote = ({
   const players = state.players.length;
   const waiting = players - submissions;
 
-  const onSubmit = (value = '') => {
+  const onSubmit = (value = "") => {
     if (submitted) return;
     setSubmitted(true);
-    broadcast('submit', {
+    broadcast("submit", {
       userId,
       name,
-      submission: value
+      submission: value,
     });
   };
 

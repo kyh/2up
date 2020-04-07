@@ -1,11 +1,11 @@
-import React from 'react';
-import { withContainer } from 'components/Storybook/utils';
-import { Box, Input } from 'components';
+import React from "react";
+import { withContainer } from "components/Storybook/utils";
+import { Box, Input } from "components";
 
 export default {
-  title: 'Input',
+  title: "Input",
   component: Input,
-  decorators: [withContainer]
+  decorators: [withContainer],
 };
 
 export const variants = () => (

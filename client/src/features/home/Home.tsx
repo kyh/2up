@@ -1,21 +1,21 @@
-import React, { useState, SyntheticEvent } from 'react';
-import { Redirect } from 'react-router-dom';
-import graphql from 'babel-plugin-relay/macro';
-import styled from 'styled-components';
-import { useAlert } from 'react-alert';
+import React, { useState, SyntheticEvent } from "react";
+import { Redirect } from "react-router-dom";
+import graphql from "babel-plugin-relay/macro";
+import styled from "styled-components";
+import { useAlert } from "react-alert";
 
-import { useBaseMutation } from 'utils/useBaseMutation';
-import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
-import { gameActions, useGame } from 'features/game/gameSlice';
-import { Button, Input, Card } from 'components';
-import { PackModal } from 'features/home/PackModal';
+import { useMutation } from "utils/useMutation";
+import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
+import { gameActions, useGame } from "features/game/gameSlice";
+import { Button, Input, Card } from "components";
+import { PackModal } from "features/home/PackModal";
 
-import { HomeGameNewMutation } from './__generated__/HomeGameNewMutation.graphql';
-import { HomeGameCheckMutation } from './__generated__/HomeGameCheckMutation.graphql';
+import { HomeGameNewMutation } from "./__generated__/HomeGameNewMutation.graphql";
+import { HomeGameCheckMutation } from "./__generated__/HomeGameCheckMutation.graphql";
 
 const Screens = {
-  join: 'join',
-  name: 'name'
+  join: "join",
+  name: "name",
 };
 
 const GameCheck = graphql`
@@ -48,8 +48,10 @@ export const Home = () => {
   const [name, setName] = useState(playhouseState.name);
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);
 
-  const gameCheck = useBaseMutation<HomeGameCheckMutation>(GameCheck);
-  const gameNew = useBaseMutation<HomeGameNewMutation>(GameNew);
+  const [gameCheck, isCheckingGame] = useMutation<HomeGameCheckMutation>(
+    GameCheck
+  );
+  const [gameNew, isCreatingGame] = useMutation<HomeGameNewMutation>(GameNew);
 
   const onClickHost = () => {
     setIsPackModalOpen(true);
@@ -63,8 +65,8 @@ export const Home = () => {
       variables: { code: gameId },
       onCompleted: (data) => {
         if (!data.game?.isValid) {
-          alert.show('Game code does not exist');
-          setgameId('');
+          alert.show("Game code does not exist");
+          setgameId("");
           return;
         }
         dispatch(gameActions.new_game({ gameId }));
@@ -72,8 +74,8 @@ export const Home = () => {
       },
       onError: (error: Error) => {
         alert.show(error);
-      }
-    })
+      },
+    });
   };
 
   const onSubmitName = (event: SyntheticEvent) => {
@@ -92,14 +94,14 @@ export const Home = () => {
           return;
         }
         dispatch(gameActions.toggle_host(true));
-        dispatch(playhouseActions.update_user({ name: '' }));
+        dispatch(playhouseActions.update_user({ name: "" }));
         dispatch(gameActions.new_game({ gameId: data.gameNew.code }));
         setShouldRedirect(true);
       },
       onError: (error: Error) => {
         alert.show(error);
-      }
-    })
+      },
+    });
   };
 
   if (gameState.gameId && shouldRedirect) {
@@ -117,12 +119,12 @@ export const Home = () => {
                 type="tel"
                 placeholder="Game ID"
                 value={gameId}
-                onChange={e => setgameId(e.target.value)}
+                onChange={(e) => setgameId(e.target.value)}
               />
-              <Button>Join existing game</Button>
+              <Button disabled={isCheckingGame}>Join existing game</Button>
             </InputContainer>
             <HostNewGameText>
-              Or{' '}
+              Or{" "}
               <button type="button" onClick={onClickHost}>
                 host your own game
               </button>
@@ -133,7 +135,7 @@ export const Home = () => {
             <Input
               placeholder="Name"
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
             />
             <Button disabled={!name}>Start</Button>
           </InputContainer>
@@ -141,6 +143,7 @@ export const Home = () => {
       </IntroCard>
       <React.Suspense fallback="">
         <PackModal
+          isLoading={isCreatingGame}
           isPackModalOpen={isPackModalOpen}
           setIsPackModalOpen={setIsPackModalOpen}
           onSelectPack={onSelectPack}

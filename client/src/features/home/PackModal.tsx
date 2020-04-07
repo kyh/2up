@@ -1,19 +1,20 @@
-import React from 'react';
-import styled from 'styled-components';
-import graphql from 'babel-plugin-relay/macro';
-import { useLazyLoadQuery } from 'react-relay/hooks';
-import { Button, Modal } from 'components';
-import { PackModalPacksQuery } from './__generated__/PackModalPacksQuery.graphql';
+import React from "react";
+import styled from "styled-components";
+import graphql from "babel-plugin-relay/macro";
+import { useLazyLoadQuery } from "react-relay/hooks";
+import { Button, Modal } from "components";
+import { PackModalPacksQuery } from "./__generated__/PackModalPacksQuery.graphql";
 
 const PacksQuery = graphql`
   query PackModalPacksQuery {
     packs
   }
-`
+`;
 export const PackModal = ({
   isPackModalOpen = false,
+  isLoading = false,
   setIsPackModalOpen = (_isOpen: boolean) => {},
-  onSelectPack = (_pack: string) => {}
+  onSelectPack = (_pack: string) => {},
 }) => {
   const data = useLazyLoadQuery<PackModalPacksQuery>(PacksQuery, {});
 
@@ -31,10 +32,15 @@ export const PackModal = ({
             return null;
           }
           return (
-            <Button key={pack} fullWidth onClick={() => onSelectPack(pack)}>
+            <Button
+              key={pack}
+              fullWidth
+              disabled={isLoading}
+              onClick={() => onSelectPack(pack)}
+            >
               {pack}
             </Button>
-            )
+          );
         })}
       </PackModalBody>
     </Modal>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 interface DebugProps {
   state: any;
@@ -20,13 +20,11 @@ const Debug = ({ state }: DebugProps) => (
     </div>
     <div>
       <h2>Players</h2>
-      {
-        Object.keys(state?.players || {}).map((player) => (
-          <p key={player}>{player}</p>
-        ))
-      }
+      {Object.keys(state?.players || {}).map((player) => (
+        <p key={player}>{player}</p>
+      ))}
     </div>
   </>
-)
+);
 
-export default Debug
+export default Debug;

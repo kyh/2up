@@ -1,8 +1,8 @@
-import React, { useState, useEffect, createRef } from 'react';
-import styled from 'styled-components';
-import { ChromePicker } from 'react-color';
-import CanvasDraw from 'react-canvas-draw';
-import { Box, Input, Button } from 'components';
+import React, { useState, useEffect, createRef } from "react";
+import styled from "styled-components";
+import { ChromePicker } from "react-color";
+import CanvasDraw from "react-canvas-draw";
+import { Box, Input, Button } from "components";
 
 type AnswerProps = {
   answer?: string;
@@ -15,12 +15,12 @@ export const Answer: React.FC<AnswerProps> = ({
   answer,
   answerType,
   submitted,
-  onSubmit
+  onSubmit,
 }) => {
   switch (answerType) {
-    case 'drawing':
+    case "drawing":
       return <AnswerCanvas submitted={submitted} onSubmit={onSubmit} />;
-    case 'endorse_drawing':
+    case "endorse_drawing":
       return (
         <EndorseCanvas
           answer={answer}
@@ -28,9 +28,9 @@ export const Answer: React.FC<AnswerProps> = ({
           onSubmit={onSubmit}
         />
       );
-    case 'color':
+    case "color":
       return <AnswerColor submitted={submitted} onSubmit={onSubmit} />;
-    case 'endorse_color':
+    case "endorse_color":
       return (
         <EndorseColor
           answer={answer}
@@ -38,7 +38,7 @@ export const Answer: React.FC<AnswerProps> = ({
           onSubmit={onSubmit}
         />
       );
-    case 'endorse_text':
+    case "endorse_text":
       return (
         <EndorseText
           answer={answer}
@@ -54,13 +54,13 @@ export const Answer: React.FC<AnswerProps> = ({
 };
 
 const AnswerText: React.FC<AnswerProps> = ({ answer, submitted, onSubmit }) => {
-  const [value, setValue] = useState('');
-  const [errorValue, setErrorValue] = useState('');
+  const [value, setValue] = useState("");
+  const [errorValue, setErrorValue] = useState("");
 
   const handleClick = () => {
     if (value.toLowerCase() === answer?.toLowerCase()) {
       setErrorValue(
-        'You have selected the right answer. Please write a tricky wrong answer instead.'
+        "You have selected the right answer. Please write a tricky wrong answer instead."
       );
       return;
     }
@@ -71,8 +71,8 @@ const AnswerText: React.FC<AnswerProps> = ({ answer, submitted, onSubmit }) => {
     <Box textAlign="center">
       <Input
         value={value}
-        onChange={e => {
-          setErrorValue('');
+        onChange={(e) => {
+          setErrorValue("");
           setValue(e.target.value);
         }}
         readOnly={submitted}
@@ -88,7 +88,7 @@ const AnswerText: React.FC<AnswerProps> = ({ answer, submitted, onSubmit }) => {
 const EndorseText: React.FC<AnswerProps> = ({
   answer,
   submitted,
-  onSubmit
+  onSubmit,
 }) => {
   return (
     <EndorsementButtons disabled={submitted} onClick={() => onSubmit(answer)}>
@@ -126,7 +126,7 @@ const AnswerCanvas: React.FC<AnswerProps> = ({ submitted, onSubmit }) => {
 const EndorseCanvas: React.FC<AnswerProps> = ({
   answer,
   submitted,
-  onSubmit
+  onSubmit,
 }) => {
   const canvas = createRef<CanvasDraw>();
 
@@ -148,7 +148,7 @@ const EndorseCanvas: React.FC<AnswerProps> = ({
 };
 
 const AnswerColor: React.FC<AnswerProps> = ({ submitted, onSubmit }) => {
-  const [color, setColor] = useState('#ffffff');
+  const [color, setColor] = useState("#ffffff");
 
   const handleChange = (c: any) => setColor(c.hex);
   const handleClick = () => {
@@ -173,7 +173,7 @@ const AnswerColor: React.FC<AnswerProps> = ({ submitted, onSubmit }) => {
 const EndorseColor: React.FC<AnswerProps> = ({
   answer,
   submitted,
-  onSubmit
+  onSubmit,
 }) => {
   return (
     <EndorsementButtons disabled={submitted} onClick={() => onSubmit(answer)}>
@@ -196,7 +196,7 @@ const HexColor = styled.div<{ hex?: string }>`
   width: 30px;
   height: 30px;
   border-radius: 30px;
-  background-color: ${props => props.hex ?? 'transparent'};
+  background-color: ${(props) => props.hex ?? "transparent"};
   margin: 0 auto;
 `;
 

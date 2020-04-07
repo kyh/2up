@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useSelector, useDispatch } from 'react-redux';
-import { Player } from 'features/types';
-import { RootState } from 'app/rootReducer';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { useSelector, useDispatch } from "react-redux";
+import { Player } from "features/types";
+import { RootState } from "app/rootReducer";
 
 export type GameState = {
   gameId: string;
@@ -33,18 +33,18 @@ export type SceneProps = {
 };
 
 export const initialState: GameState = {
-  isHost: localStorage.getItem('isHost') === 'true',
-  gameId: '',
+  isHost: localStorage.getItem("isHost") === "true",
+  gameId: "",
   players: [],
   act: 0,
   scene: 0,
-  question: '',
-  questionType: '',
-  instruction: '',
-  answer: '',
-  answerType: '',
+  question: "",
+  questionType: "",
+  instruction: "",
+  answer: "",
+  answerType: "",
   submissions: [],
-  pack: ''
+  pack: "",
 };
 
 const sortByName = (a: Player, b: Player) => {
@@ -58,7 +58,7 @@ const sortByName = (a: Player, b: Player) => {
 };
 
 const gameSlice = createSlice({
-  name: 'game',
+  name: "game",
   initialState,
   reducers: {
     new_game: (state, { payload }: PayloadAction<{ gameId: string }>) => {
@@ -78,13 +78,13 @@ const gameSlice = createSlice({
     },
     toggle_host: (state, { payload }: PayloadAction<boolean>) => {
       state.isHost = payload;
-      localStorage.setItem('isHost', state.isHost.toString());
+      localStorage.setItem("isHost", state.isHost.toString());
     },
     players: (state, { payload }: PayloadAction<{ players: Player[] }>) => {
       state.players = payload.players.sort(sortByName) ?? state.players;
     },
-    reset: () => ({ ...initialState, isHost: false })
-  }
+    reset: () => ({ ...initialState, isHost: false }),
+  },
 });
 
 export const gameActions = gameSlice.actions;

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
-import { AvatarImage, Button, Modal } from 'components';
-import { hashCode } from 'utils/stringUtils';
-import { useGameChannel } from 'features/game/GameChannel';
+import React, { useEffect, useState } from "react";
+import { useHistory, Link } from "react-router-dom";
+import styled, { css } from "styled-components";
+import { AvatarImage, Button, Modal } from "components";
+import { hashCode } from "utils/stringUtils";
+import { useGameChannel } from "features/game/GameChannel";
 
 export const GameLobby = () => {
   const history = useHistory();
@@ -19,7 +19,7 @@ export const GameLobby = () => {
   };
 
   const onStart = () => {
-    broadcast('start', { gameId: gameState.gameId });
+    broadcast("start", { gameId: gameState.gameId });
   };
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export const GameLobby = () => {
         <h1 className="title">Waiting for players to join...</h1>
       )}
       <LobbyPlayersContainer isHost={gameState.isHost}>
-        {gameState.players.map(p => {
+        {gameState.players.map((p) => {
           const avatar = hashCode(p.name, 10);
           return (
             <div className="player" key={p.name}>

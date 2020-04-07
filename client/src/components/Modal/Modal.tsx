@@ -1,8 +1,8 @@
-import React from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
-import ReactModal from 'react-modal';
-import { Button } from 'components/Button/Button';
-import { Icon } from 'components/Icon/Icon';
+import React from "react";
+import styled, { createGlobalStyle } from "styled-components";
+import ReactModal from "react-modal";
+import { Button } from "components/Button/Button";
+import { Icon } from "components/Icon/Icon";
 
 type Props = React.PropsWithChildren<{
   open: boolean;
@@ -44,7 +44,7 @@ export const Modal: React.FC<Props> = ({
   closeButton,
   title,
   onRequestClose,
-  maxWidth
+  maxWidth,
 }) => {
   return (
     <>
@@ -57,8 +57,8 @@ export const Modal: React.FC<Props> = ({
         ariaHideApp={false}
         style={{
           content: {
-            maxWidth: maxWidth
-          }
+            maxWidth: maxWidth,
+          },
         }}
       >
         {closeButton && (

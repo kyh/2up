@@ -1,5 +1,5 @@
-import { DefaultTheme } from 'styled-components';
-import { memoize } from 'lodash';
+import { DefaultTheme } from "styled-components";
+import { memoize } from "lodash";
 
 const SPACING_UNIT = 4;
 const calculateSpacing = (n: number): string => {
@@ -7,32 +7,32 @@ const calculateSpacing = (n: number): string => {
 };
 
 const colors = {
-  black: '#1A1919',
-  lightGrey: '#F5F5F5',
-  grey: '#DCDCDC',
-  darkGrey: '#7F7F7F',
-  white: '#FFFFFF',
-  purple: '#7247C4'
+  black: "#1A1919",
+  lightGrey: "#F5F5F5",
+  grey: "#DCDCDC",
+  darkGrey: "#7F7F7F",
+  white: "#FFFFFF",
+  purple: "#7247C4",
 };
 
 export const lightTheme: DefaultTheme = {
   colors,
   typography: {
     h1: {
-      fontSize: '40px',
-      lineHeight: '48px'
+      fontSize: "40px",
+      lineHeight: "48px",
     },
     h2: {
-      fontSize: '32px',
-      lineHeight: '36px'
+      fontSize: "32px",
+      lineHeight: "36px",
     },
     h3: {
-      fontSize: '18px',
-      lineHeight: '26px'
-    }
+      fontSize: "18px",
+      lineHeight: "26px",
+    },
   },
   border: {
-    wavyRadius: '30px 2px 30% 3px / 4px 10px 3px 30px'
+    wavyRadius: "30px 2px 30% 3px / 4px 10px 3px 30px",
   },
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   spacings: memoize(calculateSpacing),
@@ -40,22 +40,22 @@ export const lightTheme: DefaultTheme = {
     text: colors.black,
     background: colors.white,
     card: {
-      border: colors.black
+      border: colors.black,
     },
     button: {
       color: colors.black,
       background: colors.white,
-      border: colors.black
+      border: colors.black,
     },
     modal: {
       border: colors.black,
-      background: colors.white
+      background: colors.white,
     },
     alert: {
       text: colors.white,
-      background: colors.black
-    }
-  }
+      background: colors.black,
+    },
+  },
 };
 
 export const darkTheme: DefaultTheme = {
@@ -64,20 +64,20 @@ export const darkTheme: DefaultTheme = {
     text: colors.white,
     background: colors.black,
     card: {
-      border: colors.lightGrey
+      border: colors.lightGrey,
     },
     button: {
       color: colors.white,
       background: colors.black,
-      border: colors.lightGrey
+      border: colors.lightGrey,
     },
     modal: {
       border: colors.lightGrey,
-      background: colors.black
+      background: colors.black,
     },
     alert: {
       text: colors.black,
-      background: colors.white
-    }
-  }
+      background: colors.white,
+    },
+  },
 };

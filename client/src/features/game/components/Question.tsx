@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 type Props = {
   instruction?: string;
@@ -10,10 +10,10 @@ type Props = {
 export const Question: React.FC<Props> = ({
   instruction,
   question,
-  questionType
+  questionType,
 }) => {
   switch (questionType) {
-    case 'image':
+    case "image":
       return (
         <>
           <QuestionInstructions>{instruction}</QuestionInstructions>
