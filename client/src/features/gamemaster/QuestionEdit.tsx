@@ -1,5 +1,3 @@
-import React from 'react';
+import React from "react";
 
-export const QuestionEdit = () => (
-  <h1>QuestionEdit</h1>
-);
+export const QuestionEdit = () => <h1>QuestionEdit</h1>;

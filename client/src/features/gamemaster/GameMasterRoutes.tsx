@@ -1,20 +1,20 @@
-import React from 'react';
-import { Route } from 'react-router-dom';
-import { PageContainer } from 'components';
+import React from "react";
+import { Route } from "react-router-dom";
+import { PageContainer } from "components";
 
-import { ActList } from 'features/gamemaster/ActList';
-import { ActNew } from 'features/gamemaster/ActNew';
-import { ActEdit } from 'features/gamemaster/ActEdit';
-import { PackList } from 'features/gamemaster/PackList';
-import { PackNew } from 'features/gamemaster/PackNew';
-import { PackEdit } from 'features/gamemaster/PackEdit';
-import { PlayList } from 'features/gamemaster/PlayList';
-import { PlayNew } from 'features/gamemaster/PlayNew';
-import { PlayEdit } from 'features/gamemaster/PlayEdit';
-import { QuestionList } from 'features/gamemaster/QuestionList';
-import { QuestionNew } from 'features/gamemaster/QuestionNew';
-import { QuestionEdit } from 'features/gamemaster/QuestionEdit';
-import { GameMaster } from 'features/gamemaster/GameMaster';
+import { ActList } from "features/gamemaster/ActList";
+import { ActNew } from "features/gamemaster/ActNew";
+import { ActEdit } from "features/gamemaster/ActEdit";
+import { PackList } from "features/gamemaster/PackList";
+import { PackNew } from "features/gamemaster/PackNew";
+import { PackEdit } from "features/gamemaster/PackEdit";
+import { PlayList } from "features/gamemaster/PlayList";
+import { PlayNew } from "features/gamemaster/PlayNew";
+import { PlayEdit } from "features/gamemaster/PlayEdit";
+import { QuestionList } from "features/gamemaster/QuestionList";
+import { QuestionNew } from "features/gamemaster/QuestionNew";
+import { QuestionEdit } from "features/gamemaster/QuestionEdit";
+import { GameMaster } from "features/gamemaster/GameMaster";
 
 export const GameMasterRoutes = () => {
   return (

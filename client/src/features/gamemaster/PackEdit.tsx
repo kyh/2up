@@ -1,5 +1,3 @@
-import React from 'react';
+import React from "react";
 
-export const PackEdit = () => (
-  <h1>PackEdit</h1>
-);
+export const PackEdit = () => <h1>PackEdit</h1>;

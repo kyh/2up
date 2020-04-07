@@ -53,4 +53,11 @@ defmodule Database.Catalog do
       drawing: 2
     }
   end
+
+  def pack_create(%User{} = user, attrs) do
+    %Pack{}
+    |> Pack.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:user, user)
+    |> Repo.insert()
+  end
 end

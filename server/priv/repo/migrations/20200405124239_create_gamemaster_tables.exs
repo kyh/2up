@@ -10,7 +10,6 @@ defmodule Database.Repo.Migrations.CreateGamemasterTables do
 
     create table(:packs) do
       add :name, :string, null: false
-      add :instruction, :string, null: false
 
       timestamps()
     end

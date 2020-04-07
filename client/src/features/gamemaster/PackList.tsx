@@ -1,5 +1,3 @@
-import React from 'react';
+import React from "react";
 
-export const PackList = () => (
-  <h1>PackList</h1>
-);
+export const PackList = () => <h1>PackList</h1>;

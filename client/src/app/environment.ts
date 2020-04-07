@@ -1,13 +1,13 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
 
 async function fetchGraphQL(text: string, variables: any) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       query: text,
