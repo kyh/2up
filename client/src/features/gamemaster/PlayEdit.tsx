@@ -1,5 +1,3 @@
-import React from 'react';
+import React from "react";
 
-export const PlayEdit = () => (
-  <h1>PlayEdit</h1>
-);
+export const PlayEdit = () => <h1>PlayEdit</h1>;

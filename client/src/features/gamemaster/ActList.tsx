@@ -1,5 +1,3 @@
-import React from 'react';
+import React from "react";
 
-export const ActList = () => (
-  <h1>ActList</h1>
-);
+export const ActList = () => <h1>ActList</h1>;

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useAlert } from 'react-alert';
-import graphql from 'babel-plugin-relay/macro';
+import React, { useState } from "react";
+import { useAlert } from "react-alert";
+import graphql from "babel-plugin-relay/macro";
 
-import { Input } from 'components';
-import { useBaseMutation } from 'utils/useBaseMutation';
+import { Input } from "components";
+import { useMutation } from "utils/useMutation";
 
-import { SessionNewSessionCreateMutation } from './__generated__/SessionNewSessionCreateMutation.graphql';
+import { SessionNewSessionCreateMutation } from "./__generated__/SessionNewSessionCreateMutation.graphql";
 
 const sessionCreateMutation = graphql`
   mutation SessionNewSessionCreateMutation($input: SessionCreateInput!) {
@@ -17,15 +17,17 @@ const sessionCreateMutation = graphql`
       token
     }
   }
-`
+`;
 
 export const SessionNew = () => {
   const alert = useAlert();
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const sessionCreate = useBaseMutation<SessionNewSessionCreateMutation>(sessionCreateMutation);
+  const [sessionCreate, isCreatingSession] = useMutation<
+    SessionNewSessionCreateMutation
+  >(sessionCreateMutation);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -41,15 +43,15 @@ export const SessionNew = () => {
     sessionCreate({
       variables: { input: { username, password } },
       onCompleted: (data) => {
-        console.log('data', data)
+        console.log("data", data);
         const token = data?.sessionCreate?.token;
         if (token) {
-          localStorage.setItem('token', token);
+          localStorage.setItem("token", token);
         }
       },
       onError: (error: Error) => {
-        alert.show(error);
-      }
+        alert.show(error.message);
+      },
     });
 
     return false;
@@ -68,11 +70,15 @@ export const SessionNew = () => {
         <div>
           <label>
             password
-            <Input value={password} onChange={handlePasswordChange} />
+            <Input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
           </label>
         </div>
-        <Input type="submit" value="Submit" />
+        <Input type="submit" value="Submit" disabled={isCreatingSession} />
       </form>
     </div>
-  )
+  );
 };

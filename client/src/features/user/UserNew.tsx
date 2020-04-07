@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useAlert } from 'react-alert';
-import graphql from 'babel-plugin-relay/macro';
+import React, { useState } from "react";
+import { useAlert } from "react-alert";
+import graphql from "babel-plugin-relay/macro";
 
-import { Input } from 'components';
-import { useBaseMutation } from 'utils/useBaseMutation';
+import { Input } from "components";
+import { useMutation } from "utils/useMutation";
 
-import { UserNewUserCreateMutation } from './__generated__/UserNewUserCreateMutation.graphql';
+import { UserNewUserCreateMutation } from "./__generated__/UserNewUserCreateMutation.graphql";
 
 const userCreateMutation = graphql`
   mutation UserNewUserCreateMutation($input: UserCreateInput!) {
@@ -17,16 +17,18 @@ const userCreateMutation = graphql`
       token
     }
   }
-`
+`;
 
 export const UserNew = () => {
   const alert = useAlert();
 
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const userCreate = useBaseMutation<UserNewUserCreateMutation>(userCreateMutation);
+  const [userCreate, isCreatingUser] = useMutation<UserNewUserCreateMutation>(
+    userCreateMutation
+  );
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -46,16 +48,16 @@ export const UserNew = () => {
     userCreate({
       variables: { input: { username, email, password } },
       onCompleted: (data) => {
-        console.log('data', data)
+        console.log("data", data);
         const token = data?.userCreate?.token;
         if (token) {
-          localStorage.setItem('token', token);
+          localStorage.setItem("token", token);
         }
       },
       onError: (error: Error) => {
         alert.show(error);
-      }
-    })
+      },
+    });
 
     return false;
   };
@@ -79,11 +81,15 @@ export const UserNew = () => {
         <div>
           <label>
             password
-            <Input type="password" value={password} onChange={handlePasswordChange} />
+            <Input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
           </label>
         </div>
-        <Input type="submit" value="Submit" />
+        <Input type="submit" value="Submit" disabled={isCreatingUser} />
       </form>
     </div>
-  )
+  );
 };

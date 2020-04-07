@@ -16,4 +16,18 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   def packs(_, _, _) do
     {:ok, ["Startups", "SAT", "Color", "Drawing", "Variety"]}
   end
+
+  def pack_create(_, args, %{context: %{current_user: user}}) do
+    case Catalog.pack_create(user, args) do
+      {:error, changeset} ->
+        {
+          :error,
+          message: "Pack creation failed",
+          details: Errors.error_details(changeset)
+        }
+
+      {:ok, pack} ->
+        {:ok, %{pack: pack}}
+    end
+  end
 end

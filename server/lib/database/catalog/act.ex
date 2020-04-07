@@ -2,9 +2,9 @@ defmodule Database.Catalog.Act do
   use Database.Model
 
   schema "acts" do
-    belongs_to :user, Database.Accounts.User
-    many_to_many :questions, Database.Catalog.Question,
-      join_through: Database.Catalog.ActQuestion
+    belongs_to :user, User
+    many_to_many :questions, Question,
+      join_through: ActQuestion
 
     field :endorsement_type, :integer
     field :order, :integer
