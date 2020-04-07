@@ -1,5 +1,5 @@
-import styledNormalize from 'styled-normalize';
-import { createGlobalStyle } from 'styled-components';
+import styledNormalize from "styled-normalize";
+import { createGlobalStyle } from "styled-components";
 
 const publicUrl = process.env.PUBLIC_URL;
 

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import styled, { keyframes } from 'styled-components';
-import raw from 'raw.macro';
-import dust from './dust.svg';
+import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import styled, { keyframes } from "styled-components";
+import raw from "raw.macro";
+import dust from "./dust.svg";
 
 type Props = {
   initialSeconds?: number;
@@ -10,19 +10,19 @@ type Props = {
   onTimeout?: () => void;
 };
 
-const snail = raw('./snail.svg');
+const snail = raw("./snail.svg");
 
 export const Timer: React.FC<Props> = ({
   initialSeconds = 45,
   shouldCallTimeout = true,
-  onTimeout = () => {}
+  onTimeout = () => {},
 }) => {
   const [seconds, setSeconds] = useState(initialSeconds);
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (seconds !== 1) {
-        setSeconds(seconds => seconds - 1);
+        setSeconds((seconds) => seconds - 1);
       } else {
         if (shouldCallTimeout) {
           onTimeout();

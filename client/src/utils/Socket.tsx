@@ -1,7 +1,7 @@
-import React, { useEffect, createContext, useContext, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Socket, Presence } from 'phoenix';
-import { RootState } from 'app/rootReducer';
+import React, { useEffect, createContext, useContext, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Socket, Presence } from "phoenix";
+import { RootState } from "app/rootReducer";
 
 export const SocketContext = createContext({} as Socket);
 
@@ -11,9 +11,9 @@ type Props = {
 };
 
 export const SocketProvider: React.FC<Props> = ({
-  wsUrl = '',
+  wsUrl = "",
   options = {},
-  children
+  children,
 }) => {
   const socket = new Socket(wsUrl, { params: options });
 
@@ -27,15 +27,15 @@ export const SocketProvider: React.FC<Props> = ({
 };
 
 const PRESENCE_EVENTS = {
-  state: 'presence_state',
-  diff: 'presence_diff'
+  state: "presence_state",
+  diff: "presence_diff",
 };
 
 export const useChannel = (
   channelTopic: string,
   selector: (state: RootState) => any,
   initialPayload = {},
-  presenceAction = ''
+  presenceAction = ""
 ) => {
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState(null);
@@ -48,8 +48,8 @@ export const useChannel = (
     let presences = {};
 
     const channel = socket.channel(channelTopic, {
-      client: 'browser',
-      ...initialPayload
+      client: "browser",
+      ...initialPayload,
     });
 
     channel.onMessage = (event: string, payload: any) => {
@@ -63,8 +63,8 @@ export const useChannel = (
           presences = Presence.syncDiff(presences, payload);
         }
         const players = Presence.list(presences)
-          .map(p => p.metas[0])
-          .filter(p => !p.isHost);
+          .map((p) => p.metas[0])
+          .filter((p) => !p.isHost);
         dispatch({ type: presenceAction, payload: { players } });
       } else {
         dispatch({ type: event, payload });
@@ -74,15 +74,15 @@ export const useChannel = (
 
     channel
       .join()
-      .receive('ok', ({ messages }: any) => {
+      .receive("ok", ({ messages }: any) => {
         setConnected(true);
         setError(null);
-        console.log('successfully joined channel', messages || '');
+        console.log("successfully joined channel", messages || "");
       })
-      .receive('error', ({ reason }: any) => {
+      .receive("error", ({ reason }: any) => {
         setConnected(false);
         setError(reason);
-        console.error('failed to join channel', reason);
+        console.error("failed to join channel", reason);
       });
 
     setBroadcast(() => channel.push.bind(channel));

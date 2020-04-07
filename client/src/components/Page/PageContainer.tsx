@@ -1,24 +1,24 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 enum Size {
-  small = 'small',
-  large = 'large',
-  full = 'full'
+  small = "small",
+  large = "large",
+  full = "full",
 }
 
 type Props = {
   size?: keyof typeof Size;
-  align?: 'start' | 'center' | 'end' | 'stretch';
+  align?: "start" | "center" | "end" | "stretch";
 };
 
 const renderSize = ({ size }: Props) => {
   if (size === Size.small) {
-    return '600px';
+    return "600px";
   }
   if (size === Size.large) {
-    return '900px';
+    return "900px";
   }
-  return 'none';
+  return "none";
 };
 
 export const PageContainer = styled.section<Props>`
@@ -29,5 +29,5 @@ export const PageContainer = styled.section<Props>`
   height: 100vh;
   height: calc((var(--vh, 1vh) * 100) - 50px);
   max-width: ${renderSize};
-  align-items: ${({ align }) => (align ? align : 'start')};
+  align-items: ${({ align }) => (align ? align : "start")};
 `;

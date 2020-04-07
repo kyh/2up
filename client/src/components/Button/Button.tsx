@@ -1,21 +1,21 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 import styled, {
   css,
   StyledComponentProps,
-  DefaultTheme
-} from 'styled-components';
-import { RootState } from 'app/rootReducer';
-import { clickSound } from 'styles/sound';
-import { border, borderActive, fabBorder, fabBorderActive } from './borders';
+  DefaultTheme,
+} from "styled-components";
+import { RootState } from "app/rootReducer";
+import { clickSound } from "styles/sound";
+import { border, borderActive, fabBorder, fabBorderActive } from "./borders";
 
 enum Variants {
-  default = 'default',
-  fab = 'fab'
+  default = "default",
+  fab = "fab",
 }
 
 type Props = StyledComponentProps<
-  'button',
+  "button",
   DefaultTheme,
   {
     variant?: keyof typeof Variants;
@@ -101,7 +101,7 @@ const renderFabStyles = () => {
 
 export const StyledButton = styled.button<StyledProps>`
   transition: transform 0.2s ease;
-  width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
+  width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
   ${({ variant = Variants.default }) =>
     variant === Variants.default ? renderRegularStyles() : renderFabStyles()}
 `;
@@ -109,7 +109,7 @@ export const StyledButton = styled.button<StyledProps>`
 export const ButtonLink = styled.a<StyledProps>`
   text-align: center;
   transition: transform 0.2s ease;
-  width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
+  width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
   ${({ variant = Variants.default }) =>
     variant === Variants.default ? renderRegularStyles() : renderFabStyles()}
 `;

@@ -1,9 +1,9 @@
-import styled, { css } from 'styled-components';
-import { border, borderRounded } from './borders';
+import styled, { css } from "styled-components";
+import { border, borderRounded } from "./borders";
 
 enum Variants {
-  default = 'default',
-  rounded = 'rounded'
+  default = "default",
+  rounded = "rounded",
 }
 
 type Props = {

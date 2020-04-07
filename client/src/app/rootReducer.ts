@@ -1,11 +1,11 @@
-import { combineReducers } from '@reduxjs/toolkit';
+import { combineReducers } from "@reduxjs/toolkit";
 
-import { playhouseReducer } from 'features/home/playhouseSlice';
-import { gameReducer } from 'features/game/gameSlice';
+import { playhouseReducer } from "features/home/playhouseSlice";
+import { gameReducer } from "features/game/gameSlice";
 
 const rootReducer = combineReducers({
   playhouse: playhouseReducer,
-  game: gameReducer
+  game: gameReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

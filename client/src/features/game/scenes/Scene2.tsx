@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Alert, Timer, Button } from 'components';
-import { SceneProps } from 'features/game/gameSlice';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Alert, Timer, Button } from "components";
+import { SceneProps } from "features/game/gameSlice";
 import {
   TVQuestionConatiner,
-  Question
-} from 'features/game/components/Question';
-import { SubmissionsContainer } from 'features/game/components/SubmissionsContainer';
-import { Answer } from 'features/game/components/Answer';
+  Question,
+} from "features/game/components/Question";
+import { SubmissionsContainer } from "features/game/components/SubmissionsContainer";
+import { Answer } from "features/game/components/Answer";
 
 export const Scene2Remote = ({
   state,
   broadcast,
   userId,
-  name
+  name,
 }: SceneProps) => {
   const [submitted, setSubmitted] = useState(false);
 
@@ -24,10 +24,10 @@ export const Scene2Remote = ({
   const waiting = players - submissions;
 
   const endorse = (submissionId: number) => {
-    broadcast('endorse', {
+    broadcast("endorse", {
       userId,
       name,
-      submission_id: submissionId
+      submission_id: submissionId,
     });
     setSubmitted(true);
   };
@@ -41,7 +41,7 @@ export const Scene2Remote = ({
           instruction={state.instruction}
           questionType={state.questionType}
         />
-        {state.submissions.map(submission => {
+        {state.submissions.map((submission) => {
           if (!submission.content) return null;
           return (
             <Answer
@@ -85,7 +85,7 @@ export const Scene2TV = ({ state }: SceneProps) => {
         />
       </TVQuestionConatiner>
       <SubmissionsContainer>
-        {state.submissions.map(submission => {
+        {state.submissions.map((submission) => {
           if (!submission.content) return null;
           return (
             <div className="submission" key={submission.id}>

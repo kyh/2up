@@ -1,11 +1,11 @@
-import React from 'react';
-import { Route, useParams } from 'react-router-dom';
-import { PageContainer } from 'components';
+import React from "react";
+import { Route, useParams } from "react-router-dom";
+import { PageContainer } from "components";
 
-import { GameProvider } from 'features/game/GameChannel';
-import { GameLobby } from 'features/game/GameLobby';
-import { GameTV } from 'features/game/GameTV';
-import { GameRemote } from 'features/game/GameRemote';
+import { GameProvider } from "features/game/GameChannel";
+import { GameLobby } from "features/game/GameLobby";
+import { GameTV } from "features/game/GameTV";
+import { GameRemote } from "features/game/GameRemote";
 
 export const GameRoutes: React.FC = () => {
   const { gameId } = useParams();

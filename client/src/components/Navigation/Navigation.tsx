@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
-import { playhouseActions, usePlayhouse } from 'features/home/playhouseSlice';
+import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 
-import { Box } from 'reflexbox';
-import { Icon } from 'components/Icon/Icon';
-import { Modal } from 'components/Modal/Modal';
-import { Button, ButtonLink } from 'components/Button/Button';
+import { Box } from "reflexbox";
+import { Icon } from "components/Icon/Icon";
+import { Modal } from "components/Modal/Modal";
+import { Button, ButtonLink } from "components/Button/Button";
 
 export const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +30,7 @@ export const Navigation: React.FC = () => {
             onClick={() => dispatch(playhouseActions.toggle_dark_mode())}
             fullWidth
           >
-            {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            {isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           </Button>
         </Box>
         <SettingsContainer>
@@ -40,7 +40,7 @@ export const Navigation: React.FC = () => {
               fullWidth
               onClick={() => dispatch(playhouseActions.toggle_music())}
             >
-              {isMusicOn ? 'ON' : 'OFF'}
+              {isMusicOn ? "ON" : "OFF"}
             </Button>
           </SettingItem>
           <SettingItem>
@@ -49,7 +49,7 @@ export const Navigation: React.FC = () => {
               fullWidth
               onClick={() => dispatch(playhouseActions.toggle_SFX())}
             >
-              {isSFXOn ? 'ON' : 'OFF'}
+              {isSFXOn ? "ON" : "OFF"}
             </Button>
           </SettingItem>
         </SettingsContainer>

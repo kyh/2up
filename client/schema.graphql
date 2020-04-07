@@ -17,16 +17,24 @@ type Question {
 }
 
 type RootMutationType {
-  """Get info about live game"""
+  """
+  Get info about live game
+  """
   game(code: String!): Game
 
-  """Create new live game"""
+  """
+  Create new live game
+  """
   gameNew(pack: String!): Code
 
-  """Sign in user"""
+  """
+  Sign in user
+  """
   signin(password: String!, username: String!): Session
 
-  """Create user"""
+  """
+  Create user
+  """
   signup(email: String!, password: String!, username: String!): Session
 }
 
@@ -35,7 +43,9 @@ type RootQueryType {
   packs: [String]
   questionTypes: [String]
 
-  """Get a list of questions"""
+  """
+  Get a list of questions
+  """
   questions: [Question]
 }
 
@@ -48,4 +58,3 @@ type User {
   email: String!
   username: String!
 }
-

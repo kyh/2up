@@ -1,10 +1,10 @@
-import { Environment, Network, RecordSource, Store } from 'relay-runtime';
+import { Environment, Network, RecordSource, Store } from "relay-runtime";
 
 async function fetchGraphQL(text: string, variables: any) {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       query: text,
@@ -18,7 +18,9 @@ async function fetchGraphQL(text: string, variables: any) {
 // Relay passes a "params" object with the query name and text. So we define a helper function
 // to call our fetchGraphQL utility with params.text.
 function fetchRelay(params: any, variables: any) {
-  console.log(`fetching query ${params.name} with ${JSON.stringify(variables)}`);
+  console.log(
+    `fetching query ${params.name} with ${JSON.stringify(variables)}`
+  );
   return fetchGraphQL(params.text, variables);
 }
 

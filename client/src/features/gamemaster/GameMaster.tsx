@@ -1,9 +1,8 @@
-import React, { Suspense } from 'react';
-import styled from 'styled-components';
-import graphql from 'babel-plugin-relay/macro';
-import { useLazyLoadQuery } from 'react-relay/hooks';
-import { GameMasterQuestionsQuery } from './__generated__/GameMasterQuestionsQuery.graphql';
-
+import React, { Suspense } from "react";
+import styled from "styled-components";
+import graphql from "babel-plugin-relay/macro";
+import { useLazyLoadQuery } from "react-relay/hooks";
+import { GameMasterQuestionsQuery } from "./__generated__/GameMasterQuestionsQuery.graphql";
 
 const QuestionsQuery = graphql`
   query GameMasterQuestionsQuery {
@@ -15,7 +14,6 @@ const QuestionsQuery = graphql`
 `;
 
 export const GameMaster = () => {
-
   return (
     <Page>
       <h1>Game Master view</h1>
@@ -34,8 +32,8 @@ const Questions = () => {
         <div key={question.id}>{question.content}</div>
       ))}
     </div>
-  )
-}
+  );
+};
 
 const Page = styled.section`
   overflow: auto;

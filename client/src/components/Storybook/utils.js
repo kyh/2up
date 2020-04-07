@@ -1,17 +1,17 @@
-import React from 'react';
-import { ThemeProvider } from 'styled-components';
-import { theme } from 'styles/theme';
-import { GlobalStyle } from 'styles/global';
-import { Box } from 'components';
+import React from "react";
+import { ThemeProvider } from "styled-components";
+import { theme } from "styles/theme";
+import { GlobalStyle } from "styles/global";
+import { Box } from "components";
 
-export const withTheme = story => (
+export const withTheme = (story) => (
   <ThemeProvider theme={theme}>
     <GlobalStyle />
     <main>{story()}</main>
   </ThemeProvider>
 );
 
-export const withContainer = story => (
+export const withContainer = (story) => (
   <Box
     display="flex"
     flexDirection="column"
