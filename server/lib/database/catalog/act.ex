@@ -7,6 +7,7 @@ defmodule Database.Catalog.Act do
       join_through: Database.Catalog.ActQuestion
 
     field :endorsement_type, :integer
+    field :order, :integer
 
     timestamps()
   end

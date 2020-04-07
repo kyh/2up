@@ -8,10 +8,11 @@ import { PageContainer, Navigation, ReactAlertTemplate } from "components";
 import { lightTheme, darkTheme } from "styles/theme";
 import { GlobalStyle } from "styles/global";
 
-import { usePlayhouse } from "features/home/playhouseSlice";
-import { Home } from "features/home/Home";
-import { GameMaster } from "features/gamemaster/GameMaster";
-import { GameRoutes } from "features/game/GameRoutes";
+import { usePlayhouse } from 'features/home/playhouseSlice';
+import { Home } from 'features/home/Home';
+import { GameMasterRoutes } from 'features/gamemaster/GameMasterRoutes';
+import { GameRoutes } from 'features/game/GameRoutes';
+import { Enter } from 'features/user/Enter';
 
 const alertOptions = {
   position: positions.TOP_CENTER,
@@ -35,9 +36,12 @@ export const App: React.FC = () => {
           <Route path="/game/:gameId">
             <GameRoutes />
           </Route>
-          <Route exact path="/gamemaster">
-            <GameMaster />
+          <Route path="/enter">
+            <PageContainer size="large">
+              <Enter />
+            </PageContainer>
           </Route>
+          <GameMasterRoutes />
           <Redirect to="/" />
         </Switch>
       </AlertProvider>
