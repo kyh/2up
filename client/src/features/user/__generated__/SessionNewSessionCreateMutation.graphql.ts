@@ -1,11 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b544ed98cd91e536d4de6fc008a75a52 */
+/* @relayHash a02bb1cdc683faae71c05deaefa5dd35 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type SessionNewSessionCreateMutationVariables = {
-    username: string;
+export type SessionCreateInput = {
     password: string;
+    username: string;
+};
+export type SessionNewSessionCreateMutationVariables = {
+    input: SessionCreateInput;
 };
 export type SessionNewSessionCreateMutationResponse = {
     readonly sessionCreate: {
@@ -25,10 +28,9 @@ export type SessionNewSessionCreateMutation = {
 
 /*
 mutation SessionNewSessionCreateMutation(
-  $username: String!
-  $password: String!
+  $input: SessionCreateInput!
 ) {
-  sessionCreate(username: $username, password: $password) {
+  sessionCreate(input: $input) {
     user {
       username
       email
@@ -42,14 +44,8 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "username",
-    "type": "String!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "password",
-    "type": "String!",
+    "name": "input",
+    "type": "SessionCreateInput!",
     "defaultValue": null
   }
 ],
@@ -62,16 +58,11 @@ v1 = [
     "args": [
       {
         "kind": "Variable",
-        "name": "password",
-        "variableName": "password"
-      },
-      {
-        "kind": "Variable",
-        "name": "username",
-        "variableName": "username"
+        "name": "input",
+        "variableName": "input"
       }
     ],
-    "concreteType": "Session",
+    "concreteType": "SessionCreatePayload",
     "plural": false,
     "selections": [
       {
@@ -129,10 +120,10 @@ return {
     "operationKind": "mutation",
     "name": "SessionNewSessionCreateMutation",
     "id": null,
-    "text": "mutation SessionNewSessionCreateMutation(\n  $username: String!\n  $password: String!\n) {\n  sessionCreate(username: $username, password: $password) {\n    user {\n      username\n      email\n    }\n    token\n  }\n}\n",
+    "text": "mutation SessionNewSessionCreateMutation(\n  $input: SessionCreateInput!\n) {\n  sessionCreate(input: $input) {\n    user {\n      username\n      email\n    }\n    token\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '04098bebbc97f5ef5383d4726e613552';
+(node as any).hash = '240f0d56e235fc1e3d6f9875bbf628f6';
 export default node;

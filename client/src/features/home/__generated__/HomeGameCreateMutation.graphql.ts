@@ -1,10 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a01420efeef0c82f02452d6108e71340 */
+/* @relayHash 711a8d4a2a9ada498ecb182fc39d5ebd */
 
 import { ConcreteRequest } from "relay-runtime";
-export type HomeGameCreateMutationVariables = {
+export type GameCreateInput = {
     pack: string;
+};
+export type HomeGameCreateMutationVariables = {
+    input: GameCreateInput;
 };
 export type HomeGameCreateMutationResponse = {
     readonly gameCreate: {
@@ -18,9 +21,9 @@ export type HomeGameCreateMutation = {
 
 /*
 mutation HomeGameCreateMutation(
-  $pack: String!
+  $input: GameCreateInput!
 ) {
-  gameCreate(pack: $pack) {
+  gameCreate(input: $input) {
     code
   }
 }
@@ -30,8 +33,8 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "pack",
-    "type": "String!",
+    "name": "input",
+    "type": "GameCreateInput!",
     "defaultValue": null
   }
 ],
@@ -43,13 +46,14 @@ v1 = [
     "storageKey": null,
     "args": [
       {
-        kind: "LocalArgument",
-        name: "pack",
-        type: "String!",
-        defaultValue: null,
-      },
+        "kind": "Variable",
+        "name": "input",
+        "variableName": "input"
+      }
     ],
-    v1 = [
+    "concreteType": "GameCreatePayload",
+    "plural": false,
+    "selections": [
       {
         "kind": "ScalarField",
         "alias": null,
@@ -80,10 +84,10 @@ return {
     "operationKind": "mutation",
     "name": "HomeGameCreateMutation",
     "id": null,
-    "text": "mutation HomeGameCreateMutation(\n  $pack: String!\n) {\n  gameCreate(pack: $pack) {\n    code\n  }\n}\n",
+    "text": "mutation HomeGameCreateMutation(\n  $input: GameCreateInput!\n) {\n  gameCreate(input: $input) {\n    code\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '24b52d84a04cb316674dfbe4a338307e';
+(node as any).hash = 'ba8d61c6af11964f8410c7aa9c1cefca';
 export default node;
