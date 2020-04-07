@@ -17,6 +17,7 @@ defmodule Database.Repo.Migrations.CreateGamemasterTables do
 
     create table(:acts) do
       add :endorsement_type, :integer, null: false
+      add :order, :integer, null: false
 
       timestamps()
     end

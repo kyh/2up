@@ -22,20 +22,14 @@ type RootMutationType {
   """
   game(code: String!): Game
 
-  """
-  Create new live game
-  """
-  gameNew(pack: String!): Code
+  """Create new live game"""
+  gameCreate(pack: String!): Code
 
-  """
-  Sign in user
-  """
-  signin(password: String!, username: String!): Session
+  """Sign in user"""
+  sessionCreate(password: String!, username: String!): Session
 
-  """
-  Create user
-  """
-  signup(email: String!, password: String!, username: String!): Session
+  """Create user"""
+  userCreate(email: String!, password: String!, username: String!): Session
 }
 
 type RootQueryType {
