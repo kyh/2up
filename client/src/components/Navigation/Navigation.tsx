@@ -10,8 +10,10 @@ import { Button, ButtonLink } from "components/Button/Button";
 
 export const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { state, dispatch } = usePlayhouse();
-  const { isMusicOn, isSFXOn, isDarkMode } = state;
+  const {
+    state: { isMusicOn, isSFXOn, isDarkMode },
+    dispatch,
+  } = usePlayhouse();
 
   return (
     <StyledNav>
@@ -82,11 +84,14 @@ export const Navigation: React.FC = () => {
 };
 
 const StyledNav = styled.nav`
+  position: absolute;
   display: flex;
   justify-content: flex-end;
-  padding: 0 ${({ theme }) => theme.spacings(1)};
+  padding: 0 ${({ theme }) => theme.spacings(3)};
   align-items: center;
   height: 50px;
+  right: 0;
+  z-index: 1;
 `;
 
 const SettingsContainer = styled.div`
