@@ -1,6 +1,7 @@
-import React, { Suspense } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import graphql from "babel-plugin-relay/macro";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useLazyLoadQuery } from "react-relay/hooks";
 import { GameMasterQuestionsQuery } from "./__generated__/GameMasterQuestionsQuery.graphql";
 import { Button } from "components";
@@ -15,7 +16,52 @@ const QuestionsQuery = graphql`
   }
 `;
 
+type Act = {
+  id: string;
+  type: string;
+  instruction: string;
+  question: string;
+};
+
+// fake data generator
+const getItems = (count: number) =>
+  Array.from({ length: count }, (v, k) => k).map((k) => ({
+    id: `item-${k}`,
+    type: "TEXT",
+    instruction: `instruction ${k}`,
+    question: `question ${k}?`,
+  }));
+
+const reorder = (list: any[], startIndex: number, endIndex: number) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
 export const GameMaster = () => {
+  const [acts, setActs] = useState<Act[]>(getItems(10));
+  const [selectedAct, setSelectedAct] = useState<Act | null>(null);
+
+  const onDragEnd = (result: any) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const orderedActs = reorder(
+      acts,
+      result.source.index,
+      result.destination.index
+    );
+
+    setActs(orderedActs);
+  };
+
+  const onSelectAct = (act: Act) => {
+    setSelectedAct(act);
+  };
+
   return (
     <Page>
       <Header>
@@ -26,27 +72,38 @@ export const GameMaster = () => {
           <h3>Questions:</h3>
         </SidebarHeader>
         <SidebarContent>
-          <QuestionItem>
-            <div>
-              <div className="instruction">Give a name for this startup</div>
-              <h3 className="question">HelloWorld</h3>
-            </div>
-            <div className="type">Text</div>
-          </QuestionItem>
-          <QuestionItem>
-            <div>
-              <div className="instruction">Give a name for this startup</div>
-              <h3 className="question">AnotherStartup</h3>
-            </div>
-            <div className="type">Text</div>
-          </QuestionItem>
-          <QuestionItem>
-            <div>
-              <div className="instruction">Give a name for this startup</div>
-              <h3 className="question">WorldWarZ</h3>
-            </div>
-            <div className="type">Text</div>
-          </QuestionItem>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable">
+              {(provided: any, snapshot: any) => (
+                <SidebarContent
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {acts.map((act, index) => (
+                    <Draggable key={act.id} draggableId={act.id} index={index}>
+                      {(provided: any) => (
+                        <QuestionItem
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          isSelected={selectedAct?.id === act.id}
+                          style={{ ...provided.draggableProps.style }}
+                          onClick={() => onSelectAct(act)}
+                        >
+                          <div>
+                            <div className="instruction">{act.instruction}</div>
+                            <h3 className="question">{act.question}</h3>
+                          </div>
+                          <div className="type">{act.type}</div>
+                        </QuestionItem>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </SidebarContent>
+              )}
+            </Droppable>
+          </DragDropContext>
         </SidebarContent>
         <SidebarFooter>
           <Button>Add new question</Button>
@@ -54,7 +111,9 @@ export const GameMaster = () => {
       </Sidebar>
       <Content>
         <Monitor>
-          <h3>Whats the capital of France?</h3>
+          <MonitorScreen>
+            {!!selectedAct && <h3>{selectedAct!.question}</h3>}
+          </MonitorScreen>
         </Monitor>
       </Content>
       <Footer />
@@ -98,19 +157,24 @@ const Sidebar = styled.section`
 
 const SidebarHeader = styled.header``;
 
-const SidebarContent = styled.section``;
+const SidebarContent = styled.section`
+  overflow: auto;
+`;
 
 const SidebarFooter = styled.footer`
   padding: ${({ theme }) => theme.spacings(3)} 0;
 `;
 
-const QuestionItem = styled.div`
+const QuestionItem = styled.div<{ isSelected: boolean }>`
   display: flex;
   justify-content: space-between;
+  width: 100%;
   padding: ${({ theme }) => theme.spacings(3)};
   border: 2px dotted ${({ theme }) => theme.colors.lightGrey};
   border-radius: ${({ theme }) => theme.border.wavyRadius};
   margin-bottom: ${({ theme }) => theme.spacings(3)};
+  background-color: ${({ theme, isSelected }) =>
+    isSelected ? theme.ui.backgroundGrey : theme.ui.background};
 
   .instruction {
     color: ${({ theme }) => theme.colors.darkGrey};
@@ -142,9 +206,16 @@ const Content = styled.section`
 const Monitor = styled.section`
   background-image: url(${monitor});
   background-repeat: no-repeat;
-  background-size: 100%;
-  padding: 3% 3% 18%;
+  background-size: 100% 100%;
+  padding: 3% 6% 100px;
+  width: 50%;
+  height: 50%;
+  display: flex;
+`;
+
+const MonitorScreen = styled.section`
   text-align: center;
+  background-color: ${({ theme }) => theme.ui.background};
 `;
 
 const Footer = styled.footer`
