@@ -5,6 +5,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useLazyLoadQuery } from "react-relay/hooks";
 import { GameMasterQuestionsQuery } from "./__generated__/GameMasterQuestionsQuery.graphql";
 import { Button } from "components";
+import { Question } from "features/game/components/Question";
+import { Answer } from "features/game/components/Answer";
 import monitor from "./components/monitor.svg";
 
 const QuestionsQuery = graphql`
@@ -18,18 +20,20 @@ const QuestionsQuery = graphql`
 
 type Act = {
   id: string;
-  type: string;
+  questionType: string;
   instruction: string;
   question: string;
+  answerType: string;
 };
 
 // fake data generator
 const getItems = (count: number) =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
     id: `item-${k}`,
-    type: "TEXT",
+    questionType: "TEXT",
     instruction: `instruction ${k}`,
     question: `question ${k}?`,
+    answerType: "TEXT",
   }));
 
 const reorder = (list: any[], startIndex: number, endIndex: number) => {
@@ -94,7 +98,7 @@ export const GameMaster = () => {
                             <div className="instruction">{act.instruction}</div>
                             <h3 className="question">{act.question}</h3>
                           </div>
-                          <div className="type">{act.type}</div>
+                          <div className="type">{act.questionType}</div>
                         </QuestionItem>
                       )}
                     </Draggable>
@@ -112,7 +116,7 @@ export const GameMaster = () => {
       <Content>
         <Monitor>
           <MonitorScreen>
-            {!!selectedAct && <h3>{selectedAct!.question}</h3>}
+            {!!selectedAct && <MonitorContent act={selectedAct} />}
           </MonitorScreen>
         </Monitor>
       </Content>
@@ -122,6 +126,28 @@ export const GameMaster = () => {
         <QuestionTemplate />
       </Footer>
     </Page>
+  );
+};
+
+const MonitorContent: React.FC<{ act: Act }> = ({ act }) => {
+  return (
+    <>
+      <button>
+        <Question
+          instruction={act.instruction}
+          question={act.question}
+          questionType={act.questionType}
+        />
+      </button>
+      <button>
+        <Answer
+          answer=""
+          answerType={act.answerType}
+          submitted={false}
+          onSubmit={() => {}}
+        />
+      </button>
+    </>
   );
 };
 
@@ -224,6 +250,9 @@ const MonitorScreen = styled.section`
   width: 100%;
   max-width: 445px;
   transform: translateX(-2px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const Footer = styled.footer`

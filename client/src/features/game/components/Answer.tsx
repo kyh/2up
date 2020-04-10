@@ -14,8 +14,8 @@ type AnswerProps = {
 export const Answer: React.FC<AnswerProps> = ({
   answer,
   answerType,
-  submitted,
-  onSubmit,
+  submitted = false,
+  onSubmit = () => {},
 }) => {
   switch (answerType) {
     case "drawing":
