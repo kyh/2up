@@ -116,7 +116,11 @@ export const GameMaster = () => {
           </MonitorScreen>
         </Monitor>
       </Content>
-      <Footer />
+      <Footer>
+        <QuestionTemplate />
+        <QuestionTemplate />
+        <QuestionTemplate />
+      </Footer>
     </Page>
   );
 };
@@ -130,7 +134,7 @@ const Page = styled.section`
     "sidebar content content"
     "sidebar  footer  footer";
   grid-template-columns: 345px 1fr 1fr;
-  grid-template-rows: 50px 1fr 100px;
+  grid-template-rows: 50px 1fr 150px;
 `;
 
 const Header = styled.section`
@@ -207,7 +211,7 @@ const Monitor = styled.section`
   background-image: url(${monitor});
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  padding: 33px 20px 147px;
+  padding: 30px 20px 137px;
   width: 70%;
   height: 70%;
   display: flex;
@@ -218,10 +222,20 @@ const MonitorScreen = styled.section`
   text-align: center;
   background-color: ${({ theme }) => theme.ui.background};
   width: 100%;
-  max-width: 483px;
+  max-width: 445px;
   transform: translateX(-2px);
 `;
 
 const Footer = styled.footer`
   grid-area: footer;
+  display: flex;
+  padding: ${({ theme }) => theme.spacings(4)};
+`;
+
+const QuestionTemplate = styled.div`
+  width: 150px;
+  background: ${({ theme }) => theme.ui.background};
+  height: 100%;
+  border-radius: ${({ theme }) => theme.border.wavyRadius};
+  margin-right: ${({ theme }) => theme.spacings(4)};
 `;
