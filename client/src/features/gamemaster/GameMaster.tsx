@@ -207,15 +207,19 @@ const Monitor = styled.section`
   background-image: url(${monitor});
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  padding: 3% 6% 100px;
-  width: 50%;
-  height: 50%;
+  padding: 33px 20px 147px;
+  width: 70%;
+  height: 70%;
   display: flex;
+  justify-content: center;
 `;
 
 const MonitorScreen = styled.section`
   text-align: center;
   background-color: ${({ theme }) => theme.ui.background};
+  width: 100%;
+  max-width: 483px;
+  transform: translateX(-2px);
 `;
 
 const Footer = styled.footer`
