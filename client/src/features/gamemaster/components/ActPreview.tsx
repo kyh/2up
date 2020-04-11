@@ -17,13 +17,15 @@ export const ActPreview: React.FC<Props> = ({ selectedAct, onUpdateAct }) => {
     setEditableAct(selectedAct);
   }, [selectedAct]);
 
-  const onChange = (newActInfo: Act) => {
-    setEditableAct({ ...editableAct, ...newActInfo });
+  const onChange = (newActInfo: Act, save?: boolean) => {
+    const newAct = { ...editableAct, ...newActInfo };
+    setEditableAct(newAct);
+    if (save) onSaveChanges(newAct);
   };
 
-  const onSaveChanges = () => {
-    console.log("save changes", editableAct);
-    onUpdateAct(editableAct);
+  const onSaveChanges = (newAct = {}) => {
+    console.log("save changes", { ...editableAct, ...newAct });
+    onUpdateAct({ ...editableAct, ...newAct });
   };
 
   return (
