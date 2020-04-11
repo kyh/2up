@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Button, Icon } from "components";
+import { Box, Button, Icon, Modal } from "components";
 
 export const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <HeaderContainer>
       <div className="left">
@@ -10,13 +11,33 @@ export const Header = () => {
       </div>
       <div className="right">
         <div className="more">
-          <Button variant="fab" onClick={() => {}}>
+          <Button variant="fab" onClick={() => setIsOpen(true)}>
             <Icon icon="pencil" />
           </Button>
         </div>
         <input className="pack-title" defaultValue="Some Pack Name" />
         <div className="empty" />
       </div>
+      <Modal
+        open={isOpen}
+        title="Pack Settings"
+        onRequestClose={() => setIsOpen(false)}
+        maxWidth={300}
+        closeButton
+      >
+        <Box mb={3}>
+          <h3>Shuffle questions when playing this pack</h3>
+          <Button onClick={() => {}} fullWidth>
+            Yes
+          </Button>
+        </Box>
+        <Box>
+          <h3>Number of questions to go through</h3>
+          <Button onClick={() => {}} fullWidth>
+            10
+          </Button>
+        </Box>
+      </Modal>
     </HeaderContainer>
   );
 };
