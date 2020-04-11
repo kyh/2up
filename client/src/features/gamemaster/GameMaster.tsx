@@ -1,22 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import graphql from "babel-plugin-relay/macro";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useLazyLoadQuery } from "react-relay/hooks";
-import { GameMasterQuestionsQuery } from "./__generated__/GameMasterQuestionsQuery.graphql";
 import { Button } from "components";
-import { Question } from "features/game/components/Question";
+import { EditableQuestion } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
 import monitor from "./components/monitor.svg";
-
-const QuestionsQuery = graphql`
-  query GameMasterQuestionsQuery {
-    questions {
-      id
-      content
-    }
-  }
-`;
 
 type Act = {
   id: string;
@@ -31,7 +19,7 @@ const getItems = (count: number) =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
     id: `item-${k}`,
     questionType: "TEXT",
-    instruction: `instruction ${k}`,
+    instruction: `instruction`,
     question: `question ${k}?`,
     answerType: "TEXT",
   }));
@@ -64,6 +52,16 @@ export const GameMaster = () => {
 
   const onSelectAct = (act: Act) => {
     setSelectedAct(act);
+  };
+
+  const onUpdateAct = (act: Act) => {
+    setSelectedAct(act);
+    setActs(
+      acts.map((a) => {
+        if (a.id === act.id) return act;
+        return a;
+      })
+    );
   };
 
   return (
@@ -116,7 +114,9 @@ export const GameMaster = () => {
       <Content>
         <Monitor>
           <MonitorScreen>
-            {!!selectedAct && <MonitorContent act={selectedAct} />}
+            {!!selectedAct && (
+              <MonitorContent act={selectedAct} onUpdateAct={onUpdateAct} />
+            )}
           </MonitorScreen>
         </Monitor>
       </Content>
@@ -129,24 +129,40 @@ export const GameMaster = () => {
   );
 };
 
-const MonitorContent: React.FC<{ act: Act }> = ({ act }) => {
+const MonitorContent: React.FC<{
+  act: Act;
+  onUpdateAct: (_act: Act) => void;
+}> = ({ act, onUpdateAct }) => {
+  const [editableAct, setEditableAct] = useState(act);
+
+  useEffect(() => {
+    setEditableAct(act);
+  }, [act]);
+
+  const onChange = (newActInfo: Act) => {
+    setEditableAct({ ...editableAct, ...newActInfo });
+  };
+
+  const onSaveChanges = () => {
+    console.log("save changes", editableAct);
+    onUpdateAct(editableAct);
+  };
+
   return (
     <>
-      <button>
-        <Question
-          instruction={act.instruction}
-          question={act.question}
-          questionType={act.questionType}
-        />
-      </button>
-      <button>
-        <Answer
-          answer=""
-          answerType={act.answerType}
-          submitted={false}
-          onSubmit={() => {}}
-        />
-      </button>
+      <EditableQuestion
+        instruction={editableAct.instruction}
+        question={editableAct.question}
+        questionType={editableAct.questionType}
+        onChange={onChange}
+        onSaveChanges={onSaveChanges}
+      />
+      <Answer
+        answer=""
+        answerType={act.answerType}
+        submitted={false}
+        onSubmit={() => {}}
+      />
     </>
   );
 };
@@ -245,6 +261,7 @@ const Monitor = styled.section`
 `;
 
 const MonitorScreen = styled.section`
+  position: relative;
   text-align: center;
   background-color: ${({ theme }) => theme.ui.background};
   width: 100%;
