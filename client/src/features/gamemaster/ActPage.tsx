@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { generateUuid } from "utils/stringUtils";
 import { Sidebar } from "./components/Sidebar";
 import { Header, Page, Content } from "./components/Page";
 import { ActPreview } from "./components/ActPreview";
@@ -8,7 +9,7 @@ import { Act } from "./types";
 // fake data generator
 const getItems = (count: number) =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k}`,
+    id: generateUuid(),
     questionType: "TEXT",
     instruction: `instruction`,
     question: `question ${k}?`,

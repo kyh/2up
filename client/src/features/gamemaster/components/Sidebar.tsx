@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Button } from "components";
+import { generateUuid } from "utils/stringUtils";
 import { Act } from "../types";
 
 const reorder = (list: any[], startIndex: number, endIndex: number) => {
@@ -41,6 +42,12 @@ export const Sidebar: React.FC<Props> = ({
 
   const onSelectAct = (act: Act) => {
     setSelectedAct(act);
+  };
+
+  const addNewAct = () => {
+    const newAct = { ...selectedAct, id: generateUuid() };
+    setActs([...acts, newAct]);
+    setSelectedAct(newAct);
   };
 
   return (
@@ -86,7 +93,7 @@ export const Sidebar: React.FC<Props> = ({
         </DragDropContext>
       </SidebarContent>
       <SidebarFooter>
-        <Button>Add new question</Button>
+        <Button onClick={addNewAct}>Add new question</Button>
       </SidebarFooter>
     </SidebarContainer>
   );
@@ -107,7 +114,7 @@ const ActQuestion: React.FC<{ questionType: string; question: string }> = ({
 const SidebarContainer = styled.section`
   grid-area: sidebar;
   background: ${({ theme }) => theme.ui.background};
-  padding: 0 ${({ theme }) => theme.spacings(3)};
+  padding: ${({ theme }) => theme.spacings(3)};
   display: grid;
   grid-template-rows: max-content auto max-content;
   height: 100%;
@@ -121,7 +128,7 @@ const SidebarContent = styled.section`
 `;
 
 const SidebarFooter = styled.footer`
-  padding: ${({ theme }) => theme.spacings(3)} 0;
+  padding: ${({ theme }) => theme.spacings(3)} 0 0;
 `;
 
 const QuestionItem = styled.div<{ isSelected: boolean }>`
