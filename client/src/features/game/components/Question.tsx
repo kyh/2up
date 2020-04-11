@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Button } from "components";
+import { Act } from "features/gamemaster/types";
 
 type QuestionProps = {
   instruction?: string;
@@ -53,7 +54,7 @@ const QuestionImage = styled.img`
 `;
 
 type EditableQuestionProps = QuestionProps & {
-  onChange: (_act: any) => void;
+  onChange: (_act: any, _save?: boolean) => void;
   onSaveChanges: () => void;
 };
 
@@ -106,29 +107,42 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
   }
 };
 
-const EditableType: React.FC<{ onSelectType: (_act: any) => void }> = ({
-  onSelectType,
-  children,
-}) => {
+const EditableType: React.FC<{
+  onSelectType: (
+    _act: Pick<Act, "questionType" | "question">,
+    _save: boolean
+  ) => void;
+}> = ({ onSelectType, children }) => {
   return (
     <EditableTypeContainer>
       {children}
       <div className="button-container">
         <Button
           variant="fab"
-          onClick={() => onSelectType({ questionType: "text" })}
+          onClick={() => {
+            onSelectType(
+              {
+                questionType: "text",
+                question: "Hello in there?",
+              },
+              true
+            );
+          }}
         >
           T
         </Button>
         <Button
           variant="fab"
-          onClick={() =>
-            onSelectType({
-              questionType: "image",
-              question:
-                "https://external-sjc3-1.xx.fbcdn.net/safe_image.php?d=AQDhZS4fRQEcCkEr&url=https%3A%2F%2Fmedia0.giphy.com%2Fmedia%2Fv1.Y2lkPTEyMGMwMTQ3YmFkYjE3NzRkOGNjOTE4Y2JkNjk0ZTg5ZDdmNWU5NDI2Y2VkMjI1NA%2FaQ0PfLFwagW52%2Fgiphy.gif&ext=gif&_nc_hash=AQD5_uuLUwC2sFcW",
-            })
-          }
+          onClick={() => {
+            onSelectType(
+              {
+                questionType: "image",
+                question:
+                  "https://external-sjc3-1.xx.fbcdn.net/safe_image.php?d=AQDhZS4fRQEcCkEr&url=https%3A%2F%2Fmedia0.giphy.com%2Fmedia%2Fv1.Y2lkPTEyMGMwMTQ3YmFkYjE3NzRkOGNjOTE4Y2JkNjk0ZTg5ZDdmNWU5NDI2Y2VkMjI1NA%2FaQ0PfLFwagW52%2Fgiphy.gif&ext=gif&_nc_hash=AQD5_uuLUwC2sFcW",
+              },
+              true
+            );
+          }}
         >
           I
         </Button>

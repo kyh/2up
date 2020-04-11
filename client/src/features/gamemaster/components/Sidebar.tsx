@@ -69,7 +69,10 @@ export const Sidebar: React.FC<Props> = ({
                       >
                         <div>
                           <div className="instruction">{act.instruction}</div>
-                          <h3 className="question">{act.question}</h3>
+                          <ActQuestion
+                            questionType={act.questionType}
+                            question={act.question}
+                          />
                         </div>
                         <div className="type">{act.questionType}</div>
                       </QuestionItem>
@@ -87,6 +90,18 @@ export const Sidebar: React.FC<Props> = ({
       </SidebarFooter>
     </SidebarContainer>
   );
+};
+
+const ActQuestion: React.FC<{ questionType: string; question: string }> = ({
+  questionType,
+  question,
+}) => {
+  switch (questionType) {
+    case "image":
+      return <img style={{ height: 100 }} src={question} alt="" />;
+    default:
+      return <h3 className="question">{question}</h3>;
+  }
 };
 
 const SidebarContainer = styled.section`
@@ -135,5 +150,6 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     padding: ${({ theme }) => theme.spacings(1)};
     border: 2px solid ${({ theme }) => theme.ui.modal.border};
     border-radius: ${({ theme }) => theme.border.wavyRadius};
+    text-transform: uppercase;
   }
 `;
