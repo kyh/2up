@@ -66,10 +66,8 @@ const MonitorScreen = styled.section`
   position: relative;
   text-align: center;
   background-color: ${({ theme }) => theme.ui.background};
-  width: 100%;
-  height: 100%;
+  min-height: 335px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  overflow: auto;
 `;

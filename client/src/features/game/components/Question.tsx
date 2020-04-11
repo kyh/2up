@@ -151,10 +151,7 @@ const EditableType: React.FC<{
   );
 };
 
-const EditableQuestionContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-
+const EditableQuestionContainer = styled.div`
   input {
     border-radius: ${({ theme }) => theme.border.wavyRadius};
     border: none;
