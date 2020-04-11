@@ -41,6 +41,7 @@ export const lightTheme: DefaultTheme = {
     text: colors.black,
     background: colors.white,
     backgroundGrey: colors.backgroundGrey,
+    backgroundInverse: colors.darkGrey,
     card: {
       border: colors.black,
     },
@@ -66,6 +67,7 @@ export const darkTheme: DefaultTheme = {
     text: colors.white,
     background: colors.black,
     backgroundGrey: colors.darkGrey,
+    backgroundInverse: colors.backgroundGrey,
     card: {
       border: colors.lightGrey,
     },
