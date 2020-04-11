@@ -21,6 +21,7 @@ type Props = StyledComponentProps<
 export const iconMap = {
   setting: raw("./svgs/setting.svg"),
   close: raw("./svgs/close.svg"),
+  pencil: raw("./svgs/pencil.svg"),
 };
 
 export type IconType = keyof typeof iconMap;
