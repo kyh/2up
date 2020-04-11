@@ -40,5 +40,4 @@ export const Content = styled.section`
   justify-content: center;
   align-items: center;
   padding: ${({ theme }) => theme.spacings(5)};
-  overflow: auto;
 `;

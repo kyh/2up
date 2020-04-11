@@ -56,10 +56,10 @@ export const ActPreview: React.FC<Props> = ({ selectedAct, onUpdateAct }) => {
 const Monitor = styled.section`
   background-image: url(${monitor});
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-  padding: 48px 26px 137px;
-  display: flex;
-  justify-content: center;
+  background-size: 100%;
+  padding: 43px 43px 120px;
+  width: 700px;
+  height: 500px;
 `;
 
 const MonitorScreen = styled.section`
@@ -67,9 +67,9 @@ const MonitorScreen = styled.section`
   text-align: center;
   background-color: ${({ theme }) => theme.ui.background};
   width: 100%;
-  max-width: 445px;
-  transform: translateX(-2px);
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  overflow: auto;
 `;
