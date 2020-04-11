@@ -33,6 +33,7 @@ declare module "styled-components" {
       text: string;
       background: string;
       backgroundGrey: string;
+      backgroundInverse: string;
       card: {
         border: string;
       };

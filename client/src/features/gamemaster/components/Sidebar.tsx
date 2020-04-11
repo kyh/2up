@@ -111,6 +111,7 @@ const SidebarContainer = styled.section`
   display: grid;
   grid-template-rows: max-content auto max-content;
   height: 100%;
+  border-right: 1px solid ${({ theme }) => theme.ui.backgroundInverse};
 `;
 
 const SidebarHeader = styled.header``;

@@ -57,9 +57,7 @@ const Monitor = styled.section`
   background-image: url(${monitor});
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  padding: 30px 20px 137px;
-  width: 70%;
-  height: 70%;
+  padding: 48px 26px 137px;
   display: flex;
   justify-content: center;
 `;

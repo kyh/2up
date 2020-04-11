@@ -62,4 +62,5 @@ const QuestionTemplate = styled.div`
   height: 100%;
   border-radius: ${({ theme }) => theme.border.wavyRadius};
   margin-right: ${({ theme }) => theme.spacings(4)};
+  border: 2px solid ${({ theme }) => theme.ui.backgroundInverse};
 `;

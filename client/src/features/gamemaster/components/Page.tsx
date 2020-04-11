@@ -16,7 +16,7 @@ const HeaderContainer = styled.section`
   align-items: center;
   padding: 0 ${({ theme }) => theme.spacings(3)};
   background: ${({ theme }) => theme.ui.background};
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid ${({ theme }) => theme.ui.backgroundInverse};
   .logo {
     height: 35px;
   }
@@ -39,5 +39,6 @@ export const Content = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: ${({ theme }) => theme.spacings(3)};
+  padding: ${({ theme }) => theme.spacings(5)};
+  overflow: auto;
 `;
