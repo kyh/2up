@@ -50,6 +50,7 @@ const QuestionText = styled.h1`
 `;
 
 const QuestionImage = styled.img`
+  object-fit: cover;
   margin: 0 0 ${({ theme }) => theme.spacings(5)};
 `;
 
@@ -182,6 +183,11 @@ const EditableQuestionImageContainer = styled.div`
     left: 50%;
     top: 10px;
     transform: translateX(-50%);
+  }
+
+  img {
+    width: 250px;
+    height: 250px;
   }
 `;
 

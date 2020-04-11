@@ -30,25 +30,27 @@ export const ActPreview: React.FC<Props> = ({ selectedAct, onUpdateAct }) => {
 
   return (
     <Monitor>
-      <MonitorScreen>
-        {!!selectedAct && (
-          <>
-            <EditableQuestion
-              instruction={editableAct.instruction}
-              question={editableAct.question}
-              questionType={editableAct.questionType}
-              onChange={onChange}
-              onSaveChanges={onSaveChanges}
-            />
-            <Answer
-              answer=""
-              answerType={editableAct.answerType}
-              submitted={false}
-              onSubmit={() => {}}
-            />
-          </>
-        )}
-      </MonitorScreen>
+      <MonitorScreenContainer>
+        <MonitorScreen>
+          {!!selectedAct && (
+            <>
+              <EditableQuestion
+                instruction={editableAct.instruction}
+                question={editableAct.question}
+                questionType={editableAct.questionType}
+                onChange={onChange}
+                onSaveChanges={onSaveChanges}
+              />
+              <Answer
+                answer=""
+                answerType={editableAct.answerType}
+                submitted={false}
+                onSubmit={() => {}}
+              />
+            </>
+          )}
+        </MonitorScreen>
+      </MonitorScreenContainer>
     </Monitor>
   );
 };
@@ -62,12 +64,18 @@ const Monitor = styled.section`
   height: 500px;
 `;
 
+const MonitorScreenContainer = styled.section`
+  height: 100%;
+  overflow: auto;
+`;
+
 const MonitorScreen = styled.section`
   position: relative;
   text-align: center;
-  background-color: ${({ theme }) => theme.ui.background};
   min-height: 335px;
+  background-color: ${({ theme }) => theme.ui.background};
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: ${({ theme }) => theme.spacings(5)};
 `;
