@@ -68,8 +68,22 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
     case "image":
       return (
         <EditableQuestionContainer>
-          <EditableQuestionInstructions value={instruction} />
-          <QuestionImage alt={instruction} src={question} />
+          <EditableQuestionInstructions
+            value={instruction}
+            onChange={(e) => onChange({ instruction: e.target.value })}
+            onBlur={onSaveChanges}
+          />
+          <EditableQuestionImageContainer>
+            <EditableType onSelectType={onChange}>
+              <input
+                type="text"
+                value={question}
+                onChange={(e) => onChange({ question: e.target.value })}
+                onBlur={onSaveChanges}
+              />
+            </EditableType>
+            <QuestionImage alt={instruction} src={question} />
+          </EditableQuestionImageContainer>
         </EditableQuestionContainer>
       );
     default:
@@ -80,30 +94,47 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
             onChange={(e) => onChange({ instruction: e.target.value })}
             onBlur={onSaveChanges}
           />
-          <EditableQuestionTextContainer>
+          <EditableType onSelectType={onChange}>
             <EditableQuestionText
               value={question}
               onChange={(e) => onChange({ question: e.target.value })}
               onBlur={onSaveChanges}
             />
-            <div className="button-container">
-              <Button
-                variant="fab"
-                onClick={() => onChange({ questionType: "text" })}
-              >
-                T
-              </Button>
-              <Button
-                variant="fab"
-                onClick={() => onChange({ questionType: "image" })}
-              >
-                I
-              </Button>
-            </div>
-          </EditableQuestionTextContainer>
+          </EditableType>
         </EditableQuestionContainer>
       );
   }
+};
+
+const EditableType: React.FC<{ onSelectType: (_act: any) => void }> = ({
+  onSelectType,
+  children,
+}) => {
+  return (
+    <EditableTypeContainer>
+      {children}
+      <div className="button-container">
+        <Button
+          variant="fab"
+          onClick={() => onSelectType({ questionType: "text" })}
+        >
+          T
+        </Button>
+        <Button
+          variant="fab"
+          onClick={() =>
+            onSelectType({
+              questionType: "image",
+              question:
+                "https://external-sjc3-1.xx.fbcdn.net/safe_image.php?d=AQDhZS4fRQEcCkEr&url=https%3A%2F%2Fmedia0.giphy.com%2Fmedia%2Fv1.Y2lkPTEyMGMwMTQ3YmFkYjE3NzRkOGNjOTE4Y2JkNjk0ZTg5ZDdmNWU5NDI2Y2VkMjI1NA%2FaQ0PfLFwagW52%2Fgiphy.gif&ext=gif&_nc_hash=AQD5_uuLUwC2sFcW",
+            })
+          }
+        >
+          I
+        </Button>
+      </div>
+    </EditableTypeContainer>
+  );
 };
 
 const EditableQuestionContainer = styled.form`
@@ -133,7 +164,17 @@ const EditableQuestionText = styled.input`
   font-size: ${({ theme }) => theme.typography.h2.fontSize};
 `;
 
-const EditableQuestionTextContainer = styled.div`
+const EditableQuestionImageContainer = styled.div`
+  position: relative;
+  input {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+  }
+`;
+
+const EditableTypeContainer = styled.div`
   position: relative;
   input:focus + .button-container {
     display: block;
