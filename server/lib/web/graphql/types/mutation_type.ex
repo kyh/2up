@@ -22,7 +22,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :token, non_null(:string)
       end
 
-      resolve &Accounts.user_create/3
+      resolve(&Accounts.user_create/3)
     end
 
     @desc "Sign in user"
@@ -37,7 +37,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :token, non_null(:string)
       end
 
-      resolve &Accounts.session_create/3
+      resolve(&Accounts.session_create/3)
     end
 
     @desc "Create new live game"
@@ -50,7 +50,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :code, non_null(:string)
       end
 
-      resolve &Live.game_create/3
+      resolve(&Live.game_create/3)
     end
 
     @desc "Get info about live game"
@@ -63,7 +63,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :is_valid, non_null(:boolean)
       end
 
-      resolve &Live.game_validate/3
+      resolve(&Live.game_validate/3)
     end
 
     @desc "Create new pack"
@@ -76,7 +76,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :pack, non_null(:pack)
       end
 
-      resolve &Catalog.pack_create/3
+      resolve(&Catalog.pack_create/3)
     end
 
     @desc "Create new act"
@@ -89,7 +89,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :act, non_null(:act)
       end
 
-      resolve &Catalog.act_create/3
+      resolve(&Catalog.act_create/3)
     end
   end
 end

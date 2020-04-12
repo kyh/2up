@@ -1,28 +1,28 @@
-defmodule Database.Catalog do	
+defmodule Database.Catalog do
   use Database.Context
 
   def random_question do
     query =
       from Question,
-      order_by: fragment("RANDOM()"),
-      limit: 1
+        order_by: fragment("RANDOM()"),
+        limit: 1
 
     Repo.one(query)
   end
 
   def generate_code do
     :io_lib.format("~4..0B", [:rand.uniform(10_000) - 1])
-    |> List.to_string
+    |> List.to_string()
   end
 
   def random_formatted_questions(size) do
     query =
       from Question,
-      order_by: fragment("RANDOM()"),
-      limit: ^size
+        order_by: fragment("RANDOM()"),
+        limit: ^size
 
     Repo.all(query)
-    |> Enum.map(fn x -> 
+    |> Enum.map(fn x ->
       [x.content, x.answer]
     end)
   end
@@ -34,8 +34,9 @@ defmodule Database.Catalog do
   def act_list(%{tag_ids: tag_ids}) do
     query =
       from act in Act,
-      join: act_tag in ActTag, on: act_tag.act_id == act.id,
-      where: act_tag.tag_id in ^tag_ids
+        join: act_tag in ActTag,
+        on: act_tag.act_id == act.id,
+        where: act_tag.tag_id in ^tag_ids
 
     Repo.all(query)
   end
@@ -48,11 +49,11 @@ defmodule Database.Catalog do
   end
 
   def act_create(
-    %User{} = user,
-    %QuestionType{} = question_type,
-    %AnswerType{} = answer_type,
-    attrs
-  ) do
+        %User{} = user,
+        %QuestionType{} = question_type,
+        %AnswerType{} = answer_type,
+        attrs
+      ) do
     %Act{}
     |> Act.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:user, user)

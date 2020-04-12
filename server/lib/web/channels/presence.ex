@@ -68,6 +68,7 @@ defmodule Web.Presence do
   information, while maintaining the required `:metas` field from the
   original presence data.
   """
-  use Phoenix.Presence, otp_app: :playhouse,
-                        pubsub_server: Database.PubSub
+  use Phoenix.Presence,
+    otp_app: :playhouse,
+    pubsub_server: Database.PubSub
 end

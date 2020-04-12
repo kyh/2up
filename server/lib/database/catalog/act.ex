@@ -18,8 +18,8 @@ defmodule Database.Catalog.Act do
 
     act
     |> cast(attrs, required_fields)
-    |> assoc_constraint(:user)	
-    |> assoc_constraint(:question_type)	
-    |> assoc_constraint(:answer_type)	
+    |> assoc_constraint(:user)
+    |> assoc_constraint(:question_type)
+    |> assoc_constraint(:answer_type)
   end
 end

@@ -12,9 +12,11 @@ defmodule Game.GameServer do
   @timeout :timer.hours(1)
 
   def start_link(game_code, questions) do
-    GenServer.start_link(__MODULE__,
-                         {game_code, questions},
-                         name: via_tuple(game_code))
+    GenServer.start_link(
+      __MODULE__,
+      {game_code, questions},
+      name: via_tuple(game_code)
+    )
   end
 
   def game_state(game_code) do
@@ -52,7 +54,7 @@ defmodule Game.GameServer do
   def game_pid(game_code) do
     game_code
     |> via_tuple
-    |> GenServer.whereis
+    |> GenServer.whereis()
   end
 
   def via_tuple(game_code) do
@@ -63,15 +65,16 @@ defmodule Game.GameServer do
     # TODO: Get questions and pack data from DB once we migrate away from Airtable
     questions = Game.QuestionCache.get_questions(pack)
 
-    game = case :ets.lookup(:games_table, game_code) do
-      [] ->
-        game = Game.GamePlay.new(questions, [], pack)
-        :ets.insert(:games_table, {game_code, game})
-        game
+    game =
+      case :ets.lookup(:games_table, game_code) do
+        [] ->
+          game = Game.GamePlay.new(questions, [], pack)
+          :ets.insert(:games_table, {game_code, game})
+          game
 
-      [{^game_code, game}] ->
-        game
-    end
+        [{^game_code, game}] ->
+          game
+      end
 
     Logger.info("Spawned game server process named '#{game_code}'.")
 
@@ -80,6 +83,7 @@ defmodule Game.GameServer do
 
   def get_game_state(game) do
     current_act = Enum.at(game.acts, game.act - 1)
+
     %{
       question: question,
       answer: answer,
@@ -181,6 +185,6 @@ defmodule Game.GameServer do
   end
 
   defp my_game_code do
-    Registry.keys(Game.GameRegistry, self()) |> List.first
+    Registry.keys(Game.GameRegistry, self()) |> List.first()
   end
 end

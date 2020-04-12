@@ -9,6 +9,7 @@ defmodule Web.GraphQL.Resolvers.Live do
     case GameSupervisor.start_game(code, pack) do
       {:ok, _game_pid} ->
         {:ok, %{code: code}}
+
       {:error, _error} ->
         {:error, message: "Server error"}
     end
@@ -18,6 +19,7 @@ defmodule Web.GraphQL.Resolvers.Live do
     case GameServer.game_pid(code) do
       pid when is_pid(pid) ->
         {:ok, %{is_valid: true}}
+
       nil ->
         {:ok, %{is_valid: false}}
     end

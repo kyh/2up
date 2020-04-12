@@ -13,7 +13,7 @@ defmodule Game.GameSupervisor do
 
   def start_game(game_code, questions) do
     child_spec = %{
-      id: GameServer, 
+      id: GameServer,
       start: {GameServer, :start_link, [game_code, questions]},
       restart: :transient
     }
@@ -23,7 +23,7 @@ defmodule Game.GameSupervisor do
 
   def stop_game(game_code) do
     :ets.delete(:games_table, game_code)
-    
+
     child_pid = GameServer.game_pid(game_code)
     DynamicSupervisor.terminate_child(__MODULE__, child_pid)
   end

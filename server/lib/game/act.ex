@@ -5,13 +5,11 @@ defmodule Game.Act do
   """
 
   defstruct question: '',
-    question_type: '',
-    answer: '',
-    answer_type: '',
-    pack: '',
-    instruction: '',
-    submissions: [],
-    endorsements: []
-
-
+            question_type: '',
+            answer: '',
+            answer_type: '',
+            pack: '',
+            instruction: '',
+            submissions: [],
+            endorsements: []
 end

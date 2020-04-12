@@ -3,7 +3,7 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   alias Web.GraphQL.Errors
   alias Absinthe.Relay.Connection
 
-  def pack_list(_, args, _) do 
+  def pack_list(_, args, _) do
     Connection.from_list(Catalog.pack_list(), args)
   end
 
@@ -12,8 +12,7 @@ defmodule Web.GraphQL.Resolvers.Catalog do
       {:error, changeset} ->
         {
           :error,
-          message: "Pack creation failed",
-          details: Errors.error_details(changeset)
+          message: "Pack creation failed", details: Errors.error_details(changeset)
         }
 
       {:ok, pack} ->
@@ -26,8 +25,7 @@ defmodule Web.GraphQL.Resolvers.Catalog do
       {:error, changeset} ->
         {
           :error,
-          message: "Act creation failed",
-          details: Errors.error_details(changeset)
+          message: "Act creation failed", details: Errors.error_details(changeset)
         }
 
       {:ok, act} ->

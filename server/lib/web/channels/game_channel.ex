@@ -16,6 +16,7 @@ defmodule Web.GameChannel do
       pid when is_pid(pid) ->
         send(self(), {:after_join, game_code, payload["name"], payload["isHost"]})
         {:ok, assign(socket, :name, payload["name"])}
+
       nil ->
         {:error, %{reason: "Game does not exist"}}
     end
@@ -27,17 +28,20 @@ defmodule Web.GameChannel do
   def handle_info({:after_join, game_code, name, is_host}, socket) do
     push(socket, "presence_state", Presence.list(socket))
 
-    {:ok, _} = Presence.track(socket, socket.assigns.name, %{
-      name: name,
-      isHost: is_host,
-      score: 0
-    })
+    {:ok, _} =
+      Presence.track(socket, socket.assigns.name, %{
+        name: name,
+        isHost: is_host,
+        score: 0
+      })
 
     game_state =
       case is_host == true do
-        true -> GameServer.game_state(game_code)
+        true ->
+          GameServer.game_state(game_code)
+
         false ->
-          player = %{ id: Ecto.UUID.generate, name: name, score: 0 }
+          player = %{id: Ecto.UUID.generate(), name: name, score: 0}
           GameServer.player_new(game_code, player)
       end
 
@@ -74,6 +78,7 @@ defmodule Web.GameChannel do
         end_game_state = GameServer.game_end(game_code)
 
         {:noreply, socket}
+
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
     end
@@ -90,6 +95,7 @@ defmodule Web.GameChannel do
         game_state = GameServer.scene_next(game_code)
         broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
+
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
     end
@@ -106,6 +112,7 @@ defmodule Web.GameChannel do
         game_state = GameServer.act_next(game_code)
         broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
+
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
     end
@@ -120,7 +127,7 @@ defmodule Web.GameChannel do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         submission = %{
-          id: Ecto.UUID.generate,
+          id: Ecto.UUID.generate(),
           name: name,
           content: submission,
           endorsers: []
@@ -129,6 +136,7 @@ defmodule Web.GameChannel do
         game_state = GameServer.player_submit(game_code, submission, player_count(socket))
         broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
+
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
     end
@@ -142,10 +150,13 @@ defmodule Web.GameChannel do
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        game_state = GameServer.player_endorse(game_code, name, submission_id, player_count(socket))
+        game_state =
+          GameServer.player_endorse(game_code, name, submission_id, player_count(socket))
+
         player_score_update(socket, name, game_state.players)
         broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
+
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
     end
@@ -155,9 +166,10 @@ defmodule Web.GameChannel do
   # done submitting or endorsing
   defp player_count(socket) do
     Presence.list(socket)
-      |> Map.keys
-      |> Enum.filter(fn x -> x !== "" end) # don't include TV
-      |> Enum.count
+    |> Map.keys()
+    # don't include TV
+    |> Enum.filter(fn x -> x !== "" end)
+    |> Enum.count()
   end
 
   # Update player's score based on game state

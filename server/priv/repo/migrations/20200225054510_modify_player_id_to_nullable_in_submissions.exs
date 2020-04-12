@@ -3,6 +3,7 @@ defmodule Database.Repo.Migrations.ModifyPlayerIdToNullableInSubmissions do
 
   def up do
     execute "ALTER TABLE submissions DROP CONSTRAINT submissions_player_id_fkey"
+
     alter table(:submissions) do
       modify :player_id, references(:players), null: true
     end
@@ -10,6 +11,7 @@ defmodule Database.Repo.Migrations.ModifyPlayerIdToNullableInSubmissions do
 
   def down do
     execute "ALTER TABLE submissions DROP CONSTRAINT submissions_player_id_fkey"
+
     alter table(:submissions) do
       modify :player_id, references(:players), null: false
     end

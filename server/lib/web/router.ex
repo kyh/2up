@@ -9,11 +9,9 @@ defmodule Web.Router do
   scope "/" do
     pipe_through :api
 
-    forward "/graphql", Absinthe.Plug,
-      schema: Web.GraphQL.Schema
+    forward "/graphql", Absinthe.Plug, schema: Web.GraphQL.Schema
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL,
-      schema: Web.GraphQL.Schema
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: Web.GraphQL.Schema
 
     get "/", Web.PageController, :index
   end

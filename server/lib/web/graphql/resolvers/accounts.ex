@@ -19,8 +19,7 @@ defmodule Web.GraphQL.Resolvers.Accounts do
       {:error, changeset} ->
         {
           :error,
-          message: "Signup failed",
-          details: Errors.error_details(changeset)
+          message: "Signup failed", details: Errors.error_details(changeset)
         }
 
       {:ok, user} ->

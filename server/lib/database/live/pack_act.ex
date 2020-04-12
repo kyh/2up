@@ -16,6 +16,6 @@ defmodule Database.Live.PackAct do
     pack_act
     |> cast(attrs, required_fields)
     |> assoc_constraint(:pack)
-    |> assoc_constraint(:act)	
+    |> assoc_constraint(:act)
   end
 end
