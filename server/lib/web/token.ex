@@ -6,8 +6,6 @@ defmodule Web.Token do
   end
 
   def verify(token) do
-    Phoenix.Token.verify(Web.Endpoint, @salt, token, [
-      max_age: 90 * 24 * 3600
-    ])
+    Phoenix.Token.verify(Web.Endpoint, @salt, token, max_age: 90 * 24 * 3600)
   end
 end

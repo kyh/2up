@@ -14,6 +14,6 @@ defmodule Database.Live.Play do
     question
     |> cast(attrs, required_fields)
     |> validate_required(required_fields)
-    |> assoc_constraint(:pack)	
+    |> assoc_constraint(:pack)
   end
 end

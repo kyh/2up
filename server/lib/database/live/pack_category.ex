@@ -11,7 +11,7 @@ defmodule Database.Live.PackCategory do
   def changeset(pack_category, attrs) do
     pack_category
     |> cast(attrs, [])
-    |> assoc_constraint(:pack)	
-    |> assoc_constraint(:category)	
+    |> assoc_constraint(:pack)
+    |> assoc_constraint(:category)
   end
 end

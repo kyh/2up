@@ -34,19 +34,21 @@ defmodule Game.QuestionCache do
 
   def get_questions(questions, pack) do
     case pack == "Variety" do
-      true -> 
+      true ->
         questions |> get_random_questions(10)
-      false -> 
+
+      false ->
         Enum.filter(questions, fn x ->
           pack_field = Enum.at(x, 2)
           pack_name = Enum.at(pack_field, 0)
           pack_name == pack
-        end) |> get_random_questions(10)
+        end)
+        |> get_random_questions(10)
     end
   end
 
   def get_random_questions(questions, count) do
-    questions |> Enum.shuffle |> Enum.take(count)
+    questions |> Enum.shuffle() |> Enum.take(count)
   end
 
   def schedule_refresh do
@@ -57,9 +59,11 @@ defmodule Game.QuestionCache do
     Enum.map(records, fn x ->
       fields = x["fields"]
       [fields["Question"], fields["Answer"], fields["Pack"]]
+
       case Map.has_key?(fields, "Answer") do
         true ->
           [fields["Question"], fields["Answer"], fields["Pack"]]
+
         false ->
           [fields["Question"], "", fields["Pack"]]
       end
@@ -78,9 +82,15 @@ defmodule Game.QuestionCache do
     all_questions = []
 
     case offset == nil do
-      true -> []
+      true ->
+        []
+
       false ->
-        url = "https://api.airtable.com/v0/appOUKhim5DD45JMb/Question%20Bank\?api_key\=#{key}\&offset\=#{offset}"
+        url =
+          "https://api.airtable.com/v0/appOUKhim5DD45JMb/Question%20Bank\?api_key\=#{key}\&offset\=#{
+            offset
+          }"
+
         response = HTTPoison.get!(url)
 
         body = Poison.decode!(response.body)
@@ -88,7 +98,9 @@ defmodule Game.QuestionCache do
         new_offset = body["offset"]
 
         case records == nil do
-          true -> all_questions
+          true ->
+            all_questions
+
           false ->
             all_questions = Enum.concat(all_questions, format_records(records))
             Enum.concat(all_questions, load_questions(new_offset))

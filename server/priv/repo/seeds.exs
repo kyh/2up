@@ -17,47 +17,54 @@ alias Database.{
 }
 
 # Create playhouse user
-{_, user} = Accounts.user_create(%{
-  username: "playhouse",
-  email: "hello@playhouse.gg",
-  password: "password"
-})
+{_, user} =
+  Accounts.user_create(%{
+    username: "playhouse",
+    email: "hello@playhouse.gg",
+    password: "password"
+  })
 
 # Create featured category
-{_, featured_category} = Live.category_create(%{
-  name: "Featured"
-})
+{_, featured_category} =
+  Live.category_create(%{
+    name: "Featured"
+  })
 
 # Create packs
-{_, startups_pack} = Live.pack_create(user, %{
-  name: "Startups",
-  is_random: true,
-  length: 10
-})
+{_, startups_pack} =
+  Live.pack_create(user, %{
+    name: "Startups",
+    is_random: true,
+    length: 10
+  })
 
-{_, sat_pack} = Live.pack_create(user, %{
-  name: "SAT",
-  is_random: true,
-  length: 10
-})
+{_, sat_pack} =
+  Live.pack_create(user, %{
+    name: "SAT",
+    is_random: true,
+    length: 10
+  })
 
-{_, color_pack} = Live.pack_create(user, %{
-  name: "Color",
-  is_random: true,
-  length: 10
-})
+{_, color_pack} =
+  Live.pack_create(user, %{
+    name: "Color",
+    is_random: true,
+    length: 10
+  })
 
-{_, drawing_pack} = Live.pack_create(user, %{
-  name: "Drawing",
-  is_random: true,
-  length: 10
-})
- 
-{_, variety_pack} = Live.pack_create(user, %{
-  name: "Variety",
-  is_random: true,
-  length: 10
-})
+{_, drawing_pack} =
+  Live.pack_create(user, %{
+    name: "Drawing",
+    is_random: true,
+    length: 10
+  })
+
+{_, variety_pack} =
+  Live.pack_create(user, %{
+    name: "Variety",
+    is_random: true,
+    length: 10
+  })
 
 # Create pack categories
 Live.pack_category_create(startups_pack, featured_category)
@@ -67,18 +74,18 @@ Live.pack_category_create(drawing_pack, featured_category)
 Live.pack_category_create(variety_pack, featured_category)
 
 # Create tags
-{_, startups_tag} = Live.tag_create(%{ name: "Startups" })
-{_, sat_tag} = Live.tag_create(%{ name: "SAT" })
-{_, color_tag} = Live.tag_create(%{ name: "Color" })
-{_, drawing_tag} = Live.tag_create(%{ name: "Drawing" })
+{_, startups_tag} = Live.tag_create(%{name: "Startups"})
+{_, sat_tag} = Live.tag_create(%{name: "SAT"})
+{_, color_tag} = Live.tag_create(%{name: "Color"})
+{_, drawing_tag} = Live.tag_create(%{name: "Drawing"})
 
 # Create question types
-{_, text_question_type} = Catalog.question_type_create(%{ slug: "text" })
+{_, text_question_type} = Catalog.question_type_create(%{slug: "text"})
 
 # Create answer types
-{_, drawing_answer_type} = Catalog.answer_type_create(%{ slug: "drawing" })
-{_, color_answer_type} = Catalog.answer_type_create(%{ slug: "color" })
-{_, text_answer_type} = Catalog.answer_type_create(%{ slug: "text" })
+{_, drawing_answer_type} = Catalog.answer_type_create(%{slug: "drawing"})
+{_, color_answer_type} = Catalog.answer_type_create(%{slug: "color"})
+{_, text_answer_type} = Catalog.answer_type_create(%{slug: "text"})
 
 # Create acts
 startups_questions = [
@@ -102,13 +109,14 @@ startups_questions = [
   ["Sliced Investing", "Technology to help financial advisors"],
   ["Care Ledger", "Get free medical care"],
   ["Valor Water Analytics", "Transforming your data into improved revenue"]
-];
+]
 
 Enum.each(startups_questions, fn x ->
-  {_, act} = Catalog.act_create(user, text_question_type, text_answer_type, %{
-    question: Enum.at(x, 0),
-    answer: Enum.at(x, 1),
-  })
+  {_, act} =
+    Catalog.act_create(user, text_question_type, text_answer_type, %{
+      question: Enum.at(x, 0),
+      answer: Enum.at(x, 1)
+    })
 
   Catalog.act_tag_create(act, startups_tag)
 end)
@@ -134,13 +142,14 @@ sat_questions = [
   ["anthropology", "study of human beings"],
   ["antipathy", "dislike"],
   ["apaty", "lacking interest"]
-];
+]
 
 Enum.each(sat_questions, fn x ->
-  {_, act} = Catalog.act_create(user, text_question_type, text_answer_type, %{
-    question: Enum.at(x, 0),
-    answer: Enum.at(x, 1),
-  })
+  {_, act} =
+    Catalog.act_create(user, text_question_type, text_answer_type, %{
+      question: Enum.at(x, 0),
+      answer: Enum.at(x, 1)
+    })
 
   Catalog.act_tag_create(act, sat_tag)
 end)
@@ -164,13 +173,14 @@ color_questions = [
   ["#0ABAB5", nil],
   ["#F58426", nil],
   ["#BEC0C2", nil]
-];
+]
 
 Enum.each(color_questions, fn x ->
-  {_, act} = Catalog.act_create(user, text_question_type, color_answer_type, %{
-    question: Enum.at(x, 0),
-    answer: Enum.at(x, 1),
-  })
+  {_, act} =
+    Catalog.act_create(user, text_question_type, color_answer_type, %{
+      question: Enum.at(x, 0),
+      answer: Enum.at(x, 1)
+    })
 
   Catalog.act_tag_create(act, color_tag)
 end)
@@ -194,53 +204,56 @@ drawing_questions = [
   ["Beatles", nil, "Drawing"],
   ["Hotel California", nil, "Drawing"],
   ["Elon Musk", nil, "Drawing"]
-];
+]
 
 Enum.each(drawing_questions, fn x ->
-  {_, act} = Catalog.act_create(user, text_question_type, drawing_answer_type, %{
-    question: Enum.at(x, 0),
-    answer: Enum.at(x, 1),
-  })
+  {_, act} =
+    Catalog.act_create(user, text_question_type, drawing_answer_type, %{
+      question: Enum.at(x, 0),
+      answer: Enum.at(x, 1)
+    })
 
   Catalog.act_tag_create(act, drawing_tag)
 end)
 
 # Create play acts
-startup_acts = Catalog.act_list(%{tag_ids: [startups_tag.id] })
-sat_acts = Catalog.act_list(%{tag_ids: [startups_tag.id] })
-color_acts = Catalog.act_list(%{tag_ids: [startups_tag.id] })
-drawing_acts = Catalog.act_list(%{tag_ids: [startups_tag.id] })
-all_acts = Enum.concat(startup_acts, sat_acts)
+startup_acts = Catalog.act_list(%{tag_ids: [startups_tag.id]})
+sat_acts = Catalog.act_list(%{tag_ids: [startups_tag.id]})
+color_acts = Catalog.act_list(%{tag_ids: [startups_tag.id]})
+drawing_acts = Catalog.act_list(%{tag_ids: [startups_tag.id]})
+
+all_acts =
+  Enum.concat(startup_acts, sat_acts)
   |> Enum.concat(sat_acts)
   |> Enum.concat(color_acts)
   |> Enum.concat(drawing_acts)
 
 startup_acts
-|> Enum.with_index
+|> Enum.with_index()
 |> Enum.each(fn {x, i} ->
   Live.pack_act_create(startups_pack, x, %{order: i + 1})
 end)
 
 sat_acts
-|> Enum.with_index
+|> Enum.with_index()
 |> Enum.each(fn {x, i} ->
   Live.pack_act_create(sat_pack, x, %{order: i + 1})
 end)
 
 color_acts
-|> Enum.with_index
+|> Enum.with_index()
 |> Enum.each(fn {x, i} ->
   Live.pack_act_create(color_pack, x, %{order: i + 1})
 end)
 
 drawing_acts
-|> Enum.with_index
+|> Enum.with_index()
 |> Enum.each(fn {x, i} ->
   Live.pack_act_create(drawing_pack, x, %{order: i + 1})
 end)
 
 all_acts
-|> Enum.with_index
+|> Enum.with_index()
 |> Enum.each(fn {x, i} ->
   Live.pack_act_create(variety_pack, x, %{order: i + 1})
 end)

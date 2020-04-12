@@ -51,3 +51,7 @@ seeds:
 gql-gen:
 	cd client && get-graphql-schema http://localhost:4000/graphql > schema.graphql
 	cd client && npm run relay
+
+format:
+	cd client && npm run format
+	cd server && mix format

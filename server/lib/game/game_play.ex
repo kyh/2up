@@ -9,51 +9,57 @@ defmodule Game.GamePlay do
 
   # TODO: Move out once we migrate off of Airtable
   @pack_map %{
-    "Startups": "Give a one line description of this startup",
-    "SAT": "Give a short definition of this word",
-    "Drawing": "Draw this"
+    Startups: "Give a one line description of this startup",
+    SAT: "Give a short definition of this word",
+    Drawing: "Draw this"
   }
 
   def new(question_sets, player_ids, initial_pack) do
-    players = Enum.map player_ids, fn player_id ->
-      %Player{id: player_id}
-    end
+    players =
+      Enum.map(player_ids, fn player_id ->
+        %Player{id: player_id}
+      end)
 
-    acts = Enum.map question_sets, fn question_set ->
-      question = Enum.at(question_set, 0)
-      answer = Enum.at(question_set, 1)
-      pack = Enum.at(question_set, 2) |> Enum.at(0)
-      instruction = Map.get(@pack_map, String.to_atom(pack))
+    acts =
+      Enum.map(question_sets, fn question_set ->
+        question = Enum.at(question_set, 0)
+        answer = Enum.at(question_set, 1)
+        pack = Enum.at(question_set, 2) |> Enum.at(0)
+        instruction = Map.get(@pack_map, String.to_atom(pack))
 
-      submission = %{
-        id: Ecto.UUID.generate,
-        name: "IS_ANSWER",
-        content: answer,
-        endorsers: []
-      }
+        submission = %{
+          id: Ecto.UUID.generate(),
+          name: "IS_ANSWER",
+          content: answer,
+          endorsers: []
+        }
 
-      answer_type = get_answer_type(pack)
+        answer_type = get_answer_type(pack)
 
-      %Act{
-        question: question,
-        question_type: "text",
-        answer: answer,
-        answer_type: answer_type,
-        pack: pack,
-        instruction: instruction,
-        submissions: [submission]
-      }
-    end
+        %Act{
+          question: question,
+          question_type: "text",
+          answer: answer,
+          answer_type: answer_type,
+          pack: pack,
+          instruction: instruction,
+          submissions: [submission]
+        }
+      end)
 
     case initial_pack do
       "Variety" ->
-        acts = List.replace_at(acts, 1, generate_color_act())
+        acts =
+          List.replace_at(acts, 1, generate_color_act())
           |> List.replace_at(7, generate_color_act())
+
         %GamePlay{acts: acts, players: players, pack: initial_pack}
+
       "Color" ->
         acts = Enum.map(0..9, fn _ -> generate_color_act() end)
         %GamePlay{acts: acts, players: players, pack: initial_pack}
-      _ -> 
+
+      _ ->
         %GamePlay{acts: acts, players: players, pack: initial_pack}
     end
   end
@@ -67,16 +73,20 @@ defmodule Game.GamePlay do
 
   def generate_random_color() do
     letters = "0123456789ABCDEF"
-    color = letters
+
+    color =
+      letters
       |> String.split("", trim: true)
-      |> Enum.shuffle
+      |> Enum.shuffle()
       |> Enum.take(6)
       |> Enum.join("")
+
     "#" <> color
   end
 
   def generate_color_act() do
     random_color = generate_random_color()
+
     %Act{
       question: random_color,
       question_type: "text",
@@ -86,7 +96,7 @@ defmodule Game.GamePlay do
       instruction: "What is the color of this hex?",
       submissions: [
         %{
-          id: Ecto.UUID.generate,
+          id: Ecto.UUID.generate(),
           name: "IS_ANSWER",
           content: random_color,
           endorsers: []
@@ -97,7 +107,7 @@ defmodule Game.GamePlay do
 
   def player_new(game, player) do
     new_players =
-      game.players ++ [player]
+      (game.players ++ [player])
       |> Enum.uniq_by(fn player -> player.name end)
 
     %{game | players: new_players}
@@ -113,16 +123,16 @@ defmodule Game.GamePlay do
 
     new_acts =
       game.acts
-      |> Enum.with_index
-      |> Enum.map(fn {x,i} ->
+      |> Enum.with_index()
+      |> Enum.map(fn {x, i} ->
         case i == current_index do
           true -> updated_act
           false -> x
         end
       end)
 
+    # Extra player count for correct answer submission
     current_scene =
-      # Extra player count for correct answer submission
       case length(new_submissions) >= player_count + 1 do
         true -> game.scene + 1
         false -> game.scene
@@ -181,8 +191,8 @@ defmodule Game.GamePlay do
 
     new_acts =
       updated_game.acts
-      |> Enum.with_index
-      |> Enum.map(fn {x,i} ->
+      |> Enum.with_index()
+      |> Enum.map(fn {x, i} ->
         case i == current_index do
           true -> %{x | submissions: new_submissions}
           false -> x
@@ -191,7 +201,7 @@ defmodule Game.GamePlay do
 
     endorsement_length =
       Enum.map(new_submissions, fn x -> length(x.endorsers) end)
-      |> Enum.sum
+      |> Enum.sum()
 
     current_scene =
       case endorsement_length >= player_count do

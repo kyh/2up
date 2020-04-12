@@ -11,7 +11,7 @@ defmodule Database.Catalog.ActTag do
   def changeset(act_tag, attrs) do
     act_tag
     |> cast(attrs, [])
-    |> assoc_constraint(:act)	
-    |> assoc_constraint(:tag)	
+    |> assoc_constraint(:act)
+    |> assoc_constraint(:tag)
   end
 end
