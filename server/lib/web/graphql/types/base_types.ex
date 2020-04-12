@@ -4,7 +4,7 @@ defmodule Web.GraphQL.Types.BaseTypes do
 
   node interface do
     resolve_type fn
-      %Database.Catalog.Pack{}, _ ->
+      %Database.Live.Pack{}, _ ->
         :pack
     end
   end

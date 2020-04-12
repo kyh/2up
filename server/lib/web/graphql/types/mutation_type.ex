@@ -1,9 +1,12 @@
 defmodule Web.GraphQL.Types.MutationType do
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation, :modern
-  alias Web.GraphQL.Resolvers.Catalog
 
-  alias Web.GraphQL.Resolvers.{Catalog, Accounts, Play}
+  alias Web.GraphQL.Resolvers.{
+    Catalog,
+    Accounts,
+    Live
+  }
 
   object :mutation_type do
     @desc "Create user"
@@ -19,7 +22,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :token, non_null(:string)
       end
 
-      resolve &Accounts.signup/3
+      resolve &Accounts.user_create/3
     end
 
     @desc "Sign in user"
@@ -34,7 +37,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :token, non_null(:string)
       end
 
-      resolve &Accounts.signin/3
+      resolve &Accounts.session_create/3
     end
 
     @desc "Create new live game"
@@ -47,7 +50,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :code, non_null(:string)
       end
 
-      resolve &Play.game_create/3
+      resolve &Live.game_create/3
     end
 
     @desc "Get info about live game"
@@ -60,7 +63,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :is_valid, non_null(:boolean)
       end
 
-      resolve &Play.game_validate/3
+      resolve &Live.game_validate/3
     end
 
     @desc "Create new pack"
@@ -74,6 +77,19 @@ defmodule Web.GraphQL.Types.MutationType do
       end
 
       resolve &Catalog.pack_create/3
+    end
+
+    @desc "Create new act"
+    payload field :act_create do
+      input do
+        field :order, :integer
+      end
+
+      output do
+        field :act, non_null(:act)
+      end
+
+      resolve &Catalog.act_create/3
     end
   end
 end

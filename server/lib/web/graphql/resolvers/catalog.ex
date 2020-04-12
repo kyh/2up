@@ -1,24 +1,10 @@
 defmodule Web.GraphQL.Resolvers.Catalog do
   alias Database.Catalog
+  alias Web.GraphQL.Errors
+  alias Absinthe.Relay.Connection
 
-  def questions(_, _, _) do
-    {:ok, Catalog.list_questions()}
-  end
-
-  def question_types(_, _, _) do
-    {:ok, ["TEXT", "COLOR", "MAP", "MATH", "IMAGE"]}
-  end
-
-  def answer_types(_, _, _) do
-    {:ok, ["TEXT", "COLOR", "MAP", "BUTTON", "MATH"]}
-  end
-
-  def play_list(_, _, _) do
-    {:ok, Catalog.play_list()}
-  end
-
-  def pack_list(_, _, _) do
-    {:ok, Catalog.pack_list()}
+  def pack_list(_, args, _) do 
+    Connection.from_list(Catalog.pack_list(), args)
   end
 
   def pack_create(_, args, %{context: %{current_user: user}}) do
@@ -32,6 +18,20 @@ defmodule Web.GraphQL.Resolvers.Catalog do
 
       {:ok, pack} ->
         {:ok, %{pack: pack}}
+    end
+  end
+
+  def act_create(_, args, %{context: %{current_user: user}}) do
+    case Catalog.act_create(user, args) do
+      {:error, changeset} ->
+        {
+          :error,
+          message: "Act creation failed",
+          details: Errors.error_details(changeset)
+        }
+
+      {:ok, act} ->
+        {:ok, %{act: act}}
     end
   end
 end

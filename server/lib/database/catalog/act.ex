@@ -3,22 +3,23 @@ defmodule Database.Catalog.Act do
 
   schema "acts" do
     belongs_to :user, User
-    many_to_many :questions, Question,
-      join_through: ActQuestion
+    belongs_to :parent, Act
+    belongs_to :question_type, QuestionType
+    belongs_to :answer_type, AnswerType
 
-    field :endorsement_type, :integer
-    field :order, :integer
+    field :question, :string
+    field :answer, :string
 
     timestamps()
   end
 
-  def changeset(question, attrs) do
-    required_fields = [:content]
+  def changeset(act, attrs) do
+    required_fields = [:question]
 
-    question
+    act
     |> cast(attrs, required_fields)
-    |> validate_required(required_fields)
     |> assoc_constraint(:user)	
-    |> assoc_constraint(:pack)	
+    |> assoc_constraint(:question_type)	
+    |> assoc_constraint(:answer_type)	
   end
 end
