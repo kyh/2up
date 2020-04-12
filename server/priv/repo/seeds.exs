@@ -10,31 +10,10 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Database.Repo
-
 alias Database.{
-  Repo,
   Catalog,
   Accounts,
   Live
-}
-
-alias Database.Accounts.User
-
-alias Database.Catalog.{
-  ActTag,
-  Act,
-  AnswerType,
-  QuestionType,
-  Tag
-}
-
-alias Database.Live.{
-  Category,
-  PackAct,
-  PackCategory,
-  Pack,
-  Play
 }
 
 # Create playhouse user
@@ -83,6 +62,7 @@ alias Database.Live.{
 # Create pack categories
 Live.pack_category_create(startups_pack, featured_category)
 Live.pack_category_create(sat_pack, featured_category)
+Live.pack_category_create(color_pack, featured_category)
 Live.pack_category_create(drawing_pack, featured_category)
 Live.pack_category_create(variety_pack, featured_category)
 
@@ -93,7 +73,6 @@ Live.pack_category_create(variety_pack, featured_category)
 {_, drawing_tag} = Live.tag_create(%{ name: "Drawing" })
 
 # Create question types
-{_, image_question_type} = Catalog.question_type_create(%{ slug: "image" })
 {_, text_question_type} = Catalog.question_type_create(%{ slug: "text" })
 
 # Create answer types
@@ -217,7 +196,7 @@ drawing_questions = [
   ["Elon Musk", nil, "Drawing"]
 ];
 
-Enum.each(color_questions, fn x ->
+Enum.each(drawing_questions, fn x ->
   {_, act} = Catalog.act_create(user, text_question_type, drawing_answer_type, %{
     question: Enum.at(x, 0),
     answer: Enum.at(x, 1),
@@ -246,6 +225,12 @@ sat_acts
 |> Enum.with_index
 |> Enum.each(fn {x, i} ->
   Live.pack_act_create(sat_pack, x, %{order: i + 1})
+end)
+
+color_acts
+|> Enum.with_index
+|> Enum.each(fn {x, i} ->
+  Live.pack_act_create(color_pack, x, %{order: i + 1})
 end)
 
 drawing_acts
