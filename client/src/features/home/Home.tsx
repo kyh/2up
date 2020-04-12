@@ -121,7 +121,9 @@ export const Home = () => {
                 value={gameId}
                 onChange={(e) => setgameId(e.target.value)}
               />
-              <Button disabled={isCheckingGame}>Join existing game</Button>
+              <Button type="submit" disabled={isCheckingGame}>
+                Join existing game
+              </Button>
             </InputContainer>
             <HostNewGameText>
               Or{" "}
@@ -137,7 +139,9 @@ export const Home = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <Button disabled={!name}>Start</Button>
+            <Button type="submit" disabled={!name}>
+              Start
+            </Button>
           </InputContainer>
         )}
       </IntroCard>
