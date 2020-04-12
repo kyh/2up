@@ -3,6 +3,22 @@ schema {
   mutation: RootMutationType
 }
 
+type Act implements Node {
+  """
+  The ID of an object
+  """
+  id: ID!
+  order: Int
+}
+
+input ActCreateInput {
+  order: Int
+}
+
+type ActCreatePayload {
+  act: Act!
+}
+
 input GameCreateInput {
   pack: String!
 }
@@ -85,12 +101,12 @@ type PageInfo {
   startCursor: String
 }
 
-type Question {
-  content: String!
-  id: ID!
-}
-
 type RootMutationType {
+  """
+  Create new act
+  """
+  actCreate(input: ActCreateInput!): ActCreatePayload
+
   """
   Get info about live game
   """
@@ -118,11 +134,7 @@ type RootMutationType {
 }
 
 type RootQueryType {
-  answerTypes: [String]
   packs(after: String, before: String, first: Int, last: Int): PackConnection
-  plays: [String]
-  questionTypes: [String]
-  questions: [Question]
 }
 
 input SessionCreateInput {

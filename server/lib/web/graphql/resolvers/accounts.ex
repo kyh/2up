@@ -3,8 +3,8 @@ defmodule Web.GraphQL.Resolvers.Accounts do
 
   alias Web.GraphQL.Errors
 
-  def signin(_, %{username: username, password: password}, _) do
-    case Accounts.authenticate(username, password) do
+  def session_create(_, %{username: username, password: password}, _) do
+    case Accounts.session_create(username, password) do
       :error ->
         {:error, "Invalid username/password combination"}
 
@@ -14,8 +14,8 @@ defmodule Web.GraphQL.Resolvers.Accounts do
     end
   end
 
-  def signup(_, args, _) do
-    case Accounts.create_user(args) do
+  def user_create(_, args, _) do
+    case Accounts.user_create(args) do
       {:error, changeset} ->
         {
           :error,

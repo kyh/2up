@@ -7,7 +7,14 @@ import { PackModalPlaysQuery } from "./__generated__/PackModalPlaysQuery.graphql
 
 const PlaysQuery = graphql`
   query PackModalPlaysQuery {
-    plays
+    packs(first: 5) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
   }
 `;
 
@@ -28,18 +35,19 @@ export const PackModal = ({
       closeButton
     >
       <PackModalBody>
-        {data?.plays?.map((play) => {
-          if (!play) {
+        {data?.packs?.edges?.map((edge) => {
+          const pack = edge?.node;
+          if (!pack) {
             return null;
           }
           return (
             <Button
-              key={play}
+              key={pack.id}
               fullWidth
               disabled={isLoading}
-              onClick={() => onSelectPack(play)}
+              onClick={() => onSelectPack(pack.name)}
             >
-              {play}
+              {pack.name}
             </Button>
           );
         })}

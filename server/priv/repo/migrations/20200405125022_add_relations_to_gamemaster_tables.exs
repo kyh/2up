@@ -3,34 +3,33 @@ defmodule Database.Repo.Migrations.AddRelationsToGamemasterTables do
 
   def change do
     alter table(:plays) do
-      add :user_id, references(:users), null: false
+      add :pack_id, references(:packs), null: false
     end
 
     alter table(:packs) do
       add :user_id, references(:users), null: false
     end
 
-    alter table(:acts) do
-      add :user_id, references(:users), null: false
-    end
-
-    alter table(:play_acts) do
-      add :play_id, references(:plays), null: false
-      add :act_id, references(:acts), null: false
-    end
-
-    alter table(:act_questions) do
-      add :act_id, references(:acts), null: false
-      add :question_id, references(:questions), null: false
-    end
-
-    alter table(:questions) do
+    alter table(:pack_categories) do
       add :pack_id, references(:packs), null: false
-      add :user_id, references(:users), null: false
+      add :category_id, references(:categories), null: false
     end
 
-    alter table(:answers) do
-      add :question_id, references(:questions), null: false
+    alter table(:acts) do
+      add :parent_id, references(:acts)
+      add :user_id, references(:users), null: false
+      add :question_type_id, references(:question_types), null: false
+      add :answer_type_id, references(:answer_types), null: false
+    end
+
+    alter table(:pack_acts) do
+      add :pack_id, references(:packs), null: false
+      add :act_id, references(:acts), null: false
+    end
+
+    alter table(:act_tags) do
+      add :act_id, references(:acts), null: false
+      add :tag_id, references(:tags), null: false
     end
   end
 end

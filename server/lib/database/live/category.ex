@@ -1,20 +1,17 @@
-defmodule Database.Catalog.Pack do
+defmodule Database.Live.Category do
   use Database.Model
 
-  schema "packs" do
-    belongs_to :user, User
-
+  schema "categories" do
     field :name, :string
 
     timestamps()
   end
 
-  def changeset(question, attrs) do
+  def changeset(category, attrs) do
     required_fields = [:name]
 
-    question
+    category
     |> cast(attrs, required_fields)
     |> validate_required(required_fields)
-    |> assoc_constraint(:user)
   end
 end
