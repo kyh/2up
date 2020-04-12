@@ -7,12 +7,13 @@ const calculateSpacing = (n: number): string => {
 };
 
 const colors = {
-  black: "#1A1919",
-  lightGrey: "#F5F5F5",
-  grey: "#DCDCDC",
-  darkGrey: "#7F7F7F",
-  white: "#FFFFFF",
   purple: "#7247C4",
+  white: "#FFFFFF",
+  black: "#1A202C",
+  backgroundGrey: "#EDF2F7",
+  lightGrey: "#CBD5E0",
+  grey: "#718096",
+  darkGrey: "#2D3748",
 };
 
 export const lightTheme: DefaultTheme = {
@@ -39,6 +40,8 @@ export const lightTheme: DefaultTheme = {
   ui: {
     text: colors.black,
     background: colors.white,
+    backgroundGrey: colors.backgroundGrey,
+    backgroundInverse: colors.darkGrey,
     card: {
       border: colors.black,
     },
@@ -63,6 +66,8 @@ export const darkTheme: DefaultTheme = {
   ui: {
     text: colors.white,
     background: colors.black,
+    backgroundGrey: colors.darkGrey,
+    backgroundInverse: colors.backgroundGrey,
     card: {
       border: colors.lightGrey,
     },

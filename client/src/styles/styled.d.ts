@@ -32,6 +32,8 @@ declare module "styled-components" {
     ui: {
       text: string;
       background: string;
+      backgroundGrey: string;
+      backgroundInverse: string;
       card: {
         border: string;
       };

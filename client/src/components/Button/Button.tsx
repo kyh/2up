@@ -34,7 +34,7 @@ export const Button: React.FC<Props> = ({ onClick = () => {}, ...rest }) => {
     }
     onClick();
   };
-  return <StyledButton onClick={onButtonClick} {...rest} />;
+  return <StyledButton type="button" onClick={onButtonClick} {...rest} />;
 };
 
 type StyledProps = {
