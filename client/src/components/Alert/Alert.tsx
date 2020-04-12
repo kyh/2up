@@ -5,7 +5,7 @@ const AlertTemplate = styled.div`
   color: ${({ theme }) => theme.ui.alert.text};
   background: ${({ theme }) => theme.ui.alert.background};
   padding: ${({ theme }) => theme.spacings(3)};
-  border-radius: 30px 2px 30% 3px / 4px 10px 3px 30px;
+  border-radius: ${({ theme }) => theme.border.wavyRadius};
   display: flex;
   align-items: flex-start;
 `;
