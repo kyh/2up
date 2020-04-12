@@ -1,10 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9c54b33ac6244f99f7936295ff73c430 */
+/* @relayHash 59641314c461294f52018fd6ed5e4a84 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type PackModalPlaysQueryVariables = {};
-export type PackModalPlaysQueryResponse = {
+export type PackModalPacksQueryVariables = {};
+export type PackModalPacksQueryResponse = {
     readonly packs: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -14,15 +14,15 @@ export type PackModalPlaysQueryResponse = {
         } | null> | null;
     } | null;
 };
-export type PackModalPlaysQuery = {
-    readonly response: PackModalPlaysQueryResponse;
-    readonly variables: PackModalPlaysQueryVariables;
+export type PackModalPacksQuery = {
+    readonly response: PackModalPacksQueryResponse;
+    readonly variables: PackModalPacksQueryVariables;
 };
 
 
 
 /*
-query PackModalPlaysQuery {
+query PackModalPacksQuery {
   packs(first: 5) {
     edges {
       node {
@@ -94,7 +94,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "PackModalPlaysQuery",
+    "name": "PackModalPacksQuery",
     "type": "RootQueryType",
     "metadata": null,
     "argumentDefinitions": [],
@@ -102,18 +102,18 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "PackModalPlaysQuery",
+    "name": "PackModalPacksQuery",
     "argumentDefinitions": [],
     "selections": (v0/*: any*/)
   },
   "params": {
     "operationKind": "query",
-    "name": "PackModalPlaysQuery",
+    "name": "PackModalPacksQuery",
     "id": null,
-    "text": "query PackModalPlaysQuery {\n  packs(first: 5) {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n",
+    "text": "query PackModalPacksQuery {\n  packs(first: 5) {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b9817dda037020e3bb9209b1efe20caf';
+(node as any).hash = '9fd81a1f606c544ea082883abb7c0e06';
 export default node;
