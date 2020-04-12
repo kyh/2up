@@ -5,13 +5,13 @@ defmodule Database.Accounts do
     Repo.get(User, id)
   end
 
-  def create_user(attrs) do
+  def user_create(attrs) do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
   end
 
-  def authenticate(username, password) do
+  def session_create(username, password) do
     user = Repo.get_by(User, username: username)
 
     with %{password_hash: password_hash} <- user,
