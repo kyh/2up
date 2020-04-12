@@ -76,7 +76,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :pack, non_null(:pack)
       end
 
-      resolve(&Catalog.pack_create/3)
+      resolve(&Live.pack_create/3)
     end
 
     @desc "Create new act"

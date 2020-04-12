@@ -1,36 +1,6 @@
 defmodule Database.Catalog do
   use Database.Context
 
-  def random_question do
-    query =
-      from Question,
-        order_by: fragment("RANDOM()"),
-        limit: 1
-
-    Repo.one(query)
-  end
-
-  def generate_code do
-    :io_lib.format("~4..0B", [:rand.uniform(10_000) - 1])
-    |> List.to_string()
-  end
-
-  def random_formatted_questions(size) do
-    query =
-      from Question,
-        order_by: fragment("RANDOM()"),
-        limit: ^size
-
-    Repo.all(query)
-    |> Enum.map(fn x ->
-      [x.content, x.answer]
-    end)
-  end
-
-  def pack_list() do
-    Repo.all(Pack)
-  end
-
   def act_list(%{tag_ids: tag_ids}) do
     query =
       from act in Act,
