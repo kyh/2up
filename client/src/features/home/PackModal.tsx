@@ -3,10 +3,10 @@ import styled from "styled-components";
 import graphql from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay/hooks";
 import { Button, Modal } from "components";
-import { PackModalPlaysQuery } from "./__generated__/PackModalPlaysQuery.graphql";
+import { PackModalPacksQuery } from "./__generated__/PackModalPacksQuery.graphql";
 
-const PlaysQuery = graphql`
-  query PackModalPlaysQuery {
+const PacksQuery = graphql`
+  query PackModalPacksQuery {
     packs(first: 5) {
       edges {
         node {
@@ -24,7 +24,7 @@ export const PackModal = ({
   setIsPackModalOpen = (_isOpen: boolean) => {},
   onSelectPack = (_pack: string) => {},
 }) => {
-  const data = useLazyLoadQuery<PackModalPlaysQuery>(PlaysQuery, {});
+  const data = useLazyLoadQuery<PackModalPacksQuery>(PacksQuery, {});
 
   return (
     <Modal
