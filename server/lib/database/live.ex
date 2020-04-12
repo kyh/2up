@@ -1,6 +1,15 @@
 defmodule Database.Live do
   use Database.Context
 
+  def pack_list() do
+    Repo.all(Pack)
+  end
+
+  def generate_code do
+    :io_lib.format("~4..0B", [:rand.uniform(10_000) - 1])
+    |> List.to_string()
+  end
+
   def category_create(attrs) do
     %Category{}
     |> Category.changeset(attrs)
