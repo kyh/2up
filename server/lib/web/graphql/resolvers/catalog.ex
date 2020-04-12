@@ -1,5 +1,6 @@
 defmodule Web.GraphQL.Resolvers.Catalog do
   alias Database.Catalog
+  alias Web.GraphQL.Errors
 
   def act_create(_, args, %{context: %{current_user: user}}) do
     # TODO: Need to pass in question and answer type
