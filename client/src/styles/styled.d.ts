@@ -24,13 +24,16 @@ declare module "styled-components" {
       white: string;
       purple: string;
     };
-    border: {
-      wavyRadius: string;
-    };
     space: Array<number>;
     spacings: (spacing: number) => string;
+    border: {
+      color: string;
+      alternateColor: string;
+      wavyRadius: string;
+    };
     ui: {
       text: string;
+      lightText: string;
       background: string;
       backgroundGrey: string;
       backgroundInverse: string;

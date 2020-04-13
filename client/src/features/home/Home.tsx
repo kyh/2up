@@ -7,7 +7,7 @@ import { useAlert } from "react-alert";
 import { useMutation } from "utils/useMutation";
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 import { gameActions, useGame } from "features/game/gameSlice";
-import { Button, Input, Card } from "components";
+import { PageContainer, Button, Input, Card } from "components";
 import { PackModal } from "features/home/PackModal";
 
 import { HomeGameCreateMutation } from "./__generated__/HomeGameCreateMutation.graphql";
@@ -111,51 +111,53 @@ export const Home = () => {
   }
 
   return (
-    <IntroContainer>
-      <img src="/logo/logomark.svg" alt="Playhouse" />
-      <IntroCard>
-        {screen === Screens.join ? (
-          <>
-            <InputContainer onSubmit={onSubmitGameCode}>
+    <PageContainer>
+      <IntroContainer>
+        <img src="/logo/logomark.svg" alt="Playhouse" />
+        <IntroCard>
+          {screen === Screens.join ? (
+            <>
+              <InputContainer onSubmit={onSubmitGameCode}>
+                <Input
+                  type="tel"
+                  placeholder="Game ID"
+                  value={gameId}
+                  onChange={(e) => setgameId(e.target.value)}
+                />
+                <Button type="submit" disabled={isCheckingGame}>
+                  Join existing game
+                </Button>
+              </InputContainer>
+              <HostNewGameText>
+                Or{" "}
+                <button type="button" onClick={onClickHost}>
+                  host your own game
+                </button>
+              </HostNewGameText>
+            </>
+          ) : (
+            <InputContainer onSubmit={onSubmitName}>
               <Input
-                type="tel"
-                placeholder="Game ID"
-                value={gameId}
-                onChange={(e) => setgameId(e.target.value)}
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
-              <Button type="submit" disabled={isCheckingGame}>
-                Join existing game
+              <Button type="submit" disabled={!name}>
+                Start
               </Button>
             </InputContainer>
-            <HostNewGameText>
-              Or{" "}
-              <button type="button" onClick={onClickHost}>
-                host your own game
-              </button>
-            </HostNewGameText>
-          </>
-        ) : (
-          <InputContainer onSubmit={onSubmitName}>
-            <Input
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <Button type="submit" disabled={!name}>
-              Start
-            </Button>
-          </InputContainer>
-        )}
-      </IntroCard>
-      <React.Suspense fallback="">
-        <PackModal
-          isLoading={isCreatingGame}
-          isPackModalOpen={isPackModalOpen}
-          setIsPackModalOpen={setIsPackModalOpen}
-          onSelectPack={onSelectPack}
-        />
-      </React.Suspense>
-    </IntroContainer>
+          )}
+        </IntroCard>
+        <React.Suspense fallback="">
+          <PackModal
+            isLoading={isCreatingGame}
+            isPackModalOpen={isPackModalOpen}
+            setIsPackModalOpen={setIsPackModalOpen}
+            onSelectPack={onSelectPack}
+          />
+        </React.Suspense>
+      </IntroContainer>
+    </PageContainer>
   );
 };
 

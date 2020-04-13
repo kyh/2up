@@ -1,18 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a9b2b8076bb0e29674621f41b2368e1c */
+/* @relayHash 0b9b2424538506672376d5b638238caa */
 
 import { ConcreteRequest } from "relay-runtime";
-export type UserCreateInput = {
-    email: string;
+export type SessionCreateInput = {
     password: string;
     username: string;
 };
-export type UserNewUserCreateMutationVariables = {
-    input: UserCreateInput;
+export type LoginSessionCreateMutationVariables = {
+    input: SessionCreateInput;
 };
-export type UserNewUserCreateMutationResponse = {
-    readonly userCreate: {
+export type LoginSessionCreateMutationResponse = {
+    readonly sessionCreate: {
         readonly user: {
             readonly username: string;
             readonly email: string;
@@ -20,18 +19,18 @@ export type UserNewUserCreateMutationResponse = {
         readonly token: string;
     } | null;
 };
-export type UserNewUserCreateMutation = {
-    readonly response: UserNewUserCreateMutationResponse;
-    readonly variables: UserNewUserCreateMutationVariables;
+export type LoginSessionCreateMutation = {
+    readonly response: LoginSessionCreateMutationResponse;
+    readonly variables: LoginSessionCreateMutationVariables;
 };
 
 
 
 /*
-mutation UserNewUserCreateMutation(
-  $input: UserCreateInput!
+mutation LoginSessionCreateMutation(
+  $input: SessionCreateInput!
 ) {
-  userCreate(input: $input) {
+  sessionCreate(input: $input) {
     user {
       username
       email
@@ -46,7 +45,7 @@ var v0 = [
   {
     "kind": "LocalArgument",
     "name": "input",
-    "type": "UserCreateInput!",
+    "type": "SessionCreateInput!",
     "defaultValue": null
   }
 ],
@@ -54,7 +53,7 @@ v1 = [
   {
     "kind": "LinkedField",
     "alias": null,
-    "name": "userCreate",
+    "name": "sessionCreate",
     "storageKey": null,
     "args": [
       {
@@ -63,7 +62,7 @@ v1 = [
         "variableName": "input"
       }
     ],
-    "concreteType": "UserCreatePayload",
+    "concreteType": "SessionCreatePayload",
     "plural": false,
     "selections": [
       {
@@ -105,7 +104,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "UserNewUserCreateMutation",
+    "name": "LoginSessionCreateMutation",
     "type": "RootMutationType",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -113,18 +112,18 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "UserNewUserCreateMutation",
+    "name": "LoginSessionCreateMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "mutation",
-    "name": "UserNewUserCreateMutation",
+    "name": "LoginSessionCreateMutation",
     "id": null,
-    "text": "mutation UserNewUserCreateMutation(\n  $input: UserCreateInput!\n) {\n  userCreate(input: $input) {\n    user {\n      username\n      email\n    }\n    token\n  }\n}\n",
+    "text": "mutation LoginSessionCreateMutation(\n  $input: SessionCreateInput!\n) {\n  sessionCreate(input: $input) {\n    user {\n      username\n      email\n    }\n    token\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '3dd6567b7aba05064bfa6d491b26616b';
+(node as any).hash = '1b8db449ac1091e4b39b028834b13262';
 export default node;
