@@ -111,7 +111,7 @@ export const Home = () => {
   }
 
   return (
-    <PageContainer align="center">
+    <PageContainer size="large" align="center">
       <IntroContainer>
         <img src="/logo/logomark.svg" alt="Playhouse" />
         <IntroCard>
