@@ -1,5 +1,5 @@
 defmodule Web.Token do
-  @salt "some salt"
+  @salt System.get_env("SALT") || "salt"
 
   def sign(user) do
     Phoenix.Token.sign(Web.Endpoint, @salt, %{id: user.id})
