@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useAlert } from "react-alert";
 import graphql from "babel-plugin-relay/macro";
 
-import { Input } from "components";
+import { PageContainer, Input, Button } from "components";
 import { useMutation } from "utils/useMutation";
 
-import { UserNewUserCreateMutation } from "./__generated__/UserNewUserCreateMutation.graphql";
+import { SignupUserCreateMutation } from "./__generated__/SignupUserCreateMutation.graphql";
 
 const userCreateMutation = graphql`
-  mutation UserNewUserCreateMutation($input: UserCreateInput!) {
+  mutation SignupUserCreateMutation($input: UserCreateInput!) {
     userCreate(input: $input) {
       user {
         username
@@ -19,14 +19,14 @@ const userCreateMutation = graphql`
   }
 `;
 
-export const UserNew = () => {
+export const Signup = () => {
   const alert = useAlert();
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [userCreate, isCreatingUser] = useMutation<UserNewUserCreateMutation>(
+  const [userCreate, isCreatingUser] = useMutation<SignupUserCreateMutation>(
     userCreateMutation
   );
 
@@ -63,7 +63,7 @@ export const UserNew = () => {
   };
 
   return (
-    <div>
+    <PageContainer size="large">
       <h1>Sign up</h1>
       <form onSubmit={handleSubmit}>
         <div>
@@ -88,8 +88,10 @@ export const UserNew = () => {
             />
           </label>
         </div>
-        <Input type="submit" value="Submit" disabled={isCreatingUser} />
+        <Button type="submit" disabled={isCreatingUser}>
+          Sign up
+        </Button>
       </form>
-    </div>
+    </PageContainer>
   );
 };

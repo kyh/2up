@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Box, Button, Icon, Modal } from "components";
 
@@ -7,7 +8,9 @@ export const Header = () => {
   return (
     <HeaderContainer>
       <div className="left">
-        <img className="logo" src="/logo/logomark.svg" alt="Playhouse" />
+        <Link to="/gamemaster">
+          <img className="logo" src="/logo/logomark.svg" alt="Playhouse" />
+        </Link>
       </div>
       <div className="right">
         <div className="more">
@@ -42,7 +45,7 @@ export const Header = () => {
   );
 };
 
-const HeaderContainer = styled.section`
+export const HeaderContainer = styled.header`
   display: flex;
   grid-area: header;
   background: ${({ theme }) => theme.ui.background};

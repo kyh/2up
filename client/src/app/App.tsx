@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { Provider as AlertProvider, transitions, positions } from "react-alert";
 
-import { PageContainer, Navigation, ReactAlertTemplate } from "components";
+import { Navigation, ReactAlertTemplate } from "components";
 
 import { lightTheme, darkTheme } from "styles/theme";
 import { GlobalStyle } from "styles/global";
@@ -12,7 +12,8 @@ import { usePlayhouse } from "features/home/playhouseSlice";
 import { Home } from "features/home/Home";
 import { GameMasterRoutes } from "features/gamemaster/GameMasterRoutes";
 import { GameRoutes } from "features/game/GameRoutes";
-import { Enter } from "features/user/Enter";
+import { Signup } from "features/auth/Signup";
+import { Login } from "features/auth/Login";
 
 const alertOptions = {
   position: positions.TOP_CENTER,
@@ -29,19 +30,20 @@ export const App: React.FC = () => {
         <Navigation />
         <Switch>
           <Route exact path="/">
-            <PageContainer size="large" align="center">
-              <Home />
-            </PageContainer>
+            <Home />
           </Route>
           <Route path="/game/:gameId">
             <GameRoutes />
           </Route>
-          <Route path="/enter">
-            <PageContainer size="large">
-              <Enter />
-            </PageContainer>
+          <Route path="/signup">
+            <Signup />
           </Route>
-          <GameMasterRoutes />
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/gamemaster">
+            <GameMasterRoutes />
+          </Route>
           <Redirect to="/" />
         </Switch>
       </AlertProvider>

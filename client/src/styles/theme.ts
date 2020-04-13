@@ -32,13 +32,16 @@ export const lightTheme: DefaultTheme = {
       lineHeight: "26px",
     },
   },
-  border: {
-    wavyRadius: "30px 2px 30% 3px / 4px 10px 3px 30px",
-  },
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   spacings: memoize(calculateSpacing),
+  border: {
+    color: colors.darkGrey,
+    alternateColor: colors.grey,
+    wavyRadius: "30px 2px 30% 3px / 4px 10px 3px 30px",
+  },
   ui: {
     text: colors.black,
+    lightText: colors.grey,
     background: colors.white,
     backgroundGrey: colors.backgroundGrey,
     backgroundInverse: colors.darkGrey,
@@ -63,8 +66,14 @@ export const lightTheme: DefaultTheme = {
 
 export const darkTheme: DefaultTheme = {
   ...lightTheme,
+  border: {
+    color: colors.lightGrey,
+    alternateColor: colors.grey,
+    wavyRadius: "30px 2px 30% 3px / 4px 10px 3px 30px",
+  },
   ui: {
     text: colors.white,
+    lightText: colors.lightGrey,
     background: colors.black,
     backgroundGrey: colors.darkGrey,
     backgroundInverse: colors.backgroundGrey,

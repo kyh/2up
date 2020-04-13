@@ -156,7 +156,7 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
   .type {
     height: fit-content;
     padding: ${({ theme }) => theme.spacings(1)};
-    border: 2px solid ${({ theme }) => theme.ui.modal.border};
+    border: 2px solid ${({ theme }) => theme.border.color};
     border-radius: ${({ theme }) => theme.border.wavyRadius};
     text-transform: uppercase;
   }

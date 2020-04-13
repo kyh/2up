@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useAlert } from "react-alert";
 import graphql from "babel-plugin-relay/macro";
 
-import { Input } from "components";
+import { PageContainer, Input, Button } from "components";
 import { useMutation } from "utils/useMutation";
 
-import { SessionNewSessionCreateMutation } from "./__generated__/SessionNewSessionCreateMutation.graphql";
+import { LoginSessionCreateMutation } from "./__generated__/LoginSessionCreateMutation.graphql";
 
 const sessionCreateMutation = graphql`
-  mutation SessionNewSessionCreateMutation($input: SessionCreateInput!) {
+  mutation LoginSessionCreateMutation($input: SessionCreateInput!) {
     sessionCreate(input: $input) {
       user {
         username
@@ -19,14 +19,14 @@ const sessionCreateMutation = graphql`
   }
 `;
 
-export const SessionNew = () => {
+export const Login = () => {
   const alert = useAlert();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [sessionCreate, isCreatingSession] = useMutation<
-    SessionNewSessionCreateMutation
+    LoginSessionCreateMutation
   >(sessionCreateMutation);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +58,7 @@ export const SessionNew = () => {
   };
 
   return (
-    <div>
+    <PageContainer size="large">
       <h1>Log in</h1>
       <form onSubmit={handleSubmit}>
         <div>
@@ -77,8 +77,10 @@ export const SessionNew = () => {
             />
           </label>
         </div>
-        <Input type="submit" value="Submit" disabled={isCreatingSession} />
+        <Button type="submit" disabled={isCreatingSession}>
+          Log in
+        </Button>
       </form>
-    </div>
+    </PageContainer>
   );
 };
