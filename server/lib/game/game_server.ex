@@ -62,8 +62,13 @@ defmodule Game.GameServer do
   end
 
   def init({game_code, pack}) do
-    # TODO: Get questions and pack data from DB once we migrate away from Airtable
-    questions = Game.QuestionCache.get_questions(pack)
+    acts = Database.Catalog.question_list(pack)
+
+    questions =
+      Enum.map(acts, fn x ->
+        [x.question, x.answer, [pack]]
+      end)
+      |> Enum.shuffle()
 
     game =
       case :ets.lookup(:games_table, game_code) do

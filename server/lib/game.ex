@@ -4,7 +4,6 @@ defmodule Game do
   def start(_type, _args) do
     children = [
       {Registry, keys: :unique, name: Game.GameRegistry},
-      Game.QuestionCache,
       Game.GameSupervisor
     ]
 

@@ -14,7 +14,7 @@ defmodule Database.Catalog.Act do
   end
 
   def changeset(act, attrs) do
-    required_fields = [:question]
+    required_fields = [:question, :answer]
 
     act
     |> cast(attrs, required_fields)
