@@ -1,8 +1,19 @@
 defmodule Database.Live do
   use Database.Context
 
+  def play_create(%Pack{} = pack, attrs) do
+    %Play{}
+    |> Play.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:pack, pack)
+    |> Repo.insert()
+  end
+
   def pack_list() do
     Repo.all(Pack)
+  end
+
+  def pack_get(name) do
+    Repo.get_by(Pack, name: name)
   end
 
   def generate_code do

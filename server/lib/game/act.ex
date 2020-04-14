@@ -4,6 +4,7 @@ defmodule Game.Act do
   Submission -> Endorsement -> Results
   """
 
+  @derive Jason.Encoder
   defstruct question: '',
             question_type: '',
             answer: '',
