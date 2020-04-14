@@ -8,10 +8,10 @@ defmodule Database.Live.Play do
     timestamps()
   end
 
-  def changeset(question, attrs) do
+  def changeset(play, attrs) do
     required_fields = [:game_state]
 
-    question
+    play
     |> cast(attrs, required_fields)
     |> validate_required(required_fields)
     |> assoc_constraint(:pack)

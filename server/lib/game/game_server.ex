@@ -69,6 +69,7 @@ defmodule Game.GameServer do
         [x.question, x.answer, [pack]]
       end)
       |> Enum.shuffle()
+      |> Enum.take(10)
 
     game =
       case :ets.lookup(:games_table, game_code) do
@@ -114,8 +115,8 @@ defmodule Game.GameServer do
 
   def get_end_game_state(game) do
     %{
-      act: game.act,
-      scene: game.scene,
+      pack: game.pack,
+      acts: game.acts,
       players: game.players
     }
   end

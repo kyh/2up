@@ -2,7 +2,7 @@ defmodule Database.Accounts.User do
   use Database.Model
 
   schema "users" do
-    has_many :plays, Play
+    has_many :packs, Pack
     has_many :acts, Act
 
     field :username, :string
