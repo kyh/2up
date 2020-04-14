@@ -11,6 +11,26 @@ defmodule Database.Catalog do
     Repo.all(query)
   end
 
+  def question_list(tag_name) do
+    tag_query =
+      from act in Act,
+        select: %{question: act.question, answer: act.answer},
+        join: act_tag in ActTag,
+        on: act_tag.act_id == act.id,
+        join: tag in Tag,
+        on: act_tag.tag_id == tag.id,
+        where: tag.name == ^tag_name
+
+    all_query =
+      from act in Act,
+        select: %{question: act.question, answer: act.answer}
+
+    case tag_name do
+      "Variety" -> Repo.all(all_query)
+      _ -> Repo.all(tag_query)
+    end
+  end
+
   def pack_create(%User{} = user, attrs) do
     %Pack{}
     |> Pack.changeset(attrs)
