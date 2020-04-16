@@ -78,8 +78,9 @@ defmodule Web.GameChannel do
       pid when is_pid(pid) ->
         end_game_state = GameServer.game_end(game_code)
         pack = Live.pack_get(end_game_state.pack)
-        Live.play_create(pack, %{ game_state: end_game_state })
+        Live.play_create(pack, %{game_state: end_game_state})
         {:noreply, socket}
+
       nil ->
         {:reply, {:error, %{reason: "Game does not exist"}}, socket}
     end
