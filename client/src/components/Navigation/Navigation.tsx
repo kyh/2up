@@ -1,19 +1,29 @@
 import React, { useState } from "react";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
+import { gameActions } from "features/game/gameSlice";
 
-import { Box } from "reflexbox";
 import { Icon } from "components/Icon/Icon";
 import { Modal } from "components/Modal/Modal";
 import { Button, ButtonLink } from "components/Button/Button";
 
 export const Navigation: React.FC = () => {
+  const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const {
     state: { isMusicOn, isSFXOn, isDarkMode },
     dispatch,
   } = usePlayhouse();
+  const gameMatch = useRouteMatch<{ gameId: string }>("/game/:gameId");
+  const gameMasterMatch = useRouteMatch("/gamemaster");
+
+  const leaveGame = () => {
+    dispatch(gameActions.reset());
+    history.push("/");
+    setIsOpen(false);
+  };
 
   return (
     <StyledNav>
@@ -27,33 +37,69 @@ export const Navigation: React.FC = () => {
         maxWidth={300}
         closeButton
       >
-        <Box mb={2}>
+        {!!gameMatch && (
+          <>
+            <SettingsContainer noBorder>
+              <SettingItem>
+                <span>Game music</span>
+                <Button
+                  fullWidth
+                  onClick={() => dispatch(playhouseActions.toggle_music())}
+                >
+                  {isMusicOn ? "ON" : "OFF"}
+                </Button>
+              </SettingItem>
+              <SettingItem>
+                <span>SFX</span>
+                <Button
+                  fullWidth
+                  onClick={() => dispatch(playhouseActions.toggle_SFX())}
+                >
+                  {isSFXOn ? "ON" : "OFF"}
+                </Button>
+              </SettingItem>
+            </SettingsContainer>
+            <SettingsContainer single>
+              <Button onClick={leaveGame} fullWidth>
+                Leave Game
+              </Button>
+            </SettingsContainer>
+          </>
+        )}
+        {!!gameMasterMatch && (
+          <SettingsContainer single>
+            <Button
+              onClick={() => {
+                history.push("/");
+                setIsOpen(false);
+              }}
+              fullWidth
+            >
+              Host a game
+            </Button>
+          </SettingsContainer>
+        )}
+        {!gameMasterMatch && !gameMatch && (
+          <SettingsContainer single>
+            <Button
+              onClick={() => {
+                history.push("/gamemaster");
+                setIsOpen(false);
+              }}
+              fullWidth
+            >
+              Pack Creator
+            </Button>
+          </SettingsContainer>
+        )}
+        <h3>Profile</h3>
+        <SettingsContainer single>
           <Button
             onClick={() => dispatch(playhouseActions.toggle_dark_mode())}
             fullWidth
           >
             {isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           </Button>
-        </Box>
-        <SettingsContainer>
-          <SettingItem>
-            <span>Game music</span>
-            <Button
-              fullWidth
-              onClick={() => dispatch(playhouseActions.toggle_music())}
-            >
-              {isMusicOn ? "ON" : "OFF"}
-            </Button>
-          </SettingItem>
-          <SettingItem>
-            <span>SFX</span>
-            <Button
-              fullWidth
-              onClick={() => dispatch(playhouseActions.toggle_SFX())}
-            >
-              {isSFXOn ? "ON" : "OFF"}
-            </Button>
-          </SettingItem>
         </SettingsContainer>
         <h3>Contact us</h3>
         <SettingsContainer>
@@ -70,11 +116,11 @@ export const Navigation: React.FC = () => {
           <SettingItem>
             <ButtonLink
               fullWidth
-              href="https://join.slack.com/t/playhouse-gg/shared_invite/zt-cmze8pmv-g7Z1ceutMlfLri2hfwo~5A"
+              href="https://discord.gg/YtafKzR"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Slack
+              Discord
             </ButtonLink>
           </SettingItem>
         </SettingsContainer>
@@ -94,12 +140,14 @@ const StyledNav = styled.nav`
   z-index: 1;
 `;
 
-const SettingsContainer = styled.div`
-  display: grid;
+const SettingsContainer = styled.div<{ single?: boolean; noBorder?: boolean }>`
+  display: ${({ single }) => (single ? "block" : "grid")};
   grid-template-columns: 1fr 1fr;
-  padding-bottom: ${({ theme }) => theme.spacings(2)};
+  padding-bottom: ${({ theme, noBorder }) =>
+    noBorder ? 0 : theme.spacings(2)};
   margin-bottom: ${({ theme }) => theme.spacings(2)};
-  border-bottom: 2px solid ${({ theme }) => theme.colors.black};
+  border-bottom: ${({ theme, noBorder }) =>
+    noBorder ? "none" : `2px solid ${theme.colors.black}`};
   &:last-child {
     border-bottom: none;
   }
