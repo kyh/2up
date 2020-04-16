@@ -24,8 +24,9 @@
 ## Setting up
 
 **Client**: The web client is a React/Redux application bootstrapped with `create-react-app`
+**Server**: Backend server is an Elixir/Pheonix API server
 
-**Server**: Backend server is an Elixir/Pheonix api server
+Make sure you have [Node.js](https://nodejs.org/en/download/), [Elixir](https://elixir-lang.org/install.html), and [Postgres](https://www.postgresql.org/download/) installed on your machine
 
 #### To set up your local instance:
 
