@@ -21,14 +21,19 @@
         ├── /web                 # Channels and routes
 ```
 
-## Setting up
+## Tech Stack
 
 **Client**: The web client is a React/Redux application bootstrapped with `create-react-app`
+
 **Server**: Backend server is an Elixir/Pheonix API server
 
-Make sure you have [Node.js](https://nodejs.org/en/download/), [Elixir](https://elixir-lang.org/install.html), and [Postgres](https://www.postgresql.org/download/) installed on your machine
+## Setting up
 
-#### To set up your local instance:
+Before we start, make sure you have [Node.js](https://nodejs.org/en/download/), [Elixir](https://elixir-lang.org/install.html), and [Postgres](https://www.postgresql.org/download/) installed on your machine
+
+Once installed, copy and paste the `.env.example` to `.env` and update your enviroment keys
+
+Then run:
 
 ```bash
 make setup
