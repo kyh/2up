@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+
 import { Button } from "components";
-import { Act } from "features/gamemaster/types";
+import { Act } from "features/gamemaster/PackEditPage";
 
 type QuestionProps = {
   instruction?: string;
@@ -54,6 +55,9 @@ const QuestionImage = styled.img`
   margin: 0 0 ${({ theme }) => theme.spacings(5)};
 `;
 
+/**
+ * Editable versions of the component above for Gamemaster Pages
+ */
 type EditableQuestionProps = QuestionProps & {
   onChange: (_act: any, _save?: boolean) => void;
   onSaveChanges: () => void;

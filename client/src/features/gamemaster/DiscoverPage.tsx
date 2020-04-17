@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Input } from "components";
 import { HeaderContainer } from "./components/Page";
 
-export const PacksPage = () => {
+export const DiscoverPage = () => {
   return (
     <Page>
       <Header>

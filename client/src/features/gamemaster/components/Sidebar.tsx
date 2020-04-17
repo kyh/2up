@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 import { Button } from "components";
+import { Act } from "features/gamemaster/PackEditPage";
 import { generateUuid } from "utils/stringUtils";
-import { Act } from "../types";
 
 const reorder = (list: any[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
