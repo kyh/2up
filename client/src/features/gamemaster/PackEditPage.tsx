@@ -7,10 +7,11 @@ import { generateUuid } from "utils/stringUtils";
 
 export type Act = {
   id: string;
-  questionType: string;
   instruction: string;
+  questionType: string;
   question: string;
   answerType: string;
+  answer: string;
 };
 
 // fake data generator
@@ -21,6 +22,7 @@ const getItems = (count: number) =>
     instruction: `instruction`,
     question: `question ${k}?`,
     answerType: "TEXT",
+    answer: "",
   }));
 
 export const PackEditPage = () => {

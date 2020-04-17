@@ -2,18 +2,20 @@ import React, { useState, useEffect, createRef } from "react";
 import styled from "styled-components";
 import { ChromePicker } from "react-color";
 import CanvasDraw from "react-canvas-draw";
+
 import { Box, Input, Button } from "components";
+import { Act } from "features/gamemaster/PackEditPage";
 
 type AnswerProps = {
   answer?: string;
   answerType?: string;
   submitted?: boolean;
-  onSubmit: (_value: any) => void;
+  onSubmit?: (_value: any) => void;
 };
 
 export const Answer: React.FC<AnswerProps> = ({
-  answer,
-  answerType,
+  answer = "",
+  answerType = "text",
   submitted = false,
   onSubmit = () => {},
 }) => {
@@ -46,6 +48,7 @@ export const Answer: React.FC<AnswerProps> = ({
           onSubmit={onSubmit}
         />
       );
+    // "text"
     default:
       return (
         <AnswerText answer={answer} submitted={submitted} onSubmit={onSubmit} />
@@ -53,7 +56,11 @@ export const Answer: React.FC<AnswerProps> = ({
   }
 };
 
-const AnswerText: React.FC<AnswerProps> = ({ answer, submitted, onSubmit }) => {
+const AnswerText: React.FC<AnswerProps> = ({
+  answer = "",
+  submitted = false,
+  onSubmit = () => {},
+}) => {
   const [value, setValue] = useState("");
   const [errorValue, setErrorValue] = useState("");
 
@@ -86,9 +93,9 @@ const AnswerText: React.FC<AnswerProps> = ({ answer, submitted, onSubmit }) => {
 };
 
 const EndorseText: React.FC<AnswerProps> = ({
-  answer,
-  submitted,
-  onSubmit,
+  answer = "",
+  submitted = false,
+  onSubmit = () => {},
 }) => {
   return (
     <EndorsementButtons disabled={submitted} onClick={() => onSubmit(answer)}>
@@ -97,7 +104,10 @@ const EndorseText: React.FC<AnswerProps> = ({
   );
 };
 
-const AnswerCanvas: React.FC<AnswerProps> = ({ submitted, onSubmit }) => {
+const AnswerCanvas: React.FC<AnswerProps> = ({
+  submitted = false,
+  onSubmit = () => {},
+}) => {
   const canvas = createRef<CanvasDraw>();
 
   const handleClick = () => {
@@ -124,9 +134,9 @@ const AnswerCanvas: React.FC<AnswerProps> = ({ submitted, onSubmit }) => {
 };
 
 const EndorseCanvas: React.FC<AnswerProps> = ({
-  answer,
-  submitted,
-  onSubmit,
+  answer = "",
+  submitted = false,
+  onSubmit = () => {},
 }) => {
   const canvas = createRef<CanvasDraw>();
 
@@ -147,7 +157,10 @@ const EndorseCanvas: React.FC<AnswerProps> = ({
   );
 };
 
-const AnswerColor: React.FC<AnswerProps> = ({ submitted, onSubmit }) => {
+const AnswerColor: React.FC<AnswerProps> = ({
+  submitted = false,
+  onSubmit = () => {},
+}) => {
   const [color, setColor] = useState("#ffffff");
 
   const handleChange = (c: any) => setColor(c.hex);
@@ -171,9 +184,9 @@ const AnswerColor: React.FC<AnswerProps> = ({ submitted, onSubmit }) => {
 };
 
 const EndorseColor: React.FC<AnswerProps> = ({
-  answer,
-  submitted,
-  onSubmit,
+  answer = "",
+  submitted = false,
+  onSubmit = () => {},
 }) => {
   return (
     <EndorsementButtons disabled={submitted} onClick={() => onSubmit(answer)}>
@@ -204,4 +217,139 @@ const EndorsementButtons = styled(Button)`
   display: block;
   width: 100%;
   text-transform: uppercase;
+`;
+
+/**
+ * Editable versions of the component above for Gamemaster Pages
+ */
+type EditableAnswerProps = AnswerProps & {
+  onChange: (_act: any, _save?: boolean) => void;
+  onSaveChanges: () => void;
+};
+
+export const EditableAnswer: React.FC<EditableAnswerProps> = ({
+  answer,
+  answerType,
+  onChange,
+  onSaveChanges,
+}) => {
+  switch (answerType) {
+    case "drawing":
+      return (
+        <EditableAnswerContainer>
+          <AnswerCanvas submitted />
+        </EditableAnswerContainer>
+      );
+    case "color":
+      return (
+        <EditableAnswerContainer>
+          <AnswerColor submitted />
+        </EditableAnswerContainer>
+      );
+    // "text"
+    default:
+      return (
+        <EditableAnswerContainer>
+          <EditableType onSelectType={onChange}>
+            <Input
+              value={answer}
+              onChange={(e) => onChange({ answer: e.target.value })}
+              onBlur={onSaveChanges}
+            />
+          </EditableType>
+          <Button disabled>Submit answer</Button>
+        </EditableAnswerContainer>
+      );
+  }
+};
+
+const EditableType: React.FC<{
+  onSelectType: (
+    _act: Pick<Act, "answerType" | "answer">,
+    _save: boolean
+  ) => void;
+}> = ({ onSelectType, children }) => {
+  return (
+    <EditableTypeContainer>
+      {children}
+      <div className="button-container">
+        <Button
+          variant="fab"
+          onClick={() => {
+            onSelectType(
+              {
+                answerType: "drawing",
+                answer: "",
+              },
+              true
+            );
+          }}
+        >
+          D
+        </Button>
+        <Button
+          variant="fab"
+          onClick={() => {
+            onSelectType(
+              {
+                answerType: "color",
+                answer: "",
+              },
+              true
+            );
+          }}
+        >
+          C
+        </Button>
+        <Button
+          variant="fab"
+          onClick={() => {
+            onSelectType(
+              {
+                answerType: "text",
+                answer: "",
+              },
+              true
+            );
+          }}
+        >
+          T
+        </Button>
+      </div>
+    </EditableTypeContainer>
+  );
+};
+
+const EditableTypeContainer = styled.div`
+  position: relative;
+  input:focus + .button-container {
+    display: block;
+  }
+
+  .button-container:hover {
+    display: block;
+  }
+
+  .button-container {
+    display: none;
+    position: absolute;
+    top: -35px;
+    left: 16px;
+  }
+
+  button {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+  }
+`;
+
+const EditableAnswerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: ${({ theme }) => theme.border.wavyRadius};
+  border: 2px dotted ${({ theme }) => theme.colors.lightGrey};
+  background: ${({ theme }) => theme.ui.background};
+  padding: ${({ theme }) => theme.spacings(5)};
 `;

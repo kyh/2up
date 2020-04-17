@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { EditableQuestion } from "features/game/components/Question";
-import { Answer } from "features/game/components/Answer";
+import { EditableAnswer } from "features/game/components/Answer";
 import { Act } from "features/gamemaster/PackEditPage";
 
 import monitor from "./monitor.svg";
@@ -43,11 +43,11 @@ export const ActPreview: React.FC<Props> = ({ selectedAct, onUpdateAct }) => {
                 onChange={onChange}
                 onSaveChanges={onSaveChanges}
               />
-              <Answer
-                answer=""
+              <EditableAnswer
+                answer={editableAct.answer}
                 answerType={editableAct.answerType}
-                submitted={false}
-                onSubmit={() => {}}
+                onChange={onChange}
+                onSaveChanges={onSaveChanges}
               />
             </>
           )}
