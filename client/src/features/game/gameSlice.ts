@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useSelector, useDispatch } from "react-redux";
-import { Player } from "features/types";
 import { RootState } from "app/rootReducer";
 
 export type GameState = {
@@ -30,6 +29,12 @@ export type SceneProps = {
   broadcast: (_eventName: string, _payload?: object) => void;
   userId?: string;
   name?: string;
+};
+
+export type Player = {
+  id: string;
+  name: string;
+  score: number;
 };
 
 export const initialState: GameState = {

@@ -3,7 +3,7 @@ import { Flex, Button } from "components";
 import { SceneProps } from "features/game/gameSlice";
 
 export const Scene4Remote = ({ state, broadcast, name }: SceneProps) => {
-  const firstPlayer = state.players[0];
+  const [firstPlayer] = state.players;
   return (
     <div>
       <h2>Question: {state.act} / 10</h2>
@@ -32,10 +32,10 @@ export const Scene4TV = ({ state }: SceneProps) => {
     <div>
       <h2>Question: {state.act} / 10</h2>
       {state.players.map((player) => (
-        <div key={player.id}>
-          <h3>{player.name}</h3>
-          <h4>{player.score}</h4>
-        </div>
+        <Flex key={player.name} justifyContent="space-between" mb={3}>
+          <span>{player.name}</span>
+          <span>{player.score}</span>
+        </Flex>
       ))}
     </div>
   );

@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Sidebar } from "features/gamemaster/components/Sidebar";
+import { Header, Page, Content } from "features/gamemaster/components/Page";
+import { ActPreview } from "features/gamemaster/components/ActPreview";
 import { generateUuid } from "utils/stringUtils";
-import { Sidebar } from "./components/Sidebar";
-import { Header, Page, Content } from "./components/Page";
-import { ActPreview } from "./components/ActPreview";
-import { Act } from "./types";
+
+export type Act = {
+  id: string;
+  questionType: string;
+  instruction: string;
+  question: string;
+  answerType: string;
+};
 
 // fake data generator
 const getItems = (count: number) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
+  Array.from({ length: count }, (_, k) => k).map((k) => ({
     id: generateUuid(),
     questionType: "TEXT",
     instruction: `instruction`,
@@ -16,7 +23,7 @@ const getItems = (count: number) =>
     answerType: "TEXT",
   }));
 
-export const ActPage = () => {
+export const PackEditPage = () => {
   const [acts, setActs] = useState<Act[]>(getItems(10));
   const [selectedAct, setSelectedAct] = useState<Act>(acts[0]);
 
