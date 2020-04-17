@@ -156,6 +156,30 @@ const EditableType: React.FC<{
   );
 };
 
+const EditableTypeContainer = styled.div`
+  position: relative;
+  input:focus + .button-container {
+    display: block;
+  }
+
+  .button-container:hover {
+    display: block;
+  }
+
+  .button-container {
+    display: none;
+    position: absolute;
+    top: -35px;
+    left: 16px;
+  }
+
+  button {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+  }
+`;
+
 const EditableQuestionContainer = styled.div`
   input {
     border-radius: ${({ theme }) => theme.border.wavyRadius};
@@ -192,29 +216,5 @@ const EditableQuestionImageContainer = styled.div`
   img {
     width: 250px;
     height: 250px;
-  }
-`;
-
-const EditableTypeContainer = styled.div`
-  position: relative;
-  input:focus + .button-container {
-    display: block;
-  }
-
-  .button-container:hover {
-    display: block;
-  }
-
-  .button-container {
-    display: none;
-    position: absolute;
-    top: -35px;
-    left: 16px;
-  }
-
-  button {
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
   }
 `;
