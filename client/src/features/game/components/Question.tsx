@@ -87,8 +87,8 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
                 onChange={(e) => onChange({ question: e.target.value })}
                 onBlur={onSaveChanges}
               />
+              <QuestionImage alt={instruction} src={question} />
             </EditableType>
-            <QuestionImage alt={instruction} src={question} />
           </EditableQuestionImageContainer>
         </EditableQuestionContainer>
       );
@@ -158,19 +158,16 @@ const EditableType: React.FC<{
 
 const EditableTypeContainer = styled.div`
   position: relative;
-  input:focus + .button-container {
-    display: block;
-  }
 
-  .button-container:hover {
+  &:hover .button-container {
     display: block;
   }
 
   .button-container {
     display: none;
     position: absolute;
-    top: -35px;
-    left: 16px;
+    top: 5px;
+    left: 5px;
   }
 
   button {

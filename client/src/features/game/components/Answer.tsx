@@ -236,29 +236,29 @@ export const EditableAnswer: React.FC<EditableAnswerProps> = ({
   switch (answerType) {
     case "drawing":
       return (
-        <EditableAnswerContainer>
+        <EditableType onSelectType={onChange}>
           <AnswerCanvas submitted />
-        </EditableAnswerContainer>
+        </EditableType>
       );
     case "color":
       return (
-        <EditableAnswerContainer>
+        <EditableType onSelectType={onChange}>
           <AnswerColor submitted />
-        </EditableAnswerContainer>
+        </EditableType>
       );
     // "text"
     default:
       return (
-        <EditableAnswerContainer>
-          <EditableType onSelectType={onChange}>
+        <EditableType onSelectType={onChange}>
+          <Box mb={2}>
             <Input
               value={answer}
               onChange={(e) => onChange({ answer: e.target.value })}
               onBlur={onSaveChanges}
             />
-          </EditableType>
+          </Box>
           <Button disabled>Submit answer</Button>
-        </EditableAnswerContainer>
+        </EditableType>
       );
   }
 };
@@ -270,7 +270,7 @@ const EditableType: React.FC<{
   ) => void;
 }> = ({ onSelectType, children }) => {
   return (
-    <EditableTypeContainer>
+    <EditableAnswerContainer>
       {children}
       <div className="button-container">
         <Button
@@ -278,14 +278,14 @@ const EditableType: React.FC<{
           onClick={() => {
             onSelectType(
               {
-                answerType: "drawing",
+                answerType: "text",
                 answer: "",
               },
               true
             );
           }}
         >
-          D
+          T
         </Button>
         <Button
           variant="fab"
@@ -306,45 +306,22 @@ const EditableType: React.FC<{
           onClick={() => {
             onSelectType(
               {
-                answerType: "text",
+                answerType: "drawing",
                 answer: "",
               },
               true
             );
           }}
         >
-          T
+          D
         </Button>
       </div>
-    </EditableTypeContainer>
+    </EditableAnswerContainer>
   );
 };
 
-const EditableTypeContainer = styled.div`
-  position: relative;
-  input:focus + .button-container {
-    display: block;
-  }
-
-  .button-container:hover {
-    display: block;
-  }
-
-  .button-container {
-    display: none;
-    position: absolute;
-    top: -35px;
-    left: 16px;
-  }
-
-  button {
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-  }
-`;
-
 const EditableAnswerContainer = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -352,4 +329,21 @@ const EditableAnswerContainer = styled.div`
   border: 2px dotted ${({ theme }) => theme.colors.lightGrey};
   background: ${({ theme }) => theme.ui.background};
   padding: ${({ theme }) => theme.spacings(5)};
+
+  &:hover .button-container {
+    display: block;
+  }
+
+  .button-container {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+    button {
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+    }
+  }
 `;
