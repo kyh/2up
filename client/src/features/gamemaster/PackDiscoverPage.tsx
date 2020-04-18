@@ -28,15 +28,16 @@ const PacksList = () => {
     <>
       {data?.packs?.edges?.map((edge) => {
         const pack = edge?.node;
-        if (!pack) {
-          return null;
-        }
-        const packId = pack.id;
+        if (!pack) return null;
         return (
-          <Link key={packId} to={`/gamemaster/${packId}`} className="pack-item">
+          <Link
+            key={pack.id}
+            to={`/gamemaster/${pack.id}`}
+            className="pack-item"
+          >
             <img
               src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_1_by_1_white-wRqCbD.png?width=320"
-              alt=""
+              alt={pack.name}
             />
             <h4>{pack.name}</h4>
             <p>
