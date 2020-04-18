@@ -1,17 +1,21 @@
 import React from "react";
 import { Route } from "react-router-dom";
 
-import { DiscoverPage } from "features/gamemaster/DiscoverPage";
-import { PackEditPage } from "features/gamemaster/PackEditPage";
+import { PackDiscoverPage } from "features/gamemaster/PackDiscoverPage";
+import { PackDetailsPage } from "features/gamemaster/PackDetailsPage";
+import { PackCreatorPage } from "features/gamemaster/PackCreatorPage";
 
 export const GameMasterRoutes: React.FC = () => {
   return (
     <>
       <Route exact path="/gamemaster">
-        <DiscoverPage />
+        <PackDiscoverPage />
       </Route>
       <Route exact path="/gamemaster/:packId">
-        <PackEditPage />
+        <PackDetailsPage />
+      </Route>
+      <Route exact path="/gamemaster/:packId/edit">
+        <PackCreatorPage />
       </Route>
     </>
   );

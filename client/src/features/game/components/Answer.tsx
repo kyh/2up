@@ -4,7 +4,7 @@ import { ChromePicker } from "react-color";
 import CanvasDraw from "react-canvas-draw";
 
 import { Box, Input, Button } from "components";
-import { Act } from "features/gamemaster/PackEditPage";
+import { Act } from "features/gamemaster/PackCreatorPage";
 
 type AnswerProps = {
   answer?: string;
