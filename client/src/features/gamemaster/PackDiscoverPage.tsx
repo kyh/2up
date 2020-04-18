@@ -1,19 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { Input } from "components";
-import { HeaderContainer } from "./components/Page";
 
-export const DiscoverPage = () => {
+import { Input } from "components";
+
+import { Navigation } from "./components/Navigation";
+
+export const PackDiscoverPage = () => {
   return (
     <Page>
-      <Header>
-        <div className="left">
-          <Link to="/gamemaster">
-            <img className="logo" src="/logo/logomark.svg" alt="Playhouse" />
-          </Link>
-        </div>
-      </Header>
+      <Navigation />
       <Content>
         <SearchBox>
           <h3>Browse all 30+ packs</h3>
@@ -35,7 +31,7 @@ export const DiscoverPage = () => {
                 and more!
               </p>
             </Link>
-            <Link to="/gamemaster/123" className="pack-item">
+            <Link to="/gamemaster/456" className="pack-item">
               <img
                 src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/JoPS_1_by_1__-_light-wujOmY.png?width=320"
                 alt=""
@@ -45,7 +41,7 @@ export const DiscoverPage = () => {
                 A guided tour through our most beautiful and delightful puzzles.
               </p>
             </Link>
-            <Link to="/gamemaster/123" className="pack-item">
+            <Link to="/gamemaster/789" className="pack-item">
               <img
                 src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_II_1_by_1_-_Dark_mode_white-FmrLoX.png?width=320"
                 alt=""
@@ -62,12 +58,6 @@ export const DiscoverPage = () => {
     </Page>
   );
 };
-
-const Header = styled(HeaderContainer)`
-  .left {
-    border-right: none;
-  }
-`;
 
 const Page = styled.section`
   display: grid;

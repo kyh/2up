@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { Button } from "components";
-import { Act } from "features/gamemaster/PackEditPage";
+import { Act } from "features/gamemaster/PackCreatorPage";
 
 type QuestionProps = {
   instruction?: string;
