@@ -1,61 +1,56 @@
 import { useState, useRef, useCallback, useEffect } from "react";
+import { GraphQLTaggedNode } from "react-relay";
 import { useRelayEnvironment } from "react-relay/hooks";
-import { commitMutation } from "react-relay";
-
 import {
-  MutationParameters,
-  GraphQLTaggedNode,
   MutationConfig,
+  MutationParameters,
+  commitMutation,
   Disposable,
 } from "relay-runtime";
 
-type BaseMutationConfig<TMutation extends MutationParameters> = Omit<
-  MutationConfig<TMutation>,
+type CustomMutationConfig<TOperationType extends MutationParameters> = Omit<
+  MutationConfig<TOperationType>,
   "mutation"
 >;
 
-export function useMutation<TMutation extends MutationParameters>(
+export function useMutation<TOperationType extends MutationParameters>(
   mutation: GraphQLTaggedNode
-) {
+): [(config?: CustomMutationConfig<TOperationType>) => void, boolean] {
   const environment = useRelayEnvironment();
   const [isPending, setPending] = useState(false);
-  const requestRef = useRef<null | Disposable>(null);
+  const requestRef = useRef<Disposable | null>(null);
   const mountedRef = useRef(false);
 
   const execute = useCallback(
-    (
-      config: BaseMutationConfig<TMutation> & { mutation?: never } = {
-        variables: {},
-      }
-    ) => {
-      if (requestRef.current != null) {
-        return;
-      }
-      const request = commitMutation<TMutation>(environment, {
+    (config: CustomMutationConfig<TOperationType> = { variables: {} }) => {
+      if (requestRef.current != null) return;
+
+      const request = commitMutation(environment, {
         ...config,
-        onCompleted: (...args) => {
+        mutation,
+        onCompleted: (response, errors) => {
           if (!mountedRef.current) {
             return;
           }
+
           requestRef.current = null;
           setPending(false);
-          config.onCompleted && config.onCompleted(...args);
+          config.onCompleted && config.onCompleted(response, errors);
         },
         onError: (error) => {
           console.error(error);
-          if (!mountedRef.current) {
-            return;
-          }
+          if (!mountedRef.current) return;
+
           requestRef.current = null;
           setPending(false);
           config.onError && config.onError(error);
         },
-        mutation,
       });
+
       requestRef.current = request;
       setPending(true);
     },
-    [mutation, environment]
+    [environment, mutation]
   );
 
   useEffect(() => {
@@ -65,7 +60,5 @@ export function useMutation<TMutation extends MutationParameters>(
     };
   }, []);
 
-  const response: [typeof execute, typeof isPending] = [execute, isPending];
-
-  return response;
+  return [execute, isPending];
 }
