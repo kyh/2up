@@ -25,7 +25,7 @@ const PacksList = () => {
   const data = useLazyLoadQuery<DiscoverPagePacksQuery>(PacksQuery, {});
 
   return (
-    <div className="pack-items">
+    <>
       {data?.packs?.edges?.map((edge) => {
         const pack = edge?.node;
         if (!pack) {
@@ -45,7 +45,7 @@ const PacksList = () => {
           </Link>
         );
       })}
-    </div>
+    </>
   );
 };
 
@@ -75,7 +75,6 @@ export const PackDiscoverPage = () => {
 
 const Page = styled.section`
   display: grid;
-  height: calc((var(--vh, 1vh) * 100));
   background: ${({ theme }) => theme.ui.backgroundGrey};
   grid-template-areas:
     "header  header  header"
@@ -115,12 +114,13 @@ const SearchBox = styled.section`
 
 const PackSection = styled.section`
   .pack-items {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: ${({ theme }) => theme.spacings(5)};
   }
 
   .pack-item {
     max-width: 300px;
-    margin-right: ${({ theme }) => theme.spacings(10)};
     padding: ${({ theme }) => theme.spacings(5)};
     border: 2px solid transparent;
     border-radius: ${({ theme }) => theme.border.wavyRadius};
@@ -130,14 +130,17 @@ const PackSection = styled.section`
     }
 
     img {
+      display: block;
       width: 160px;
       height: 160px;
       object-fit: cover;
-      margin-bottom: ${({ theme }) => theme.spacings(2)};
+      margin: ${({ theme }) => `0 auto ${theme.spacings(2)}`};
     }
+
     h4 {
       margin-bottom: ${({ theme }) => theme.spacings(3)};
     }
+
     p {
       color: ${({ theme }) => theme.ui.lightText};
     }
