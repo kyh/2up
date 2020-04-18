@@ -1,8 +1,52 @@
-import React from "react";
+import React, { Suspense } from "react";
 import styled from "styled-components";
+import graphql from "babel-plugin-relay/macro";
+import { useLazyLoadQuery } from "react-relay/hooks";
 import { Link } from "react-router-dom";
 import { Input } from "components";
 import { HeaderContainer } from "./components/Page";
+import { DiscoverPagePacksQuery } from "./__generated__/DiscoverPagePacksQuery.graphql";
+
+const PacksQuery = graphql`
+  query DiscoverPagePacksQuery {
+    packs(first: 5) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+const PacksList = () => {
+  const data = useLazyLoadQuery<DiscoverPagePacksQuery>(PacksQuery, {});
+
+  return (
+    <div className="pack-items">
+      {data?.packs?.edges?.map((edge) => {
+        const pack = edge?.node;
+        if (!pack) {
+          return null;
+        }
+        const packId = pack.id;
+        return (
+          <Link key={packId} to={`/gamemaster/${packId}`} className="pack-item">
+            <img
+              src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_1_by_1_white-wRqCbD.png?width=320"
+              alt=""
+            />
+            <h4>{pack.name}</h4>
+            <p>
+              A guided tour through our most beautiful and delightful puzzles.
+            </p>
+          </Link>
+        );
+      })}
+    </div>
+  );
+};
 
 export const DiscoverPage = () => {
   return (
@@ -24,38 +68,9 @@ export const DiscoverPage = () => {
         <PackSection>
           <h3>Featured</h3>
           <div className="pack-items">
-            <Link to="/gamemaster/123" className="pack-item">
-              <img
-                src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_1_by_1_white-wRqCbD.png?width=320"
-                alt=""
-              />
-              <h4>Logic</h4>
-              <p>
-                Stretch your analytic muscles with knights, knaves, logic gates,
-                and more!
-              </p>
-            </Link>
-            <Link to="/gamemaster/123" className="pack-item">
-              <img
-                src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/JoPS_1_by_1__-_light-wujOmY.png?width=320"
-                alt=""
-              />
-              <h4>Joy of Problem Solving</h4>
-              <p>
-                A guided tour through our most beautiful and delightful puzzles.
-              </p>
-            </Link>
-            <Link to="/gamemaster/123" className="pack-item">
-              <img
-                src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_II_1_by_1_-_Dark_mode_white-FmrLoX.png?width=320"
-                alt=""
-              />
-              <h4>Logic II</h4>
-              <p>
-                Exercise your rationality and learn the mathematical dialects of
-                logic!
-              </p>
-            </Link>
+            <Suspense fallback="Loading...">
+              <PacksList />
+            </Suspense>
           </div>
         </PackSection>
       </Content>
