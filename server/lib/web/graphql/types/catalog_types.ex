@@ -3,6 +3,9 @@ defmodule Web.GraphQL.Types.CatalogTypes do
   use Absinthe.Relay.Schema.Notation, :modern
 
   node object(:act) do
-    field :order, :integer
+    field :question, non_null(:string)
+    field :answer, :string
   end
+
+  connection(node_type: :act)
 end

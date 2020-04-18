@@ -1,19 +1,59 @@
-import React from "react";
+import React, { Suspense } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { Input } from "components";
-import { HeaderContainer } from "./components/Page";
+import graphql from "babel-plugin-relay/macro";
+import { useLazyLoadQuery } from "react-relay/hooks";
 
-export const DiscoverPage = () => {
+import { Input } from "components";
+import { Navigation } from "./components/Navigation";
+import { DiscoverPagePacksQuery } from "./__generated__/DiscoverPagePacksQuery.graphql";
+
+const PacksQuery = graphql`
+  query DiscoverPagePacksQuery {
+    packs(first: 5) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+const PacksList = () => {
+  const data = useLazyLoadQuery<DiscoverPagePacksQuery>(PacksQuery, {});
+
+  return (
+    <>
+      {data?.packs?.edges?.map((edge) => {
+        const pack = edge?.node;
+        if (!pack) return null;
+        return (
+          <Link
+            key={pack.id}
+            to={`/gamemaster/${pack.id}`}
+            className="pack-item"
+          >
+            <img
+              src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_1_by_1_white-wRqCbD.png?width=320"
+              alt={pack.name}
+            />
+            <h4>{pack.name}</h4>
+            <p>
+              A guided tour through our most beautiful and delightful puzzles.
+            </p>
+          </Link>
+        );
+      })}
+    </>
+  );
+};
+
+export const PackDiscoverPage = () => {
   return (
     <Page>
-      <Header>
-        <div className="left">
-          <Link to="/gamemaster">
-            <img className="logo" src="/logo/logomark.svg" alt="Playhouse" />
-          </Link>
-        </div>
-      </Header>
+      <Navigation />
       <Content>
         <SearchBox>
           <h3>Browse all 30+ packs</h3>
@@ -24,38 +64,9 @@ export const DiscoverPage = () => {
         <PackSection>
           <h3>Featured</h3>
           <div className="pack-items">
-            <Link to="/gamemaster/123" className="pack-item">
-              <img
-                src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_1_by_1_white-wRqCbD.png?width=320"
-                alt=""
-              />
-              <h4>Logic</h4>
-              <p>
-                Stretch your analytic muscles with knights, knaves, logic gates,
-                and more!
-              </p>
-            </Link>
-            <Link to="/gamemaster/123" className="pack-item">
-              <img
-                src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/JoPS_1_by_1__-_light-wujOmY.png?width=320"
-                alt=""
-              />
-              <h4>Joy of Problem Solving</h4>
-              <p>
-                A guided tour through our most beautiful and delightful puzzles.
-              </p>
-            </Link>
-            <Link to="/gamemaster/123" className="pack-item">
-              <img
-                src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_II_1_by_1_-_Dark_mode_white-FmrLoX.png?width=320"
-                alt=""
-              />
-              <h4>Logic II</h4>
-              <p>
-                Exercise your rationality and learn the mathematical dialects of
-                logic!
-              </p>
-            </Link>
+            <Suspense fallback="Loading...">
+              <PacksList />
+            </Suspense>
           </div>
         </PackSection>
       </Content>
@@ -63,15 +74,8 @@ export const DiscoverPage = () => {
   );
 };
 
-const Header = styled(HeaderContainer)`
-  .left {
-    border-right: none;
-  }
-`;
-
 const Page = styled.section`
   display: grid;
-  height: calc((var(--vh, 1vh) * 100));
   background: ${({ theme }) => theme.ui.backgroundGrey};
   grid-template-areas:
     "header  header  header"
@@ -111,12 +115,13 @@ const SearchBox = styled.section`
 
 const PackSection = styled.section`
   .pack-items {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: ${({ theme }) => theme.spacings(5)};
   }
 
   .pack-item {
     max-width: 300px;
-    margin-right: ${({ theme }) => theme.spacings(10)};
     padding: ${({ theme }) => theme.spacings(5)};
     border: 2px solid transparent;
     border-radius: ${({ theme }) => theme.border.wavyRadius};
@@ -126,14 +131,17 @@ const PackSection = styled.section`
     }
 
     img {
+      display: block;
       width: 160px;
       height: 160px;
       object-fit: cover;
-      margin-bottom: ${({ theme }) => theme.spacings(2)};
+      margin: ${({ theme }) => `0 auto ${theme.spacings(2)}`};
     }
+
     h4 {
       margin-bottom: ${({ theme }) => theme.spacings(3)};
     }
+
     p {
       color: ${({ theme }) => theme.ui.lightText};
     }

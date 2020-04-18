@@ -31,6 +31,11 @@ defmodule Web.GraphQL.Resolvers.Live do
     Connection.from_list(Live.pack_list(), args)
   end
 
+  def pack_get_by_id(args, _) do
+    pack = Live.pack_get_by_id(args.id)
+    {:ok, pack}
+  end
+
   def pack_create(_, args, %{context: %{current_user: user}}) do
     case Live.pack_create(user, args) do
       {:error, changeset} ->

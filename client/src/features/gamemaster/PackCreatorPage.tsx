@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+
 import { Sidebar } from "features/gamemaster/components/Sidebar";
-import { Header, Page, Content } from "features/gamemaster/components/Page";
+import { Page, Content } from "features/gamemaster/components/Page";
 import { ActPreview } from "features/gamemaster/components/ActPreview";
 import { generateUuid } from "utils/stringUtils";
+
+import { Navigation } from "./components/Navigation";
 
 export type Act = {
   id: string;
@@ -25,7 +28,7 @@ const getItems = (count: number) =>
     answer: "",
   }));
 
-export const PackEditPage = () => {
+export const PackCreatorPage = () => {
   const [acts, setActs] = useState<Act[]>(getItems(10));
   const [selectedAct, setSelectedAct] = useState<Act>(acts[0]);
 
@@ -41,7 +44,7 @@ export const PackEditPage = () => {
 
   return (
     <Page>
-      <Header />
+      <Navigation />
       <Sidebar
         acts={acts}
         setActs={setActs}
