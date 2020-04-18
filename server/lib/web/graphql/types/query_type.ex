@@ -8,5 +8,10 @@ defmodule Web.GraphQL.Types.QueryType do
     connection field :packs, node_type: :pack do
       resolve(&Live.pack_list/3)
     end
+
+    field :pack, :pack do
+      arg :id, non_null(:id)
+      resolve parsing_node_ids(&Live.pack_get_by_id/2, id: :pack)
+    end
   end
 end
