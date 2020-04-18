@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { EditableQuestion } from "features/game/components/Question";
 import { EditableAnswer } from "features/game/components/Answer";
-import { Act } from "features/gamemaster/PackEditPage";
+import { Act } from "features/gamemaster/PackCreatorPage";
 
 import monitor from "./monitor.svg";
 

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import { Button } from "components";
-import { Act } from "features/gamemaster/PackEditPage";
+import { Act } from "features/gamemaster/PackCreatorPage";
 import { generateUuid } from "utils/stringUtils";
 
 const reorder = (list: any[], startIndex: number, endIndex: number) => {

@@ -16,6 +16,10 @@ defmodule Database.Live do
     Repo.get_by(Pack, name: name)
   end
 
+  def pack_get_by_id(id) do
+    Repo.get_by(Pack, id: 1)
+  end
+
   def generate_code do
     :io_lib.format("~4..0B", [:rand.uniform(10_000) - 1])
     |> List.to_string()
