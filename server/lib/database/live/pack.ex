@@ -4,6 +4,7 @@ defmodule Database.Live.Pack do
   schema "packs" do
     belongs_to :user, User
     many_to_many :categories, Category, join_through: PackCategory
+    many_to_many :acts, Act, join_through: PackAct
 
     field :name, :string
     field :is_random, :boolean
