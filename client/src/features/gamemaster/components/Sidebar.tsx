@@ -67,6 +67,9 @@ export const Sidebar: React.FC<Props> = ({
     <SidebarContainer>
       <SidebarHeader>
         <h3>Questions:</h3>
+        <Button>
+          <Icon icon="list" size="sm" />
+        </Button>
       </SidebarHeader>
       <SidebarContent>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -141,7 +144,21 @@ const SidebarContainer = styled.section`
   border-right: 1px solid ${({ theme }) => theme.ui.backgroundInverse};
 `;
 
-const SidebarHeader = styled.header``;
+const SidebarHeader = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${({ theme }) => theme.spacings(3)};
+
+  h3 {
+    margin: 0;
+  }
+
+  button {
+    padding: ${({ theme }) => theme.spacings(1)};
+    min-width: 0;
+  }
+`;
 
 const SidebarContent = styled.section`
   overflow: auto;
