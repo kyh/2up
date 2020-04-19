@@ -48,16 +48,26 @@ defmodule Database.Catalog do
 
   def act_create(
         %User{} = user,
+        %Pack{} = pack,
         %QuestionType{} = question_type,
         %AnswerType{} = answer_type,
         attrs
       ) do
-    %Act{}
-    |> Act.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:user, user)
-    |> Ecto.Changeset.put_assoc(:question_type, question_type)
-    |> Ecto.Changeset.put_assoc(:answer_type, answer_type)
+    {:ok, act} =
+      %Act{}
+      |> Act.changeset(attrs)
+      |> Ecto.Changeset.put_assoc(:user, user)
+      |> Ecto.Changeset.put_assoc(:question_type, question_type)
+      |> Ecto.Changeset.put_assoc(:answer_type, answer_type)
+      |> Repo.insert()
+
+    %PackAct{}
+    |> PackAct.changeset(%{ order: attrs.order })
+    |> Ecto.Changeset.put_assoc(:pack, pack)
+    |> Ecto.Changeset.put_assoc(:act, act)
     |> Repo.insert()
+
+    {:ok, act}
   end
 
   def act_tag_create(%Act{} = act, %Tag{} = tag) do
