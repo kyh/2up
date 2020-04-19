@@ -11,7 +11,7 @@ config :playhouse,
   ecto_repos: [Database.Repo]
 
 config :cors_plug,
-  origin: ["https://playhouse-client.onrender.com"],
+  origin: [System.get_env("WEB_CLIENT_URL")],
   max_age: 86400,
   methods: ["GET", "POST"]
 

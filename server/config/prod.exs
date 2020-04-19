@@ -15,7 +15,7 @@ config :playhouse, Web.Endpoint,
     host: System.get_env("RENDER_EXTERNAL_HOSTNAME") || "localhost",
     port: 80
   ],
-  check_origin: ["https://playhouse-client.onrender.com"]
+  check_origin: [System.get_env("WEB_CLIENT_URL")]
 
 # Do not print debug messages in production
 config :logger, level: :info
