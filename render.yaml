@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: playhouse-client
+    env: static
+    buildCommand: cd client; yarn; yarn build
+    staticPublishPath: client/build
+    autoDeploy: true
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  - type: web
+    name: playhouse-server
+    env: elixir
+    buildCommand: cd server; ./build.sh
+    startCommand: cd server; _build/prod/rel/playhouse/bin/playhouse start
+    autoDeploy: true
+
+databases:
+  - name: playhouse-db-prod
