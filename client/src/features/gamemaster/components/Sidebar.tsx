@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
 
-import { Button } from "components";
+import { Button, Icon } from "components";
 import { Act } from "features/gamemaster/PackCreatorPage";
 import { generateUuid } from "utils/stringUtils";
 
@@ -27,10 +32,8 @@ export const Sidebar: React.FC<Props> = ({
   selectedAct,
   setSelectedAct,
 }) => {
-  const onDragEnd = (result: any) => {
-    if (!result.destination) {
-      return;
-    }
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
 
     const orderedActs = reorder(
       acts,
@@ -41,7 +44,11 @@ export const Sidebar: React.FC<Props> = ({
     setActs(orderedActs);
   };
 
-  const onSelectAct = (act: Act) => {
+  const deleteAct = (act: Act) => {
+    setActs(acts.filter((a) => a.id !== act.id));
+  };
+
+  const selectAct = (act: Act) => {
     setSelectedAct(act);
   };
 
@@ -73,7 +80,7 @@ export const Sidebar: React.FC<Props> = ({
                         {...provided.dragHandleProps}
                         isSelected={selectedAct?.id === act.id}
                         style={{ ...provided.draggableProps.style }}
-                        onClick={() => onSelectAct(act)}
+                        onClick={() => selectAct(act)}
                       >
                         <div>
                           <div className="instruction">{act.instruction}</div>
@@ -83,6 +90,12 @@ export const Sidebar: React.FC<Props> = ({
                           />
                         </div>
                         <div className="type">{act.questionType}</div>
+                        <button
+                          className="delete"
+                          onClick={() => deleteAct(act)}
+                        >
+                          <Icon icon="trash" />
+                        </button>
                       </QuestionItem>
                     )}
                   </Draggable>
@@ -133,6 +146,7 @@ const SidebarFooter = styled.footer`
 `;
 
 const QuestionItem = styled.div<{ isSelected: boolean }>`
+  position: relative;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -142,6 +156,10 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
   margin-bottom: ${({ theme }) => theme.spacings(3)};
   background-color: ${({ theme, isSelected }) =>
     isSelected ? theme.ui.backgroundGrey : theme.ui.background};
+
+  &:hover .delete {
+    display: block;
+  }
 
   .instruction {
     color: ${({ theme }) => theme.colors.darkGrey};
@@ -160,5 +178,12 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     border: 2px solid ${({ theme }) => theme.border.color};
     border-radius: ${({ theme }) => theme.border.wavyRadius};
     text-transform: uppercase;
+  }
+
+  .delete {
+    display: none;
+    position: absolute;
+    right: ${({ theme }) => theme.spacings(2)};
+    bottom: ${({ theme }) => theme.spacings(2)};
   }
 `;
