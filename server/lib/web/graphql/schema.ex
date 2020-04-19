@@ -22,6 +22,9 @@ defmodule Web.GraphQL.Schema do
     loader =
       Dataloader.new()
       |> Dataloader.add_source(Database.Live.Pack, source)
+      |> Dataloader.add_source(Database.Catalog.Act, source)
+      |> Dataloader.add_source(Database.Catalog.QuestionType, source)
+      |> Dataloader.add_source(Database.Catalog.AnswerType, source)
 
     Map.put(ctx, :loader, loader)
   end

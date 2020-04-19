@@ -4,11 +4,18 @@ schema {
 }
 
 type Act implements Node {
-  """
-  The ID of an object
-  """
+  answer: String
+  answerType: AnswerType!
+
+  """The ID of an object"""
   id: ID!
-  order: Int
+  question: String!
+  questionType: QuestionType!
+}
+
+type ActConnection {
+  edges: [ActEdge]
+  pageInfo: PageInfo!
 }
 
 input ActCreateInput {
@@ -17,6 +24,18 @@ input ActCreateInput {
 
 type ActCreatePayload {
   act: Act!
+}
+
+type ActEdge {
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """The item at the end of the edge"""
+  node: Act
+}
+
+type AnswerType {
+  slug: String!
 }
 
 input GameCreateInput {
@@ -35,20 +54,16 @@ type GamePayload {
   isValid: Boolean!
 }
 
-"""
-An object with an ID
-"""
+"""An object with an ID"""
 interface Node {
-  """
-  The id of the object.
-  """
+  """The id of the object."""
   id: ID!
 }
 
 type Pack implements Node {
-  """
-  The ID of an object
-  """
+  acts(after: String, before: String, first: Int, last: Int): ActConnection
+
+  """The ID of an object"""
   id: ID!
   name: String!
   user: User
@@ -68,72 +83,53 @@ type PackCreatePayload {
 }
 
 type PackEdge {
-  """
-  A cursor for use in pagination
-  """
+  """A cursor for use in pagination"""
   cursor: String!
 
-  """
-  The item at the end of the edge
-  """
+  """The item at the end of the edge"""
   node: Pack
 }
 
 type PageInfo {
-  """
-  When paginating forwards, the cursor to continue.
-  """
+  """When paginating forwards, the cursor to continue."""
   endCursor: String
 
-  """
-  When paginating forwards, are there more items?
-  """
+  """When paginating forwards, are there more items?"""
   hasNextPage: Boolean!
 
-  """
-  When paginating backwards, are there more items?
-  """
+  """When paginating backwards, are there more items?"""
   hasPreviousPage: Boolean!
 
-  """
-  When paginating backwards, the cursor to continue.
-  """
+  """When paginating backwards, the cursor to continue."""
   startCursor: String
 }
 
+type QuestionType {
+  slug: String!
+}
+
 type RootMutationType {
-  """
-  Create new act
-  """
+  """Create new act"""
   actCreate(input: ActCreateInput!): ActCreatePayload
 
-  """
-  Get info about live game
-  """
+  """Get info about live game"""
   game(input: GameInput!): GamePayload
 
-  """
-  Create new live game
-  """
+  """Create new live game"""
   gameCreate(input: GameCreateInput!): GameCreatePayload
 
-  """
-  Create new pack
-  """
+  """Create new pack"""
   packCreate(input: PackCreateInput!): PackCreatePayload
 
-  """
-  Sign in user
-  """
+  """Sign in user"""
   sessionCreate(input: SessionCreateInput!): SessionCreatePayload
 
-  """
-  Create user
-  """
+  """Create user"""
   userCreate(input: UserCreateInput!): UserCreatePayload
 }
 
 type RootQueryType {
+  pack(id: ID!): Pack
   packs(after: String, before: String, first: Int, last: Int): PackConnection
 }
 
@@ -162,3 +158,4 @@ type UserCreatePayload {
   token: String!
   user: User!
 }
+
