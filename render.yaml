@@ -2,7 +2,7 @@ services:
   - type: web
     name: playhouse-client
     env: static
-    buildCommand: cd client; yarn; yarn build
+    buildCommand: cd client; npm i; npm run build
     staticPublishPath: client/build
     autoDeploy: true
     routes:
