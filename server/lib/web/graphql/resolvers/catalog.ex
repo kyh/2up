@@ -2,9 +2,12 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   alias Database.Catalog
   alias Web.GraphQL.Errors
 
-  def act_create(_, args, %{context: %{current_user: user}}) do
-    # TODO: Need to pass in question and answer type
-    case Catalog.act_create(user, nil, nil, args) do
+  def act_create(args, %{context: %{current_user: user}}) do
+    question_type = Database.Repo.get_by(Database.Catalog.QuestionType, id: args.question_type_id)
+    answer_type = Database.Repo.get_by(Database.Catalog.AnswerType, id: args.answer_type_id)
+    pack = Database.Repo.get_by(Database.Live.Pack, id: args.pack_id)
+
+    case Catalog.act_create(user, pack, question_type, answer_type, args) do
       {:error, changeset} ->
         {
           :error,
