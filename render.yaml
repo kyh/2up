@@ -2,7 +2,7 @@ services:
   - type: web
     name: playhouse-client
     env: static
-    buildCommand: cd client; npm i; npm run build
+    buildCommand: cd client && npm i && npm run build
     staticPublishPath: client/build
     autoDeploy: true
     routes:
@@ -13,8 +13,8 @@ services:
   - type: web
     name: playhouse-server
     env: elixir
-    buildCommand: cd server; ./build.sh
-    startCommand: cd server; _build/prod/rel/playhouse/bin/playhouse start
+    buildCommand: cd server && ./build.sh
+    startCommand: cd server && _build/prod/rel/playhouse/bin/playhouse start
     autoDeploy: true
 
 databases:
