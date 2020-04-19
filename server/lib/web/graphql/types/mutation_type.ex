@@ -82,14 +82,19 @@ defmodule Web.GraphQL.Types.MutationType do
     @desc "Create new act"
     payload field :act_create do
       input do
+        field :pack_id, :id
         field :order, :integer
+        field :question_type_id, :id
+        field :answer_type_id, :id
+        field :question, :string
+        field :answer, :string
       end
 
       output do
         field :act, non_null(:act)
       end
 
-      resolve(&Catalog.act_create/3)
+      resolve parsing_node_ids(&Catalog.act_create/2, pack_id: :pack, question_type_id: :question_type, answer_type_id: :answer_type)
     end
   end
 end
