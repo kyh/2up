@@ -31,6 +31,14 @@ defmodule Database.Catalog do
     end
   end
 
+  def question_type_list do
+    Repo.all(QuestionType)
+  end
+
+  def answer_type_list do
+    Repo.all(AnswerType)
+  end
+
   def pack_create(%User{} = user, attrs) do
     %Pack{}
     |> Pack.changeset(attrs)
