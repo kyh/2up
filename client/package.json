@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npm run relay && react-scripts start",
     "build": "npm run relay && react-scripts build",
-    "relay": "npx relay-compiler --schema schema.graphql --language typescript --src ./src/ --watchman false $@",
+    "relay": "relay-compiler --schema schema.graphql --language typescript --src ./src/ --watchman false $@",
     "format": "prettier --write .",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

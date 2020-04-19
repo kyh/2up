@@ -1,10 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 34b3e2bba16813c3dcbf27a5b223fbeb */
+/* @relayHash 5a9ed42802c3e7d13c411560c9e169a7 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type DiscoverPagePacksQueryVariables = {};
-export type DiscoverPagePacksQueryResponse = {
+export type PackDiscoverPageQueryVariables = {};
+export type PackDiscoverPageQueryResponse = {
     readonly packs: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -14,15 +14,15 @@ export type DiscoverPagePacksQueryResponse = {
         } | null> | null;
     } | null;
 };
-export type DiscoverPagePacksQuery = {
-    readonly response: DiscoverPagePacksQueryResponse;
-    readonly variables: DiscoverPagePacksQueryVariables;
+export type PackDiscoverPageQuery = {
+    readonly response: PackDiscoverPageQueryResponse;
+    readonly variables: PackDiscoverPageQueryVariables;
 };
 
 
 
 /*
-query DiscoverPagePacksQuery {
+query PackDiscoverPageQuery {
   packs(first: 5) {
     edges {
       node {
@@ -94,7 +94,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "DiscoverPagePacksQuery",
+    "name": "PackDiscoverPageQuery",
     "type": "RootQueryType",
     "metadata": null,
     "argumentDefinitions": [],
@@ -102,18 +102,18 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "DiscoverPagePacksQuery",
+    "name": "PackDiscoverPageQuery",
     "argumentDefinitions": [],
     "selections": (v0/*: any*/)
   },
   "params": {
     "operationKind": "query",
-    "name": "DiscoverPagePacksQuery",
+    "name": "PackDiscoverPageQuery",
     "id": null,
-    "text": "query DiscoverPagePacksQuery {\n  packs(first: 5) {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n",
+    "text": "query PackDiscoverPageQuery {\n  packs(first: 5) {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '7632fbeb68d37a983e835d09c35078c9';
+(node as any).hash = 'a4552026bc1342372c5213312619a12a';
 export default node;

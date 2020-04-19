@@ -6,10 +6,10 @@ import { useLazyLoadQuery } from "react-relay/hooks";
 
 import { Input } from "components";
 import { Navigation } from "./components/Navigation";
-import { DiscoverPagePacksQuery } from "./__generated__/DiscoverPagePacksQuery.graphql";
+import { PackDiscoverPageQuery } from "./__generated__/PackDiscoverPageQuery.graphql";
 
 const PacksQuery = graphql`
-  query DiscoverPagePacksQuery {
+  query PackDiscoverPageQuery {
     packs(first: 5) {
       edges {
         node {
@@ -22,7 +22,7 @@ const PacksQuery = graphql`
 `;
 
 const PacksList = () => {
-  const data = useLazyLoadQuery<DiscoverPagePacksQuery>(PacksQuery, {});
+  const data = useLazyLoadQuery<PackDiscoverPageQuery>(PacksQuery, {});
 
   return (
     <>
