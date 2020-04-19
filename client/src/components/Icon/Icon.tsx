@@ -24,6 +24,7 @@ export const iconMap = {
   pencil: raw("./svgs/pencil.svg"),
   play: raw("./svgs/play.svg"),
   trash: raw("./svgs/trash.svg"),
+  list: raw("./svgs/list.svg"),
 };
 
 export type IconType = keyof typeof iconMap;
