@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 80efae8c701647b39e8ad9b1ba7190c1 */
+/* @relayHash c17bd897b93861264817e1d928bd3b1b */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ActCreateInput = {
@@ -13,7 +13,6 @@ export type ActNewActCreateMutationResponse = {
     readonly actCreate: {
         readonly act: {
             readonly id: string;
-            readonly order: number | null;
         };
     } | null;
 };
@@ -31,7 +30,6 @@ mutation ActNewActCreateMutation(
   actCreate(input: $input) {
     act {
       id
-      order
     }
   }
 }
@@ -77,13 +75,6 @@ v1 = [
             "name": "id",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "order",
-            "args": null,
-            "storageKey": null
           }
         ]
       }
@@ -110,10 +101,10 @@ return {
     "operationKind": "mutation",
     "name": "ActNewActCreateMutation",
     "id": null,
-    "text": "mutation ActNewActCreateMutation(\n  $input: ActCreateInput!\n) {\n  actCreate(input: $input) {\n    act {\n      id\n      order\n    }\n  }\n}\n",
+    "text": "mutation ActNewActCreateMutation(\n  $input: ActCreateInput!\n) {\n  actCreate(input: $input) {\n    act {\n      id\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '3c5a960677466f40cf5d2863369cf891';
+(node as any).hash = 'a410c01ea69cf953c601b940ff3a9426';
 export default node;

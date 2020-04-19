@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useAlert } from "react-alert";
 import graphql from "babel-plugin-relay/macro";
-import { useLazyLoadQuery } from "react-relay/hooks";
 import { Box, Input } from "components";
 import { useMutation } from "utils/useMutation";
 
@@ -12,7 +11,6 @@ const actCreateMutation = graphql`
     actCreate(input: $input) {
       act {
         id
-        order
       }
     }
   }
