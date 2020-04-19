@@ -16,6 +16,3 @@ services:
     buildCommand: cd server && ./build.sh
     startCommand: cd server && _build/prod/rel/playhouse/bin/playhouse start
     autoDeploy: true
-
-databases:
-  - name: playhouse-db-prod
