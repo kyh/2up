@@ -23,7 +23,7 @@ export const iconMap = {
   close: raw("./svgs/close.svg"),
   pencil: raw("./svgs/pencil.svg"),
   play: raw("./svgs/play.svg"),
-  trash: raw("./svgs/close.svg"),
+  trash: raw("./svgs/trash.svg"),
 };
 
 export type IconType = keyof typeof iconMap;

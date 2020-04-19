@@ -45,7 +45,12 @@ export const Sidebar: React.FC<Props> = ({
   };
 
   const deleteAct = (act: Act) => {
-    setActs(acts.filter((a) => a.id !== act.id));
+    if (acts.length > 1) {
+      setActs(acts.filter((a) => a.id !== act.id));
+      if (selectedAct.id === act.id) {
+        setSelectedAct(acts[0]);
+      }
+    }
   };
 
   const selectAct = (act: Act) => {
@@ -80,16 +85,17 @@ export const Sidebar: React.FC<Props> = ({
                         {...provided.dragHandleProps}
                         isSelected={selectedAct?.id === act.id}
                         style={{ ...provided.draggableProps.style }}
-                        onClick={() => selectAct(act)}
                       >
-                        <div>
+                        <div className="left" onClick={() => selectAct(act)}>
                           <div className="instruction">{act.instruction}</div>
                           <ActQuestion
                             questionType={act.questionType}
                             question={act.question}
                           />
                         </div>
-                        <div className="type">{act.questionType}</div>
+                        <div className="right" onClick={() => selectAct(act)}>
+                          <div className="type">{act.questionType}</div>
+                        </div>
                         <button
                           className="delete"
                           onClick={() => deleteAct(act)}
@@ -150,7 +156,6 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: ${({ theme }) => theme.spacings(3)};
   border: 2px dotted ${({ theme }) => theme.colors.lightGrey};
   border-radius: ${({ theme }) => theme.border.wavyRadius};
   margin-bottom: ${({ theme }) => theme.spacings(3)};
@@ -159,6 +164,15 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
 
   &:hover .delete {
     display: block;
+  }
+
+  .left {
+    width: 100%;
+    padding: ${({ theme }) => theme.spacings(3)};
+  }
+
+  .right {
+    padding: ${({ theme }) => theme.spacings(3)};
   }
 
   .instruction {
