@@ -10,8 +10,12 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :playhouse, Web.Endpoint,
-  url: [scheme: "https", host: System.get_env("RENDER_EXTERNAL_HOSTNAME") || "localhost", port: 80],
-  check_origin: ["https://playhouse.gg", System.get_env("WEB_CLIENT_URL")]
+  url: [
+    scheme: "https",
+    host: System.get_env("RENDER_EXTERNAL_HOSTNAME") || "localhost",
+    port: 80
+  ],
+  check_origin: [System.get_env("WEB_CLIENT_URL")]
 
 # Do not print debug messages in production
 config :logger, level: :info
