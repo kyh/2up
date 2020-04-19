@@ -81,6 +81,7 @@ Live.pack_category_create(variety_pack, featured_category)
 
 # Create question types
 {_, text_question_type} = Catalog.question_type_create(%{slug: "text"})
+{_, _} = Catalog.question_type_create(%{slug: "image"})
 
 # Create answer types
 {_, drawing_answer_type} = Catalog.answer_type_create(%{slug: "drawing"})

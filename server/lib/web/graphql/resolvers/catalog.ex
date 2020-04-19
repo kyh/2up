@@ -15,4 +15,12 @@ defmodule Web.GraphQL.Resolvers.Catalog do
         {:ok, %{act: act}}
     end
   end
+
+  def question_type_list(_, _, _) do
+    {:ok, Catalog.question_type_list()}
+  end
+
+  def answer_type_list(_, _, _) do
+    {:ok, Catalog.answer_type_list()}
+  end
 end

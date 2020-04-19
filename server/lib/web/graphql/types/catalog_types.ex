@@ -18,11 +18,11 @@ defmodule Web.GraphQL.Types.CatalogTypes do
 
   connection(node_type: :act)
 
-  object(:question_type) do
+  node object(:question_type) do
     field :slug, non_null(:string)
   end
 
-  object(:answer_type) do
+  node object(:answer_type) do
     field :slug, non_null(:string)
   end
 end
