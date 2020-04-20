@@ -10,8 +10,12 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :playhouse, Web.Endpoint,
-  url: [scheme: "https", host: "https://api.playhouse.gg", port: 80],
-  check_origin: ["https://playhouse.gg"]
+  url: [
+    scheme: "https",
+    host: System.get_env("RENDER_EXTERNAL_HOSTNAME") || "localhost",
+    port: 80
+  ],
+  check_origin: [System.get_env("WEB_CLIENT_URL")]
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -52,18 +56,10 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
-import_config "prod.secret.exs"
-
-config :playhouse, Web.Endpoint,
-  # Possibly not needed, but doesn't hurt
-  http: [port: {:system, "PORT"}],
-  url: [host: System.get_env("APP_NAME") <> ".gigalixirapp.com", port: 80],
-  secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
-  server: true
+# import_config "prod.secret.exs"
 
 config :playhouse, Database.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   ssl: true,
-  # Free tier db only allows 4 connections. Rolling deploys need pool_size*(n+1) connections where n is the number of app replicas.
-  pool_size: 2
+  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "2")

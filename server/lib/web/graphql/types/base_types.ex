@@ -6,6 +6,7 @@ defmodule Web.GraphQL.Types.BaseTypes do
     resolve_type(fn
       %Database.Live.Pack{}, _ ->
         :pack
+
       %Database.Catalog.Act{}, _ ->
         :act
     end)
