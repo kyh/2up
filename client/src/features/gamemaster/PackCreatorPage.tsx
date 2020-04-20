@@ -1,52 +1,78 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 
 import { Sidebar } from "features/gamemaster/components/Sidebar";
 import { ActPreview } from "features/gamemaster/components/ActPreview";
-import { generateUuid } from "utils/stringUtils";
+import { useLazyLoadQuery } from "react-relay/hooks";
 
+import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery.graphql";
 import { Navigation } from "./components/Navigation";
+
+import graphql from "babel-plugin-relay/macro";
+const PackQuery = graphql`
+  query PackCreatorPagePackQuery($id: ID!) {
+    pack(id: $id) {
+      id
+      name
+      acts(first: 100) @connection(key: "PackCreatorPage_acts", filters: []) {
+        edges {
+          node {
+            id
+            answer
+            question
+            questionType {
+              slug
+            }
+            answerType {
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 export type Act = {
   id: string;
-  instruction: string;
-  questionType: string;
+  instruction?: string;
+  questionType: {
+    slug: string;
+  };
   question: string;
-  answerType: string;
-  answer: string;
+  answerType: {
+    slug: string;
+  };
+  answer: string | null;
 };
 
-// fake data generator
-const getItems = (count: number) =>
-  Array.from({ length: count }, (_, k) => k).map((k) => ({
-    id: generateUuid(),
-    questionType: "TEXT",
-    instruction: `instruction`,
-    question: `question ${k}?`,
-    answerType: "TEXT",
-    answer: "",
-  }));
-
 export const PackCreatorPage = () => {
-  const [acts, setActs] = useState<Act[]>(getItems(10));
-  const [selectedAct, setSelectedAct] = useState<Act>(acts[0]);
+  const { packId } = useParams();
+
+  const [selectedAct, setSelectedAct] = useState<Act | undefined>(undefined);
+
+  const data = useLazyLoadQuery<PackCreatorPagePackQuery>(PackQuery, {
+    id: packId || "",
+  });
+  const newActs: Array<Act> = [];
+  data?.pack?.acts?.edges?.forEach((edge) => {
+    const node = edge?.node;
+    if (node) {
+      newActs.push(node);
+    }
+  });
 
   const onUpdateAct = (act: Act) => {
-    setSelectedAct(act);
-    setActs(
-      acts.map((a) => {
-        if (a.id === act.id) return act;
-        return a;
-      })
-    );
+    // setSelectedAct(act.id);
   };
 
   return (
     <Page>
       <Navigation />
       <Sidebar
-        acts={acts}
-        setActs={setActs}
+        packId={packId || ""}
+        acts={newActs}
         selectedAct={selectedAct}
         setSelectedAct={setSelectedAct}
       />

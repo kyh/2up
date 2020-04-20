@@ -8,8 +8,13 @@ import {
 } from "react-beautiful-dnd";
 
 import { Button, Icon } from "components";
+import { useAlert } from "react-alert";
 import { Act } from "features/gamemaster/PackCreatorPage";
-import { generateUuid } from "utils/stringUtils";
+
+import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation.graphql";
+import graphql from "babel-plugin-relay/macro";
+import { useMutation } from "utils/useMutation";
+import { ConnectionHandler } from "relay-runtime";
 
 const reorder = (list: any[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
@@ -21,17 +26,42 @@ const reorder = (list: any[], startIndex: number, endIndex: number) => {
 
 type Props = {
   acts: Act[];
-  setActs: (_acts: Act[]) => void;
-  selectedAct: Act;
-  setSelectedAct: (_act: Act) => void;
+  packId: string;
+  selectedAct?: Act;
+  setSelectedAct(act: Act): void;
 };
 
+const actCreateMutation = graphql`
+  mutation SidebarActCreateMutation($input: ActCreateInput!) {
+    actCreate(input: $input) {
+      act {
+        id
+        question
+        answer
+        questionType {
+          id
+          slug
+        }
+        answerType {
+          id
+          slug
+        }
+      }
+    }
+  }
+`;
+
 export const Sidebar: React.FC<Props> = ({
+  packId,
   acts,
-  setActs,
   selectedAct,
   setSelectedAct,
 }) => {
+  const alert = useAlert();
+  const [actCreate, isCreatingAct] = useMutation<SidebarActCreateMutation>(
+    actCreateMutation
+  );
+
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
@@ -41,15 +71,15 @@ export const Sidebar: React.FC<Props> = ({
       result.destination.index
     );
 
-    setActs(orderedActs);
+    // setActs(orderedActs);
   };
 
   const deleteAct = (act: Act) => {
     if (acts.length > 1) {
-      setActs(acts.filter((a) => a.id !== act.id));
-      if (selectedAct.id === act.id) {
-        setSelectedAct(acts[0]);
-      }
+      // setActs(acts.filter((a) => a.id !== act.id));
+      // if (selectedAct.id === act.id) {
+      //   setSelectedAct(acts[0]);
+      // }
     }
   };
 
@@ -58,9 +88,47 @@ export const Sidebar: React.FC<Props> = ({
   };
 
   const addNewAct = () => {
-    const newAct = { ...selectedAct, id: generateUuid() };
-    setActs([...acts, newAct]);
-    setSelectedAct(newAct);
+    actCreate({
+      variables: {
+        input: {
+          packId,
+          order: acts.length + 1,
+          question: "hi",
+          answer: "hey",
+          questionTypeId: "UXVlc3Rpb25UeXBlOjE=",
+          answerTypeId: "QW5zd2VyVHlwZToz",
+        },
+      },
+      updater: (store) => {
+        const payload = store.getRootField("actCreate");
+        const act = payload?.getLinkedRecord("act");
+        const pack = store.get(packId);
+
+        if (pack) {
+          const acts = ConnectionHandler.getConnection(
+            pack,
+            "PackCreatorPage_acts"
+          );
+
+          if (acts) {
+            const edge = ConnectionHandler.createEdge(
+              store,
+              acts,
+              act,
+              "ActEdge"
+            );
+
+            ConnectionHandler.insertEdgeAfter(acts, edge);
+          }
+        }
+      },
+      onCompleted: (data) => {
+        console.log("data", data);
+      },
+      onError: (error: Error) => {
+        alert.show(error.message);
+      },
+    });
   };
 
   return (
@@ -92,12 +160,12 @@ export const Sidebar: React.FC<Props> = ({
                         <div className="left" onClick={() => selectAct(act)}>
                           <div className="instruction">{act.instruction}</div>
                           <ActQuestion
-                            questionType={act.questionType}
+                            questionType={act.questionType.slug}
                             question={act.question}
                           />
                         </div>
                         <div className="right" onClick={() => selectAct(act)}>
-                          <div className="type">{act.questionType}</div>
+                          <div className="type">{act.questionType.slug}</div>
                         </div>
                         <button
                           className="delete"

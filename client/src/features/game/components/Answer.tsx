@@ -278,7 +278,7 @@ const EditableType: React.FC<{
           onClick={() => {
             onSelectType(
               {
-                answerType: "text",
+                answerType: { slug: "text" },
                 answer: "",
               },
               true
@@ -292,7 +292,7 @@ const EditableType: React.FC<{
           onClick={() => {
             onSelectType(
               {
-                answerType: "color",
+                answerType: { slug: "color" },
                 answer: "",
               },
               true
@@ -306,7 +306,7 @@ const EditableType: React.FC<{
           onClick={() => {
             onSelectType(
               {
-                answerType: "drawing",
+                answerType: { slug: "drawing" },
                 answer: "",
               },
               true

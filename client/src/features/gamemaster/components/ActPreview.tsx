@@ -8,7 +8,7 @@ import { Act } from "features/gamemaster/PackCreatorPage";
 import monitor from "./monitor.svg";
 
 type Props = {
-  selectedAct: Act;
+  selectedAct?: Act;
   onUpdateAct: (_act: Act) => void;
 };
 
@@ -27,7 +27,9 @@ export const ActPreview: React.FC<Props> = ({ selectedAct, onUpdateAct }) => {
 
   const onSaveChanges = (newAct = {}) => {
     console.log("save changes", { ...editableAct, ...newAct });
-    onUpdateAct({ ...editableAct, ...newAct });
+    if (editableAct) {
+      onUpdateAct({ ...editableAct, ...newAct });
+    }
   };
 
   return (
@@ -37,15 +39,15 @@ export const ActPreview: React.FC<Props> = ({ selectedAct, onUpdateAct }) => {
           {!!selectedAct && (
             <>
               <EditableQuestion
-                instruction={editableAct.instruction}
-                question={editableAct.question}
-                questionType={editableAct.questionType}
+                instruction={editableAct?.instruction}
+                question={editableAct?.question}
+                questionType={editableAct?.questionType.slug}
                 onChange={onChange}
                 onSaveChanges={onSaveChanges}
               />
               <EditableAnswer
-                answer={editableAct.answer}
-                answerType={editableAct.answerType}
+                answer={editableAct?.answer || ""}
+                answerType={editableAct?.answerType.slug}
                 onChange={onChange}
                 onSaveChanges={onSaveChanges}
               />

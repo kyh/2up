@@ -127,7 +127,7 @@ const EditableType: React.FC<{
           onClick={() => {
             onSelectType(
               {
-                questionType: "text",
+                questionType: { slug: "text" },
                 question: "Hello in there?",
               },
               true
@@ -141,7 +141,7 @@ const EditableType: React.FC<{
           onClick={() => {
             onSelectType(
               {
-                questionType: "image",
+                questionType: { slug: "image" },
                 question:
                   "https://external-sjc3-1.xx.fbcdn.net/safe_image.php?d=AQDhZS4fRQEcCkEr&url=https%3A%2F%2Fmedia0.giphy.com%2Fmedia%2Fv1.Y2lkPTEyMGMwMTQ3YmFkYjE3NzRkOGNjOTE4Y2JkNjk0ZTg5ZDdmNWU5NDI2Y2VkMjI1NA%2FaQ0PfLFwagW52%2Fgiphy.gif&ext=gif&_nc_hash=AQD5_uuLUwC2sFcW",
               },
