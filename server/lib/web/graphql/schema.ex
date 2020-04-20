@@ -20,7 +20,7 @@ defmodule Web.GraphQL.Schema do
     source = Dataloader.Ecto.new(Database.Repo)
 
     loader =
-      Dataloader.new
+      Dataloader.new()
       |> Dataloader.add_source(Database.Live.Pack, source)
 
     Map.put(ctx, :loader, loader)

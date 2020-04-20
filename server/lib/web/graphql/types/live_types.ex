@@ -13,14 +13,14 @@ defmodule Web.GraphQL.Types.LiveTypes do
     field :user, :user
 
     connection field :acts, node_type: :act do
-      resolve fn parent, args, %{context: %{loader: loader}} ->
+      resolve(fn parent, args, %{context: %{loader: loader}} ->
         loader
-          |> Dataloader.load(Pack, :acts, parent)
-          |> on_load(fn loader ->
-            Dataloader.get(loader, Pack, :acts, parent)
-            |> Connection.from_list(args)
-          end)
-      end
+        |> Dataloader.load(Pack, :acts, parent)
+        |> on_load(fn loader ->
+          Dataloader.get(loader, Pack, :acts, parent)
+          |> Connection.from_list(args)
+        end)
+      end)
     end
   end
 
