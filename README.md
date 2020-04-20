@@ -25,7 +25,11 @@
 
 **Client**: The web client is a React/Redux application bootstrapped with `create-react-app`
 
+**Data Transport**: We use GraphQL Relay as our frontend data store, GraphQL (Dashboard) and Websocket (Game) for data transport
+
 **Server**: Backend server is an Elixir/Pheonix API server
+
+**Database**: Everything is stored in a Postgres database
 
 ## Setting up
 
@@ -53,4 +57,4 @@ make react
 
 ## Deployment
 
-Any code merged into master will autodeploy with Netlify
+Any code merged into master will autodeploy with (Render)[https://render.com/]
