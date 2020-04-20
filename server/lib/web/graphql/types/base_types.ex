@@ -9,8 +9,10 @@ defmodule Web.GraphQL.Types.BaseTypes do
 
       %Database.Catalog.Act{}, _ ->
         :act
+
       %Database.Catalog.QuestionType{}, _ ->
         :question_type
+
       %Database.Catalog.AnswerType{}, _ ->
         :answer_type
     end)

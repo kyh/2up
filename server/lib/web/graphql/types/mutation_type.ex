@@ -94,7 +94,13 @@ defmodule Web.GraphQL.Types.MutationType do
         field :act, non_null(:act)
       end
 
-      resolve parsing_node_ids(&Catalog.act_create/2, pack_id: :pack, question_type_id: :question_type, answer_type_id: :answer_type)
+      resolve(
+        parsing_node_ids(&Catalog.act_create/2,
+          pack_id: :pack,
+          question_type_id: :question_type,
+          answer_type_id: :answer_type
+        )
+      )
     end
   end
 end
