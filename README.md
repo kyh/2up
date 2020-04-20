@@ -57,4 +57,4 @@ make react
 
 ## Deployment
 
-Any code merged into master will autodeploy with (Render)[https://render.com/]
+Any code merged into master will autodeploy through [Render](https://render.com/)
