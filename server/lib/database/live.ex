@@ -17,7 +17,7 @@ defmodule Database.Live do
   end
 
   def pack_get_by_id(id) do
-    Repo.get_by(Pack, id: 1)
+    Repo.get_by(Pack, id: id)
   end
 
   def generate_code do
