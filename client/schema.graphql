@@ -19,7 +19,12 @@ type ActConnection {
 }
 
 input ActCreateInput {
+  answer: String
+  answerTypeId: ID
   order: Int
+  packId: ID
+  question: String
+  questionTypeId: ID
 }
 
 type ActCreatePayload {
@@ -34,7 +39,9 @@ type ActEdge {
   node: Act
 }
 
-type AnswerType {
+type AnswerType implements Node {
+  """The ID of an object"""
+  id: ID!
   slug: String!
 }
 
@@ -104,7 +111,9 @@ type PageInfo {
   startCursor: String
 }
 
-type QuestionType {
+type QuestionType implements Node {
+  """The ID of an object"""
+  id: ID!
   slug: String!
 }
 
@@ -129,8 +138,10 @@ type RootMutationType {
 }
 
 type RootQueryType {
+  answerTypes: [AnswerType]
   pack(id: ID!): Pack
   packs(after: String, before: String, first: Int, last: Int): PackConnection
+  questionTypes: [QuestionType]
 }
 
 input SessionCreateInput {

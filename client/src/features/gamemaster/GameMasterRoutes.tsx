@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Route } from "react-router-dom";
 
 import { PackDiscoverPage } from "features/gamemaster/PackDiscoverPage";
@@ -15,7 +15,9 @@ export const GameMasterRoutes: React.FC = () => {
         <PackDetailsPage />
       </Route>
       <Route exact path="/gamemaster/:packId/edit">
-        <PackCreatorPage />
+        <Suspense fallback="Loading...">
+          <PackCreatorPage />
+        </Suspense>
       </Route>
     </>
   );

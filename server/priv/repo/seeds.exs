@@ -219,9 +219,9 @@ end)
 
 # Create play acts
 startup_acts = Catalog.act_list(%{tag_ids: [startups_tag.id]})
-sat_acts = Catalog.act_list(%{tag_ids: [startups_tag.id]})
-color_acts = Catalog.act_list(%{tag_ids: [startups_tag.id]})
-drawing_acts = Catalog.act_list(%{tag_ids: [startups_tag.id]})
+sat_acts = Catalog.act_list(%{tag_ids: [sat_tag.id]})
+color_acts = Catalog.act_list(%{tag_ids: [color_tag.id]})
+drawing_acts = Catalog.act_list(%{tag_ids: [drawing_tag.id]})
 
 all_acts =
   Enum.concat(startup_acts, sat_acts)
