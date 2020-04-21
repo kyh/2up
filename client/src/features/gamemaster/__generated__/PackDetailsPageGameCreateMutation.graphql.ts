@@ -1,26 +1,28 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 711a8d4a2a9ada498ecb182fc39d5ebd */
+/* @relayHash b3c06b8a7417ca0b06e3dcf5a09415d7 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type GameCreateInput = {
     pack: string;
 };
-export type HomeGameCreateMutationVariables = {
+export type PackDetailsPageGameCreateMutationVariables = {
     input: GameCreateInput;
 };
-export type HomeGameCreateMutationResponse = {
+export type PackDetailsPageGameCreateMutationResponse = {
     readonly gameCreate: {
         readonly code: string;
     } | null;
 };
-export type HomeGameCreateMutation = {
-    readonly response: HomeGameCreateMutationResponse;
-    readonly variables: HomeGameCreateMutationVariables;
+export type PackDetailsPageGameCreateMutation = {
+    readonly response: PackDetailsPageGameCreateMutationResponse;
+    readonly variables: PackDetailsPageGameCreateMutationVariables;
 };
 
+
+
 /*
-mutation HomeGameCreateMutation(
+mutation PackDetailsPageGameCreateMutation(
   $input: GameCreateInput!
 ) {
   gameCreate(input: $input) {
@@ -68,7 +70,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "HomeGameCreateMutation",
+    "name": "PackDetailsPageGameCreateMutation",
     "type": "RootMutationType",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -76,18 +78,18 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "HomeGameCreateMutation",
+    "name": "PackDetailsPageGameCreateMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "mutation",
-    "name": "HomeGameCreateMutation",
+    "name": "PackDetailsPageGameCreateMutation",
     "id": null,
-    "text": "mutation HomeGameCreateMutation(\n  $input: GameCreateInput!\n) {\n  gameCreate(input: $input) {\n    code\n  }\n}\n",
+    "text": "mutation PackDetailsPageGameCreateMutation(\n  $input: GameCreateInput!\n) {\n  gameCreate(input: $input) {\n    code\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'ba8d61c6af11964f8410c7aa9c1cefca';
+(node as any).hash = '8c45438b26ccd7d8c7be02c7e3325696';
 export default node;

@@ -130,14 +130,11 @@ export const Navigation: React.FC = () => {
 };
 
 const StyledNav = styled.nav`
-  position: absolute;
   display: flex;
   justify-content: flex-end;
   padding: 0 ${({ theme }) => theme.spacings(3)};
   align-items: center;
   height: 50px;
-  right: 0;
-  z-index: 1;
 `;
 
 const SettingsContainer = styled.div<{ single?: boolean; noBorder?: boolean }>`

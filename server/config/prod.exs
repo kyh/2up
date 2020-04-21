@@ -17,6 +17,12 @@ config :playhouse, Web.Endpoint,
   ],
   check_origin: [System.get_env("WEB_CLIENT_URL")]
 
+config :playhouse, Database.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  url: System.get_env("DATABASE_URL"),
+  ssl: true,
+  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "2")
+
 # Do not print debug messages in production
 config :logger, level: :info
 
@@ -57,9 +63,3 @@ config :logger, level: :info
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
 # import_config "prod.secret.exs"
-
-config :playhouse, Database.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  url: System.get_env("DATABASE_URL"),
-  ssl: true,
-  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "2")
