@@ -16,12 +16,21 @@ type CurrentAppState = {
   isDarkMode: boolean;
 };
 
+const getIsDarkMode = () => {
+  const isDarkMode = localStorage.getItem("isDarkMode");
+  if (isDarkMode === "true") return true;
+  if (isDarkMode === "false") return false;
+  if (window.matchMedia)
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  return true;
+};
+
 export const initialState: CurrentAppState = {
   userId: localStorage.getItem("userId") || "",
   name: localStorage.getItem("name") || "",
   isMusicOn: localStorage.getItem("isMusicOn") === "true",
   isSFXOn: localStorage.getItem("isSFXOn") === "true",
-  isDarkMode: localStorage.getItem("isDarkMode") === "true",
+  isDarkMode: getIsDarkMode(),
 };
 
 const playhouseSlice = createSlice({
