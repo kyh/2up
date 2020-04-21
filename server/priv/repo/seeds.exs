@@ -225,7 +225,6 @@ drawing_acts = Catalog.act_list(%{tag_ids: [drawing_tag.id]})
 
 all_acts =
   Enum.concat(startup_acts, sat_acts)
-  |> Enum.concat(sat_acts)
   |> Enum.concat(color_acts)
   |> Enum.concat(drawing_acts)
 
