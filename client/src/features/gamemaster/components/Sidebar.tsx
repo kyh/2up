@@ -71,10 +71,12 @@ export const Sidebar: React.FC<Props> = ({
       result.destination.index
     );
 
+    // TODO: update order with mutation
     // setActs(orderedActs);
   };
 
   const deleteAct = (act: Act) => {
+    // TODO: delete act mutation
     if (acts.length > 1) {
       // setActs(acts.filter((a) => a.id !== act.id));
       // if (selectedAct.id === act.id) {
@@ -92,6 +94,7 @@ export const Sidebar: React.FC<Props> = ({
       variables: {
         input: {
           packId,
+          // TODO: Remove hard coded values
           order: acts.length + 1,
           question: "hi",
           answer: "hey",
@@ -118,6 +121,7 @@ export const Sidebar: React.FC<Props> = ({
               "ActEdge"
             );
 
+            // TODO: Handle different order case
             ConnectionHandler.insertEdgeAfter(acts, edge);
           }
         }
