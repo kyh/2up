@@ -53,4 +53,8 @@ export const GlobalStyle = createGlobalStyle`
   h1, h2, h3, h4, h5, h6, p {
     margin: 0 0 ${({ theme }) => theme.spacings(3)};
   }
+
+  p {
+    line-height: 1.6;
+  }
 `;

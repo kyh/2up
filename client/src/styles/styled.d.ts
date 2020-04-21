@@ -25,6 +25,9 @@ declare module "styled-components" {
       purple: string;
     };
     space: Array<number>;
+    media: {
+      desktop: (...args: any[]) => FlattenSimpleInterpolation;
+    };
     spacings: (spacing: number) => string;
     border: {
       color: string;

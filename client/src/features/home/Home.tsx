@@ -7,7 +7,7 @@ import { useAlert } from "react-alert";
 import { useMutation } from "utils/useMutation";
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 import { gameActions, useGame } from "features/game/gameSlice";
-import { PageContainer, Button, Input, Card } from "components";
+import { Navigation, PageContainer, Button, Input, Card } from "components";
 
 import { HomeGameCheckMutation } from "./__generated__/HomeGameCheckMutation.graphql";
 
@@ -74,42 +74,45 @@ export const Home = () => {
   }
 
   return (
-    <PageContainer size="large" align="center">
-      <IntroContainer>
-        <img src="/logo/logomark.svg" alt="Playhouse" />
-        <IntroCard>
-          {screen === Screens.join ? (
-            <>
-              <InputContainer onSubmit={onSubmitGameCode}>
+    <>
+      <Navigation />
+      <PageContainer size="large" align="center">
+        <IntroContainer>
+          <img src="/logo/logomark.svg" alt="Playhouse" />
+          <IntroCard>
+            {screen === Screens.join ? (
+              <>
+                <InputContainer onSubmit={onSubmitGameCode}>
+                  <Input
+                    type="tel"
+                    placeholder="Game ID"
+                    value={gameId}
+                    onChange={(e) => setgameId(e.target.value)}
+                  />
+                  <Button type="submit" disabled={isCheckingGame}>
+                    Join existing game
+                  </Button>
+                </InputContainer>
+                <HostNewGameText>
+                  Or <Link to="/gamemaster">host your own game</Link>
+                </HostNewGameText>
+              </>
+            ) : (
+              <InputContainer onSubmit={onSubmitName}>
                 <Input
-                  type="tel"
-                  placeholder="Game ID"
-                  value={gameId}
-                  onChange={(e) => setgameId(e.target.value)}
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
-                <Button type="submit" disabled={isCheckingGame}>
-                  Join existing game
+                <Button type="submit" disabled={!name}>
+                  Start
                 </Button>
               </InputContainer>
-              <HostNewGameText>
-                Or <Link to="/gamemaster">host your own game</Link>
-              </HostNewGameText>
-            </>
-          ) : (
-            <InputContainer onSubmit={onSubmitName}>
-              <Input
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <Button type="submit" disabled={!name}>
-                Start
-              </Button>
-            </InputContainer>
-          )}
-        </IntroCard>
-      </IntroContainer>
-    </PageContainer>
+            )}
+          </IntroCard>
+        </IntroContainer>
+      </PageContainer>
+    </>
   );
 };
 
