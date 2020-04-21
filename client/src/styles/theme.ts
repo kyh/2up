@@ -1,4 +1,4 @@
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme, css } from "styled-components";
 import { memoize } from "lodash";
 
 const SPACING_UNIT = 4;
@@ -14,6 +14,10 @@ const colors = {
   lightGrey: "#CBD5E0",
   grey: "#718096",
   darkGrey: "#2D3748",
+};
+
+const mediaSizes = {
+  desktop: 900,
 };
 
 export const lightTheme: DefaultTheme = {
@@ -34,6 +38,13 @@ export const lightTheme: DefaultTheme = {
   },
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   spacings: memoize(calculateSpacing),
+  media: {
+    desktop: (mandatory: any, ...args) => css`
+      @media (max-width: ${mediaSizes.desktop}px) {
+        ${css(mandatory, ...args)};
+      }
+    `,
+  },
   border: {
     color: colors.darkGrey,
     alternateColor: colors.grey,

@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import graphql from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay/hooks";
 
+import { PackDiscoverPageQuery } from "./__generated__/PackDiscoverPageQuery.graphql";
+
 import { Input } from "components";
 import { Navigation } from "./components/Navigation";
-import { PackDiscoverPageQuery } from "./__generated__/PackDiscoverPageQuery.graphql";
+import { Page, Content } from "./components/Page";
 
 const PacksQuery = graphql`
   query PackDiscoverPageQuery {
@@ -32,7 +34,7 @@ const PacksList = () => {
         return (
           <Link
             key={pack.id}
-            to={`/gamemaster/${pack.id}`}
+            to={`/gamemaster/${pack.id}?packName=${pack.name}`}
             className="pack-item"
           >
             <img
@@ -74,24 +76,6 @@ export const PackDiscoverPage = () => {
   );
 };
 
-const Page = styled.section`
-  display: grid;
-  background: ${({ theme }) => theme.ui.backgroundGrey};
-  grid-template-areas:
-    "header  header  header"
-    "content content content"
-    "footer  footer  footer";
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 50px 1fr 50px;
-`;
-
-const Content = styled.section`
-  max-width: 900px;
-  margin: 0 auto;
-  grid-area: content;
-  padding: ${({ theme }) => `${theme.spacings(10)} ${theme.spacings(5)}`};
-`;
-
 const SearchBox = styled.section`
   display: flex;
   background: ${({ theme }) => theme.ui.background};
@@ -116,12 +100,11 @@ const SearchBox = styled.section`
 const PackSection = styled.section`
   .pack-items {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 3fr));
     grid-gap: ${({ theme }) => theme.spacings(5)};
   }
 
   .pack-item {
-    max-width: 300px;
     padding: ${({ theme }) => theme.spacings(5)};
     border: 2px solid transparent;
     border-radius: ${({ theme }) => theme.border.wavyRadius};

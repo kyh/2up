@@ -6,11 +6,14 @@ import { useAlert } from "react-alert";
 
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 import { gameActions } from "features/game/gameSlice";
-import { Box, Card, Button } from "components";
+import { Card, Button } from "components";
 import { useMutation } from "utils/useMutation";
+import { useQueryParams } from "utils/queryUtils";
 
 import { PackDetailsPageGameCreateMutation } from "./__generated__/PackDetailsPageGameCreateMutation.graphql";
+
 import { Navigation } from "./components/Navigation";
+import { Page, Content } from "./components/Page";
 
 const GameCreateMutation = graphql`
   mutation PackDetailsPageGameCreateMutation($input: GameCreateInput!) {
@@ -21,6 +24,7 @@ const GameCreateMutation = graphql`
 `;
 
 export const PackDetailsPage = () => {
+  const params = useQueryParams();
   const { packId } = useParams();
   const history = useHistory();
   const alert = useAlert();
@@ -32,7 +36,7 @@ export const PackDetailsPage = () => {
 
   const onHostGame = () => {
     gameCreate({
-      variables: { input: { pack: packId! } },
+      variables: { input: { pack: params.get("packName")! } },
       onCompleted: (data) => {
         if (!data || !data.gameCreate) return;
         const gameId = data.gameCreate.code;
@@ -50,51 +54,56 @@ export const PackDetailsPage = () => {
   return (
     <Page>
       <Navigation />
-      <Content>
-        <Box mr={5}>
-          <Box mb={3}>
-            <Link to="/gamemaster">&#171; Back to packs</Link>
-          </Box>
-          <h1>Pack Name</h1>
-          <p>
-            A guided tour through our most beautiful and delightful puzzles.
-          </p>
-        </Box>
-        <GameCard>
-          <img src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_1_by_1_white-wRqCbD.png?width=320" />
-          <Button onClick={onHostGame} disabled={isCreatingGame}>
-            Host a game
-          </Button>
-          <Link to={`/gamemaster/${packId}/edit`}>Edit Pack</Link>
-        </GameCard>
-      </Content>
+      <PackDetailsPageContent>
+        <Link className="back-link" to="/gamemaster">
+          &#171; Back to packs
+        </Link>
+        <div className="pack-details">
+          <GameCard>
+            <img src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_1_by_1_white-wRqCbD.png?width=320" />
+            <Button onClick={onHostGame} disabled={isCreatingGame}>
+              Host a game
+            </Button>
+            <Link to={`/gamemaster/${packId}/edit`}>Edit Pack</Link>
+          </GameCard>
+          <div className="description-container">
+            <h1 className="pack-name">Pack Name</h1>
+            <p className="pack-description">
+              A guided tour through our most beautiful and delightful puzzles.
+            </p>
+          </div>
+        </div>
+      </PackDetailsPageContent>
     </Page>
   );
 };
 
-const Page = styled.section`
-  display: grid;
-  height: calc((var(--vh, 1vh) * 100));
-  background: ${({ theme }) => theme.ui.backgroundGrey};
-  grid-template-areas:
-    "header  header  header"
-    "content content content"
-    "footer  footer  footer";
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 50px 1fr 50px;
-`;
+const PackDetailsPageContent = styled(Content)`
+  display: block;
 
-const Content = styled.section`
-  display: flex;
-  max-width: 900px;
-  margin: 0 auto;
-  grid-area: content;
-  padding: ${({ theme }) => `${theme.spacings(10)} ${theme.spacings(5)}`};
+  .back-link {
+    display: inline-block;
+    margin-bottom: ${({ theme }) => theme.spacings(3)};
+  }
+
+  .pack-details {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+
+    ${({ theme }) => theme.media.desktop`
+      display: block;
+    `}
+  }
+
+  .description-container {
+    padding-right: ${({ theme }) => theme.spacings(10)};
+  }
 `;
 
 const GameCard = styled(Card)`
   height: max-content;
-  width: 35%;
+  min-width: 250px;
   align-items: center;
 
   img {
@@ -109,4 +118,8 @@ const GameCard = styled(Card)`
     width: 100%;
     margin-bottom: ${({ theme }) => theme.spacings(2)};
   }
+
+  ${({ theme }) => theme.media.desktop`
+    margin-bottom: ${theme.spacings(5)};
+  `}
 `;

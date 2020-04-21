@@ -2,20 +2,21 @@ import styled from "styled-components";
 
 export const Page = styled.section`
   display: grid;
-  height: calc((var(--vh, 1vh) * 100));
+  min-height: calc((var(--vh, 1vh) * 100));
   background: ${({ theme }) => theme.ui.backgroundGrey};
   grid-template-areas:
-    "header  header  header"
-    "sidebar content content"
-    "sidebar  footer  footer";
-  grid-template-columns: 345px 1fr 1fr;
-  grid-template-rows: 50px 1fr 150px;
+    "header"
+    "content"
+    "footer";
+  grid-template-columns: 1fr;
+  grid-template-rows: 50px 1fr 50px;
 `;
 
 export const Content = styled.section`
+  display: grid;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
   grid-area: content;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacings(5)};
+  padding: ${({ theme }) => `${theme.spacings(10)} ${theme.spacings(5)}`};
 `;

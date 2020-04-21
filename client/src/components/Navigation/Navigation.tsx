@@ -17,7 +17,6 @@ export const Navigation: React.FC = () => {
     dispatch,
   } = usePlayhouse();
   const gameMatch = useRouteMatch<{ gameId: string }>("/game/:gameId");
-  const gameMasterMatch = useRouteMatch("/gamemaster");
 
   const leaveGame = () => {
     dispatch(gameActions.reset());
@@ -65,32 +64,6 @@ export const Navigation: React.FC = () => {
               </Button>
             </SettingsContainer>
           </>
-        )}
-        {!!gameMasterMatch && (
-          <SettingsContainer single>
-            <Button
-              onClick={() => {
-                history.push("/");
-                setIsOpen(false);
-              }}
-              fullWidth
-            >
-              Host a game
-            </Button>
-          </SettingsContainer>
-        )}
-        {!gameMasterMatch && !gameMatch && (
-          <SettingsContainer single>
-            <Button
-              onClick={() => {
-                history.push("/gamemaster");
-                setIsOpen(false);
-              }}
-              fullWidth
-            >
-              Pack Creator
-            </Button>
-          </SettingsContainer>
         )}
         <h3>Profile</h3>
         <SettingsContainer single>
