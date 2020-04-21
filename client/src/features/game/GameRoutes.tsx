@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, useParams } from "react-router-dom";
-import { PageContainer } from "components";
+import { Navigation, PageContainer } from "components";
 
 import { GameProvider } from "features/game/GameChannel";
 import { GameLobby } from "features/game/GameLobby";
@@ -11,6 +11,7 @@ export const GameRoutes: React.FC = () => {
   const { gameId } = useParams();
   return (
     <GameProvider gameId={gameId}>
+      <Navigation />
       <Route exact path={`/game/${gameId}/lobby`}>
         <PageContainer size="full">
           <GameLobby />

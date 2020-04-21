@@ -1,5 +1,5 @@
 import React, { useState, SyntheticEvent } from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import graphql from "babel-plugin-relay/macro";
 import styled from "styled-components";
 import { useAlert } from "react-alert";
@@ -8,9 +8,7 @@ import { useMutation } from "utils/useMutation";
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 import { gameActions, useGame } from "features/game/gameSlice";
 import { PageContainer, Button, Input, Card } from "components";
-import { PackModal } from "features/home/PackModal";
 
-import { HomeGameCreateMutation } from "./__generated__/HomeGameCreateMutation.graphql";
 import { HomeGameCheckMutation } from "./__generated__/HomeGameCheckMutation.graphql";
 
 const Screens = {
@@ -22,14 +20,6 @@ const GameCheckMutation = graphql`
   mutation HomeGameCheckMutation($input: GameInput!) {
     game(input: $input) {
       isValid
-    }
-  }
-`;
-
-const GameCreateMutation = graphql`
-  mutation HomeGameCreateMutation($input: GameCreateInput!) {
-    gameCreate(input: $input) {
-      code
     }
   }
 `;
@@ -46,18 +36,10 @@ export const Home = () => {
   );
   const [gameId, setgameId] = useState(gameState.gameId);
   const [name, setName] = useState(playhouseState.name);
-  const [isPackModalOpen, setIsPackModalOpen] = useState(false);
 
   const [gameCheck, isCheckingGame] = useMutation<HomeGameCheckMutation>(
     GameCheckMutation
   );
-  const [gameCreate, isCreatingGame] = useMutation<HomeGameCreateMutation>(
-    GameCreateMutation
-  );
-
-  const onClickHost = () => {
-    setIsPackModalOpen(true);
-  };
 
   // Joining an existing game:
   const onSubmitGameCode = async (event: SyntheticEvent) => {
@@ -87,25 +69,6 @@ export const Home = () => {
     setShouldRedirect(true);
   };
 
-  // Creating a new game:
-  const onSelectPack = (pack: string) => {
-    gameCreate({
-      variables: { input: { pack } },
-      onCompleted: (data) => {
-        if (!data || !data.gameCreate) {
-          return;
-        }
-        dispatch(gameActions.toggle_host(true));
-        dispatch(playhouseActions.update_user({ name: "" }));
-        dispatch(gameActions.new_game({ gameId: data.gameCreate.code }));
-        setShouldRedirect(true);
-      },
-      onError: (error: Error) => {
-        alert.show(error.message);
-      },
-    });
-  };
-
   if (gameState.gameId && shouldRedirect) {
     return <Redirect to={`/game/${gameState.gameId}/lobby`} />;
   }
@@ -129,10 +92,7 @@ export const Home = () => {
                 </Button>
               </InputContainer>
               <HostNewGameText>
-                Or{" "}
-                <button type="button" onClick={onClickHost}>
-                  host your own game
-                </button>
+                Or <Link to="/gamemaster">host your own game</Link>
               </HostNewGameText>
             </>
           ) : (
@@ -148,14 +108,6 @@ export const Home = () => {
             </InputContainer>
           )}
         </IntroCard>
-        <React.Suspense fallback="">
-          <PackModal
-            isLoading={isCreatingGame}
-            isPackModalOpen={isPackModalOpen}
-            setIsPackModalOpen={setIsPackModalOpen}
-            onSelectPack={onSelectPack}
-          />
-        </React.Suspense>
       </IntroContainer>
     </PageContainer>
   );
@@ -191,7 +143,7 @@ const HostNewGameText = styled.div`
   justify-content: center;
   margin-top: auto;
 
-  button {
+  a {
     margin-left: ${({ theme }) => theme.spacings(1.2)};
     text-decoration: underline;
   }

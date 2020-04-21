@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { Provider as AlertProvider, transitions, positions } from "react-alert";
 
-import { Navigation, ReactAlertTemplate } from "components";
+import { ReactAlertTemplate } from "components";
 
 import { lightTheme, darkTheme } from "styles/theme";
 import { GlobalStyle } from "styles/global";
@@ -27,7 +27,6 @@ export const App: React.FC = () => {
     <ThemeProvider theme={state.isDarkMode ? darkTheme : lightTheme}>
       <AlertProvider template={ReactAlertTemplate} {...alertOptions}>
         <GlobalStyle />
-        <Navigation />
         <Switch>
           <Route exact path="/">
             <Home />

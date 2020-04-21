@@ -23,11 +23,10 @@ const renderSize = ({ size }: Props) => {
 
 export const PageContainer = styled.section<Props>`
   display: flex;
-  padding: ${({ theme }) => `${theme.spacings(16)} ${theme.spacings(4)}`};
+  padding: ${({ theme }) => theme.spacings(4)};
   margin: 0 auto;
   justify-content: center;
-  height: 100vh;
-  height: calc((var(--vh, 1vh) * 100));
+  height: calc((var(--vh, 1vh) * 100) - 50px);
   max-width: ${renderSize};
   align-items: ${({ align }) => (align ? align : "start")};
 `;
