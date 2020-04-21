@@ -26,6 +26,7 @@ export const ActPreview: React.FC<Props> = ({ selectedAct, onUpdateAct }) => {
   };
 
   const onSaveChanges = (newAct = {}) => {
+    // TODO: update mutation here
     console.log("save changes", { ...editableAct, ...newAct });
     if (editableAct) {
       onUpdateAct({ ...editableAct, ...newAct });

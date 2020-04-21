@@ -263,6 +263,7 @@ export const EditableAnswer: React.FC<EditableAnswerProps> = ({
   }
 };
 
+// TODO: Get question types from backend
 const EditableType: React.FC<{
   onSelectType: (
     _act: Pick<Act, "answerType" | "answer">,

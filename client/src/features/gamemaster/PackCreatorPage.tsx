@@ -34,6 +34,7 @@ const PackQuery = graphql`
   }
 `;
 
+// TODO: Replace with auto generated fragment
 export type Act = {
   id: string;
   instruction?: string;
