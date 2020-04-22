@@ -84,6 +84,21 @@ defmodule Database.Catalog do
     {:ok, act}
   end
 
+  def act_update(
+        %User{} = user,
+        %Act{} = act,
+        # %QuestionType{} = question_type,
+        # %AnswerType{} = answer_type,
+        attrs
+      ) do
+    # TODO: Check if this user is the author
+    act
+    |> Act.changeset(attrs)
+    # |> Ecto.Changeset.put_assoc(:question_type, question_type)
+    # |> Ecto.Changeset.put_assoc(:answer_type, answer_type)
+    |> Repo.update()
+  end
+
   def act_tag_create(%Act{} = act, %Tag{} = tag) do
     %ActTag{}
     |> ActTag.changeset(%{})

@@ -102,5 +102,29 @@ defmodule Web.GraphQL.Types.MutationType do
         )
       )
     end
+
+    @desc "Update act"
+    payload field :act_update do
+      input do
+        field :id, :id
+        field :order, :integer
+        field :question_type_id, :id
+        field :answer_type_id, :id
+        field :question, :string
+        field :answer, :string
+      end
+
+      output do
+        field :act, non_null(:act)
+      end
+
+      resolve(
+        parsing_node_ids(&Catalog.act_update/2,
+          id: :act,
+          question_type_id: :question_type,
+          answer_type_id: :answer_type
+        )
+      )
+    end
   end
 end
