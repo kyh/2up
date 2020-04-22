@@ -27,7 +27,7 @@
 
 **Data Transport**: We use GraphQL Relay as our frontend data store, GraphQL (Dashboard) and Websocket (Game) for data transport
 
-**Server**: Backend server is an Elixir/Pheonix API server
+**Server**: Backend server is an Elixir/Phoenix API server
 
 **Database**: Everything is stored in a Postgres database
 
