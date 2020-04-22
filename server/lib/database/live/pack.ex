@@ -9,12 +9,14 @@ defmodule Database.Live.Pack do
     field :name, :string
     field :is_random, :boolean
     field :length, :integer
+    field :description, :string
+    field :image_url, :string
 
     timestamps()
   end
 
   def changeset(pack, attrs) do
-    required_fields = [:name, :is_random, :length]
+    required_fields = [:name, :is_random, :length, :description, :image_url]
 
     pack
     |> cast(attrs, required_fields)

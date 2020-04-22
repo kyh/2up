@@ -69,9 +69,11 @@ interface Node {
 
 type Pack implements Node {
   acts(after: String, before: String, first: Int, last: Int): ActConnection
+  description: String
 
   """The ID of an object"""
   id: ID!
+  imageUrl: String
   name: String!
   user: User
 }

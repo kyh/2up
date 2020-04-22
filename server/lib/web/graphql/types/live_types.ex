@@ -11,6 +11,8 @@ defmodule Web.GraphQL.Types.LiveTypes do
   node object(:pack) do
     field :name, non_null(:string)
     field :user, :user
+    field :description, :string
+    field :image_url, :string
 
     connection field :acts, node_type: :act do
       resolve(fn parent, args, %{context: %{loader: loader}} ->

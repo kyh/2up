@@ -17,6 +17,8 @@ const PacksQuery = graphql`
         node {
           id
           name
+          description
+          imageUrl
         }
       }
     }
@@ -37,14 +39,9 @@ const PacksList = () => {
             to={`/gamemaster/${pack.id}?packName=${pack.name}`}
             className="pack-item"
           >
-            <img
-              src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_1_by_1_white-wRqCbD.png?width=320"
-              alt={pack.name}
-            />
+            <img src={pack.imageUrl || ""} alt={pack.name} />
             <h4>{pack.name}</h4>
-            <p>
-              A guided tour through our most beautiful and delightful puzzles.
-            </p>
+            <p>{pack.description}</p>
           </Link>
         );
       })}

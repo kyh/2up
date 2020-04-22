@@ -35,6 +35,8 @@ alias Database.{
   Live.pack_create(user, %{
     name: "Startups",
     is_random: true,
+    image_url: "https://i.picsum.photos/id/258/320/320.jpg",
+    description: "Guess the one liners of tech startups",
     length: 10
   })
 
@@ -42,6 +44,8 @@ alias Database.{
   Live.pack_create(user, %{
     name: "SAT",
     is_random: true,
+    image_url: "https://i.picsum.photos/id/258/320/320.jpg",
+    description: "How well do you know your SAT vocab?",
     length: 10
   })
 
@@ -49,6 +53,8 @@ alias Database.{
   Live.pack_create(user, %{
     name: "Color",
     is_random: true,
+    image_url: "https://i.picsum.photos/id/258/320/320.jpg",
+    description: "Do you even know your colors?",
     length: 10
   })
 
@@ -56,6 +62,8 @@ alias Database.{
   Live.pack_create(user, %{
     name: "Drawing",
     is_random: true,
+    image_url: "https://i.picsum.photos/id/258/320/320.jpg",
+    description: "Who is the best drawer of them all?",
     length: 10
   })
 
@@ -63,6 +71,8 @@ alias Database.{
   Live.pack_create(user, %{
     name: "Variety",
     is_random: true,
+    image_url: "https://i.picsum.photos/id/258/320/320.jpg",
+    description: "Best of the best, from all the sorts of packs",
     length: 10
   })
 
