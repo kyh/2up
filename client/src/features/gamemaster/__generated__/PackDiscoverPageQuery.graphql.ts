@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5a9ed42802c3e7d13c411560c9e169a7 */
+/* @relayHash bd951172825ecd77b8d9a96bbdfc56e6 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type PackDiscoverPageQueryVariables = {};
@@ -10,6 +10,8 @@ export type PackDiscoverPageQueryResponse = {
             readonly node: {
                 readonly id: string;
                 readonly name: string;
+                readonly description: string | null;
+                readonly imageUrl: string | null;
             } | null;
         } | null> | null;
     } | null;
@@ -28,6 +30,8 @@ query PackDiscoverPageQuery {
       node {
         id
         name
+        description
+        imageUrl
       }
     }
   }
@@ -82,6 +86,20 @@ var v0 = [
                 "name": "name",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "description",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "imageUrl",
+                "args": null,
+                "storageKey": null
               }
             ]
           }
@@ -110,10 +128,10 @@ return {
     "operationKind": "query",
     "name": "PackDiscoverPageQuery",
     "id": null,
-    "text": "query PackDiscoverPageQuery {\n  packs(first: 5) {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n",
+    "text": "query PackDiscoverPageQuery {\n  packs(first: 5) {\n    edges {\n      node {\n        id\n        name\n        description\n        imageUrl\n      }\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'a4552026bc1342372c5213312619a12a';
+(node as any).hash = '2070cd5729d809eeeaa65f24d1107bcf';
 export default node;
