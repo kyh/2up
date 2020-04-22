@@ -1,11 +1,36 @@
 import React, { useState, useEffect } from "react";
+import { useAlert } from "react-alert";
 import styled from "styled-components";
+import graphql from "babel-plugin-relay/macro";
 
+import { useMutation } from "utils/useMutation";
 import { EditableQuestion } from "features/game/components/Question";
 import { EditableAnswer } from "features/game/components/Answer";
 import { Act } from "features/gamemaster/PackCreatorPage";
 
 import monitor from "./monitor.svg";
+
+import { ActPreviewActUpdateMutation } from "./__generated__/ActPreviewActUpdateMutation.graphql";
+
+const actUpdateMutation = graphql`
+  mutation ActPreviewActUpdateMutation($input: ActUpdateInput!) {
+    actUpdate(input: $input) {
+      act {
+        id
+        question
+        answer
+        questionType {
+          id
+          slug
+        }
+        answerType {
+          id
+          slug
+        }
+      }
+    }
+  }
+`;
 
 type Props = {
   selectedAct?: Act;
@@ -13,7 +38,13 @@ type Props = {
 };
 
 export const ActPreview: React.FC<Props> = ({ selectedAct, onUpdateAct }) => {
+  const alert = useAlert();
+
   const [editableAct, setEditableAct] = useState(selectedAct);
+
+  const [actUpdate, isUpdatingAct] = useMutation<ActPreviewActUpdateMutation>(
+    actUpdateMutation
+  );
 
   useEffect(() => {
     setEditableAct(selectedAct);
@@ -26,11 +57,26 @@ export const ActPreview: React.FC<Props> = ({ selectedAct, onUpdateAct }) => {
   };
 
   const onSaveChanges = (newAct = {}) => {
-    // TODO: update mutation here
-    console.log("save changes", { ...editableAct, ...newAct });
-    if (editableAct) {
-      onUpdateAct({ ...editableAct, ...newAct });
+    if (!editableAct || isUpdatingAct) {
+      return;
     }
+
+    // TODO: Send along question type id and answer type id
+    actUpdate({
+      variables: {
+        input: {
+          id: editableAct.id,
+          question: editableAct.question,
+          answer: editableAct.answer,
+        },
+      },
+      onCompleted: (data) => {
+        console.log("data", data);
+      },
+      onError: (error: Error) => {
+        alert.show(error.message);
+      },
+    });
   };
 
   return (

@@ -39,6 +39,19 @@ type ActEdge {
   node: Act
 }
 
+input ActUpdateInput {
+  answer: String
+  answerTypeId: ID
+  id: ID
+  order: Int
+  question: String
+  questionTypeId: ID
+}
+
+type ActUpdatePayload {
+  act: Act!
+}
+
 type AnswerType implements Node {
   """The ID of an object"""
   id: ID!
@@ -122,6 +135,9 @@ type QuestionType implements Node {
 type RootMutationType {
   """Create new act"""
   actCreate(input: ActCreateInput!): ActCreatePayload
+
+  """Update act"""
+  actUpdate(input: ActUpdateInput!): ActUpdatePayload
 
   """Get info about live game"""
   game(input: GameInput!): GamePayload

@@ -55,7 +55,7 @@ export const Signup = () => {
         }
       },
       onError: (error: Error) => {
-        alert.show(error);
+        alert.show(error.message);
       },
     });
 

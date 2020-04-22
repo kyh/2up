@@ -19,6 +19,24 @@ defmodule Web.GraphQL.Resolvers.Catalog do
     end
   end
 
+  def act_update(args, %{context: %{current_user: user}}) do
+    act = Database.Repo.get_by(Database.Catalog.Act, id: args.id)
+
+    # question_type = Database.Repo.get_by(Database.Catalog.QuestionType, id: args.question_type_id)
+    # answer_type = Database.Repo.get_by(Database.Catalog.AnswerType, id: args.answer_type_id)
+
+    case Catalog.act_update(user, act, args) do
+      {:error, changeset} ->
+        {
+          :error,
+          message: "Act update failed", details: Errors.error_details(changeset)
+        }
+
+      {:ok, act} ->
+        {:ok, %{act: act}}
+    end
+  end
+
   def question_type_list(_, _, _) do
     {:ok, Catalog.question_type_list()}
   end
