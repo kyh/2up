@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   DragDropContext,
@@ -10,11 +10,12 @@ import {
 import { Button, Icon } from "components";
 import { useAlert } from "react-alert";
 import { Act } from "features/gamemaster/PackCreatorPage";
+import { ActsTableModal } from "features/gamemaster/components/ActsTableModal";
 
-import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation.graphql";
 import graphql from "babel-plugin-relay/macro";
-import { useMutation } from "utils/useMutation";
 import { ConnectionHandler } from "relay-runtime";
+import { useMutation } from "utils/useMutation";
+import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation.graphql";
 
 // const reorder = (list: any[], startIndex: number, endIndex: number) => {
 //   const result = Array.from(list);
@@ -58,6 +59,7 @@ export const Sidebar: React.FC<Props> = ({
   setSelectedAct,
 }) => {
   const alert = useAlert();
+  const [tableViewOpen, setTableViewOpen] = useState(false);
   const [actCreate, isCreatingAct] = useMutation<SidebarActCreateMutation>(
     actCreateMutation
   );
@@ -105,26 +107,14 @@ export const Sidebar: React.FC<Props> = ({
       updater: (store) => {
         const payload = store.getRootField("actCreate");
         const act = payload?.getLinkedRecord("act");
-        const pack = store.get(packId);
-
-        if (pack) {
-          const acts = ConnectionHandler.getConnection(
-            pack,
-            "PackCreatorPage_acts"
-          );
-
-          if (acts) {
-            const edge = ConnectionHandler.createEdge(
-              store,
-              acts,
-              act,
-              "ActEdge"
-            );
-
-            // TODO: Handle different order case
-            ConnectionHandler.insertEdgeAfter(acts, edge);
-          }
-        }
+        const pack = store.get(packId)!;
+        const acts = ConnectionHandler.getConnection(
+          pack,
+          "PackCreatorPage_acts"
+        )!;
+        const edge = ConnectionHandler.createEdge(store, acts, act, "ActEdge");
+        // TODO: Handle different order case
+        ConnectionHandler.insertEdgeAfter(acts, edge);
       },
       onCompleted: (data) => {
         console.log("data", data);
@@ -139,9 +129,16 @@ export const Sidebar: React.FC<Props> = ({
     <SidebarContainer>
       <SidebarHeader>
         <h3>Questions:</h3>
-        <Button>
+        <Button onClick={() => setTableViewOpen(true)}>
           <Icon icon="list" size="sm" />
         </Button>
+        <ActsTableModal
+          acts={acts}
+          open={tableViewOpen}
+          setOpen={(open) => {
+            setTableViewOpen(open);
+          }}
+        />
       </SidebarHeader>
       <SidebarContent>
         <DragDropContext onDragEnd={onDragEnd}>
