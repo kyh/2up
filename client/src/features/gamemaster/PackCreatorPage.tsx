@@ -56,13 +56,11 @@ export const PackCreatorPage = () => {
   const data = useLazyLoadQuery<PackCreatorPagePackQuery>(PackQuery, {
     id: packId || "",
   });
-  const newActs: Array<Act> = [];
-  data?.pack?.acts?.edges?.forEach((edge) => {
-    const node = edge?.node;
-    if (node) {
-      newActs.push(node);
-    }
-  });
+
+  const newActs: Act[] =
+    data?.pack?.acts?.edges
+      ?.map((edge: any) => (edge?.node ? edge.node : null))
+      .filter((node: Act) => !!node) || [];
 
   const onUpdateAct = (act: Act) => {
     // setSelectedAct(act.id);

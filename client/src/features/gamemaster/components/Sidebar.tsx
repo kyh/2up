@@ -16,13 +16,13 @@ import graphql from "babel-plugin-relay/macro";
 import { useMutation } from "utils/useMutation";
 import { ConnectionHandler } from "relay-runtime";
 
-const reorder = (list: any[], startIndex: number, endIndex: number) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
+// const reorder = (list: any[], startIndex: number, endIndex: number) => {
+//   const result = Array.from(list);
+//   const [removed] = result.splice(startIndex, 1);
+//   result.splice(endIndex, 0, removed);
 
-  return result;
-};
+//   return result;
+// };
 
 type Props = {
   acts: Act[];
@@ -65,11 +65,11 @@ export const Sidebar: React.FC<Props> = ({
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
-    const orderedActs = reorder(
-      acts,
-      result.source.index,
-      result.destination.index
-    );
+    // const orderedActs = reorder(
+    //   acts,
+    //   result.source.index,
+    //   result.destination.index
+    // );
 
     // TODO: update order with mutation
     // setActs(orderedActs);
@@ -188,7 +188,9 @@ export const Sidebar: React.FC<Props> = ({
         </DragDropContext>
       </SidebarContent>
       <SidebarFooter>
-        <Button onClick={addNewAct}>Add new question</Button>
+        <Button onClick={addNewAct} disabled={isCreatingAct}>
+          Add new question
+        </Button>
       </SidebarFooter>
     </SidebarContainer>
   );

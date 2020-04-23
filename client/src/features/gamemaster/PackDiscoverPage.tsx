@@ -112,7 +112,7 @@ const PackSection = styled.section`
 
     img {
       display: block;
-      width: 160px;
+      width: 100%;
       height: 160px;
       object-fit: cover;
       margin: ${({ theme }) => `0 auto ${theme.spacings(2)}`};

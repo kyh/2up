@@ -60,7 +60,10 @@ export const PackDetailsPage = () => {
         </Link>
         <div className="pack-details">
           <GameCard>
-            <img src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_1_by_1_white-wRqCbD.png?width=320" />
+            <img
+              src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_1_by_1_white-wRqCbD.png?width=320"
+              alt="Pack Name"
+            />
             <Button onClick={onHostGame} disabled={isCreatingGame}>
               Host a game
             </Button>
