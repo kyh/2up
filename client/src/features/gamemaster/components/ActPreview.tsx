@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useAlert } from "react-alert";
 import styled from "styled-components";
 import graphql from "babel-plugin-relay/macro";
+import { useFragment } from "react-relay/hooks";
 
 import { useMutation } from "utils/useMutation";
 import { EditableQuestion } from "features/game/components/Question";
 import { EditableAnswer } from "features/game/components/Answer";
-import { Act } from "features/gamemaster/PackCreatorPage";
 
 import monitor from "./monitor.svg";
 
 import { ActPreviewActUpdateMutation } from "./__generated__/ActPreviewActUpdateMutation.graphql";
+import { ActPreview_act$key } from "./__generated__/ActPreview_act.graphql";
 
 const actUpdateMutation = graphql`
   mutation ActPreviewActUpdateMutation($input: ActUpdateInput!) {
@@ -33,24 +34,43 @@ const actUpdateMutation = graphql`
 `;
 
 type Props = {
-  selectedAct?: Act;
-  onUpdateAct: (_act: Act) => void;
+  act: ActPreview_act$key;
 };
 
-export const ActPreview: React.FC<Props> = ({ selectedAct, onUpdateAct }) => {
+export const ActPreview: React.FC<Props> = ({ act }) => {
   const alert = useAlert();
 
-  const [editableAct, setEditableAct] = useState(selectedAct);
+  const data = useFragment(
+    graphql`
+      fragment ActPreview_act on Act {
+        id
+        question
+        answer
+        questionType {
+          id
+          slug
+        }
+        answerType {
+          id
+          slug
+        }
+      }
+    `,
+    act
+  );
 
+  console.log("hm", data);
+
+  const [editableAct, setEditableAct] = useState(data);
   const [actUpdate, isUpdatingAct] = useMutation<ActPreviewActUpdateMutation>(
     actUpdateMutation
   );
 
   useEffect(() => {
-    setEditableAct(selectedAct);
-  }, [selectedAct]);
+    setEditableAct(data);
+  }, [act]);
 
-  const onChange = (newActInfo: Act, save?: boolean) => {
+  const onChange = (newActInfo: any, save?: boolean) => {
     const newAct = { ...editableAct, ...newActInfo };
     setEditableAct(newAct);
     if (save) onSaveChanges(newAct);
@@ -83,10 +103,10 @@ export const ActPreview: React.FC<Props> = ({ selectedAct, onUpdateAct }) => {
     <Monitor>
       <MonitorScreenContainer>
         <MonitorScreen>
-          {!!selectedAct && (
+          {!!data && (
             <>
               <EditableQuestion
-                instruction={editableAct?.instruction}
+                // instruction={editableAct?.instruction}
                 question={editableAct?.question}
                 questionType={editableAct?.questionType.slug}
                 onChange={onChange}

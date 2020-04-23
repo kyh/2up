@@ -4,7 +4,6 @@ import { ChromePicker } from "react-color";
 import CanvasDraw from "react-canvas-draw";
 
 import { Box, Input, Button } from "components";
-import { Act } from "features/gamemaster/PackCreatorPage";
 
 type AnswerProps = {
   answer?: string;
@@ -266,7 +265,7 @@ export const EditableAnswer: React.FC<EditableAnswerProps> = ({
 // TODO: Get question types from backend
 const EditableType: React.FC<{
   onSelectType: (
-    _act: Pick<Act, "answerType" | "answer">,
+    _act: Pick<any, "answerType" | "answer">,
     _save: boolean
   ) => void;
 }> = ({ onSelectType, children }) => {

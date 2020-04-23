@@ -156,6 +156,7 @@ type RootMutationType {
 }
 
 type RootQueryType {
+  act(id: ID!): Act
   answerTypes: [AnswerType]
   pack(id: ID!): Pack
   packs(after: String, before: String, first: Int, last: Int): PackConnection
