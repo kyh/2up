@@ -75,6 +75,7 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
       return (
         <EditableQuestionContainer>
           <EditableQuestionInstructions
+            placeholder="Instruction..."
             value={instruction}
             onChange={(e) => onChange({ instruction: e.target.value })}
             onBlur={onSaveChanges}
@@ -83,6 +84,7 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
             <EditableType onSelectType={onChange}>
               <input
                 type="text"
+                placeholder="Image URL"
                 value={question}
                 onChange={(e) => onChange({ question: e.target.value })}
                 onBlur={onSaveChanges}
@@ -96,12 +98,14 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
       return (
         <EditableQuestionContainer>
           <EditableQuestionInstructions
+            placeholder="Instruction..."
             value={instruction}
             onChange={(e) => onChange({ instruction: e.target.value })}
             onBlur={onSaveChanges}
           />
           <EditableType onSelectType={onChange}>
             <EditableQuestionText
+              placeholder="Your question..."
               value={question}
               onChange={(e) => onChange({ question: e.target.value })}
               onBlur={onSaveChanges}

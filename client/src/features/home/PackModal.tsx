@@ -19,18 +19,18 @@ const PacksQuery = graphql`
 `;
 
 export const PackModal = ({
-  isPackModalOpen = false,
-  isLoading = false,
-  setIsPackModalOpen = (_isOpen: boolean) => {},
+  open = false,
+  loading = false,
+  setOpen = (_isOpen: boolean) => {},
   onSelectPack = (_pack: string) => {},
 }) => {
   const data = useLazyLoadQuery<PackModalPacksQuery>(PacksQuery, {});
 
   return (
     <Modal
-      open={isPackModalOpen}
+      open={open}
       title="Select a pack"
-      onRequestClose={() => setIsPackModalOpen(false)}
+      onRequestClose={() => setOpen(false)}
       maxWidth={300}
       closeButton
     >
@@ -44,7 +44,7 @@ export const PackModal = ({
             <Button
               key={pack.id}
               fullWidth
-              disabled={isLoading}
+              disabled={loading}
               onClick={() => onSelectPack(pack.name)}
             >
               {pack.name}
