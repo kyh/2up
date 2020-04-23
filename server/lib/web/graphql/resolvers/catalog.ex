@@ -44,4 +44,9 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   def answer_type_list(_, _, _) do
     {:ok, Catalog.answer_type_list()}
   end
+
+  def act_get_by_id(args, _) do
+    act = Catalog.act_get_by_id(args.id)
+    {:ok, act}
+  end
 end

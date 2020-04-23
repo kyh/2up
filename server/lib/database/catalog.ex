@@ -118,4 +118,8 @@ defmodule Database.Catalog do
     |> AnswerType.changeset(attrs)
     |> Repo.insert()
   end
+
+  def act_get_by_id(id) do
+    Repo.get_by(Act, id: id)
+  end
 end

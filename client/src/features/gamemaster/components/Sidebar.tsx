@@ -9,13 +9,14 @@ import {
 
 import { Button, Icon } from "components";
 import { useAlert } from "react-alert";
-import { Act } from "features/gamemaster/PackCreatorPage";
 import { ActsTableModal } from "features/gamemaster/components/ActsTableModal";
 
 import graphql from "babel-plugin-relay/macro";
-import { ConnectionHandler } from "relay-runtime";
-import { useMutation } from "utils/useMutation";
 import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation.graphql";
+import { useMutation } from "utils/useMutation";
+import { useFragment } from "react-relay/hooks";
+import { ConnectionHandler } from "relay-runtime";
+import { Sidebar_pack$key } from "./__generated__/Sidebar_pack.graphql";
 
 // const reorder = (list: any[], startIndex: number, endIndex: number) => {
 //   const result = Array.from(list);
@@ -26,10 +27,9 @@ import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutati
 // };
 
 type Props = {
-  acts: Act[];
-  packId: string;
-  selectedAct?: Act;
-  setSelectedAct(act: Act): void;
+  pack: Sidebar_pack$key;
+  selectedAct?: any;
+  setSelectedAct(act: any): void;
 };
 
 const actCreateMutation = graphql`
@@ -53,8 +53,7 @@ const actCreateMutation = graphql`
 `;
 
 export const Sidebar: React.FC<Props> = ({
-  packId,
-  acts,
+  pack,
   selectedAct,
   setSelectedAct,
 }) => {
@@ -63,6 +62,33 @@ export const Sidebar: React.FC<Props> = ({
   const [actCreate, isCreatingAct] = useMutation<SidebarActCreateMutation>(
     actCreateMutation
   );
+
+  const data = useFragment(
+    graphql`
+      fragment Sidebar_pack on Pack {
+        id
+        acts(first: 100) @connection(key: "PackCreatorPage_acts", filters: []) {
+          edges {
+            node {
+              id
+              answer
+              question
+              questionType {
+                slug
+              }
+              answerType {
+                slug
+              }
+            }
+          }
+        }
+      }
+    `,
+    pack
+  );
+
+  const acts = data?.acts?.edges;
+  const packId = data.id;
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -77,18 +103,18 @@ export const Sidebar: React.FC<Props> = ({
     // setActs(orderedActs);
   };
 
-  const deleteAct = (act: Act) => {
+  const deleteAct = (act: any) => {
     // TODO: delete act mutation
-    if (acts.length > 1) {
-      // setActs(acts.filter((a) => a.id !== act.id));
-      // if (selectedAct.id === act.id) {
-      //   setSelectedAct(acts[0]);
-      // }
-    }
+    // if (acts.length > 1) {
+    // setActs(acts.filter((a) => a.id !== act.id));
+    // if (selectedAct.id === act.id) {
+    //   setSelectedAct(acts[0]);
+    // }
+    // }
   };
 
-  const selectAct = (act: Act) => {
-    setSelectedAct(act);
+  const selectAct = (act: any) => {
+    setSelectedAct(act.id);
   };
 
   const addNewAct = () => {
@@ -97,7 +123,7 @@ export const Sidebar: React.FC<Props> = ({
         input: {
           packId,
           // TODO: Remove hard coded values
-          order: acts.length + 1,
+          order: 1,
           question: "hi",
           answer: "hey",
           questionTypeId: "UXVlc3Rpb25UeXBlOjE=",
@@ -148,36 +174,43 @@ export const Sidebar: React.FC<Props> = ({
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {acts.map((act, index) => (
-                  <Draggable key={act.id} draggableId={act.id} index={index}>
-                    {(provided) => (
-                      <QuestionItem
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        isSelected={selectedAct?.id === act.id}
-                        style={{ ...provided.draggableProps.style }}
-                      >
-                        <div className="left" onClick={() => selectAct(act)}>
-                          <div className="instruction">{act.instruction}</div>
-                          <ActQuestion
-                            questionType={act.questionType.slug}
-                            question={act.question}
-                          />
-                        </div>
-                        <div className="right" onClick={() => selectAct(act)}>
-                          <div className="type">{act.questionType.slug}</div>
-                        </div>
-                        <button
-                          className="delete"
-                          onClick={() => deleteAct(act)}
+                {acts?.map((edge, index) => {
+                  const act = edge?.node;
+                  if (!act) {
+                    return;
+                  }
+
+                  return (
+                    <Draggable key={act.id} draggableId={act.id} index={index}>
+                      {(provided) => (
+                        <QuestionItem
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          isSelected={selectedAct?.id === act.id}
+                          style={{ ...provided.draggableProps.style }}
                         >
-                          <Icon icon="trash" />
-                        </button>
-                      </QuestionItem>
-                    )}
-                  </Draggable>
-                ))}
+                          <div className="left" onClick={() => selectAct(act)}>
+                            {/* <div className="instruction">{act.instruction}</div> */}
+                            <ActQuestion
+                              questionType={act.questionType.slug}
+                              question={act.question}
+                            />
+                          </div>
+                          <div className="right" onClick={() => selectAct(act)}>
+                            <div className="type">{act.questionType.slug}</div>
+                          </div>
+                          <button
+                            className="delete"
+                            onClick={() => deleteAct(act)}
+                          >
+                            <Icon icon="trash" />
+                          </button>
+                        </QuestionItem>
+                      )}
+                    </Draggable>
+                  );
+                })}
                 {provided.placeholder}
               </SidebarContent>
             )}
