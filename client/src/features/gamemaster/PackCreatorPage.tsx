@@ -11,73 +11,50 @@ import { Navigation } from "./components/Navigation";
 
 import graphql from "babel-plugin-relay/macro";
 const PackQuery = graphql`
-  query PackCreatorPagePackQuery($id: ID!) {
-    pack(id: $id) {
-      id
-      name
-      acts(first: 100) @connection(key: "PackCreatorPage_acts", filters: []) {
-        edges {
-          node {
-            id
-            answer
-            question
-            questionType {
-              slug
-            }
-            answerType {
-              slug
-            }
-          }
-        }
-      }
+  query PackCreatorPagePackQuery($packId: ID!, $actId: ID!) {
+    pack(id: $packId) {
+      ...Navigation_pack
+      ...Sidebar_pack
+    }
+    act(id: $actId) {
+      ...ActPreview_act
     }
   }
 `;
 
-// TODO: Replace with auto generated fragment
-export type Act = {
-  id: string;
-  instruction?: string;
-  questionType: {
-    slug: string;
-  };
-  question: string;
-  answerType: {
-    slug: string;
-  };
-  answer: string | null;
-};
-
 export const PackCreatorPage = () => {
   const { packId } = useParams();
 
-  const [selectedAct, setSelectedAct] = useState<Act | undefined>(undefined);
+  const [selectedAct, setSelectedAct] = useState<any | undefined>(undefined);
+
+  const [selectedActId, setSelectedActId] = useState("");
 
   const data = useLazyLoadQuery<PackCreatorPagePackQuery>(PackQuery, {
-    id: packId || "",
+    packId: packId || "",
+    actId: selectedActId,
   });
 
-  const newActs: Act[] =
-    data?.pack?.acts?.edges
-      ?.map((edge: any) => (edge?.node ? edge.node : null))
-      .filter((node: Act) => !!node) || [];
+  // const onUpdateAct = (act: Act) => {
+  //   // setSelectedAct(act.id);
+  // };
 
-  const onUpdateAct = (act: Act) => {
-    // setSelectedAct(act.id);
-  };
+  if (!data) {
+    return null;
+  }
 
   return (
     <Page>
-      <Navigation />
-      <Sidebar
-        packId={packId || ""}
-        acts={newActs}
-        selectedAct={selectedAct}
-        setSelectedAct={setSelectedAct}
-      />
-      <Content>
-        <ActPreview selectedAct={selectedAct} onUpdateAct={onUpdateAct} />
-      </Content>
+      {data.pack && (
+        <>
+          <Navigation pack={data.pack} />
+          <Sidebar
+            pack={data.pack}
+            selectedAct={selectedAct}
+            setSelectedAct={setSelectedActId}
+          />
+        </>
+      )}
+      <Content>{data.act && <ActPreview act={data.act} />}</Content>
       <Footer>
         <QuestionTemplate />
         <QuestionTemplate />

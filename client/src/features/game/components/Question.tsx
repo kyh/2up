@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import { Button } from "components";
-import { Act } from "features/gamemaster/PackCreatorPage";
 
 type QuestionProps = {
   instruction?: string;
@@ -119,7 +118,7 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
 // TODO: Get answer types from backend
 const EditableType: React.FC<{
   onSelectType: (
-    _act: Pick<Act, "questionType" | "question">,
+    _act: Pick<any, "questionType" | "question">,
     _save: boolean
   ) => void;
 }> = ({ onSelectType, children }) => {

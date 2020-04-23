@@ -53,7 +53,7 @@ export const PackDetailsPage = () => {
 
   return (
     <Page>
-      <Navigation />
+      {/* <Navigation /> */}
       <PackDetailsPageContent>
         <Link className="back-link" to="/gamemaster">
           &#171; Back to packs

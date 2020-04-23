@@ -52,7 +52,7 @@ const PacksList = () => {
 export const PackDiscoverPage = () => {
   return (
     <Page>
-      <Navigation />
+      {/* <Navigation /> */}
       <Content>
         <SearchBox>
           <h3>Browse all 30+ packs</h3>

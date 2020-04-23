@@ -1,13 +1,30 @@
 import React, { useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
+import { useFragment } from "react-relay/hooks";
+import graphql from "babel-plugin-relay/macro";
 
 import { Box, Button, Icon, Modal } from "components";
+import { Navigation_pack$key } from "./__generated__/Navigation_pack.graphql";
 
-export const Navigation = () => {
+type Props = {
+  pack: Navigation_pack$key;
+};
+
+export const Navigation = ({ pack }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const editMatch = useRouteMatch<{ packId: string }>(
     "/gamemaster/:packId/edit"
+  );
+
+  const data = useFragment(
+    graphql`
+      fragment Navigation_pack on Pack {
+        id
+        name
+      }
+    `,
+    pack
   );
 
   return (
@@ -25,7 +42,7 @@ export const Navigation = () => {
                 <Icon icon="pencil" />
               </Button>
             </div>
-            <input className="pack-title" defaultValue="Some Pack Name" />
+            <input className="pack-title" defaultValue={data.name} />
             <div className="empty" />
           </div>
           <Modal
