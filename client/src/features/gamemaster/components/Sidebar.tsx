@@ -6,16 +6,16 @@ import {
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
+import { useAlert } from "react-alert";
+import { useFragment } from "react-relay/hooks";
 
 import { Button, Icon } from "components";
-import { useAlert } from "react-alert";
 import { ActsTableModal } from "features/gamemaster/components/ActsTableModal";
 
 import graphql from "babel-plugin-relay/macro";
-import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation.graphql";
-import { useMutation } from "utils/useMutation";
-import { useFragment } from "react-relay/hooks";
 import { ConnectionHandler } from "relay-runtime";
+import { useMutation } from "utils/useMutation";
+import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation.graphql";
 import { Sidebar_pack$key } from "./__generated__/Sidebar_pack.graphql";
 
 // const reorder = (list: any[], startIndex: number, endIndex: number) => {

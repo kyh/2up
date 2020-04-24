@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Button, Input, Modal } from "components";
-import { Act } from "features/gamemaster/PackCreatorPage";
 
 type Props = {
   open: boolean;
   setOpen: (_isOpen: boolean) => void;
-  acts: Act[];
+  acts: any; // TODO: type properly with fragments
 };
 
 export const ActsTableModal: React.FC<Props> = ({
@@ -30,7 +29,11 @@ export const ActsTableModal: React.FC<Props> = ({
           <div className="answer">Answer Type</div>
           <div className="answer-type">Answer</div>
         </div>
-        {acts.map((act: Act) => {
+        {acts?.map((edge: any) => {
+          const act = edge?.node;
+          if (!act) {
+            return;
+          }
           return (
             <div className="row" key={act.id}>
               <div className="instruction">
