@@ -1,6 +1,7 @@
 defmodule Web.GraphQL.Schema do
   use Absinthe.Schema
   use Absinthe.Relay.Schema, :modern
+  use Absinthe.Relay.Schema.Notation, :modern
   import Absinthe.Resolution.Helpers, only: [dataloader: 1, dataloader: 3]
 
   import_types(Web.GraphQL.Types.{
@@ -13,7 +14,26 @@ defmodule Web.GraphQL.Schema do
     GameTypes
   })
 
-  query(do: import_fields(:query_type))
+  query do
+    import_fields(:query_type)
+
+    node field do
+      resolve(fn
+        %{type: :act, id: id}, _ ->
+          {:ok, Database.Repo.get(Database.Catalog.Act, id)}
+
+        %{type: :pack, id: id}, _ ->
+          {:ok, Database.Repo.get(Database.Live.Pack, id)}
+
+        %{type: :answer_type, id: id}, _ ->
+          {:ok, Database.Repo.get(Database.Catalog.AnswerType, id)}
+
+        %{type: :question_type, id: id}, _ ->
+          {:ok, Database.Repo.get(Database.Catalog.QuestionType, id)}
+      end)
+    end
+  end
+
   mutation(do: import_fields(:mutation_type))
 
   def context(ctx) do

@@ -4,17 +4,19 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ActPreview_act = {
-    readonly id: string;
-    readonly question: string;
-    readonly answer: string | null;
-    readonly questionType: {
+    readonly act: {
         readonly id: string;
-        readonly slug: string;
-    };
-    readonly answerType: {
-        readonly id: string;
-        readonly slug: string;
-    };
+        readonly question: string;
+        readonly answer: string | null;
+        readonly questionType: {
+            readonly id: string;
+            readonly slug: string;
+        };
+        readonly answerType: {
+            readonly id: string;
+            readonly slug: string;
+        };
+    } | null;
     readonly " $refType": "ActPreview_act";
 };
 export type ActPreview_act$data = ActPreview_act;
@@ -46,47 +48,77 @@ v1 = [
 return {
   "kind": "Fragment",
   "name": "ActPreview_act",
-  "type": "Act",
-  "metadata": null,
-  "argumentDefinitions": [],
+  "type": "RootQueryType",
+  "metadata": {
+    "refetch": {
+      "connection": null,
+      "operation": require('./SidebarActsQuery.graphql.ts'),
+      "fragmentPathInResult": []
+    }
+  },
+  "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "actId",
+      "type": "ID!",
+      "defaultValue": null
+    }
+  ],
   "selections": [
-    (v0/*: any*/),
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "question",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "answer",
-      "args": null,
-      "storageKey": null
-    },
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "questionType",
+      "name": "act",
       "storageKey": null,
-      "args": null,
-      "concreteType": "QuestionType",
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "id",
+          "variableName": "actId"
+        }
+      ],
+      "concreteType": "Act",
       "plural": false,
-      "selections": (v1/*: any*/)
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "answerType",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "AnswerType",
-      "plural": false,
-      "selections": (v1/*: any*/)
+      "selections": [
+        (v0/*: any*/),
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "question",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "answer",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "questionType",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "QuestionType",
+          "plural": false,
+          "selections": (v1/*: any*/)
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "answerType",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "AnswerType",
+          "plural": false,
+          "selections": (v1/*: any*/)
+        }
+      ]
     }
   ]
 };
 })();
-(node as any).hash = '58885010b17316a64f9436a8a9e0df27';
+(node as any).hash = 'd7c5c23517dea479079a2f14c9139907';
 export default node;
