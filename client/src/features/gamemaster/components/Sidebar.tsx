@@ -28,7 +28,7 @@ import { Sidebar_pack$key } from "./__generated__/Sidebar_pack.graphql";
 
 type Props = {
   pack: Sidebar_pack$key;
-  selectedAct?: any;
+  selectedActId: string;
   setSelectedAct(act: any): void;
 };
 
@@ -54,7 +54,7 @@ const actCreateMutation = graphql`
 
 export const Sidebar: React.FC<Props> = ({
   pack,
-  selectedAct,
+  selectedActId,
   setSelectedAct,
 }) => {
   const alert = useAlert();
@@ -71,12 +71,14 @@ export const Sidebar: React.FC<Props> = ({
           edges {
             node {
               id
-              answer
               question
+              answer
               questionType {
+                id
                 slug
               }
               answerType {
+                id
                 slug
               }
             }
@@ -88,7 +90,7 @@ export const Sidebar: React.FC<Props> = ({
   );
 
   const acts = data?.acts?.edges;
-  const packId = data.id;
+  const packId = data?.id;
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -187,7 +189,7 @@ export const Sidebar: React.FC<Props> = ({
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          isSelected={selectedAct?.id === act.id}
+                          isSelected={selectedActId === act.id}
                           style={{ ...provided.draggableProps.style }}
                         >
                           <div className="left" onClick={() => selectAct(act)}>

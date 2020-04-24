@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4f41a41202a1d7bcbe8eed05f3f3eff3 */
+/* @relayHash 27dd14abf758d4b68f92acdfae1faf63 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -9,12 +9,7 @@ export type PackCreatorPagePackQueryVariables = {
     actId: string;
 };
 export type PackCreatorPagePackQueryResponse = {
-    readonly pack: {
-        readonly " $fragmentRefs": FragmentRefs<"Navigation_pack" | "Sidebar_pack">;
-    } | null;
-    readonly act: {
-        readonly " $fragmentRefs": FragmentRefs<"ActPreview_act">;
-    } | null;
+    readonly " $fragmentRefs": FragmentRefs<"PackCreatorPage_view">;
 };
 export type PackCreatorPagePackQuery = {
     readonly response: PackCreatorPagePackQueryResponse;
@@ -28,28 +23,22 @@ query PackCreatorPagePackQuery(
   $packId: ID!
   $actId: ID!
 ) {
-  pack(id: $packId) {
-    ...Navigation_pack
-    ...Sidebar_pack
-    id
-  }
-  act(id: $actId) {
-    ...ActPreview_act
-    id
-  }
+  ...PackCreatorPage_view_1NRrWQ
 }
 
-fragment ActPreview_act on Act {
-  id
-  question
-  answer
-  questionType {
+fragment ActPreview_act_Bzqxt on RootQueryType {
+  act(id: $actId) {
     id
-    slug
-  }
-  answerType {
-    id
-    slug
+    question
+    answer
+    questionType {
+      id
+      slug
+    }
+    answerType {
+      id
+      slug
+    }
   }
 }
 
@@ -58,21 +47,30 @@ fragment Navigation_pack on Pack {
   name
 }
 
+fragment PackCreatorPage_view_1NRrWQ on RootQueryType {
+  pack(id: $packId) {
+    ...Navigation_pack
+    ...Sidebar_pack
+    id
+  }
+  ...ActPreview_act_Bzqxt
+}
+
 fragment Sidebar_pack on Pack {
   id
   acts(first: 100) {
     edges {
       node {
         id
-        answer
         question
+        answer
         questionType {
-          slug
           id
+          slug
         }
         answerType {
-          slug
           id
+          slug
         }
         __typename
       }
@@ -101,63 +99,64 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "id",
-    "variableName": "packId"
-  }
-],
-v2 = [
-  {
-    "kind": "Variable",
-    "name": "id",
-    "variableName": "actId"
-  }
-],
-v3 = {
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v4 = [
+v2 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 100
   }
 ],
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "answer",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "question",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "answer",
   "args": null,
   "storageKey": null
 },
-v8 = [
-  (v7/*: any*/),
-  (v3/*: any*/)
+v5 = [
+  (v1/*: any*/),
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "slug",
+    "args": null,
+    "storageKey": null
+  }
 ],
-v9 = [
-  (v3/*: any*/),
-  (v7/*: any*/)
-];
+v6 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "questionType",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "QuestionType",
+  "plural": false,
+  "selections": (v5/*: any*/)
+},
+v7 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "answerType",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "AnswerType",
+  "plural": false,
+  "selections": (v5/*: any*/)
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -168,39 +167,18 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "pack",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Pack",
-        "plural": false,
-        "selections": [
+        "kind": "FragmentSpread",
+        "name": "PackCreatorPage_view",
+        "args": [
           {
-            "kind": "FragmentSpread",
-            "name": "Navigation_pack",
-            "args": null
+            "kind": "Variable",
+            "name": "actId",
+            "variableName": "actId"
           },
           {
-            "kind": "FragmentSpread",
-            "name": "Sidebar_pack",
-            "args": null
-          }
-        ]
-      },
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "act",
-        "storageKey": null,
-        "args": (v2/*: any*/),
-        "concreteType": "Act",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "FragmentSpread",
-            "name": "ActPreview_act",
-            "args": null
+            "kind": "Variable",
+            "name": "packId",
+            "variableName": "packId"
           }
         ]
       }
@@ -216,11 +194,17 @@ return {
         "alias": null,
         "name": "pack",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": [
+          {
+            "kind": "Variable",
+            "name": "id",
+            "variableName": "packId"
+          }
+        ],
         "concreteType": "Pack",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
+          (v1/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -233,7 +217,7 @@ return {
             "alias": null,
             "name": "acts",
             "storageKey": "acts(first:100)",
-            "args": (v4/*: any*/),
+            "args": (v2/*: any*/),
             "concreteType": "ActConnection",
             "plural": false,
             "selections": [
@@ -255,29 +239,11 @@ return {
                     "concreteType": "Act",
                     "plural": false,
                     "selections": [
+                      (v1/*: any*/),
                       (v3/*: any*/),
-                      (v5/*: any*/),
+                      (v4/*: any*/),
                       (v6/*: any*/),
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "questionType",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "QuestionType",
-                        "plural": false,
-                        "selections": (v8/*: any*/)
-                      },
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "answerType",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "AnswerType",
-                        "plural": false,
-                        "selections": (v8/*: any*/)
-                      },
+                      (v7/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -327,7 +293,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "acts",
-            "args": (v4/*: any*/),
+            "args": (v2/*: any*/),
             "handle": "connection",
             "key": "PackCreatorPage_acts",
             "filters": []
@@ -339,33 +305,21 @@ return {
         "alias": null,
         "name": "act",
         "storageKey": null,
-        "args": (v2/*: any*/),
+        "args": [
+          {
+            "kind": "Variable",
+            "name": "id",
+            "variableName": "actId"
+          }
+        ],
         "concreteType": "Act",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
           (v3/*: any*/),
+          (v4/*: any*/),
           (v6/*: any*/),
-          (v5/*: any*/),
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "questionType",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "QuestionType",
-            "plural": false,
-            "selections": (v9/*: any*/)
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "answerType",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "AnswerType",
-            "plural": false,
-            "selections": (v9/*: any*/)
-          }
+          (v7/*: any*/)
         ]
       }
     ]
@@ -374,10 +328,10 @@ return {
     "operationKind": "query",
     "name": "PackCreatorPagePackQuery",
     "id": null,
-    "text": "query PackCreatorPagePackQuery(\n  $packId: ID!\n  $actId: ID!\n) {\n  pack(id: $packId) {\n    ...Navigation_pack\n    ...Sidebar_pack\n    id\n  }\n  act(id: $actId) {\n    ...ActPreview_act\n    id\n  }\n}\n\nfragment ActPreview_act on Act {\n  id\n  question\n  answer\n  questionType {\n    id\n    slug\n  }\n  answerType {\n    id\n    slug\n  }\n}\n\nfragment Navigation_pack on Pack {\n  id\n  name\n}\n\nfragment Sidebar_pack on Pack {\n  id\n  acts(first: 100) {\n    edges {\n      node {\n        id\n        answer\n        question\n        questionType {\n          slug\n          id\n        }\n        answerType {\n          slug\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n",
+    "text": "query PackCreatorPagePackQuery(\n  $packId: ID!\n  $actId: ID!\n) {\n  ...PackCreatorPage_view_1NRrWQ\n}\n\nfragment ActPreview_act_Bzqxt on RootQueryType {\n  act(id: $actId) {\n    id\n    question\n    answer\n    questionType {\n      id\n      slug\n    }\n    answerType {\n      id\n      slug\n    }\n  }\n}\n\nfragment Navigation_pack on Pack {\n  id\n  name\n}\n\nfragment PackCreatorPage_view_1NRrWQ on RootQueryType {\n  pack(id: $packId) {\n    ...Navigation_pack\n    ...Sidebar_pack\n    id\n  }\n  ...ActPreview_act_Bzqxt\n}\n\nfragment Sidebar_pack on Pack {\n  id\n  acts(first: 100) {\n    edges {\n      node {\n        id\n        question\n        answer\n        questionType {\n          id\n          slug\n        }\n        answerType {\n          id\n          slug\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'd410a0e04aef34c8dc8087d1eda22aa9';
+(node as any).hash = '0bf8636951fcf5e3486205d7e22f8b88';
 export default node;

@@ -158,6 +158,12 @@ type RootMutationType {
 type RootQueryType {
   act(id: ID!): Act
   answerTypes: [AnswerType]
+
+  """Fetches an object given its ID"""
+  node(
+    """The id of an object."""
+    id: ID!
+  ): Node
   pack(id: ID!): Pack
   packs(after: String, before: String, first: Int, last: Int): PackConnection
   questionTypes: [QuestionType]

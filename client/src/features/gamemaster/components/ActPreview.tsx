@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useAlert } from "react-alert";
 import styled from "styled-components";
 import graphql from "babel-plugin-relay/macro";
-import { useFragment } from "react-relay/hooks";
 
 import { useMutation } from "utils/useMutation";
 import { EditableQuestion } from "features/game/components/Question";
 import { EditableAnswer } from "features/game/components/Answer";
+import { useRefetchableFragment } from "react-relay/hooks";
 
 import monitor from "./monitor.svg";
 
@@ -35,40 +35,49 @@ const actUpdateMutation = graphql`
 
 type Props = {
   act: ActPreview_act$key;
+  selectedActId: string;
 };
 
-export const ActPreview: React.FC<Props> = ({ act }) => {
+export const ActPreview: React.FC<Props> = ({ act, selectedActId }) => {
   const alert = useAlert();
 
-  const data = useFragment(
+  const [data, refetch] = useRefetchableFragment(
     graphql`
-      fragment ActPreview_act on Act {
-        id
-        question
-        answer
-        questionType {
+      fragment ActPreview_act on RootQueryType
+        @argumentDefinitions(actId: { type: "ID!" })
+        @refetchable(queryName: "SidebarActsQuery") {
+        act(id: $actId) {
           id
-          slug
-        }
-        answerType {
-          id
-          slug
+          question
+          answer
+          questionType {
+            id
+            slug
+          }
+          answerType {
+            id
+            slug
+          }
         }
       }
     `,
     act
   );
 
-  console.log("hm", data);
-
-  const [editableAct, setEditableAct] = useState(data);
+  const [editableAct, setEditableAct] = useState(data?.act);
   const [actUpdate, isUpdatingAct] = useMutation<ActPreviewActUpdateMutation>(
     actUpdateMutation
   );
 
   useEffect(() => {
-    setEditableAct(data);
-  }, [act]);
+    if (data && data.act) {
+      setEditableAct(data.act);
+    }
+  }, [data?.act]);
+
+  useEffect(() => {
+    refetch({ actId: selectedActId });
+  }, [selectedActId]);
 
   const onChange = (newActInfo: any, save?: boolean) => {
     const newAct = { ...editableAct, ...newActInfo };
