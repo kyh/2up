@@ -35,7 +35,7 @@
 
 Before we start, make sure you have [Node.js](https://nodejs.org/en/download/), [Elixir](https://elixir-lang.org/install.html), and [Postgres](https://www.postgresql.org/download/) installed on your machine
 
-Once installed, copy and paste the `.env.example` to `.env` and update your enviroment keys
+Once installed, copy and paste the `.env.example` to `.env` and update your environment keys
 
 Then run:
 
@@ -51,7 +51,7 @@ make seeds
 # Start the api server
 make phx
 
-# In a seperate terminal window
+# In a separate terminal window
 make react
 ```
 
