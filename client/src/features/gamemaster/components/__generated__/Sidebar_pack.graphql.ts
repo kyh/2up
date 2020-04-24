@@ -9,12 +9,14 @@ export type Sidebar_pack = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
-                readonly answer: string | null;
                 readonly question: string;
+                readonly answer: string | null;
                 readonly questionType: {
+                    readonly id: string;
                     readonly slug: string;
                 };
                 readonly answerType: {
+                    readonly id: string;
                     readonly slug: string;
                 };
             } | null;
@@ -39,6 +41,7 @@ var v0 = {
   "storageKey": null
 },
 v1 = [
+  (v0/*: any*/),
   {
     "kind": "ScalarField",
     "alias": null,
@@ -97,14 +100,14 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "answer",
+                  "name": "question",
                   "args": null,
                   "storageKey": null
                 },
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "question",
+                  "name": "answer",
                   "args": null,
                   "storageKey": null
                 },
@@ -176,5 +179,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7e5276abdbbe6d86b55ca1baa5756b1b';
+(node as any).hash = 'a9e94945aa2e8763ea5e73ce2d10b1f5';
 export default node;
