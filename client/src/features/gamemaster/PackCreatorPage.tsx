@@ -8,46 +8,27 @@ import { ActPreview } from "features/gamemaster/components/ActPreview";
 import { useLazyLoadQuery, useFragment } from "react-relay/hooks";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery.graphql";
-import { PackCreatorPage_view$key } from "./__generated__/PackCreatorPage_view.graphql";
 import { Navigation } from "./components/Navigation";
 
 const PackQuery = graphql`
   query PackCreatorPagePackQuery($packId: ID!, $actId: ID!) {
-    ...PackCreatorPage_view @arguments(packId: $packId, actId: $actId)
+    pack(id: $packId) {
+      ...Navigation_pack
+      ...Sidebar_pack
+    }
+    ...ActPreview_act @arguments(actId: $actId)
   }
 `;
 
-export const PackCreatorPageContainer = () => {
+export const PackCreatorPage = () => {
+  const [selectedActId, setSelectedActId] = useState("");
+
   const { packId } = useParams();
 
   const data = useLazyLoadQuery<PackCreatorPagePackQuery>(PackQuery, {
     packId: packId || "",
     actId: "", // TODO: if not specified grab the first id
   });
-
-  return <PackCreatorPage view={data} />;
-};
-
-type PackCreatorPageProps = {
-  view: PackCreatorPage_view$key;
-};
-
-export const PackCreatorPage = ({ view }: PackCreatorPageProps) => {
-  const [selectedActId, setSelectedActId] = useState("");
-
-  const data = useFragment(
-    graphql`
-      fragment PackCreatorPage_view on RootQueryType
-        @argumentDefinitions(packId: { type: "ID!" }, actId: { type: "ID!" }) {
-        pack(id: $packId) {
-          ...Navigation_pack
-          ...Sidebar_pack
-        }
-        ...ActPreview_act @arguments(actId: $actId)
-      }
-    `,
-    view
-  );
 
   // const onUpdateAct = (act: Act) => {
   //   // setSelectedAct(act.id);
