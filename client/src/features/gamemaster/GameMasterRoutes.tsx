@@ -3,7 +3,7 @@ import { Route } from "react-router-dom";
 
 import { PackDiscoverPage } from "features/gamemaster/PackDiscoverPage";
 import { PackDetailsPage } from "features/gamemaster/PackDetailsPage";
-import { PackCreatorPageContainer } from "features/gamemaster/PackCreatorPage";
+import { PackCreatorPage } from "features/gamemaster/PackCreatorPage";
 
 export const GameMasterRoutes: React.FC = () => {
   return (
@@ -16,7 +16,7 @@ export const GameMasterRoutes: React.FC = () => {
       </Route>
       <Route exact path="/gamemaster/:packId/edit">
         <Suspense fallback="Loading...">
-          <PackCreatorPageContainer />
+          <PackCreatorPage />
         </Suspense>
       </Route>
     </>
