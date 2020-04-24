@@ -33,7 +33,6 @@ type PackCreatorPageProps = {
 };
 
 export const PackCreatorPage = ({ view }: PackCreatorPageProps) => {
-  const [selectedAct, setSelectedAct] = useState<any | undefined>(undefined);
   const [selectedActId, setSelectedActId] = useState("");
 
   const data = useFragment(
