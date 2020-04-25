@@ -16,7 +16,7 @@ defmodule Database.Live.Pack do
   end
 
   def changeset(pack, attrs) do
-    required_fields = [:name, :is_random, :length, :description, :image_url]
+    required_fields = [:name, :is_random, :length, :description]
 
     pack
     |> cast(attrs, required_fields)
