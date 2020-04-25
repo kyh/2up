@@ -224,7 +224,8 @@ Enum.each(drawing_questions, fn x ->
   {_, act} =
     Catalog.act_create(user, text_question_type, drawing_answer_type, %{
       question: Enum.at(x, 0),
-      answer: Enum.at(x, 1)
+      answer: Enum.at(x, 1),
+      instruction: "Draw this"
     })
 
   Catalog.act_tag_create(act, drawing_tag)
