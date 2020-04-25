@@ -39,7 +39,11 @@ const PacksList = () => {
             to={`/gamemaster/${pack.id}?packName=${pack.name}`}
             className="pack-item"
           >
-            <img src={pack.imageUrl || ""} alt={pack.name} />
+            {pack.imageUrl ? (
+              <img src={pack.imageUrl || ""} alt={pack.name} />
+            ) : (
+              <DefaultImage />
+            )}
             <h4>{pack.name}</h4>
             <p>{pack.description}</p>
           </Link>
@@ -52,7 +56,7 @@ const PacksList = () => {
 export const PackDiscoverPage = () => {
   return (
     <Page>
-      {/* <Navigation /> */}
+      <Navigation />
       <Content>
         <SearchBox>
           <h3>Browse all 30+ packs</h3>
@@ -126,4 +130,11 @@ const PackSection = styled.section`
       color: ${({ theme }) => theme.ui.lightText};
     }
   }
+`;
+
+const DefaultImage = styled.div`
+  width: 100%;
+  height: 160px;
+  background-color: #bcc7ff;
+  margin: ${({ theme }) => `0 auto ${theme.spacings(2)}`};
 `;

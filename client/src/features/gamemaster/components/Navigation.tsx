@@ -8,7 +8,7 @@ import { Box, Button, Icon, Modal } from "components";
 import { Navigation_pack$key } from "./__generated__/Navigation_pack.graphql";
 
 type Props = {
-  pack: Navigation_pack$key;
+  pack?: Navigation_pack$key;
 };
 
 export const Navigation = ({ pack }: Props) => {
@@ -24,7 +24,7 @@ export const Navigation = ({ pack }: Props) => {
         name
       }
     `,
-    pack
+    pack || null
   );
 
   return (
@@ -42,7 +42,7 @@ export const Navigation = ({ pack }: Props) => {
                 <Icon icon="pencil" />
               </Button>
             </div>
-            <input className="pack-title" defaultValue={data.name} />
+            <input className="pack-title" defaultValue={data?.name} />
             <div className="empty" />
           </div>
           <Modal
