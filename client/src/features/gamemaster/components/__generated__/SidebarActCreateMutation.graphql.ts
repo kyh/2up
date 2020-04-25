@@ -1,11 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a54cd153ae0f73fce7b102f5baa4c084 */
+/* @relayHash c7088f5c7aa1e342133294e3c4224a52 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ActCreateInput = {
     answer?: string | null;
     answerTypeId?: string | null;
+    instruction?: string | null;
     order?: number | null;
     packId?: string | null;
     question?: string | null;
@@ -20,6 +21,7 @@ export type SidebarActCreateMutationResponse = {
             readonly id: string;
             readonly question: string;
             readonly answer: string | null;
+            readonly instruction: string | null;
             readonly questionType: {
                 readonly id: string;
                 readonly slug: string;
@@ -47,6 +49,7 @@ mutation SidebarActCreateMutation(
       id
       question
       answer
+      instruction
       questionType {
         id
         slug
@@ -127,6 +130,13 @@ v3 = [
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "instruction",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "questionType",
@@ -171,10 +181,10 @@ return {
     "operationKind": "mutation",
     "name": "SidebarActCreateMutation",
     "id": null,
-    "text": "mutation SidebarActCreateMutation(\n  $input: ActCreateInput!\n) {\n  actCreate(input: $input) {\n    act {\n      id\n      question\n      answer\n      questionType {\n        id\n        slug\n      }\n      answerType {\n        id\n        slug\n      }\n    }\n  }\n}\n",
+    "text": "mutation SidebarActCreateMutation(\n  $input: ActCreateInput!\n) {\n  actCreate(input: $input) {\n    act {\n      id\n      question\n      answer\n      instruction\n      questionType {\n        id\n        slug\n      }\n      answerType {\n        id\n        slug\n      }\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '43dad6add54e300bc76992475d388a2b';
+(node as any).hash = 'fb1831cffe3508aef8050e9ba76e8e1d';
 export default node;

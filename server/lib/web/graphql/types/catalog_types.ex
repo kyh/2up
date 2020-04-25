@@ -11,6 +11,7 @@ defmodule Web.GraphQL.Types.CatalogTypes do
   node object(:act) do
     field :question, non_null(:string)
     field :answer, :string
+    field :instruction, :string
 
     field :question_type, non_null(:question_type), resolve: dataloader(QuestionType)
     field :answer_type, non_null(:answer_type), resolve: dataloader(AnswerType)

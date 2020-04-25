@@ -20,6 +20,7 @@ const actUpdateMutation = graphql`
         id
         question
         answer
+        instruction
         questionType {
           id
           slug
@@ -50,6 +51,7 @@ export const ActPreview: React.FC<Props> = ({ act, selectedActId }) => {
           id
           question
           answer
+          instruction
           questionType {
             id
             slug
@@ -97,6 +99,7 @@ export const ActPreview: React.FC<Props> = ({ act, selectedActId }) => {
           id: editableAct.id,
           question: editableAct.question,
           answer: editableAct.answer,
+          instruction: editableAct.instruction,
         },
       },
       onCompleted: (data) => {
@@ -115,7 +118,7 @@ export const ActPreview: React.FC<Props> = ({ act, selectedActId }) => {
           {!!data && (
             <>
               <EditableQuestion
-                // instruction={editableAct?.instruction}
+                instruction={editableAct?.instruction || ""}
                 question={editableAct?.question}
                 questionType={editableAct?.questionType.slug}
                 onChange={onChange}

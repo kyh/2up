@@ -39,6 +39,7 @@ const actCreateMutation = graphql`
         id
         question
         answer
+        instruction
         questionType {
           id
           slug
@@ -73,6 +74,7 @@ export const Sidebar: React.FC<Props> = ({
               id
               question
               answer
+              instruction
               questionType {
                 id
                 slug
@@ -126,8 +128,7 @@ export const Sidebar: React.FC<Props> = ({
           packId,
           // TODO: Remove hard coded values
           order: 1,
-          question: "hi",
-          answer: "hey",
+          question: "",
           questionTypeId: "UXVlc3Rpb25UeXBlOjE=",
           answerTypeId: "QW5zd2VyVHlwZToz",
         },

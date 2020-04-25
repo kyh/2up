@@ -9,6 +9,7 @@ type Act implements Node {
 
   """The ID of an object"""
   id: ID!
+  instruction: String
   question: String!
   questionType: QuestionType!
 }
@@ -21,6 +22,7 @@ type ActConnection {
 input ActCreateInput {
   answer: String
   answerTypeId: ID
+  instruction: String
   order: Int
   packId: ID
   question: String
@@ -43,6 +45,7 @@ input ActUpdateInput {
   answer: String
   answerTypeId: ID
   id: ID
+  instruction: String
   order: Int
   question: String
   questionTypeId: ID

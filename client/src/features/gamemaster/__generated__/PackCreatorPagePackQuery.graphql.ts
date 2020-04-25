@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 993b9d4dba68661eb6302c8bd7a64c38 */
+/* @relayHash 39b3519816f3f0fc9560ed94f00b66b3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,7 @@ fragment ActPreview_act_Bzqxt on RootQueryType {
     id
     question
     answer
+    instruction
     questionType {
       id
       slug
@@ -63,6 +64,7 @@ fragment Sidebar_pack on Pack {
         id
         question
         answer
+        instruction
         questionType {
           id
           slug
@@ -133,7 +135,14 @@ v5 = {
   "args": null,
   "storageKey": null
 },
-v6 = [
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "instruction",
+  "args": null,
+  "storageKey": null
+},
+v7 = [
   (v2/*: any*/),
   {
     "kind": "ScalarField",
@@ -143,7 +152,7 @@ v6 = [
     "storageKey": null
   }
 ],
-v7 = {
+v8 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "questionType",
@@ -151,9 +160,9 @@ v7 = {
   "args": null,
   "concreteType": "QuestionType",
   "plural": false,
-  "selections": (v6/*: any*/)
+  "selections": (v7/*: any*/)
 },
-v8 = {
+v9 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "answerType",
@@ -161,7 +170,7 @@ v8 = {
   "args": null,
   "concreteType": "AnswerType",
   "plural": false,
-  "selections": (v6/*: any*/)
+  "selections": (v7/*: any*/)
 };
 return {
   "kind": "Request",
@@ -258,8 +267,9 @@ return {
                       (v2/*: any*/),
                       (v4/*: any*/),
                       (v5/*: any*/),
-                      (v7/*: any*/),
+                      (v6/*: any*/),
                       (v8/*: any*/),
+                      (v9/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -334,8 +344,9 @@ return {
           (v2/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
-          (v7/*: any*/),
-          (v8/*: any*/)
+          (v6/*: any*/),
+          (v8/*: any*/),
+          (v9/*: any*/)
         ]
       }
     ]
@@ -344,7 +355,7 @@ return {
     "operationKind": "query",
     "name": "PackCreatorPagePackQuery",
     "id": null,
-    "text": "query PackCreatorPagePackQuery(\n  $packId: ID!\n  $actId: ID!\n) {\n  pack(id: $packId) {\n    ...Navigation_pack\n    ...Sidebar_pack\n    id\n  }\n  ...ActPreview_act_Bzqxt\n}\n\nfragment ActPreview_act_Bzqxt on RootQueryType {\n  act(id: $actId) {\n    id\n    question\n    answer\n    questionType {\n      id\n      slug\n    }\n    answerType {\n      id\n      slug\n    }\n  }\n}\n\nfragment Navigation_pack on Pack {\n  id\n  name\n}\n\nfragment Sidebar_pack on Pack {\n  id\n  acts(first: 100) {\n    edges {\n      node {\n        id\n        question\n        answer\n        questionType {\n          id\n          slug\n        }\n        answerType {\n          id\n          slug\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n",
+    "text": "query PackCreatorPagePackQuery(\n  $packId: ID!\n  $actId: ID!\n) {\n  pack(id: $packId) {\n    ...Navigation_pack\n    ...Sidebar_pack\n    id\n  }\n  ...ActPreview_act_Bzqxt\n}\n\nfragment ActPreview_act_Bzqxt on RootQueryType {\n  act(id: $actId) {\n    id\n    question\n    answer\n    instruction\n    questionType {\n      id\n      slug\n    }\n    answerType {\n      id\n      slug\n    }\n  }\n}\n\nfragment Navigation_pack on Pack {\n  id\n  name\n}\n\nfragment Sidebar_pack on Pack {\n  id\n  acts(first: 100) {\n    edges {\n      node {\n        id\n        question\n        answer\n        instruction\n        questionType {\n          id\n          slug\n        }\n        answerType {\n          id\n          slug\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n",
     "metadata": {}
   }
 };

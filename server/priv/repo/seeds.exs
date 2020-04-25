@@ -126,7 +126,8 @@ Enum.each(startups_questions, fn x ->
   {_, act} =
     Catalog.act_create(user, text_question_type, text_answer_type, %{
       question: Enum.at(x, 0),
-      answer: Enum.at(x, 1)
+      answer: Enum.at(x, 1),
+      instruction: "Give a one line description of this startup"
     })
 
   Catalog.act_tag_create(act, startups_tag)
@@ -159,7 +160,8 @@ Enum.each(sat_questions, fn x ->
   {_, act} =
     Catalog.act_create(user, text_question_type, text_answer_type, %{
       question: Enum.at(x, 0),
-      answer: Enum.at(x, 1)
+      answer: Enum.at(x, 1),
+      instruction: "Give a short definition of this word"
     })
 
   Catalog.act_tag_create(act, sat_tag)
@@ -190,7 +192,8 @@ Enum.each(color_questions, fn x ->
   {_, act} =
     Catalog.act_create(user, text_question_type, color_answer_type, %{
       question: Enum.at(x, 0),
-      answer: Enum.at(x, 1)
+      answer: Enum.at(x, 1),
+      instruction: "What color is this hex?"
     })
 
   Catalog.act_tag_create(act, color_tag)
