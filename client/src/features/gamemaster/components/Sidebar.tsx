@@ -194,7 +194,7 @@ export const Sidebar: React.FC<Props> = ({
                           style={{ ...provided.draggableProps.style }}
                         >
                           <div className="left" onClick={() => selectAct(act)}>
-                            {/* <div className="instruction">{act.instruction}</div> */}
+                            <div className="instruction">{act.instruction}</div>
                             <ActQuestion
                               questionType={act.questionType.slug}
                               question={act.question}
