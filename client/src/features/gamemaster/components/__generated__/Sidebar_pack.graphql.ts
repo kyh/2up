@@ -11,6 +11,7 @@ export type Sidebar_pack = {
                 readonly id: string;
                 readonly question: string;
                 readonly answer: string | null;
+                readonly instruction: string | null;
                 readonly questionType: {
                     readonly id: string;
                     readonly slug: string;
@@ -112,6 +113,13 @@ return {
                   "storageKey": null
                 },
                 {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "instruction",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
                   "kind": "LinkedField",
                   "alias": null,
                   "name": "questionType",
@@ -179,5 +187,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a9e94945aa2e8763ea5e73ce2d10b1f5';
+(node as any).hash = 'f7e4584f018066b0fe40dd61ce7650de';
 export default node;

@@ -8,6 +8,7 @@ export type ActPreview_act = {
         readonly id: string;
         readonly question: string;
         readonly answer: string | null;
+        readonly instruction: string | null;
         readonly questionType: {
             readonly id: string;
             readonly slug: string;
@@ -96,6 +97,13 @@ return {
           "storageKey": null
         },
         {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "instruction",
+          "args": null,
+          "storageKey": null
+        },
+        {
           "kind": "LinkedField",
           "alias": null,
           "name": "questionType",
@@ -120,5 +128,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd7c5c23517dea479079a2f14c9139907';
+(node as any).hash = '8440952bbede346dbbd162414415f1d1';
 export default node;

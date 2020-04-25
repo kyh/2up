@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6d225ccb4db0f2ddae0d6d7f9840aa74 */
+/* @relayHash 42e9fa639f01238c71d48ca88508cfb2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,7 @@ fragment ActPreview_act_Bzqxt on RootQueryType {
     id
     question
     answer
+    instruction
     questionType {
       id
       slug
@@ -125,6 +126,13 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "instruction",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "questionType",
@@ -152,7 +160,7 @@ return {
     "operationKind": "query",
     "name": "SidebarActsQuery",
     "id": null,
-    "text": "query SidebarActsQuery(\n  $actId: ID!\n) {\n  ...ActPreview_act_Bzqxt\n}\n\nfragment ActPreview_act_Bzqxt on RootQueryType {\n  act(id: $actId) {\n    id\n    question\n    answer\n    questionType {\n      id\n      slug\n    }\n    answerType {\n      id\n      slug\n    }\n  }\n}\n",
+    "text": "query SidebarActsQuery(\n  $actId: ID!\n) {\n  ...ActPreview_act_Bzqxt\n}\n\nfragment ActPreview_act_Bzqxt on RootQueryType {\n  act(id: $actId) {\n    id\n    question\n    answer\n    instruction\n    questionType {\n      id\n      slug\n    }\n    answerType {\n      id\n      slug\n    }\n  }\n}\n",
     "metadata": {
       "derivedFrom": "ActPreview_act",
       "isRefetchableQuery": true
@@ -160,5 +168,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'd7c5c23517dea479079a2f14c9139907';
+(node as any).hash = '8440952bbede346dbbd162414415f1d1';
 export default node;

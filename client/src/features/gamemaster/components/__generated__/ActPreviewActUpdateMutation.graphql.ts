@@ -1,12 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9a57076c5163d25185b3dd4c090a909a */
+/* @relayHash 2da80a2b3f78a776cdc75ff7a9511958 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ActUpdateInput = {
     answer?: string | null;
     answerTypeId?: string | null;
     id?: string | null;
+    instruction?: string | null;
     order?: number | null;
     question?: string | null;
     questionTypeId?: string | null;
@@ -20,6 +21,7 @@ export type ActPreviewActUpdateMutationResponse = {
             readonly id: string;
             readonly question: string;
             readonly answer: string | null;
+            readonly instruction: string | null;
             readonly questionType: {
                 readonly id: string;
                 readonly slug: string;
@@ -47,6 +49,7 @@ mutation ActPreviewActUpdateMutation(
       id
       question
       answer
+      instruction
       questionType {
         id
         slug
@@ -127,6 +130,13 @@ v3 = [
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "instruction",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "questionType",
@@ -171,10 +181,10 @@ return {
     "operationKind": "mutation",
     "name": "ActPreviewActUpdateMutation",
     "id": null,
-    "text": "mutation ActPreviewActUpdateMutation(\n  $input: ActUpdateInput!\n) {\n  actUpdate(input: $input) {\n    act {\n      id\n      question\n      answer\n      questionType {\n        id\n        slug\n      }\n      answerType {\n        id\n        slug\n      }\n    }\n  }\n}\n",
+    "text": "mutation ActPreviewActUpdateMutation(\n  $input: ActUpdateInput!\n) {\n  actUpdate(input: $input) {\n    act {\n      id\n      question\n      answer\n      instruction\n      questionType {\n        id\n        slug\n      }\n      answerType {\n        id\n        slug\n      }\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e959f1d68c91455bd98c5b4e7c717a3e';
+(node as any).hash = 'b6daf83c7f7be03e0dfb2b2344f8ec87';
 export default node;

@@ -88,6 +88,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :answer_type_id, :id
         field :question, :string
         field :answer, :string
+        field :instruction, :string
       end
 
       output do
@@ -112,6 +113,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :answer_type_id, :id
         field :question, :string
         field :answer, :string
+        field :instruction, :string
       end
 
       output do

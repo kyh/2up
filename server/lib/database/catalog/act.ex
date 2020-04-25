@@ -3,18 +3,18 @@ defmodule Database.Catalog.Act do
 
   schema "acts" do
     belongs_to :user, User
-    belongs_to :parent, Act
     belongs_to :question_type, QuestionType
     belongs_to :answer_type, AnswerType
 
     field :question, :string
     field :answer, :string
+    field :instruction, :string
 
     timestamps()
   end
 
   def changeset(act, attrs) do
-    required_fields = [:question, :answer]
+    required_fields = [:question, :answer, :instruction]
 
     act
     |> cast(attrs, required_fields)
