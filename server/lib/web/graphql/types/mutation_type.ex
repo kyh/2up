@@ -70,6 +70,9 @@ defmodule Web.GraphQL.Types.MutationType do
     payload field :pack_create do
       input do
         field :name, non_null(:string)
+        field :description, non_null(:string)
+        field :is_random, non_null(:boolean)
+        field :length, non_null(:integer)
       end
 
       output do

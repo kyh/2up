@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import graphql from "babel-plugin-relay/macro";
 import { useParams } from "react-router-dom";
+import { useLazyLoadQuery } from "react-relay/hooks";
 
 import { Sidebar } from "features/gamemaster/components/Sidebar";
 import { ActPreview } from "features/gamemaster/components/ActPreview";
-import { useLazyLoadQuery, useFragment } from "react-relay/hooks";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery.graphql";
 import { Navigation } from "./components/Navigation";

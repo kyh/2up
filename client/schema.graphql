@@ -109,6 +109,9 @@ type PackConnection {
 }
 
 input PackCreateInput {
+  description: String!
+  isRandom: Boolean!
+  length: Int!
   name: String!
 }
 
@@ -148,7 +151,7 @@ type RootMutationType {
   """Create new act and pack act"""
   actCreate(input: ActCreateInput!): ActCreatePayload
 
-  """Delete act and pack act"""
+  """Delete pack act and act (if no dependencies)"""
   actDelete(input: ActDeleteInput!): ActDeletePayload
 
   """Update act"""
@@ -174,8 +177,14 @@ type RootQueryType {
   act(id: ID!): Act
   answerTypes: [AnswerType]
   currentUser: User
+
+  """Fetches an object given its ID"""
+  node(
+    """The id of an object."""
+    id: ID!
+  ): Node
   pack(id: ID!): Pack
-  packs(after: String, before: String, first: Int, last: Int): PackConnection
+  packs(after: String, before: String, first: Int, last: Int, username: String): PackConnection
   questionTypes: [QuestionType]
 }
 

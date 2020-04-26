@@ -1,10 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { Provider as AlertProvider, transitions, positions } from "react-alert";
 
 import { ReactAlertTemplate } from "components";
-
 import { lightTheme, darkTheme } from "styles/theme";
 import { GlobalStyle } from "styles/global";
 
@@ -14,6 +13,7 @@ import { GameMasterRoutes } from "features/gamemaster/GameMasterRoutes";
 import { GameRoutes } from "features/game/GameRoutes";
 import { Signup } from "features/auth/Signup";
 import { Login } from "features/auth/Login";
+import { Profile } from "features/profile/Profile";
 
 const alertOptions = {
   position: positions.TOP_CENTER,
@@ -42,6 +42,11 @@ export const App: React.FC = () => {
           </Route>
           <Route path="/gamemaster">
             <GameMasterRoutes />
+          </Route>
+          <Route path="/:username">
+            <Suspense fallback="Loading...">
+              <Profile />
+            </Suspense>
           </Route>
           <Redirect to="/" />
         </Switch>
