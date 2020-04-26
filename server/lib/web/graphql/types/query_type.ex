@@ -1,12 +1,16 @@
 defmodule Web.GraphQL.Types.QueryType do
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation, :modern
-  alias Web.GraphQL.Resolvers.{Catalog, Live}
+  alias Web.GraphQL.Resolvers.{Accounts, Catalog, Live}
   alias Web.GraphQL.Middleware.Authenticate
 
   object :query_type do
     connection field :packs, node_type: :pack do
       resolve(&Live.pack_list/3)
+    end
+
+    field :current_user, :user do
+      resolve(&Accounts.current_user/3)
     end
 
     field :pack, :pack do

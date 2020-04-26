@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0b9b2424538506672376d5b638238caa */
+/* @relayHash 95823824458fcc8e37aeb27a565212d1 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type SessionCreateInput = {
@@ -34,6 +34,7 @@ mutation LoginSessionCreateMutation(
     user {
       username
       email
+      id
     }
     token
   }
@@ -51,55 +52,32 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "sessionCreate",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input"
-      }
-    ],
-    "concreteType": "SessionCreatePayload",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "user",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "User",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "username",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "token",
-        "args": null,
-        "storageKey": null
-      }
-    ]
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "username",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "email",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "token",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -108,19 +86,78 @@ return {
     "type": "RootMutationType",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "sessionCreate",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "SessionCreatePayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "user",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "User",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/)
+            ]
+          },
+          (v4/*: any*/)
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "LoginSessionCreateMutation",
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "sessionCreate",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "SessionCreatePayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "user",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "User",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          (v4/*: any*/)
+        ]
+      }
+    ]
   },
   "params": {
     "operationKind": "mutation",
     "name": "LoginSessionCreateMutation",
     "id": null,
-    "text": "mutation LoginSessionCreateMutation(\n  $input: SessionCreateInput!\n) {\n  sessionCreate(input: $input) {\n    user {\n      username\n      email\n    }\n    token\n  }\n}\n",
+    "text": "mutation LoginSessionCreateMutation(\n  $input: SessionCreateInput!\n) {\n  sessionCreate(input: $input) {\n    user {\n      username\n      email\n      id\n    }\n    token\n  }\n}\n",
     "metadata": {}
   }
 };

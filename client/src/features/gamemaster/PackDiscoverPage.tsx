@@ -132,7 +132,7 @@ const PackSection = styled.section`
   }
 `;
 
-const DefaultImage = styled.div`
+export const DefaultImage = styled.div`
   width: 100%;
   height: 160px;
   background-color: #bcc7ff;
