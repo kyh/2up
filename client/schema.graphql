@@ -91,7 +91,7 @@ type Pack implements Node {
   id: ID!
   imageUrl: String
   name: String!
-  user: User
+  user: User!
 }
 
 type PackConnection {
@@ -161,6 +161,7 @@ type RootMutationType {
 type RootQueryType {
   act(id: ID!): Act
   answerTypes: [AnswerType]
+  currentUser: User
 
   """Fetches an object given its ID"""
   node(
@@ -182,8 +183,11 @@ type SessionCreatePayload {
   user: User!
 }
 
-type User {
+type User implements Node {
   email: String!
+
+  """The ID of an object"""
+  id: ID!
   username: String!
 }
 

@@ -45,6 +45,7 @@ defmodule Web.GraphQL.Schema do
       |> Dataloader.add_source(Database.Catalog.Act, source)
       |> Dataloader.add_source(Database.Catalog.QuestionType, source)
       |> Dataloader.add_source(Database.Catalog.AnswerType, source)
+      |> Dataloader.add_source(Database.Accounts.User, source)
 
     Map.put(ctx, :loader, loader)
   end

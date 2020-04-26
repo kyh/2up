@@ -15,6 +15,9 @@ defmodule Web.GraphQL.Types.BaseTypes do
 
       %Database.Catalog.AnswerType{}, _ ->
         :answer_type
+
+      %Database.Accounts.User{}, _ ->
+        :user
     end)
   end
 end

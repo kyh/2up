@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 64935bc968bbec32eff688bef9071d4c */
+/* @relayHash c0cd38e73a572230573a77f18e723298 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UserCreateInput = {
@@ -35,6 +35,7 @@ mutation SignupUserCreateMutation(
     user {
       username
       email
+      id
     }
     token
   }
@@ -52,55 +53,32 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "userCreate",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input"
-      }
-    ],
-    "concreteType": "UserCreatePayload",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "user",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "User",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "username",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "token",
-        "args": null,
-        "storageKey": null
-      }
-    ]
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "username",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "email",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "token",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -109,19 +87,78 @@ return {
     "type": "RootMutationType",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "userCreate",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "UserCreatePayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "user",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "User",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/)
+            ]
+          },
+          (v4/*: any*/)
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "SignupUserCreateMutation",
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "userCreate",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "UserCreatePayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "user",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "User",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          (v4/*: any*/)
+        ]
+      }
+    ]
   },
   "params": {
     "operationKind": "mutation",
     "name": "SignupUserCreateMutation",
     "id": null,
-    "text": "mutation SignupUserCreateMutation(\n  $input: UserCreateInput!\n) {\n  userCreate(input: $input) {\n    user {\n      username\n      email\n    }\n    token\n  }\n}\n",
+    "text": "mutation SignupUserCreateMutation(\n  $input: UserCreateInput!\n) {\n  userCreate(input: $input) {\n    user {\n      username\n      email\n      id\n    }\n    token\n  }\n}\n",
     "metadata": {}
   }
 };

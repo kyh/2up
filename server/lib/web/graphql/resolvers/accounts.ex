@@ -27,4 +27,8 @@ defmodule Web.GraphQL.Resolvers.Accounts do
         {:ok, %{user: user, token: token}}
     end
   end
+
+  def current_user(_, args, %{context: %{current_user: user}}) do
+    {:ok, user}
+  end
 end

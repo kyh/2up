@@ -11,14 +11,34 @@ import { useMutation } from "utils/useMutation";
 import { useQueryParams } from "utils/queryUtils";
 
 import { PackDetailsPageGameCreateMutation } from "./__generated__/PackDetailsPageGameCreateMutation.graphql";
+import { PackDetailsPagePackQuery } from "./__generated__/PackDetailsPagePackQuery.graphql";
 
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
+import { useLazyLoadQuery } from "react-relay/hooks";
+import { DefaultImage } from "features/gamemaster/PackDiscoverPage";
 
 const GameCreateMutation = graphql`
   mutation PackDetailsPageGameCreateMutation($input: GameCreateInput!) {
     gameCreate(input: $input) {
       code
+    }
+  }
+`;
+
+const PackQuery = graphql`
+  query PackDetailsPagePackQuery($packId: ID!) {
+    currentUser {
+      id
+    }
+    pack(id: $packId) {
+      id
+      name
+      description
+      imageUrl
+      user {
+        id
+      }
     }
   }
 `;
@@ -33,6 +53,12 @@ export const PackDetailsPage = () => {
   const [gameCreate, isCreatingGame] = useMutation<
     PackDetailsPageGameCreateMutation
   >(GameCreateMutation);
+
+  const data = useLazyLoadQuery<PackDetailsPagePackQuery>(PackQuery, {
+    packId: packId || "",
+  });
+
+  const { pack, currentUser } = data || {};
 
   const onHostGame = () => {
     gameCreate({
@@ -60,20 +86,21 @@ export const PackDetailsPage = () => {
         </Link>
         <div className="pack-details">
           <GameCard>
-            <img
-              src="https://ds055uzetaobb.cloudfront.net/brioche/chapter/Logic_1_by_1_white-wRqCbD.png?width=320"
-              alt="Pack Name"
-            />
+            {pack?.imageUrl ? (
+              <img src={pack?.imageUrl || ""} alt={pack?.name} />
+            ) : (
+              <DefaultImage />
+            )}
             <Button onClick={onHostGame} disabled={isCreatingGame}>
               Host a game
             </Button>
-            <Link to={`/gamemaster/${packId}/edit`}>Edit Pack</Link>
+            {pack?.user?.id === currentUser?.id && (
+              <Link to={`/gamemaster/${packId}/edit`}>Edit Pack</Link>
+            )}
           </GameCard>
           <div className="description-container">
-            <h1 className="pack-name">Pack Name</h1>
-            <p className="pack-description">
-              A guided tour through our most beautiful and delightful puzzles.
-            </p>
+            <h1 className="pack-name">{pack?.name}</h1>
+            <p className="pack-description">{pack?.description}</p>
           </div>
         </div>
       </PackDetailsPageContent>

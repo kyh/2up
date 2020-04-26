@@ -5,12 +5,13 @@ defmodule Web.GraphQL.Types.LiveTypes do
   alias Absinthe.Relay.Connection
   alias Web.GraphQL.Resolvers.Live
   alias Database.Live.Pack
+  alias Database.Accounts.User
 
-  import Absinthe.Resolution.Helpers, only: [on_load: 2]
+  import Absinthe.Resolution.Helpers, only: [on_load: 2, dataloader: 1]
 
   node object(:pack) do
     field :name, non_null(:string)
-    field :user, :user
+    field :user, non_null(:user), resolve: dataloader(User)
     field :description, :string
     field :image_url, :string
 
