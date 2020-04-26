@@ -6,6 +6,7 @@ defmodule Web.GraphQL.Types.QueryType do
 
   object :query_type do
     connection field :packs, node_type: :pack do
+      arg(:username, :string)
       resolve(&Live.pack_list/3)
     end
 
