@@ -8,15 +8,16 @@ import {
 } from "react-beautiful-dnd";
 import { useAlert } from "react-alert";
 import { useFragment } from "react-relay/hooks";
+import graphql from "babel-plugin-relay/macro";
+import { ConnectionHandler } from "relay-runtime";
 
 import { Button, Icon } from "components";
 import { ActsTableModal } from "features/gamemaster/components/ActsTableModal";
-
-import graphql from "babel-plugin-relay/macro";
-import { ConnectionHandler } from "relay-runtime";
 import { useMutation } from "utils/useMutation";
+
 import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation.graphql";
 import { Sidebar_pack$key } from "./__generated__/Sidebar_pack.graphql";
+import { SidebarActDeleteMutation } from "./__generated__/SidebarActDeleteMutation.graphql";
 
 // const reorder = (list: any[], startIndex: number, endIndex: number) => {
 //   const result = Array.from(list);
@@ -53,6 +54,16 @@ const actCreateMutation = graphql`
   }
 `;
 
+const actDeleteMutation = graphql`
+  mutation SidebarActDeleteMutation($input: ActDeleteInput!) {
+    actDelete(input: $input) {
+      act {
+        id
+      }
+    }
+  }
+`;
+
 export const Sidebar: React.FC<Props> = ({
   pack,
   selectedActId,
@@ -62,6 +73,10 @@ export const Sidebar: React.FC<Props> = ({
   const [tableViewOpen, setTableViewOpen] = useState(false);
   const [actCreate, isCreatingAct] = useMutation<SidebarActCreateMutation>(
     actCreateMutation
+  );
+
+  const [actDelete, isDeletingAct] = useMutation<SidebarActDeleteMutation>(
+    actDeleteMutation
   );
 
   const data = useFragment(
@@ -108,13 +123,25 @@ export const Sidebar: React.FC<Props> = ({
   };
 
   const deleteAct = (act: any) => {
-    // TODO: delete act mutation
-    // if (acts.length > 1) {
-    // setActs(acts.filter((a) => a.id !== act.id));
-    // if (selectedAct.id === act.id) {
-    //   setSelectedAct(acts[0]);
-    // }
-    // }
+    actDelete({
+      variables: {
+        input: {
+          id: act.id,
+          packId,
+        },
+      },
+      updater: (store) => {
+        const payload = store.getRootField("actDelete");
+        const act = payload?.getLinkedRecord("act");
+        store.delete(act.getDataID());
+      },
+      onCompleted: (data) => {
+        console.log("data", data);
+      },
+      onError: (error: Error) => {
+        alert.show(error.message);
+      },
+    });
   };
 
   const selectAct = (act: any) => {
@@ -202,6 +229,7 @@ export const Sidebar: React.FC<Props> = ({
                           </div>
                           <button
                             className="delete"
+                            disabled={isDeletingAct}
                             onClick={() => deleteAct(act)}
                           >
                             <Icon icon="trash" />
