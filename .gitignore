@@ -46,3 +46,6 @@ erl_crash.dump
 
 # Ignore package tarball (built via "mix hex.build").
 playhouse-*.tar
+
+# Ignore __generated__ files
+__generated__
