@@ -62,11 +62,13 @@ defmodule Database.Catalog do
 
   def act_create(
         %User{} = user,
-        %Pack{} = pack,
-        %QuestionType{} = question_type,
-        %AnswerType{} = answer_type,
         attrs
       ) do
+
+    question_type = Repo.get_by(QuestionType, slug: "text")
+    answer_type = Repo.get_by(AnswerType, slug: "text")
+    pack = Repo.get_by(Pack, attrs.pack_id)
+
     {:ok, act} =
       %Act{}
       |> Act.changeset(attrs)
@@ -86,11 +88,11 @@ defmodule Database.Catalog do
 
   def act_update(
         %User{} = user,
-        %Act{} = act,
-        # %QuestionType{} = question_type,
-        # %AnswerType{} = answer_type,
         attrs
       ) do
+    act = Repo.get_by(Act, id: attrs.id)
+    # question_type = Repo.get_by(QuestionType, id: args.question_type_id)
+    # answer_type = Repo.get_by(AnswerType, id: args.answer_type_id)
     # TODO: Check if this user is the author
     act
     |> Act.changeset(attrs)
