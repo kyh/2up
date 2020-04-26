@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { Link, useParams, useHistory } from "react-router-dom";
 import graphql from "babel-plugin-relay/macro";
 import { useAlert } from "react-alert";
+import { useLazyLoadQuery } from "react-relay/hooks";
 
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 import { gameActions } from "features/game/gameSlice";
+import { DefaultImage } from "features/gamemaster/PackDiscoverPage";
 import { Card, Button } from "components";
 import { useMutation } from "utils/useMutation";
 import { useQueryParams } from "utils/queryUtils";
@@ -15,8 +17,6 @@ import { PackDetailsPagePackQuery } from "./__generated__/PackDetailsPagePackQue
 
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
-import { useLazyLoadQuery } from "react-relay/hooks";
-import { DefaultImage } from "features/gamemaster/PackDiscoverPage";
 
 const GameCreateMutation = graphql`
   mutation PackDetailsPageGameCreateMutation($input: GameCreateInput!) {

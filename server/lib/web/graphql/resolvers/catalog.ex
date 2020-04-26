@@ -3,11 +3,7 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   alias Web.GraphQL.Errors
 
   def act_create(args, %{context: %{current_user: user}}) do
-    question_type = Database.Repo.get_by(Database.Catalog.QuestionType, id: args.question_type_id)
-    answer_type = Database.Repo.get_by(Database.Catalog.AnswerType, id: args.answer_type_id)
-    pack = Database.Repo.get_by(Database.Live.Pack, id: args.pack_id)
-
-    case Catalog.act_create(user, pack, question_type, answer_type, args) do
+    case Catalog.act_create(user, args) do
       {:error, changeset} ->
         {
           :error,
@@ -20,12 +16,7 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   end
 
   def act_update(args, %{context: %{current_user: user}}) do
-    act = Database.Repo.get_by(Database.Catalog.Act, id: args.id)
-
-    # question_type = Database.Repo.get_by(Database.Catalog.QuestionType, id: args.question_type_id)
-    # answer_type = Database.Repo.get_by(Database.Catalog.AnswerType, id: args.answer_type_id)
-
-    case Catalog.act_update(user, act, args) do
+    case Catalog.act_update(user, args) do
       {:error, changeset} ->
         {
           :error,

@@ -126,11 +126,8 @@ export const Sidebar: React.FC<Props> = ({
       variables: {
         input: {
           packId,
-          // TODO: Remove hard coded values
-          order: 1,
-          question: "",
-          questionTypeId: "UXVlc3Rpb25UeXBlOjE=",
-          answerTypeId: "QW5zd2VyVHlwZToz",
+          question: "Play",
+          order: (acts?.length || 0) + 1,
         },
       },
       updater: (store) => {
