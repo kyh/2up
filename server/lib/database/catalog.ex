@@ -64,10 +64,9 @@ defmodule Database.Catalog do
         %User{} = user,
         attrs
       ) do
-
     question_type = Repo.get_by(QuestionType, slug: "text")
     answer_type = Repo.get_by(AnswerType, slug: "text")
-    pack = Repo.get_by(Pack, attrs.pack_id)
+    pack = Repo.get(Pack, attrs.pack_id)
 
     {:ok, act} =
       %Act{}
@@ -99,6 +98,30 @@ defmodule Database.Catalog do
     # |> Ecto.Changeset.put_assoc(:question_type, question_type)
     # |> Ecto.Changeset.put_assoc(:answer_type, answer_type)
     |> Repo.update()
+  end
+
+  def act_delete(
+        %User{} = user,
+        %Act{} = act,
+        attrs
+      ) do
+    pack = Repo.get_by(Pack, id: attrs.pack_id)
+
+    pack_act =
+      Repo.get_by(PackAct, pack_id: pack.id, act_id: act.id)
+      |> Repo.delete()
+
+    pack_acts_query =
+      from pack_act in PackAct,
+        select: %{id: pack_act.id},
+        where: pack_act.act_id == ^act.id
+
+    Repo.all(pack_acts_query)
+    |> Enum.count()
+    |> case do
+      0 -> act |> Repo.delete()
+      _ -> {:ok, act}
+    end
   end
 
   def act_tag_create(%Act{} = act, %Tag{} = tag) do
