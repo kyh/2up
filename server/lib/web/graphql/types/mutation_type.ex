@@ -79,7 +79,7 @@ defmodule Web.GraphQL.Types.MutationType do
       resolve(&Live.pack_create/3)
     end
 
-    @desc "Create new act"
+    @desc "Create new act and pack act"
     payload field :act_create do
       input do
         field :pack_id, :id
@@ -125,6 +125,25 @@ defmodule Web.GraphQL.Types.MutationType do
           id: :act,
           question_type_id: :question_type,
           answer_type_id: :answer_type
+        )
+      )
+    end
+
+    @desc "Delete pack act and act (if no dependencies)"
+    payload field :act_delete do
+      input do
+        field :pack_id, :id
+        field :id, :id
+      end
+
+      output do
+        field :act, non_null(:act)
+      end
+
+      resolve(
+        parsing_node_ids(&Catalog.act_delete/2,
+          id: :act,
+          pack_id: :pack
         )
       )
     end
