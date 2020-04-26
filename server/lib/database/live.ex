@@ -8,7 +8,20 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
-  def pack_list() do
+  def pack_list(%{username: username}) do
+    user = Repo.get_by(User, username: username)
+    case user do
+      nil -> []
+      _ -> 
+        query =
+          from pack in Pack,
+            where: pack.user_id == ^user.id
+
+        Repo.all(query)
+    end
+  end
+
+  def pack_list(_) do
     Repo.all(Pack)
   end
 

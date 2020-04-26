@@ -28,7 +28,7 @@ defmodule Web.GraphQL.Resolvers.Live do
   end
 
   def pack_list(_, args, _) do
-    Connection.from_list(Live.pack_list(), args)
+    Connection.from_list(Live.pack_list(args), args)
   end
 
   def pack_get_by_id(args, _) do
