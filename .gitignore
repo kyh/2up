@@ -49,6 +49,3 @@ playhouse-*.tar
 
 # Ignore __generated__ files
 __generated__
-
-# Ignore generated schema.json
-schema.json
