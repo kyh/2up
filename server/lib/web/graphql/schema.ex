@@ -2,7 +2,12 @@ defmodule Web.GraphQL.Schema do
   use Absinthe.Schema
   use Absinthe.Relay.Schema, :modern
   use Absinthe.Relay.Schema.Notation, :modern
+
   import Absinthe.Resolution.Helpers, only: [dataloader: 1, dataloader: 3]
+
+  alias Database.Catalog.{Act, QuestionType, AnswerType}
+  alias Database.Accounts.User
+  alias Database.Live.Pack
 
   import_types(Web.GraphQL.Types.{
     QueryType,
@@ -14,26 +19,7 @@ defmodule Web.GraphQL.Schema do
     GameTypes
   })
 
-  query do
-    import_fields(:query_type)
-
-    node field do
-      resolve(fn
-        %{type: :act, id: id}, _ ->
-          {:ok, Database.Repo.get(Database.Catalog.Act, id)}
-
-        %{type: :pack, id: id}, _ ->
-          {:ok, Database.Repo.get(Database.Live.Pack, id)}
-
-        %{type: :answer_type, id: id}, _ ->
-          {:ok, Database.Repo.get(Database.Catalog.AnswerType, id)}
-
-        %{type: :question_type, id: id}, _ ->
-          {:ok, Database.Repo.get(Database.Catalog.QuestionType, id)}
-      end)
-    end
-  end
-
+  query(do: import_fields(:query_type))
   mutation(do: import_fields(:mutation_type))
 
   def context(ctx) do
@@ -41,11 +27,11 @@ defmodule Web.GraphQL.Schema do
 
     loader =
       Dataloader.new()
-      |> Dataloader.add_source(Database.Live.Pack, source)
-      |> Dataloader.add_source(Database.Catalog.Act, source)
-      |> Dataloader.add_source(Database.Catalog.QuestionType, source)
-      |> Dataloader.add_source(Database.Catalog.AnswerType, source)
-      |> Dataloader.add_source(Database.Accounts.User, source)
+      |> Dataloader.add_source(Pack, source)
+      |> Dataloader.add_source(Act, source)
+      |> Dataloader.add_source(QuestionType, source)
+      |> Dataloader.add_source(AnswerType, source)
+      |> Dataloader.add_source(User, source)
 
     Map.put(ctx, :loader, loader)
   end

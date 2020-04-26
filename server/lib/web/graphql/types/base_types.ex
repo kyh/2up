@@ -2,21 +2,25 @@ defmodule Web.GraphQL.Types.BaseTypes do
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation, :modern
 
+  alias Database.Catalog.{Act, QuestionType, AnswerType}
+  alias Database.Live.Pack
+  alias Database.Accounts.User
+
   node interface do
     resolve_type(fn
-      %Database.Live.Pack{}, _ ->
+      %Pack{}, _ ->
         :pack
 
-      %Database.Catalog.Act{}, _ ->
+      %Act{}, _ ->
         :act
 
-      %Database.Catalog.QuestionType{}, _ ->
+      %QuestionType{}, _ ->
         :question_type
 
-      %Database.Catalog.AnswerType{}, _ ->
+      %AnswerType{}, _ ->
         :answer_type
 
-      %Database.Accounts.User{}, _ ->
+      %User{}, _ ->
         :user
     end)
   end
