@@ -10,9 +10,12 @@ defmodule Database.Live do
 
   def pack_list(%{username: username}) do
     user = Repo.get_by(User, username: username)
+
     case user do
-      nil -> []
-      _ -> 
+      nil ->
+        []
+
+      _ ->
         query =
           from pack in Pack,
             where: pack.user_id == ^user.id
