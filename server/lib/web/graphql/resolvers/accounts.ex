@@ -31,4 +31,8 @@ defmodule Web.GraphQL.Resolvers.Accounts do
   def current_user(_, args, %{context: %{current_user: user}}) do
     {:ok, user}
   end
+
+  def current_user(_, args, _) do
+    {:ok, nil}
+  end
 end
