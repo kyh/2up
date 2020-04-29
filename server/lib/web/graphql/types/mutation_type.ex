@@ -2,6 +2,8 @@ defmodule Web.GraphQL.Types.MutationType do
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation, :modern
 
+  alias Absinthe.Relay.Connection
+
   alias Web.GraphQL.Resolvers.{
     Catalog,
     Accounts,
@@ -43,14 +45,14 @@ defmodule Web.GraphQL.Types.MutationType do
     @desc "Create new live game"
     payload field :game_create do
       input do
-        field :pack, non_null(:string)
+        field :pack_id, non_null(:id)
       end
 
       output do
         field :code, non_null(:string)
       end
 
-      resolve(&Live.game_create/3)
+      resolve(parsing_node_ids(&Live.game_create/2, pack_id: :pack))
     end
 
     @desc "Get info about live game"

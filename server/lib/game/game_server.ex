@@ -61,20 +61,11 @@ defmodule Game.GameServer do
     {:via, Registry, {Game.GameRegistry, game_code}}
   end
 
-  def init({game_code, pack}) do
-    acts = Database.Catalog.question_list(pack)
-
-    questions =
-      Enum.map(acts, fn x ->
-        [x.question, x.answer, [pack]]
-      end)
-      |> Enum.shuffle()
-      |> Enum.take(10)
-
+  def init({game_code, questions}) do
     game =
       case :ets.lookup(:games_table, game_code) do
         [] ->
-          game = Game.GamePlay.new(questions, [], pack)
+          game = Game.GamePlay.new(questions, [])
           :ets.insert(:games_table, {game_code, game})
           game
 

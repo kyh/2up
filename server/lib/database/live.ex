@@ -8,6 +8,10 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
+  def pack_get(pack_id) do
+    Repo.get(Pack, pack_id)
+  end
+
   def pack_list(%{username: username}) do
     user = Repo.get_by(User, username: username)
 

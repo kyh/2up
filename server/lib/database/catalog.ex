@@ -11,24 +11,28 @@ defmodule Database.Catalog do
     Repo.all(query)
   end
 
-  def question_list(tag_name) do
+  def question_list(pack_id) do
     tag_query =
       from act in Act,
-        select: %{question: act.question, answer: act.answer},
-        join: act_tag in ActTag,
-        on: act_tag.act_id == act.id,
-        join: tag in Tag,
-        on: act_tag.tag_id == tag.id,
-        where: tag.name == ^tag_name
+        join: pack_act in PackAct,
+        on: pack_act.act_id == act.id,
+        join: pack in Pack,
+        on: pack_act.pack_id == pack.id,
+        join: question_type in QuestionType,
+        on: act.question_type_id == question_type.id,
+        join: answer_type in AnswerType,
+        on: act.answer_type_id == answer_type.id,
+        select: %{
+          question: act.question,
+          answer: act.answer,
+          pack: pack.name,
+          instruction: act.instruction,
+          answer_type: answer_type.slug,
+          question_type: question_type.slug
+        },
+        where: pack.id == ^pack_id
 
-    all_query =
-      from act in Act,
-        select: %{question: act.question, answer: act.answer}
-
-    case tag_name do
-      "Variety" -> Repo.all(all_query)
-      _ -> Repo.all(tag_query)
-    end
+    Repo.all(tag_query)
   end
 
   def question_type_list do
