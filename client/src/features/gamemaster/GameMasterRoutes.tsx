@@ -9,7 +9,9 @@ export const GameMasterRoutes: React.FC = () => {
   return (
     <>
       <Route exact path="/gamemaster">
-        <PackDiscoverPage />
+        <Suspense fallback="Loading...">
+          <PackDiscoverPage />
+        </Suspense>
       </Route>
       <Route exact path="/gamemaster/:packId">
         <Suspense fallback="Loading...">

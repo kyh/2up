@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import graphql from "babel-plugin-relay/macro";
@@ -67,9 +67,7 @@ export const PackDiscoverPage = () => {
         <PackSection>
           <h3>Featured</h3>
           <div className="pack-items">
-            <Suspense fallback="Loading...">
-              <PacksList />
-            </Suspense>
+            <PacksList />
           </div>
         </PackSection>
       </Content>
