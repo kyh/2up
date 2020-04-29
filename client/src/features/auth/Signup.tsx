@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAlert } from "react-alert";
 import graphql from "babel-plugin-relay/macro";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 import { PageContainer, Input, Button } from "components";
 import { useMutation } from "utils/useMutation";
@@ -19,7 +20,7 @@ const userCreateMutation = graphql`
   }
 `;
 
-export const Signup = () => {
+const Signup = ({ history }: RouteComponentProps) => {
   const alert = useAlert();
 
   const [username, setUsername] = useState("");
@@ -48,10 +49,10 @@ export const Signup = () => {
     userCreate({
       variables: { input: { username, email, password } },
       onCompleted: (data) => {
-        console.log("data", data);
         const token = data?.userCreate?.token;
         if (token) {
           localStorage.setItem("token", token);
+          history.push(`/${username}`);
         }
       },
       onError: (error: Error) => {
@@ -95,3 +96,5 @@ export const Signup = () => {
     </PageContainer>
   );
 };
+
+export const SignupPage = withRouter(Signup);
