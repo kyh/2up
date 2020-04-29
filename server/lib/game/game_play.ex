@@ -7,14 +7,7 @@ defmodule Game.GamePlay do
 
   defstruct act: 0, scene: 0, acts: [], players: [], pack: ""
 
-  # TODO: Move out once we migrate off of Airtable
-  @pack_map %{
-    Startups: "Give a one line description of this startup",
-    SAT: "Give a short definition of this word",
-    Drawing: "Draw this"
-  }
-
-  def new(question_sets, player_ids, initial_pack) do
+  def new(question_sets, player_ids) do
     players =
       Enum.map(player_ids, fn player_id ->
         %Player{id: player_id}
@@ -22,10 +15,14 @@ defmodule Game.GamePlay do
 
     acts =
       Enum.map(question_sets, fn question_set ->
-        question = Enum.at(question_set, 0)
-        answer = Enum.at(question_set, 1)
-        pack = Enum.at(question_set, 2) |> Enum.at(0)
-        instruction = Map.get(@pack_map, String.to_atom(pack))
+        %{
+          question: question,
+          answer: answer,
+          pack: pack,
+          instruction: instruction,
+          question_type: question_type,
+          answer_type: answer_type
+        } = question_set
 
         submission = %{
           id: Ecto.UUID.generate(),
@@ -34,11 +31,9 @@ defmodule Game.GamePlay do
           endorsers: []
         }
 
-        answer_type = get_answer_type(pack)
-
         %Act{
           question: question,
-          question_type: "text",
+          question_type: question_type,
           answer: answer,
           answer_type: answer_type,
           pack: pack,
@@ -47,62 +42,7 @@ defmodule Game.GamePlay do
         }
       end)
 
-    case initial_pack do
-      "Variety" ->
-        acts =
-          List.replace_at(acts, 1, generate_color_act())
-          |> List.replace_at(7, generate_color_act())
-
-        %GamePlay{acts: acts, players: players, pack: initial_pack}
-
-      "Color" ->
-        acts = Enum.map(0..9, fn _ -> generate_color_act() end)
-        %GamePlay{acts: acts, players: players, pack: initial_pack}
-
-      _ ->
-        %GamePlay{acts: acts, players: players, pack: initial_pack}
-    end
-  end
-
-  def get_answer_type(pack) do
-    case pack do
-      "Drawing" -> "drawing"
-      _ -> "text"
-    end
-  end
-
-  def generate_random_color() do
-    letters = "0123456789ABCDEF"
-
-    color =
-      letters
-      |> String.split("", trim: true)
-      |> Enum.shuffle()
-      |> Enum.take(6)
-      |> Enum.join("")
-
-    "#" <> color
-  end
-
-  def generate_color_act() do
-    random_color = generate_random_color()
-
-    %Act{
-      question: random_color,
-      question_type: "text",
-      answer: random_color,
-      answer_type: "color",
-      pack: "Color",
-      instruction: "What is the color of this hex?",
-      submissions: [
-        %{
-          id: Ecto.UUID.generate(),
-          name: "IS_ANSWER",
-          content: random_color,
-          endorsers: []
-        }
-      ]
-    }
+    %GamePlay{acts: acts, players: players}
   end
 
   def player_new(game, player) do

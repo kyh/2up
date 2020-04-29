@@ -1,7 +1,7 @@
 import React from "react";
 import graphql from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay/hooks";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { ConnectionHandler, ROOT_ID } from "relay-runtime";
 import { useFragment } from "react-relay/hooks";
@@ -126,11 +126,19 @@ const PackList = ({ packs }: PackListProps) => {
 
   return (
     <>
-      {edges.map((edge) => (
-        <div key={edge?.node?.id}>
-          <p>{edge?.node?.name}</p>
-        </div>
-      ))}
+      {edges.map((edge) => {
+        const node = edge?.node;
+        const packId = node?.id;
+        const packName = node?.name;
+
+        return (
+          <div key={packId}>
+            <p>
+              <Link to={`/gamemaster/${packId}`}>{packName}</Link>
+            </p>
+          </div>
+        );
+      })}
     </>
   );
 };

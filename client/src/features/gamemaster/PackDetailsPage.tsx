@@ -62,7 +62,7 @@ export const PackDetailsPage = () => {
 
   const onHostGame = () => {
     gameCreate({
-      variables: { input: { pack: params.get("packName")! } },
+      variables: { input: { packId: packId || "" } },
       onCompleted: (data) => {
         if (!data || !data.gameCreate) return;
         const gameId = data.gameCreate.code;

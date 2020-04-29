@@ -5,10 +5,15 @@ defmodule Web.GraphQL.Resolvers.Live do
   alias Game.GameSupervisor
   alias Game.GameServer
 
-  def game_create(_, %{pack: pack}, _) do
+  def game_create(%{pack_id: pack_id}, _) do
     code = Live.generate_code()
 
-    case GameSupervisor.start_game(code, pack) do
+    questions =
+      Database.Catalog.question_list(pack_id)
+      |> Enum.shuffle()
+      |> Enum.take(10)
+
+    case GameSupervisor.start_game(code, questions) do
       {:ok, _game_pid} ->
         {:ok, %{code: code}}
 
