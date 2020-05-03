@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import gql from "graphql-tag";
+import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
 import { Sidebar } from "features/gamemaster/components/Sidebar";

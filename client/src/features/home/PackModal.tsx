@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import gql from "graphql-tag";
+import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { Button, Modal } from "components";
 import { PackModalPacksQuery } from "./__generated__/PackModalPacksQuery";
