@@ -148,18 +148,17 @@ defmodule Database.Catalog do
     |> Repo.insert()
   end
 
-
   def act_get_by_id(%{id: id, pack_id: pack_id}) do
-    query =  
+    query =
       from act in Act,
-      join: pack_act in PackAct,
-      on: pack_act.act_id == act.id,
-      join: pack in Pack,
-      on: pack_act.pack_id == pack.id,
-      where: pack.id == ^pack_id,
-      where: act.id == ^id,
-      order_by: [asc: pack_act.order],
-      limit: 1
+        join: pack_act in PackAct,
+        on: pack_act.act_id == act.id,
+        join: pack in Pack,
+        on: pack_act.pack_id == pack.id,
+        where: pack.id == ^pack_id,
+        where: act.id == ^id,
+        order_by: [asc: pack_act.order],
+        limit: 1
 
     Repo.one(query)
   end
@@ -169,15 +168,15 @@ defmodule Database.Catalog do
   end
 
   def act_get_by_id(%{pack_id: pack_id}) do
-    query =  
+    query =
       from act in Act,
-      join: pack_act in PackAct,
-      on: pack_act.act_id == act.id,
-      join: pack in Pack,
-      on: pack_act.pack_id == pack.id,
-      where: pack.id == ^pack_id,
-      order_by: [asc: pack_act.order],
-      limit: 1
+        join: pack_act in PackAct,
+        on: pack_act.act_id == act.id,
+        join: pack in Pack,
+        on: pack_act.pack_id == pack.id,
+        where: pack.id == ^pack_id,
+        order_by: [asc: pack_act.order],
+        limit: 1
 
     Repo.one(query)
   end
