@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npm run gql-gen && react-scripts start",
-    "build": "npm run gql-gen && react-scripts build",
+    "build": "npm run codegen && react-scripts build",
     "relay": "relay-compiler --schema schema.json --language typescript --src ./src/ --watchman false $@",
     "format": "prettier --write .",
     "test": "react-scripts test",
@@ -12,7 +12,8 @@
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "introspect-schema": "apollo schema:download --endpoint=http://localhost:4000/graphql schema.json",
-    "gql-gen": "npm run introspect-schema && apollo codegen:generate --localSchemaFile=schema.json --target=typescript --includes=src/**/*.tsx --tagName=gql --addTypename --globalTypesFile=src/__generated__/graphql-types.ts __generated__"
+    "codegen": "apollo codegen:generate --localSchemaFile=schema.json --target=typescript --includes=src/**/*.tsx --tagName=gql --addTypename --globalTypesFile=src/__generated__/graphql-types.ts __generated__",
+    "gql-gen": "npm run introspect-schema && npm run codegen"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.3.4",
