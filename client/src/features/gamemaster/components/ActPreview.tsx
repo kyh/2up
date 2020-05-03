@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useAlert } from "react-alert";
 import styled from "styled-components";
-import graphql from "babel-plugin-relay/macro";
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/react-hooks";
 
-import { useMutation } from "utils/useMutation";
 import { EditableQuestion } from "features/game/components/Question";
 import { EditableAnswer } from "features/game/components/Answer";
-import { useRefetchableFragment } from "react-relay/hooks";
 
 import monitor from "./monitor.svg";
 
-import { ActPreviewActUpdateMutation } from "./__generated__/ActPreviewActUpdateMutation.graphql";
-import { ActPreview_act$key } from "./__generated__/ActPreview_act.graphql";
+import { ActPreviewActUpdateMutation } from "./__generated__/ActPreviewActUpdateMutation";
+import { ActPreviewFragment } from "./__generated__/ActPreviewFragment";
 
-const actUpdateMutation = graphql`
+const ACT_UPDATE = gql`
   mutation ActPreviewActUpdateMutation($input: ActUpdateInput!) {
     actUpdate(input: $input) {
       act {
@@ -35,65 +33,33 @@ const actUpdateMutation = graphql`
 `;
 
 type Props = {
-  act: ActPreview_act$key;
+  act: ActPreviewFragment;
   selectedActId: string;
 };
 
-export const ActPreview: React.FC<Props> = ({ act, selectedActId }) => {
-  const alert = useAlert();
-
-  const [data, refetch] = useRefetchableFragment(
-    graphql`
-      fragment ActPreview_act on RootQueryType
-        @argumentDefinitions(actId: { type: "ID!" })
-        @refetchable(queryName: "SidebarActsQuery") {
-        act(id: $actId) {
-          id
-          question
-          answer
-          instruction
-          questionType {
-            id
-            slug
-          }
-          answerType {
-            id
-            slug
-          }
-        }
-      }
-    `,
-    act
-  );
-
-  const [editableAct, setEditableAct] = useState(data?.act);
-  const [actUpdate, isUpdatingAct] = useMutation<ActPreviewActUpdateMutation>(
-    actUpdateMutation
-  );
+export const ActPreview = ({ act }: Props) => {
+  const [editableAct, setEditableAct] = useState(act);
+  const [actUpdate] = useMutation<ActPreviewActUpdateMutation>(ACT_UPDATE);
 
   useEffect(() => {
-    if (data && data.act) {
-      setEditableAct(data.act);
-    }
-  }, [data?.act]);
-
-  useEffect(() => {
-    refetch({ actId: selectedActId });
-  }, [selectedActId]);
+    setEditableAct(act);
+  }, [act]);
 
   const onChange = (newActInfo: any, save?: boolean) => {
     const newAct = { ...editableAct, ...newActInfo };
     setEditableAct(newAct);
-    if (save) onSaveChanges(newAct);
+    if (save) onSaveChanges();
   };
 
-  const onSaveChanges = (newAct = {}) => {
-    if (!editableAct || isUpdatingAct) {
+  const onSaveChanges = async () => {
+    if (!editableAct) {
       return;
     }
 
+    console.log("editableAct", editableAct);
+
     // TODO: Send along question type id and answer type id
-    actUpdate({
+    await actUpdate({
       variables: {
         input: {
           id: editableAct.id,
@@ -102,12 +68,6 @@ export const ActPreview: React.FC<Props> = ({ act, selectedActId }) => {
           instruction: editableAct.instruction,
         },
       },
-      onCompleted: (data) => {
-        console.log("data", data);
-      },
-      onError: (error: Error) => {
-        alert.show(error.message);
-      },
     });
   };
 
@@ -115,27 +75,42 @@ export const ActPreview: React.FC<Props> = ({ act, selectedActId }) => {
     <Monitor>
       <MonitorScreenContainer>
         <MonitorScreen>
-          {!!data && (
-            <>
-              <EditableQuestion
-                instruction={editableAct?.instruction || ""}
-                question={editableAct?.question}
-                questionType={editableAct?.questionType.slug}
-                onChange={onChange}
-                onSaveChanges={onSaveChanges}
-              />
-              <EditableAnswer
-                answer={editableAct?.answer || ""}
-                answerType={editableAct?.answerType.slug}
-                onChange={onChange}
-                onSaveChanges={onSaveChanges}
-              />
-            </>
-          )}
+          <EditableQuestion
+            instruction={editableAct?.instruction || ""}
+            question={editableAct?.question}
+            questionType={editableAct?.questionType?.slug}
+            onChange={onChange}
+            onSaveChanges={onSaveChanges}
+          />
+          <EditableAnswer
+            answer={editableAct?.answer || ""}
+            answerType={editableAct?.answerType?.slug}
+            onChange={onChange}
+            onSaveChanges={onSaveChanges}
+          />
         </MonitorScreen>
       </MonitorScreenContainer>
     </Monitor>
   );
+};
+
+ActPreview.fragments = {
+  act: gql`
+    fragment ActPreviewFragment on Act {
+      id
+      question
+      answer
+      instruction
+      questionType {
+        id
+        slug
+      }
+      answerType {
+        id
+        slug
+      }
+    }
+  `,
 };
 
 const Monitor = styled.section`

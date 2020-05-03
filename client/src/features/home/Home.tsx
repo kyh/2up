@@ -1,22 +1,22 @@
 import React, { useState, SyntheticEvent } from "react";
 import { Link, Redirect } from "react-router-dom";
-import graphql from "babel-plugin-relay/macro";
+import { useMutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 import styled from "styled-components";
 import { useAlert } from "react-alert";
 
-import { useMutation } from "utils/useMutation";
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 import { gameActions, useGame } from "features/game/gameSlice";
 import { Navigation, PageContainer, Button, Input, Card } from "components";
 
-import { HomeGameCheckMutation } from "./__generated__/HomeGameCheckMutation.graphql";
+import { HomeGameCheckMutation } from "./__generated__/HomeGameCheckMutation";
 
 const Screens = {
   join: "join",
   name: "name",
 };
 
-const GameCheckMutation = graphql`
+const GAME_CHECK = gql`
   mutation HomeGameCheckMutation($input: GameInput!) {
     game(input: $input) {
       isValid
@@ -36,30 +36,23 @@ export const Home = () => {
   );
   const [gameId, setgameId] = useState(gameState.gameId);
   const [name, setName] = useState(playhouseState.name);
-
-  const [gameCheck, isCheckingGame] = useMutation<HomeGameCheckMutation>(
-    GameCheckMutation
-  );
+  const [gameCheck] = useMutation<HomeGameCheckMutation>(GAME_CHECK);
 
   // Joining an existing game:
   const onSubmitGameCode = async (event: SyntheticEvent) => {
     event.preventDefault();
 
-    gameCheck({
+    const { data } = await gameCheck({
       variables: { input: { code: gameId } },
-      onCompleted: (data) => {
-        if (!data.game?.isValid) {
-          alert.show("Game code does not exist");
-          setgameId("");
-          return;
-        }
-        dispatch(gameActions.new_game({ gameId }));
-        setScreen(Screens.name);
-      },
-      onError: (error: Error) => {
-        alert.show(error.message);
-      },
     });
+
+    if (data?.game?.isValid) {
+      alert.show("Game code does not exist");
+      setgameId("");
+      return;
+    }
+    dispatch(gameActions.new_game({ gameId }));
+    setScreen(Screens.name);
   };
 
   const onSubmitName = (event: SyntheticEvent) => {
@@ -89,9 +82,7 @@ export const Home = () => {
                     value={gameId}
                     onChange={(e) => setgameId(e.target.value)}
                   />
-                  <Button type="submit" disabled={isCheckingGame}>
-                    Join existing game
-                  </Button>
+                  <Button type="submit">Join existing game</Button>
                 </InputContainer>
                 <HostNewGameText>
                   Or <Link to="/gamemaster">host your own game</Link>

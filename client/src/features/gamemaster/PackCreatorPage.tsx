@@ -1,60 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import graphql from "babel-plugin-relay/macro";
 import { useParams } from "react-router-dom";
-import { useLazyLoadQuery } from "react-relay/hooks";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
 
 import { Sidebar } from "features/gamemaster/components/Sidebar";
 import { ActPreview } from "features/gamemaster/components/ActPreview";
 
-import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery.graphql";
+import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
 import { Navigation } from "./components/Navigation";
 
-const PackQuery = graphql`
-  query PackCreatorPagePackQuery($packId: ID!, $actId: ID!) {
+const PACK_QUERY = gql`
+  query PackCreatorPagePackQuery($packId: ID!, $actId: ID) {
     pack(id: $packId) {
-      ...Navigation_pack
-      ...Sidebar_pack
+      ...NavigationPackFragment
+      ...SidebarPackFragment
     }
-    ...ActPreview_act @arguments(actId: $actId)
+    act(id: $actId, packId: $packId) {
+      ...ActPreviewFragment
+    }
   }
+  ${Navigation.fragments.pack}
+  ${Sidebar.fragments.pack}
+  ${ActPreview.fragments.act}
 `;
 
 export const PackCreatorPage = () => {
   const [selectedActId, setSelectedActId] = useState("");
-
   const { packId } = useParams();
-
-  const data = useLazyLoadQuery<PackCreatorPagePackQuery>(PackQuery, {
-    packId: packId || "",
-    actId: "", // TODO: if not specified grab the first id
+  const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
+    variables: {
+      packId: packId || "",
+    },
   });
 
-  // const onUpdateAct = (act: Act) => {
-  //   // setSelectedAct(act.id);
-  // };
+  const handleSelect = (selectedActId: string) => {
+    setSelectedActId(selectedActId);
+    const newVariables = {
+      packId,
+      actId: selectedActId,
+    };
+    refetch(newVariables);
+  };
 
-  if (!data) {
-    return null;
-  }
+  const refetchActs = () => {
+    const newVariables = {
+      packId,
+      actId: selectedActId,
+    };
+    refetch(newVariables);
+  };
 
   return (
     <Page>
-      {data.pack && (
+      {data?.pack && (
         <>
           <Navigation pack={data.pack} />
           <Sidebar
             pack={data.pack}
             selectedActId={selectedActId}
-            setSelectedAct={setSelectedActId}
+            setSelectedAct={handleSelect}
+            refetchActs={refetchActs}
           />
         </>
       )}
-      <React.Suspense fallback="Loading...">
-        <Content>
-          {data && <ActPreview selectedActId={selectedActId} act={data} />}
-        </Content>
-      </React.Suspense>
+      <Content>
+        {data?.act && (
+          <ActPreview selectedActId={selectedActId} act={data.act} />
+        )}
+      </Content>
       <Footer>
         <QuestionTemplate />
         <QuestionTemplate />

@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { useAlert } from "react-alert";
-import graphql from "babel-plugin-relay/macro";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useMutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 
 import { PageContainer, Input, Button } from "components";
-import { useMutation } from "utils/useMutation";
 
-import { SignupUserCreateMutation } from "./__generated__/SignupUserCreateMutation.graphql";
+import { SignupUserCreateMutation } from "./__generated__/SignupUserCreateMutation";
 
-const userCreateMutation = graphql`
+const USER_CREATE = gql`
   mutation SignupUserCreateMutation($input: UserCreateInput!) {
     userCreate(input: $input) {
       user {
@@ -21,15 +20,10 @@ const userCreateMutation = graphql`
 `;
 
 const Signup = ({ history }: RouteComponentProps) => {
-  const alert = useAlert();
-
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const [userCreate, isCreatingUser] = useMutation<SignupUserCreateMutation>(
-    userCreateMutation
-  );
+  const [userCreate] = useMutation<SignupUserCreateMutation>(USER_CREATE);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -43,22 +37,18 @@ const Signup = ({ history }: RouteComponentProps) => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    userCreate({
+    const { data } = await userCreate({
       variables: { input: { username, email, password } },
-      onCompleted: (data) => {
-        const token = data?.userCreate?.token;
-        if (token) {
-          localStorage.setItem("token", token);
-          history.push(`/${username}`);
-        }
-      },
-      onError: (error: Error) => {
-        alert.show(error.message);
-      },
     });
+
+    const token = data?.userCreate?.token;
+    if (token) {
+      localStorage.setItem("token", token);
+      history.push(`/${username}`);
+    }
 
     return false;
   };
@@ -89,9 +79,7 @@ const Signup = ({ history }: RouteComponentProps) => {
             />
           </label>
         </div>
-        <Button type="submit" disabled={isCreatingUser}>
-          Sign up
-        </Button>
+        <Button type="submit">Sign up</Button>
       </form>
     </PageContainer>
   );
