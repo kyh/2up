@@ -8,7 +8,7 @@ import {
 } from "react-beautiful-dnd";
 import { useAlert } from "react-alert";
 import { useMutation } from "@apollo/react-hooks";
-import gql from "graphql-tag";
+import { gql } from "apollo-boost";
 
 import { Button, Icon } from "components";
 import { ActsTableModal } from "features/gamemaster/components/ActsTableModal";

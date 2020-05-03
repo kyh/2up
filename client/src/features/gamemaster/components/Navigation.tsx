@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
-import gql from "graphql-tag";
+import { gql } from "apollo-boost";
 
 import { Box, Button, Icon, Modal } from "components";
 

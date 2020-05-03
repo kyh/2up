@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link, useParams, useHistory } from "react-router-dom";
-import gql from "graphql-tag";
+import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";

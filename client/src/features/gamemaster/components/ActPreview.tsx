@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import gql from "graphql-tag";
+import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 
 import { EditableQuestion } from "features/game/components/Question";

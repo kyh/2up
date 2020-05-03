@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
-import gql from "graphql-tag";
+import { gql } from "apollo-boost";
 
 import { PageContainer, Input, Button } from "components";
 
