@@ -56,8 +56,6 @@ export const ActPreview = ({ act }: Props) => {
       return;
     }
 
-    console.log("editableAct", editableAct);
-
     // TODO: Send along question type id and answer type id
     await actUpdate({
       variables: {

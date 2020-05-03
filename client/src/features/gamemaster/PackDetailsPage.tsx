@@ -52,8 +52,6 @@ export const PackDetailsPage = () => {
     variables: { packId },
   });
 
-  console.log("data", data);
-
   const { pack, currentUser } = data || {};
 
   const onHostGame = async () => {
