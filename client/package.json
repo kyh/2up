@@ -5,7 +5,6 @@
   "scripts": {
     "start": "npm run gql-gen && react-scripts start",
     "build": "npm run codegen && react-scripts build",
-    "relay": "relay-compiler --schema schema.json --language typescript --src ./src/ --watchman false $@",
     "format": "prettier --write .",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -16,7 +15,9 @@
     "gql-gen": "npm run introspect-schema && npm run codegen"
   },
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
     "@reduxjs/toolkit": "^1.3.4",
+    "apollo-boost": "^0.4.7",
     "babel-plugin-relay": "^9.0.0",
     "lodash": "^4.17.15",
     "phoenix": "^1.4.16",
