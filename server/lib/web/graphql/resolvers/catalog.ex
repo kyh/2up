@@ -52,7 +52,7 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   end
 
   def act_get_by_id(args, _) do
-    act = Catalog.act_get_by_id(args.id)
+    act = Catalog.act_get_by_id(args)
     {:ok, act}
   end
 end

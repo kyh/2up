@@ -20,8 +20,9 @@ defmodule Web.GraphQL.Types.QueryType do
     end
 
     field :act, :act do
-      arg(:id, non_null(:id))
-      resolve(parsing_node_ids(&Catalog.act_get_by_id/2, id: :act))
+      arg(:id, :id)
+      arg(:pack_id, :id)
+      resolve(parsing_node_ids(&Catalog.act_get_by_id/2, id: :act, pack_id: :pack))
     end
 
     field :question_types, list_of(:question_type) do

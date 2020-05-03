@@ -1,24 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 import { Link, useParams, useHistory } from "react-router-dom";
-import graphql from "babel-plugin-relay/macro";
-import { useAlert } from "react-alert";
-import { useLazyLoadQuery } from "react-relay/hooks";
+import gql from "graphql-tag";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 import { gameActions } from "features/game/gameSlice";
 import { DefaultImage } from "features/gamemaster/PackDiscoverPage";
 import { Card, Button } from "components";
-import { useMutation } from "utils/useMutation";
-import { useQueryParams } from "utils/queryUtils";
-
-import { PackDetailsPageGameCreateMutation } from "./__generated__/PackDetailsPageGameCreateMutation.graphql";
-import { PackDetailsPagePackQuery } from "./__generated__/PackDetailsPagePackQuery.graphql";
 
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
 
-const GameCreateMutation = graphql`
+import { PackDetailsPageGameCreateMutation } from "./__generated__/PackDetailsPageGameCreateMutation";
+import { PackDetailsPagePackQuery } from "./__generated__/PackDetailsPagePackQuery";
+
+const GAME_CREATE = gql`
   mutation PackDetailsPageGameCreateMutation($input: GameCreateInput!) {
     gameCreate(input: $input) {
       code
@@ -26,7 +23,7 @@ const GameCreateMutation = graphql`
   }
 `;
 
-const PackQuery = graphql`
+const PACK_QUERY = gql`
   query PackDetailsPagePackQuery($packId: ID!) {
     currentUser {
       id
@@ -44,37 +41,32 @@ const PackQuery = graphql`
 `;
 
 export const PackDetailsPage = () => {
-  const params = useQueryParams();
   const { packId } = useParams();
   const history = useHistory();
-  const alert = useAlert();
   const { dispatch } = usePlayhouse();
 
-  const [gameCreate, isCreatingGame] = useMutation<
-    PackDetailsPageGameCreateMutation
-  >(GameCreateMutation);
-
-  const data = useLazyLoadQuery<PackDetailsPagePackQuery>(PackQuery, {
-    packId: packId || "",
+  const [gameCreate] = useMutation<PackDetailsPageGameCreateMutation>(
+    GAME_CREATE
+  );
+  const { data } = useQuery<PackDetailsPagePackQuery>(PACK_QUERY, {
+    variables: { packId },
   });
+
+  console.log("data", data);
 
   const { pack, currentUser } = data || {};
 
-  const onHostGame = () => {
-    gameCreate({
+  const onHostGame = async () => {
+    const { data } = await gameCreate({
       variables: { input: { packId: packId || "" } },
-      onCompleted: (data) => {
-        if (!data || !data.gameCreate) return;
-        const gameId = data.gameCreate.code;
-        dispatch(gameActions.toggle_host(true));
-        dispatch(playhouseActions.update_user({ name: "" }));
-        dispatch(gameActions.new_game({ gameId }));
-        history.push(`/game/${gameId}/lobby`);
-      },
-      onError: (error: Error) => {
-        alert.show(error.message);
-      },
     });
+
+    if (!data || !data.gameCreate) return;
+    const gameId = data.gameCreate.code;
+    dispatch(gameActions.toggle_host(true));
+    dispatch(playhouseActions.update_user({ name: "" }));
+    dispatch(gameActions.new_game({ gameId }));
+    history.push(`/game/${gameId}/lobby`);
   };
 
   return (
@@ -91,9 +83,7 @@ export const PackDetailsPage = () => {
             ) : (
               <DefaultImage />
             )}
-            <Button onClick={onHostGame} disabled={isCreatingGame}>
-              Host a game
-            </Button>
+            <Button onClick={onHostGame}>Host a game</Button>
             {pack?.user?.id === currentUser?.id && (
               <Link to={`/gamemaster/${packId}/edit`}>Edit Pack</Link>
             )}

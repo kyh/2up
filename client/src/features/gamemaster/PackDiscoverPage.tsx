@@ -1,16 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import graphql from "babel-plugin-relay/macro";
-import { useLazyLoadQuery } from "react-relay/hooks";
-
-import { PackDiscoverPageQuery } from "./__generated__/PackDiscoverPageQuery.graphql";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
 
 import { Input } from "components";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
+import { PackDiscoverPageQuery } from "./__generated__/PackDiscoverPageQuery";
 
-const PacksQuery = graphql`
+const PACKS_QUERY = gql`
   query PackDiscoverPageQuery {
     packs(first: 5) {
       edges {
@@ -26,7 +25,7 @@ const PacksQuery = graphql`
 `;
 
 const PacksList = () => {
-  const data = useLazyLoadQuery<PackDiscoverPageQuery>(PacksQuery, {});
+  const { data } = useQuery<PackDiscoverPageQuery>(PACKS_QUERY);
 
   return (
     <>

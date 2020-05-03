@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { useAlert } from "react-alert";
-import graphql from "babel-plugin-relay/macro";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useMutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 
 import { PageContainer, Input, Button } from "components";
-import { useMutation } from "utils/useMutation";
 
-import { LoginSessionCreateMutation } from "./__generated__/LoginSessionCreateMutation.graphql";
+import { LoginSessionCreateMutation } from "./__generated__/LoginSessionCreateMutation";
 
-const sessionCreateMutation = graphql`
+const SESSION_CREATE = gql`
   mutation LoginSessionCreateMutation($input: SessionCreateInput!) {
     sessionCreate(input: $input) {
       user {
@@ -21,14 +20,12 @@ const sessionCreateMutation = graphql`
 `;
 
 export const Login = ({ history }: RouteComponentProps) => {
-  const alert = useAlert();
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [sessionCreate, isCreatingSession] = useMutation<
-    LoginSessionCreateMutation
-  >(sessionCreateMutation);
+  const [sessionCreate] = useMutation<LoginSessionCreateMutation>(
+    SESSION_CREATE
+  );
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -38,22 +35,19 @@ export const Login = ({ history }: RouteComponentProps) => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    sessionCreate({
+    const { data } = await sessionCreate({
       variables: { input: { username, password } },
-      onCompleted: (data) => {
-        const token = data?.sessionCreate?.token;
-        if (token) {
-          localStorage.setItem("token", token);
-          history.push(`/${username}`);
-        }
-      },
-      onError: (error: Error) => {
-        alert.show(error.message);
-      },
     });
+
+    const token = data?.sessionCreate?.token;
+
+    if (token) {
+      localStorage.setItem("token", token);
+      history.push(`/${username}`);
+    }
 
     return false;
   };
@@ -78,9 +72,7 @@ export const Login = ({ history }: RouteComponentProps) => {
             />
           </label>
         </div>
-        <Button type="submit" disabled={isCreatingSession}>
-          Log in
-        </Button>
+        <Button type="submit">Log in</Button>
       </form>
     </PageContainer>
   );
