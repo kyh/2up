@@ -37,8 +37,7 @@ seeds:
 	cd server && mix run priv/repo/seeds.exs
 
 gql-gen:
-	cd server && mix absinthe.schema.json --schema Web.GraphQL.Schema --pretty ../client/schema.json
-	cd client && npm run relay
+	cd client && npm run gql-gen
 
 format:
 	cd client && npm run format

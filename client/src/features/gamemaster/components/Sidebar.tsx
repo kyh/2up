@@ -7,17 +7,15 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { useAlert } from "react-alert";
-import { useFragment } from "react-relay/hooks";
-import graphql from "babel-plugin-relay/macro";
-import { ConnectionHandler } from "relay-runtime";
+import { useMutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 
 import { Button, Icon } from "components";
 import { ActsTableModal } from "features/gamemaster/components/ActsTableModal";
-import { useMutation } from "utils/useMutation";
 
-import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation.graphql";
-import { Sidebar_pack$key } from "./__generated__/Sidebar_pack.graphql";
-import { SidebarActDeleteMutation } from "./__generated__/SidebarActDeleteMutation.graphql";
+import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation";
+import { SidebarActDeleteMutation } from "./__generated__/SidebarActDeleteMutation";
+import { SidebarPackFragment } from "./__generated__/SidebarPackFragment";
 
 // const reorder = (list: any[], startIndex: number, endIndex: number) => {
 //   const result = Array.from(list);
@@ -28,12 +26,13 @@ import { SidebarActDeleteMutation } from "./__generated__/SidebarActDeleteMutati
 // };
 
 type Props = {
-  pack: Sidebar_pack$key;
+  pack: SidebarPackFragment;
   selectedActId: string;
   setSelectedAct(act: any): void;
+  refetchActs(): void;
 };
 
-const actCreateMutation = graphql`
+const ACT_CREATE = gql`
   mutation SidebarActCreateMutation($input: ActCreateInput!) {
     actCreate(input: $input) {
       act {
@@ -54,7 +53,7 @@ const actCreateMutation = graphql`
   }
 `;
 
-const actDeleteMutation = graphql`
+const ACT_DELETE = gql`
   mutation SidebarActDeleteMutation($input: ActDeleteInput!) {
     actDelete(input: $input) {
       act {
@@ -64,50 +63,19 @@ const actDeleteMutation = graphql`
   }
 `;
 
-export const Sidebar: React.FC<Props> = ({
+export const Sidebar = ({
   pack,
   selectedActId,
   setSelectedAct,
-}) => {
+  refetchActs,
+}: Props) => {
   const alert = useAlert();
   const [tableViewOpen, setTableViewOpen] = useState(false);
-  const [actCreate, isCreatingAct] = useMutation<SidebarActCreateMutation>(
-    actCreateMutation
-  );
+  const [actCreate] = useMutation<SidebarActCreateMutation>(ACT_CREATE);
+  const [actDelete] = useMutation<SidebarActDeleteMutation>(ACT_DELETE);
 
-  const [actDelete, isDeletingAct] = useMutation<SidebarActDeleteMutation>(
-    actDeleteMutation
-  );
-
-  const data = useFragment(
-    graphql`
-      fragment Sidebar_pack on Pack {
-        id
-        acts(first: 100) @connection(key: "PackCreatorPage_acts", filters: []) {
-          edges {
-            node {
-              id
-              question
-              answer
-              instruction
-              questionType {
-                id
-                slug
-              }
-              answerType {
-                id
-                slug
-              }
-            }
-          }
-        }
-      }
-    `,
-    pack
-  );
-
-  const acts = data?.acts?.edges;
-  const packId = data?.id;
+  const acts = pack.acts?.edges;
+  const packId = pack.id;
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -122,34 +90,24 @@ export const Sidebar: React.FC<Props> = ({
     // setActs(orderedActs);
   };
 
-  const deleteAct = (act: any) => {
-    actDelete({
+  const deleteAct = async (act: any) => {
+    await actDelete({
       variables: {
         input: {
           id: act.id,
           packId,
         },
       },
-      updater: (store) => {
-        const payload = store.getRootField("actDelete");
-        const act = payload?.getLinkedRecord("act");
-        store.delete(act.getDataID());
-      },
-      onCompleted: (data) => {
-        console.log("data", data);
-      },
-      onError: (error: Error) => {
-        alert.show(error.message);
-      },
     });
+    refetchActs();
   };
 
   const selectAct = (act: any) => {
     setSelectedAct(act.id);
   };
 
-  const addNewAct = () => {
-    actCreate({
+  const addNewAct = async () => {
+    await actCreate({
       variables: {
         input: {
           packId,
@@ -157,25 +115,8 @@ export const Sidebar: React.FC<Props> = ({
           order: (acts?.length || 0) + 1,
         },
       },
-      updater: (store) => {
-        const payload = store.getRootField("actCreate");
-        const act = payload?.getLinkedRecord("act");
-        const pack = store.get(packId)!;
-        const acts = ConnectionHandler.getConnection(
-          pack,
-          "PackCreatorPage_acts"
-        )!;
-        const edge = ConnectionHandler.createEdge(store, acts, act, "ActEdge");
-        // TODO: Handle different order case
-        ConnectionHandler.insertEdgeAfter(acts, edge);
-      },
-      onCompleted: (data) => {
-        console.log("data", data);
-      },
-      onError: (error: Error) => {
-        alert.show(error.message);
-      },
     });
+    refetchActs();
   };
 
   return (
@@ -201,7 +142,7 @@ export const Sidebar: React.FC<Props> = ({
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {acts?.map((edge, index) => {
+                {acts?.map((edge: any, index: any) => {
                   const act = edge?.node;
                   if (!act) {
                     return;
@@ -229,7 +170,6 @@ export const Sidebar: React.FC<Props> = ({
                           </div>
                           <button
                             className="delete"
-                            disabled={isDeletingAct}
                             onClick={() => deleteAct(act)}
                           >
                             <Icon icon="trash" />
@@ -246,12 +186,36 @@ export const Sidebar: React.FC<Props> = ({
         </DragDropContext>
       </SidebarContent>
       <SidebarFooter>
-        <Button onClick={addNewAct} disabled={isCreatingAct}>
-          Add new question
-        </Button>
+        <Button onClick={addNewAct}>Add new question</Button>
       </SidebarFooter>
     </SidebarContainer>
   );
+};
+
+Sidebar.fragments = {
+  pack: gql`
+    fragment SidebarPackFragment on Pack {
+      id
+      acts(first: 100) {
+        edges {
+          node {
+            id
+            question
+            answer
+            instruction
+            questionType {
+              id
+              slug
+            }
+            answerType {
+              id
+              slug
+            }
+          }
+        }
+      }
+    }
+  `,
 };
 
 const ActQuestion: React.FC<{ questionType: string; question: string }> = ({
