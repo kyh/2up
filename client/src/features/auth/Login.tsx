@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 
-import { PageContainer, Input, Button } from "components";
+import { PageContainer, Input, Button, Box } from "components";
 
 import { LoginSessionCreateMutation } from "./__generated__/LoginSessionCreateMutation";
 
@@ -54,26 +54,32 @@ export const Login = ({ history }: RouteComponentProps) => {
 
   return (
     <PageContainer size="large">
-      <h1>Log in</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            username
+      <div>
+        <Box textAlign="center">
+          <h1>Log in</h1>
+        </Box>
+        <form onSubmit={handleSubmit}>
+          <Box>
+            <div>
+              <label>username</label>
+            </div>
             <Input value={username} onChange={handleUsernameChange} />
-          </label>
-        </div>
-        <div>
-          <label>
-            password
+          </Box>
+          <Box>
+            <div>
+              <label>password</label>
+            </div>
             <Input
               type="password"
               value={password}
               onChange={handlePasswordChange}
             />
-          </label>
-        </div>
-        <Button type="submit">Log in</Button>
-      </form>
+          </Box>
+          <Box mt="5px" display="flex" justifyContent="flex-end">
+            <Button type="submit">Log in</Button>
+          </Box>
+        </form>
+      </div>
     </PageContainer>
   );
 };
