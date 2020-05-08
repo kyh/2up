@@ -1330,11 +1330,11 @@
             "defaultValue": null
           },
           {
-            "name": "answerTypeId",
+            "name": "answerTypeSlug",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "ID",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null
@@ -1380,11 +1380,11 @@
             "defaultValue": null
           },
           {
-            "name": "questionTypeId",
+            "name": "questionTypeSlug",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "ID",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null

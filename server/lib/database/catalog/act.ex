@@ -15,9 +15,10 @@ defmodule Database.Catalog.Act do
 
   def changeset(act, attrs) do
     required_fields = [:question, :answer, :instruction]
+    optional_fields = [:question_type_id, :answer_type_id]
 
     act
-    |> cast(attrs, required_fields)
+    |> cast(attrs, required_fields ++ optional_fields)
     |> assoc_constraint(:user)
     |> assoc_constraint(:question_type)
     |> assoc_constraint(:answer_type)

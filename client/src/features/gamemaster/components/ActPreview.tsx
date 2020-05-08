@@ -62,7 +62,9 @@ export const ActPreview = ({ act }: Props) => {
         input: {
           id: editableAct.id,
           question: editableAct.question,
+          question_type_slug: editableAct.questionType.slug,
           answer: editableAct.answer,
+          answer_type_slug: editableAct.answerType.slug,
           instruction: editableAct.instruction,
         },
       },

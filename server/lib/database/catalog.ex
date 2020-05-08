@@ -93,15 +93,15 @@ defmodule Database.Catalog do
         %User{} = user,
         attrs
       ) do
-    act = Repo.get_by(Act, id: attrs.id)
-    # question_type = Repo.get_by(QuestionType, id: args.question_type_id)
-    # answer_type = Repo.get_by(AnswerType, id: args.answer_type_id)
-    # TODO: Check if this user is the author
-    act
-    |> Act.changeset(attrs)
-    # |> Ecto.Changeset.put_assoc(:question_type, question_type)
-    # |> Ecto.Changeset.put_assoc(:answer_type, answer_type)
-    |> Repo.update()
+    question_type = Repo.get_by(QuestionType, slug: attrs.question_type_slug)
+    answer_type = Repo.get_by(AnswerType, slug: attrs.answer_type_slug)
+    attrs = attrs
+      |> Map.put(:question_type_id, question_type.id)
+      |> Map.put(:answer_type_id, answer_type.id)
+
+    Repo.get_by(Act, id: attrs.id)
+      |> Act.changeset(attrs)
+      |> Repo.update()
   end
 
   def act_delete(
