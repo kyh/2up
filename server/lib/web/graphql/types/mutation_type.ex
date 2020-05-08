@@ -114,8 +114,8 @@ defmodule Web.GraphQL.Types.MutationType do
       input do
         field :id, :id
         field :order, :integer
-        field :question_type_id, :id
-        field :answer_type_id, :id
+        field :question_type_slug, :string
+        field :answer_type_slug, :string
         field :question, :string
         field :answer, :string
         field :instruction, :string
@@ -126,11 +126,7 @@ defmodule Web.GraphQL.Types.MutationType do
       end
 
       resolve(
-        parsing_node_ids(&Catalog.act_update/2,
-          id: :act,
-          question_type_id: :question_type,
-          answer_type_id: :answer_type
-        )
+        parsing_node_ids(&Catalog.act_update/2, id: :act)
       )
     end
 
