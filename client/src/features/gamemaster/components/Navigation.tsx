@@ -1,21 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
 
 import { Box, Button, Icon, Modal } from "components";
 
 import { NavigationPackFragment } from "./__generated__/NavigationPackFragment";
+import { NavigationPackUpdateMutation } from "./__generated__/NavigationPackUpdateMutation";
 
 type Props = {
   pack?: NavigationPackFragment;
 };
 
 export const Navigation = ({ pack }: Props) => {
+  const [editablePack, setEditablePack] = useState(pack);
   const [isOpen, setIsOpen] = useState(false);
   const editMatch = useRouteMatch<{ packId: string }>(
     "/gamemaster/:packId/edit"
   );
+  const [packUpdate] = useMutation<NavigationPackUpdateMutation>(PACK_UPDATE);
+
+  useEffect(() => {
+    setEditablePack(pack);
+  }, [pack]);
+
+  const onChange = (newPackInfo: any, save?: boolean) => {
+    const newPack = { ...editablePack, ...newPackInfo };
+    setEditablePack(newPack);
+    if (save) onSaveChanges();
+  };
+
+  const onSaveChanges = async () => {
+    if (!editablePack) {
+      return;
+    }
+
+    await packUpdate({
+      variables: {
+        input: {
+          id: editablePack.id,
+          name: editablePack.name,
+          is_random: editablePack.isRandom,
+          length: editablePack.length,
+        },
+      },
+    });
+  };
+
+  console.log("render editablePack", editablePack);
 
   return (
     <NavigationContainer editMatch={!!editMatch}>
@@ -32,26 +65,46 @@ export const Navigation = ({ pack }: Props) => {
                 <Icon icon="pencil" />
               </Button>
             </div>
-            <input className="pack-title" defaultValue={pack?.name} />
+            <input
+              className="pack-title"
+              defaultValue={pack?.name}
+              onChange={(event) => onChange({ name: event.target.value })}
+              onBlur={onSaveChanges}
+            />
             <div className="empty" />
           </div>
           <Modal
             open={isOpen}
             title="Pack Settings"
-            onRequestClose={() => setIsOpen(false)}
+            onRequestClose={() => {
+              setIsOpen(false);
+              onSaveChanges();
+            }}
             maxWidth={300}
             closeButton
           >
             <Box mb={3}>
               <h3>Shuffle questions when playing this pack</h3>
-              <Button onClick={() => {}} fullWidth>
-                Yes
+              <Button
+                onClick={() => onChange({ isRandom: !editablePack?.isRandom })}
+                fullWidth
+              >
+                {editablePack?.isRandom ? "Yes" : "No"}
               </Button>
             </Box>
             <Box>
               <h3>Number of questions to go through</h3>
-              <Button onClick={() => {}} fullWidth>
-                10
+              <Button
+                onClick={() => {
+                  if (editablePack?.length) {
+                    const newLength =
+                      editablePack?.length > 10 ? 5 : editablePack?.length + 5;
+                    onChange({ length: newLength });
+                  }
+                }}
+                fullWidth
+              >
+                {editablePack?.length}
               </Button>
             </Box>
           </Modal>
@@ -66,9 +119,22 @@ Navigation.fragments = {
     fragment NavigationPackFragment on Pack {
       id
       name
+      length
+      isRandom
     }
   `,
 };
+
+const PACK_UPDATE = gql`
+  mutation NavigationPackUpdateMutation($input: PackUpdateInput!) {
+    packUpdate(input: $input) {
+      pack {
+        ...NavigationPackFragment
+      }
+    }
+  }
+  ${Navigation.fragments.pack}
+`;
 
 export const NavigationContainer = styled.header<{ editMatch: boolean }>`
   display: flex;

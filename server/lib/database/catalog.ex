@@ -95,13 +95,15 @@ defmodule Database.Catalog do
       ) do
     question_type = Repo.get_by(QuestionType, slug: attrs.question_type_slug)
     answer_type = Repo.get_by(AnswerType, slug: attrs.answer_type_slug)
-    attrs = attrs
+
+    attrs =
+      attrs
       |> Map.put(:question_type_id, question_type.id)
       |> Map.put(:answer_type_id, answer_type.id)
 
     Repo.get_by(Act, id: attrs.id)
-      |> Act.changeset(attrs)
-      |> Repo.update()
+    |> Act.changeset(attrs)
+    |> Repo.update()
   end
 
   def act_delete(

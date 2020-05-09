@@ -11,27 +11,6 @@ import monitor from "./monitor.svg";
 import { ActPreviewActUpdateMutation } from "./__generated__/ActPreviewActUpdateMutation";
 import { ActPreviewFragment } from "./__generated__/ActPreviewFragment";
 
-const ACT_UPDATE = gql`
-  mutation ActPreviewActUpdateMutation($input: ActUpdateInput!) {
-    actUpdate(input: $input) {
-      act {
-        id
-        question
-        answer
-        instruction
-        questionType {
-          id
-          slug
-        }
-        answerType {
-          id
-          slug
-        }
-      }
-    }
-  }
-`;
-
 type Props = {
   act: ActPreviewFragment;
   selectedActId: string;
@@ -56,7 +35,6 @@ export const ActPreview = ({ act }: Props) => {
       return;
     }
 
-    // TODO: Send along question type id and answer type id
     await actUpdate({
       variables: {
         input: {
@@ -112,6 +90,17 @@ ActPreview.fragments = {
     }
   `,
 };
+
+const ACT_UPDATE = gql`
+  mutation ActPreviewActUpdateMutation($input: ActUpdateInput!) {
+    actUpdate(input: $input) {
+      act {
+        ...ActPreviewFragment
+      }
+    }
+  }
+  ${ActPreview.fragments.act}
+`;
 
 const Monitor = styled.section`
   background-image: url(${monitor});
