@@ -11,8 +11,7 @@ import { usePlayhouse } from "features/home/playhouseSlice";
 import { Home } from "features/home/Home";
 import { GameMasterRoutes } from "features/gamemaster/GameMasterRoutes";
 import { GameRoutes } from "features/game/GameRoutes";
-import { SignupPage } from "features/auth/Signup";
-import { LoginPage } from "features/auth/Login";
+import { AuthPage } from "features/auth/AuthPage";
 import { Profile } from "features/profile/Profile";
 
 const alertOptions = {
@@ -35,10 +34,10 @@ export const App: React.FC = () => {
             <GameRoutes />
           </Route>
           <Route path="/signup">
-            <SignupPage />
+            <AuthPage />
           </Route>
           <Route path="/login">
-            <LoginPage />
+            <AuthPage isLogin />
           </Route>
           <Route path="/gamemaster">
             <GameMasterRoutes />
