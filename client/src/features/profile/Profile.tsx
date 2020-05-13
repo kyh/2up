@@ -80,7 +80,7 @@ export const Profile = () => {
           return (
             <div key={packId}>
               <p>
-                <Link to={`/gamemaster/${packId}`}>{packName}</Link>
+                <Link to={`/gamemaster/${packId}/edit`}>{packName}</Link>
               </p>
             </div>
           );

@@ -14,6 +14,8 @@ defmodule Web.GraphQL.Types.LiveTypes do
     field :user, non_null(:user), resolve: dataloader(User)
     field :description, :string
     field :image_url, :string
+    field :length, :integer
+    field :is_random, :boolean
 
     connection field :acts, node_type: :act do
       resolve(fn parent, args, %{context: %{loader: loader}} ->
