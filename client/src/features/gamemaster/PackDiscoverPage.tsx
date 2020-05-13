@@ -35,7 +35,7 @@ const PacksList = () => {
         return (
           <Link
             key={pack.id}
-            to={`/gamemaster/${pack.id}?packName=${pack.name}`}
+            to={`/gamemaster/${pack.id}`}
             className="pack-item"
           >
             {pack.imageUrl ? (
