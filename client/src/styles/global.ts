@@ -57,4 +57,15 @@ export const GlobalStyle = createGlobalStyle`
   p {
     line-height: 1.6;
   }
+
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0 0 ${({ theme }) => theme.spacings(3)};
+  }
+
+  label {
+    display: block;
+    margin: 0 0 ${({ theme }) => theme.spacings(1)};
+  }
 `;

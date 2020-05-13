@@ -14,6 +14,7 @@ const colors = {
   lightGrey: "#CBD5E0",
   grey: "#718096",
   darkGrey: "#2D3748",
+  red: "#f05252",
 };
 
 const mediaSizes = {

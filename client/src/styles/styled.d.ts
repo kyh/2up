@@ -23,6 +23,7 @@ declare module "styled-components" {
       darkGrey: string;
       white: string;
       purple: string;
+      red: string;
     };
     space: Array<number>;
     media: {
