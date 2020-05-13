@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Route } from "react-router-dom";
 
 import { PackDiscoverPage } from "features/gamemaster/PackDiscoverPage";

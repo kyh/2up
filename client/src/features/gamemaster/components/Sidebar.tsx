@@ -91,15 +91,19 @@ export const Sidebar = ({
   };
 
   const deleteAct = async (act: any) => {
-    await actDelete({
-      variables: {
-        input: {
-          id: act.id,
-          packId,
+    try {
+      await actDelete({
+        variables: {
+          input: {
+            id: act.id,
+            packId,
+          },
         },
-      },
-    });
-    refetchActs();
+      });
+      refetchActs();
+    } catch (error) {
+      alert.show(error);
+    }
   };
 
   const selectAct = (act: any) => {
