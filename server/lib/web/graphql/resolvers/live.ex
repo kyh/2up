@@ -53,4 +53,17 @@ defmodule Web.GraphQL.Resolvers.Live do
         {:ok, %{pack: pack}}
     end
   end
+
+  def pack_update(args, %{context: %{current_user: user}}) do
+    case Live.pack_update(user, args) do
+      {:error, changeset} ->
+        {
+          :error,
+          message: "Pack update failed", details: Errors.error_details(changeset)
+        }
+
+      {:ok, pack} ->
+        {:ok, %{pack: pack}}
+    end
+  end
 end

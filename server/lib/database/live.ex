@@ -58,6 +58,12 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
+  def pack_update(%User{} = user, attrs) do
+    Repo.get_by(Pack, id: attrs.id)
+    |> Pack.changeset(attrs)
+    |> Repo.update()
+  end
+
   def pack_category_create(%Pack{} = pack, %Category{} = category) do
     %PackCategory{}
     |> PackCategory.changeset(%{})
