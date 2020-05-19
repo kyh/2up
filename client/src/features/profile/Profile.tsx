@@ -1,9 +1,10 @@
 import React from "react";
+import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useParams, Link } from "react-router-dom";
 
-import { Button } from "components";
+import { Button, Card } from "components";
 
 import { ProfileUserQuery } from "./__generated__/ProfileUserQuery";
 import { ProfilePackCreateMutation } from "./__generated__/ProfilePackCreateMutation";
@@ -65,27 +66,29 @@ export const Profile = () => {
   }
 
   return (
-    <div>
-      <div>
-        <p>{username}</p>
-      </div>
-      <div>
-        <Button onClick={createPack}>Create pack</Button>
-        <p>packs</p>
-        {data.packs?.edges?.map((edge) => {
-          const node = edge?.node;
-          const packId = node?.id;
-          const packName = node?.name;
+    <ProfileContainer>
+      <h1>{username}</h1>
+      <h2>Packs</h2>
+      <Button onClick={createPack}>Create pack</Button>
+      {data.packs?.edges?.map((edge) => {
+        const node = edge?.node;
+        const packId = node?.id;
+        const packName = node?.name;
 
-          return (
-            <div key={packId}>
-              <p>
-                <Link to={`/gamemaster/${packId}/edit`}>{packName}</Link>
-              </p>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+        return (
+          <Card key={packId}>
+            <h3>
+              <Link to={`/gamemaster/${packId}`}>{packName}</Link>
+            </h3>
+            <Link to={`/gamemaster/${packId}/edit`}>Edit</Link>
+          </Card>
+        );
+      })}
+    </ProfileContainer>
   );
 };
+
+const ProfileContainer = styled.section`
+  max-width: 750px;
+  margin: 0 auto;
+`;
