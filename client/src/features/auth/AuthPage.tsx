@@ -91,16 +91,18 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
                 <div className="error">Username is required</div>
               )}
             </Field>
-            <Field>
-              <label htmlFor="email">Email</label>
-              <Input
-                id="email"
-                name="email"
-                placeholder="player@playhouse.gg"
-                ref={register({ required: true })}
-              />
-              {errors.email && <div className="error">Email is required</div>}
-            </Field>
+            {!isLogin && (
+              <Field>
+                <label htmlFor="email">Email</label>
+                <Input
+                  id="email"
+                  name="email"
+                  placeholder="player@playhouse.gg"
+                  ref={register({ required: true })}
+                />
+                {errors.email && <div className="error">Email is required</div>}
+              </Field>
+            )}
             <Field>
               <label htmlFor="password">Password</label>
               <Input
