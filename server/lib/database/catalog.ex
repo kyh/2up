@@ -11,6 +11,14 @@ defmodule Database.Catalog do
     Repo.all(query)
   end
 
+  def act_list(%{question_type_id: question_type_id, answer_type_id: answer_type_id}) do
+    query =
+      from act in Act,
+        where: act.question_type_id == ^question_type_id and act.answer_type_id == ^answer_type_id
+
+    Repo.all(query)
+  end
+
   def question_list(pack_id) do
     tag_query =
       from act in Act,

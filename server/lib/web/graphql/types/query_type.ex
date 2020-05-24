@@ -25,6 +25,19 @@ defmodule Web.GraphQL.Types.QueryType do
       resolve(parsing_node_ids(&Catalog.act_get_by_id/2, id: :act, pack_id: :pack))
     end
 
+    connection field :acts, node_type: :act do
+      arg(:question_type_id, :id)
+      arg(:answer_type_id, :id)
+      arg(:after, :string)
+
+      resolve(
+        parsing_node_ids(&Catalog.act_list/2,
+          question_type_id: :question_type,
+          answer_type_id: :answer_type
+        )
+      )
+    end
+
     field :question_types, list_of(:question_type) do
       resolve(&Catalog.question_type_list/3)
     end

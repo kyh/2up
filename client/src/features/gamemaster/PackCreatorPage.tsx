@@ -6,9 +6,10 @@ import { useQuery } from "@apollo/react-hooks";
 
 import { Sidebar } from "features/gamemaster/components/Sidebar";
 import { ActPreview } from "features/gamemaster/components/ActPreview";
+import { Navigation } from "features/gamemaster/components/Navigation";
+import { Suggestions } from "features/gamemaster/components/Suggestions";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
-import { Navigation } from "./components/Navigation";
 
 const PACK_QUERY = gql`
   query PackCreatorPagePackQuery($packId: ID!, $actId: ID) {
@@ -18,6 +19,14 @@ const PACK_QUERY = gql`
     }
     act(id: $actId, packId: $packId) {
       ...ActPreviewFragment
+    }
+    questionTypes {
+      id
+      slug
+    }
+    answerTypes {
+      id
+      slug
     }
   }
   ${Navigation.fragments.pack}
@@ -51,6 +60,11 @@ export const PackCreatorPage = () => {
     refetch(newVariables);
   };
 
+  const questionTypes = data?.questionTypes || [];
+  const answerTypes = data?.answerTypes || [];
+  const questionTypeId = questionTypes[0] ? questionTypes[0].id : "";
+  const answerTypeId = answerTypes[0] ? answerTypes[0].id : "";
+
   return (
     <Page>
       {data?.pack && (
@@ -70,9 +84,10 @@ export const PackCreatorPage = () => {
         )}
       </Content>
       <Footer>
-        <QuestionTemplate />
-        <QuestionTemplate />
-        <QuestionTemplate />
+        <Suggestions
+          questionTypeId={questionTypeId}
+          answerTypeId={answerTypeId}
+        />
       </Footer>
     </Page>
   );
@@ -102,13 +117,4 @@ const Footer = styled.footer`
   grid-area: footer;
   display: flex;
   padding: ${({ theme }) => theme.spacings(4)};
-`;
-
-const QuestionTemplate = styled.div`
-  width: 150px;
-  background: ${({ theme }) => theme.ui.background};
-  height: 100%;
-  border-radius: ${({ theme }) => theme.border.wavyRadius};
-  margin-right: ${({ theme }) => theme.spacings(4)};
-  border: 2px solid ${({ theme }) => theme.ui.backgroundInverse};
 `;
