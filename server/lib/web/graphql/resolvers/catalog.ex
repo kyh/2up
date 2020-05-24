@@ -1,6 +1,11 @@
 defmodule Web.GraphQL.Resolvers.Catalog do
+  alias Absinthe.Relay.Connection
   alias Database.Catalog
   alias Web.GraphQL.Errors
+
+  def act_list(args, _) do
+    Connection.from_list(Catalog.act_list(args), args)
+  end
 
   def act_create(args, %{context: %{current_user: user}}) do
     case Catalog.act_create(user, args) do
