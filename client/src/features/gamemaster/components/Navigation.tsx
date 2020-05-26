@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import { useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { Box, Button, Icon, Modal } from "components";
 
 import { NavigationPackFragment } from "./__generated__/NavigationPackFragment";
 import { NavigationPackUpdateMutation } from "./__generated__/NavigationPackUpdateMutation";
+import { NavigationCurrentUserQuery } from "./__generated__/NavigationCurrentUserQuery";
 
 type Props = {
   pack?: NavigationPackFragment;
@@ -19,6 +20,7 @@ export const Navigation = ({ pack }: Props) => {
   const editMatch = useRouteMatch<{ packId: string }>(
     "/gamemaster/:packId/edit"
   );
+  const { data } = useQuery<NavigationCurrentUserQuery>(CURRENT_USER);
   const [packUpdate] = useMutation<NavigationPackUpdateMutation>(PACK_UPDATE);
 
   useEffect(() => {
@@ -48,7 +50,10 @@ export const Navigation = ({ pack }: Props) => {
     });
   };
 
-  console.log("render editablePack", editablePack);
+  const onLogout = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
 
   return (
     <NavigationContainer editMatch={!!editMatch}>
@@ -57,7 +62,7 @@ export const Navigation = ({ pack }: Props) => {
           <img className="logo" src="/logo/logomark.svg" alt="Playhouse" />
         </Link>
       </div>
-      {!!editMatch && (
+      {!!editMatch ? (
         <>
           <div className="right">
             <div className="more">
@@ -109,6 +114,22 @@ export const Navigation = ({ pack }: Props) => {
             </Box>
           </Modal>
         </>
+      ) : (
+        <div className="right end">
+          {data?.currentUser?.username ? (
+            <>
+              <Link to={`/${data?.currentUser?.username}`}>Profile</Link>
+              <Link to="/gamemaster" onClick={onLogout}>
+                Logout
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/signup">Sign Up</Link>
+              <Link to="/login">Login</Link>
+            </>
+          )}
+        </div>
       )}
     </NavigationContainer>
   );
@@ -124,6 +145,14 @@ Navigation.fragments = {
     }
   `,
 };
+
+const CURRENT_USER = gql`
+  query NavigationCurrentUserQuery {
+    currentUser {
+      username
+    }
+  }
+`;
 
 const PACK_UPDATE = gql`
   mutation NavigationPackUpdateMutation($input: PackUpdateInput!) {
@@ -162,6 +191,16 @@ export const NavigationContainer = styled.header<{ editMatch: boolean }>`
     align-items: center;
     flex: auto;
     padding: 0 ${({ theme }) => theme.spacings(3)};
+
+    &.end {
+      justify-content: flex-end;
+      > a {
+        padding: ${({ theme }) => theme.spacings(3)};
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
   }
 
   .pack-title {

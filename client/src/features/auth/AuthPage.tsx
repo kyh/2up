@@ -69,7 +69,7 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
         history.push(`/${username}`);
       }
     } catch (error) {
-      alert.show(error);
+      alert.show(error.message);
     }
   };
 

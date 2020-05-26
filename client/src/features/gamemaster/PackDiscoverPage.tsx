@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
-import { Input } from "components";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
 import { PackDiscoverPageQuery } from "./__generated__/PackDiscoverPageQuery";
@@ -57,12 +56,6 @@ export const PackDiscoverPage = () => {
     <Page>
       <Navigation />
       <Content>
-        <SearchBox>
-          <h3>Browse all 30+ packs</h3>
-          <div className="search">
-            <Input placeholder="Search..." />
-          </div>
-        </SearchBox>
         <PackSection>
           <h3>Featured</h3>
           <div className="pack-items">
@@ -73,27 +66,6 @@ export const PackDiscoverPage = () => {
     </Page>
   );
 };
-
-const SearchBox = styled.section`
-  display: flex;
-  background: ${({ theme }) => theme.ui.background};
-  padding: ${({ theme }) => theme.spacings(5)};
-  border-radius: ${({ theme }) => theme.border.wavyRadius};
-  margin-bottom: ${({ theme }) => theme.spacings(7)};
-  border: 2px dotted ${({ theme }) => theme.colors.lightGrey};
-
-  h3 {
-    margin-right: ${({ theme }) => theme.spacings(7)};
-  }
-
-  .search {
-    flex: auto;
-  }
-
-  input {
-    width: 100%;
-  }
-`;
 
 const PackSection = styled.section`
   .pack-items {
