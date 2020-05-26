@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { Provider as AlertProvider, transitions, positions } from "react-alert";
@@ -43,9 +43,7 @@ export const App: React.FC = () => {
             <GameMasterRoutes />
           </Route>
           <Route path="/:username">
-            <Suspense fallback="Loading...">
-              <Profile />
-            </Suspense>
+            <Profile />
           </Route>
           <Redirect to="/" />
         </Switch>
