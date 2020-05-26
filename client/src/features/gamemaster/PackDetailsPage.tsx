@@ -6,7 +6,7 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 import { gameActions } from "features/game/gameSlice";
-import { DefaultImage } from "features/gamemaster/PackDiscoverPage";
+import { DefaultImage } from "features/gamemaster/components/Packs";
 import { Card, Button } from "components";
 
 import { Navigation } from "./components/Navigation";
@@ -71,7 +71,7 @@ export const PackDetailsPage = () => {
     <Page>
       <Navigation />
       <PackDetailsPageContent>
-        <Link className="back-link" to="/gamemaster">
+        <Link to="#" className="back-link" onClick={() => history.goBack()}>
           &#171; Back to packs
         </Link>
         <div className="pack-details">
