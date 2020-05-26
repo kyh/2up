@@ -12,7 +12,7 @@ import { Home } from "features/home/Home";
 import { GameMasterRoutes } from "features/gamemaster/GameMasterRoutes";
 import { GameRoutes } from "features/game/GameRoutes";
 import { AuthPage } from "features/auth/AuthPage";
-import { Profile } from "features/profile/Profile";
+import { ProfilePage } from "features/profile/ProfilePage";
 
 const alertOptions = {
   position: positions.TOP_CENTER,
@@ -43,7 +43,7 @@ export const App: React.FC = () => {
             <GameMasterRoutes />
           </Route>
           <Route path="/:username">
-            <Profile />
+            <ProfilePage />
           </Route>
           <Redirect to="/" />
         </Switch>
