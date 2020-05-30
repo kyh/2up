@@ -1,9 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
 import { Button } from "components";
+import { ActTemplate } from "features/gamemaster/components/ActTemplate";
 
 import { SuggestionsActsQuery } from "./__generated__/SuggestionsActsQuery";
 
@@ -25,11 +25,7 @@ const ACTS_QUERY = gql`
       after: $after
     ) {
       edges {
-        node {
-          id
-          question
-          answer
-        }
+        ...ActTemplateFragment
       }
       pageInfo {
         endCursor
@@ -37,6 +33,7 @@ const ACTS_QUERY = gql`
       }
     }
   }
+  ${ActTemplate.fragments.act}
 `;
 
 export const Suggestions = ({
@@ -77,23 +74,18 @@ export const Suggestions = ({
     });
   };
 
+  const onQuestionTemplateClick = () => {
+    console.log("");
+  };
+
   return (
     <>
-      {acts.map((act) => (
-        <QuestionTemplate>
-          <span>{act?.node?.question}</span>
-        </QuestionTemplate>
-      ))}
+      {acts.map((act) => {
+        return (
+          act && <ActTemplate act={act} onClick={onQuestionTemplateClick} />
+        );
+      })}
       <Button onClick={onFetchMoreClick}>Fetch More</Button>
     </>
   );
 };
-
-const QuestionTemplate = styled.div`
-  width: 150px;
-  background: ${({ theme }) => theme.ui.background};
-  height: 100%;
-  border-radius: ${({ theme }) => theme.border.wavyRadius};
-  margin-right: ${({ theme }) => theme.spacings(4)};
-  border: 2px solid ${({ theme }) => theme.ui.backgroundInverse};
-`;

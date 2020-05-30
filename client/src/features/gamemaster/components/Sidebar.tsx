@@ -11,7 +11,6 @@ import { useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 
 import { Button, Icon } from "components";
-import { ActsTableModal } from "features/gamemaster/components/ActsTableModal";
 
 import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation";
 import { SidebarActDeleteMutation } from "./__generated__/SidebarActDeleteMutation";
@@ -70,7 +69,6 @@ export const Sidebar = ({
   refetchActs,
 }: Props) => {
   const alert = useAlert();
-  const [tableViewOpen, setTableViewOpen] = useState(false);
   const [actCreate] = useMutation<SidebarActCreateMutation>(ACT_CREATE);
   const [actDelete] = useMutation<SidebarActDeleteMutation>(ACT_DELETE);
 
@@ -127,16 +125,6 @@ export const Sidebar = ({
     <SidebarContainer>
       <SidebarHeader>
         <h3>Questions:</h3>
-        <Button onClick={() => setTableViewOpen(true)}>
-          <Icon icon="list" size="sm" />
-        </Button>
-        <ActsTableModal
-          acts={acts}
-          open={tableViewOpen}
-          setOpen={(open) => {
-            setTableViewOpen(open);
-          }}
-        />
       </SidebarHeader>
       <SidebarContent>
         <DragDropContext onDragEnd={onDragEnd}>
