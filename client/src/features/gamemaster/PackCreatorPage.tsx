@@ -7,7 +7,6 @@ import { useQuery } from "@apollo/react-hooks";
 import { Sidebar } from "features/gamemaster/components/Sidebar";
 import { ActPreview } from "features/gamemaster/components/ActPreview";
 import { Navigation } from "features/gamemaster/components/Navigation";
-import { Suggestions } from "features/gamemaster/components/Suggestions";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
 
@@ -60,11 +59,6 @@ export const PackCreatorPage = () => {
     refetch(newVariables);
   };
 
-  const questionTypes = data?.questionTypes || [];
-  const answerTypes = data?.answerTypes || [];
-  const questionTypeId = questionTypes[0] ? questionTypes[0].id : "";
-  const answerTypeId = answerTypes[0] ? answerTypes[0].id : "";
-
   return (
     <Page>
       {data?.pack && (
@@ -83,12 +77,6 @@ export const PackCreatorPage = () => {
           <ActPreview selectedActId={selectedActId} act={data.act} />
         )}
       </Content>
-      <Footer>
-        <Suggestions
-          questionTypeId={questionTypeId}
-          answerTypeId={answerTypeId}
-        />
-      </Footer>
     </Page>
   );
 };
