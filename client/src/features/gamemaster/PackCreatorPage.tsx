@@ -90,7 +90,7 @@ export const Page = styled.section`
     "sidebar content content"
     "sidebar  footer  footer";
   grid-template-columns: 345px 1fr 1fr;
-  grid-template-rows: 50px 1fr 150px;
+  grid-template-rows: 50px 1fr 0;
 `;
 
 export const Content = styled.section`
