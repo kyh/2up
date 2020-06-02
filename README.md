@@ -25,7 +25,7 @@
 
 **Client**: The web client is a React/Redux application bootstrapped with `create-react-app`
 
-**Data Transport**: We use Apollo as our frontend data store, GraphQL (Dashboard) and Websocket (Game) for data transport
+**Data Transport**: The `Gamemaster` pages use GraphQL with Apollo while the `Game` itself uses websockets
 
 **Server**: Backend server is an Elixir/Phoenix API server
 
