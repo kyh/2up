@@ -1,6 +1,6 @@
 # Playhouse
 
-## Learn more about Elixir
+> Server written in Elixir, learn more:
 
 - Official website: https://www.phoenixframework.org/
 - Guides: https://hexdocs.pm/phoenix/overview.html
