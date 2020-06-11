@@ -8,10 +8,6 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
-  def pack_get(pack_id) do
-    Repo.get(Pack, pack_id)
-  end
-
   def pack_list(%{username: username}) do
     user = Repo.get_by(User, username: username)
 
@@ -58,7 +54,7 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
-  def pack_update(%User{} = user, attrs) do
+  def pack_update(%User{} = _user, attrs) do
     Repo.get_by(Pack, id: attrs.id)
     |> Pack.changeset(attrs)
     |> Repo.update()
