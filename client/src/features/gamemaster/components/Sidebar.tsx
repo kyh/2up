@@ -14,6 +14,7 @@ import { Button, Icon } from "components";
 
 import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation";
 import { SidebarActDeleteMutation } from "./__generated__/SidebarActDeleteMutation";
+import { SidebarPackActUpdateMutation } from "./__generated__/SidebarPackActUpdateMutation";
 import { SidebarPackFragment } from "./__generated__/SidebarPackFragment";
 
 // const reorder = (list: any[], startIndex: number, endIndex: number) => {
@@ -62,6 +63,17 @@ const ACT_DELETE = gql`
   }
 `;
 
+const PACK_ACT_UPDATE = gql`
+  mutation SidebarPackActUpdateMutation($input: PackActUpdateInput!) {
+    packActUpdate(input: $input) {
+      packAct {
+        id
+        order
+      }
+    }
+  }
+`;
+
 export const Sidebar = ({
   pack,
   selectedActId,
@@ -71,21 +83,43 @@ export const Sidebar = ({
   const alert = useAlert();
   const [actCreate] = useMutation<SidebarActCreateMutation>(ACT_CREATE);
   const [actDelete] = useMutation<SidebarActDeleteMutation>(ACT_DELETE);
+  const [packActUpdate] = useMutation<SidebarPackActUpdateMutation>(
+    PACK_ACT_UPDATE
+  );
 
   const acts = pack.acts?.edges;
   const packId = pack.id;
 
-  const onDragEnd = (result: DropResult) => {
+  const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
 
-    // const orderedActs = reorder(
-    //   acts,
-    //   result.source.index,
-    //   result.destination.index
-    // );
+    const destinationIndex = result.destination.index;
+    const draggableId = result.draggableId;
 
-    // TODO: update order with mutation
-    // setActs(orderedActs);
+    let before;
+    let after;
+    if (destinationIndex !== 0 && acts) {
+      before = acts[destinationIndex];
+    }
+    if (acts && destinationIndex !== acts.length - 1) {
+      after = acts[destinationIndex + 1];
+    }
+
+    try {
+      await packActUpdate({
+        variables: {
+          input: {
+            packId,
+            id: draggableId,
+            beforeId: before?.node?.id,
+            afterId: after?.node?.id,
+          },
+        },
+      });
+      refetchActs();
+    } catch (error) {
+      alert.show(error.message);
+    }
   };
 
   const deleteAct = async (act: any) => {
@@ -100,7 +134,7 @@ export const Sidebar = ({
       });
       refetchActs();
     } catch (error) {
-      alert.show(error);
+      alert.show(error.message);
     }
   };
 

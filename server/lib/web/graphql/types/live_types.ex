@@ -3,7 +3,7 @@ defmodule Web.GraphQL.Types.LiveTypes do
   use Absinthe.Relay.Schema.Notation, :modern
 
   alias Absinthe.Relay.Connection
-  alias Web.GraphQL.Resolvers.Live
+  alias Web.GraphQL.Resolvers.Catalog
   alias Database.Live.Pack
   alias Database.Accounts.User
 
@@ -18,13 +18,8 @@ defmodule Web.GraphQL.Types.LiveTypes do
     field :is_random, :boolean
 
     connection field :acts, node_type: :act do
-      resolve(fn parent, args, %{context: %{loader: loader}} ->
-        loader
-        |> Dataloader.load(Pack, :acts, parent)
-        |> on_load(fn loader ->
-          Dataloader.get(loader, Pack, :acts, parent)
-          |> Connection.from_list(args)
-        end)
+      resolve(fn parent, args, meta ->
+        Catalog.ordered_act_list(parent, Map.merge(args, %{pack_id: parent.id}), meta)
       end)
     end
   end

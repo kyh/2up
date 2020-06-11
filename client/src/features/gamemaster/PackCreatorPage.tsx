@@ -54,7 +54,7 @@ export const PackCreatorPage = () => {
   const refetchActs = () => {
     const newVariables = {
       packId,
-      actId: selectedActId,
+      id: selectedActId,
     };
     refetch(newVariables);
   };
