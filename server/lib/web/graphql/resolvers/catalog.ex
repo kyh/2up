@@ -3,6 +3,10 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   alias Database.Catalog
   alias Web.GraphQL.Errors
 
+  def ordered_act_list(_, args, _) do
+    Connection.from_list(Catalog.ordered_act_list(args), args)
+  end
+
   def act_list(args, _) do
     Connection.from_list(Catalog.act_list(args), args)
   end
@@ -45,6 +49,19 @@ defmodule Web.GraphQL.Resolvers.Catalog do
 
       {:ok, act} ->
         {:ok, %{act: act}}
+    end
+  end
+
+  def pack_act_update(args, %{context: %{current_user: user}}) do
+    case Catalog.pack_act_update(user, args) do
+      {:error, changeset} ->
+        {
+          :error,
+          message: "Pack act update failed", details: Errors.error_details(changeset)
+        }
+
+      {:ok, pack_act} ->
+        {:ok, %{pack_act: pack_act}}
     end
   end
 
