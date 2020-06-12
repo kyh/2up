@@ -5,14 +5,13 @@ defmodule Database.Live.PackAct do
     belongs_to :pack, Pack
     belongs_to :act, Act
 
-    field :order, :integer
-    field :new_order, :decimal
+    field :order, :decimal
 
     timestamps()
   end
 
   def changeset(pack_act, attrs) do
-    required_fields = [:order, :new_order]
+    required_fields = [:order]
 
     pack_act
     |> cast(attrs, required_fields)
