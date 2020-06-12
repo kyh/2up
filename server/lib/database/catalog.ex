@@ -100,7 +100,7 @@ defmodule Database.Catalog do
       |> Repo.insert()
 
     %PackAct{}
-    |> PackAct.changeset(%{new_order: attrs.order, order: attrs.order})
+    |> PackAct.changeset(%{new_order: attrs.order})
     |> Ecto.Changeset.put_assoc(:pack, pack)
     |> Ecto.Changeset.put_assoc(:act, act)
     |> Repo.insert()
