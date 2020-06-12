@@ -91,13 +91,13 @@ defmodule Database.Live do
     Repo.all(query) |> rebalance_pack_acts(10)
   end
 
-  def rebalance_pack_acts([ pack_act | pack_acts ], new_order) do
+  def rebalance_pack_acts([pack_act | pack_acts], new_order) do
     pack_act
-    |> PackAct.changeset(%{ order: new_order })
-    |> Repo.update
+    |> PackAct.changeset(%{order: new_order})
+    |> Repo.update()
 
     rebalance_pack_acts(pack_acts, new_order + 10)
   end
 
-  def rebalance_pack_acts([], _order), do: nil
+  def rebalance_pack_acts([], _order), do: :ok
 end
