@@ -86,14 +86,14 @@ defmodule Database.Live do
     query =
       from pack_act in PackAct,
         where: pack_act.pack_id == ^pack.id,
-        order_by: [asc: pack_act.new_order]
+        order_by: [asc: pack_act.order]
 
     Repo.all(query) |> rebalance_pack_acts(10)
   end
 
   def rebalance_pack_acts([ pack_act | pack_acts ], new_order) do
     pack_act
-    |> PackAct.changeset(%{ new_order: new_order })
+    |> PackAct.changeset(%{ order: new_order })
     |> Repo.update
 
     rebalance_pack_acts(pack_acts, new_order + 10)

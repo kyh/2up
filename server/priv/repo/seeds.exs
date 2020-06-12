@@ -242,29 +242,29 @@ all_acts =
 startup_acts
 |> Enum.with_index()
 |> Enum.each(fn {x, i} ->
-  Live.pack_act_create(startups_pack, x, %{new_order: i + 1})
+  Live.pack_act_create(startups_pack, x, %{order: i + 1})
 end)
 
 sat_acts
 |> Enum.with_index()
 |> Enum.each(fn {x, i} ->
-  Live.pack_act_create(sat_pack, x, %{new_order: i + 1})
+  Live.pack_act_create(sat_pack, x, %{order: i + 1})
 end)
 
 color_acts
 |> Enum.with_index()
 |> Enum.each(fn {x, i} ->
-  Live.pack_act_create(color_pack, x, %{new_order: i + 1})
+  Live.pack_act_create(color_pack, x, %{order: i + 1})
 end)
 
 drawing_acts
 |> Enum.with_index()
 |> Enum.each(fn {x, i} ->
-  Live.pack_act_create(drawing_pack, x, %{new_order: i + 1})
+  Live.pack_act_create(drawing_pack, x, %{order: i + 1})
 end)
 
 all_acts
 |> Enum.with_index()
 |> Enum.each(fn {x, i} ->
-  Live.pack_act_create(variety_pack, x, %{new_order: i + 1})
+  Live.pack_act_create(variety_pack, x, %{order: i + 1})
 end)
