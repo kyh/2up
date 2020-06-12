@@ -114,7 +114,6 @@ defmodule Database.Catalog do
         after_id: after_id,
         pack_id: pack_id
       }) do
-
     before_pack_act = Repo.get_by(PackAct, act_id: before_id, pack_id: pack_id)
     after_pack_act = Repo.get_by(PackAct, act_id: after_id, pack_id: pack_id)
 
@@ -137,6 +136,7 @@ defmodule Database.Catalog do
         attrs
       ) do
     new_order = calculate_new_order(attrs)
+
     Repo.get_by(PackAct, act_id: attrs.id, pack_id: attrs.pack_id)
     |> PackAct.changeset(%{order: new_order})
     |> Repo.update()
