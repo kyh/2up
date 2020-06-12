@@ -93,7 +93,7 @@ defmodule Database.Live do
 
   def rebalance_pack_acts([ pack_act | pack_acts ], new_order) do
     pack_act
-    |> PackAct.changeset(%{ new_order: new_order, order: new_order })
+    |> PackAct.changeset(%{ new_order: new_order })
     |> Repo.update
 
     rebalance_pack_acts(pack_acts, new_order + 10)
