@@ -5,7 +5,7 @@ defmodule Database.Live.PackAct do
     belongs_to :pack, Pack
     belongs_to :act, Act
 
-    field :order, :integer
+    field :order, :decimal
 
     timestamps()
   end

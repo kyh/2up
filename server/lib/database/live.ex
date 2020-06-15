@@ -8,10 +8,6 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
-  def pack_get(pack_id) do
-    Repo.get(Pack, pack_id)
-  end
-
   def pack_list(%{username: username}) do
     user = Repo.get_by(User, username: username)
 
@@ -58,7 +54,7 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
-  def pack_update(%User{} = user, attrs) do
+  def pack_update(%User{} = _user, attrs) do
     Repo.get_by(Pack, id: attrs.id)
     |> Pack.changeset(attrs)
     |> Repo.update()
@@ -85,4 +81,23 @@ defmodule Database.Live do
     |> Ecto.Changeset.put_assoc(:act, act)
     |> Repo.insert()
   end
+
+  def rebalance_pack(%Pack{} = pack) do
+    query =
+      from pack_act in PackAct,
+        where: pack_act.pack_id == ^pack.id,
+        order_by: [asc: pack_act.order]
+
+    Repo.all(query) |> rebalance_pack_acts(10)
+  end
+
+  def rebalance_pack_acts([pack_act | pack_acts], new_order) do
+    pack_act
+    |> PackAct.changeset(%{order: new_order})
+    |> Repo.update()
+
+    rebalance_pack_acts(pack_acts, new_order + 10)
+  end
+
+  def rebalance_pack_acts([], _order), do: :ok
 end
