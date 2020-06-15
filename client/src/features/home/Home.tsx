@@ -47,12 +47,13 @@ export const Home = () => {
     });
 
     if (data?.game?.isValid) {
-      alert.show("Game code does not exist");
-      setgameId("");
+      dispatch(gameActions.new_game({ gameId }));
+      setScreen(Screens.name);
       return;
     }
-    dispatch(gameActions.new_game({ gameId }));
-    setScreen(Screens.name);
+
+    alert.show("Game code does not exist");
+    setgameId("");
   };
 
   const onSubmitName = (event: SyntheticEvent) => {
