@@ -32,7 +32,7 @@ export const GameProvider: React.FC<{ gameId?: string }> = ({
     }
     if (error) {
       dispatch(gameActions.reset());
-      alert.show(error);
+      alert.show(error.message);
       history.push("/");
     }
   }, [state.gameId, gameId, error]);

@@ -3,8 +3,6 @@ defmodule Web.GraphQL.Schema do
   use Absinthe.Relay.Schema, :modern
   use Absinthe.Relay.Schema.Notation, :modern
 
-  import Absinthe.Resolution.Helpers, only: [dataloader: 1, dataloader: 3]
-
   alias Database.Catalog.{Act, QuestionType, AnswerType}
   alias Database.Accounts.User
   alias Database.Live.Pack

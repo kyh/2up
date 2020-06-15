@@ -26,4 +26,9 @@ defmodule Web.GraphQL.Types.CatalogTypes do
   node object(:answer_type) do
     field :slug, non_null(:string)
   end
+
+  object(:pack_act) do
+    field :id, :id
+    field :order, non_null(:string)
+  end
 end

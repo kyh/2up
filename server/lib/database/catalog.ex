@@ -1,6 +1,17 @@
 defmodule Database.Catalog do
   use Database.Context
 
+  def ordered_act_list(args) do
+    query =
+      from act in Act,
+        join: pack_act in PackAct,
+        on: pack_act.act_id == act.id,
+        where: pack_act.pack_id == ^args.pack_id,
+        order_by: [asc: pack_act.order]
+
+    Repo.all(query)
+  end
+
   def act_list(%{tag_ids: tag_ids}) do
     query =
       from act in Act,
@@ -95,6 +106,40 @@ defmodule Database.Catalog do
     |> Repo.insert()
 
     {:ok, act}
+  end
+
+  def calculate_new_order(%{
+        id: act_id,
+        before_id: before_id,
+        after_id: after_id,
+        pack_id: pack_id
+      }) do
+    before_pack_act = Repo.get_by(PackAct, act_id: before_id, pack_id: pack_id)
+    after_pack_act = Repo.get_by(PackAct, act_id: after_id, pack_id: pack_id)
+
+    Decimal.add(before_pack_act.order, after_pack_act.order)
+    |> Decimal.div(2)
+  end
+
+  def calculate_new_order(%{after_id: after_id, pack_id: pack_id}) do
+    after_pack_act = Repo.get_by(PackAct, act_id: after_id, pack_id: pack_id)
+    Decimal.div(after_pack_act.order, Decimal.cast(2))
+  end
+
+  def calculate_new_order(%{before_id: before_id, pack_id: pack_id}) do
+    before_pack_act = Repo.get_by(PackAct, act_id: before_id, pack_id: pack_id)
+    Decimal.add(before_pack_act.order, 1)
+  end
+
+  def pack_act_update(
+        %User{} = user,
+        attrs
+      ) do
+    new_order = calculate_new_order(attrs)
+
+    Repo.get_by(PackAct, act_id: attrs.id, pack_id: attrs.pack_id)
+    |> PackAct.changeset(%{order: new_order})
+    |> Repo.update()
   end
 
   def act_update(
