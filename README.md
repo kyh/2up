@@ -18,7 +18,7 @@
     └── /lib
         ├── /database            # Database access
         ├── /game                # Game server
-        ├── /web                 # Channels and routes
+        └── /web                 # Channels and routes
 ```
 
 ## Tech Stack
