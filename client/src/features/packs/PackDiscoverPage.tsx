@@ -6,11 +6,15 @@ import { useQuery } from "@apollo/react-hooks";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
 import { PackSection, PackImage } from "./components/Packs";
-import { PackDiscoverPageQuery } from "./__generated__/PackDiscoverPageQuery";
+import {
+  PackDiscoverPageQuery,
+  PackDiscoverPageQuery_my,
+  PackDiscoverPageQuery_featured,
+} from "./__generated__/PackDiscoverPageQuery";
 
 const PACKS_QUERY = gql`
-  query PackDiscoverPageQuery {
-    packs(first: 5) {
+  query PackDiscoverPageQuery($username: String) {
+    featured: packs(first: 5) {
       edges {
         node {
           id
@@ -20,15 +24,25 @@ const PACKS_QUERY = gql`
         }
       }
     }
+    my: packs(first: 10, username: $username) {
+      edges {
+        node {
+          id
+          name
+          imageUrl
+          description
+        }
+      }
+    }
   }
 `;
 
-const PacksList = () => {
-  const { data } = useQuery<PackDiscoverPageQuery>(PACKS_QUERY);
-
+const Packs: React.FC<{
+  packs?: PackDiscoverPageQuery_my | PackDiscoverPageQuery_featured | null;
+}> = ({ packs }) => {
   return (
     <>
-      {data?.packs?.edges?.map((edge) => {
+      {packs?.edges?.map((edge) => {
         const pack = edge?.node;
         if (!pack) return null;
         return (
@@ -44,15 +58,29 @@ const PacksList = () => {
 };
 
 export const PackDiscoverPage = () => {
+  const { data } = useQuery<PackDiscoverPageQuery>(PACKS_QUERY, {
+    variables: { username: localStorage.getItem("username") || "" },
+  });
+
   return (
     <Page>
       <Navigation />
       <Content>
         <PackSection>
-          <h3>Featured</h3>
-          <div className="pack-items">
-            <PacksList />
+          <div className="pack-section">
+            <h2>Featured</h2>
+            <div className="pack-items">
+              <Packs packs={data?.featured} />
+            </div>
           </div>
+          {!!data?.my?.edges?.length && (
+            <div className="pack-section">
+              <h2>My Packs</h2>
+              <div className="pack-items">
+                <Packs packs={data?.my} />
+              </div>
+            </div>
+          )}
         </PackSection>
       </Content>
     </Page>

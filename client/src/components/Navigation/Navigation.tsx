@@ -74,7 +74,7 @@ export const Navigation: React.FC = () => {
             {isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           </Button>
         </SettingsContainer>
-        <h3>Contact us</h3>
+        <h3>Find us on</h3>
         <SettingsContainer>
           <SettingItem>
             <ButtonLink
