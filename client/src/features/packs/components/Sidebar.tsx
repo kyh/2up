@@ -185,14 +185,11 @@ export const Sidebar = ({
                           style={{ ...provided.draggableProps.style }}
                         >
                           <div className="left" onClick={() => selectAct(act)}>
-                            <div className="instruction">{act.instruction}</div>
-                            <ActQuestion
-                              questionType={act.questionType.slug}
-                              question={act.question}
-                            />
+                            <div className="type">{act.questionType.slug}</div>
                           </div>
                           <div className="right" onClick={() => selectAct(act)}>
-                            <div className="type">{act.questionType.slug}</div>
+                            <div className="instruction">{act.instruction}</div>
+                            <h3 className="question">{act.question}</h3>
                           </div>
                           <button
                             className="delete"
@@ -242,18 +239,6 @@ Sidebar.fragments = {
       }
     }
   `,
-};
-
-const ActQuestion: React.FC<{ questionType: string; question: string }> = ({
-  questionType,
-  question,
-}) => {
-  switch (questionType) {
-    case "image":
-      return <img style={{ height: 100 }} src={question} alt="" />;
-    default:
-      return <h3 className="question">{question}</h3>;
-  }
 };
 
 const SidebarContainer = styled.section`
@@ -306,11 +291,12 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
   }
 
   .left {
-    width: 100%;
     padding: ${({ theme }) => theme.spacings(3)};
   }
 
   .right {
+    width: 100%;
+    overflow: hidden;
     padding: ${({ theme }) => theme.spacings(3)};
   }
 

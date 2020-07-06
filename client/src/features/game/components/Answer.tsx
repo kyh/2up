@@ -222,15 +222,13 @@ const EndorsementButtons = styled(Button)`
  * Editable versions of the component above for Gamemaster Pages
  */
 type EditableAnswerProps = AnswerProps & {
-  onChange: (_act: any, _save?: boolean) => void;
-  onSaveChanges: () => void;
+  onChange: (_updatedAct: any) => void;
 };
 
 export const EditableAnswer: React.FC<EditableAnswerProps> = ({
   answer,
   answerType,
   onChange,
-  onSaveChanges,
 }) => {
   switch (answerType) {
     case "drawing":
@@ -251,9 +249,8 @@ export const EditableAnswer: React.FC<EditableAnswerProps> = ({
         <EditableType onSelectType={onChange}>
           <Box mb={2}>
             <Input
-              value={answer}
-              onChange={(e) => onChange({ answer: e.target.value })}
-              onBlur={onSaveChanges}
+              defaultValue={answer}
+              onBlur={(e) => onChange({ answer: e.target.value })}
             />
           </Box>
           <Button disabled>Submit answer</Button>
@@ -264,10 +261,7 @@ export const EditableAnswer: React.FC<EditableAnswerProps> = ({
 
 // TODO: Get question types from backend
 const EditableType: React.FC<{
-  onSelectType: (
-    _act: Pick<any, "answerType" | "answer">,
-    _save: boolean
-  ) => void;
+  onSelectType: (_updatedAct: Pick<any, "answerType" | "answer">) => void;
 }> = ({ onSelectType, children }) => {
   return (
     <EditableAnswerContainer>
@@ -276,13 +270,10 @@ const EditableType: React.FC<{
         <Button
           variant="fab"
           onClick={() => {
-            onSelectType(
-              {
-                answerType: { slug: "text" },
-                answer: "",
-              },
-              true
-            );
+            onSelectType({
+              answerType: { slug: "text" },
+              answer: "",
+            });
           }}
         >
           T
@@ -290,13 +281,10 @@ const EditableType: React.FC<{
         <Button
           variant="fab"
           onClick={() => {
-            onSelectType(
-              {
-                answerType: { slug: "color" },
-                answer: "",
-              },
-              true
-            );
+            onSelectType({
+              answerType: { slug: "color" },
+              answer: "",
+            });
           }}
         >
           C
@@ -304,13 +292,10 @@ const EditableType: React.FC<{
         <Button
           variant="fab"
           onClick={() => {
-            onSelectType(
-              {
-                answerType: { slug: "drawing" },
-                answer: "",
-              },
-              true
-            );
+            onSelectType({
+              answerType: { slug: "drawing" },
+              answer: "",
+            });
           }}
         >
           D
