@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, useParams } from "react-router-dom";
+import { Route, Switch, useParams } from "react-router-dom";
 
 import { GameProvider } from "features/game/GameChannel";
 import { GameLobby } from "features/game/GameLobby";
@@ -12,23 +12,25 @@ import { PageContainer } from "components";
 export const GameRoutes: React.FC = () => {
   const { gameId } = useParams();
   return (
-    <GameProvider gameId={gameId}>
-      <Navigation />
-      <Route exact path={`/game/${gameId}/lobby`}>
-        <PageContainer size="full">
-          <GameLobby />
-        </PageContainer>
-      </Route>
-      <Route exact path={`/game/${gameId}/tv`}>
-        <PageContainer size="large" align="center">
-          <GameTV />
-        </PageContainer>
-      </Route>
-      <Route exact path={`/game/${gameId}/remote`}>
-        <PageContainer size="small">
-          <GameRemote />
-        </PageContainer>
-      </Route>
-    </GameProvider>
+    <Switch>
+      <GameProvider gameId={gameId}>
+        <Navigation />
+        <Route exact path={`/game/${gameId}/lobby`}>
+          <PageContainer size="full">
+            <GameLobby />
+          </PageContainer>
+        </Route>
+        <Route exact path={`/game/${gameId}/tv`}>
+          <PageContainer size="large" align="center">
+            <GameTV />
+          </PageContainer>
+        </Route>
+        <Route exact path={`/game/${gameId}/remote`}>
+          <PageContainer size="small">
+            <GameRemote />
+          </PageContainer>
+        </Route>
+      </GameProvider>
+    </Switch>
   );
 };

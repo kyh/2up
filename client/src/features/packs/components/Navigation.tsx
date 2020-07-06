@@ -124,8 +124,8 @@ export const Navigation = ({ pack }: Props) => {
             </>
           ) : (
             <>
-              <Link to="/signup">Sign Up</Link>
-              <Link to="/login">Login</Link>
+              <Link to="/auth/signup">Sign Up</Link>
+              <Link to="/auth/login">Login</Link>
             </>
           )}
         </div>
