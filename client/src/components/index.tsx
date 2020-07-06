@@ -7,5 +7,4 @@ export { Card } from "./Card/Card";
 export { AvatarImage } from "./AvatarImage/AvatarImage";
 export { Icon } from "./Icon/Icon";
 export { Modal } from "./Modal/Modal";
-export { Navigation } from "./Navigation/Navigation";
 export { Timer } from "./Timer/Timer";

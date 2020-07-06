@@ -7,7 +7,9 @@ import { useAlert } from "react-alert";
 
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 import { gameActions, useGame } from "features/game/gameSlice";
-import { Navigation, PageContainer, Button, Input, Card } from "components";
+
+import { Navigation } from "features/game/components/Navigation";
+import { PageContainer, Button, Input, Card } from "components";
 
 import { HomeGameCheckMutation } from "./__generated__/HomeGameCheckMutation";
 

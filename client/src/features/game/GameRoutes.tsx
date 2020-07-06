@@ -1,11 +1,13 @@
 import React from "react";
 import { Route, useParams } from "react-router-dom";
-import { Navigation, PageContainer } from "components";
 
 import { GameProvider } from "features/game/GameChannel";
 import { GameLobby } from "features/game/GameLobby";
 import { GameTV } from "features/game/GameTV";
 import { GameRemote } from "features/game/GameRemote";
+
+import { Navigation } from "features/game/components/Navigation";
+import { PageContainer } from "components";
 
 export const GameRoutes: React.FC = () => {
   const { gameId } = useParams();

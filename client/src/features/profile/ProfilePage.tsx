@@ -7,7 +7,6 @@ import { useParams, Link } from "react-router-dom";
 import { Navigation } from "features/packs/components/Navigation";
 import { Page, Content } from "features/packs/components/Page";
 import { PackSection, PackImage } from "features/packs/components/Packs";
-import { Button } from "components";
 
 import { ProfileUserQuery } from "./__generated__/ProfileUserQuery";
 
