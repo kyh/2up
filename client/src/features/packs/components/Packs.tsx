@@ -11,6 +11,12 @@ export const PackSection = styled.section`
     margin-bottom: ${({ theme }) => theme.spacings(8)};
   }
 
+  .pack-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .pack-item {
     position: relative;
     padding: ${({ theme }) => theme.spacings(5)};

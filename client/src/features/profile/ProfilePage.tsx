@@ -51,7 +51,7 @@ export const ProfilePage = () => {
             <h1>@{username}'s packs</h1>
             {isMyPage && (
               <ButtonLinkNative to="/packs/new">
-                Create another Pack
+                Create new Pack
               </ButtonLinkNative>
             )}
           </header>

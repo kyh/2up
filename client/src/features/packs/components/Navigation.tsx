@@ -1,52 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 
-import { Box, Button, Icon, Modal } from "components";
-
-import { NavigationPackFragment } from "./__generated__/NavigationPackFragment";
-import { NavigationPackUpdateMutation } from "./__generated__/NavigationPackUpdateMutation";
 import { NavigationCurrentUserQuery } from "./__generated__/NavigationCurrentUserQuery";
 
-type Props = {
-  pack?: NavigationPackFragment;
-};
-
-export const Navigation = ({ pack }: Props) => {
-  const [editablePack, setEditablePack] = useState(pack);
-  const [isOpen, setIsOpen] = useState(false);
-  const editMatch = useRouteMatch<{ packId: string }>("/packs/:packId/edit");
+export const Navigation = () => {
   const { data } = useQuery<NavigationCurrentUserQuery>(CURRENT_USER);
-  const [packUpdate] = useMutation<NavigationPackUpdateMutation>(PACK_UPDATE);
-
-  useEffect(() => {
-    setEditablePack(pack);
-  }, [pack]);
-
-  const onChange = (newPackInfo: any, save?: boolean) => {
-    const newPack = { ...editablePack, ...newPackInfo };
-    setEditablePack(newPack);
-    if (save) onSaveChanges();
-  };
-
-  const onSaveChanges = async () => {
-    if (!editablePack) {
-      return;
-    }
-
-    await packUpdate({
-      variables: {
-        input: {
-          id: editablePack.id,
-          name: editablePack.name,
-          is_random: editablePack.isRandom,
-          length: editablePack.length,
-        },
-      },
-    });
-  };
 
   const onLogout = () => {
     localStorage.removeItem("token");
@@ -55,94 +16,29 @@ export const Navigation = ({ pack }: Props) => {
   };
 
   return (
-    <NavigationContainer editMatch={!!editMatch}>
+    <NavigationContainer>
       <div className="left">
         <Link to="/packs">
           <img className="logo" src="/logo/logomark.svg" alt="Playhouse" />
         </Link>
       </div>
-      {!!editMatch ? (
-        <>
-          <div className="right">
-            <div className="more">
-              <Button variant="fab" onClick={() => setIsOpen(true)}>
-                <Icon icon="pencil" />
-              </Button>
-            </div>
-            <input
-              className="pack-title"
-              defaultValue={pack?.name}
-              onChange={(event) => onChange({ name: event.target.value })}
-              onBlur={onSaveChanges}
-            />
-            <div className="empty" />
-          </div>
-          <Modal
-            open={isOpen}
-            title="Pack Settings"
-            onRequestClose={() => {
-              setIsOpen(false);
-              onSaveChanges();
-            }}
-            maxWidth={300}
-            closeButton
-          >
-            <Box mb={3}>
-              <h3>Shuffle questions when playing this pack</h3>
-              <Button
-                onClick={() => onChange({ isRandom: !editablePack?.isRandom })}
-                fullWidth
-              >
-                {editablePack?.isRandom ? "Yes" : "No"}
-              </Button>
-            </Box>
-            <Box>
-              <h3>Number of questions to go through</h3>
-              <Button
-                onClick={() => {
-                  if (editablePack?.length) {
-                    const newLength =
-                      editablePack?.length > 10 ? 5 : editablePack?.length + 5;
-                    onChange({ length: newLength });
-                  }
-                }}
-                fullWidth
-              >
-                {editablePack?.length}
-              </Button>
-            </Box>
-          </Modal>
-        </>
-      ) : (
-        <div className="right end">
-          {data?.currentUser?.username ? (
-            <>
-              <Link to={`/${data?.currentUser?.username}`}>Profile</Link>
-              <Link to="/packs" onClick={onLogout}>
-                Logout
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link to="/auth/signup">Sign Up</Link>
-              <Link to="/auth/login">Login</Link>
-            </>
-          )}
-        </div>
-      )}
+      <div className="right end">
+        {data?.currentUser?.username ? (
+          <>
+            <Link to={`/${data?.currentUser?.username}`}>Profile</Link>
+            <Link to="/packs" onClick={onLogout}>
+              Logout
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/auth/signup">Sign Up</Link>
+            <Link to="/auth/login">Login</Link>
+          </>
+        )}
+      </div>
     </NavigationContainer>
   );
-};
-
-Navigation.fragments = {
-  pack: gql`
-    fragment NavigationPackFragment on Pack {
-      id
-      name
-      length
-      isRandom
-    }
-  `,
 };
 
 const CURRENT_USER = gql`
@@ -153,18 +49,7 @@ const CURRENT_USER = gql`
   }
 `;
 
-const PACK_UPDATE = gql`
-  mutation NavigationPackUpdateMutation($input: PackUpdateInput!) {
-    packUpdate(input: $input) {
-      pack {
-        ...NavigationPackFragment
-      }
-    }
-  }
-  ${Navigation.fragments.pack}
-`;
-
-export const NavigationContainer = styled.header<{ editMatch: boolean }>`
+export const NavigationContainer = styled.header`
   display: flex;
   grid-area: header;
   background: ${({ theme }) => theme.ui.background};
@@ -178,9 +63,7 @@ export const NavigationContainer = styled.header<{ editMatch: boolean }>`
     display: flex;
     align-items: center;
     width: 345px;
-    border-right: 1px solid
-      ${({ theme, editMatch }) =>
-        editMatch ? theme.ui.backgroundInverse : "transparent"};
+    border-right: 1px solid transparent;
     padding-left: ${({ theme }) => theme.spacings(3)};
   }
 
