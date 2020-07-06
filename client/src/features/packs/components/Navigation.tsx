@@ -17,9 +17,7 @@ type Props = {
 export const Navigation = ({ pack }: Props) => {
   const [editablePack, setEditablePack] = useState(pack);
   const [isOpen, setIsOpen] = useState(false);
-  const editMatch = useRouteMatch<{ packId: string }>(
-    "/gamemaster/:packId/edit"
-  );
+  const editMatch = useRouteMatch<{ packId: string }>("/packs/:packId/edit");
   const { data } = useQuery<NavigationCurrentUserQuery>(CURRENT_USER);
   const [packUpdate] = useMutation<NavigationPackUpdateMutation>(PACK_UPDATE);
 
@@ -58,7 +56,7 @@ export const Navigation = ({ pack }: Props) => {
   return (
     <NavigationContainer editMatch={!!editMatch}>
       <div className="left">
-        <Link to="/gamemaster">
+        <Link to="/packs">
           <img className="logo" src="/logo/logomark.svg" alt="Playhouse" />
         </Link>
       </div>
@@ -119,7 +117,7 @@ export const Navigation = ({ pack }: Props) => {
           {data?.currentUser?.username ? (
             <>
               <Link to={`/${data?.currentUser?.username}`}>Profile</Link>
-              <Link to="/gamemaster" onClick={onLogout}>
+              <Link to="/packs" onClick={onLogout}>
                 Logout
               </Link>
             </>

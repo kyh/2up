@@ -4,9 +4,9 @@ import { useParams } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
-import { Sidebar } from "features/gamemaster/components/Sidebar";
-import { ActPreview } from "features/gamemaster/components/ActPreview";
-import { Navigation } from "features/gamemaster/components/Navigation";
+import { Sidebar } from "features/packs/components/Sidebar";
+import { ActPreview } from "features/packs/components/ActPreview";
+import { Navigation } from "features/packs/components/Navigation";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
 

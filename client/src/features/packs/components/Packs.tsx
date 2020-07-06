@@ -17,14 +17,6 @@ export const PackSection = styled.section`
       border-color: ${({ theme }) => theme.border.alternateColor};
     }
 
-    img {
-      display: block;
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      margin: ${({ theme }) => `0 auto ${theme.spacings(2)}`};
-    }
-
     h4 {
       margin-bottom: ${({ theme }) => theme.spacings(3)};
     }
@@ -48,9 +40,11 @@ export const PackSection = styled.section`
   }
 `;
 
-export const DefaultImage = styled.div`
+export const PackImage = styled.div<{ src?: string | null }>`
   width: 100%;
   height: 160px;
   background-color: #bcc7ff;
+  background-image: ${({ src }) => (src ? `url("${src}")` : "none")};
+  background-size: cover;
   margin: ${({ theme }) => `0 auto ${theme.spacings(2)}`};
 `;

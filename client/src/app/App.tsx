@@ -9,7 +9,7 @@ import { GlobalStyle } from "styles/global";
 
 import { usePlayhouse } from "features/home/playhouseSlice";
 import { Home } from "features/home/Home";
-import { GameMasterRoutes } from "features/gamemaster/GameMasterRoutes";
+import { PackRoutes } from "features/packs/PackRoutes";
 import { GameRoutes } from "features/game/GameRoutes";
 import { AuthPage } from "features/auth/AuthPage";
 import { ProfilePage } from "features/profile/ProfilePage";
@@ -39,8 +39,8 @@ export const App: React.FC = () => {
           <Route path="/login">
             <AuthPage isLogin />
           </Route>
-          <Route path="/gamemaster">
-            <GameMasterRoutes />
+          <Route path="/packs">
+            <PackRoutes />
           </Route>
           <Route path="/:username">
             <ProfilePage />

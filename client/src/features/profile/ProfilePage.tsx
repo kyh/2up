@@ -6,12 +6,9 @@ import { useParams, useHistory, Link } from "react-router-dom";
 import { useAlert } from "react-alert";
 
 import { Button } from "components";
-import { Navigation } from "features/gamemaster/components/Navigation";
-import { Page, Content } from "features/gamemaster/components/Page";
-import {
-  PackSection,
-  DefaultImage,
-} from "features/gamemaster/components/Packs";
+import { Navigation } from "features/packs/components/Navigation";
+import { Page, Content } from "features/packs/components/Page";
+import { PackSection, PackImage } from "features/packs/components/Packs";
 
 import { ProfileUserQuery } from "./__generated__/ProfileUserQuery";
 import { ProfilePackCreateMutation } from "./__generated__/ProfilePackCreateMutation";
@@ -69,7 +66,7 @@ export const ProfilePage = () => {
         },
       });
       const pack = response.data?.packCreate?.pack;
-      history.push(`/gamemaster/${pack?.id}/edit`);
+      history.push(`/packs/${pack?.id}/edit`);
     } catch (error) {
       alert.show(error.message);
     }
@@ -98,18 +95,14 @@ export const ProfilePage = () => {
 
                 return (
                   <div key={pack.id} className="pack-item">
-                    <Link to={`/gamemaster/${pack.id}`}>
-                      {pack.imageUrl ? (
-                        <img src={pack.imageUrl || ""} alt={pack.name} />
-                      ) : (
-                        <DefaultImage />
-                      )}
+                    <Link to={`/packs/${pack.id}`}>
+                      <PackImage src={pack.imageUrl} />
                       <h4>{pack.name}</h4>
                       <p>{pack.description}</p>
                     </Link>
                     <Link
                       className="edit-pack-button"
-                      to={`/gamemaster/${pack.id}/edit`}
+                      to={`/packs/${pack.id}/edit`}
                     >
                       Edit Pack
                     </Link>
