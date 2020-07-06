@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
+import { ButtonLinkNative } from "components";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
 import { PackSection, PackImage } from "./components/Packs";
@@ -67,20 +68,27 @@ export const PackDiscoverPage = () => {
       <Navigation />
       <Content>
         <PackSection>
-          <div className="pack-section">
-            <h2>Featured</h2>
-            <div className="pack-items">
-              <Packs packs={data?.featured} />
-            </div>
-          </div>
           {!!data?.my?.edges?.length && (
             <div className="pack-section">
-              <h2>My Packs</h2>
+              <header className="pack-section-header">
+                <h2>My Packs</h2>
+                <ButtonLinkNative to="/packs/new">
+                  Create new Pack
+                </ButtonLinkNative>
+              </header>
               <div className="pack-items">
                 <Packs packs={data?.my} />
               </div>
             </div>
           )}
+          <div className="pack-section">
+            <header className="pack-section-header">
+              <h2>Featured</h2>
+            </header>
+            <div className="pack-items">
+              <Packs packs={data?.featured} />
+            </div>
+          </div>
         </PackSection>
       </Content>
     </Page>

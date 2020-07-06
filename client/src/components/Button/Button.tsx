@@ -45,6 +45,7 @@ type StyledProps = {
 
 const renderRegularStyles = () => {
   return css`
+    transition: transform 0.2s ease;
     padding: ${({ theme }) => theme.spacings(4)};
     border-image-slice: 4 4 3 5 fill;
     border-image-width: 5px;
@@ -75,6 +76,7 @@ const renderRegularStyles = () => {
 
 const renderFabStyles = () => {
   return css`
+    transition: transform 0.2s ease;
     padding: ${({ theme }) => theme.spacings(1)};
     background-repeat: no-repeat;
     background-size: contain;
@@ -101,7 +103,6 @@ const renderFabStyles = () => {
 };
 
 export const StyledButton = styled.button<StyledProps>`
-  transition: transform 0.2s ease;
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
   ${({ variant = Variants.default }) =>
     variant === Variants.default ? renderRegularStyles() : renderFabStyles()}
@@ -109,13 +110,11 @@ export const StyledButton = styled.button<StyledProps>`
 
 export const ButtonLink = styled.a<StyledProps>`
   text-align: center;
-  transition: transform 0.2s ease;
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
   ${({ variant = Variants.default }) =>
     variant === Variants.default ? renderRegularStyles() : renderFabStyles()}
 `;
 
 export const ButtonLinkNative = styled(Link)`
-  transition: transform 0.2s ease;
   ${renderRegularStyles()}
 `;
