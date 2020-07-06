@@ -58,8 +58,7 @@ const QuestionImage = styled.img`
  * Editable versions of the component above for Gamemaster Pages
  */
 type EditableQuestionProps = QuestionProps & {
-  onChange: (_act: any, _save?: boolean) => void;
-  onSaveChanges: () => void;
+  onChange: (_updatedAct: any) => void;
 };
 
 export const EditableQuestion: React.FC<EditableQuestionProps> = ({
@@ -67,7 +66,6 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
   question,
   questionType,
   onChange,
-  onSaveChanges,
 }) => {
   switch (questionType) {
     case "image":
@@ -75,18 +73,16 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
         <EditableQuestionContainer>
           <EditableQuestionInstructions
             placeholder="Instruction..."
-            value={instruction}
-            onChange={(e) => onChange({ instruction: e.target.value })}
-            onBlur={onSaveChanges}
+            defaultValue={instruction}
+            onBlur={(e) => onChange({ instruction: e.target.value })}
           />
           <EditableQuestionImageContainer>
             <EditableType onSelectType={onChange}>
               <input
                 type="text"
                 placeholder="Image URL"
-                value={question}
-                onChange={(e) => onChange({ question: e.target.value })}
-                onBlur={onSaveChanges}
+                defaultValue={question}
+                onBlur={(e) => onChange({ question: e.target.value })}
               />
               <QuestionImage alt={instruction} src={question} />
             </EditableType>
@@ -98,16 +94,14 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
         <EditableQuestionContainer>
           <EditableQuestionInstructions
             placeholder="Instruction..."
-            value={instruction}
-            onChange={(e) => onChange({ instruction: e.target.value })}
-            onBlur={onSaveChanges}
+            defaultValue={instruction}
+            onBlur={(e) => onChange({ instruction: e.target.value })}
           />
           <EditableType onSelectType={onChange}>
             <EditableQuestionText
               placeholder="Your question..."
-              value={question}
-              onChange={(e) => onChange({ question: e.target.value })}
-              onBlur={onSaveChanges}
+              defaultValue={question}
+              onBlur={(e) => onChange({ question: e.target.value })}
             />
           </EditableType>
         </EditableQuestionContainer>
@@ -117,10 +111,7 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
 
 // TODO: Get answer types from backend
 const EditableType: React.FC<{
-  onSelectType: (
-    _act: Pick<any, "questionType" | "question">,
-    _save: boolean
-  ) => void;
+  onSelectType: (_updatedAct: Pick<any, "questionType" | "question">) => void;
 }> = ({ onSelectType, children }) => {
   return (
     <EditableTypeContainer>
@@ -129,13 +120,10 @@ const EditableType: React.FC<{
         <Button
           variant="fab"
           onClick={() => {
-            onSelectType(
-              {
-                questionType: { slug: "text" },
-                question: "Hello in there?",
-              },
-              true
-            );
+            onSelectType({
+              questionType: { slug: "text" },
+              question: "Hello in there?",
+            });
           }}
         >
           T
@@ -143,14 +131,11 @@ const EditableType: React.FC<{
         <Button
           variant="fab"
           onClick={() => {
-            onSelectType(
-              {
-                questionType: { slug: "image" },
-                question:
-                  "https://external-sjc3-1.xx.fbcdn.net/safe_image.php?d=AQDhZS4fRQEcCkEr&url=https%3A%2F%2Fmedia0.giphy.com%2Fmedia%2Fv1.Y2lkPTEyMGMwMTQ3YmFkYjE3NzRkOGNjOTE4Y2JkNjk0ZTg5ZDdmNWU5NDI2Y2VkMjI1NA%2FaQ0PfLFwagW52%2Fgiphy.gif&ext=gif&_nc_hash=AQD5_uuLUwC2sFcW",
-              },
-              true
-            );
+            onSelectType({
+              questionType: { slug: "image" },
+              question:
+                "https://external-sjc3-1.xx.fbcdn.net/safe_image.php?d=AQDhZS4fRQEcCkEr&url=https%3A%2F%2Fmedia0.giphy.com%2Fmedia%2Fv1.Y2lkPTEyMGMwMTQ3YmFkYjE3NzRkOGNjOTE4Y2JkNjk0ZTg5ZDdmNWU5NDI2Y2VkMjI1NA%2FaQ0PfLFwagW52%2Fgiphy.gif&ext=gif&_nc_hash=AQD5_uuLUwC2sFcW",
+            });
           }}
         >
           I

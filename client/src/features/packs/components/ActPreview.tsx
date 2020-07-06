@@ -24,26 +24,17 @@ export const ActPreview = ({ act }: Props) => {
     setEditableAct(act);
   }, [act]);
 
-  const onChange = (newActInfo: any, save?: boolean) => {
-    const newAct = { ...editableAct, ...newActInfo };
-    setEditableAct(newAct);
-    if (save) onSaveChanges();
-  };
-
-  const onSaveChanges = async () => {
-    if (!editableAct) {
-      return;
-    }
-
+  const onChange = async (updatedAct = {}) => {
+    const newAct = { ...editableAct, ...updatedAct };
     await actUpdate({
       variables: {
         input: {
-          id: editableAct.id,
-          question: editableAct.question,
-          question_type_slug: editableAct.questionType.slug,
-          answer: editableAct.answer,
-          answer_type_slug: editableAct.answerType.slug,
-          instruction: editableAct.instruction,
+          id: newAct.id,
+          question: newAct.question,
+          question_type_slug: newAct.questionType.slug,
+          answer: newAct.answer,
+          answer_type_slug: newAct.answerType.slug,
+          instruction: newAct.instruction,
         },
       },
     });
@@ -58,13 +49,11 @@ export const ActPreview = ({ act }: Props) => {
             question={editableAct?.question}
             questionType={editableAct?.questionType?.slug}
             onChange={onChange}
-            onSaveChanges={onSaveChanges}
           />
           <EditableAnswer
             answer={editableAct?.answer || ""}
             answerType={editableAct?.answerType?.slug}
             onChange={onChange}
-            onSaveChanges={onSaveChanges}
           />
         </MonitorScreen>
       </MonitorScreenContainer>
