@@ -25,6 +25,7 @@ export const Navigation = () => {
       <div className="right end">
         {data?.currentUser?.username ? (
           <>
+            <Link to="/">Play</Link>
             <Link to={`/${data?.currentUser?.username}`}>Profile</Link>
             <Link to="/packs" onClick={onLogout}>
               Logout
@@ -32,6 +33,7 @@ export const Navigation = () => {
           </>
         ) : (
           <>
+            <Link to="/">Play</Link>
             <Link to="/auth/signup">Sign Up</Link>
             <Link to="/auth/login">Login</Link>
           </>
