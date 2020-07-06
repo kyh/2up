@@ -61,7 +61,7 @@ export const PackDetailsPage = () => {
     <Page>
       <Navigation />
       <PackDetailsPageContent>
-        <Link to="#" className="back-link" onClick={() => history.goBack()}>
+        <Link to="/packs" className="back-link">
           &#171; Back to packs
         </Link>
         <div className="pack-details">
