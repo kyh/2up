@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
+import { useAlert } from "react-alert";
 
 import { EditableQuestion } from "features/game/components/Question";
 import { EditableAnswer } from "features/game/components/Answer";
@@ -13,10 +14,11 @@ import { ActPreviewFragment } from "./__generated__/ActPreviewFragment";
 
 type Props = {
   act: ActPreviewFragment;
-  selectedActId: string;
+  setSaving: (saved: boolean) => void;
 };
 
-export const ActPreview = ({ act }: Props) => {
+export const ActPreview = ({ act, setSaving }: Props) => {
+  const alert = useAlert();
   const [editableAct, setEditableAct] = useState(act);
   const [actUpdate] = useMutation<ActPreviewActUpdateMutation>(ACT_UPDATE);
 
@@ -25,19 +27,26 @@ export const ActPreview = ({ act }: Props) => {
   }, [act]);
 
   const onChange = async (updatedAct = {}) => {
+    setSaving(true);
     const newAct = { ...editableAct, ...updatedAct };
-    await actUpdate({
-      variables: {
-        input: {
-          id: newAct.id,
-          question: newAct.question,
-          question_type_slug: newAct.questionType.slug,
-          answer: newAct.answer,
-          answer_type_slug: newAct.answerType.slug,
-          instruction: newAct.instruction,
+    try {
+      await actUpdate({
+        variables: {
+          input: {
+            id: newAct.id,
+            question: newAct.question,
+            question_type_slug: newAct.questionType.slug,
+            answer: newAct.answer,
+            answer_type_slug: newAct.answerType.slug,
+            instruction: newAct.instruction,
+          },
         },
-      },
-    });
+      });
+      setSaving(false);
+    } catch (error) {
+      alert.show(error.message);
+      setSaving(false);
+    }
   };
 
   return (

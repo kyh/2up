@@ -28,8 +28,9 @@ import { SidebarPackFragment } from "./__generated__/SidebarPackFragment";
 type Props = {
   pack: SidebarPackFragment;
   selectedActId: string;
-  setSelectedAct(act: any): void;
-  refetchActs(): void;
+  setSelectedAct: (act: any) => void;
+  refetchActs: () => void;
+  setSaving: (saving: boolean) => void;
 };
 
 const ACT_CREATE = gql`
@@ -79,6 +80,7 @@ export const Sidebar = ({
   selectedActId,
   setSelectedAct,
   refetchActs,
+  setSaving,
 }: Props) => {
   const alert = useAlert();
   const [actCreate] = useMutation<SidebarActCreateMutation>(ACT_CREATE);
@@ -92,7 +94,7 @@ export const Sidebar = ({
 
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
-
+    setSaving(true);
     const destinationIndex = result.destination.index;
     const draggableId = result.draggableId;
 
@@ -116,13 +118,16 @@ export const Sidebar = ({
           },
         },
       });
-      refetchActs();
+      await refetchActs();
+      setSaving(false);
     } catch (error) {
       alert.show(error.message);
+      setSaving(false);
     }
   };
 
   const deleteAct = async (act: any) => {
+    setSaving(true);
     try {
       await actDelete({
         variables: {
@@ -132,9 +137,11 @@ export const Sidebar = ({
           },
         },
       });
-      refetchActs();
+      await refetchActs();
+      setSaving(false);
     } catch (error) {
       alert.show(error.message);
+      setSaving(false);
     }
   };
 
@@ -143,16 +150,23 @@ export const Sidebar = ({
   };
 
   const addNewAct = async () => {
-    await actCreate({
-      variables: {
-        input: {
-          packId,
-          question: "Play",
-          order: (acts?.length || 0) + 1,
+    setSaving(true);
+    try {
+      await actCreate({
+        variables: {
+          input: {
+            packId,
+            question: "Play",
+            order: (acts?.length || 0) + 1,
+          },
         },
-      },
-    });
-    refetchActs();
+      });
+      await refetchActs();
+      setSaving(false);
+    } catch (error) {
+      alert.show(error.message);
+      setSaving(false);
+    }
   };
 
   return (

@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useAlert } from "react-alert";
 
 import { Sidebar } from "features/packs/components/Sidebar";
 import { ActPreview } from "features/packs/components/ActPreview";
 import { NavigationContainer } from "features/packs/components/Navigation";
 
-import { Box, Button, Icon, Modal } from "components";
+import { Box, Button, Icon, Modal, Loader } from "components";
 
 import {
   PackCreatorPagePackQuery,
@@ -39,24 +40,36 @@ const PACK_UPDATE = gql`
 
 export const Navigation = ({
   pack,
+  saving,
+  setSaving,
 }: {
   pack: PackCreatorPagePackQuery_pack;
+  saving: boolean;
+  setSaving: (saving: boolean) => void;
 }) => {
+  const alert = useAlert();
   const [isOpen, setIsOpen] = useState(false);
   const [packUpdate] = useMutation<PackUpdateMutation>(PACK_UPDATE);
 
   const onSaveChanges = async (newPackInfo = {}) => {
+    setSaving(true);
     const newPack = { ...pack, ...newPackInfo };
-    await packUpdate({
-      variables: {
-        input: {
-          id: newPack.id,
-          name: newPack.name,
-          is_random: newPack.isRandom,
-          length: newPack.length,
+    try {
+      await packUpdate({
+        variables: {
+          input: {
+            id: newPack.id,
+            name: newPack.name,
+            is_random: newPack.isRandom,
+            length: newPack.length,
+          },
         },
-      },
-    });
+      });
+      setSaving(false);
+    } catch (error) {
+      alert.show(error.message);
+      setSaving(false);
+    }
   };
 
   return (
@@ -67,7 +80,7 @@ export const Navigation = ({
         </Link>
       </div>
       <div className="right">
-        <div className="more">
+        <div>
           <Button variant="fab" onClick={() => setIsOpen(true)}>
             <Icon icon="pencil" />
           </Button>
@@ -77,7 +90,9 @@ export const Navigation = ({
           defaultValue={pack?.name}
           onBlur={(e) => onSaveChanges({ name: e.target.value })}
         />
-        <div className="empty" />
+        <div>
+          <Loader loading={saving} />
+        </div>
       </div>
       <Modal
         open={isOpen}
@@ -115,8 +130,15 @@ export const Navigation = ({
 };
 
 const StyledNavigationContainer = styled(NavigationContainer)`
+  position: relative;
   .left {
     border-right-color: ${({ theme }) => theme.ui.backgroundInverse};
+  }
+  .loader {
+    position: absolute;
+    right: ${({ theme }) => theme.spacings(4)};
+    top: ${({ theme }) => theme.spacings(4)};
+    color: ${({ theme }) => theme.ui.lightText};
   }
 `;
 
@@ -144,6 +166,7 @@ const PACK_QUERY = gql`
 `;
 
 export const PackCreatorPage = () => {
+  const [saving, setSaving] = useState(false);
   const [selectedActId, setSelectedActId] = useState("");
   const { packId } = useParams();
   const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
@@ -152,40 +175,39 @@ export const PackCreatorPage = () => {
     },
   });
 
-  const handleSelect = (selectedActId: string) => {
+  const handleSelect = async (selectedActId: string) => {
     setSelectedActId(selectedActId);
     const newVariables = {
       packId,
       actId: selectedActId,
     };
-    refetch(newVariables);
+    return refetch(newVariables);
   };
 
-  const refetchActs = () => {
+  const refetchActs = async () => {
     const newVariables = {
       packId,
       id: selectedActId,
     };
-    refetch(newVariables);
+    return refetch(newVariables);
   };
 
   return (
     <Page>
       {data?.pack && (
         <>
-          <Navigation pack={data.pack} />
+          <Navigation pack={data.pack} saving={saving} setSaving={setSaving} />
           <Sidebar
             pack={data.pack}
             selectedActId={selectedActId}
             setSelectedAct={handleSelect}
             refetchActs={refetchActs}
+            setSaving={setSaving}
           />
         </>
       )}
       <Content>
-        {data?.act && (
-          <ActPreview selectedActId={selectedActId} act={data.act} />
-        )}
+        {data?.act && <ActPreview act={data.act} setSaving={setSaving} />}
       </Content>
     </Page>
   );
