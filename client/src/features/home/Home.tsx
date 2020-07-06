@@ -86,7 +86,7 @@ export const Home = () => {
                   <Button type="submit">Join existing game</Button>
                 </InputContainer>
                 <HostNewGameText>
-                  Or <Link to="/gamemaster">host your own game</Link>
+                  Or <Link to="/packs">host your own game</Link>
                 </HostNewGameText>
               </>
             ) : (

@@ -6,7 +6,7 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 import { gameActions } from "features/game/gameSlice";
-import { DefaultImage } from "features/gamemaster/components/Packs";
+import { PackImage } from "features/packs/components/Packs";
 import { Card, Button } from "components";
 
 import { Navigation } from "./components/Navigation";
@@ -76,14 +76,10 @@ export const PackDetailsPage = () => {
         </Link>
         <div className="pack-details">
           <GameCard>
-            {pack?.imageUrl ? (
-              <img src={pack?.imageUrl || ""} alt={pack?.name} />
-            ) : (
-              <DefaultImage />
-            )}
+            <PackImage src={pack?.imageUrl} />
             <Button onClick={onHostGame}>Host a game</Button>
             {pack?.user?.id === currentUser?.id && (
-              <Link to={`/gamemaster/${packId}/edit`}>Edit Pack</Link>
+              <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
             )}
           </GameCard>
           <div className="description-container">

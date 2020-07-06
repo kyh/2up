@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/react-hooks";
 
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
-import { PackSection, DefaultImage } from "./components/Packs";
+import { PackSection, PackImage } from "./components/Packs";
 import { PackDiscoverPageQuery } from "./__generated__/PackDiscoverPageQuery";
 
 const PACKS_QUERY = gql`
@@ -32,16 +32,8 @@ const PacksList = () => {
         const pack = edge?.node;
         if (!pack) return null;
         return (
-          <Link
-            key={pack.id}
-            to={`/gamemaster/${pack.id}`}
-            className="pack-item"
-          >
-            {pack.imageUrl ? (
-              <img src={pack.imageUrl || ""} alt={pack.name} />
-            ) : (
-              <DefaultImage />
-            )}
+          <Link key={pack.id} to={`/packs/${pack.id}`} className="pack-item">
+            <PackImage src={pack.imageUrl} />
             <h4>{pack.name}</h4>
             <p>{pack.description}</p>
           </Link>
