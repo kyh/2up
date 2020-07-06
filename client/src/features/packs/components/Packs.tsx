@@ -7,11 +7,16 @@ export const PackSection = styled.section`
     grid-gap: ${({ theme }) => theme.spacings(5)};
   }
 
+  .pack-section {
+    margin-bottom: ${({ theme }) => theme.spacings(8)};
+  }
+
   .pack-item {
     position: relative;
     padding: ${({ theme }) => theme.spacings(5)};
     border: 2px solid transparent;
     border-radius: ${({ theme }) => theme.border.wavyRadius};
+    max-width: 273px;
 
     &:hover {
       border-color: ${({ theme }) => theme.border.alternateColor};

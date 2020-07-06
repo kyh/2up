@@ -66,6 +66,7 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
         // @ts-ignore
         const token = data[responseKey].token;
         localStorage.setItem("token", token);
+        localStorage.setItem("username", username);
         history.push(`/${username}`);
       }
     } catch (error) {

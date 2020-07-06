@@ -78,7 +78,7 @@ export const PackDetailsPage = () => {
           <GameCard>
             <PackImage src={pack?.imageUrl} />
             <Button onClick={onHostGame}>Host a game</Button>
-            {pack?.user?.id === currentUser?.id && (
+            {!!data && pack?.user?.id === currentUser?.id && (
               <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
             )}
           </GameCard>
@@ -98,6 +98,9 @@ const PackDetailsPageContent = styled(Content)`
   .back-link {
     display: inline-block;
     margin-bottom: ${({ theme }) => theme.spacings(3)};
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .pack-details {

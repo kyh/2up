@@ -50,6 +50,7 @@ export const Navigation = ({ pack }: Props) => {
 
   const onLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     window.location.reload();
   };
 
