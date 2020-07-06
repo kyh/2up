@@ -4,8 +4,9 @@ import { Link, useParams, useHistory } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 
-import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
-import { gameActions } from "features/game/gameSlice";
+import { hostGame } from "features/game/gameService";
+import { usePlayhouse } from "features/home/playhouseSlice";
+
 import { PackImage } from "features/packs/components/Packs";
 import { Card, Button } from "components";
 
@@ -54,18 +55,7 @@ export const PackDetailsPage = () => {
 
   const { pack, currentUser } = data || {};
 
-  const onHostGame = async () => {
-    const { data } = await gameCreate({
-      variables: { input: { packId: packId || "" } },
-    });
-
-    if (!data || !data.gameCreate) return;
-    const gameId = data.gameCreate.code;
-    dispatch(gameActions.toggle_host(true));
-    dispatch(playhouseActions.update_user({ name: "" }));
-    dispatch(gameActions.new_game({ gameId }));
-    history.push(`/game/${gameId}/lobby`);
-  };
+  const onHostGame = () => hostGame(dispatch, gameCreate, history, packId);
 
   return (
     <Page>
