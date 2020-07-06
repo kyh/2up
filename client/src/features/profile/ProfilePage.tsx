@@ -1,17 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import { useParams, useHistory, Link } from "react-router-dom";
-import { useAlert } from "react-alert";
+import { useQuery } from "@apollo/react-hooks";
+import { useParams, Link } from "react-router-dom";
 
-import { Button } from "components";
 import { Navigation } from "features/packs/components/Navigation";
 import { Page, Content } from "features/packs/components/Page";
 import { PackSection, PackImage } from "features/packs/components/Packs";
+import { Button } from "components";
 
 import { ProfileUserQuery } from "./__generated__/ProfileUserQuery";
-import { ProfilePackCreateMutation } from "./__generated__/ProfilePackCreateMutation";
 
 const USER_QUERY = gql`
   query ProfileUserQuery($username: String!) {
@@ -31,46 +29,11 @@ const USER_QUERY = gql`
   }
 `;
 
-const PACK_CREATE = gql`
-  mutation ProfilePackCreateMutation($input: PackCreateInput!) {
-    packCreate(input: $input) {
-      pack {
-        id
-        name
-      }
-    }
-  }
-`;
-
 export const ProfilePage = () => {
-  const alert = useAlert();
-  const history = useHistory();
   const { username } = useParams();
   const { data } = useQuery<ProfileUserQuery>(USER_QUERY, {
     variables: { username: username || "" },
   });
-  const [packCreate, { loading }] = useMutation<ProfilePackCreateMutation>(
-    PACK_CREATE
-  );
-
-  const createPack = async () => {
-    try {
-      const response = await packCreate({
-        variables: {
-          input: {
-            name: "hi",
-            description: "Some description",
-            isRandom: true,
-            length: 10,
-          },
-        },
-      });
-      const pack = response.data?.packCreate?.pack;
-      history.push(`/packs/${pack?.id}/edit`);
-    } catch (error) {
-      alert.show(error.message);
-    }
-  };
 
   if (!data) {
     return null;
@@ -83,9 +46,7 @@ export const ProfilePage = () => {
         <ProfileContent>
           <header className="profile-header">
             <h1>@{username}'s packs</h1>
-            <Button onClick={createPack} disabled={loading}>
-              Create Pack
-            </Button>
+            <Link to="/packs/new">Create new Pack</Link>
           </header>
           <PackSection>
             <div className="pack-items">
@@ -121,6 +82,7 @@ const ProfileContent = styled.section`
   .profile-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: ${({ theme }) => theme.spacings(5)};
   }
 `;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import { PackDiscoverPage } from "features/packs/PackDiscoverPage";
 import { PackDetailsPage } from "features/packs/PackDetailsPage";
@@ -8,7 +8,7 @@ import { PackCreatorPage } from "features/packs/PackCreatorPage";
 
 export const PackRoutes: React.FC = () => {
   return (
-    <>
+    <Switch>
       <Route exact path="/packs">
         <PackDiscoverPage />
       </Route>
@@ -21,6 +21,6 @@ export const PackRoutes: React.FC = () => {
       <Route exact path="/packs/:packId/edit">
         <PackCreatorPage />
       </Route>
-    </>
+    </Switch>
   );
 };
