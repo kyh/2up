@@ -89,11 +89,11 @@ export const Navigation: React.FC = () => {
           <SettingItem>
             <ButtonLink
               fullWidth
-              href="https://discord.gg/YtafKzR"
+              href="https://join.slack.com/t/playhouse-gg/shared_invite/zt-dzouxy28-Z_sP6RrD4Ign1yUV1GEQkw"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Discord
+              Slack
             </ButtonLink>
           </SettingItem>
         </SettingsContainer>
