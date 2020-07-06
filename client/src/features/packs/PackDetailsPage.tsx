@@ -136,6 +136,10 @@ const GameCard = styled(Card)`
     margin-bottom: ${({ theme }) => theme.spacings(2)};
   }
 
+  a:hover {
+    text-decoration: underline;
+  }
+
   ${({ theme }) => theme.media.desktop`
     margin-bottom: ${theme.spacings(5)};
   `}
