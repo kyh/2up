@@ -8,6 +8,8 @@ import { Navigation } from "features/packs/components/Navigation";
 import { Page, Content } from "features/packs/components/Page";
 import { PackSection, PackImage } from "features/packs/components/Packs";
 
+import { ButtonLinkNative } from "components";
+
 import { ProfileUserQuery } from "./__generated__/ProfileUserQuery";
 
 const USER_QUERY = gql`
@@ -38,6 +40,8 @@ export const ProfilePage = () => {
     return null;
   }
 
+  const isMyPage = data?.currentUser?.username === username;
+
   return (
     <Page>
       <Navigation />
@@ -45,7 +49,11 @@ export const ProfilePage = () => {
         <ProfileContent>
           <header className="profile-header">
             <h1>@{username}'s packs</h1>
-            <Link to="/packs/new">Create new Pack</Link>
+            {isMyPage && (
+              <ButtonLinkNative to="/packs/new">
+                Create another Pack
+              </ButtonLinkNative>
+            )}
           </header>
           <PackSection>
             <div className="pack-items">
@@ -60,12 +68,13 @@ export const ProfilePage = () => {
                       <h4>{pack.name}</h4>
                       <p>{pack.description}</p>
                     </Link>
-                    <Link
-                      className="edit-pack-button"
-                      to={`/packs/${pack.id}/edit`}
-                    >
-                      Edit Pack
-                    </Link>
+                    {isMyPage && (
+                      <div className="edit-pack-footer">
+                        <ButtonLinkNative to={`/packs/${pack.id}/edit`}>
+                          Edit Pack
+                        </ButtonLinkNative>
+                      </div>
+                    )}
                   </div>
                 );
               })}

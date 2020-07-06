@@ -30,16 +30,13 @@ export const PackSection = styled.section`
       color: ${({ theme }) => theme.ui.lightText};
     }
 
-    .edit-pack-button {
-      position: absolute;
-      right: ${({ theme }) => theme.spacings(3)};
-      bottom: ${({ theme }) => theme.spacings(3)};
-      padding: ${({ theme }) => theme.spacings(1)};
-      border-radius: ${({ theme }) => theme.border.wavyRadius};
-      border: 2px solid ${({ theme }) => theme.border.color};
+    .edit-pack-footer {
+      display: flex;
+      justify-content: center;
+      margin-top: ${({ theme }) => theme.spacings(5)};
 
-      &:hover {
-        border-color: ${({ theme }) => theme.border.alternateColor};
+      a {
+        padding: ${({ theme }) => theme.spacings(3)};
       }
     }
   }

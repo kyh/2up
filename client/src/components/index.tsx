@@ -1,7 +1,7 @@
 export { Flex, Box } from "reflexbox";
 export { Alert, ReactAlertTemplate } from "./Alert/Alert";
 export { PageContainer } from "./Page/PageContainer";
-export { Button, ButtonLink } from "./Button/Button";
+export { Button, ButtonLink, ButtonLinkNative } from "./Button/Button";
 export { Input } from "./Input/Input";
 export { Card } from "./Card/Card";
 export { AvatarImage } from "./AvatarImage/AvatarImage";

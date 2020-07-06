@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import styled, {
   css,
   StyledComponentProps,
@@ -112,4 +113,9 @@ export const ButtonLink = styled.a<StyledProps>`
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
   ${({ variant = Variants.default }) =>
     variant === Variants.default ? renderRegularStyles() : renderFabStyles()}
+`;
+
+export const ButtonLinkNative = styled(Link)`
+  transition: transform 0.2s ease;
+  ${renderRegularStyles()}
 `;
