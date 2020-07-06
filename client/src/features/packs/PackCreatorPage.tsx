@@ -81,9 +81,7 @@ export const Navigation = ({
       </div>
       <div className="right">
         <div>
-          <Button variant="fab" onClick={() => setIsOpen(true)}>
-            <Icon icon="pencil" />
-          </Button>
+          <Loader loading={saving} />
         </div>
         <input
           className="pack-title"
@@ -91,7 +89,16 @@ export const Navigation = ({
           onBlur={(e) => onSaveChanges({ name: e.target.value })}
         />
         <div>
-          <Loader loading={saving} />
+          <Button
+            className="pack-ext-button"
+            variant="fab"
+            onClick={() => setIsOpen(true)}
+          >
+            <Icon icon="pencil" />
+          </Button>
+          <Button className="pack-ext-button" variant="fab">
+            <Icon icon="play" />
+          </Button>
         </div>
       </div>
       <Modal
@@ -130,15 +137,23 @@ export const Navigation = ({
 };
 
 const StyledNavigationContainer = styled(NavigationContainer)`
-  position: relative;
   .left {
     border-right-color: ${({ theme }) => theme.ui.backgroundInverse};
   }
+  .right {
+    position: relative;
+  }
   .loader {
     position: absolute;
-    right: ${({ theme }) => theme.spacings(4)};
+    left: ${({ theme }) => theme.spacings(4)};
     top: ${({ theme }) => theme.spacings(4)};
     color: ${({ theme }) => theme.ui.lightText};
+  }
+  .pack-ext-button {
+    margin-right: ${({ theme }) => theme.spacings(2)};
+  }
+  .pack-ext-button:last-child {
+    margin-right: 0;
   }
 `;
 
