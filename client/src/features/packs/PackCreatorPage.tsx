@@ -92,7 +92,7 @@ export const Navigation = ({
   return (
     <StyledNavigationContainer>
       <div className="left">
-        <Link to="/packs">
+        <Link to={`/packs/${pack.id}`}>
           <img className="logo" src="/logo/logomark.svg" alt="Playhouse" />
         </Link>
       </div>
