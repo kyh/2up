@@ -1,20 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import { ActTemplateFragment } from "./__generated__/ActTemplateFragment";
+import { SceneTemplateFragment } from "./__generated__/SceneTemplateFragment";
 
-type ActTemplateProps = {
-  act: ActTemplateFragment;
+type Props = {
+  act: SceneTemplateFragment;
   onClick(): void;
 };
 
-export const ActTemplate = ({ act }: ActTemplateProps) => {
-  return <ActTemplateContainer>{act?.node?.question}</ActTemplateContainer>;
+export const SceneTemplate = ({ act }: Props) => {
+  return <SceneTemplateContainer>{act?.node?.question}</SceneTemplateContainer>;
 };
 
-ActTemplate.fragments = {
+SceneTemplate.fragments = {
   act: gql`
-    fragment ActTemplateFragment on ActEdge {
+    fragment SceneTemplateFragment on ActEdge {
       node {
         id
         question
@@ -24,7 +24,7 @@ ActTemplate.fragments = {
   `,
 };
 
-const ActTemplateContainer = styled.div`
+const SceneTemplateContainer = styled.div`
   width: 150px;
   background: ${({ theme }) => theme.ui.background};
   height: 100%;

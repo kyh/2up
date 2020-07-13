@@ -12,29 +12,21 @@ import { gql } from "apollo-boost";
 
 import { Button, Icon } from "components";
 
-import { SidebarActCreateMutation } from "./__generated__/SidebarActCreateMutation";
-import { SidebarActDeleteMutation } from "./__generated__/SidebarActDeleteMutation";
-import { SidebarPackActUpdateMutation } from "./__generated__/SidebarPackActUpdateMutation";
+import { SidebarSceneCreateMutation } from "./__generated__/SidebarSceneCreateMutation";
+import { SidebarSceneDeleteMutation } from "./__generated__/SidebarSceneDeleteMutation";
+import { SidebarPackUpdateMutation } from "./__generated__/SidebarPackUpdateMutation";
 import { SidebarPackFragment } from "./__generated__/SidebarPackFragment";
-
-// const reorder = (list: any[], startIndex: number, endIndex: number) => {
-//   const result = Array.from(list);
-//   const [removed] = result.splice(startIndex, 1);
-//   result.splice(endIndex, 0, removed);
-
-//   return result;
-// };
 
 type Props = {
   pack: SidebarPackFragment;
-  selectedActId: string;
-  setSelectedAct: (act: any) => void;
-  refetchActs: () => void;
+  selectedSceneId: string;
+  selectScene: (scene: any) => void;
+  refetchScenes: () => void;
   setSaving: (saving: boolean) => void;
 };
 
-const ACT_CREATE = gql`
-  mutation SidebarActCreateMutation($input: ActCreateInput!) {
+const SCENE_CREATE = gql`
+  mutation SidebarSceneCreateMutation($input: ActCreateInput!) {
     actCreate(input: $input) {
       act {
         id
@@ -54,8 +46,8 @@ const ACT_CREATE = gql`
   }
 `;
 
-const ACT_DELETE = gql`
-  mutation SidebarActDeleteMutation($input: ActDeleteInput!) {
+const SCENE_DELETE = gql`
+  mutation SidebarSceneDeleteMutation($input: ActDeleteInput!) {
     actDelete(input: $input) {
       act {
         id
@@ -64,8 +56,8 @@ const ACT_DELETE = gql`
   }
 `;
 
-const PACK_ACT_UPDATE = gql`
-  mutation SidebarPackActUpdateMutation($input: PackActUpdateInput!) {
+const PACK_SCENE_UPDATE = gql`
+  mutation SidebarPackUpdateMutation($input: PackActUpdateInput!) {
     packActUpdate(input: $input) {
       packAct {
         id
@@ -77,19 +69,19 @@ const PACK_ACT_UPDATE = gql`
 
 export const Sidebar = ({
   pack,
-  selectedActId,
-  setSelectedAct,
-  refetchActs,
+  selectedSceneId,
+  selectScene,
+  refetchScenes,
   setSaving,
 }: Props) => {
   const alert = useAlert();
-  const [actCreate] = useMutation<SidebarActCreateMutation>(ACT_CREATE);
-  const [actDelete] = useMutation<SidebarActDeleteMutation>(ACT_DELETE);
-  const [packActUpdate] = useMutation<SidebarPackActUpdateMutation>(
-    PACK_ACT_UPDATE
+  const [sceneCreate] = useMutation<SidebarSceneCreateMutation>(SCENE_CREATE);
+  const [sceneDelete] = useMutation<SidebarSceneDeleteMutation>(SCENE_DELETE);
+  const [packSceneUpdate] = useMutation<SidebarPackUpdateMutation>(
+    PACK_SCENE_UPDATE
   );
 
-  const acts = pack.acts?.edges;
+  const scenes = pack.acts?.edges;
   const packId = pack.id;
 
   const onDragEnd = async (result: DropResult) => {
@@ -100,15 +92,15 @@ export const Sidebar = ({
 
     let before;
     let after;
-    if (destinationIndex !== 0 && acts) {
-      before = acts[destinationIndex];
+    if (destinationIndex !== 0 && scenes) {
+      before = scenes[destinationIndex];
     }
-    if (acts && destinationIndex !== acts.length - 1) {
-      after = acts[destinationIndex + 1];
+    if (scenes && destinationIndex !== scenes.length - 1) {
+      after = scenes[destinationIndex + 1];
     }
 
     try {
-      await packActUpdate({
+      await packSceneUpdate({
         variables: {
           input: {
             packId,
@@ -118,7 +110,7 @@ export const Sidebar = ({
           },
         },
       });
-      await refetchActs();
+      await refetchScenes();
       setSaving(false);
     } catch (error) {
       alert.show(error.message);
@@ -126,18 +118,18 @@ export const Sidebar = ({
     }
   };
 
-  const deleteAct = async (act: any) => {
+  const deleteScene = async (sceneId: string) => {
     setSaving(true);
     try {
-      await actDelete({
+      await sceneDelete({
         variables: {
           input: {
-            id: act.id,
+            id: sceneId,
             packId,
           },
         },
       });
-      await refetchActs();
+      await refetchScenes();
       setSaving(false);
     } catch (error) {
       alert.show(error.message);
@@ -145,23 +137,19 @@ export const Sidebar = ({
     }
   };
 
-  const selectAct = (act: any) => {
-    setSelectedAct(act.id);
-  };
-
-  const addNewAct = async () => {
+  const addNewScene = async () => {
     setSaving(true);
     try {
-      await actCreate({
+      await sceneCreate({
         variables: {
           input: {
             packId,
             question: "Play",
-            order: (acts?.length || 0) + 1,
+            order: (scenes?.length || 0) + 1,
           },
         },
       });
-      await refetchActs();
+      await refetchScenes();
       setSaving(false);
     } catch (error) {
       alert.show(error.message);
@@ -172,7 +160,7 @@ export const Sidebar = ({
   return (
     <SidebarContainer>
       <SidebarHeader>
-        <h3>Questions:</h3>
+        <h3>Scenes:</h3>
       </SidebarHeader>
       <SidebarContent>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -182,32 +170,46 @@ export const Sidebar = ({
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {acts?.map((edge: any, index: any) => {
-                  const act = edge?.node;
-                  if (!act) {
+                {scenes?.map((edge: any, index: any) => {
+                  const scene = edge?.node;
+                  if (!scene) {
                     return;
                   }
 
                   return (
-                    <Draggable key={act.id} draggableId={act.id} index={index}>
+                    <Draggable
+                      key={scene.id}
+                      draggableId={scene.id}
+                      index={index}
+                    >
                       {(provided) => (
                         <QuestionItem
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          isSelected={selectedActId === act.id}
+                          isSelected={selectedSceneId === scene.id}
                           style={{ ...provided.draggableProps.style }}
                         >
-                          <div className="left" onClick={() => selectAct(act)}>
-                            <div className="type">{act.questionType.slug}</div>
+                          <div
+                            className="left"
+                            onClick={() => selectScene(scene.id)}
+                          >
+                            <div className="type">
+                              {scene.questionType.slug}
+                            </div>
                           </div>
-                          <div className="right" onClick={() => selectAct(act)}>
-                            <div className="instruction">{act.instruction}</div>
-                            <h3 className="question">{act.question}</h3>
+                          <div
+                            className="right"
+                            onClick={() => selectScene(scene.id)}
+                          >
+                            <div className="instruction">
+                              {scene.instruction}
+                            </div>
+                            <h3 className="question">{scene.question}</h3>
                           </div>
                           <button
                             className="delete"
-                            onClick={() => deleteAct(act)}
+                            onClick={() => deleteScene(scene.id)}
                           >
                             <Icon icon="trash" />
                           </button>
@@ -223,7 +225,7 @@ export const Sidebar = ({
         </DragDropContext>
       </SidebarContent>
       <SidebarFooter>
-        <Button onClick={addNewAct}>Add new question</Button>
+        <Button onClick={addNewScene}>Add New Scene</Button>
       </SidebarFooter>
     </SidebarContainer>
   );
@@ -318,11 +320,17 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     color: ${({ theme }) => theme.colors.darkGrey};
     font-size: 14px;
     margin-bottom: ${({ theme }) => theme.spacings(2)};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .question {
     font-size: 24px;
     margin: 0 0 ${({ theme }) => theme.spacings(3)};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .type {

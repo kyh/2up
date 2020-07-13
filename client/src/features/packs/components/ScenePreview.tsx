@@ -9,36 +9,36 @@ import { EditableAnswer } from "features/game/components/Answer";
 
 import monitor from "./monitor.svg";
 
-import { ActPreviewActUpdateMutation } from "./__generated__/ActPreviewActUpdateMutation";
-import { ActPreviewFragment } from "./__generated__/ActPreviewFragment";
+import { SceneUpdateMutation } from "./__generated__/SceneUpdateMutation";
+import { ScenePreviewFragment } from "./__generated__/ScenePreviewFragment";
 
 type Props = {
-  act: ActPreviewFragment;
+  scene: ScenePreviewFragment;
   setSaving: (saved: boolean) => void;
 };
 
-export const ActPreview = ({ act, setSaving }: Props) => {
+export const ScenePreview = ({ scene, setSaving }: Props) => {
   const alert = useAlert();
-  const [editableAct, setEditableAct] = useState(act);
-  const [actUpdate] = useMutation<ActPreviewActUpdateMutation>(ACT_UPDATE);
+  const [editableScene, setEditableScene] = useState(scene);
+  const [sceneUpdate] = useMutation<SceneUpdateMutation>(SCENE_UPDATE);
 
   useEffect(() => {
-    setEditableAct(act);
-  }, [act]);
+    setEditableScene(scene);
+  }, [scene]);
 
-  const onChange = async (updatedAct = {}) => {
+  const onChange = async (updatedScene = {}) => {
     setSaving(true);
-    const newAct = { ...editableAct, ...updatedAct };
+    const newScene = { ...editableScene, ...updatedScene };
     try {
-      await actUpdate({
+      await sceneUpdate({
         variables: {
           input: {
-            id: newAct.id,
-            question: newAct.question,
-            question_type_slug: newAct.questionType.slug,
-            answer: newAct.answer,
-            answer_type_slug: newAct.answerType.slug,
-            instruction: newAct.instruction,
+            id: newScene.id,
+            question: newScene.question,
+            question_type_slug: newScene.questionType.slug,
+            answer: newScene.answer,
+            answer_type_slug: newScene.answerType.slug,
+            instruction: newScene.instruction,
           },
         },
       });
@@ -54,14 +54,14 @@ export const ActPreview = ({ act, setSaving }: Props) => {
       <MonitorScreenContainer>
         <MonitorScreen>
           <EditableQuestion
-            instruction={editableAct?.instruction || ""}
-            question={editableAct?.question}
-            questionType={editableAct?.questionType?.slug}
+            instruction={editableScene?.instruction || ""}
+            question={editableScene?.question}
+            questionType={editableScene?.questionType?.slug}
             onChange={onChange}
           />
           <EditableAnswer
-            answer={editableAct?.answer || ""}
-            answerType={editableAct?.answerType?.slug}
+            answer={editableScene?.answer || ""}
+            answerType={editableScene?.answerType?.slug}
             onChange={onChange}
           />
         </MonitorScreen>
@@ -70,9 +70,9 @@ export const ActPreview = ({ act, setSaving }: Props) => {
   );
 };
 
-ActPreview.fragments = {
+ScenePreview.fragments = {
   act: gql`
-    fragment ActPreviewFragment on Act {
+    fragment ScenePreviewFragment on Act {
       id
       question
       answer
@@ -89,15 +89,15 @@ ActPreview.fragments = {
   `,
 };
 
-const ACT_UPDATE = gql`
-  mutation ActPreviewActUpdateMutation($input: ActUpdateInput!) {
+const SCENE_UPDATE = gql`
+  mutation SceneUpdateMutation($input: ActUpdateInput!) {
     actUpdate(input: $input) {
       act {
-        ...ActPreviewFragment
+        ...ScenePreviewFragment
       }
     }
   }
-  ${ActPreview.fragments.act}
+  ${ScenePreview.fragments.act}
 `;
 
 const Monitor = styled.section`

@@ -8,7 +8,7 @@ type Props = {
   acts: any; // TODO: type properly with fragments
 };
 
-export const ActsTableModal: React.FC<Props> = ({
+export const SceneTableModal: React.FC<Props> = ({
   open = false,
   setOpen = (_isOpen: boolean) => {},
   acts = [],

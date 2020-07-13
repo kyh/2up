@@ -3,7 +3,7 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
 import { Button } from "components";
-import { ActTemplate } from "features/packs/components/SceneTemplate";
+import { SceneTemplate } from "features/packs/components/SceneTemplate";
 
 import { SuggestionsActsQuery } from "./__generated__/SuggestionsActsQuery";
 
@@ -25,7 +25,7 @@ const ACTS_QUERY = gql`
       after: $after
     ) {
       edges {
-        ...ActTemplateFragment
+        ...SceneTemplateFragment
       }
       pageInfo {
         endCursor
@@ -33,7 +33,7 @@ const ACTS_QUERY = gql`
       }
     }
   }
-  ${ActTemplate.fragments.act}
+  ${SceneTemplate.fragments.act}
 `;
 
 export const Suggestions = ({
@@ -82,7 +82,7 @@ export const Suggestions = ({
     <>
       {acts.map((act) => {
         return (
-          act && <ActTemplate act={act} onClick={onQuestionTemplateClick} />
+          act && <SceneTemplate act={act} onClick={onQuestionTemplateClick} />
         );
       })}
       <Button onClick={onFetchMoreClick}>Fetch More</Button>
