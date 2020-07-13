@@ -1,13 +1,13 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "components";
-import { gameActions, SceneProps } from "features/game/gameSlice";
+import { gameActions, StepProps } from "features/game/gameSlice";
 
-type Props = SceneProps & {
-  dispatch: (_action: object) => void;
-};
-
-export const Scene0Remote = ({ state, broadcast, dispatch }: Props) => {
+export const Step0Remote = ({
+  state,
+  broadcast,
+  dispatch = () => {},
+}: StepProps) => {
   const history = useHistory();
   const handleEnd = () => {
     dispatch(gameActions.reset());
@@ -29,4 +29,4 @@ export const Scene0Remote = ({ state, broadcast, dispatch }: Props) => {
   );
 };
 
-export const Scene0TV = Scene0Remote;
+export const Step0TV = Step0Remote;

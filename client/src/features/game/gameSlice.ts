@@ -24,11 +24,12 @@ export type Submission = {
   endorsers: Player[];
 };
 
-export type SceneProps = {
+export type StepProps = {
   state: GameState;
   broadcast: (_eventName: string, _payload?: object) => void;
   userId?: string;
   name?: string;
+  dispatch?: (_action: object) => void;
 };
 
 export type Player = {
