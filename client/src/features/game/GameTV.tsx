@@ -1,10 +1,10 @@
 import React from "react";
 import { useGameChannel } from "features/game/GameChannel";
-import { Scene0TV } from "./scenes/Scene0";
-import { Scene1TV } from "./scenes/Scene1";
-import { Scene2TV } from "./scenes/Scene2";
-import { Scene3TV } from "./scenes/Scene3";
-import { Scene4TV } from "./scenes/Scene4";
+import { Scene0TV } from "./steps/Scene0";
+import { Scene1TV } from "./steps/Scene1";
+import { Scene2TV } from "./steps/Scene2";
+import { Scene3TV } from "./steps/Scene3";
+import { Scene4TV } from "./steps/Scene4";
 
 export const GameTV: React.FC = () => {
   const { state, broadcast, dispatch } = useGameChannel();
