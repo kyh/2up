@@ -22,7 +22,9 @@ export const PackSection = styled.section`
     padding: ${({ theme }) => theme.spacings(5)};
     border: 2px solid transparent;
     border-radius: ${({ theme }) => theme.border.wavyRadius};
-    max-width: 273px;
+    ${({ theme }) => theme.media.desktop`
+      max-width: 273px;
+    `}
 
     &:hover {
       border-color: ${({ theme }) => theme.border.alternateColor};

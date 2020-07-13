@@ -41,7 +41,7 @@ export const lightTheme: DefaultTheme = {
   spacings: memoize(calculateSpacing),
   media: {
     desktop: (mandatory: any, ...args) => css`
-      @media (max-width: ${mediaSizes.desktop}px) {
+      @media (min-width: ${mediaSizes.desktop}px) {
         ${css(mandatory, ...args)};
       }
     `,

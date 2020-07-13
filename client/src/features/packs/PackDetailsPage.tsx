@@ -94,17 +94,18 @@ const PackDetailsPageContent = styled(Content)`
   }
 
   .pack-details {
-    display: flex;
     justify-content: space-between;
     flex-direction: row-reverse;
 
     ${({ theme }) => theme.media.desktop`
-      display: block;
+      display: flex;
     `}
   }
 
   .description-container {
-    padding-right: ${({ theme }) => theme.spacings(10)};
+    ${({ theme }) => theme.media.desktop`
+      padding-right: ${theme.spacings(10)};
+    `}
   }
 `;
 
@@ -112,6 +113,7 @@ const GameCard = styled(Card)`
   height: max-content;
   min-width: 250px;
   align-items: center;
+  margin-bottom: ${({ theme }) => theme.spacings(5)};
 
   img {
     display: block;
@@ -129,8 +131,4 @@ const GameCard = styled(Card)`
   a:hover {
     text-decoration: underline;
   }
-
-  ${({ theme }) => theme.media.desktop`
-    margin-bottom: ${theme.spacings(5)};
-  `}
 `;

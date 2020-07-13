@@ -159,7 +159,9 @@ export const Navigation = ({
 
 const StyledNavigationContainer = styled(NavigationContainer)`
   .left {
-    border-right-color: ${({ theme }) => theme.ui.backgroundInverse};
+    ${({ theme }) => theme.media.desktop`
+      border-right-color: ${theme.ui.backgroundInverse};
+    `}
   }
   .right {
     position: relative;
