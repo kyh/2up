@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useGameChannel } from "features/game/GameChannel";
 import { usePlayhouse } from "features/home/playhouseSlice";
-import { Scene0Remote } from "./scenes/Scene0";
-import { Scene1Remote } from "./scenes/Scene1";
-import { Scene2Remote } from "./scenes/Scene2";
-import { Scene3Remote } from "./scenes/Scene3";
-import { Scene4Remote } from "./scenes/Scene4";
+import { Scene0Remote } from "./steps/Scene0";
+import { Scene1Remote } from "./steps/Scene1";
+import { Scene2Remote } from "./steps/Scene2";
+import { Scene3Remote } from "./steps/Scene3";
+import { Scene4Remote } from "./steps/Scene4";
 
 export const GameRemote: React.FC = () => {
   const {
