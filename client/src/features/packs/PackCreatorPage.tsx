@@ -10,7 +10,7 @@ import { hostGame } from "features/game/gameService";
 import { usePlayhouse } from "features/home/playhouseSlice";
 
 import { Sidebar } from "features/packs/components/Sidebar";
-import { ActPreview } from "features/packs/components/ScenePreview";
+import { ScenePreview } from "features/packs/components/ScenePreview";
 import { NavigationContainer } from "features/packs/components/Navigation";
 
 import { Box, Button, Icon, Modal, Loader } from "components";
@@ -181,13 +181,13 @@ const StyledNavigationContainer = styled(NavigationContainer)`
 `;
 
 const PACK_QUERY = gql`
-  query PackCreatorPagePackQuery($packId: ID!, $actId: ID) {
+  query PackCreatorPagePackQuery($packId: ID!, $sceneId: ID) {
     pack(id: $packId) {
       ...PackSettingsFragment
       ...SidebarPackFragment
     }
-    act(id: $actId, packId: $packId) {
-      ...ActPreviewFragment
+    act(id: $sceneId, packId: $packId) {
+      ...ScenePreviewFragment
     }
     questionTypes {
       id
@@ -200,12 +200,12 @@ const PACK_QUERY = gql`
   }
   ${PACK_FRAGMENT}
   ${Sidebar.fragments.pack}
-  ${ActPreview.fragments.act}
+  ${ScenePreview.fragments.act}
 `;
 
 export const PackCreatorPage = () => {
   const [saving, setSaving] = useState(false);
-  const [selectedActId, setSelectedActId] = useState("");
+  const [selectedSceneId, setSelectedSceneId] = useState("");
   const { packId } = useParams();
   const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
     variables: {
@@ -213,19 +213,19 @@ export const PackCreatorPage = () => {
     },
   });
 
-  const handleSelect = async (selectedActId: string) => {
-    setSelectedActId(selectedActId);
+  const selectScene = async (selectedSceneId: string) => {
+    setSelectedSceneId(selectedSceneId);
     const newVariables = {
       packId,
-      actId: selectedActId,
+      sceneId: selectedSceneId,
     };
     return refetch(newVariables);
   };
 
-  const refetchActs = async () => {
+  const refetchScenes = async () => {
     const newVariables = {
       packId,
-      id: selectedActId,
+      id: selectedSceneId,
     };
     return refetch(newVariables);
   };
@@ -237,15 +237,15 @@ export const PackCreatorPage = () => {
           <Navigation pack={data.pack} saving={saving} setSaving={setSaving} />
           <Sidebar
             pack={data.pack}
-            selectedActId={selectedActId}
-            setSelectedAct={handleSelect}
-            refetchActs={refetchActs}
+            selectedSceneId={selectedSceneId}
+            selectScene={selectScene}
+            refetchScenes={refetchScenes}
             setSaving={setSaving}
           />
         </>
       )}
       <Content>
-        {data?.act && <ActPreview act={data.act} setSaving={setSaving} />}
+        {data?.act && <ScenePreview scene={data.act} setSaving={setSaving} />}
       </Content>
     </Page>
   );
