@@ -10,7 +10,7 @@ import { hostGame } from "features/game/gameService";
 import { usePlayhouse } from "features/home/playhouseSlice";
 
 import { Sidebar } from "features/packs/components/Sidebar";
-import { ActPreview } from "features/packs/components/ActPreview";
+import { ActPreview } from "features/packs/components/ScenePreview";
 import { NavigationContainer } from "features/packs/components/Navigation";
 
 import { Box, Button, Icon, Modal, Loader } from "components";
