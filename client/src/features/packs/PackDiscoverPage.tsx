@@ -66,7 +66,11 @@ export const PackDiscoverPage = () => {
   return (
     <Page>
       <Navigation />
-      <Content>
+      <Content
+        bgImage="/backgrounds/illustration-1.svg"
+        bgTop="200px"
+        bgHeight="900px"
+      >
         <PackSection>
           {!!data?.my?.edges?.length && (
             <div className="pack-section">
