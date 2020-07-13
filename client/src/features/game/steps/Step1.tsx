@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 import { Alert, Flex, Timer } from "components";
-import { SceneProps } from "features/game/gameSlice";
+import { StepProps } from "features/game/gameSlice";
 import {
   TVQuestionConatiner,
   Question,
 } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
 
-export const Scene1Remote = ({
-  state,
-  broadcast,
-  userId,
-  name,
-}: SceneProps) => {
+export const Step1Remote = ({ state, broadcast, userId, name }: StepProps) => {
   const [submitted, setSubmitted] = useState(false);
 
   const submissions = state.submissions.length - 1;
@@ -48,7 +43,7 @@ export const Scene1Remote = ({
   );
 };
 
-export const Scene1TV = ({ state }: SceneProps) => {
+export const Step1TV = ({ state }: StepProps) => {
   const submissions = state.submissions.length - 1;
   return (
     <>

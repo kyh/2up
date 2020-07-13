@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Alert, Timer } from "components";
-import { SceneProps } from "features/game/gameSlice";
+import { StepProps } from "features/game/gameSlice";
 import {
   TVQuestionConatiner,
   Question,
@@ -8,12 +8,7 @@ import {
 import { SubmissionsContainer } from "features/game/components/SubmissionsContainer";
 import { Answer } from "features/game/components/Answer";
 
-export const Scene2Remote = ({
-  state,
-  broadcast,
-  userId,
-  name,
-}: SceneProps) => {
+export const Step2Remote = ({ state, broadcast, userId, name }: StepProps) => {
   const [submitted, setSubmitted] = useState(false);
 
   const submissions = state.submissions.reduce((sum, s) => {
@@ -67,7 +62,7 @@ export const Scene2Remote = ({
   );
 };
 
-export const Scene2TV = ({ state }: SceneProps) => {
+export const Step2TV = ({ state }: StepProps) => {
   const submissions = state.submissions.reduce((sum, s) => {
     return (sum += s.endorsers.length);
   }, 0);

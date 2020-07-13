@@ -1,12 +1,12 @@
 import React from "react";
 import { AvatarImage, Button } from "components";
-import { SceneProps } from "features/game/gameSlice";
+import { StepProps } from "features/game/gameSlice";
 import { hashCode } from "utils/stringUtils";
 import { SubmissionsContainer } from "features/game/components/SubmissionsContainer";
 import { Answer } from "features/game/components/Answer";
 import correctSvg from "features/game/components/correct.svg";
 
-export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
+export const Step3Remote = ({ state, broadcast, name }: StepProps) => {
   const firstPlayer = state.players[0];
   return (
     <section>
@@ -59,7 +59,7 @@ export const Scene3Remote = ({ state, broadcast, name }: SceneProps) => {
   );
 };
 
-export const Scene3TV = ({ state }: SceneProps) => {
+export const Step3TV = ({ state }: StepProps) => {
   return (
     <section>
       <SubmissionsContainer>
