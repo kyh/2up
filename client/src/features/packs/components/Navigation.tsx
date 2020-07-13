@@ -64,9 +64,11 @@ export const NavigationContainer = styled.header`
   .left {
     display: flex;
     align-items: center;
-    width: 345px;
     border-right: 1px solid transparent;
     padding-left: ${({ theme }) => theme.spacings(3)};
+    ${({ theme }) => theme.media.desktop`
+      width: 345px;
+    `}
   }
 
   .right {
