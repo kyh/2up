@@ -75,7 +75,7 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
   };
 
   return (
-    <Page>
+    <Page isLogin={isLogin}>
       <FormContainer>
         <h1 className="title">{isLogin ? "Login" : "Sign up"}</h1>
         <CardContainer>
@@ -132,10 +132,21 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
   );
 };
 
-const Page = styled(PageContainer)`
+const Page = styled(PageContainer)<{ isLogin?: boolean }>`
   align-items: center;
   height: 100vh;
   background: ${({ theme }) => theme.ui.backgroundGrey};
+  background-repeat: no-repeat;
+  ${({ isLogin }) =>
+    isLogin
+      ? `
+    background-image: url('/illustrations/krown-kitty.svg');
+    background-position: 23% 93%;
+  `
+      : `
+    background-image: url('/illustrations/unicorn-ice-cream.svg');
+    background-position: 78% 104%;
+  `}
 `;
 
 const FormContainer = styled.section`
