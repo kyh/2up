@@ -6,7 +6,7 @@ import { gql } from "apollo-boost";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
 
-import { PageContainer, Input, Button, Card } from "components";
+import { PageContainer, TextField, Button, Card } from "components";
 
 import { SignupUserCreateMutation } from "./__generated__/SignupUserCreateMutation";
 import { LoginSessionCreateMutation } from "./__generated__/LoginSessionCreateMutation";
@@ -78,45 +78,36 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
     <Page isLogin={isLogin}>
       <FormContainer>
         <h1 className="title">{isLogin ? "Login" : "Sign up"}</h1>
-        <CardContainer>
+        <Card background>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Field>
-              <label htmlFor="username">Username</label>
-              <Input
-                id="username"
-                name="username"
-                placeholder="Lil Jon Snow"
-                ref={register({ required: true })}
-              />
-              {errors.username && (
-                <div className="error">Username is required</div>
-              )}
-            </Field>
+            <TextField
+              id="username"
+              name="username"
+              placeholder="Lil Jon Snow"
+              ref={register({ required: true })}
+              error={!!errors.username}
+              errorText="Username is required"
+            />
             {!isLogin && (
-              <Field>
-                <label htmlFor="email">Email</label>
-                <Input
-                  id="email"
-                  name="email"
-                  placeholder="player@playhouse.gg"
-                  ref={register({ required: true })}
-                />
-                {errors.email && <div className="error">Email is required</div>}
-              </Field>
-            )}
-            <Field>
-              <label htmlFor="password">Password</label>
-              <Input
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Super secret password"
+              <TextField
+                id="email"
+                name="email"
+                type="email"
+                placeholder="player@playhouse.gg"
                 ref={register({ required: true })}
+                error={!!errors.email}
+                errorText="Email is required"
               />
-              {errors.password && (
-                <div className="error">Password is required</div>
-              )}
-            </Field>
+            )}
+            <TextField
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Super secret password"
+              ref={register({ required: true })}
+              error={!!errors.password}
+              errorText="Password is required"
+            />
             <Button
               className="submit"
               type="submit"
@@ -126,7 +117,7 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
               {isLogin ? "Login" : "Sign up"}
             </Button>
           </form>
-        </CardContainer>
+        </Card>
       </FormContainer>
     </Page>
   );
@@ -156,15 +147,5 @@ const FormContainer = styled.section`
   }
   .submit {
     margin-top: ${({ theme }) => theme.spacings(4)};
-  }
-`;
-
-const CardContainer = styled(Card)`
-  background: ${({ theme }) => theme.ui.background};
-`;
-
-const Field = styled.fieldset`
-  .error {
-    color: ${({ theme }) => theme.colors.red};
   }
 `;
