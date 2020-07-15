@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
-import { ButtonLinkNative } from "components";
+import { useHostGame } from "features/game/gameService";
+
+import { ButtonLinkNative, Icon, Button } from "components";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
 import { PackSection, PackImage } from "./components/Packs";
@@ -41,17 +43,27 @@ const PACKS_QUERY = gql`
 const Packs: React.FC<{
   packs?: PackDiscoverPageQuery_my | PackDiscoverPageQuery_featured | null;
 }> = ({ packs }) => {
+  const hostGame = useHostGame();
   return (
     <>
       {packs?.edges?.map((edge) => {
         const pack = edge?.node;
         if (!pack) return null;
         return (
-          <Link key={pack.id} to={`/packs/${pack.id}`} className="pack-item">
-            <PackImage src={pack.imageUrl} />
-            <h4>{pack.name}</h4>
-            <p>{pack.description}</p>
-          </Link>
+          <div key={pack.id} className="pack-item">
+            <Button
+              className="pack-play-button"
+              variant="fab"
+              onClick={() => hostGame(pack.id)}
+            >
+              <Icon icon="play" />
+            </Button>
+            <Link to={`/packs/${pack.id}`}>
+              <PackImage src={pack.imageUrl} />
+              <h4>{pack.name}</h4>
+              <p>{pack.description}</p>
+            </Link>
+          </div>
         );
       })}
     </>

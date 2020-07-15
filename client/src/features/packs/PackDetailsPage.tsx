@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 
-import { hostGame } from "features/game/gameService";
-import { usePlayhouse } from "features/home/playhouseSlice";
+import { useHostGame } from "features/game/gameService";
 
 import { PackImage } from "features/packs/components/Packs";
 import { Card, Button } from "components";
@@ -13,16 +12,7 @@ import { Card, Button } from "components";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
 
-import { PackDetailsPageGameCreateMutation } from "./__generated__/PackDetailsPageGameCreateMutation";
 import { PackDetailsPagePackQuery } from "./__generated__/PackDetailsPagePackQuery";
-
-const GAME_CREATE = gql`
-  mutation PackDetailsPageGameCreateMutation($input: GameCreateInput!) {
-    gameCreate(input: $input) {
-      code
-    }
-  }
-`;
 
 const PACK_QUERY = gql`
   query PackDetailsPagePackQuery($packId: ID!) {
@@ -43,19 +33,13 @@ const PACK_QUERY = gql`
 
 export const PackDetailsPage = () => {
   const { packId } = useParams();
-  const history = useHistory();
-  const { dispatch } = usePlayhouse();
+  const hostGame = useHostGame();
 
-  const [gameCreate] = useMutation<PackDetailsPageGameCreateMutation>(
-    GAME_CREATE
-  );
   const { data } = useQuery<PackDetailsPagePackQuery>(PACK_QUERY, {
     variables: { packId },
   });
 
   const { pack, currentUser } = data || {};
-
-  const onHostGame = () => hostGame(dispatch, gameCreate, history, packId);
 
   return (
     <Page>
@@ -67,7 +51,7 @@ export const PackDetailsPage = () => {
         <div className="pack-details">
           <GameCard>
             <PackImage src={pack?.imageUrl} />
-            <Button onClick={onHostGame}>Host a game</Button>
+            <Button onClick={() => hostGame(packId)}>Host a game</Button>
             {!!data && pack?.user?.id === currentUser?.id && (
               <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
             )}
