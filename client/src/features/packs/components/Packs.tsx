@@ -45,7 +45,7 @@ export const PackSection = styled.section`
     .edit-pack-footer {
       display: flex;
       justify-content: center;
-      margin-top: ${({ theme }) => theme.spacings(5)};
+      margin-bottom: ${({ theme }) => theme.spacings(5)};
 
       a {
         padding: ${({ theme }) => theme.spacings(3)};
