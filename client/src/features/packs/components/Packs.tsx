@@ -19,7 +19,6 @@ export const PackSection = styled.section`
 
   .pack-item {
     position: relative;
-    padding: ${({ theme }) => theme.spacings(5)};
     border: 2px solid transparent;
     border-radius: ${({ theme }) => theme.border.wavyRadius};
     ${({ theme }) => theme.media.desktop`
@@ -28,6 +27,11 @@ export const PackSection = styled.section`
 
     &:hover {
       border-color: ${({ theme }) => theme.border.alternateColor};
+    }
+
+    a {
+      display: block;
+      padding: ${({ theme }) => theme.spacings(5)};
     }
 
     h4 {
@@ -45,6 +49,16 @@ export const PackSection = styled.section`
 
       a {
         padding: ${({ theme }) => theme.spacings(3)};
+      }
+    }
+
+    .pack-play-button {
+      position: absolute;
+      top: 25%;
+      left: 50%;
+      transform: translateX(-50%);
+      &:active {
+        transform: translateX(-50%) scale(0.9);
       }
     }
   }

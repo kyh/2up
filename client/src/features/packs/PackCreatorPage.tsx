@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useAlert } from "react-alert";
 
-import { hostGame } from "features/game/gameService";
-import { usePlayhouse } from "features/home/playhouseSlice";
+import { useHostGame } from "features/game/gameService";
 
 import { Sidebar } from "features/packs/components/Sidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";
@@ -20,7 +19,6 @@ import {
   PackCreatorPagePackQuery_pack,
 } from "./__generated__/PackCreatorPagePackQuery";
 import { PackUpdateMutation } from "./__generated__/PackUpdateMutation";
-import { GameCreateMutation } from "./__generated__/GameCreateMutation";
 
 export const PACK_FRAGMENT = gql`
   fragment PackSettingsFragment on Pack {
@@ -42,14 +40,6 @@ const PACK_UPDATE = gql`
   ${PACK_FRAGMENT}
 `;
 
-const GAME_CREATE = gql`
-  mutation GameCreateMutation($input: GameCreateInput!) {
-    gameCreate(input: $input) {
-      code
-    }
-  }
-`;
-
 export const Navigation = ({
   pack,
   saving,
@@ -60,13 +50,9 @@ export const Navigation = ({
   setSaving: (saving: boolean) => void;
 }) => {
   const alert = useAlert();
-  const history = useHistory();
-  const { dispatch } = usePlayhouse();
   const [isOpen, setIsOpen] = useState(false);
   const [packUpdate] = useMutation<PackUpdateMutation>(PACK_UPDATE);
-  const [gameCreate] = useMutation<GameCreateMutation>(GAME_CREATE);
-
-  const onHostGame = () => hostGame(dispatch, gameCreate, history, pack.id);
+  const hostGame = useHostGame();
 
   const onSaveChanges = async (newPackInfo = {}) => {
     setSaving(true);
@@ -116,7 +102,7 @@ export const Navigation = ({
           <Button
             className="pack-ext-button"
             variant="fab"
-            onClick={() => onHostGame()}
+            onClick={() => hostGame(pack.id)}
           >
             <Icon icon="play" />
           </Button>
