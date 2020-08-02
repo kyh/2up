@@ -222,10 +222,12 @@ const EndorsementButtons = styled(Button)`
  * Editable versions of the component above for Gamemaster Pages
  */
 type EditableAnswerProps = AnswerProps & {
+  sceneId: string;
   onChange: (_updatedAct: any) => void;
 };
 
 export const EditableAnswer: React.FC<EditableAnswerProps> = ({
+  sceneId,
   answer,
   answerType,
   onChange,
@@ -233,20 +235,20 @@ export const EditableAnswer: React.FC<EditableAnswerProps> = ({
   switch (answerType) {
     case "drawing":
       return (
-        <EditableType onSelectType={onChange}>
+        <EditableType onSelectType={onChange} key={sceneId}>
           <AnswerCanvas submitted />
         </EditableType>
       );
     case "color":
       return (
-        <EditableType onSelectType={onChange}>
+        <EditableType onSelectType={onChange} key={sceneId}>
           <AnswerColor submitted />
         </EditableType>
       );
     // "text"
     default:
       return (
-        <EditableType onSelectType={onChange}>
+        <EditableType onSelectType={onChange} key={sceneId}>
           <Box mb={2}>
             <Input
               defaultValue={answer}

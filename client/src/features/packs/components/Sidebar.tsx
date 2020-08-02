@@ -19,9 +19,9 @@ import { SidebarPackFragment } from "./__generated__/SidebarPackFragment";
 
 type Props = {
   pack: SidebarPackFragment;
-  selectedSceneId: string;
+  selectedSceneId?: string;
   selectScene: (scene: any) => void;
-  refetchScenes: () => void;
+  refetch: () => void;
   setSaving: (saving: boolean) => void;
 };
 
@@ -71,7 +71,7 @@ export const Sidebar = ({
   pack,
   selectedSceneId,
   selectScene,
-  refetchScenes,
+  refetch,
   setSaving,
 }: Props) => {
   const alert = useAlert();
@@ -110,7 +110,7 @@ export const Sidebar = ({
           },
         },
       });
-      await refetchScenes();
+      await refetch();
       setSaving(false);
     } catch (error) {
       alert.show(error.message);
@@ -129,7 +129,7 @@ export const Sidebar = ({
           },
         },
       });
-      await refetchScenes();
+      await refetch();
       setSaving(false);
     } catch (error) {
       alert.show(error.message);
@@ -149,7 +149,7 @@ export const Sidebar = ({
           },
         },
       });
-      await refetchScenes();
+      await refetch();
       setSaving(false);
     } catch (error) {
       alert.show(error.message);

@@ -3,7 +3,7 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
 import { Button } from "components";
-import { SceneTemplate } from "features/packs/components/SceneTemplate";
+import { SceneTemplate } from "./SceneTemplate";
 
 import { SuggestionsActsQuery } from "./__generated__/SuggestionsActsQuery";
 
