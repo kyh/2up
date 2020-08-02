@@ -19,16 +19,11 @@ type Props = {
 
 export const ScenePreview = ({ scene, setSaving }: Props) => {
   const alert = useAlert();
-  const [editableScene, setEditableScene] = useState(scene);
   const [sceneUpdate] = useMutation<SceneUpdateMutation>(SCENE_UPDATE);
-
-  useEffect(() => {
-    setEditableScene(scene);
-  }, [scene]);
 
   const onChange = async (updatedScene = {}) => {
     setSaving(true);
-    const newScene = { ...editableScene, ...updatedScene };
+    const newScene = { ...scene, ...updatedScene };
     try {
       await sceneUpdate({
         variables: {
@@ -54,14 +49,16 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
       <MonitorScreenContainer>
         <MonitorScreen>
           <EditableQuestion
-            instruction={editableScene?.instruction || ""}
-            question={editableScene?.question}
-            questionType={editableScene?.questionType?.slug}
+            sceneId={scene.id}
+            instruction={scene?.instruction || ""}
+            question={scene?.question || ""}
+            questionType={scene?.questionType?.slug}
             onChange={onChange}
           />
           <EditableAnswer
-            answer={editableScene?.answer || ""}
-            answerType={editableScene?.answerType?.slug}
+            sceneId={scene.id}
+            answer={scene?.answer || ""}
+            answerType={scene?.answerType?.slug}
             onChange={onChange}
           />
         </MonitorScreen>

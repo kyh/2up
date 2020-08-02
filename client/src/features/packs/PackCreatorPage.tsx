@@ -191,7 +191,6 @@ const PACK_QUERY = gql`
 
 export const PackCreatorPage = () => {
   const [saving, setSaving] = useState(false);
-  const [selectedSceneId, setSelectedSceneId] = useState("");
   const { packId } = useParams();
   const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
     variables: {
@@ -199,21 +198,12 @@ export const PackCreatorPage = () => {
     },
   });
 
-  const selectScene = async (selectedSceneId: string) => {
-    setSelectedSceneId(selectedSceneId);
+  const selectScene = (selectedSceneId: string) => {
     const newVariables = {
       packId,
       sceneId: selectedSceneId,
     };
-    return refetch(newVariables);
-  };
-
-  const refetchScenes = async () => {
-    const newVariables = {
-      packId,
-      id: selectedSceneId,
-    };
-    return refetch(newVariables);
+    refetch(newVariables);
   };
 
   return (
@@ -223,9 +213,9 @@ export const PackCreatorPage = () => {
           <Navigation pack={data.pack} saving={saving} setSaving={setSaving} />
           <Sidebar
             pack={data.pack}
-            selectedSceneId={selectedSceneId}
+            selectedSceneId={data.act?.id}
             selectScene={selectScene}
-            refetchScenes={refetchScenes}
+            refetch={refetch}
             setSaving={setSaving}
           />
         </>
@@ -257,8 +247,8 @@ export const Content = styled.section`
   padding: ${({ theme }) => theme.spacings(5)};
 `;
 
-const Footer = styled.footer`
-  grid-area: footer;
-  display: flex;
-  padding: ${({ theme }) => theme.spacings(4)};
-`;
+// const Footer = styled.footer`
+//   grid-area: footer;
+//   display: flex;
+//   padding: ${({ theme }) => theme.spacings(4)};
+// `;

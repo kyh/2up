@@ -58,10 +58,12 @@ const QuestionImage = styled.img`
  * Editable versions of the component above for Gamemaster Pages
  */
 type EditableQuestionProps = QuestionProps & {
+  sceneId: string;
   onChange: (_updatedAct: any) => void;
 };
 
 export const EditableQuestion: React.FC<EditableQuestionProps> = ({
+  sceneId,
   instruction,
   question,
   questionType,
@@ -70,7 +72,7 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
   switch (questionType) {
     case "image":
       return (
-        <EditableQuestionContainer>
+        <EditableQuestionContainer key={sceneId}>
           <EditableQuestionInstructions
             placeholder="Instruction..."
             defaultValue={instruction}
@@ -91,7 +93,7 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
       );
     default:
       return (
-        <EditableQuestionContainer>
+        <EditableQuestionContainer key={sceneId}>
           <EditableQuestionInstructions
             placeholder="Instruction..."
             defaultValue={instruction}
@@ -99,7 +101,7 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
           />
           <EditableType onSelectType={onChange}>
             <EditableQuestionText
-              placeholder="Your question..."
+              placeholder="Your question?"
               defaultValue={question}
               onBlur={(e) => onChange({ question: e.target.value })}
             />
