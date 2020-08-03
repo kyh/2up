@@ -1,6 +1,6 @@
 {
   "short_name": "Playhouse",
-  "name": "|> Playhouse",
+  "name": "Playhouse",
   "icons": [
     {
       "src": "favicon/favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#2D3748",
   "background_color": "#ffffff"
 }
