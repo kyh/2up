@@ -202,9 +202,11 @@ export const Sidebar = ({
                             className="right"
                             onClick={() => selectScene(scene.id)}
                           >
-                            <div className="instruction">
-                              {scene.instruction}
-                            </div>
+                            {scene.instruction && (
+                              <div className="instruction">
+                                {scene.instruction}
+                              </div>
+                            )}
                             <h3 className="question">{scene.question}</h3>
                           </div>
                           <button
