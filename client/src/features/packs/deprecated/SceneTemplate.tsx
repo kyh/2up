@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { gql } from "apollo-boost";
+import { gql } from "@apollo/client";
 import { SceneTemplateFragment } from "./__generated__/SceneTemplateFragment";
 
 type Props = {
