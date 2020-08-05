@@ -1,7 +1,6 @@
 import React, { useState, SyntheticEvent } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { useMutation } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { useAlert } from "react-alert";
 

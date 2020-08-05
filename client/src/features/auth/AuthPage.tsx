@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { useMutation } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
 
