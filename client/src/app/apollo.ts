@@ -19,8 +19,6 @@ const authLink = setContext((_, { headers }) => {
 export const client = new ApolloClient({
   cache: cache,
   link: authLink.concat(httpLink),
-  name: "playhouse-web-client",
-  version: "1.0",
   defaultOptions: {
     watchQuery: {
       fetchPolicy: "cache-and-network",
