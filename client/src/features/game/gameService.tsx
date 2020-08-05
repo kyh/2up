@@ -1,6 +1,5 @@
 import { useHistory } from "react-router-dom";
-import { gql } from "apollo-boost";
-import { useMutation } from "@apollo/react-hooks";
+import { gql, useMutation } from "@apollo/client";
 
 import { gameActions } from "features/game/gameSlice";
 import { usePlayhouse, playhouseActions } from "features/home/playhouseSlice";
