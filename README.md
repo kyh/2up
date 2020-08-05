@@ -12,7 +12,6 @@
 │       ├── /features            # App routes
 │       ├── /styles              # Theme and global styling
 │       └── /utils               # Utility
-│── /design                      # Design assets
 │── /docs                        # App documentation
 └── /server                      # Phoenix server
     └── /lib
@@ -23,13 +22,13 @@
 
 ## Tech Stack
 
-**Client**: The web client is a React/Redux application bootstrapped with `create-react-app`
+**Client**: The web client is a `React/Redux` application bootstrapped with `create-react-app`
 
-**Data Transport**: The `Gamemaster` pages use GraphQL with Apollo while the `Game` itself uses websockets
+**Data Transport**: The `Game` itself uses websockets but the rest of the pages use `Apollo` with `Graphql`
 
-**Server**: Backend server is an Elixir/Phoenix API server
+**Server**: Elixir/Phoenix API server
 
-**Database**: Everything is stored in a Postgres database
+**Database**: Postgres
 
 ## Setting up
 
