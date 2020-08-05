@@ -7,8 +7,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { useAlert } from "react-alert";
-import { useMutation } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+import { gql, useMutation } from "@apollo/client";
 
 import { Button, Icon } from "components";
 

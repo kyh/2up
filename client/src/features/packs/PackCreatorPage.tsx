@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import { useAlert } from "react-alert";
 
 import { useHostGame } from "features/game/gameService";
