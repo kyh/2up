@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { gql, useMutation } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { useAlert } from "react-alert";
+import { useForm } from "react-hook-form";
 
-import { Button } from "components";
+import { Button, Card, TextField, AreaField } from "components";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
 import { PackCreateMutation } from "./__generated__/PackCreateMutation";
@@ -20,22 +21,36 @@ const PACK_CREATE = gql`
   }
 `;
 
+export type PackInputs = {
+  name: string;
+  description: string;
+  isRandom?: boolean;
+  length?: number;
+};
+
 export const PackNewPage = () => {
   const alert = useAlert();
   const history = useHistory();
+  const { register, handleSubmit, errors } = useForm<PackInputs>();
+
   const [packCreate, { loading }] = useMutation<PackCreateMutation>(
     PACK_CREATE
   );
 
-  const createPack = async () => {
+  const createPack = async ({
+    name,
+    description,
+    isRandom = true,
+    length = 10,
+  }: PackInputs) => {
     try {
       const response = await packCreate({
         variables: {
           input: {
-            name: "hi",
-            description: "Some description",
-            isRandom: true,
-            length: 10,
+            name,
+            description,
+            isRandom,
+            length,
           },
         },
       });
@@ -50,9 +65,32 @@ export const PackNewPage = () => {
     <Page>
       <Navigation />
       <PackNewPageContent>
-        <Button onClick={createPack} disabled={loading}>
-          Create Pack
-        </Button>
+        <h1 className="title">New Pack</h1>
+        <Card background>
+          <form onSubmit={handleSubmit(createPack)}>
+            <TextField
+              labelText="Pack Name"
+              id="name"
+              name="name"
+              placeholder="Who's that Pokemon?"
+              ref={register({ required: true })}
+              error={!!errors.name}
+              errorText="Pack name is required"
+            />
+            <AreaField
+              labelText="Description"
+              id="description"
+              name="description"
+              placeholder="The popular question-and-answer segment that is featured in numerous episodes of the Pokémon anime"
+              ref={register({ required: true })}
+              error={!!errors.description}
+              errorText="A short description is required"
+            />
+            <Button className="submit" type="submit" disabled={loading}>
+              Create Pack
+            </Button>
+          </form>
+        </Card>
       </PackNewPageContent>
     </Page>
   );
@@ -60,4 +98,20 @@ export const PackNewPage = () => {
 
 const PackNewPageContent = styled(Content)`
   display: block;
+  max-width: 500px;
+  margin: 0 auto;
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+  }
+
+  button {
+    margin: 0 auto;
+  }
 `;
