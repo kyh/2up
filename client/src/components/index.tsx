@@ -9,4 +9,5 @@ export { Icon } from "./Icon/Icon";
 export { Modal } from "./Modal/Modal";
 export { Timer } from "./Timer/Timer";
 export { Loader } from "./Loader/Loader";
-export { Field, TextField } from "./Field/Field";
+export { Field, TextField } from "./TextField/TextField";
+export { AreaField } from "./TextField/AreaField";
