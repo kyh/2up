@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npm run gql-gen && react-scripts start",
+    "dev": "npm start",
     "build": "npm run codegen && react-scripts build",
     "format": "prettier --write .",
     "test": "react-scripts test",
@@ -25,13 +26,13 @@
     "react-canvas-draw": "^1.1.1",
     "react-color": "^2.18.1",
     "react-dom": "^16.13.1",
-    "react-hook-form": "^6.4.0",
+    "react-hook-form": "^6.4.1",
     "react-modal": "^3.11.2",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "redux-logger": "^3.0.6",
     "reflexbox": "^4.0.6",
-    "snyk": "^1.377.1",
+    "snyk": "^1.381.1",
     "styled-components": "^5.1.1",
     "styled-normalize": "^8.0.7",
     "uifx": "^2.0.7"
@@ -62,10 +63,10 @@
     "graphql": "^15.3.0",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1",
+    "pretty-quick": "^3.0.0",
     "raw.macro": "^0.4.2",
     "react-scripts": "^3.4.3",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.2"
   },
   "husky": {
     "hooks": {

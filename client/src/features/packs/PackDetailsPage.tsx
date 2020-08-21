@@ -31,7 +31,7 @@ const PACK_QUERY = gql`
 `;
 
 export const PackDetailsPage = () => {
-  const { packId } = useParams();
+  const { packId } = useParams<{ packId: string }>();
   const hostGame = useHostGame();
 
   const { data } = useQuery<PackDetailsPagePackQuery>(PACK_QUERY, {
