@@ -190,7 +190,7 @@ const PACK_QUERY = gql`
 
 export const PackCreatorPage = () => {
   const [saving, setSaving] = useState(false);
-  const { packId } = useParams();
+  const { packId } = useParams<{ packId: string }>();
   const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
     variables: {
       packId: packId || "",

@@ -10,7 +10,7 @@ import { Navigation } from "features/game/components/Navigation";
 import { PageContainer } from "components";
 
 export const GameRoutes: React.FC = () => {
-  const { gameId } = useParams();
+  const { gameId } = useParams<{ gameId: string }>();
   return (
     <Switch>
       <GameProvider gameId={gameId}>

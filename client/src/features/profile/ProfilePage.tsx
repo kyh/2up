@@ -30,7 +30,7 @@ const USER_QUERY = gql`
 `;
 
 export const ProfilePage = () => {
-  const { username } = useParams();
+  const { username } = useParams<{ username: string }>();
   const { data } = useQuery<ProfileUserQuery>(USER_QUERY, {
     variables: { username: username || "" },
   });
