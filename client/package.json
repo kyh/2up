@@ -11,12 +11,10 @@
     "introspect-schema": "apollo schema:download --endpoint=http://localhost:4000/graphql schema.json",
     "codegen": "apollo codegen:generate --localSchemaFile=schema.json --target=typescript --includes=src/**/*.tsx --tagName=gql --addTypename --globalTypesFile=src/__generated__/graphql-types.ts __generated__",
     "gql-gen": "npm run introspect-schema && npm run codegen",
-    "clean:codegen": "find . -name __generated__ -exec rm -rf {} \\;",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "clean:codegen": "find . -name __generated__ -exec rm -rf {} \\;"
   },
   "dependencies": {
-    "@apollo/client": "^3.1.3",
+    "@apollo/client": "^3.1.4",
     "@reduxjs/toolkit": "^1.4.0",
     "lodash": "^4.17.20",
     "phoenix": "^1.5.4",
@@ -26,13 +24,12 @@
     "react-canvas-draw": "^1.1.1",
     "react-color": "^2.18.1",
     "react-dom": "^16.13.1",
-    "react-hook-form": "^6.5.0",
+    "react-hook-form": "^6.6.0",
     "react-modal": "^3.11.2",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "redux-logger": "^3.0.6",
     "reflexbox": "^4.0.6",
-    "snyk": "^1.381.2",
     "styled-components": "^5.1.1",
     "styled-normalize": "^8.0.7",
     "uifx": "^2.0.7"
@@ -40,12 +37,12 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^10.4.9",
-    "@testing-library/user-event": "^12.1.2",
+    "@testing-library/user-event": "^12.1.3",
     "@types/jest": "^26.0.10",
-    "@types/lodash": "^4.14.159",
-    "@types/node": "^14.6.0",
+    "@types/lodash": "^4.14.161",
+    "@types/node": "^14.6.2",
     "@types/phoenix": "^1.5.0",
-    "@types/react": "^16.9.46",
+    "@types/react": "^16.9.48",
     "@types/react-alert": "^5.2.0",
     "@types/react-beautiful-dnd": "^13.0.0",
     "@types/react-canvas-draw": "^1.1.0",
@@ -58,11 +55,11 @@
     "@types/reflexbox": "^4.0.1",
     "@types/styled-components": "^5.1.2",
     "@types/webpack-env": "^1.15.2",
-    "apollo": "^2.30.2",
+    "apollo": "^2.30.3",
     "babel-plugin-macros": "^2.8.0",
     "graphql": "^15.3.0",
     "husky": "^4.2.5",
-    "prettier": "^2.0.5",
+    "prettier": "^2.1.1",
     "pretty-quick": "^3.0.0",
     "raw.macro": "^0.4.2",
     "react-scripts": "^3.4.3",
@@ -84,6 +81,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "snyk": true
+  }
 }
