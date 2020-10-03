@@ -1,9 +1,10 @@
 import React, { useState, useEffect, createRef } from "react";
 import styled from "styled-components";
-import { ChromePicker } from "react-color";
 import CanvasDraw from "react-canvas-draw";
-
+import { HexColorPicker } from "react-colorful";
 import { Box, Input, Button } from "components";
+
+import "react-colorful/dist/index.css";
 
 type AnswerProps = {
   answer?: string;
@@ -162,19 +163,13 @@ const AnswerColor: React.FC<AnswerProps> = ({
 }) => {
   const [color, setColor] = useState("#ffffff");
 
-  const handleChange = (c: any) => setColor(c.hex);
   const handleClick = () => {
     onSubmit(color);
   };
 
   return (
     <ColorPickerContainer>
-      <ChromePicker
-        color={color}
-        onChange={handleChange}
-        onChangeComplete={handleChange}
-        disableAlpha
-      />
+      <HexColorPicker color={color} onChange={setColor} />
       <Button disabled={!color || submitted} onClick={handleClick}>
         Submit answer
       </Button>
@@ -195,11 +190,7 @@ const EndorseColor: React.FC<AnswerProps> = ({
 };
 
 const ColorPickerContainer = styled.div`
-  text-align: center;
-  .chrome-picker {
-    .flexbox-fix + .flexbox-fix {
-      display: none !important;
-    }
+  .react-colorful {
     margin-bottom: ${({ theme }) => theme.spacings(2)};
   }
 `;
@@ -326,6 +317,7 @@ const EditableAnswerContainer = styled.div`
     position: absolute;
     top: 10px;
     left: 10px;
+    z-index: 100;
 
     button {
       width: 30px;
