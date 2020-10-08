@@ -82,6 +82,7 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
             <TextField
               id="username"
               name="username"
+              labelText="Username"
               placeholder="Lil Jon Snow"
               ref={register({ required: true })}
               error={!!errors.username}
@@ -89,6 +90,7 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
             />
             {!isLogin && (
               <TextField
+                labelText="Email"
                 id="email"
                 name="email"
                 type="email"
@@ -99,6 +101,7 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
               />
             )}
             <TextField
+              labelText="Password"
               id="password"
               name="password"
               type="password"
