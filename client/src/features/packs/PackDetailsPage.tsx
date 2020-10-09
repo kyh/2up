@@ -47,19 +47,16 @@ export const PackDetailsPage = () => {
         <Link to="/packs" className="back-link">
           &#171; Back to packs
         </Link>
-        <div className="pack-details">
-          <GameCard>
-            <PackImage src={pack?.imageUrl} />
+        <header className="pack-header">
+          <h1 className="pack-name">{pack?.name}</h1>
+          <p className="pack-description">{pack?.description}</p>
+          <div className="pack-actions">
             <Button onClick={() => hostGame(packId)}>Host a game</Button>
             {!!data && pack?.user?.id === currentUser?.id && (
               <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
             )}
-          </GameCard>
-          <div className="description-container">
-            <h1 className="pack-name">{pack?.name}</h1>
-            <p className="pack-description">{pack?.description}</p>
           </div>
-        </div>
+        </header>
       </PackDetailsPageContent>
     </Page>
   );
@@ -76,42 +73,26 @@ const PackDetailsPageContent = styled(Content)`
     }
   }
 
-  .pack-details {
-    justify-content: space-between;
-    flex-direction: row-reverse;
-
-    ${({ theme }) => theme.media.desktop`
-      display: flex;
-    `}
+  .pack-header {
+    text-align: center;
   }
 
-  .description-container {
-    ${({ theme }) => theme.media.desktop`
-      padding-right: ${theme.spacings(10)};
-    `}
-  }
-`;
-
-const GameCard = styled(Card)`
-  height: max-content;
-  min-width: 250px;
-  align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacings(5)};
-
-  img {
-    display: block;
-    width: 160px;
-    height: 160px;
-    object-fit: cover;
-    margin: ${({ theme }) => `0 auto ${theme.spacings(2)}`};
+  .pack-description {
+    margin-bottom: ${({ theme }) => theme.spacings(5)};
   }
 
-  button {
-    width: 100%;
-    margin-bottom: ${({ theme }) => theme.spacings(2)};
-  }
+  .pack-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-  a:hover {
-    text-decoration: underline;
+    button {
+      margin-bottom: ${({ theme }) => theme.spacings(2)};
+      min-width: 150px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
   }
 `;
