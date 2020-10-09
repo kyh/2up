@@ -63,9 +63,10 @@ export const ProfilePage = () => {
                 return (
                   <div key={pack.id} className="pack-item">
                     <Link to={`/packs/${pack.id}`}>
-                      <PackImage src={pack.imageUrl} />
-                      <h4>{pack.name}</h4>
-                      <p>{pack.description}</p>
+                      <article>
+                        <h2>{pack.name}</h2>
+                        <p>{pack.description}</p>
+                      </article>
                     </Link>
                     {isMyPage && (
                       <div className="edit-pack-footer">

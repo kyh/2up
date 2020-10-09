@@ -36,10 +36,13 @@ export const PackSection = styled.section`
   }
 
   .pack-item {
+    display: flex;
+    flex-direction: column;
     position: relative;
     border: 2px solid ${({ theme }) => theme.border.alternateColor};
     border-radius: ${({ theme }) => theme.border.wavyRadius};
     background-color: ${({ theme }) => theme.ui.background};
+    min-height: 16em;
 
     &:hover {
       border-color: ${({ theme }) => theme.border.color};
@@ -49,7 +52,7 @@ export const PackSection = styled.section`
       padding: ${({ theme }) => theme.spacings(5)};
     }
 
-    h4 {
+    h2 {
       margin-bottom: ${({ theme }) => theme.spacings(3)};
     }
 
@@ -58,22 +61,10 @@ export const PackSection = styled.section`
     }
 
     .edit-pack-footer {
-      display: flex;
-      justify-content: center;
-      margin-bottom: ${({ theme }) => theme.spacings(5)};
-
+      margin: ${({ theme }) =>
+        `auto ${theme.spacings(5)} ${theme.spacings(5)}`};
       a {
-        padding: ${({ theme }) => theme.spacings(3)};
-      }
-    }
-
-    .pack-play-button {
-      position: absolute;
-      top: 25%;
-      left: 50%;
-      transform: translateX(-50%);
-      &:active {
-        transform: translateX(-50%) scale(0.9);
+        display: inline-flex;
       }
     }
   }
