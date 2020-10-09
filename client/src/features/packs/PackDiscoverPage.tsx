@@ -46,13 +46,12 @@ const Packs: React.FC<{
         const pack = edge?.node;
         if (!pack) return null;
         return (
-          <div key={pack.id} className="pack-item">
-            <Link to={`/packs/${pack.id}`}>
-              <PackImage src={pack.imageUrl} />
-              <h4>{pack.name}</h4>
+          <Link to={`/packs/${pack.id}`} key={pack.id} className="pack-item">
+            <article>
+              <h2>{pack.name}</h2>
               <p>{pack.description}</p>
-            </Link>
-          </div>
+            </article>
+          </Link>
         );
       })}
     </>
@@ -69,6 +68,14 @@ export const PackDiscoverPage = () => {
       <Navigation />
       <Content>
         <PackSection>
+          <div className="pack-section">
+            <header className="pack-section-header main-header">
+              <h1>Featured Games</h1>
+            </header>
+            <div className="pack-items staggered-pack-items">
+              <Packs packs={data?.featured} />
+            </div>
+          </div>
           {!!data?.my?.edges?.length && (
             <div className="pack-section">
               <header className="pack-section-header">
@@ -82,14 +89,6 @@ export const PackDiscoverPage = () => {
               </div>
             </div>
           )}
-          <div className="pack-section">
-            <header className="pack-section-header">
-              <h2>Featured</h2>
-            </header>
-            <div className="pack-items">
-              <Packs packs={data?.featured} />
-            </div>
-          </div>
         </PackSection>
       </Content>
     </Page>

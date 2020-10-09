@@ -5,32 +5,47 @@ export const PackSection = styled.section`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 3fr));
     grid-gap: ${({ theme }) => theme.spacings(5)};
+
+    ${({ theme }) => theme.media.desktop`
+      &.staggered-pack-items {
+        grid-template-columns: repeat(4, 1fr);
+
+        .pack-item:first-child {
+          grid-column-start: 1;
+          grid-column-end: span 2;
+          grid-row-start: 1;
+          grid-row-end: span 2;
+        }
+      }
+    `}
   }
 
   .pack-section {
-    margin-bottom: ${({ theme }) => theme.spacings(8)};
+    margin-bottom: ${({ theme }) => theme.spacings(12)};
   }
 
   .pack-section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: ${({ theme }) => theme.spacings(6)};
+
+    &.main-header {
+      justify-content: center;
+    }
   }
 
   .pack-item {
     position: relative;
-    border: 2px solid transparent;
+    border: 2px solid ${({ theme }) => theme.border.alternateColor};
     border-radius: ${({ theme }) => theme.border.wavyRadius};
-    ${({ theme }) => theme.media.desktop`
-      max-width: 273px;
-    `}
+    background-color: ${({ theme }) => theme.ui.background};
 
     &:hover {
-      border-color: ${({ theme }) => theme.border.alternateColor};
+      border-color: ${({ theme }) => theme.border.color};
     }
 
-    a {
-      display: block;
+    article {
       padding: ${({ theme }) => theme.spacings(5)};
     }
 
