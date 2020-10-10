@@ -5,8 +5,7 @@ import { gql, useQuery } from "@apollo/client";
 
 import { useHostGame } from "features/game/gameService";
 
-import { PackImage } from "features/packs/components/Packs";
-import { Card, Button } from "components";
+import { Button } from "components";
 
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
@@ -47,16 +46,18 @@ export const PackDetailsPage = () => {
         <Link to="/packs" className="back-link">
           &#171; Back to packs
         </Link>
-        <header className="pack-header">
-          <h1 className="pack-name">{pack?.name}</h1>
-          <p className="pack-description">{pack?.description}</p>
-          <div className="pack-actions">
-            <Button onClick={() => hostGame(packId)}>Host a game</Button>
-            {!!data && pack?.user?.id === currentUser?.id && (
-              <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
-            )}
-          </div>
-        </header>
+        {pack && (
+          <header className="pack-header">
+            <h1 className="pack-name">{pack.name}</h1>
+            <p className="pack-description">{pack.description}</p>
+            <div className="pack-actions">
+              <Button onClick={() => hostGame(packId)}>Host a game</Button>
+              {!!data && pack.user?.id === currentUser?.id && (
+                <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
+              )}
+            </div>
+          </header>
+        )}
       </PackDetailsPageContent>
     </Page>
   );
@@ -67,7 +68,7 @@ const PackDetailsPageContent = styled(Content)`
 
   .back-link {
     display: inline-block;
-    margin-bottom: ${({ theme }) => theme.spacings(3)};
+    margin-bottom: ${({ theme }) => theme.spacings(5)};
     &:hover {
       text-decoration: underline;
     }
@@ -75,6 +76,8 @@ const PackDetailsPageContent = styled(Content)`
 
   .pack-header {
     text-align: center;
+    margin: auto;
+    max-width: 600px;
   }
 
   .pack-description {
