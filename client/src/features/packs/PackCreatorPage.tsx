@@ -10,8 +10,8 @@ import { useHostGame } from "features/game/gameService";
 import { Sidebar } from "features/packs/components/Sidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";
 import { NavigationContainer } from "features/packs/components/Navigation";
-
-import { Box, Button, Icon, Modal, Loader } from "components";
+import { PackForm } from "features/packs/components/PackForm";
+import { Button, Icon, Modal, Loader } from "components";
 
 import {
   PackCreatorPagePackQuery,
@@ -23,6 +23,7 @@ export const PACK_FRAGMENT = gql`
   fragment PackSettingsFragment on Pack {
     id
     name
+    description
     length
     isRandom
   }
@@ -114,29 +115,12 @@ export const Navigation = ({
         maxWidth={500}
         closeButton
       >
-        <Box mb={3}>
-          <h3>Shuffle questions when playing this pack</h3>
-          <Button
-            onClick={() => onSaveChanges({ isRandom: !pack?.isRandom })}
-            fullWidth
-          >
-            {pack?.isRandom ? "Yes" : "No"}
-          </Button>
-        </Box>
-        <Box>
-          <h3>Number of questions to go through</h3>
-          <Button
-            onClick={() => {
-              if (pack?.length) {
-                const newLength = pack?.length > 10 ? 5 : pack?.length + 5;
-                onSaveChanges({ length: newLength });
-              }
-            }}
-            fullWidth
-          >
-            {pack?.length}
-          </Button>
-        </Box>
+        <PackForm
+          onSubmit={onSaveChanges}
+          loading={saving}
+          submitText="Save Changes"
+          defaultValues={pack}
+        />
       </Modal>
     </StyledNavigationContainer>
   );
