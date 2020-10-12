@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-
 import { Button, TextField, AreaField } from "components";
 
 export type PackInputs = {
