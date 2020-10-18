@@ -69,6 +69,7 @@ export const Navigation = ({
         },
       });
       setSaving(false);
+      setIsOpen(false);
     } catch (error) {
       alert.show(error.message);
       setSaving(false);
@@ -86,11 +87,9 @@ export const Navigation = ({
         <div>
           <Loader loading={saving} />
         </div>
-        <input
-          className="pack-title"
-          defaultValue={pack?.name}
-          onBlur={(e) => onSaveChanges({ name: e.target.value })}
-        />
+        <button onClick={() => setIsOpen(true)}>
+          <h4 className="pack-title">{pack?.name}</h4>
+        </button>
         <div>
           <Button
             className="pack-ext-button"
