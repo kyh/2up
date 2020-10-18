@@ -117,7 +117,7 @@ export const Sidebar = ({
     }
   };
 
-  const deleteScene = async (sceneId: string) => {
+  const deleteScene = async (sceneId: string, index: number) => {
     setSaving(true);
     try {
       await sceneDelete({
@@ -129,6 +129,9 @@ export const Sidebar = ({
         },
       });
       await refetch();
+      if (sceneId === selectedSceneId) {
+        selectScene(scenes![index - 1]?.node?.id);
+      }
       setSaving(false);
     } catch (error) {
       alert.show(error.message);
@@ -139,16 +142,17 @@ export const Sidebar = ({
   const addNewScene = async () => {
     setSaving(true);
     try {
-      await sceneCreate({
+      const { data } = await sceneCreate({
         variables: {
           input: {
             packId,
-            question: "Play",
+            question: "What's your name?",
             order: (scenes?.length || 0) + 1,
           },
         },
       });
       await refetch();
+      selectScene(data?.actCreate?.act.id);
       setSaving(false);
     } catch (error) {
       alert.show(error.message);
@@ -174,12 +178,9 @@ export const Sidebar = ({
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {scenes?.map((edge: any, index: any) => {
+                {scenes?.map((edge, index) => {
                   const scene = edge?.node;
-                  if (!scene) {
-                    return;
-                  }
-
+                  if (!scene) return null;
                   return (
                     <Draggable
                       key={scene.id}
@@ -215,7 +216,7 @@ export const Sidebar = ({
                           </div>
                           <button
                             className="delete"
-                            onClick={() => deleteScene(scene.id)}
+                            onClick={() => deleteScene(scene.id, index)}
                           >
                             <Icon icon="trash" />
                           </button>
