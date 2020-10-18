@@ -89,14 +89,6 @@ export const NavigationContainer = styled.header`
   }
 
   .pack-title {
-    text-align: center;
-    border-radius: ${({ theme }) => theme.border.wavyRadius};
-    border: none;
-    transition: all 0.23s ease;
-
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);
-    }
+    margin: 0;
   }
 `;

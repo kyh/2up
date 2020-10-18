@@ -162,6 +162,11 @@ export const Sidebar = ({
         <h3>Scenes:</h3>
       </SidebarHeader>
       <SidebarContent>
+        {!scenes?.length && (
+          <Button className="first-scene-button" onClick={addNewScene}>
+            Add your first Scene
+          </Button>
+        )}
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided) => (
@@ -226,7 +231,9 @@ export const Sidebar = ({
         </DragDropContext>
       </SidebarContent>
       <SidebarFooter>
-        <Button onClick={addNewScene}>Add New Scene</Button>
+        {!!scenes?.length && (
+          <Button onClick={addNewScene}>Add New Scene</Button>
+        )}
       </SidebarFooter>
     </SidebarContainer>
   );
@@ -286,6 +293,10 @@ const SidebarHeader = styled.header`
 
 const SidebarContent = styled.section`
   overflow: auto;
+  .first-scene-button {
+    width: 100%;
+    height: 100px;
+  }
 `;
 
 const SidebarFooter = styled.footer`
