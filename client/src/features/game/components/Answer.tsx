@@ -104,10 +104,9 @@ const EndorseText: React.FC<AnswerProps> = ({
   );
 };
 
-const AnswerCanvas: React.FC<AnswerProps> = ({
-  submitted = false,
-  onSubmit = () => {},
-}) => {
+const AnswerCanvas: React.FC<
+  AnswerProps & { height?: number; width?: number }
+> = ({ submitted = false, onSubmit = () => {}, width, height }) => {
   const canvas = createRef<CanvasDraw>();
 
   const handleClick = () => {
@@ -122,8 +121,8 @@ const AnswerCanvas: React.FC<AnswerProps> = ({
           ref={canvas}
           brushRadius={5}
           lazyRadius={5}
-          canvasWidth={window.innerWidth}
-          canvasHeight={window.innerHeight - 250}
+          canvasWidth={width || window.innerWidth}
+          canvasHeight={height || window.innerHeight - 250}
         />
       </Box>
       <Button disabled={submitted} onClick={handleClick}>
@@ -227,7 +226,7 @@ export const EditableAnswer: React.FC<EditableAnswerProps> = ({
     case "drawing":
       return (
         <EditableType onSelectType={onChange} key={sceneId}>
-          <AnswerCanvas submitted />
+          <AnswerCanvas submitted height={300} width={200} />
         </EditableType>
       );
     case "color":
@@ -303,10 +302,12 @@ const EditableAnswerContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  border-radius: ${({ theme }) => theme.border.wavyRadius};
-  border: 2px dotted ${({ theme }) => theme.colors.lightGrey};
   background: ${({ theme }) => theme.ui.background};
-  padding: ${({ theme }) => theme.spacings(5)};
+  padding-top: 35px;
+
+  input {
+    width: 100%;
+  }
 
   &:hover .button-container {
     display: block;
@@ -315,8 +316,8 @@ const EditableAnswerContainer = styled.div`
   .button-container {
     display: none;
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 0;
+    left: 0;
     z-index: 100;
 
     button {

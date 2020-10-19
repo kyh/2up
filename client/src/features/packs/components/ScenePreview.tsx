@@ -7,6 +7,7 @@ import { EditableQuestion } from "features/game/components/Question";
 import { EditableAnswer } from "features/game/components/Answer";
 
 import monitor from "./monitor.svg";
+import mobile from "./mobile.svg";
 
 import { SceneUpdateMutation } from "./__generated__/SceneUpdateMutation";
 import { ScenePreviewFragment } from "./__generated__/ScenePreviewFragment";
@@ -44,9 +45,9 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
   };
 
   return (
-    <Monitor>
-      <MonitorScreenContainer>
-        <MonitorScreen>
+    <Container>
+      <Monitor>
+        <Screen>
           <EditableQuestion
             sceneId={scene.id}
             instruction={scene?.instruction || ""}
@@ -54,15 +55,19 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
             questionType={scene?.questionType?.slug}
             onChange={onChange}
           />
+        </Screen>
+      </Monitor>
+      <Mobile>
+        <Screen>
           <EditableAnswer
             sceneId={scene.id}
             answer={scene?.answer || ""}
             answerType={scene?.answerType?.slug}
             onChange={onChange}
           />
-        </MonitorScreen>
-      </MonitorScreenContainer>
-    </Monitor>
+        </Screen>
+      </Mobile>
+    </Container>
   );
 };
 
@@ -96,27 +101,39 @@ const SCENE_UPDATE = gql`
   ${ScenePreview.fragments.act}
 `;
 
+const Container = styled.section`
+  display: flex;
+  align-items: center;
+`;
+
 const Monitor = styled.section`
   background-image: url(${monitor});
   background-repeat: no-repeat;
   background-size: 100%;
-  padding: 43px 43px 120px;
-  width: 700px;
-  height: 500px;
+  padding: 30px 30px 130px;
+  width: 500px;
+  height: 400px;
+  margin-right: 20px;
 `;
 
-const MonitorScreenContainer = styled.section`
-  height: 100%;
-  overflow: auto;
+const Mobile = styled.section`
+  background-image: url(${mobile});
+  background-repeat: no-repeat;
+  background-size: 100%;
+  padding: 61px 16px 64px 27px;
+  width: 270px;
+  height: 525px;
 `;
 
-const MonitorScreen = styled.section`
+const Screen = styled.section`
   position: relative;
   text-align: center;
-  min-height: 335px;
   background-color: ${({ theme }) => theme.ui.background};
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: ${({ theme }) => theme.spacings(5)};
+  padding: ${({ theme }) => theme.spacings(2)};
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
