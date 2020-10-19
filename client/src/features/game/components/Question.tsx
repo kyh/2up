@@ -147,6 +147,7 @@ const EditableType: React.FC<{
 };
 
 const EditableTypeContainer = styled.div`
+  padding-top: 35px;
   position: relative;
 
   &:hover .button-container {
@@ -156,8 +157,8 @@ const EditableTypeContainer = styled.div`
   .button-container {
     display: none;
     position: absolute;
-    top: 5px;
-    left: 5px;
+    top: 0;
+    left: 10px;
   }
 
   button {
