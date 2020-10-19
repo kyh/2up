@@ -5,7 +5,7 @@ import { gql, useQuery } from "@apollo/client";
 import { ButtonLinkNative } from "components";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
-import { PackSection, PackImage } from "./components/Packs";
+import { PackSection } from "./components/Packs";
 import {
   PackDiscoverPageQuery,
   PackDiscoverPageQuery_my,

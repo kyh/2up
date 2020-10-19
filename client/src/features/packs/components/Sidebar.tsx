@@ -7,6 +7,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { useAlert } from "react-alert";
+import ReactTooltip from "react-tooltip";
 import { gql, useMutation } from "@apollo/client";
 
 import { Button, Icon } from "components";
@@ -166,11 +167,6 @@ export const Sidebar = ({
         <h3>Scenes:</h3>
       </SidebarHeader>
       <SidebarContent>
-        {!scenes?.length && (
-          <Button className="first-scene-button" onClick={addNewScene}>
-            Add your first Scene
-          </Button>
-        )}
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided) => (
@@ -214,12 +210,14 @@ export const Sidebar = ({
                             )}
                             <h3 className="question">{scene.question}</h3>
                           </div>
-                          <button
-                            className="delete"
-                            onClick={() => deleteScene(scene.id, index)}
-                          >
-                            <Icon icon="trash" />
-                          </button>
+                          {scenes.length > 1 && (
+                            <button
+                              className="delete"
+                              onClick={() => deleteScene(scene.id, index)}
+                            >
+                              <Icon icon="trash" />
+                            </button>
+                          )}
                         </QuestionItem>
                       )}
                     </Draggable>
@@ -232,9 +230,11 @@ export const Sidebar = ({
         </DragDropContext>
       </SidebarContent>
       <SidebarFooter>
-        {!!scenes?.length && (
-          <Button onClick={addNewScene}>Add New Scene</Button>
-        )}
+        <Button onClick={addNewScene}>Add New Scene</Button>
+        <Button onClick={addNewScene} data-tip="Quick add">
+          +
+        </Button>
+        <ReactTooltip effect="solid" place="top" />
       </SidebarFooter>
     </SidebarContainer>
   );
@@ -302,6 +302,9 @@ const SidebarContent = styled.section`
 
 const SidebarFooter = styled.footer`
   padding: ${({ theme }) => theme.spacings(3)} 0 0;
+  button {
+    min-width: 0;
+  }
 `;
 
 const QuestionItem = styled.div<{ isSelected: boolean }>`

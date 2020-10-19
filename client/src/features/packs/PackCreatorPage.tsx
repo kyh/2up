@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { useAlert } from "react-alert";
+import ReactTooltip from "react-tooltip";
 
 import { useHostGame } from "features/game/gameService";
 
@@ -91,10 +92,12 @@ export const Navigation = ({
           <h4 className="pack-title">{pack?.name}</h4>
         </button>
         <div>
+          <ReactTooltip effect="solid" place="bottom" />
           <Button
             className="pack-ext-button"
             variant="fab"
             onClick={() => setIsOpen(true)}
+            data-tip="Edit pack"
           >
             <Icon icon="pencil" />
           </Button>
@@ -102,6 +105,7 @@ export const Navigation = ({
             className="pack-ext-button"
             variant="fab"
             onClick={() => hostGame(pack.id)}
+            data-tip="Test play"
           >
             <Icon icon="play" />
           </Button>
