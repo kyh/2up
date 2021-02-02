@@ -49,3 +49,4 @@ playhouse-*.tar
 
 # Ignore __generated__ files
 __generated__
+.eslintcache

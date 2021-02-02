@@ -1,14 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { debounce } from "lodash";
 import { ApolloProvider } from "@apollo/client";
 import { Provider as ReduxProvider } from "react-redux";
-import { SocketProvider } from "utils/Socket";
 import { BrowserRouter } from "react-router-dom";
+import { SocketProvider } from "utils/Socket";
 
-import { debounce } from "lodash";
 import { store } from "app/store";
 import { client } from "app/apollo";
-import * as serviceWorker from "./serviceWorker";
+
+import { App } from "./app/App";
+import reportWebVitals from "./reportWebVitals";
 
 const onResize = () => {
   const vh = window.innerHeight * 0.01;
@@ -19,10 +21,8 @@ const debouncedResize = debounce(onResize, 100);
 window.addEventListener("resize", debouncedResize);
 onResize();
 
-const render = () => {
-  const { App } = require("./app/App");
-
-  ReactDOM.render(
+ReactDOM.render(
+  <React.StrictMode>
     <BrowserRouter>
       <ReduxProvider store={store}>
         <SocketProvider wsUrl={`${process.env.REACT_APP_SOCKET_URL}/socket`}>
@@ -31,18 +31,12 @@ const render = () => {
           </ApolloProvider>
         </SocketProvider>
       </ReduxProvider>
-    </BrowserRouter>,
-    document.getElementById("root")
-  );
-};
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById("root")
+);
 
-render();
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
-
-if (process.env.NODE_ENV === "development" && module.hot) {
-  module.hot.accept("./app/App", render);
-}
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
