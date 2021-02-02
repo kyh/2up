@@ -25,7 +25,7 @@ export const avatarMap = {
 };
 
 export const AvatarImage: React.FC<Props> = ({ avatar }) => {
-  const svg = avatarMap[avatar as 1];
+  const svg = avatarMap[avatar as keyof typeof avatarMap];
   if (!svg) return null;
   return (
     <StyledIcon
