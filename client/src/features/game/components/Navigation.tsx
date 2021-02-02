@@ -79,7 +79,7 @@ export const Navigation: React.FC = () => {
           <SettingItem>
             <ButtonLink
               fullWidth
-              href="https://github.com/tehkaiyu/playhouse"
+              href="https://github.com/kyh/playhouse"
               target="_blank"
               rel="noopener noreferrer"
             >
