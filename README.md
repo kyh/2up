@@ -56,4 +56,4 @@ make react
 
 ## Deployment
 
-Any code merged into master will autodeploy through [Render](https://render.com/)
+Any code merged into `main` will autodeploy through [Render](https://render.com/)
