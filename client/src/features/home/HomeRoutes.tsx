@@ -33,6 +33,7 @@ const IntroContainer = styled.section`
   img {
     display: block;
     width: 60px;
+    height: 65px;
     margin: ${({ theme }) => `0 auto ${theme.spacings(2)}`};
   }
   transform: translateY(-70px);
