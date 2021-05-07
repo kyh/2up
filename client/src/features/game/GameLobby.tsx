@@ -87,7 +87,7 @@ export const GameLobby = () => {
           </Modal>
         </>
       ) : (
-        <Link className="join-button" to="/">
+        <Link className="join-button" to="/join">
           Or join the room on this device
         </Link>
       )}

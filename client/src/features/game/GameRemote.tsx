@@ -10,7 +10,7 @@ import { Step4Remote } from "./steps/Step4";
 
 export const GameRemote: React.FC = () => {
   const {
-    state: { userId, name },
+    state: { userId, username },
   } = usePlayhouse();
   const { state, broadcast, dispatch } = useGameChannel();
 
@@ -26,7 +26,7 @@ export const GameRemote: React.FC = () => {
           broadcast={broadcast}
           dispatch={dispatch}
           userId={userId}
-          name={name}
+          name={username}
         />
       );
     case 1:
@@ -35,7 +35,7 @@ export const GameRemote: React.FC = () => {
           state={state}
           broadcast={broadcast}
           userId={userId}
-          name={name}
+          name={username}
         />
       );
     case 2:
@@ -44,7 +44,7 @@ export const GameRemote: React.FC = () => {
           state={state}
           broadcast={broadcast}
           userId={userId}
-          name={name}
+          name={username}
         />
       );
     case 3:
@@ -53,7 +53,7 @@ export const GameRemote: React.FC = () => {
           state={state}
           broadcast={broadcast}
           userId={userId}
-          name={name}
+          name={username}
         />
       );
     case 4:
@@ -62,7 +62,7 @@ export const GameRemote: React.FC = () => {
           state={state}
           broadcast={broadcast}
           userId={userId}
-          name={name}
+          name={username}
         />
       );
     default:

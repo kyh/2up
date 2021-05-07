@@ -8,7 +8,7 @@ import { lightTheme, darkTheme } from "styles/theme";
 import { GlobalStyle } from "styles/global";
 
 import { usePlayhouse } from "features/home/playhouseSlice";
-import { Home } from "features/home/Home";
+import { HomeRoutes } from "features/home/HomeRoutes";
 import { PackRoutes } from "features/packs/PackRoutes";
 import { GameRoutes } from "features/game/GameRoutes";
 import { AuthRoutes } from "features/auth/AuthRoutes";
@@ -27,8 +27,8 @@ export const App: React.FC = () => {
       <AlertProvider template={ReactAlertTemplate} {...alertOptions}>
         <GlobalStyle />
         <Switch>
-          <Route exact path="/">
-            <Home />
+          <Route exact path={["/", "/join"]}>
+            <HomeRoutes />
           </Route>
           <Route path="/game/:gameId">
             <GameRoutes />
