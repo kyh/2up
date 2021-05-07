@@ -5,12 +5,12 @@ import { themeSong } from "styles/sound";
 
 type UserPayload = {
   userId?: string;
-  name?: string;
+  username?: string;
 };
 
 type CurrentAppState = {
   userId: string;
-  name: string;
+  username: string;
   isMusicOn: boolean;
   isSFXOn: boolean;
   isDarkMode: boolean;
@@ -27,7 +27,7 @@ const getIsDarkMode = () => {
 
 export const initialState: CurrentAppState = {
   userId: localStorage.getItem("userId") || "",
-  name: localStorage.getItem("name") || "",
+  username: localStorage.getItem("username") || "",
   isMusicOn: localStorage.getItem("isMusicOn") === "true",
   isSFXOn: localStorage.getItem("isSFXOn") === "true",
   isDarkMode: getIsDarkMode(),
@@ -56,14 +56,9 @@ const playhouseSlice = createSlice({
     },
     update_user: (state, { payload }: PayloadAction<UserPayload>) => {
       state.userId = payload.userId ?? state.userId;
-      state.name = payload.name ?? state.name;
-
-      if (state.name !== undefined) {
-        localStorage.setItem("name", state.name);
-      }
-      if (state.userId) {
-        localStorage.setItem("userId", state.userId);
-      }
+      state.username = payload.username ?? state.username;
+      if (state.username) localStorage.setItem("username", state.username);
+      if (state.userId) localStorage.setItem("userId", state.userId);
     },
   },
 });

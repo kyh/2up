@@ -27,7 +27,7 @@ export const useHostGame = () => {
     if (!data || !data.gameCreate) return;
     const gameId = data.gameCreate.code;
     dispatch(gameActions.toggle_host(true));
-    dispatch(playhouseActions.update_user({ name: "" }));
+    dispatch(playhouseActions.update_user({ username: "" }));
     dispatch(gameActions.new_game({ gameId }));
     history.push(`/game/${gameId}/lobby`);
   };
