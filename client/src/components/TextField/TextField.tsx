@@ -21,7 +21,7 @@ type Props = {
 
 export const TextField = React.forwardRef<HTMLInputElement, Props>(
   (
-    { id, labelText, type = "text", name, placeholder, error, errorText },
+    { id, labelText, type = "text", placeholder, error, errorText, ...props },
     ref
   ) => {
     return (
@@ -30,9 +30,9 @@ export const TextField = React.forwardRef<HTMLInputElement, Props>(
         <Input
           id={id}
           type={type}
-          name={name}
           placeholder={placeholder}
           ref={ref}
+          {...props}
         />
         {error && <div className="error">{errorText}</div>}
       </Field>

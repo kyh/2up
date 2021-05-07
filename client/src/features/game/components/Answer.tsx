@@ -4,8 +4,6 @@ import CanvasDraw from "react-canvas-draw";
 import { HexColorPicker } from "react-colorful";
 import { Box, Input, Button } from "components";
 
-import "react-colorful/dist/index.css";
-
 type AnswerProps = {
   answer?: string;
   answerType?: string;

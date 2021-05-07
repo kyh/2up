@@ -11,7 +11,6 @@ export const Field = styled.fieldset`
 type Props = {
   id?: HTMLTextAreaElement["id"];
   type?: HTMLTextAreaElement["type"];
-  name?: HTMLTextAreaElement["name"];
   placeholder?: HTMLTextAreaElement["placeholder"];
   labelText?: React.ReactNode;
   children?: React.ReactNode;
@@ -20,16 +19,16 @@ type Props = {
 };
 
 export const AreaField = React.forwardRef<HTMLTextAreaElement, Props>(
-  ({ id, labelText, name, placeholder, error, errorText }, ref) => {
+  ({ id, labelText, placeholder, error, errorText, ...props }, ref) => {
     return (
       <Field>
         <label htmlFor={id}>{labelText}</label>
         <Textarea
           id={id}
-          name={name}
           placeholder={placeholder}
           ref={ref}
           as="textarea"
+          {...props}
         />
         {error && <div className="error">{errorText}</div>}
       </Field>

@@ -16,7 +16,11 @@ export const PackForm = ({
   defaultValues = {},
   onSubmit,
 }: any) => {
-  const { register, handleSubmit, errors } = useForm<PackInputs>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PackInputs>({
     defaultValues,
   });
   return (
@@ -24,18 +28,16 @@ export const PackForm = ({
       <TextField
         labelText="Pack Name"
         id="name"
-        name="name"
+        {...register("name", { required: true })}
         placeholder="Who's that Pokemon?"
-        ref={register({ required: true })}
         error={!!errors.name}
         errorText="Pack name is required"
       />
       <AreaField
         labelText="Description"
         id="description"
-        name="description"
+        {...register("description", { required: true })}
         placeholder="The popular question-and-answer segment that is featured in numerous episodes of the Pokémon anime"
-        ref={register({ required: true })}
         error={!!errors.description}
         errorText="A short description is required"
       />
