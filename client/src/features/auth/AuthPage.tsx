@@ -43,14 +43,20 @@ export type AuthInputs = {
 export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
   const alert = useAlert();
   const history = useHistory();
-  const { register, handleSubmit, errors } = useForm<AuthInputs>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AuthInputs>();
 
-  const [userCreate, { loading: userCreateLoading }] = useMutation<
-    SignupUserCreateMutation
-  >(USER_CREATE);
-  const [sessionCreate, { loading: sessionCreateLoading }] = useMutation<
-    LoginSessionCreateMutation
-  >(SESSION_CREATE);
+  const [
+    userCreate,
+    { loading: userCreateLoading },
+  ] = useMutation<SignupUserCreateMutation>(USER_CREATE);
+  const [
+    sessionCreate,
+    { loading: sessionCreateLoading },
+  ] = useMutation<LoginSessionCreateMutation>(SESSION_CREATE);
 
   const onSubmit = async ({ username, email, password }: AuthInputs) => {
     try {
@@ -81,10 +87,9 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextField
               id="username"
-              name="username"
+              {...register("username", { required: true })}
               labelText="Username"
               placeholder="Lil Jon Snow"
-              ref={register({ required: true })}
               error={!!errors.username}
               errorText="Username is required"
             />
@@ -92,10 +97,9 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
               <TextField
                 labelText="Email"
                 id="email"
-                name="email"
+                {...register("email", { required: true })}
                 type="email"
                 placeholder="player@playhouse.gg"
-                ref={register({ required: true })}
                 error={!!errors.email}
                 errorText="Email is required"
               />
@@ -103,10 +107,9 @@ export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
             <TextField
               labelText="Password"
               id="password"
-              name="password"
+              {...register("password", { required: true })}
               type="password"
               placeholder="Super secret password"
-              ref={register({ required: true })}
               error={!!errors.password}
               errorText="Password is required"
             />
