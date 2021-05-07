@@ -11,7 +11,6 @@ export const Field = styled.fieldset`
 type Props = {
   id?: HTMLInputElement["id"];
   type?: HTMLInputElement["type"];
-  name?: HTMLInputElement["name"];
   placeholder?: HTMLInputElement["placeholder"];
   labelText?: React.ReactNode;
   children?: React.ReactNode;

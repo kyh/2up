@@ -36,7 +36,7 @@ export const Home = () => {
     gameState.gameId ? Screens.name : Screens.join
   );
   const [gameId, setgameId] = useState(gameState.gameId);
-  const [name, setName] = useState(playhouseState.name);
+  const [name, setName] = useState(playhouseState.username);
   const [gameCheck] = useMutation<HomeGameCheckMutation>(GAME_CHECK);
 
   // Joining an existing game:
@@ -60,7 +60,7 @@ export const Home = () => {
   const onSubmitName = (event: SyntheticEvent) => {
     event.preventDefault();
     dispatch(gameActions.toggle_host(false));
-    dispatch(playhouseActions.update_user({ name }));
+    dispatch(playhouseActions.update_user({ username: name }));
     setShouldRedirect(true);
   };
 
