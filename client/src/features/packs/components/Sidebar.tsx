@@ -25,9 +25,9 @@ type Props = {
 };
 
 const SCENE_CREATE = gql`
-  mutation SidebarSceneCreateMutation($input: ActCreateInput!) {
-    actCreate(input: $input) {
-      act {
+  mutation SidebarSceneCreateMutation($input: SceneCreateInput!) {
+    sceneCreate(input: $input) {
+      scene {
         id
         question
         answer
@@ -46,9 +46,9 @@ const SCENE_CREATE = gql`
 `;
 
 const SCENE_DELETE = gql`
-  mutation SidebarSceneDeleteMutation($input: ActDeleteInput!) {
-    actDelete(input: $input) {
-      act {
+  mutation SidebarSceneDeleteMutation($input: SceneDeleteInput!) {
+    sceneDelete(input: $input) {
+      scene {
         id
       }
     }
@@ -56,9 +56,9 @@ const SCENE_DELETE = gql`
 `;
 
 const PACK_SCENE_UPDATE = gql`
-  mutation SidebarPackUpdateMutation($input: PackActUpdateInput!) {
-    packActUpdate(input: $input) {
-      packAct {
+  mutation SidebarPackUpdateMutation($input: PackSceneUpdateInput!) {
+    packSceneUpdate(input: $input) {
+      packScene {
         id
         order
       }
@@ -80,7 +80,7 @@ export const Sidebar = ({
     PACK_SCENE_UPDATE
   );
 
-  const scenes = pack.acts?.edges;
+  const scenes = pack.scenes?.edges;
   const packId = pack.id;
 
   const onDragEnd = async (result: DropResult) => {
@@ -152,7 +152,7 @@ export const Sidebar = ({
         },
       });
       await refetch();
-      selectScene(data?.actCreate?.act.id);
+      selectScene(data?.sceneCreate?.scene.id);
       setSaving(false);
     } catch (error) {
       alert.show(error.message);
@@ -243,7 +243,7 @@ Sidebar.fragments = {
   pack: gql`
     fragment SidebarPackFragment on Pack {
       id
-      acts(first: 100) {
+      scenes(first: 100) {
         edges {
           node {
             id

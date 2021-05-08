@@ -71,8 +71,8 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
 };
 
 ScenePreview.fragments = {
-  act: gql`
-    fragment ScenePreviewFragment on Act {
+  scene: gql`
+    fragment ScenePreviewFragment on Scene {
       id
       question
       answer
@@ -90,14 +90,14 @@ ScenePreview.fragments = {
 };
 
 const SCENE_UPDATE = gql`
-  mutation SceneUpdateMutation($input: ActUpdateInput!) {
-    actUpdate(input: $input) {
-      act {
+  mutation SceneUpdateMutation($input: SceneUpdateInput!) {
+    sceneUpdate(input: $input) {
+      scene {
         ...ScenePreviewFragment
       }
     }
   }
-  ${ScenePreview.fragments.act}
+  ${ScenePreview.fragments.scene}
 `;
 
 const Container = styled.section`

@@ -158,7 +158,7 @@ const PACK_QUERY = gql`
       ...PackSettingsFragment
       ...SidebarPackFragment
     }
-    act(id: $sceneId, packId: $packId) {
+    scene(id: $sceneId, packId: $packId) {
       ...ScenePreviewFragment
     }
     questionTypes {
@@ -172,7 +172,7 @@ const PACK_QUERY = gql`
   }
   ${PACK_FRAGMENT}
   ${Sidebar.fragments.pack}
-  ${ScenePreview.fragments.act}
+  ${ScenePreview.fragments.scene}
 `;
 
 export const PackCreatorPage = () => {
@@ -199,7 +199,7 @@ export const PackCreatorPage = () => {
           <Navigation pack={data.pack} saving={saving} setSaving={setSaving} />
           <Sidebar
             pack={data.pack}
-            selectedSceneId={data.act?.id}
+            selectedSceneId={data.scene?.id}
             selectScene={selectScene}
             refetch={refetch}
             setSaving={setSaving}
@@ -207,7 +207,9 @@ export const PackCreatorPage = () => {
         </>
       )}
       <Content>
-        {data?.act && <ScenePreview scene={data.act} setSaving={setSaving} />}
+        {data?.scene && (
+          <ScenePreview scene={data.scene} setSaving={setSaving} />
+        )}
       </Content>
     </Page>
   );

@@ -211,7 +211,7 @@ const EndorsementButtons = styled(Button)`
  */
 type EditableAnswerProps = AnswerProps & {
   sceneId: string;
-  onChange: (_updatedAct: any) => void;
+  onChange: (_updatedScene: any) => void;
 };
 
 export const EditableAnswer: React.FC<EditableAnswerProps> = ({
@@ -251,7 +251,7 @@ export const EditableAnswer: React.FC<EditableAnswerProps> = ({
 
 // TODO: Get question types from backend
 const EditableType: React.FC<{
-  onSelectType: (_updatedAct: Pick<any, "answerType" | "answer">) => void;
+  onSelectType: (_updatedScene: Pick<any, "answerType" | "answer">) => void;
 }> = ({ onSelectType, children }) => {
   return (
     <EditableAnswerContainer>

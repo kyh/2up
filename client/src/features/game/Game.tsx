@@ -16,9 +16,9 @@ export const Game: React.FC = () => {
 
   useEffect(() => {
     window.scroll(0, 0);
-  }, [state.scene]);
+  }, [state.step]);
 
-  switch (state.scene) {
+  switch (state.step) {
     case 0:
       return (
         <Step0

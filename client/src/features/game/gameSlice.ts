@@ -6,8 +6,8 @@ export type GameState = {
   gameId: string;
   players: Player[];
   isHost: boolean;
-  act: number;
   scene: number;
+  step: number;
   question?: string;
   questionType?: string;
   instruction?: string;
@@ -42,8 +42,8 @@ export const initialState: GameState = {
   isHost: localStorage.getItem("isHost") === "true",
   gameId: "",
   players: [],
-  act: 0,
   scene: 0,
+  step: 0,
   question: "",
   questionType: "",
   instruction: "",
@@ -71,8 +71,8 @@ const gameSlice = createSlice({
       state.gameId = payload.gameId;
     },
     game_state: (state, { payload }: PayloadAction<GameState>) => {
-      state.act = payload.act ?? state.act;
       state.scene = payload.scene ?? state.scene;
+      state.step = payload.step ?? state.step;
       state.question = payload.question ?? state.question;
       state.instruction = payload.instruction ?? state.instruction;
       state.answer = payload.answer ?? state.answer;
