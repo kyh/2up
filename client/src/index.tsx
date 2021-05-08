@@ -1,4 +1,4 @@
-import React from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import { debounce } from "lodash";
 import { ApolloProvider } from "@apollo/client";
@@ -22,7 +22,7 @@ window.addEventListener("resize", debouncedResize);
 onResize();
 
 ReactDOM.render(
-  <React.StrictMode>
+  <StrictMode>
     <BrowserRouter>
       <ReduxProvider store={store}>
         <SocketProvider wsUrl={`${process.env.REACT_APP_SOCKET_URL}/socket`}>
@@ -32,7 +32,7 @@ ReactDOM.render(
         </SocketProvider>
       </ReduxProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </StrictMode>,
   document.getElementById("root")
 );
 

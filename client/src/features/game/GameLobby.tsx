@@ -25,9 +25,9 @@ export const GameLobby = () => {
   useEffect(() => {
     if (gameState.act) {
       if (gameState.isHost) {
-        history.push(`/game/${gameState.gameId}/tv`);
+        history.push(`/game/${gameState.gameId}/spectate`);
       } else {
-        history.push(`/game/${gameState.gameId}/remote`);
+        history.push(`/game/${gameState.gameId}`);
       }
     }
   }, [gameState.gameId, gameState.act, gameState.isHost]);

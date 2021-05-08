@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Alert, Timer } from "components";
 import { StepProps } from "features/game/gameSlice";
 import {
@@ -8,7 +8,7 @@ import {
 import { SubmissionsContainer } from "features/game/components/SubmissionsContainer";
 import { Answer } from "features/game/components/Answer";
 
-export const Step2Remote = ({ state, broadcast, userId, name }: StepProps) => {
+export const Step2 = ({ state, broadcast, userId, name }: StepProps) => {
   const [submitted, setSubmitted] = useState(false);
 
   const submissions = state.submissions.reduce((sum, s) => {
@@ -62,7 +62,7 @@ export const Step2Remote = ({ state, broadcast, userId, name }: StepProps) => {
   );
 };
 
-export const Step2TV = ({ state }: StepProps) => {
+export const Step2Spectate = ({ state }: StepProps) => {
   const submissions = state.submissions.reduce((sum, s) => {
     return (sum += s.endorsers.length);
   }, 0);

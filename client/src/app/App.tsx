@@ -1,4 +1,3 @@
-import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { Provider as AlertProvider, transitions, positions } from "react-alert";
@@ -20,7 +19,7 @@ const alertOptions = {
   timeout: 8000,
 };
 
-export const App: React.FC = () => {
+export const App = () => {
   const { state } = usePlayhouse();
   return (
     <ThemeProvider theme={state.isDarkMode ? darkTheme : lightTheme}>

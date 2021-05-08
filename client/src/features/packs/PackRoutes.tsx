@@ -1,12 +1,10 @@
-import React from "react";
 import { Route, Switch } from "react-router-dom";
-
 import { PackDiscoverPage } from "features/packs/PackDiscoverPage";
 import { PackDetailsPage } from "features/packs/PackDetailsPage";
 import { PackNewPage } from "features/packs/PackNewPage";
 import { PackCreatorPage } from "features/packs/PackCreatorPage";
 
-export const PackRoutes: React.FC = () => {
+export const PackRoutes = () => {
   return (
     <Switch>
       <Route exact path="/packs">

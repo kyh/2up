@@ -1,8 +1,7 @@
-import React from "react";
 import { Flex, Button } from "components";
 import { StepProps } from "features/game/gameSlice";
 
-export const Step4Remote = ({ state, broadcast, name }: StepProps) => {
+export const Step4 = ({ state, broadcast, name }: StepProps) => {
   const [firstPlayer] = state.players;
   return (
     <div>
@@ -27,7 +26,7 @@ export const Step4Remote = ({ state, broadcast, name }: StepProps) => {
   );
 };
 
-export const Step4TV = ({ state }: StepProps) => {
+export const Step4Spectate = ({ state }: StepProps) => {
   return (
     <div>
       <h2>Question: {state.act} / 10</h2>

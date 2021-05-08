@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Alert, Flex, Timer } from "components";
 import { StepProps } from "features/game/gameSlice";
 import {
@@ -7,7 +7,7 @@ import {
 } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
 
-export const Step1Remote = ({ state, broadcast, userId, name }: StepProps) => {
+export const Step1 = ({ state, broadcast, userId, name }: StepProps) => {
   const [submitted, setSubmitted] = useState(false);
 
   const submissions = state.submissions.length - 1;
@@ -43,7 +43,7 @@ export const Step1Remote = ({ state, broadcast, userId, name }: StepProps) => {
   );
 };
 
-export const Step1TV = ({ state }: StepProps) => {
+export const Step1Spectate = ({ state }: StepProps) => {
   const submissions = state.submissions.length - 1;
   return (
     <>

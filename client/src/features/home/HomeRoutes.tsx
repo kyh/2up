@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 import { Navigation } from "features/game/components/Navigation";
@@ -6,7 +5,7 @@ import { HomeJoinGamePage } from "features/home/HomeJoinGamePage";
 import { HomeSetNamePage } from "features/home/HomeSetNamePage";
 import { PageContainer, Card } from "components";
 
-export const HomeRoutes: React.FC = () => {
+export const HomeRoutes = () => {
   return (
     <>
       <Navigation />
