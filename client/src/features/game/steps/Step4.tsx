@@ -5,7 +5,7 @@ export const Step4 = ({ state, broadcast, name }: StepProps) => {
   const [firstPlayer] = state.players;
   return (
     <div>
-      <h2>Question: {state.act} / 10</h2>
+      <h2>Question: {state.scene} / 10</h2>
       {state.players.map((player) => (
         <Flex key={player.name} justifyContent="space-between" mb={3}>
           <span>{player.name}</span>
@@ -15,7 +15,7 @@ export const Step4 = ({ state, broadcast, name }: StepProps) => {
       {firstPlayer && (
         <Button
           disabled={firstPlayer.name !== name}
-          onClick={() => broadcast("act:next")}
+          onClick={() => broadcast("scene:next")}
         >
           {firstPlayer.name === name
             ? "Next Question"
@@ -29,7 +29,7 @@ export const Step4 = ({ state, broadcast, name }: StepProps) => {
 export const Step4Spectate = ({ state }: StepProps) => {
   return (
     <div>
-      <h2>Question: {state.act} / 10</h2>
+      <h2>Question: {state.scene} / 10</h2>
       {state.players.map((player) => (
         <Flex key={player.name} justifyContent="space-between" mb={3}>
           <span>{player.name}</span>

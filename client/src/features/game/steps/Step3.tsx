@@ -47,7 +47,7 @@ export const Step3 = ({ state, broadcast, name }: StepProps) => {
       {firstPlayer && (
         <Button
           disabled={firstPlayer.name !== name}
-          onClick={() => broadcast("scene:next")}
+          onClick={() => broadcast("step:next")}
         >
           {firstPlayer.name === name
             ? "Next"

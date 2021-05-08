@@ -9,7 +9,7 @@ import { Step4Spectate } from "./steps/Step4";
 export const GameSpectate = () => {
   const { state, broadcast, dispatch } = useGameChannel();
 
-  switch (state.scene) {
+  switch (state.step) {
     case 0:
       return (
         <Step0Spectate
