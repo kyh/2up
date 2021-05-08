@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { useGameChannel } from "features/game/GameChannel";
 import { usePlayhouse } from "features/home/playhouseSlice";
 
-import { Step0Remote } from "./steps/Step0";
-import { Step1Remote } from "./steps/Step1";
-import { Step2Remote } from "./steps/Step2";
-import { Step3Remote } from "./steps/Step3";
-import { Step4Remote } from "./steps/Step4";
+import { Step0 } from "./steps/Step0";
+import { Step1 } from "./steps/Step1";
+import { Step2 } from "./steps/Step2";
+import { Step3 } from "./steps/Step3";
+import { Step4 } from "./steps/Step4";
 
-export const GameRemote: React.FC = () => {
+export const Game: React.FC = () => {
   const {
     state: { userId, username },
   } = usePlayhouse();
@@ -21,7 +21,7 @@ export const GameRemote: React.FC = () => {
   switch (state.scene) {
     case 0:
       return (
-        <Step0Remote
+        <Step0
           state={state}
           broadcast={broadcast}
           dispatch={dispatch}
@@ -31,7 +31,7 @@ export const GameRemote: React.FC = () => {
       );
     case 1:
       return (
-        <Step1Remote
+        <Step1
           state={state}
           broadcast={broadcast}
           userId={userId}
@@ -40,7 +40,7 @@ export const GameRemote: React.FC = () => {
       );
     case 2:
       return (
-        <Step2Remote
+        <Step2
           state={state}
           broadcast={broadcast}
           userId={userId}
@@ -49,7 +49,7 @@ export const GameRemote: React.FC = () => {
       );
     case 3:
       return (
-        <Step3Remote
+        <Step3
           state={state}
           broadcast={broadcast}
           userId={userId}
@@ -58,7 +58,7 @@ export const GameRemote: React.FC = () => {
       );
     case 4:
       return (
-        <Step4Remote
+        <Step4
           state={state}
           broadcast={broadcast}
           userId={userId}

@@ -1,4 +1,3 @@
-import React from "react";
 import { AvatarImage, Button } from "components";
 import { StepProps } from "features/game/gameSlice";
 import { hashCode } from "utils/stringUtils";
@@ -6,7 +5,7 @@ import { SubmissionsContainer } from "features/game/components/SubmissionsContai
 import { Answer } from "features/game/components/Answer";
 import correctSvg from "features/game/components/correct.svg";
 
-export const Step3Remote = ({ state, broadcast, name }: StepProps) => {
+export const Step3 = ({ state, broadcast, name }: StepProps) => {
   const firstPlayer = state.players[0];
   return (
     <section>
@@ -59,7 +58,7 @@ export const Step3Remote = ({ state, broadcast, name }: StepProps) => {
   );
 };
 
-export const Step3TV = ({ state }: StepProps) => {
+export const Step3Spectate = ({ state }: StepProps) => {
   return (
     <section>
       <SubmissionsContainer>

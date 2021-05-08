@@ -1,15 +1,14 @@
-import React from "react";
 import { Route, Switch, useParams } from "react-router-dom";
 
 import { GameProvider } from "features/game/GameChannel";
 import { GameLobby } from "features/game/GameLobby";
-import { GameTV } from "features/game/GameTV";
-import { GameRemote } from "features/game/GameRemote";
+import { GameSpectate } from "features/game/GameSpectate";
+import { Game } from "features/game/Game";
 
 import { Navigation } from "features/game/components/Navigation";
 import { PageContainer } from "components";
 
-export const GameRoutes: React.FC = () => {
+export const GameRoutes = () => {
   const { gameId } = useParams<{ gameId: string }>();
   return (
     <Switch>
@@ -20,14 +19,14 @@ export const GameRoutes: React.FC = () => {
             <GameLobby />
           </PageContainer>
         </Route>
-        <Route exact path={`/game/${gameId}/tv`}>
-          <PageContainer size="large" align="center">
-            <GameTV />
+        <Route exact path={`/game/${gameId}`}>
+          <PageContainer size="small">
+            <Game />
           </PageContainer>
         </Route>
-        <Route exact path={`/game/${gameId}/remote`}>
-          <PageContainer size="small">
-            <GameRemote />
+        <Route exact path={`/game/${gameId}/spectate`}>
+          <PageContainer size="large" align="center">
+            <GameSpectate />
           </PageContainer>
         </Route>
       </GameProvider>

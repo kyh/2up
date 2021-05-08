@@ -1,9 +1,8 @@
-import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import { AuthPage } from "features/auth/AuthPage";
 
-export const AuthRoutes: React.FC = () => {
+export const AuthRoutes = () => {
   return (
     <Switch>
       <Route path="/auth/signup">

@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { gql, useMutation } from "@apollo/client";
 import { useHistory } from "react-router-dom";

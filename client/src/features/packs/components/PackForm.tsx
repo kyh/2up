@@ -10,12 +10,19 @@ export type PackInputs = {
   length?: number;
 };
 
-export const PackForm = ({
+type PackFormProps = {
+  submitText?: string;
+  loading?: boolean;
+  defaultValues?: Object;
+  onSubmit: any;
+};
+
+export const PackForm: React.FC<PackFormProps> = ({
   submitText = "Create Pack",
   loading = false,
   defaultValues = {},
   onSubmit,
-}: any) => {
+}) => {
   const {
     register,
     handleSubmit,
