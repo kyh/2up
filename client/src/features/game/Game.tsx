@@ -6,11 +6,10 @@ import { Step0 } from "./steps/Step0";
 import { Step1 } from "./steps/Step1";
 import { Step2 } from "./steps/Step2";
 import { Step3 } from "./steps/Step3";
-import { Step4 } from "./steps/Step4";
 
 export const Game: React.FC = () => {
   const {
-    state: { userId, username },
+    state: { userId, name },
   } = usePlayhouse();
   const { state, broadcast, dispatch } = useGameChannel();
 
@@ -26,7 +25,7 @@ export const Game: React.FC = () => {
           broadcast={broadcast}
           dispatch={dispatch}
           userId={userId}
-          name={username}
+          name={name}
         />
       );
     case 1:
@@ -35,34 +34,25 @@ export const Game: React.FC = () => {
           state={state}
           broadcast={broadcast}
           userId={userId}
-          name={username}
+          name={name}
         />
       );
-    case 2:
+    case 3:
       return (
         <Step2
           state={state}
           broadcast={broadcast}
           userId={userId}
-          name={username}
+          name={name}
         />
       );
-    case 3:
+    case 4:
       return (
         <Step3
           state={state}
           broadcast={broadcast}
           userId={userId}
-          name={username}
-        />
-      );
-    case 4:
-      return (
-        <Step4
-          state={state}
-          broadcast={broadcast}
-          userId={userId}
-          name={username}
+          name={name}
         />
       );
     default:

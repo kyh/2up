@@ -30,7 +30,7 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
             id: newScene.id,
             question: newScene.question,
             question_type_slug: newScene.questionType.slug,
-            answer: newScene.answer,
+            sceneAnswers: newScene.sceneAnswers,
             answer_type_slug: newScene.answerType.slug,
             instruction: newScene.instruction,
           },
@@ -60,7 +60,7 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
         <Screen>
           <EditableAnswer
             sceneId={scene.id}
-            answer={scene?.answer || ""}
+            sceneAnswers={scene?.sceneAnswers || []}
             answerType={scene?.answerType?.slug}
             onChange={onChange}
           />
@@ -75,7 +75,7 @@ ScenePreview.fragments = {
     fragment ScenePreviewFragment on Scene {
       id
       question
-      answer
+      sceneAnswers
       instruction
       questionType {
         id

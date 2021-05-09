@@ -4,32 +4,17 @@ import { RootState } from "app/rootReducer";
 
 export type GameState = {
   gameId: string;
+  pack: string;
   players: Player[];
-  isHost: boolean;
+  isSpectator: boolean;
   scene: number;
   step: number;
+  instruction?: string;
   question?: string;
   questionType?: string;
-  instruction?: string;
-  answer?: string;
+  sceneAnswers?: SceneAnswer[];
   answerType?: string;
   submissions: Submission[];
-  pack: string;
-};
-
-export type Submission = {
-  id: number;
-  name: string;
-  content: string;
-  endorsers: Player[];
-};
-
-export type StepProps = {
-  state: GameState;
-  broadcast: (_eventName: string, _payload?: object) => void;
-  userId?: string;
-  name?: string;
-  dispatch?: (_action: object) => void;
 };
 
 export type Player = {
@@ -38,16 +23,36 @@ export type Player = {
   score: number;
 };
 
+export type SceneAnswer = {
+  id: number;
+  isCorrect: boolean;
+  content: string;
+};
+
+export type Submission = {
+  id: number;
+  name: string;
+  content: string;
+};
+
+export type StepProps = {
+  state: GameState;
+  broadcast: (_eventName: string, _payload?: object) => void;
+  dispatch: (_action: object) => void;
+  userId?: string;
+  name?: string;
+};
+
 export const initialState: GameState = {
-  isHost: localStorage.getItem("isHost") === "true",
+  isSpectator: localStorage.getItem("isSpectator") === "true",
   gameId: "",
   players: [],
   scene: 0,
   step: 0,
+  instruction: "",
   question: "",
   questionType: "",
-  instruction: "",
-  answer: "",
+  sceneAnswers: [],
   answerType: "",
   submissions: [],
   pack: "",
@@ -73,23 +78,22 @@ const gameSlice = createSlice({
     game_state: (state, { payload }: PayloadAction<GameState>) => {
       state.scene = payload.scene ?? state.scene;
       state.step = payload.step ?? state.step;
+      state.instruction = payload.instruction ?? state.instruction;
       state.question = payload.question ?? state.question;
-      state.instruction = payload.instruction ?? state.instruction;
-      state.answer = payload.answer ?? state.answer;
-      state.submissions = payload.submissions ?? state.submissions;
-      state.instruction = payload.instruction ?? state.instruction;
       state.questionType = payload.questionType ?? state.questionType;
+      state.sceneAnswers = payload.sceneAnswers ?? state.sceneAnswers;
       state.answerType = payload.answerType ?? state.answerType;
+      state.submissions = payload.submissions ?? state.submissions;
       state.pack = payload.pack ?? payload.pack;
     },
-    toggle_host: (state, { payload }: PayloadAction<boolean>) => {
-      state.isHost = payload;
-      localStorage.setItem("isHost", state.isHost.toString());
+    toggle_spectator: (state, { payload }: PayloadAction<boolean>) => {
+      state.isSpectator = payload;
+      localStorage.setItem("isSpectator", state.isSpectator.toString());
     },
     players: (state, { payload }: PayloadAction<{ players: Player[] }>) => {
       state.players = payload.players.sort(sortByName) ?? state.players;
     },
-    reset: () => ({ ...initialState, isHost: false }),
+    reset: () => ({ ...initialState, isSpectator: false }),
   },
 });
 
