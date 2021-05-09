@@ -15,7 +15,7 @@ defmodule Web.GraphQL.Resolvers.Live do
       |> Enum.map(fn scene ->
         scene_answers =
           Database.Catalog.scene_answer_list(%{scene_id: scene.scene_id})
-          |> Enum.map(fn scene_answer -> 
+          |> Enum.map(fn scene_answer ->
             %{
               id: scene_answer.id,
               isCorrect: scene_answer.is_correct,

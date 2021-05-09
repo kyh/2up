@@ -35,8 +35,8 @@ defmodule Game.GameServer do
     GenServer.call(via_tuple(game_code), {:player_new, player})
   end
 
-  def player_submit(game_code, submission, player_count) do
-    GenServer.call(via_tuple(game_code), {:player_submit, submission, player_count})
+  def player_submit(game_code, name, submission, player_count) do
+    GenServer.call(via_tuple(game_code), {:player_submit, name, submission, player_count})
   end
 
   def step_next(game_code) do
@@ -120,8 +120,8 @@ defmodule Game.GameServer do
     {:reply, get_game_state(updated_game), updated_game, @timeout}
   end
 
-  def handle_call({:player_submit, submission, player_count}, _from, game) do
-    updated_game = Game.GamePlay.player_submit(game, submission, player_count)
+  def handle_call({:player_submit, name, submission, player_count}, _from, game) do
+    updated_game = Game.GamePlay.player_submit(game, name, submission, player_count)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 

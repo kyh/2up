@@ -111,7 +111,7 @@ defmodule Web.GameChannel do
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        game_state = GameServer.step_next(game_code)
+        game_state = GameServer.scene_next(game_code)
         broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
 
@@ -134,7 +134,8 @@ defmodule Web.GameChannel do
           content: submission
         }
 
-        game_state = GameServer.player_submit(game_code, submission, player_count(socket))
+        game_state = GameServer.player_submit(game_code, name, submission, player_count(socket))
+        player_score_update(socket, name, game_state.players)
         broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
 
