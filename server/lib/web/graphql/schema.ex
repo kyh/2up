@@ -3,7 +3,7 @@ defmodule Web.GraphQL.Schema do
   use Absinthe.Relay.Schema, :modern
   use Absinthe.Relay.Schema.Notation, :modern
 
-  alias Database.Catalog.{Act, QuestionType, AnswerType}
+  alias Database.Catalog.{Scene, QuestionType, AnswerType}
   alias Database.Accounts.User
   alias Database.Live.Pack
 
@@ -26,7 +26,7 @@ defmodule Web.GraphQL.Schema do
     loader =
       Dataloader.new()
       |> Dataloader.add_source(Pack, source)
-      |> Dataloader.add_source(Act, source)
+      |> Dataloader.add_source(Scene, source)
       |> Dataloader.add_source(QuestionType, source)
       |> Dataloader.add_source(AnswerType, source)
       |> Dataloader.add_source(User, source)

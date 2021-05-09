@@ -3,65 +3,65 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   alias Database.Catalog
   alias Web.GraphQL.Errors
 
-  def ordered_act_list(_, args, _) do
-    Connection.from_list(Catalog.ordered_act_list(args), args)
+  def ordered_scene_list(_, args, _) do
+    Connection.from_list(Catalog.ordered_scene_list(args), args)
   end
 
-  def act_list(args, _) do
-    Connection.from_list(Catalog.act_list(args), args)
+  def scene_list(args, _) do
+    Connection.from_list(Catalog.scene_list(args), args)
   end
 
-  def act_create(args, %{context: %{current_user: user}}) do
-    case Catalog.act_create(user, args) do
+  def scene_create(args, %{context: %{current_user: user}}) do
+    case Catalog.scene_create(user, args) do
       {:error, changeset} ->
         {
           :error,
-          message: "Act creation failed", details: Errors.error_details(changeset)
+          message: "Scene creation failed", details: Errors.error_details(changeset)
         }
 
-      {:ok, act} ->
-        {:ok, %{act: act}}
+      {:ok, scene} ->
+        {:ok, %{scene: scene}}
     end
   end
 
-  def act_update(args, %{context: %{current_user: user}}) do
-    case Catalog.act_update(user, args) do
+  def scene_update(args, %{context: %{current_user: user}}) do
+    case Catalog.scene_update(user, args) do
       {:error, changeset} ->
         {
           :error,
-          message: "Act update failed", details: Errors.error_details(changeset)
+          message: "Scene update failed", details: Errors.error_details(changeset)
         }
 
-      {:ok, act} ->
-        {:ok, %{act: act}}
+      {:ok, scene} ->
+        {:ok, %{scene: scene}}
     end
   end
 
-  def act_delete(args, %{context: %{current_user: user}}) do
-    act = Database.Repo.get_by(Database.Catalog.Act, id: args.id)
+  def scene_delete(args, %{context: %{current_user: user}}) do
+    scene = Database.Repo.get_by(Database.Catalog.Scene, id: args.id)
 
-    case Catalog.act_delete(user, act, args) do
+    case Catalog.scene_delete(user, scene, args) do
       {:error, changeset} ->
         {
           :error,
-          message: "Act delete failed", details: Errors.error_details(changeset)
+          message: "Scene delete failed", details: Errors.error_details(changeset)
         }
 
-      {:ok, act} ->
-        {:ok, %{act: act}}
+      {:ok, scene} ->
+        {:ok, %{scene: scene}}
     end
   end
 
-  def pack_act_update(args, %{context: %{current_user: user}}) do
-    case Catalog.pack_act_update(user, args) do
+  def pack_scene_update(args, %{context: %{current_user: user}}) do
+    case Catalog.pack_scene_update(user, args) do
       {:error, changeset} ->
         {
           :error,
-          message: "Pack act update failed", details: Errors.error_details(changeset)
+          message: "Pack scene update failed", details: Errors.error_details(changeset)
         }
 
-      {:ok, pack_act} ->
-        {:ok, %{pack_act: pack_act}}
+      {:ok, pack_scene} ->
+        {:ok, %{pack_scene: pack_scene}}
     end
   end
 
@@ -73,8 +73,8 @@ defmodule Web.GraphQL.Resolvers.Catalog do
     {:ok, Catalog.answer_type_list()}
   end
 
-  def act_get_by_id(args, _) do
-    act = Catalog.act_get_by_id(args)
-    {:ok, act}
+  def scene_get_by_id(args, _) do
+    scene = Catalog.scene_get_by_id(args)
+    {:ok, scene}
   end
 end

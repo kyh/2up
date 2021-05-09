@@ -19,19 +19,19 @@ defmodule Web.GraphQL.Types.QueryType do
       resolve(parsing_node_ids(&Live.pack_get_by_id/2, id: :pack))
     end
 
-    field :act, :act do
+    field :scene, :scene do
       arg(:id, :id)
       arg(:pack_id, :id)
-      resolve(parsing_node_ids(&Catalog.act_get_by_id/2, id: :act, pack_id: :pack))
+      resolve(parsing_node_ids(&Catalog.scene_get_by_id/2, id: :scene, pack_id: :pack))
     end
 
-    connection field :acts, node_type: :act do
+    connection field :scene, node_type: :scene do
       arg(:question_type_id, :id)
       arg(:answer_type_id, :id)
       arg(:after, :string)
 
       resolve(
-        parsing_node_ids(&Catalog.act_list/2,
+        parsing_node_ids(&Catalog.scene_list/2,
           question_type_id: :question_type,
           answer_type_id: :answer_type
         )

@@ -87,14 +87,14 @@ defmodule Web.GameChannel do
   end
 
   @doc """
-  Increments scene in game state
+  Increments step in game state
   """
-  def handle_in("scene:next", _payload, socket) do
+  def handle_in("step:next", _payload, socket) do
     "game:" <> game_code = socket.topic
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        game_state = GameServer.scene_next(game_code)
+        game_state = GameServer.step_next(game_code)
         broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
 
@@ -104,14 +104,14 @@ defmodule Web.GameChannel do
   end
 
   @doc """
-  Increments act in game state
+  Increments scene in game state
   """
-  def handle_in("act:next", _payload, socket) do
+  def handle_in("scene:next", _payload, socket) do
     "game:" <> game_code = socket.topic
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        game_state = GameServer.act_next(game_code)
+        game_state = GameServer.step_next(game_code)
         broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
 
@@ -131,31 +131,10 @@ defmodule Web.GameChannel do
         submission = %{
           id: Ecto.UUID.generate(),
           name: name,
-          content: submission,
-          endorsers: []
+          content: submission
         }
 
         game_state = GameServer.player_submit(game_code, submission, player_count(socket))
-        broadcast!(socket, "game/game_state", game_state)
-        {:noreply, socket}
-
-      nil ->
-        {:reply, {:error, %{reason: "Game does not exist"}}, socket}
-    end
-  end
-
-  @doc """
-  Player's choice out of all submissions for the question
-  """
-  def handle_in("endorse", %{"name" => name, "submission_id" => submission_id}, socket) do
-    "game:" <> game_code = socket.topic
-
-    case GameServer.game_pid(game_code) do
-      pid when is_pid(pid) ->
-        game_state =
-          GameServer.player_endorse(game_code, name, submission_id, player_count(socket))
-
-        player_score_update(socket, name, game_state.players)
         broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
 
