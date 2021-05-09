@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useGameChannel } from "features/game/GameChannel";
 import { usePlayhouse } from "features/home/playhouseSlice";
 
@@ -7,7 +7,7 @@ import { Step1 } from "./steps/Step1";
 import { Step2 } from "./steps/Step2";
 import { Step3 } from "./steps/Step3";
 
-export const Game: React.FC = () => {
+export const Game = () => {
   const {
     state: { userId, name },
   } = usePlayhouse();

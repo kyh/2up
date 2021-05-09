@@ -1,19 +1,18 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect, createContext, ReactNode } from "react";
 import { useHistory } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { useChannel } from "utils/Socket";
 import { initialState, gameActions } from "features/game/gameSlice";
 
-export const GameContext = React.createContext({
+export const GameContext = createContext({
   state: initialState,
   broadcast: (_eventName: string, _payload?: object) => {},
   dispatch: (_action: object) => {},
 });
 
-export const GameProvider: React.FC<{ gameId?: string }> = ({
-  children,
-  gameId,
-}) => {
+type Props = { gameId?: string; children?: ReactNode };
+
+export const GameProvider = ({ children, gameId }: Props) => {
   const history = useHistory();
   const alert = useAlert();
   const [state, broadcast, dispatch, connected, error] = useChannel(

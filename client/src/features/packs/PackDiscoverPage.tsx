@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
@@ -37,9 +36,11 @@ const PACKS_QUERY = gql`
   }
 `;
 
-const Packs: React.FC<{
+type PacksProps = {
   packs?: PackDiscoverPageQuery_my | PackDiscoverPageQuery_featured | null;
-}> = ({ packs }) => {
+};
+
+const Packs = ({ packs }: PacksProps) => {
   return (
     <>
       {packs?.edges?.map((edge) => {

@@ -1,4 +1,10 @@
-import React, { useEffect, createContext, useContext, useState } from "react";
+import {
+  useEffect,
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Socket, Presence } from "phoenix";
 import { RootState } from "app/rootReducer";
@@ -8,13 +14,14 @@ export const SocketContext = createContext({} as Socket);
 type Props = {
   wsUrl: string;
   options?: any;
+  children: ReactNode;
 };
 
-export const SocketProvider: React.FC<Props> = ({
+export const SocketProvider = ({
   wsUrl = "",
   options = {},
   children,
-}) => {
+}: Props) => {
   const socket = new Socket(wsUrl, { params: options });
 
   useEffect(() => {

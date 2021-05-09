@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode, forwardRef } from "react";
 import styled from "styled-components";
 import { Input } from "../Input/Input";
 
@@ -12,13 +12,13 @@ type Props = {
   id?: HTMLInputElement["id"];
   type?: HTMLInputElement["type"];
   placeholder?: HTMLInputElement["placeholder"];
-  labelText?: React.ReactNode;
-  children?: React.ReactNode;
+  labelText?: ReactNode;
+  children?: ReactNode;
   error?: boolean;
-  errorText?: React.ReactNode;
+  errorText?: ReactNode;
 };
 
-export const TextField = React.forwardRef<HTMLInputElement, Props>(
+export const TextField = forwardRef<HTMLInputElement, Props>(
   (
     { id, labelText, type = "text", placeholder, error, errorText, ...props },
     ref

@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled, {
@@ -22,12 +22,12 @@ type Props = StyledComponentProps<
     variant?: keyof typeof Variants;
     fullWidth?: boolean;
     onClick?: () => void;
-    children?: React.ReactNode;
+    children?: ReactNode;
   } & StyledProps,
   never
 >;
 
-export const Button: React.FC<Props> = ({ onClick = () => {}, ...rest }) => {
+export const Button = ({ onClick = () => {}, ...rest }: Props) => {
   const { isSFXOn } = useSelector((state: RootState) => state.playhouse);
   const onButtonClick = () => {
     if (isSFXOn) {
