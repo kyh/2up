@@ -10,9 +10,11 @@ defmodule Database.Repo.Migrations.RemoveActsAndAddScenes do
       add :answer_type_id, references(:answer_types), null: false
       add :question, :string, null: false
       add :instruction, :string
+
+      timestamps()
     end
 
-    create table(:pack_scene) do
+    create table(:pack_scenes) do
       add :pack_id, references(:packs), null: false
       add :scene_id, references(:scenes), null: false
       add :order, :integer

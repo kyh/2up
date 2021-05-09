@@ -7,6 +7,8 @@ defmodule Database.Repo.Migrations.CreateSceneAnswers do
 
       add :content, :string, null: false
       add :is_correct, :boolean, null: false, default: false
+
+      timestamps()
     end
   end
 end

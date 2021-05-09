@@ -24,9 +24,9 @@ alias Database.{
     password: "password"
   })
 
-# Create featured category
-{_, featured_category} =
-  Live.category_create(%{
+# Create featured tag
+{_, featured_tag} =
+  Live.tag_create(%{
     name: "Featured"
   })
 
@@ -73,29 +73,22 @@ alias Database.{
     length: 10
   })
 
-# Create pack categories
-Live.pack_category_create(startups_pack, featured_category)
-Live.pack_category_create(sat_pack, featured_category)
-Live.pack_category_create(color_pack, featured_category)
-Live.pack_category_create(drawing_pack, featured_category)
-Live.pack_category_create(variety_pack, featured_category)
-
-# Create tags
-{_, startups_tag} = Live.tag_create(%{name: "Startups"})
-{_, sat_tag} = Live.tag_create(%{name: "SAT"})
-{_, color_tag} = Live.tag_create(%{name: "Color"})
-{_, drawing_tag} = Live.tag_create(%{name: "Drawing"})
+# Create pack tags
+Live.pack_tag_create(startups_pack, featured_tag)
+Live.pack_tag_create(sat_pack, featured_tag)
+Live.pack_tag_create(color_pack, featured_tag)
+Live.pack_tag_create(drawing_pack, featured_tag)
+Live.pack_tag_create(variety_pack, featured_tag)
 
 # Create question types
 {_, text_question_type} = Catalog.question_type_create(%{slug: "text"})
 {_, _} = Catalog.question_type_create(%{slug: "image"})
 
 # Create answer types
-{_, drawing_answer_type} = Catalog.answer_type_create(%{slug: "drawing"})
-{_, color_answer_type} = Catalog.answer_type_create(%{slug: "color"})
 {_, text_answer_type} = Catalog.answer_type_create(%{slug: "text"})
+# {_, multi_text_answer_type} = Catalog.answer_type_create(%{slug: "multi_text"})
 
-# Create acts
+# Create scenes
 startups_questions = [
   ["GoCardless", "Set up interbank transfers for customers"],
   ["Spoil", "Make the world a happier place through giving"],
@@ -119,15 +112,19 @@ startups_questions = [
   ["Valor Water Analytics", "Transforming your data into improved revenue"]
 ]
 
-Enum.each(startups_questions, fn x ->
-  {_, act} =
-    Catalog.act_create(user, text_question_type, text_answer_type, %{
+startups_questions
+|> Enum.with_index()
+|> Enum.each(fn {x, i} ->
+  {_, scene} =
+    Catalog.scene_create(text_question_type, text_answer_type, %{
       question: Enum.at(x, 0),
       answer: Enum.at(x, 1),
       instruction: "Give a one line description of this startup"
     })
 
-  Catalog.act_tag_create(act, startups_tag)
+  Catalog.scene_answer_create(scene, Enum.at(x, 1), true)
+
+  Live.pack_scene_create(startups_pack, scene, %{order: i})
 end)
 
 sat_questions = [
@@ -153,118 +150,16 @@ sat_questions = [
   ["apaty", "lacking interest"]
 ]
 
-Enum.each(sat_questions, fn x ->
-  {_, act} =
-    Catalog.act_create(user, text_question_type, text_answer_type, %{
+sat_questions
+|> Enum.with_index()
+|> Enum.each(fn {x, i} ->
+  {_, scene} =
+    Catalog.scene_create(text_question_type, text_answer_type, %{
       question: Enum.at(x, 0),
-      answer: Enum.at(x, 1),
       instruction: "Give a short definition of this word"
     })
 
-  Catalog.act_tag_create(act, sat_tag)
-end)
+  Catalog.scene_answer_create(scene, Enum.at(x, 1), true)
 
-color_questions = [
-  ["#4285F4", nil],
-  ["#DB4437", nil],
-  ["#F4B400", nil],
-  ["#0F9D58", nil],
-  ["#4267B2", nil],
-  ["#3DBB3D", nil],
-  ["#666666", nil],
-  ["#E50914", nil],
-  ["#FFFC00", nil],
-  ["#00704A", nil],
-  ["#EE1D23", nil],
-  ["#185494", nil],
-  ["#FAAF18", nil],
-  ["#EA0A8E", nil],
-  ["#FFFF64", nil],
-  ["#0ABAB5", nil],
-  ["#F58426", nil],
-  ["#BEC0C2", nil]
-]
-
-Enum.each(color_questions, fn x ->
-  {_, act} =
-    Catalog.act_create(user, text_question_type, color_answer_type, %{
-      question: Enum.at(x, 0),
-      answer: Enum.at(x, 1),
-      instruction: "What color is this hex?"
-    })
-
-  Catalog.act_tag_create(act, color_tag)
-end)
-
-drawing_questions = [
-  ["Tiger King", nil, "Drawing"],
-  ["tonkotsu ramen", nil, "Drawing"],
-  ["fundraising", nil, "Drawing"],
-  ["API", nil, "Drawing"],
-  ["encryption", nil, "Drawing"],
-  ["BTS", nil, "Drawing"],
-  ["Carole Baskin", nil, "Drawing"],
-  ["Harvard", nil, "Drawing"],
-  ["Wartortle", nil, "Drawing"],
-  ["Coachella", nil, "Drawing"],
-  ["OP", nil, "Drawing"],
-  ["Joy Luck Club", nil, "Drawing"],
-  ["kimchi", nil, "Drawing"],
-  ["hamachi kama", nil, "Drawing"],
-  ["kale", nil, "Drawing"],
-  ["Beatles", nil, "Drawing"],
-  ["Hotel California", nil, "Drawing"],
-  ["Elon Musk", nil, "Drawing"]
-]
-
-Enum.each(drawing_questions, fn x ->
-  {_, act} =
-    Catalog.act_create(user, text_question_type, drawing_answer_type, %{
-      question: Enum.at(x, 0),
-      answer: Enum.at(x, 1),
-      instruction: "Draw this"
-    })
-
-  Catalog.act_tag_create(act, drawing_tag)
-end)
-
-# Create play acts
-startup_acts = Catalog.act_list(%{tag_ids: [startups_tag.id]})
-sat_acts = Catalog.act_list(%{tag_ids: [sat_tag.id]})
-color_acts = Catalog.act_list(%{tag_ids: [color_tag.id]})
-drawing_acts = Catalog.act_list(%{tag_ids: [drawing_tag.id]})
-
-all_acts =
-  Enum.concat(startup_acts, sat_acts)
-  |> Enum.concat(color_acts)
-  |> Enum.concat(drawing_acts)
-
-startup_acts
-|> Enum.with_index()
-|> Enum.each(fn {x, i} ->
-  Live.pack_act_create(startups_pack, x, %{order: i + 1})
-end)
-
-sat_acts
-|> Enum.with_index()
-|> Enum.each(fn {x, i} ->
-  Live.pack_act_create(sat_pack, x, %{order: i + 1})
-end)
-
-color_acts
-|> Enum.with_index()
-|> Enum.each(fn {x, i} ->
-  Live.pack_act_create(color_pack, x, %{order: i + 1})
-end)
-
-drawing_acts
-|> Enum.with_index()
-|> Enum.each(fn {x, i} ->
-  Live.pack_act_create(drawing_pack, x, %{order: i + 1})
-end)
-
-all_acts
-|> Enum.with_index()
-|> Enum.each(fn {x, i} ->
-  Live.pack_act_create(variety_pack, x, %{order: i + 1})
+  Live.pack_scene_create(sat_pack, scene, %{order: i})
 end)

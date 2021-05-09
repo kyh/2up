@@ -19,7 +19,6 @@ defmodule Database.Catalog.Scene do
 
     scene
     |> cast(attrs, required_fields ++ optional_fields)
-    |> assoc_constraint(:user)
     |> assoc_constraint(:question_type)
     |> assoc_constraint(:answer_type)
   end
