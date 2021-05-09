@@ -43,6 +43,12 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
     }
   };
 
+  const sceneAnswers =
+    scene?.sceneAnswers?.edges?.map((edge) => {
+      const node = edge?.node;
+      return { ...node };
+    }) || [];
+
   return (
     <Container>
       <Monitor>
@@ -60,7 +66,7 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
         <Screen>
           <EditableAnswer
             sceneId={scene.id}
-            sceneAnswers={scene?.sceneAnswers || []}
+            sceneAnswers={sceneAnswers}
             answerType={scene?.answerType?.slug}
             onChange={onChange}
           />
@@ -75,7 +81,15 @@ ScenePreview.fragments = {
     fragment ScenePreviewFragment on Scene {
       id
       question
-      sceneAnswers
+      sceneAnswers(first: 100) {
+        edges {
+          node {
+            id
+            content
+            isCorrect
+          }
+        }
+      }
       instruction
       questionType {
         id

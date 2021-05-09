@@ -33,6 +33,7 @@ export const Game: React.FC = () => {
         <Step1
           state={state}
           broadcast={broadcast}
+          dispatch={dispatch}
           userId={userId}
           name={name}
         />
@@ -42,6 +43,7 @@ export const Game: React.FC = () => {
         <Step2
           state={state}
           broadcast={broadcast}
+          dispatch={dispatch}
           userId={userId}
           name={name}
         />
@@ -51,6 +53,7 @@ export const Game: React.FC = () => {
         <Step3
           state={state}
           broadcast={broadcast}
+          dispatch={dispatch}
           userId={userId}
           name={name}
         />

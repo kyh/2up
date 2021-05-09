@@ -10,14 +10,27 @@ defmodule Web.GraphQL.Types.CatalogTypes do
 
   node object(:scene) do
     field :question, non_null(:string)
-    field :answer, :string
     field :instruction, :string
 
     field :question_type, non_null(:question_type), resolve: dataloader(QuestionType)
     field :answer_type, non_null(:answer_type), resolve: dataloader(AnswerType)
+
+    connection field :scene_answers, node_type: :scene_answer do
+      resolve(fn parent, args, meta ->
+        Catalog.scene_answer_list(parent, Map.merge(args, %{scene_id: parent.id}), meta)
+      end)
+    end
   end
 
   connection(node_type: :scene)
+
+  node object(:scene_answer) do
+    field :content, non_null(:string)
+    field :is_correct, non_null(:boolean)
+    # field :scene, non_null(:scene), resolve: dataloader(Scene)
+  end
+
+  connection(node_type: :scene_answer)
 
   node object(:question_type) do
     field :slug, non_null(:string)
