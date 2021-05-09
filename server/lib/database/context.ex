@@ -11,9 +11,9 @@ defmodule Database.Context do
 
       alias Database.Catalog.{
         Scene,
+        SceneAnswer,
         AnswerType,
-        QuestionType,
-        Tag
+        QuestionType
       }
 
       alias Database.Live.{
@@ -21,6 +21,7 @@ defmodule Database.Context do
         PackScene,
         PackTag,
         Pack,
+        Tag,
         Play
       }
     end

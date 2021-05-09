@@ -15,7 +15,8 @@ defmodule Database.Catalog do
   def scene_list(%{question_type_id: question_type_id, answer_type_id: answer_type_id}) do
     query =
       from scene in Scene,
-        where: scene.question_type_id == ^question_type_id and scene.answer_type_id == ^answer_type_id
+        where:
+          scene.question_type_id == ^question_type_id and scene.answer_type_id == ^answer_type_id
 
     Repo.all(query)
   end
@@ -60,14 +61,12 @@ defmodule Database.Catalog do
   end
 
   def scene_create(
-        %User{} = user,
         %QuestionType{} = question_type,
         %AnswerType{} = answer_type,
         attrs
       ) do
     %Scene{}
     |> Scene.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:user, user)
     |> Ecto.Changeset.put_assoc(:question_type, question_type)
     |> Ecto.Changeset.put_assoc(:answer_type, answer_type)
     |> Repo.insert()
@@ -96,6 +95,13 @@ defmodule Database.Catalog do
     |> Repo.insert()
 
     {:ok, scene}
+  end
+
+  def scene_answer_create(%Scene{} = scene, answer, is_correct) do
+    %SceneAnswer{}
+    |> SceneAnswer.changeset(%{content: answer, is_correct: is_correct})
+    |> Ecto.Changeset.put_assoc(:scene, scene)
+    |> Repo.insert()
   end
 
   def calculate_new_order(%{

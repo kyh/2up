@@ -1,4 +1,4 @@
-defmodule Database.Catalog.SceneAnswers do
+defmodule Database.Catalog.SceneAnswer do
   use Database.Model
 
   schema "scene_answers" do

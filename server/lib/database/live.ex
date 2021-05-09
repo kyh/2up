@@ -41,7 +41,7 @@ defmodule Database.Live do
     |> List.to_string()
   end
 
-  def category_create(attrs) do
+  def tag_create(attrs) do
     %Tag{}
     |> Tag.changeset(attrs)
     |> Repo.insert()
@@ -60,11 +60,11 @@ defmodule Database.Live do
     |> Repo.update()
   end
 
-  def pack_category_create(%Pack{} = pack, %Tag{} = category) do
+  def pack_tag_create(%Pack{} = pack, %Tag{} = tag) do
     %PackTag{}
     |> PackTag.changeset(%{})
     |> Ecto.Changeset.put_assoc(:pack, pack)
-    |> Ecto.Changeset.put_assoc(:category, category)
+    |> Ecto.Changeset.put_assoc(:tag, tag)
     |> Repo.insert()
   end
 
