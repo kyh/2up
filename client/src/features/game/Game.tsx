@@ -38,7 +38,7 @@ export const Game: React.FC = () => {
           name={name}
         />
       );
-    case 3:
+    case 2:
       return (
         <Step2
           state={state}
@@ -48,7 +48,7 @@ export const Game: React.FC = () => {
           name={name}
         />
       );
-    case 4:
+    case 3:
       return (
         <Step3
           state={state}

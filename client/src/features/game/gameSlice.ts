@@ -6,7 +6,7 @@ export type GameState = {
   gameId: string;
   pack: string;
   players: Player[];
-  isSpectator: boolean;
+  isHost: boolean;
   scene: number;
   step: number;
   instruction?: string;
@@ -44,7 +44,7 @@ export type StepProps = {
 };
 
 export const initialState: GameState = {
-  isSpectator: localStorage.getItem("isSpectator") === "true",
+  isHost: localStorage.getItem("isHost") === "true",
   gameId: "",
   players: [],
   scene: 0,
@@ -87,13 +87,13 @@ const gameSlice = createSlice({
       state.pack = payload.pack ?? payload.pack;
     },
     toggle_spectator: (state, { payload }: PayloadAction<boolean>) => {
-      state.isSpectator = payload;
-      localStorage.setItem("isSpectator", state.isSpectator.toString());
+      state.isHost = payload;
+      localStorage.setItem("isHost", state.isHost.toString());
     },
     players: (state, { payload }: PayloadAction<{ players: Player[] }>) => {
       state.players = payload.players.sort(sortByName) ?? state.players;
     },
-    reset: () => ({ ...initialState, isSpectator: false }),
+    reset: () => ({ ...initialState, isHost: false }),
   },
 });
 

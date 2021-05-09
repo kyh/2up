@@ -64,7 +64,7 @@ export const useChannel = (
         }
         const players = Presence.list(presences)
           .map((p) => p.metas[0])
-          .filter((p) => !p.isSpectator);
+          .filter((p) => !p.isHost);
         dispatch({ type: presenceAction, payload: { players } });
       } else {
         dispatch({ type: event, payload });

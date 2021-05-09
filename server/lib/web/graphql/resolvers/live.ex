@@ -18,7 +18,7 @@ defmodule Web.GraphQL.Resolvers.Live do
           |> Enum.map(fn scene_answer -> 
             %{
               id: scene_answer.id,
-              is_correct: scene_answer.is_correct,
+              isCorrect: scene_answer.is_correct,
               content: scene_answer.content
             }
           end)
