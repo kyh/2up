@@ -44,8 +44,7 @@ const Submissions = ({ gameState }: { gameState: GameState }) => {
             <Answer
               answerType={gameState.answerType}
               sceneAnswer={sceneAnswer}
-              onSubmit={() => {}}
-              submitted
+              displayMode
             />
             <div className="endorsement-container">
               {gameState.submissions.map((submission) => {
