@@ -13,7 +13,7 @@ import { App } from "./app/App";
 import reportWebVitals from "./reportWebVitals";
 
 const onResize = () => {
-  const vh = window.innerHeight * 0.01;
+  const vh = window.innerHeight;
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 };
 

@@ -5,7 +5,6 @@ export const Page = styled.section<{
   bgTop?: string;
 }>`
   display: grid;
-  height: calc((var(--vh, 1vh) * 100));
   background: ${({ theme }) => theme.ui.backgroundGrey};
   grid-template-areas:
     "header"
@@ -18,6 +17,7 @@ export const Page = styled.section<{
     overflow-x: hidden;
     overflow-y: auto;
     perspective: 5px;
+    height: var(--vh, 100vh);
 
     ${
       bgImage
