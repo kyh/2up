@@ -8,7 +8,7 @@ import { Answer } from "features/game/components/Answer";
 export const Step1 = ({ state, broadcast, userId, name }: StepProps) => {
   const [submitted, setSubmitted] = useState(false);
 
-  const submissions = state.submissions.length - 1;
+  const submissions = state.submissions.length;
   const players = state.players.length;
   const waiting = players - submissions;
 
