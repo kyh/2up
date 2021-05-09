@@ -79,7 +79,7 @@ defmodule Game.GameServer do
 
     %{
       question: question,
-      answer: answer,
+      scene_answers: scene_answers,
       pack: pack,
       instruction: instruction,
       question_type: question_type,
@@ -93,7 +93,7 @@ defmodule Game.GameServer do
       pack: pack,
       question: question,
       questionType: question_type,
-      answer: answer,
+      sceneAnswers: scene_answers,
       answerType: answer_type,
       submissions: current_scene.submissions,
       instruction: instruction

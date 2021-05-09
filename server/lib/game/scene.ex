@@ -7,9 +7,9 @@ defmodule Game.Scene do
   @derive Jason.Encoder
   defstruct question: '',
             question_type: '',
-            answer: '',
             answer_type: '',
             pack: '',
             instruction: '',
-            submissions: []
+            submissions: [],
+            scene_answers: []
 end
