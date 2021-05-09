@@ -8,12 +8,25 @@ defmodule Web.GraphQL.Resolvers.Live do
   def game_create(%{pack_id: pack_id}, _) do
     code = Live.generate_code()
 
-    questions =
-      Database.Catalog.question_list(pack_id)
+    scenes =
+      Database.Catalog.scene_list(pack_id)
       |> Enum.shuffle()
       |> Enum.take(10)
+      |> Enum.map(fn scene ->
+        scene_answers =
+          Database.Catalog.scene_answer_list(%{scene_id: scene.scene_id})
+          |> Enum.map(fn scene_answer -> 
+            %{
+              id: scene_answer.id,
+              is_correct: scene_answer.is_correct,
+              content: scene_answer.content
+            }
+          end)
 
-    case GameSupervisor.start_game(code, questions) do
+        Map.put(scene, :scene_answers, scene_answers)
+      end)
+
+    case GameSupervisor.start_game(code, scenes) do
       {:ok, _game_pid} ->
         {:ok, %{code: code}}
 

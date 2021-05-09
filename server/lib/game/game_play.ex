@@ -17,27 +17,21 @@ defmodule Game.GamePlay do
       Enum.map(question_sets, fn question_set ->
         %{
           question: question,
-          answer: answer,
+          scene_answers: scene_answers,
           pack: pack,
           instruction: instruction,
           question_type: question_type,
           answer_type: answer_type
         } = question_set
 
-        submission = %{
-          id: Ecto.UUID.generate(),
-          name: "IS_ANSWER",
-          content: answer
-        }
-
         %Scene{
           question: question,
           question_type: question_type,
-          answer: answer,
+          scene_answers: scene_answers,
           answer_type: answer_type,
           pack: pack,
           instruction: instruction,
-          submissions: [submission]
+          submissions: []
         }
       end)
 

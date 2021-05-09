@@ -29,8 +29,8 @@ defmodule Database.Catalog do
     Repo.all(query)
   end
 
-  def question_list(pack_id) do
-    tag_query =
+  def scene_list(pack_id) do
+    query =
       from scene in Scene,
         join: pack_scene in PackScene,
         on: pack_scene.scene_id == scene.id,
@@ -42,7 +42,7 @@ defmodule Database.Catalog do
         on: scene.answer_type_id == answer_type.id,
         select: %{
           question: scene.question,
-          answer: scene.answer,
+          scene_id: scene.id,
           pack: pack.name,
           instruction: scene.instruction,
           answer_type: answer_type.slug,
@@ -50,7 +50,7 @@ defmodule Database.Catalog do
         },
         where: pack.id == ^pack_id
 
-    Repo.all(tag_query)
+    Repo.all(query)
   end
 
   def question_type_list do
