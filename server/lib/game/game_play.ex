@@ -46,7 +46,7 @@ defmodule Game.GamePlay do
     %{game | players: new_players}
   end
 
-  def player_submit(game, submission, player_count) do
+  def player_submit(game, name, submission, player_count) do
     new_submission = [submission]
     current_index = game.scene - 1
     current_scene = Enum.at(game.scenes, current_index)
@@ -71,7 +71,20 @@ defmodule Game.GamePlay do
         false -> game.step
       end
 
-    %{game | scenes: new_scenes, step: current_step}
+    correct_submission_count =
+      current_scene.scene_answers
+      |> Enum.filter(& &1.isCorrect)
+      |> Enum.filter(&(&1.content == submission.content))
+      |> Enum.count()
+
+    case correct_submission_count > 0 do
+      true ->
+        %{game | scenes: new_scenes, step: current_step}
+        |> player_add_score(name, 100)
+
+      false ->
+        %{game | scenes: new_scenes, step: current_step}
+    end
   end
 
   def player_add_score(game, name, score) do
