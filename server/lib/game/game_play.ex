@@ -66,7 +66,7 @@ defmodule Game.GamePlay do
 
     # Extra player count for correct answer submission
     current_step =
-      case length(new_submissions) >= player_count + 1 do
+      case length(new_submissions) >= player_count do
         true -> game.step + 1
         false -> game.step
       end

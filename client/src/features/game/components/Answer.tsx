@@ -40,10 +40,11 @@ export const Answer: React.FC<AnswerProps> = ({
 };
 
 const AnswerText: React.FC<AnswerProps> = ({
+  sceneAnswer,
   submitted = false,
   onSubmit = () => {},
 }) => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(sceneAnswer?.content);
 
   const handleClick = () => {
     onSubmit(value);

@@ -25,7 +25,7 @@ export const GameSpectate = () => {
           dispatch={dispatch}
         />
       );
-    case 3:
+    case 2:
       return (
         <Step2Spectate
           broadcast={broadcast}
@@ -33,7 +33,7 @@ export const GameSpectate = () => {
           dispatch={dispatch}
         />
       );
-    case 4:
+    case 3:
       return (
         <Step3Spectate
           broadcast={broadcast}

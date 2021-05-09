@@ -24,17 +24,17 @@ export const GameLobby = () => {
 
   useEffect(() => {
     if (gameState.scene) {
-      if (gameState.isSpectator) {
+      if (gameState.isHost) {
         history.push(`/game/${gameState.gameId}/spectate`);
       } else {
         history.push(`/game/${gameState.gameId}`);
       }
     }
-  }, [gameState.gameId, gameState.scene, gameState.isSpectator]);
+  }, [gameState.gameId, gameState.scene, gameState.isHost]);
 
   return (
     <LobbyContainer>
-      {gameState.isSpectator ? (
+      {gameState.isHost ? (
         <TitleContainer>
           <h1 className="title">
             Go to <span className="highlight">playhouse.gg</span>
@@ -45,7 +45,7 @@ export const GameLobby = () => {
       ) : (
         <h1 className="title">Waiting for players to join...</h1>
       )}
-      <LobbyPlayersContainer isSpectator={gameState.isSpectator}>
+      <LobbyPlayersContainer isHost={gameState.isHost}>
         {gameState.players.map((p) => {
           const avatar = hashCode(p.name, 10);
           return (
@@ -56,7 +56,7 @@ export const GameLobby = () => {
           );
         })}
       </LobbyPlayersContainer>
-      {!gameState.isSpectator ? (
+      {!gameState.isHost ? (
         <>
           <Button className="start-game-button" onClick={onClickStart}>
             Start game
@@ -133,7 +133,7 @@ const TitleContainer = styled.div`
 `;
 
 type LobbyPlayersContainerProps = {
-  isSpectator: boolean;
+  isHost: boolean;
 };
 const renderTvStyles = () => {
   return css`
@@ -173,8 +173,7 @@ const renderRemoteStyles = () => {
   `;
 };
 const LobbyPlayersContainer = styled.section<LobbyPlayersContainerProps>`
-  ${({ isSpectator }) =>
-    isSpectator ? renderTvStyles() : renderRemoteStyles()}
+  ${({ isHost }) => (isHost ? renderTvStyles() : renderRemoteStyles())}
 `;
 const StartModalBody = styled.div`
   p {
