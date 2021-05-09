@@ -2,8 +2,9 @@ defmodule Database.Catalog.AnswerType do
   use Database.Model
 
   schema "answer_types" do
-    has_many :acts, Act
+    has_many :scenes, Scene
 
+    # TODO: Turn into enum type
     field :slug, :string
 
     timestamps()

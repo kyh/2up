@@ -3,7 +3,6 @@ defmodule Database.Accounts.User do
 
   schema "users" do
     has_many :packs, Pack
-    has_many :acts, Act
 
     field :username, :string
     field :email, :string

@@ -41,9 +41,9 @@ defmodule Database.Live do
     |> List.to_string()
   end
 
-  def category_create(attrs) do
-    %Category{}
-    |> Category.changeset(attrs)
+  def tag_create(attrs) do
+    %Tag{}
+    |> Tag.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -60,11 +60,11 @@ defmodule Database.Live do
     |> Repo.update()
   end
 
-  def pack_category_create(%Pack{} = pack, %Category{} = category) do
-    %PackCategory{}
-    |> PackCategory.changeset(%{})
+  def pack_tag_create(%Pack{} = pack, %Tag{} = tag) do
+    %PackTag{}
+    |> PackTag.changeset(%{})
     |> Ecto.Changeset.put_assoc(:pack, pack)
-    |> Ecto.Changeset.put_assoc(:category, category)
+    |> Ecto.Changeset.put_assoc(:tag, tag)
     |> Repo.insert()
   end
 
@@ -74,30 +74,30 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
-  def pack_act_create(%Pack{} = pack, %Act{} = act, attrs) do
-    %PackAct{}
-    |> PackAct.changeset(attrs)
+  def pack_scene_create(%Pack{} = pack, %Scene{} = scene, attrs) do
+    %PackScene{}
+    |> PackScene.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:pack, pack)
-    |> Ecto.Changeset.put_assoc(:act, act)
+    |> Ecto.Changeset.put_assoc(:scene, scene)
     |> Repo.insert()
   end
 
   def rebalance_pack(%Pack{} = pack) do
     query =
-      from pack_act in PackAct,
-        where: pack_act.pack_id == ^pack.id,
-        order_by: [asc: pack_act.order]
+      from pack_scene in PackScene,
+        where: pack_scene.pack_id == ^pack.id,
+        order_by: [asc: pack_scene.order]
 
-    Repo.all(query) |> rebalance_pack_acts(10)
+    Repo.all(query) |> rebalance_pack_scenes(10)
   end
 
-  def rebalance_pack_acts([pack_act | pack_acts], new_order) do
-    pack_act
-    |> PackAct.changeset(%{order: new_order})
+  def rebalance_pack_scenes([pack_scene | pack_scenes], new_order) do
+    pack_scene
+    |> PackScene.changeset(%{order: new_order})
     |> Repo.update()
 
-    rebalance_pack_acts(pack_acts, new_order + 10)
+    rebalance_pack_scenes(pack_scenes, new_order + 10)
   end
 
-  def rebalance_pack_acts([], _order), do: :ok
+  def rebalance_pack_scenes([], _order), do: :ok
 end

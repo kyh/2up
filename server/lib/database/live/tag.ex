@@ -1,16 +1,16 @@
-defmodule Database.Live.Category do
+defmodule Database.Live.Tag do
   use Database.Model
 
-  schema "categories" do
+  schema "tags" do
     field :name, :string
 
     timestamps()
   end
 
-  def changeset(category, attrs) do
+  def changeset(tag, attrs) do
     required_fields = [:name]
 
-    category
+    tag
     |> cast(attrs, required_fields)
     |> validate_required(required_fields)
   end

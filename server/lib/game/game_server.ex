@@ -39,16 +39,12 @@ defmodule Game.GameServer do
     GenServer.call(via_tuple(game_code), {:player_submit, submission, player_count})
   end
 
-  def player_endorse(game_code, name, submission_id, player_count) do
-    GenServer.call(via_tuple(game_code), {:player_endorse, name, submission_id, player_count})
+  def step_next(game_code) do
+    GenServer.call(via_tuple(game_code), :step_next)
   end
 
   def scene_next(game_code) do
     GenServer.call(via_tuple(game_code), :scene_next)
-  end
-
-  def act_next(game_code) do
-    GenServer.call(via_tuple(game_code), :act_next)
   end
 
   def game_pid(game_code) do
@@ -79,7 +75,7 @@ defmodule Game.GameServer do
   end
 
   def get_game_state(game) do
-    current_act = Enum.at(game.acts, game.act - 1)
+    current_scene = Enum.at(game.scenes, game.scene - 1)
 
     %{
       question: question,
@@ -88,18 +84,18 @@ defmodule Game.GameServer do
       instruction: instruction,
       question_type: question_type,
       answer_type: answer_type
-    } = current_act
+    } = current_scene
 
     %{
-      act: game.act,
       scene: game.scene,
+      step: game.step,
       players: game.players,
       pack: pack,
       question: question,
       questionType: question_type,
       answer: answer,
       answerType: answer_type,
-      submissions: current_act.submissions,
+      submissions: current_scene.submissions,
       instruction: instruction
     }
   end
@@ -107,7 +103,7 @@ defmodule Game.GameServer do
   def get_end_game_state(game) do
     %{
       pack: game.pack,
-      acts: game.acts,
+      scenes: game.scenes,
       players: game.players
     }
   end
@@ -132,14 +128,6 @@ defmodule Game.GameServer do
     {:reply, get_game_state(updated_game), updated_game, @timeout}
   end
 
-  def handle_call({:player_endorse, name, submission_id, player_count}, _from, game) do
-    updated_game = Game.GamePlay.player_endorse(game, name, submission_id, player_count)
-
-    :ets.insert(:games_table, {my_game_code(), updated_game})
-
-    {:reply, get_game_state(updated_game), updated_game, @timeout}
-  end
-
   def handle_call(:game_start, _from, game) do
     updated_game = Game.GamePlay.start(game)
 
@@ -152,16 +140,16 @@ defmodule Game.GameServer do
     {:reply, get_end_game_state(game), game, @timeout}
   end
 
-  def handle_call(:act_next, _from, game) do
-    updated_game = Game.GamePlay.act_next(game)
+  def handle_call(:scene_next, _from, game) do
+    updated_game = Game.GamePlay.scene_next(game)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 
     {:reply, get_game_state(updated_game), updated_game, @timeout}
   end
 
-  def handle_call(:scene_next, _from, game) do
-    updated_game = Game.GamePlay.scene_next(game)
+  def handle_call(:step_next, _from, game) do
+    updated_game = Game.GamePlay.step_next(game)
 
     :ets.insert(:games_table, {my_game_code(), updated_game})
 

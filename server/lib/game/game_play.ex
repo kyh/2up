@@ -3,9 +3,9 @@ defmodule Game.GamePlay do
   Main game logic
   """
 
-  alias Game.{Act, GamePlay, Player}
+  alias Game.{Scene, GamePlay, Player}
 
-  defstruct act: 0, scene: 0, acts: [], players: [], pack: ""
+  defstruct scene: 0, step: 0, scenes: [], players: [], pack: ""
 
   def new(question_sets, player_ids) do
     players =
@@ -13,7 +13,7 @@ defmodule Game.GamePlay do
         %Player{id: player_id}
       end)
 
-    acts =
+    scenes =
       Enum.map(question_sets, fn question_set ->
         %{
           question: question,
@@ -27,11 +27,10 @@ defmodule Game.GamePlay do
         submission = %{
           id: Ecto.UUID.generate(),
           name: "IS_ANSWER",
-          content: answer,
-          endorsers: []
+          content: answer
         }
 
-        %Act{
+        %Scene{
           question: question,
           question_type: question_type,
           answer: answer,
@@ -42,7 +41,7 @@ defmodule Game.GamePlay do
         }
       end)
 
-    %GamePlay{acts: acts, players: players}
+    %GamePlay{scenes: scenes, players: players}
   end
 
   def player_new(game, player) do
@@ -55,30 +54,30 @@ defmodule Game.GamePlay do
 
   def player_submit(game, submission, player_count) do
     new_submission = [submission]
-    current_index = game.act - 1
-    current_act = Enum.at(game.acts, current_index)
-    current_submissions = current_act.submissions
+    current_index = game.scene - 1
+    current_scene = Enum.at(game.scenes, current_index)
+    current_submissions = current_scene.submissions
     new_submissions = Enum.shuffle(current_submissions ++ new_submission)
-    updated_act = %{current_act | submissions: new_submissions}
+    updated_scene = %{current_scene | submissions: new_submissions}
 
-    new_acts =
-      game.acts
+    new_scenes =
+      game.scenes
       |> Enum.with_index()
       |> Enum.map(fn {x, i} ->
         case i == current_index do
-          true -> updated_act
+          true -> updated_scene
           false -> x
         end
       end)
 
     # Extra player count for correct answer submission
-    current_scene =
+    current_step =
       case length(new_submissions) >= player_count + 1 do
-        true -> game.scene + 1
-        false -> game.scene
+        true -> game.step + 1
+        false -> game.step
       end
 
-    %{game | acts: new_acts, scene: current_scene}
+    %{game | scenes: new_scenes, step: current_step}
   end
 
   def player_add_score(game, name, score) do
@@ -99,71 +98,18 @@ defmodule Game.GamePlay do
     %{game | players: new_players}
   end
 
-  def player_endorse(game, name, submission_id, player_count) do
-    current_index = game.act - 1
-    current_act = Enum.at(game.acts, current_index)
-
-    submission =
-      Enum.filter(current_act.submissions, fn x -> x.id === submission_id end)
-      |> Enum.at(0)
-
-    updated_game =
-      case submission.name == "IS_ANSWER" do
-        true -> player_add_score(game, name, 1000)
-        false -> player_add_score(game, submission.name, 500)
-      end
-
-    player =
-      Enum.filter(updated_game.players, fn x -> x.name === name end)
-      |> Enum.at(0)
-
-    new_endorsers = submission.endorsers ++ [player]
-    new_submission = %{submission | endorsers: new_endorsers}
-
-    new_submissions =
-      current_act.submissions
-      |> Enum.map(fn x ->
-        case x.id == submission_id do
-          true -> new_submission
-          false -> x
-        end
-      end)
-
-    new_acts =
-      updated_game.acts
-      |> Enum.with_index()
-      |> Enum.map(fn {x, i} ->
-        case i == current_index do
-          true -> %{x | submissions: new_submissions}
-          false -> x
-        end
-      end)
-
-    endorsement_length =
-      Enum.map(new_submissions, fn x -> length(x.endorsers) end)
-      |> Enum.sum()
-
-    current_scene =
-      case endorsement_length >= player_count do
-        true -> updated_game.scene + 1
-        false -> updated_game.scene
-      end
-
-    %{updated_game | acts: new_acts, scene: current_scene}
+  def step_next(game) do
+    %{game | step: game.step + 1}
   end
 
   def scene_next(game) do
-    %{game | scene: game.scene + 1}
-  end
-
-  def act_next(game) do
-    case length(game.acts) == game.act do
-      true -> %{game | act: 0, scene: 0}
-      false -> %{game | act: game.act + 1, scene: 1}
+    case length(game.scenes) == game.scene do
+      true -> %{game | scene: 0, step: 0}
+      false -> %{game | scene: game.scene + 1, step: 1}
     end
   end
 
   def start(game) do
-    %{game | act: 1, scene: 1}
+    %{game | scene: 1, step: 1}
   end
 end

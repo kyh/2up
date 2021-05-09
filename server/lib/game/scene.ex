@@ -1,6 +1,6 @@
-defmodule Game.Act do
+defmodule Game.Scene do
   @moduledoc """
-  Act is one full life cycle of a question
+  Scene is one full life cycle of a question
   Submission -> Endorsement -> Results
   """
 
@@ -11,6 +11,5 @@ defmodule Game.Act do
             answer_type: '',
             pack: '',
             instruction: '',
-            submissions: [],
-            endorsements: []
+            submissions: []
 end
