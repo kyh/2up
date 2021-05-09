@@ -24,7 +24,7 @@ export type Player = {
 };
 
 export type SceneAnswer = {
-  id?: number;
+  id?: string;
   isCorrect?: boolean;
   content?: string;
 };
