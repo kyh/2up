@@ -1,4 +1,4 @@
-defmodule Database.Live.Category do
+defmodule Database.Live.Tag do
   use Database.Model
 
   schema "categories" do

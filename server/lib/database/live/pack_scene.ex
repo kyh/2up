@@ -1,21 +1,21 @@
-defmodule Database.Live.PackAct do
+defmodule Database.Live.PackScene do
   use Database.Model
 
-  schema "pack_acts" do
+  schema "pack_scenes" do
     belongs_to :pack, Pack
-    belongs_to :act, Act
+    belongs_to :scene, Scene
 
     field :order, :decimal
 
     timestamps()
   end
 
-  def changeset(pack_act, attrs) do
+  def changeset(pack_scene, attrs) do
     required_fields = [:order]
 
-    pack_act
+    pack_scene
     |> cast(attrs, required_fields)
     |> assoc_constraint(:pack)
-    |> assoc_constraint(:act)
+    |> assoc_constraint(:scene)
   end
 end

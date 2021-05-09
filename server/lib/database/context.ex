@@ -10,17 +10,16 @@ defmodule Database.Context do
       alias Database.Accounts.User
 
       alias Database.Catalog.{
-        ActTag,
-        Act,
+        Scene,
         AnswerType,
         QuestionType,
         Tag
       }
 
       alias Database.Live.{
-        Category,
-        PackAct,
-        PackCategory,
+        Tag,
+        PackScene,
+        PackTag,
         Pack,
         Play
       }

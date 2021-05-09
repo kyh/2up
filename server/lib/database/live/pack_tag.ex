@@ -1,9 +1,9 @@
-defmodule Database.Live.PackCategory do
+defmodule Database.Live.PackTag do
   use Database.Model
 
   schema "pack_categories" do
     belongs_to :pack, Pack
-    belongs_to :category, Category
+    belongs_to :category, Tag
 
     timestamps()
   end
