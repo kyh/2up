@@ -9,12 +9,12 @@ export const HomeSetNamePage: React.FC = () => {
   const history = useHistory();
   const { state: playhouseState, dispatch } = usePlayhouse();
   const { state: gameState } = useGame();
-  const [name, setName] = useState(playhouseState.username);
+  const [name, setName] = useState(playhouseState.name);
 
   const onSubmitName = (event: SyntheticEvent) => {
     event.preventDefault();
-    dispatch(gameActions.toggle_host(false));
-    dispatch(playhouseActions.update_user({ username: name }));
+    dispatch(gameActions.toggle_spectator(false));
+    dispatch(playhouseActions.update_user({ name }));
     if (gameState.gameId) {
       history.push(`/game/${gameState.gameId}/lobby`);
     } else {

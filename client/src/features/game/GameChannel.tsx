@@ -20,8 +20,8 @@ export const GameProvider: React.FC<{ gameId?: string }> = ({
     `game:${gameId}`,
     (state) => state.game,
     {
-      name: localStorage.getItem("username"),
-      isHost: localStorage.getItem("isHost") === "true",
+      name: localStorage.getItem("name"),
+      isSpectator: localStorage.getItem("isSpectator") === "true",
     },
     "game/players"
   );

@@ -1,47 +1,28 @@
-import React, { useState, useEffect, createRef } from "react";
+import React, { useState, createRef } from "react";
 import styled from "styled-components";
 import CanvasDraw from "react-canvas-draw";
 import { HexColorPicker } from "react-colorful";
 import { Box, Input, Button } from "components";
+import type { SceneAnswer } from "features/game/gameSlice";
 
 type AnswerProps = {
-  answer?: string;
+  sceneAnswer?: SceneAnswer;
   answerType?: string;
   submitted?: boolean;
   onSubmit?: (_value: any) => void;
 };
 
 export const Answer: React.FC<AnswerProps> = ({
-  answer = "",
+  sceneAnswer,
   answerType = "text",
   submitted = false,
   onSubmit = () => {},
 }) => {
   switch (answerType) {
-    case "drawing":
-      return <AnswerCanvas submitted={submitted} onSubmit={onSubmit} />;
-    case "endorse_drawing":
+    case "multi_text":
       return (
-        <EndorseCanvas
-          answer={answer}
-          submitted={submitted}
-          onSubmit={onSubmit}
-        />
-      );
-    case "color":
-      return <AnswerColor submitted={submitted} onSubmit={onSubmit} />;
-    case "endorse_color":
-      return (
-        <EndorseColor
-          answer={answer}
-          submitted={submitted}
-          onSubmit={onSubmit}
-        />
-      );
-    case "endorse_text":
-      return (
-        <EndorseText
-          answer={answer}
+        <AnswerMulti
+          sceneAnswer={sceneAnswer}
           submitted={submitted}
           onSubmit={onSubmit}
         />
@@ -49,26 +30,22 @@ export const Answer: React.FC<AnswerProps> = ({
     // "text"
     default:
       return (
-        <AnswerText answer={answer} submitted={submitted} onSubmit={onSubmit} />
+        <AnswerText
+          sceneAnswer={sceneAnswer}
+          submitted={submitted}
+          onSubmit={onSubmit}
+        />
       );
   }
 };
 
 const AnswerText: React.FC<AnswerProps> = ({
-  answer = "",
   submitted = false,
   onSubmit = () => {},
 }) => {
   const [value, setValue] = useState("");
-  const [errorValue, setErrorValue] = useState("");
 
   const handleClick = () => {
-    if (value.toLowerCase() === answer?.toLowerCase()) {
-      setErrorValue(
-        "You have selected the right answer. Please write a tricky wrong answer instead."
-      );
-      return;
-    }
     onSubmit(value);
   };
 
@@ -76,13 +53,9 @@ const AnswerText: React.FC<AnswerProps> = ({
     <Box textAlign="center">
       <Input
         value={value}
-        onChange={(e) => {
-          setErrorValue("");
-          setValue(e.target.value);
-        }}
+        onChange={(e) => setValue(e.target.value)}
         readOnly={submitted}
       />
-      <p>{errorValue}</p>
       <Button disabled={!value || submitted} onClick={handleClick}>
         Submit answer
       </Button>
@@ -90,14 +63,18 @@ const AnswerText: React.FC<AnswerProps> = ({
   );
 };
 
-const EndorseText: React.FC<AnswerProps> = ({
-  answer = "",
+const AnswerMulti: React.FC<AnswerProps> = ({
+  sceneAnswer,
   submitted = false,
   onSubmit = () => {},
 }) => {
   return (
-    <EndorsementButtons disabled={submitted} onClick={() => onSubmit(answer)}>
-      {answer}
+    <EndorsementButtons
+      key={sceneAnswer?.id}
+      disabled={submitted}
+      onClick={() => onSubmit(sceneAnswer)}
+    >
+      {sceneAnswer?.content}
     </EndorsementButtons>
   );
 };
@@ -130,30 +107,6 @@ const AnswerCanvas: React.FC<
   );
 };
 
-const EndorseCanvas: React.FC<AnswerProps> = ({
-  answer = "",
-  submitted = false,
-  onSubmit = () => {},
-}) => {
-  const canvas = createRef<CanvasDraw>();
-
-  useEffect(() => {
-    canvas?.current?.loadSaveData(answer!);
-  });
-
-  return (
-    <EndorsementButtons disabled={submitted} onClick={() => onSubmit(answer)}>
-      <CanvasDraw
-        ref={canvas}
-        brushRadius={5}
-        lazyRadius={5}
-        canvasWidth={window.innerWidth / 4}
-        canvasHeight={(window.innerHeight - 250) / 4}
-      />
-    </EndorsementButtons>
-  );
-};
-
 const AnswerColor: React.FC<AnswerProps> = ({
   submitted = false,
   onSubmit = () => {},
@@ -171,18 +124,6 @@ const AnswerColor: React.FC<AnswerProps> = ({
         Submit answer
       </Button>
     </ColorPickerContainer>
-  );
-};
-
-const EndorseColor: React.FC<AnswerProps> = ({
-  answer = "",
-  submitted = false,
-  onSubmit = () => {},
-}) => {
-  return (
-    <EndorsementButtons disabled={submitted} onClick={() => onSubmit(answer)}>
-      <HexColor hex={answer} />
-    </EndorsementButtons>
   );
 };
 
@@ -209,28 +150,27 @@ const EndorsementButtons = styled(Button)`
 /**
  * Editable versions of the component above for Gamemaster Pages
  */
-type EditableAnswerProps = AnswerProps & {
+type EditableAnswerProps = {
   sceneId: string;
+  answerType: string;
+  sceneAnswers: SceneAnswer[];
   onChange: (_updatedScene: any) => void;
 };
 
 export const EditableAnswer: React.FC<EditableAnswerProps> = ({
   sceneId,
-  answer,
+  sceneAnswers,
   answerType,
   onChange,
 }) => {
   switch (answerType) {
-    case "drawing":
+    case "multi_text":
       return (
         <EditableType onSelectType={onChange} key={sceneId}>
-          <AnswerCanvas submitted height={300} width={200} />
-        </EditableType>
-      );
-    case "color":
-      return (
-        <EditableType onSelectType={onChange} key={sceneId}>
-          <AnswerColor submitted />
+          <Box mb={2}>
+            <Input onBlur={(e) => onChange({ answer: e.target.value })} />
+          </Box>
+          <Button onClick={() => {}}>+ Add Option</Button>
         </EditableType>
       );
     // "text"
@@ -239,7 +179,7 @@ export const EditableAnswer: React.FC<EditableAnswerProps> = ({
         <EditableType onSelectType={onChange} key={sceneId}>
           <Box mb={2}>
             <Input
-              defaultValue={answer}
+              defaultValue={""}
               onBlur={(e) => onChange({ answer: e.target.value })}
             />
           </Box>
@@ -249,9 +189,11 @@ export const EditableAnswer: React.FC<EditableAnswerProps> = ({
   }
 };
 
-// TODO: Get question types from backend
+// TODO: Get answer types from backend
 const EditableType: React.FC<{
-  onSelectType: (_updatedScene: Pick<any, "answerType" | "answer">) => void;
+  onSelectType: (
+    _updatedScene: Pick<any, "answerType" | "sceneAnswers">
+  ) => void;
 }> = ({ onSelectType, children }) => {
   return (
     <EditableAnswerContainer>
@@ -262,7 +204,7 @@ const EditableType: React.FC<{
           onClick={() => {
             onSelectType({
               answerType: { slug: "text" },
-              answer: "",
+              sceneAnswers: [],
             });
           }}
         >
@@ -272,23 +214,12 @@ const EditableType: React.FC<{
           variant="fab"
           onClick={() => {
             onSelectType({
-              answerType: { slug: "color" },
-              answer: "",
+              answerType: { slug: "multi_text" },
+              sceneAnswers: [],
             });
           }}
         >
-          C
-        </Button>
-        <Button
-          variant="fab"
-          onClick={() => {
-            onSelectType({
-              answerType: { slug: "drawing" },
-              answer: "",
-            });
-          }}
-        >
-          D
+          M
         </Button>
       </div>
     </EditableAnswerContainer>

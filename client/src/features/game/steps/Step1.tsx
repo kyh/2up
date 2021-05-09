@@ -32,12 +32,14 @@ export const Step1 = ({ state, broadcast, userId, name }: StepProps) => {
         instruction={state.instruction}
         questionType={state.questionType}
       />
-      <Answer
-        answer={state.answer}
-        answerType={state.answerType}
-        submitted={submitted}
-        onSubmit={onSubmit}
-      />
+      {state.sceneAnswers?.map((sceneAnswer) => (
+        <Answer
+          sceneAnswer={sceneAnswer}
+          answerType={state.answerType}
+          submitted={submitted}
+          onSubmit={onSubmit}
+        />
+      ))}
       <Timer shouldCallTimeout={!submitted} onTimeout={onSubmit} />
     </Flex>
   );

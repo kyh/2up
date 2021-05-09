@@ -2,7 +2,7 @@ import { useHistory } from "react-router-dom";
 import { Button } from "components";
 import { gameActions, StepProps } from "features/game/gameSlice";
 
-export const Step0 = ({ state, broadcast, dispatch = () => {} }: StepProps) => {
+export const Step0 = ({ state, broadcast, dispatch }: StepProps) => {
   const history = useHistory();
   const handleEnd = () => {
     dispatch(gameActions.reset());

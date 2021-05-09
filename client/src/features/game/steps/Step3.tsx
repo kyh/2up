@@ -1,101 +1,41 @@
-import { AvatarImage, Button } from "components";
+import { Flex, Button } from "components";
 import { StepProps } from "features/game/gameSlice";
-import { hashCode } from "utils/stringUtils";
-import { SubmissionsContainer } from "features/game/components/SubmissionsContainer";
-import { Answer } from "features/game/components/Answer";
-import correctSvg from "features/game/components/correct.svg";
 
 export const Step3 = ({ state, broadcast, name }: StepProps) => {
-  const firstPlayer = state.players[0];
+  const [firstPlayer] = state.players;
   return (
-    <section>
-      <SubmissionsContainer>
-        {state.submissions.map((submission) => {
-          if (!submission.content) return null;
-          const isRightAnswer = submission.content === state.answer;
-          return (
-            <div className="submission full" key={submission.id}>
-              {isRightAnswer && (
-                <img
-                  className="correct"
-                  src={correctSvg}
-                  alt="Correct answer"
-                />
-              )}
-              <Answer
-                key={submission.id}
-                answerType={`endorse_${state.answerType}`}
-                answer={submission.content}
-                onSubmit={() => {}}
-                submitted
-              />
-              <div className="endorsement-container">
-                {submission.endorsers.map((endorser) => {
-                  const avatar = hashCode(endorser.name, 10);
-                  return (
-                    <div className="endorsement" key={endorser.id}>
-                      <AvatarImage avatar={avatar} />
-                      {endorser.name}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-      </SubmissionsContainer>
+    <div>
+      <h2>Question: {state.scene} / 10</h2>
+      {state.players.map((player) => (
+        <Flex key={player.name} justifyContent="space-between" mb={3}>
+          <span>{player.name}</span>
+          <span>{player.score}</span>
+        </Flex>
+      ))}
       {firstPlayer && (
         <Button
           disabled={firstPlayer.name !== name}
-          onClick={() => broadcast("step:next")}
+          onClick={() => broadcast("scene:next")}
         >
           {firstPlayer.name === name
-            ? "Next"
+            ? "Next Question"
             : `Waiting for ${firstPlayer.name}`}
         </Button>
       )}
-    </section>
+    </div>
   );
 };
 
 export const Step3Spectate = ({ state }: StepProps) => {
   return (
-    <section>
-      <SubmissionsContainer>
-        {state.submissions.map((submission) => {
-          if (!submission.content) return null;
-          const isRightAnswer = submission.content === state.answer;
-          return (
-            <div className="submission" key={submission.id}>
-              {isRightAnswer && (
-                <img
-                  className="correct"
-                  src={correctSvg}
-                  alt="Correct answer"
-                />
-              )}
-              <Answer
-                key={submission.id}
-                answerType={`endorse_${state.answerType}`}
-                answer={submission.content}
-                onSubmit={() => {}}
-                submitted
-              />
-              <div className="endorsement-container">
-                {submission.endorsers.map((endorser) => {
-                  const avatar = hashCode(endorser.name, 10);
-                  return (
-                    <div className="endorsement" key={endorser.id}>
-                      <AvatarImage avatar={avatar} />
-                      {endorser.name}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-      </SubmissionsContainer>
-    </section>
+    <div>
+      <h2>Question: {state.scene} / 10</h2>
+      {state.players.map((player) => (
+        <Flex key={player.name} justifyContent="space-between" mb={3}>
+          <span>{player.name}</span>
+          <span>{player.score}</span>
+        </Flex>
+      ))}
+    </div>
   );
 };
