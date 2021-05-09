@@ -17,9 +17,9 @@ defmodule Web.GraphQL.Types.LiveTypes do
     field :length, :integer
     field :is_random, :boolean
 
-    connection field :acts, node_type: :act do
+    connection field :scenes, node_type: :scene do
       resolve(fn parent, args, meta ->
-        Catalog.ordered_act_list(parent, Map.merge(args, %{pack_id: parent.id}), meta)
+        Catalog.ordered_scene_list(parent, Map.merge(args, %{pack_id: parent.id}), meta)
       end)
     end
   end

@@ -1,51 +1,42 @@
 defmodule Database.Catalog do
   use Database.Context
 
-  def ordered_act_list(args) do
+  def ordered_scene_list(args) do
     query =
-      from act in Act,
-        join: pack_act in PackAct,
-        on: pack_act.act_id == act.id,
-        where: pack_act.pack_id == ^args.pack_id,
-        order_by: [asc: pack_act.order]
+      from scene in Scene,
+        join: pack_scene in PackScene,
+        on: pack_scene.scene_id == scene.id,
+        where: pack_scene.pack_id == ^args.pack_id,
+        order_by: [asc: pack_scene.order]
 
     Repo.all(query)
   end
 
-  def act_list(%{tag_ids: tag_ids}) do
+  def scene_list(%{question_type_id: question_type_id, answer_type_id: answer_type_id}) do
     query =
-      from act in Act,
-        join: act_tag in ActTag,
-        on: act_tag.act_id == act.id,
-        where: act_tag.tag_id in ^tag_ids
-
-    Repo.all(query)
-  end
-
-  def act_list(%{question_type_id: question_type_id, answer_type_id: answer_type_id}) do
-    query =
-      from act in Act,
-        where: act.question_type_id == ^question_type_id and act.answer_type_id == ^answer_type_id
+      from scene in Scene,
+        where:
+          scene.question_type_id == ^question_type_id and scene.answer_type_id == ^answer_type_id
 
     Repo.all(query)
   end
 
   def question_list(pack_id) do
     tag_query =
-      from act in Act,
-        join: pack_act in PackAct,
-        on: pack_act.act_id == act.id,
+      from scene in Scene,
+        join: pack_scene in PackScene,
+        on: pack_scene.scene_id == scene.id,
         join: pack in Pack,
-        on: pack_act.pack_id == pack.id,
+        on: pack_scene.pack_id == pack.id,
         join: question_type in QuestionType,
-        on: act.question_type_id == question_type.id,
+        on: scene.question_type_id == question_type.id,
         join: answer_type in AnswerType,
-        on: act.answer_type_id == answer_type.id,
+        on: scene.answer_type_id == answer_type.id,
         select: %{
-          question: act.question,
-          answer: act.answer,
+          question: scene.question,
+          answer: scene.answer,
           pack: pack.name,
-          instruction: act.instruction,
+          instruction: scene.instruction,
           answer_type: answer_type.slug,
           question_type: question_type.slug
         },
@@ -69,21 +60,19 @@ defmodule Database.Catalog do
     |> Repo.insert()
   end
 
-  def act_create(
-        %User{} = user,
+  def scene_create(
         %QuestionType{} = question_type,
         %AnswerType{} = answer_type,
         attrs
       ) do
-    %Act{}
-    |> Act.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:user, user)
+    %Scene{}
+    |> Scene.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:question_type, question_type)
     |> Ecto.Changeset.put_assoc(:answer_type, answer_type)
     |> Repo.insert()
   end
 
-  def act_create(
+  def scene_create(
         %User{} = user,
         attrs
       ) do
@@ -91,58 +80,65 @@ defmodule Database.Catalog do
     answer_type = Repo.get_by(AnswerType, slug: "text")
     pack = Repo.get(Pack, attrs.pack_id)
 
-    {:ok, act} =
-      %Act{}
-      |> Act.changeset(attrs)
+    {:ok, scene} =
+      %Scene{}
+      |> Scene.changeset(attrs)
       |> Ecto.Changeset.put_assoc(:user, user)
       |> Ecto.Changeset.put_assoc(:question_type, question_type)
       |> Ecto.Changeset.put_assoc(:answer_type, answer_type)
       |> Repo.insert()
 
-    %PackAct{}
-    |> PackAct.changeset(%{order: attrs.order})
+    %PackScene{}
+    |> PackScene.changeset(%{order: attrs.order})
     |> Ecto.Changeset.put_assoc(:pack, pack)
-    |> Ecto.Changeset.put_assoc(:act, act)
+    |> Ecto.Changeset.put_assoc(:scene, scene)
     |> Repo.insert()
 
-    {:ok, act}
+    {:ok, scene}
+  end
+
+  def scene_answer_create(%Scene{} = scene, answer, is_correct) do
+    %SceneAnswer{}
+    |> SceneAnswer.changeset(%{content: answer, is_correct: is_correct})
+    |> Ecto.Changeset.put_assoc(:scene, scene)
+    |> Repo.insert()
   end
 
   def calculate_new_order(%{
-        id: act_id,
+        id: scene_id,
         before_id: before_id,
         after_id: after_id,
         pack_id: pack_id
       }) do
-    before_pack_act = Repo.get_by(PackAct, act_id: before_id, pack_id: pack_id)
-    after_pack_act = Repo.get_by(PackAct, act_id: after_id, pack_id: pack_id)
+    before_pack_scene = Repo.get_by(PackScene, scene_id: before_id, pack_id: pack_id)
+    after_pack_scene = Repo.get_by(PackScene, scene_id: after_id, pack_id: pack_id)
 
-    Decimal.add(before_pack_act.order, after_pack_act.order)
+    Decimal.add(before_pack_scene.order, after_pack_scene.order)
     |> Decimal.div(2)
   end
 
   def calculate_new_order(%{after_id: after_id, pack_id: pack_id}) do
-    after_pack_act = Repo.get_by(PackAct, act_id: after_id, pack_id: pack_id)
-    Decimal.div(after_pack_act.order, Decimal.cast(2))
+    after_pack_scene = Repo.get_by(PackScene, scene_id: after_id, pack_id: pack_id)
+    Decimal.div(after_pack_scene.order, Decimal.cast(2))
   end
 
   def calculate_new_order(%{before_id: before_id, pack_id: pack_id}) do
-    before_pack_act = Repo.get_by(PackAct, act_id: before_id, pack_id: pack_id)
-    Decimal.add(before_pack_act.order, 1)
+    before_pack_scene = Repo.get_by(PackScene, scene_id: before_id, pack_id: pack_id)
+    Decimal.add(before_pack_scene.order, 1)
   end
 
-  def pack_act_update(
+  def pack_scene_update(
         %User{} = user,
         attrs
       ) do
     new_order = calculate_new_order(attrs)
 
-    Repo.get_by(PackAct, act_id: attrs.id, pack_id: attrs.pack_id)
-    |> PackAct.changeset(%{order: new_order})
+    Repo.get_by(PackScene, scene_id: attrs.id, pack_id: attrs.pack_id)
+    |> PackScene.changeset(%{order: new_order})
     |> Repo.update()
   end
 
-  def act_update(
+  def scene_update(
         %User{} = user,
         attrs
       ) do
@@ -154,41 +150,33 @@ defmodule Database.Catalog do
       |> Map.put(:question_type_id, question_type.id)
       |> Map.put(:answer_type_id, answer_type.id)
 
-    Repo.get_by(Act, id: attrs.id)
-    |> Act.changeset(attrs)
+    Repo.get_by(Scene, id: attrs.id)
+    |> Scene.changeset(attrs)
     |> Repo.update()
   end
 
-  def act_delete(
+  def scene_delete(
         %User{} = user,
-        %Act{} = act,
+        %Scene{} = scene,
         attrs
       ) do
     pack = Repo.get_by(Pack, id: attrs.pack_id)
 
-    pack_act =
-      Repo.get_by(PackAct, pack_id: pack.id, act_id: act.id)
+    pack_scene =
+      Repo.get_by(PackScene, pack_id: pack.id, scene_id: scene.id)
       |> Repo.delete()
 
-    pack_acts_query =
-      from pack_act in PackAct,
-        select: %{id: pack_act.id},
-        where: pack_act.act_id == ^act.id
+    pack_scenes_query =
+      from pack_scene in PackScene,
+        select: %{id: pack_scene.id},
+        where: pack_scene.scene_id == ^scene.id
 
-    Repo.all(pack_acts_query)
+    Repo.all(pack_scenes_query)
     |> Enum.count()
     |> case do
-      0 -> act |> Repo.delete()
-      _ -> {:ok, act}
+      0 -> scene |> Repo.delete()
+      _ -> {:ok, scene}
     end
-  end
-
-  def act_tag_create(%Act{} = act, %Tag{} = tag) do
-    %ActTag{}
-    |> ActTag.changeset(%{})
-    |> Ecto.Changeset.put_assoc(:act, act)
-    |> Ecto.Changeset.put_assoc(:tag, tag)
-    |> Repo.insert()
   end
 
   def question_type_create(attrs) do
@@ -203,34 +191,34 @@ defmodule Database.Catalog do
     |> Repo.insert()
   end
 
-  def act_get_by_id(%{id: id, pack_id: pack_id}) do
+  def scene_get_by_id(%{id: id, pack_id: pack_id}) do
     query =
-      from act in Act,
-        join: pack_act in PackAct,
-        on: pack_act.act_id == act.id,
+      from scene in Scene,
+        join: pack_scene in PackScene,
+        on: pack_scene.scene_id == scene.id,
         join: pack in Pack,
-        on: pack_act.pack_id == pack.id,
+        on: pack_scene.pack_id == pack.id,
         where: pack.id == ^pack_id,
-        where: act.id == ^id,
-        order_by: [asc: pack_act.order],
+        where: scene.id == ^id,
+        order_by: [asc: pack_scene.order],
         limit: 1
 
     Repo.one(query)
   end
 
-  def act_get_by_id(%{id: id}) do
-    Repo.get_by(Act, id: id)
+  def scene_get_by_id(%{id: id}) do
+    Repo.get_by(Scene, id: id)
   end
 
-  def act_get_by_id(%{pack_id: pack_id}) do
+  def scene_get_by_id(%{pack_id: pack_id}) do
     query =
-      from act in Act,
-        join: pack_act in PackAct,
-        on: pack_act.act_id == act.id,
+      from scene in Scene,
+        join: pack_scene in PackScene,
+        on: pack_scene.scene_id == scene.id,
         join: pack in Pack,
-        on: pack_act.pack_id == pack.id,
+        on: pack_scene.pack_id == pack.id,
         where: pack.id == ^pack_id,
-        order_by: [asc: pack_act.order],
+        order_by: [asc: pack_scene.order],
         limit: 1
 
     Repo.one(query)
