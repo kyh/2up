@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode, forwardRef } from "react";
 import styled from "styled-components";
 import { Input } from "../Input/Input";
 
@@ -12,13 +12,13 @@ type Props = {
   id?: HTMLTextAreaElement["id"];
   type?: HTMLTextAreaElement["type"];
   placeholder?: HTMLTextAreaElement["placeholder"];
-  labelText?: React.ReactNode;
-  children?: React.ReactNode;
+  labelText?: ReactNode;
+  children?: ReactNode;
   error?: boolean;
-  errorText?: React.ReactNode;
+  errorText?: ReactNode;
 };
 
-export const AreaField = React.forwardRef<HTMLTextAreaElement, Props>(
+export const AreaField = forwardRef<HTMLTextAreaElement, Props>(
   ({ id, labelText, placeholder, error, errorText, ...props }, ref) => {
     return (
       <Field>

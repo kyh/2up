@@ -1,4 +1,4 @@
-import React, { useState, SyntheticEvent } from "react";
+import { useState, SyntheticEvent } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { gql, useMutation } from "@apollo/client";
@@ -16,7 +16,7 @@ const GAME_CHECK = gql`
   }
 `;
 
-export const HomeJoinGamePage: React.FC = () => {
+export const HomeJoinGamePage = () => {
   const alert = useAlert();
   const history = useHistory();
   const { state: gameState, dispatch } = useGame();

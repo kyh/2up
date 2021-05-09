@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode } from "react";
 import styled from "styled-components";
 import { Button } from "components";
 
@@ -8,11 +8,11 @@ type QuestionProps = {
   questionType?: string;
 };
 
-export const Question: React.FC<QuestionProps> = ({
+export const Question = ({
   instruction,
   question,
   questionType,
-}) => {
+}: QuestionProps) => {
   switch (questionType) {
     case "image":
       return (
@@ -54,13 +54,13 @@ type EditableQuestionProps = QuestionProps & {
   onChange: (_updatedAct: any) => void;
 };
 
-export const EditableQuestion: React.FC<EditableQuestionProps> = ({
+export const EditableQuestion = ({
   sceneId,
   instruction,
   question,
   questionType,
   onChange,
-}) => {
+}: EditableQuestionProps) => {
   switch (questionType) {
     case "image":
       return (
@@ -103,10 +103,15 @@ export const EditableQuestion: React.FC<EditableQuestionProps> = ({
   }
 };
 
+type EditableTypeProps = {
+  onSelectType: (
+    _updatedScene: Pick<any, "answerType" | "sceneAnswers">
+  ) => void;
+  children: ReactNode;
+};
+
 // TODO: Get answer types from backend
-const EditableType: React.FC<{
-  onSelectType: (_updatedAct: Pick<any, "questionType" | "question">) => void;
-}> = ({ onSelectType, children }) => {
+const EditableType = ({ onSelectType, children }: EditableTypeProps) => {
   return (
     <EditableTypeContainer>
       {children}

@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
@@ -40,7 +39,9 @@ export type AuthInputs = {
   password: string;
 };
 
-export const AuthPage: React.FC<{ isLogin?: boolean }> = ({ isLogin }) => {
+type Props = { isLogin?: boolean };
+
+export const AuthPage = ({ isLogin }: Props) => {
   const alert = useAlert();
   const history = useHistory();
   const {

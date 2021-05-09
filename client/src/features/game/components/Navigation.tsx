@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 
@@ -9,7 +9,7 @@ import { Icon } from "components/Icon/Icon";
 import { Modal } from "components/Modal/Modal";
 import { Button, ButtonLink } from "components/Button/Button";
 
-export const Navigation: React.FC = () => {
+export const Navigation = () => {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const {

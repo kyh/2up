@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import styled, { keyframes } from "styled-components";
 import raw from "raw.macro";
@@ -12,11 +12,11 @@ type Props = {
 
 const snail = raw("./snail.svg");
 
-export const Timer: React.FC<Props> = ({
+export const Timer = ({
   initialSeconds = 45,
   shouldCallTimeout = true,
   onTimeout = () => {},
-}) => {
+}: Props) => {
   const [seconds, setSeconds] = useState(initialSeconds);
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const Snail = styled.div`
 const Dust = styled.div`
   width: 197px;
   height: 66px;
-  background-image: url('${dust}');
+  background-image: url("${dust}");
   background-size: 5910px 67px;
   animation-name: ${dustAnimation};
   animation-duration: 1s;

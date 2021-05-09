@@ -1,4 +1,3 @@
-import React from "react";
 import styled, { StyledComponentProps, DefaultTheme } from "styled-components";
 import raw from "raw.macro";
 
@@ -24,7 +23,7 @@ export const avatarMap = {
   10: raw("./svgs/10.svg"),
 };
 
-export const AvatarImage: React.FC<Props> = ({ avatar }) => {
+export const AvatarImage = ({ avatar }: Props) => {
   const svg = avatarMap[avatar as keyof typeof avatarMap];
   if (!svg) return null;
   return (

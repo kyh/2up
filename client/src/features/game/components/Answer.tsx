@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import styled from "styled-components";
 // import CanvasDraw from "react-canvas-draw";
 // import { HexColorPicker } from "react-colorful";
@@ -12,12 +12,12 @@ type AnswerProps = {
   onSubmit?: (_value: any) => void;
 };
 
-export const Answer: React.FC<AnswerProps> = ({
+export const Answer = ({
   sceneAnswer,
   answerType = "text",
   submitted = false,
   onSubmit = () => {},
-}) => {
+}: AnswerProps) => {
   switch (answerType) {
     case "multi_text":
       return (
@@ -39,11 +39,11 @@ export const Answer: React.FC<AnswerProps> = ({
   }
 };
 
-const AnswerText: React.FC<AnswerProps> = ({
+const AnswerText = ({
   sceneAnswer,
   submitted = false,
   onSubmit = () => {},
-}) => {
+}: AnswerProps) => {
   const [value, setValue] = useState(sceneAnswer?.content);
 
   const handleClick = () => {
@@ -64,11 +64,11 @@ const AnswerText: React.FC<AnswerProps> = ({
   );
 };
 
-const AnswerMulti: React.FC<AnswerProps> = ({
+const AnswerMulti = ({
   sceneAnswer,
   submitted = false,
   onSubmit = () => {},
-}) => {
+}: AnswerProps) => {
   return (
     <EndorsementButton
       key={sceneAnswer?.id}
@@ -158,12 +158,12 @@ type EditableAnswerProps = {
   onChange: (_updatedScene: any) => void;
 };
 
-export const EditableAnswer: React.FC<EditableAnswerProps> = ({
+export const EditableAnswer = ({
   sceneId,
   sceneAnswers,
   answerType,
   onChange,
-}) => {
+}: EditableAnswerProps) => {
   // TODO: we should move this state stuff into its own component
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(0);
 
@@ -234,12 +234,15 @@ export const EditableAnswer: React.FC<EditableAnswerProps> = ({
   }
 };
 
-// TODO: Get answer types from backend
-const EditableType: React.FC<{
+type EditableTypeProps = {
   onSelectType: (
     _updatedScene: Pick<any, "answerType" | "sceneAnswers">
   ) => void;
-}> = ({ onSelectType, children }) => {
+  children: ReactNode;
+};
+
+// TODO: Get answer types from backend
+const EditableType = ({ onSelectType, children }: EditableTypeProps) => {
   return (
     <EditableAnswerContainer>
       {children}

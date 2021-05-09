@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { AvatarImage, Button, Modal } from "components";

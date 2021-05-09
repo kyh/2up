@@ -1,13 +1,13 @@
-import React from "react";
+import { ReactNode, PropsWithChildren } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import ReactModal from "react-modal";
 import { Button } from "components/Button/Button";
 import { Icon } from "components/Icon/Icon";
 
-type Props = React.PropsWithChildren<{
+type Props = PropsWithChildren<{
   open: boolean;
   onRequestClose: () => void;
-  title?: React.ReactNode;
+  title?: ReactNode;
   closeButton?: boolean;
   maxWidth?: number;
 }>;
@@ -39,14 +39,14 @@ const ModalStyle = createGlobalStyle`
   }
 `;
 
-export const Modal: React.FC<Props> = ({
+export const Modal = ({
   children,
   open,
   closeButton,
   title,
   onRequestClose,
   maxWidth,
-}) => {
+}: Props) => {
   return (
     <>
       <ModalStyle />

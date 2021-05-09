@@ -1,4 +1,3 @@
-import React from "react";
 import styled, {
   css,
   StyledComponentProps,
@@ -30,7 +29,7 @@ export const iconMap = {
 export type IconType = keyof typeof iconMap;
 export type IconSizeType = "xs" | "sm" | "md" | "lg" | number;
 
-export const Icon: React.FC<Props> = ({ icon, color, size, rotate }) => {
+export const Icon = ({ icon, color, size, rotate }: Props) => {
   const iconSvg = iconMap[icon];
   if (!iconSvg) return null;
   return (

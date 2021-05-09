@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { Button, TextField, AreaField } from "components";
@@ -17,12 +16,12 @@ type PackFormProps = {
   onSubmit: any;
 };
 
-export const PackForm: React.FC<PackFormProps> = ({
+export const PackForm = ({
   submitText = "Create Pack",
   loading = false,
   defaultValues = {},
   onSubmit,
-}) => {
+}: PackFormProps) => {
   const {
     register,
     handleSubmit,
