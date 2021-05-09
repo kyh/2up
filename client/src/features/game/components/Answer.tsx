@@ -10,13 +10,15 @@ type AnswerProps = {
   answerType?: string;
   submitted?: boolean;
   onSubmit?: (_value: any) => void;
+  displayMode?: boolean;
 };
 
 export const Answer = ({
-  sceneAnswer,
+  sceneAnswer = {},
   answerType = "text",
   submitted = false,
   onSubmit = () => {},
+  displayMode = false,
 }: AnswerProps) => {
   switch (answerType) {
     case "multi_text":
@@ -25,6 +27,7 @@ export const Answer = ({
           sceneAnswer={sceneAnswer}
           submitted={submitted}
           onSubmit={onSubmit}
+          displayMode={displayMode}
         />
       );
     // "text"
@@ -34,30 +37,38 @@ export const Answer = ({
           sceneAnswer={sceneAnswer}
           submitted={submitted}
           onSubmit={onSubmit}
+          displayMode={displayMode}
         />
       );
   }
 };
 
 const AnswerText = ({
-  sceneAnswer,
+  sceneAnswer = {},
   submitted = false,
   onSubmit = () => {},
+  displayMode = false,
 }: AnswerProps) => {
-  const [value, setValue] = useState(sceneAnswer?.content);
+  const [value, setValue] = useState("");
 
-  const handleClick = () => {
-    onSubmit(value);
-  };
+  if (displayMode) {
+    return (
+      <Box textAlign="center" mb={1}>
+        <h2>{sceneAnswer?.content}</h2>
+      </Box>
+    );
+  }
 
   return (
     <Box textAlign="center">
-      <Input
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        readOnly={submitted}
-      />
-      <Button disabled={!value || submitted} onClick={handleClick}>
+      <Box mb={3}>
+        <Input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          readOnly={submitted}
+        />
+      </Box>
+      <Button disabled={!value || submitted} onClick={() => onSubmit(value)}>
         Submit answer
       </Button>
     </Box>
@@ -65,10 +76,19 @@ const AnswerText = ({
 };
 
 const AnswerMulti = ({
-  sceneAnswer,
+  sceneAnswer = {},
   submitted = false,
   onSubmit = () => {},
+  displayMode = false,
 }: AnswerProps) => {
+  if (displayMode) {
+    return (
+      <EndorsementButton key={sceneAnswer?.id} disabled>
+        {sceneAnswer?.content}
+      </EndorsementButton>
+    );
+  }
+
   return (
     <EndorsementButton
       key={sceneAnswer?.id}
