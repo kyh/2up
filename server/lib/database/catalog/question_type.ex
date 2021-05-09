@@ -2,8 +2,9 @@ defmodule Database.Catalog.QuestionType do
   use Database.Model
 
   schema "question_types" do
-    has_many :acts, Act
+    has_many :scenes, Scene
 
+    # TODO: Turn into enum
     field :slug, :string
 
     timestamps()

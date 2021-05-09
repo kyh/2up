@@ -100,8 +100,8 @@ defmodule Web.GraphQL.Types.MutationType do
       resolve(parsing_node_ids(&Live.pack_update/2, id: :pack))
     end
 
-    @desc "Create new act and pack act"
-    payload field :act_create do
+    @desc "Create new scene and pack scene"
+    payload field :scene_create do
       input do
         field :pack_id, :id
         field :order, :integer
@@ -113,11 +113,11 @@ defmodule Web.GraphQL.Types.MutationType do
       end
 
       output do
-        field :act, non_null(:act)
+        field :scene, non_null(:scene)
       end
 
       resolve(
-        parsing_node_ids(&Catalog.act_create/2,
+        parsing_node_ids(&Catalog.scene_create/2,
           pack_id: :pack,
           question_type_id: :question_type,
           answer_type_id: :answer_type
@@ -125,8 +125,8 @@ defmodule Web.GraphQL.Types.MutationType do
       )
     end
 
-    @desc "Update act"
-    payload field :act_update do
+    @desc "Update scene"
+    payload field :scene_update do
       input do
         field :id, :id
         field :order, :integer
@@ -138,33 +138,33 @@ defmodule Web.GraphQL.Types.MutationType do
       end
 
       output do
-        field :act, non_null(:act)
+        field :scene, non_null(:scene)
       end
 
-      resolve(parsing_node_ids(&Catalog.act_update/2, id: :act))
+      resolve(parsing_node_ids(&Catalog.scene_update/2, id: :scene))
     end
 
-    @desc "Delete pack act and act (if no dependencies)"
-    payload field :act_delete do
+    @desc "Delete pack scene and scene (if no dependencies)"
+    payload field :scene_delete do
       input do
         field :pack_id, :id
         field :id, :id
       end
 
       output do
-        field :act, non_null(:act)
+        field :scene, non_null(:scene)
       end
 
       resolve(
-        parsing_node_ids(&Catalog.act_delete/2,
-          id: :act,
+        parsing_node_ids(&Catalog.scene_delete/2,
+          id: :scene,
           pack_id: :pack
         )
       )
     end
 
-    @desc "Update pack act"
-    payload field(:pack_act_update) do
+    @desc "Update pack scene"
+    payload field(:pack_scene_update) do
       input do
         field :id, :id
         field :pack_id, :id
@@ -173,15 +173,15 @@ defmodule Web.GraphQL.Types.MutationType do
       end
 
       output do
-        field :pack_act, non_null(:pack_act)
+        field :pack_scene, non_null(:pack_scene)
       end
 
       resolve(
-        parsing_node_ids(&Catalog.pack_act_update/2,
-          id: :act,
+        parsing_node_ids(&Catalog.pack_scene_update/2,
+          id: :scene,
           pack_id: :pack,
-          before_id: :act,
-          after_id: :act
+          before_id: :scene,
+          after_id: :scene
         )
       )
     end
