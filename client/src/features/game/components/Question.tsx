@@ -104,9 +104,7 @@ export const EditableQuestion = ({
 };
 
 type EditableTypeProps = {
-  onSelectType: (
-    _updatedScene: Pick<any, "answerType" | "sceneAnswers">
-  ) => void;
+  onSelectType: (_updatedScene: Pick<any, "questionType" | "question">) => void;
   children: ReactNode;
 };
 
