@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { AvatarImage, Button } from "components";
+import { Box, AvatarImage, Button } from "components";
 import { StepProps, GameState } from "features/game/gameSlice";
 import { hashCode } from "utils/stringUtils";
 import { Answer } from "features/game/components/Answer";
@@ -11,14 +11,16 @@ export const Step2 = ({ state, broadcast, name }: StepProps) => {
     <section>
       <Submissions gameState={state} />
       {firstPlayer && (
-        <Button
-          disabled={firstPlayer.name !== name}
-          onClick={() => broadcast("step:next")}
-        >
-          {firstPlayer.name === name
-            ? "Next"
-            : `Waiting for ${firstPlayer.name}`}
-        </Button>
+        <Box textAlign="center">
+          <Button
+            disabled={firstPlayer.name !== name}
+            onClick={() => broadcast("step:next")}
+          >
+            {firstPlayer.name === name
+              ? "Next"
+              : `Waiting for ${firstPlayer.name}`}
+          </Button>
+        </Box>
       )}
     </section>
   );

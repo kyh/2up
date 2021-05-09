@@ -52,11 +52,7 @@ const AnswerText = ({
   const [value, setValue] = useState("");
 
   if (displayMode) {
-    return (
-      <Box textAlign="center" mb={1}>
-        <h2>{sceneAnswer?.content}</h2>
-      </Box>
-    );
+    return <DisplayAnswerText>{sceneAnswer?.content}</DisplayAnswerText>;
   }
 
   return (
@@ -166,6 +162,14 @@ const EndorsementButton = styled(Button)`
   display: block;
   width: 100%;
   text-transform: uppercase;
+`;
+
+const DisplayAnswerText = styled.div`
+  ${({ theme }) => theme.typography.h3};
+  text-align: center;
+  padding: ${({ theme }) => theme.spacings(3)};
+  border: 2px solid ${({ theme }) => theme.border.alternateColor};
+  border-radius: ${({ theme }) => theme.border.wavyRadius};
 `;
 
 /**
