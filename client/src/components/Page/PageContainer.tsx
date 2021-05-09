@@ -26,7 +26,7 @@ export const PageContainer = styled.section<Props>`
   padding: ${({ theme }) => theme.spacings(4)};
   margin: 0 auto;
   justify-content: center;
-  height: calc((var(--vh, 1vh) * 100) - 50px);
+  height: calc(var(--vh, 100vh) - 50px);
   max-width: ${renderSize};
   align-items: ${({ align }) => (align ? align : "start")};
 `;

@@ -216,8 +216,8 @@ export const PackCreatorPage = () => {
 };
 
 export const Page = styled.section`
+  height: var(--vh, 100vh);
   display: grid;
-  height: calc((var(--vh, 1vh) * 100));
   background: ${({ theme }) => theme.ui.backgroundGrey};
   grid-template-areas:
     "header  header  header"
