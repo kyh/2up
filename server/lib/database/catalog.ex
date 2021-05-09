@@ -21,6 +21,14 @@ defmodule Database.Catalog do
     Repo.all(query)
   end
 
+  def scene_answer_list(args) do
+    query =
+      from scene_answer in SceneAnswer,
+        where: scene_answer.scene_id == ^args.scene_id
+
+    Repo.all(query)
+  end
+
   def question_list(pack_id) do
     tag_query =
       from scene in Scene,
