@@ -111,7 +111,7 @@ defmodule Web.GameChannel do
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        game_state = GameServer.step_next(game_code)
+        game_state = GameServer.scene_next(game_code)
         broadcast!(socket, "game/game_state", game_state)
         {:noreply, socket}
 
