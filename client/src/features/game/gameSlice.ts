@@ -24,9 +24,9 @@ export type Player = {
 };
 
 export type SceneAnswer = {
-  id: number;
-  isCorrect: boolean;
-  content: string;
+  id?: number;
+  isCorrect?: boolean;
+  content?: string;
 };
 
 export type Submission = {

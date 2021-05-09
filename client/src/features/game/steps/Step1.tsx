@@ -1,10 +1,8 @@
 import { useState } from "react";
+import styled from "styled-components";
 import { Alert, Flex, Timer } from "components";
 import { StepProps } from "features/game/gameSlice";
-import {
-  TVQuestionConatiner,
-  Question,
-} from "features/game/components/Question";
+import { Question } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
 
 export const Step1 = ({ state, broadcast, userId, name }: StepProps) => {
@@ -63,3 +61,10 @@ export const Step1Spectate = ({ state }: StepProps) => {
     </>
   );
 };
+
+const TVQuestionConatiner = styled.div`
+  max-width: 600px;
+  line-height: 1.3;
+  transform: translateY(-100px);
+  text-align: center;
+`;

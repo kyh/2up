@@ -31,13 +31,6 @@ export const Question: React.FC<QuestionProps> = ({
   }
 };
 
-export const TVQuestionConatiner = styled.div`
-  max-width: 600px;
-  line-height: 1.3;
-  transform: translateY(-100px);
-  text-align: center;
-`;
-
 const QuestionInstructions = styled.div`
   text-align: center;
   margin: 0 0 ${({ theme }) => theme.spacings(2)};
