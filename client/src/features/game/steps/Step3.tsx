@@ -1,10 +1,10 @@
-import { Flex, Button } from "components";
+import { Box, Flex, Button } from "components";
 import { StepProps } from "features/game/gameSlice";
 
 export const Step3 = ({ state, broadcast, name }: StepProps) => {
   const [firstPlayer] = state.players;
   return (
-    <div>
+    <Box>
       <h2>Question: {state.scene} / 10</h2>
       {state.players.map((player) => (
         <Flex key={player.name} justifyContent="space-between" mb={3}>
@@ -13,16 +13,18 @@ export const Step3 = ({ state, broadcast, name }: StepProps) => {
         </Flex>
       ))}
       {firstPlayer && (
-        <Button
-          disabled={firstPlayer.name !== name}
-          onClick={() => broadcast("scene:next")}
-        >
-          {firstPlayer.name === name
-            ? "Next Question"
-            : `Waiting for ${firstPlayer.name}`}
-        </Button>
+        <Box textAlign="center">
+          <Button
+            disabled={firstPlayer.name !== name}
+            onClick={() => broadcast("scene:next")}
+          >
+            {firstPlayer.name === name
+              ? "Next Question"
+              : `Waiting for ${firstPlayer.name}`}
+          </Button>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 
