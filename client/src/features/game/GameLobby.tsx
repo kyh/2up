@@ -140,13 +140,15 @@ const renderTvStyles = () => {
     justify-content: space-between;
     left: ${({ theme }) => theme.spacings(8)};
     right: ${({ theme }) => theme.spacings(8)};
-    bottom: 10%;
-
+    bottom: 0;
     .player {
       text-align: center;
-      svg {
-        width: 70%;
-      }
+      max-width: 130px;
+      max-height: 350px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-self: flex-end;
     }
   `;
 };

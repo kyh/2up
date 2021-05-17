@@ -43,9 +43,14 @@ export const Avatar = ({ name, contain = false, ...rest }: Props) => {
 
 const StyledIcon = styled(Box)<{ contain: boolean }>`
   display: inline-flex;
-  > svg path {
-    fill: ${({ theme }) => theme.ui.text};
+  > svg {
+    width: 100%;
+    height: 100%;
+    path {
+      fill: ${({ theme }) => theme.ui.text};
+    }
   }
+
   ${({ contain }) =>
     contain &&
     css`

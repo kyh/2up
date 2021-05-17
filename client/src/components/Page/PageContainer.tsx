@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Box } from "reflexbox";
 
 enum Size {
   small = "small",
@@ -22,7 +21,7 @@ const renderSize = ({ size }: Props) => {
   return "none";
 };
 
-export const PageContainer = styled(Box)<Props>`
+export const PageContainer = styled.section<Props>`
   display: flex;
   padding: ${({ theme }) => theme.spacings(4)};
   margin: 0 auto;
