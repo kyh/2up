@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { Avatar, Button, Modal } from "components";
+import { Avatar, Button, Modal, SpriteAnimation, scaleIn } from "components";
 import { useGameChannel } from "features/game/GameChannel";
 
 export const GameLobby = () => {
@@ -48,7 +48,15 @@ export const GameLobby = () => {
         {gameState.players.map((p) => (
           <div className="player" key={p.name}>
             <p>{p.name}</p>
-            <Avatar name={p.name} contain={!gameState.isHost} mr={2} />
+            <Avatar
+              className="avatar"
+              name={p.name}
+              contain={!gameState.isHost}
+              mr={2}
+            />
+            {!gameState.isHost && (
+              <SpriteAnimation name="bubbleExplosion3" left={-150} top={-55} />
+            )}
           </div>
         ))}
       </LobbyPlayersContainer>
@@ -141,6 +149,8 @@ const renderTvStyles = () => {
     left: ${({ theme }) => theme.spacings(8)};
     right: ${({ theme }) => theme.spacings(8)};
     bottom: 0;
+    pointer-events: none;
+
     .player {
       text-align: center;
       max-width: 130px;
@@ -152,14 +162,22 @@ const renderTvStyles = () => {
     }
   `;
 };
+
 const renderRemoteStyles = () => {
   return css`
     margin-top: ${({ theme }) => theme.spacings(4)};
+
     .player {
+      position: relative;
       display: flex;
       flex-direction: row-reverse;
       align-items: center;
       margin-bottom: ${({ theme }) => theme.spacings(2)};
+
+      .avatar {
+        transform: scale(0);
+        animation: ${scaleIn} 0.3s ease forwards 0.4s;
+      }
 
       p {
         margin: 0 auto 0 0;
