@@ -4,6 +4,24 @@ import styled, { css } from "styled-components";
 import { Avatar, Button, Modal, SpriteAnimation, scaleIn } from "components";
 import { useGameChannel } from "features/game/GameChannel";
 
+const Player = ({
+  isHost,
+  playerName,
+}: {
+  isHost: boolean;
+  playerName: string;
+}) => {
+  return (
+    <div className="player">
+      <p>{playerName}</p>
+      <Avatar className="avatar" name={playerName} contain={!isHost} mr={2} />
+      {!isHost && (
+        <SpriteAnimation name="bubbleExplosion3" left={-150} top={-55} />
+      )}
+    </div>
+  );
+};
+
 export const GameLobby = () => {
   const history = useHistory();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,18 +64,7 @@ export const GameLobby = () => {
       )}
       <LobbyPlayersContainer isHost={gameState.isHost}>
         {gameState.players.map((p) => (
-          <div className="player" key={p.name}>
-            <p>{p.name}</p>
-            <Avatar
-              className="avatar"
-              name={p.name}
-              contain={!gameState.isHost}
-              mr={2}
-            />
-            {!gameState.isHost && (
-              <SpriteAnimation name="bubbleExplosion3" left={-150} top={-55} />
-            )}
-          </div>
+          <Player key={p.name} isHost={gameState.isHost} playerName={p.name} />
         ))}
       </LobbyPlayersContainer>
       {!gameState.isHost ? (
