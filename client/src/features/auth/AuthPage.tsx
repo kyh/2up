@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useHistory } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
@@ -136,14 +136,14 @@ const Page = styled(PageContainer)<{ isLogin?: boolean }>`
   background-repeat: no-repeat;
   ${({ isLogin }) =>
     isLogin
-      ? `
-    background-image: url('/illustrations/krown-kitty.svg');
-    background-position: 23% 102%;
-  `
-      : `
-    background-image: url('/illustrations/glass-kitty.svg');
-    background-position: 78% 102%;
-  `}
+      ? css`
+          background-image: url("/illustrations/kitty-crown.svg");
+          background-position: 23% 102%;
+        `
+      : css`
+          background-image: url("/illustrations/kitty-glasses.svg");
+          background-position: 78% 102%;
+        `}
 `;
 
 const FormContainer = styled.section`
