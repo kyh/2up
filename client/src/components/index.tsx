@@ -11,3 +11,5 @@ export { Timer } from "./Timer/Timer";
 export { Loader } from "./Loader/Loader";
 export { Field, TextField } from "./TextField/TextField";
 export { AreaField } from "./TextField/AreaField";
+export { SpriteAnimation, animate } from "./SpriteAnimation/SpriteAnimation";
+export * from "./SpriteAnimation/animations";

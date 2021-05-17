@@ -1,0 +1,372 @@
+{
+  "frames": [
+    {
+      "filename": "Bubble Explosion 03_00000.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00001.png",
+      "frame": {
+        "x": 360,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00002.png",
+      "frame": {
+        "x": 720,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00003.png",
+      "frame": {
+        "x": 1080,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00004.png",
+      "frame": {
+        "x": 1440,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00005.png",
+      "frame": {
+        "x": 1800,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00006.png",
+      "frame": {
+        "x": 2160,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00007.png",
+      "frame": {
+        "x": 2520,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00008.png",
+      "frame": {
+        "x": 2880,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00009.png",
+      "frame": {
+        "x": 3240,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00010.png",
+      "frame": {
+        "x": 3600,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00011.png",
+      "frame": {
+        "x": 3960,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00012.png",
+      "frame": {
+        "x": 4320,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00013.png",
+      "frame": {
+        "x": 4680,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00014.png",
+      "frame": {
+        "x": 5040,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00015.png",
+      "frame": {
+        "x": 5400,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Explosion 03_00016.png",
+      "frame": {
+        "x": 5760,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "spritesheet.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 6120,
+      "h": 185
+    },
+    "scale": "1"
+  }
+}
