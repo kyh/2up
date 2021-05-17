@@ -138,11 +138,11 @@ const Page = styled(PageContainer)<{ isLogin?: boolean }>`
     isLogin
       ? `
     background-image: url('/illustrations/krown-kitty.svg');
-    background-position: 23% 93%;
+    background-position: 23% 102%;
   `
       : `
-    background-image: url('/illustrations/unicorn-ice-cream.svg');
-    background-position: 78% 104%;
+    background-image: url('/illustrations/glass-kitty.svg');
+    background-position: 78% 102%;
   `}
 `;
 

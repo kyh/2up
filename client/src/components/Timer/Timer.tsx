@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 import styled, { keyframes } from "styled-components";
+import { Box } from "reflexbox";
 import raw from "raw.macro";
 import dust from "./dust.svg";
 
@@ -33,7 +34,7 @@ export const Timer = ({
     return () => clearInterval(interval);
   }, [seconds]);
 
-  return ReactDOM.createPortal(
+  return createPortal(
     <Container>
       <TimerContainer initialSeconds={initialSeconds}>
         <SnailContainer>
@@ -70,7 +71,7 @@ const dustAnimation = keyframes`
   }
 `;
 
-const Container = styled.div`
+const Container = styled(Box)`
   position: absolute;
   bottom: 20px;
   left: 0;

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { AvatarImage, Button, Modal } from "components";
-import { hashCode } from "utils/stringUtils";
+import { Avatar, Button, Modal } from "components";
 import { useGameChannel } from "features/game/GameChannel";
 
 export const GameLobby = () => {
@@ -46,15 +45,12 @@ export const GameLobby = () => {
         <h1 className="title">Waiting for players to join...</h1>
       )}
       <LobbyPlayersContainer isHost={gameState.isHost}>
-        {gameState.players.map((p) => {
-          const avatar = hashCode(p.name, 10);
-          return (
-            <div className="player" key={p.name}>
-              <p>{p.name}</p>
-              <AvatarImage avatar={avatar} />
-            </div>
-          );
-        })}
+        {gameState.players.map((p) => (
+          <div className="player" key={p.name}>
+            <p>{p.name}</p>
+            <Avatar name={p.name} contain={!gameState.isHost} mr={2} />
+          </div>
+        ))}
       </LobbyPlayersContainer>
       {!gameState.isHost ? (
         <>
@@ -109,6 +105,7 @@ const LobbyContainer = styled.section`
     margin-top: auto;
   }
 `;
+
 const TitleContainer = styled.div`
   text-align: center;
   margin-top: ${({ theme }) => theme.spacings(2)};
@@ -135,6 +132,7 @@ const TitleContainer = styled.div`
 type LobbyPlayersContainerProps = {
   isHost: boolean;
 };
+
 const renderTvStyles = () => {
   return css`
     position: absolute;
@@ -162,19 +160,16 @@ const renderRemoteStyles = () => {
       margin-bottom: ${({ theme }) => theme.spacings(2)};
 
       p {
-        margin-right: auto;
-      }
-
-      svg {
-        max-height: 50px;
-        margin-right: ${({ theme }) => theme.spacings(2)};
+        margin: 0 auto 0 0;
       }
     }
   `;
 };
+
 const LobbyPlayersContainer = styled.section<LobbyPlayersContainerProps>`
   ${({ isHost }) => (isHost ? renderTvStyles() : renderRemoteStyles())}
 `;
+
 const StartModalBody = styled.div`
   p {
     margin: 0 0 ${({ theme }) => theme.spacings(3)};

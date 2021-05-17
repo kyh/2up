@@ -20,7 +20,7 @@ type Props = {
 
 export const TextField = forwardRef<HTMLInputElement, Props>(
   (
-    { id, labelText, type = "text", placeholder, error, errorText, ...props },
+    { id, labelText, type = "text", placeholder, error, errorText, ...rest },
     ref
   ) => {
     return (
@@ -31,7 +31,7 @@ export const TextField = forwardRef<HTMLInputElement, Props>(
           type={type}
           placeholder={placeholder}
           ref={ref}
-          {...props}
+          {...rest}
         />
         {error && <div className="error">{errorText}</div>}
       </Field>

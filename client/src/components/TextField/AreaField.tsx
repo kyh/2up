@@ -19,7 +19,7 @@ type Props = {
 };
 
 export const AreaField = forwardRef<HTMLTextAreaElement, Props>(
-  ({ id, labelText, placeholder, error, errorText, ...props }, ref) => {
+  ({ id, labelText, placeholder, error, errorText, ...rest }, ref) => {
     return (
       <Field>
         <label htmlFor={id}>{labelText}</label>
@@ -28,7 +28,7 @@ export const AreaField = forwardRef<HTMLTextAreaElement, Props>(
           placeholder={placeholder}
           ref={ref}
           as="textarea"
-          {...props}
+          {...rest}
         />
         {error && <div className="error">{errorText}</div>}
       </Field>

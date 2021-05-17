@@ -3,10 +3,11 @@ import styled, {
   StyledComponentProps,
   DefaultTheme,
 } from "styled-components";
+import { Box } from "reflexbox";
 import raw from "raw.macro";
 
 type Props = StyledComponentProps<
-  "div",
+  typeof Box,
   DefaultTheme,
   {
     icon: IconType;
@@ -29,7 +30,7 @@ export const iconMap = {
 export type IconType = keyof typeof iconMap;
 export type IconSizeType = "xs" | "sm" | "md" | "lg" | number;
 
-export const Icon = ({ icon, color, size, rotate }: Props) => {
+export const Icon = ({ icon, color, size, rotate, ...rest }: Props) => {
   const iconSvg = iconMap[icon];
   if (!iconSvg) return null;
   return (
@@ -39,6 +40,7 @@ export const Icon = ({ icon, color, size, rotate }: Props) => {
       dangerouslySetInnerHTML={{ __html: iconSvg }}
       iconSize={size}
       rotate={rotate}
+      {...rest}
     />
   );
 };
@@ -55,10 +57,12 @@ const iconSizeMap = {
   md: "24px",
   lg: "40px",
 };
+
 const getDimensions = (iconSize: IconSizeType) => {
   if (typeof iconSize === "number") return `${iconSize}px`;
   return iconSizeMap[iconSize];
 };
+
 const getSvgStyles = (props: StyledProps) => {
   const { iconSize, iconColor, rotate } = props;
 
@@ -74,7 +78,7 @@ const getSvgStyles = (props: StyledProps) => {
   `;
 };
 
-const StyledIcon = styled.div<StyledProps>`
+const StyledIcon = styled(Box)<StyledProps>`
   display: inline-flex;
   padding: ${({ theme }) => theme.spacings(1)};
   > svg {

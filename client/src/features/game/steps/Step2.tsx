@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { Box, AvatarImage, Button } from "components";
+import { Box, Avatar, Button } from "components";
 import { StepProps, GameState } from "features/game/gameSlice";
-import { hashCode } from "utils/stringUtils";
 import { Answer } from "features/game/components/Answer";
 import correctSvg from "features/game/components/correct.svg";
 
@@ -50,12 +49,11 @@ const Submissions = ({ gameState }: { gameState: GameState }) => {
             />
             <div className="endorsement-container">
               {gameState.submissions.map((submission) => {
-                const avatar = hashCode(submission.name, 10);
                 const show = submission.content === sceneAnswer.content;
                 if (!show) return null;
                 return (
                   <div className="endorsement" key={submission.id}>
-                    <AvatarImage avatar={avatar} />
+                    <Avatar name={submission.name} />
                     {submission.name}
                   </div>
                 );

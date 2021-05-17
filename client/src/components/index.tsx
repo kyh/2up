@@ -4,7 +4,7 @@ export { PageContainer } from "./Page/PageContainer";
 export { Button, ButtonLink, ButtonLinkNative } from "./Button/Button";
 export { Input } from "./Input/Input";
 export { Card } from "./Card/Card";
-export { AvatarImage } from "./AvatarImage/AvatarImage";
+export { Avatar } from "./Avatar/Avatar";
 export { Icon } from "./Icon/Icon";
 export { Modal } from "./Modal/Modal";
 export { Timer } from "./Timer/Timer";
