@@ -13,10 +13,10 @@ const Player = ({
 }) => {
   return (
     <div className="player">
-      <p>{playerName}</p>
+      <p className="name">{playerName}</p>
       <Avatar className="avatar" name={playerName} contain={!isHost} />
       {!isHost && (
-        <SpriteAnimation name="bubbleExplosion3" left={-150} top={-55} />
+        <SpriteAnimation name="bubbleExplosion3" left={-130} top={-35} />
       )}
     </div>
   );
@@ -111,7 +111,7 @@ const LobbyContainer = styled.section`
   display: flex;
   flex-direction: column;
   .start-game-button {
-    margin: ${({ theme }) => theme.spacings(4)} auto;
+    margin: ${({ theme }) => theme.spacings(10)} auto;
   }
   .join-button {
     display: block;
@@ -174,19 +174,20 @@ const renderTvStyles = () => {
 const renderRemoteStyles = () => {
   return css`
     margin-top: ${({ theme }) => theme.spacings(4)};
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: ${({ theme }) => theme.spacings(3)};
     .player {
       position: relative;
       display: flex;
-      flex-direction: row-reverse;
       align-items: center;
-      margin-bottom: ${({ theme }) => theme.spacings(2)};
+      flex-direction: column;
+      .name {
+        margin-bottom: ${({ theme }) => theme.spacings(1)};
+      }
       .avatar {
         transform: scale(0);
         animation: ${scaleIn} 0.3s ease forwards 0.4s;
-        margin-right: ${({ theme }) => theme.spacings(2)};
-      }
-      p {
-        margin: 0 auto 0 0;
       }
     }
   `;
