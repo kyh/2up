@@ -2,7 +2,7 @@ import { useState, useEffect, ReactNode } from "react";
 import styled from "styled-components";
 // import CanvasDraw from "react-canvas-draw";
 // import { HexColorPicker } from "react-colorful";
-import { Input, Button } from "components";
+import { Input, Button, Record } from "components";
 import type { SceneAnswer } from "features/game/gameSlice";
 
 type AnswerProps = {
@@ -50,6 +50,7 @@ const AnswerText = ({
   displayMode = false,
 }: AnswerProps) => {
   const [value, setValue] = useState("");
+
   const submit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     onSubmit(value);
@@ -61,6 +62,7 @@ const AnswerText = ({
 
   return (
     <AnswerTextForm onSubmit={submit}>
+      <Record onTranscribe={(value) => setValue(value)} />
       <InputContainer>
         <Input
           value={value}

@@ -39,7 +39,7 @@ export const Step1 = ({ state, broadcast, userId, name }: StepProps) => {
           onSubmit={onSubmit}
         />
       ))}
-      <Timer shouldCallTimeout={!submitted} onTimeout={() => {}} />
+      <Timer shouldCallTimeout={!submitted} onTimeout={onSubmit} />
     </Container>
   );
 };

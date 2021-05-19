@@ -11,4 +11,5 @@ export { Loader } from "./Loader/Loader";
 export { Field, TextField } from "./TextField/TextField";
 export { AreaField } from "./TextField/AreaField";
 export { SpriteAnimation, animate } from "./SpriteAnimation/SpriteAnimation";
+export { Record } from "./Speech/Speech";
 export * from "./SpriteAnimation/animations";
