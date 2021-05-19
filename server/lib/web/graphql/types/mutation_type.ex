@@ -133,8 +133,8 @@ defmodule Web.GraphQL.Types.MutationType do
         field :question_type_slug, :string
         field :answer_type_slug, :string
         field :question, :string
-        field :answer, :string
         field :instruction, :string
+        field :scene_answers, list_of(:scene_answer)
       end
 
       output do
