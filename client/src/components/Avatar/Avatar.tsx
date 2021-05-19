@@ -4,12 +4,11 @@ import styled, {
   css,
 } from "styled-components";
 import raw from "raw.macro";
-import { Box } from "reflexbox";
 import { hashCode } from "utils/stringUtils";
 import { fabBorder } from "../Button/borders";
 
 type Props = StyledComponentProps<
-  typeof Box,
+  "div",
   DefaultTheme,
   {
     name: string;
@@ -19,6 +18,7 @@ type Props = StyledComponentProps<
 >;
 
 export const avatarMap = {
+  0: raw("./svgs/0.svg"),
   1: raw("./svgs/1.svg"),
   2: raw("./svgs/2.svg"),
   3: raw("./svgs/3.svg"),
@@ -28,8 +28,10 @@ export const avatarMap = {
   7: raw("./svgs/7.svg"),
 };
 
+const length = Object.keys(avatarMap).length;
+
 export const Avatar = ({ name, contain = false, ...rest }: Props) => {
-  const avatar = hashCode(name, 7);
+  const avatar = hashCode(name, length);
   const svg = avatarMap[avatar as keyof typeof avatarMap];
   if (!svg) return null;
   return (
@@ -41,7 +43,7 @@ export const Avatar = ({ name, contain = false, ...rest }: Props) => {
   );
 };
 
-const StyledIcon = styled(Box)<{ contain: boolean }>`
+const StyledIcon = styled.div<{ contain: boolean }>`
   display: inline-flex;
   > svg {
     width: 100%;
@@ -66,7 +68,6 @@ const StyledIcon = styled(Box)<{ contain: boolean }>`
       background-size: contain;
       background-image: ${({ theme }) =>
         `url("data:image/svg+xml,${fabBorder(theme.ui.button.border)}")`};
-
       > svg {
         width: 100%;
         height: 80%;

@@ -8,6 +8,7 @@ enum Variants {
 
 type Props = {
   variant?: keyof typeof Variants;
+  fullWidth?: boolean;
 };
 
 const renderRegularStyles = () => {
@@ -37,6 +38,7 @@ export const Input = styled.input<Props>`
   padding: ${({ theme }) => theme.spacings(4)};
   color: ${({ theme }) => theme.ui.button.color};
   background-color: ${({ theme }) => theme.ui.button.background};
+  width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
   ${({ variant = Variants.default }) =>
     variant === Variants.default
       ? renderRegularStyles()

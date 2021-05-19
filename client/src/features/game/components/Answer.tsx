@@ -2,7 +2,7 @@ import { useState, useEffect, ReactNode } from "react";
 import styled from "styled-components";
 // import CanvasDraw from "react-canvas-draw";
 // import { HexColorPicker } from "react-colorful";
-import { Box, Input, Button } from "components";
+import { Input, Button } from "components";
 import type { SceneAnswer } from "features/game/gameSlice";
 
 type AnswerProps = {
@@ -50,26 +50,49 @@ const AnswerText = ({
   displayMode = false,
 }: AnswerProps) => {
   const [value, setValue] = useState("");
+  const submit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    onSubmit(value);
+  };
 
   if (displayMode) {
-    return <DisplayAnswerText>{sceneAnswer?.content}</DisplayAnswerText>;
+    return <AnswerTextDisplay>{sceneAnswer?.content}</AnswerTextDisplay>;
   }
 
   return (
-    <Box textAlign="center">
-      <Box mb={3}>
+    <AnswerTextForm onSubmit={submit}>
+      <InputContainer>
         <Input
           value={value}
           onChange={(e) => setValue(e.target.value)}
           readOnly={submitted}
+          autoFocus
+          fullWidth
         />
-      </Box>
-      <Button disabled={!value || submitted} onClick={() => onSubmit(value)}>
+      </InputContainer>
+      <Button type="submit" disabled={!value || submitted}>
         Submit answer
       </Button>
-    </Box>
+    </AnswerTextForm>
   );
 };
+
+const AnswerTextForm = styled.form`
+  text-align: center;
+  width: 100%;
+`;
+
+const InputContainer = styled.div`
+  margin-bottom: ${({ theme }) => theme.spacings(3)};
+`;
+
+const AnswerTextDisplay = styled.div`
+  ${({ theme }) => theme.typography.h3};
+  text-align: center;
+  padding: ${({ theme }) => theme.spacings(3)};
+  border: 2px solid ${({ theme }) => theme.border.alternateColor};
+  border-radius: ${({ theme }) => theme.border.wavyRadius};
+`;
 
 const AnswerMulti = ({
   sceneAnswer = {},
@@ -79,20 +102,21 @@ const AnswerMulti = ({
 }: AnswerProps) => {
   if (displayMode) {
     return (
-      <EndorsementButton key={sceneAnswer?.id} disabled>
+      <Button key={sceneAnswer?.id} fullWidth disabled>
         {sceneAnswer?.content}
-      </EndorsementButton>
+      </Button>
     );
   }
 
   return (
-    <EndorsementButton
+    <Button
       key={sceneAnswer?.id}
       disabled={submitted}
       onClick={() => onSubmit(sceneAnswer)}
+      fullWidth
     >
       {sceneAnswer?.content}
-    </EndorsementButton>
+    </Button>
   );
 };
 
@@ -158,20 +182,6 @@ const AnswerMulti = ({
 //   margin: 0 auto;
 // `;
 
-const EndorsementButton = styled(Button)`
-  display: block;
-  width: 100%;
-  text-transform: uppercase;
-`;
-
-const DisplayAnswerText = styled.div`
-  ${({ theme }) => theme.typography.h3};
-  text-align: center;
-  padding: ${({ theme }) => theme.spacings(3)};
-  border: 2px solid ${({ theme }) => theme.border.alternateColor};
-  border-radius: ${({ theme }) => theme.border.wavyRadius};
-`;
-
 /**
  * Editable versions of the component above for Gamemaster Pages
  */
@@ -211,7 +221,7 @@ export const EditableAnswer = ({
       return (
         <EditableType onSelectType={onChange} key={sceneId}>
           {sceneAnswers.map((_, index) => (
-            <Box mb={2}>
+            <InputContainer>
               <Input
                 type="radio"
                 name="correct"
@@ -223,7 +233,7 @@ export const EditableAnswer = ({
                   onChangeSceneAnswer({ content: e.target.value }, index)
                 }
               />
-            </Box>
+            </InputContainer>
           ))}
           <Button
             onClick={() =>
@@ -244,14 +254,14 @@ export const EditableAnswer = ({
       const [sceneAnswer] = sceneAnswers;
       return (
         <EditableType onSelectType={onChange} key={sceneId}>
-          <Box mb={2}>
+          <InputContainer>
             <Input
               defaultValue={sceneAnswer.content}
               onBlur={(e) =>
                 onChangeSceneAnswer({ content: e.target.value }, 0)
               }
             />
-          </Box>
+          </InputContainer>
           <Button disabled>Submit answer</Button>
         </EditableType>
       );
