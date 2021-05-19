@@ -45,6 +45,7 @@
     "@types/react-modal": "^3.10.6",
     "@types/react-redux": "^7.1.16",
     "@types/react-router-dom": "^5.1.7",
+    "@types/react-speech-recognition": "^3.6.0",
     "@types/redux-logger": "^3.0.8",
     "@types/styled-components": "^5.1.7",
     "@types/webpack-env": "^1.16.0",
