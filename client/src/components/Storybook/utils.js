@@ -1,7 +1,6 @@
-import { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { theme } from "styles/theme";
 import { GlobalStyle } from "styles/global";
-import { Box } from "components";
 
 export const withTheme = (story) => (
   <ThemeProvider theme={theme}>
@@ -10,16 +9,14 @@ export const withTheme = (story) => (
   </ThemeProvider>
 );
 
-export const withContainer = (story) => (
-  <Box
-    display="flex"
-    flexDirection="column"
-    justifyContent="center"
-    alignItems="center"
-    maxWidth={1200}
-    m="auto"
-    p={3}
-  >
-    {story()}
-  </Box>
-);
+const Container = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+  padding: 12px;
+`;
+
+export const withContainer = (story) => <Container>{story()}</Container>;

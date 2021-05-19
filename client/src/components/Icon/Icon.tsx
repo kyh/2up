@@ -3,11 +3,10 @@ import styled, {
   StyledComponentProps,
   DefaultTheme,
 } from "styled-components";
-import { Box } from "reflexbox";
 import raw from "raw.macro";
 
 type Props = StyledComponentProps<
-  typeof Box,
+  "div",
   DefaultTheme,
   {
     icon: IconType;
@@ -78,7 +77,7 @@ const getSvgStyles = (props: StyledProps) => {
   `;
 };
 
-const StyledIcon = styled(Box)<StyledProps>`
+const StyledIcon = styled.div<StyledProps>`
   display: inline-flex;
   padding: ${({ theme }) => theme.spacings(1)};
   > svg {

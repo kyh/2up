@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import styled, { keyframes } from "styled-components";
-import { Box } from "reflexbox";
 import raw from "raw.macro";
 import dust from "./dust.svg";
 
@@ -71,7 +70,7 @@ const dustAnimation = keyframes`
   }
 `;
 
-const Container = styled(Box)`
+const Container = styled.div`
   position: absolute;
   bottom: 20px;
   left: 0;

@@ -105,7 +105,7 @@ export const Navigation = () => {
 const StyledNav = styled.nav`
   display: flex;
   justify-content: flex-end;
-  padding: 0 ${({ theme }) => theme.spacings(3)};
+  padding: 0 ${({ theme }) => theme.spacings(1)};
   align-items: center;
   height: 50px;
 `;

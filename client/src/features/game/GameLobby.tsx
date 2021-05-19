@@ -14,7 +14,7 @@ const Player = ({
   return (
     <div className="player">
       <p>{playerName}</p>
-      <Avatar className="avatar" name={playerName} contain={!isHost} mr={2} />
+      <Avatar className="avatar" name={playerName} contain={!isHost} />
       {!isHost && (
         <SpriteAnimation name="bubbleExplosion3" left={-150} top={-55} />
       )}
@@ -124,7 +124,6 @@ const LobbyContainer = styled.section`
 const TitleContainer = styled.div`
   text-align: center;
   margin-top: ${({ theme }) => theme.spacings(2)};
-
   .title {
     margin: 0 0 ${({ theme }) => theme.spacings(2)};
   }
@@ -157,7 +156,6 @@ const renderTvStyles = () => {
     right: ${({ theme }) => theme.spacings(8)};
     bottom: 0;
     pointer-events: none;
-
     .player {
       text-align: center;
       max-width: 130px;
@@ -166,6 +164,9 @@ const renderTvStyles = () => {
       display: flex;
       flex-direction: column;
       align-self: flex-end;
+      .avatar {
+        margin-right: ${({ theme }) => theme.spacings(2)};
+      }
     }
   `;
 };
@@ -173,19 +174,17 @@ const renderTvStyles = () => {
 const renderRemoteStyles = () => {
   return css`
     margin-top: ${({ theme }) => theme.spacings(4)};
-
     .player {
       position: relative;
       display: flex;
       flex-direction: row-reverse;
       align-items: center;
       margin-bottom: ${({ theme }) => theme.spacings(2)};
-
       .avatar {
         transform: scale(0);
         animation: ${scaleIn} 0.3s ease forwards 0.4s;
+        margin-right: ${({ theme }) => theme.spacings(2)};
       }
-
       p {
         margin: 0 auto 0 0;
       }

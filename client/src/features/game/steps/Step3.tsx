@@ -1,19 +1,20 @@
-import { Box, Flex, Button } from "components";
+import styled from "styled-components";
+import { Button } from "components";
 import { StepProps } from "features/game/gameSlice";
 
 export const Step3 = ({ state, broadcast, name }: StepProps) => {
   const [firstPlayer] = state.players;
   return (
-    <Box>
+    <section>
       <h2>Question: {state.scene} / 10</h2>
       {state.players.map((player) => (
-        <Flex key={player.name} justifyContent="space-between" mb={3}>
+        <PlayerContainer>
           <span>{player.name}</span>
           <span>{player.score}</span>
-        </Flex>
+        </PlayerContainer>
       ))}
       {firstPlayer && (
-        <Box textAlign="center">
+        <NextButtonContainer>
           <Button
             disabled={firstPlayer.name !== name}
             onClick={() => broadcast("scene:next")}
@@ -22,22 +23,32 @@ export const Step3 = ({ state, broadcast, name }: StepProps) => {
               ? "Next Question"
               : `Waiting for ${firstPlayer.name}`}
           </Button>
-        </Box>
+        </NextButtonContainer>
       )}
-    </Box>
+    </section>
   );
 };
 
 export const Step3Spectate = ({ state }: StepProps) => {
   return (
-    <div>
+    <section>
       <h2>Question: {state.scene} / 10</h2>
       {state.players.map((player) => (
-        <Flex key={player.name} justifyContent="space-between" mb={3}>
+        <PlayerContainer>
           <span>{player.name}</span>
           <span>{player.score}</span>
-        </Flex>
+        </PlayerContainer>
       ))}
-    </div>
+    </section>
   );
 };
+
+const PlayerContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: ${({ theme }) => theme.spacings(3)};
+`;
+
+const NextButtonContainer = styled.div`
+  text-align: center;
+`;

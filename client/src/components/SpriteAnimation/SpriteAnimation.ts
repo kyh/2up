@@ -1,14 +1,20 @@
-import { Box } from "reflexbox";
 import styled, { css, keyframes } from "styled-components";
 
 const sheets = {
   bubbleExplosion3: {
+    // url to spritesheet
     spritesheet: require("./bubble-explosion-03/spritesheet.png").default,
+    // frame width
     width: 360,
+    // frame height
     height: 185,
+    // number of frames
     steps: 17,
+    // duration of animation in seconds
     duration: 1,
+    // animation-fill-mode property
     loop: "forwards",
+    // meta.size.w of spritesheet.json
     animation: keyframes`
       100% { background-position: -6120px 0; }
     `,
@@ -30,7 +36,7 @@ export const animate = (name: animationName) => {
   `;
 };
 
-export const SpriteAnimation = styled(Box)<{
+export const SpriteAnimation = styled.div<{
   name: animationName;
   top?: number;
   left?: number;
