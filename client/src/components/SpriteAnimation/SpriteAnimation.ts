@@ -44,8 +44,8 @@ export const SpriteAnimation = styled.div<{
   bottom?: number;
 }>`
   ${({ name }) => animate(name)};
-  top: ${({ top }) => `${top}px` || "auto"};
-  left: ${({ left }) => `${left}px` || "auto"};
-  right: ${({ right }) => `${right}px` || "auto"};
-  bottom: ${({ bottom }) => `${bottom}px` || "auto"};
+  top: ${({ top }) => (top ? `${top}px` : "auto")};
+  left: ${({ left }) => (left ? `${left}px` : "auto")};
+  right: ${({ right }) => (right ? `${right}px` : "auto")};
+  bottom: ${({ bottom }) => (bottom ? `${bottom}px` : "auto")};
 `;
