@@ -258,7 +258,7 @@ export const EditableAnswer = ({
         <EditableType onSelectType={onChange} key={sceneId}>
           <InputContainer>
             <Input
-              defaultValue={sceneAnswer.content}
+              defaultValue={sceneAnswer?.content}
               onBlur={(e) =>
                 onChangeSceneAnswer({ content: e.target.value }, 0)
               }
