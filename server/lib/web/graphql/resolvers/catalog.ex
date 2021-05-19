@@ -7,6 +7,10 @@ defmodule Web.GraphQL.Resolvers.Catalog do
     Connection.from_list(Catalog.ordered_scene_list(args), args)
   end
 
+  def scene_answer_list(_, args, _) do
+    Connection.from_list(Catalog.scene_answer_list(args), args)
+  end
+
   def scene_list(args, _) do
     Connection.from_list(Catalog.scene_list(args), args)
   end

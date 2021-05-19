@@ -9,7 +9,10 @@ import monitor from "./monitor.svg";
 import mobile from "./mobile.svg";
 
 import { SceneUpdateMutation } from "./__generated__/SceneUpdateMutation";
-import { ScenePreviewFragment } from "./__generated__/ScenePreviewFragment";
+import {
+  ScenePreviewFragment,
+  ScenePreviewFragment_sceneAnswers_edges,
+} from "./__generated__/ScenePreviewFragment";
 
 type Props = {
   scene: ScenePreviewFragment;
@@ -23,15 +26,25 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
   const onChange = async (updatedScene = {}) => {
     setSaving(true);
     const newScene = { ...scene, ...updatedScene };
+    const newSceneAnswers = (newScene?.sceneAnswers?.edges || []).map(
+      (sceneAnswer: ScenePreviewFragment_sceneAnswers_edges | null) => {
+        return {
+          id: sceneAnswer?.node?.id,
+          content: sceneAnswer?.node?.content,
+          isCorrect: sceneAnswer?.node?.isCorrect,
+        };
+      }
+    );
+
     try {
       await sceneUpdate({
         variables: {
           input: {
-            id: newScene.id,
+            id: newScene.id || "",
             question: newScene.question,
-            question_type_slug: newScene.questionType.slug,
-            sceneAnswers: newScene.sceneAnswers,
-            answer_type_slug: newScene.answerType.slug,
+            questionTypeSlug: newScene.questionType.slug,
+            sceneAnswers: newSceneAnswers,
+            answerTypeSlug: newScene.answerType.slug,
             instruction: newScene.instruction,
           },
         },

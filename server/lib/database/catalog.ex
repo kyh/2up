@@ -91,7 +91,6 @@ defmodule Database.Catalog do
     {:ok, scene} =
       %Scene{}
       |> Scene.changeset(attrs)
-      |> Ecto.Changeset.put_assoc(:user, user)
       |> Ecto.Changeset.put_assoc(:question_type, question_type)
       |> Ecto.Changeset.put_assoc(:answer_type, answer_type)
       |> Repo.insert()
