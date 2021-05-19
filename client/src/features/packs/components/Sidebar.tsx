@@ -30,14 +30,10 @@ const SCENE_CREATE = gql`
       scene {
         id
         question
-        sceneAnswers(first: 100) {
-          edges {
-            node {
-              id
-              content
-              isCorrect
-            }
-          }
+        sceneAnswers {
+          id
+          content
+          isCorrect
         }
         instruction
         questionType {
@@ -256,14 +252,10 @@ Sidebar.fragments = {
           node {
             id
             question
-            sceneAnswers(first: 100) {
-              edges {
-                node {
-                  id
-                  content
-                  isCorrect
-                }
-              }
+            sceneAnswers {
+              id
+              content
+              isCorrect
             }
             instruction
             questionType {

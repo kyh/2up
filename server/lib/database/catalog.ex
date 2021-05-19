@@ -157,6 +157,24 @@ defmodule Database.Catalog do
       |> Map.put(:question_type_id, question_type.id)
       |> Map.put(:answer_type_id, answer_type.id)
 
+    Enum.each(attrs.scene_answers, fn a ->
+      attrs = a |> Map.put(:scene_id, attrs.id)
+
+      new_or_updated_scene_answer =
+        case a.id do
+          "" ->
+            %SceneAnswer{}
+
+          scene_answer_id ->
+            case Repo.get(SceneAnswer, a.id) do
+              nil -> %SceneAnswer{}
+              scene_answer -> scene_answer
+            end
+        end
+        |> SceneAnswer.changeset(attrs)
+        |> Repo.insert_or_update()
+    end)
+
     Repo.get_by(Scene, id: attrs.id)
     |> Scene.changeset(attrs)
     |> Repo.update()
