@@ -86,7 +86,7 @@ Live.pack_tag_create(variety_pack, featured_tag)
 
 # Create answer types
 {_, text_answer_type} = Catalog.answer_type_create(%{slug: "text"})
-# {_, multi_text_answer_type} = Catalog.answer_type_create(%{slug: "multi_text"})
+{_, multi_text_answer_type} = Catalog.answer_type_create(%{slug: "multi_text"})
 
 # Create scenes
 startups_questions = [
