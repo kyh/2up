@@ -23,7 +23,7 @@ export const Game = () => {
     case 0:
       return (
         <Step0
-          state={gameState}
+          gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
           userId={userId}
@@ -33,7 +33,7 @@ export const Game = () => {
     case 1:
       return (
         <Step1
-          state={gameState}
+          gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
           userId={userId}
@@ -43,7 +43,7 @@ export const Game = () => {
     case 2:
       return (
         <Step2
-          state={gameState}
+          gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
           userId={userId}
@@ -53,7 +53,7 @@ export const Game = () => {
     case 3:
       return (
         <Step3
-          state={gameState}
+          gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
           userId={userId}

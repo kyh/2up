@@ -2,12 +2,12 @@ import styled from "styled-components";
 import { Button } from "components";
 import { StepProps } from "features/game/gameSlice";
 
-export const Step3 = ({ state, broadcast, name }: StepProps) => {
-  const [firstPlayer] = state.players;
+export const Step3 = ({ gameState, broadcast, name }: StepProps) => {
+  const [firstPlayer] = gameState.players;
   return (
     <section>
-      <h2>Question: {state.scene} / 10</h2>
-      {state.players.map((player) => (
+      <h2>Question: {gameState.scene} / 10</h2>
+      {gameState.players.map((player) => (
         <PlayerContainer key={player.name}>
           <span>{player.name}</span>
           <span>{player.score}</span>
@@ -29,11 +29,11 @@ export const Step3 = ({ state, broadcast, name }: StepProps) => {
   );
 };
 
-export const Step3Spectate = ({ state }: StepProps) => {
+export const Step3Spectate = ({ gameState }: StepProps) => {
   return (
     <section>
-      <h2>Question: {state.scene} / 10</h2>
-      {state.players.map((player) => (
+      <h2>Question: {gameState.scene} / 10</h2>
+      {gameState.players.map((player) => (
         <PlayerContainer key={player.name}>
           <span>{player.name}</span>
           <span>{player.score}</span>

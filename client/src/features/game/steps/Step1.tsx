@@ -5,11 +5,11 @@ import { StepProps } from "features/game/gameSlice";
 import { Question } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
 
-export const Step1 = ({ state, broadcast, userId, name }: StepProps) => {
+export const Step1 = ({ gameState, broadcast, userId, name }: StepProps) => {
   const [submitted, setSubmitted] = useState(false);
 
-  const submissions = state.submissions.length;
-  const players = state.players.length;
+  const submissions = gameState.submissions.length;
+  const players = gameState.players.length;
   const waiting = players - submissions;
 
   const onSubmit = (value = "") => {
@@ -26,15 +26,15 @@ export const Step1 = ({ state, broadcast, userId, name }: StepProps) => {
     <Container>
       {submitted && <Alert>Waiting for {waiting} players</Alert>}
       <Question
-        question={state.question}
-        instruction={state.instruction}
-        questionType={state.questionType}
+        question={gameState.question}
+        instruction={gameState.instruction}
+        questionType={gameState.questionType}
       />
-      {state.sceneAnswers?.map((sceneAnswer) => (
+      {gameState.sceneAnswers?.map((sceneAnswer) => (
         <Answer
           key={sceneAnswer.id}
           sceneAnswer={sceneAnswer}
-          answerType={state.answerType}
+          answerType={gameState.answerType}
           submitted={submitted}
           onSubmit={onSubmit}
         />
@@ -51,8 +51,8 @@ const Container = styled.div`
   height: 100%;
 `;
 
-export const Step1Spectate = ({ state }: StepProps) => {
-  const submissions = state.submissions.length - 1;
+export const Step1Spectate = ({ gameState }: StepProps) => {
+  const submissions = gameState.submissions.length - 1;
   return (
     <>
       {!!submissions && (
@@ -60,9 +60,9 @@ export const Step1Spectate = ({ state }: StepProps) => {
       )}
       <SpectateConatiner>
         <Question
-          question={state.question}
-          instruction={state.instruction}
-          questionType={state.questionType}
+          question={gameState.question}
+          instruction={gameState.instruction}
+          questionType={gameState.questionType}
         />
       </SpectateConatiner>
       <Timer />

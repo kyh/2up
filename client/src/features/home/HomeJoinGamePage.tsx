@@ -5,7 +5,7 @@ import { gql, useMutation } from "@apollo/client";
 import { useAlert } from "react-alert";
 import { gameActions, useGame } from "features/game/gameSlice";
 import { Button, Input } from "components";
-import { Form } from "./components/Form";
+import { Form } from "features/home/components/Form";
 import { HomeGameCheckMutation } from "./__generated__/HomeGameCheckMutation";
 
 const GAME_CHECK = gql`

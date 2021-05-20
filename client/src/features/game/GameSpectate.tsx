@@ -14,32 +14,32 @@ export const GameSpectate = () => {
     case 0:
       return (
         <Step0Spectate
+          gameState={gameState}
           broadcast={broadcast}
-          state={gameState}
           dispatch={dispatch}
         />
       );
     case 1:
       return (
         <Step1Spectate
+          gameState={gameState}
           broadcast={broadcast}
-          state={gameState}
           dispatch={dispatch}
         />
       );
     case 2:
       return (
         <Step2Spectate
+          gameState={gameState}
           broadcast={broadcast}
-          state={gameState}
           dispatch={dispatch}
         />
       );
     case 3:
       return (
         <Step3Spectate
+          gameState={gameState}
           broadcast={broadcast}
-          state={gameState}
           dispatch={dispatch}
         />
       );

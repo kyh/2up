@@ -1,14 +1,24 @@
 import styled from "styled-components";
-import { Avatar, Button } from "components";
-import { StepProps, GameState } from "features/game/gameSlice";
+import { Button } from "components";
+import { StepProps, GameState, SceneAnswer } from "features/game/gameSlice";
 import { Answer } from "features/game/components/Answer";
 import correctSvg from "features/game/components/correct.svg";
+import {
+  Player,
+  PlayersGrid,
+  PlayersRow,
+} from "features/game/components/PlayerGrid";
 
-export const Step2 = ({ state, broadcast, name }: StepProps) => {
-  const [firstPlayer] = state.players;
+const isCorrect = (sceneAnswer: SceneAnswer) => sceneAnswer.isCorrect;
+
+export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
+  const [firstPlayer] = gameState.players;
+  // We only support single answers for now
+  const correctAnswer = gameState.sceneAnswers?.find(isCorrect)!;
   return (
-    <section>
-      <Submissions gameState={state} />
+    <Container>
+      <AnswerResult gameState={gameState} sceneAnswer={correctAnswer} />
+      <Submissions gameState={gameState} sceneAnswer={correctAnswer} />
       {firstPlayer && (
         <NextButtonContainer>
           <Button
@@ -21,88 +31,86 @@ export const Step2 = ({ state, broadcast, name }: StepProps) => {
           </Button>
         </NextButtonContainer>
       )}
-    </section>
+    </Container>
   );
 };
 
-export const Step2Spectate = ({ state }: StepProps) => {
+export const Step2Spectate = ({ gameState }: StepProps) => {
+  const correctAnswer = gameState.sceneAnswers?.find(isCorrect)!;
   return (
-    <section>
-      <Submissions gameState={state} />
-    </section>
+    <Container>
+      <AnswerResult gameState={gameState} sceneAnswer={correctAnswer} />
+      <Submissions gameState={gameState} sceneAnswer={correctAnswer} />
+    </Container>
   );
 };
 
-const Submissions = ({ gameState }: { gameState: GameState }) => {
-  return (
-    <SubmissionsContainer>
-      {gameState.sceneAnswers?.map((sceneAnswer) => {
-        return (
-          <div className="submission" key={sceneAnswer.id}>
-            {sceneAnswer.isCorrect && (
-              <img className="correct" src={correctSvg} alt="Correct answer" />
-            )}
-            <Answer
-              answerType={gameState.answerType}
-              sceneAnswer={sceneAnswer}
-              displayMode
-            />
-            <div className="endorsement-container">
-              {gameState.submissions.map((submission) => {
-                const show = submission.content === sceneAnswer.content;
-                if (!show) return null;
-                return (
-                  <div className="endorsement" key={submission.id}>
-                    <Avatar name={submission.name} />
-                    {submission.name}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        );
-      })}
-    </SubmissionsContainer>
-  );
-};
-
-export const SubmissionsContainer = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  .submission {
-    display: inline-flex;
-    position: relative;
-    flex-direction: column;
-    width: 100%;
-    margin-bottom: ${({ theme }) => theme.spacings(2)};
-    .correct {
-      position: absolute;
-      left: -20px;
-      top: -20px;
-      height: 60px;
-    }
-  }
-  .endorsement-container {
-    display: flex;
-    flex-direction: row-reverse;
-    transform: translateY(-20px);
-    .endorsement {
-      display: inline-flex;
-      flex-direction: column;
-      padding: 10px;
-      background: ${({ theme }) => theme.ui.background};
-      justify-content: center;
-      align-items: center;
-      border: 2px solid;
-      border-radius: 100%;
-      svg {
-        width: 20px;
-        height: 20px;
-      }
+const Container = styled.div`
+  .answer-container {
+    margin-bottom: ${({ theme }) => theme.spacings(5)};
+    .title {
+      text-align: center;
     }
   }
 `;
+
+type Props = {
+  gameState: GameState;
+  sceneAnswer: SceneAnswer;
+};
+
+const AnswerResult = ({ gameState, sceneAnswer }: Props) => {
+  return (
+    <div className="answer-container">
+      <h4 className="title">Correct Answer</h4>
+      <Answer
+        answerType={gameState.answerType}
+        sceneAnswer={sceneAnswer}
+        displayMode
+      />
+    </div>
+  );
+};
+
+const Submissions = ({ gameState, sceneAnswer }: Props) => {
+  const players = gameState.submissions.map((submission) => {
+    const isCorrect = submission.content === sceneAnswer.content;
+    return (
+      <Player
+        key={submission.id}
+        playerName={`${submission.name}: "${submission.content}"`}
+        isHost={gameState.isHost}
+      >
+        {isCorrect && (
+          <img className="correct" src={correctSvg} alt="Correct answer" />
+        )}
+      </Player>
+    );
+  });
+
+  if (gameState.isHost) {
+    return (
+      <SpectatorSubmissionsContainer>{players}</SpectatorSubmissionsContainer>
+    );
+  }
+
+  return <SubmissionsContainer>{players}</SubmissionsContainer>;
+};
+
+const SubmissionsContainer = styled(PlayersGrid)`
+  margin-bottom: ${({ theme }) => theme.spacings(5)};
+  .correct {
+    position: absolute;
+    width: 50px;
+    top: ${({ theme }) => theme.spacings(-3)};
+    left: 0;
+  }
+  .name {
+    text-align: center;
+  }
+`;
+
+const SpectatorSubmissionsContainer = styled(PlayersRow)``;
 
 const NextButtonContainer = styled.div`
   text-align: center;

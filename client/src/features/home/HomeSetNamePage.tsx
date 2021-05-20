@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
 import { gameActions, useGame } from "features/game/gameSlice";
 import { Button, Input } from "components";
-import { Form } from "./components/Form";
+import { Form } from "features/home/components/Form";
 
 export const HomeSetNamePage = () => {
   const history = useHistory();

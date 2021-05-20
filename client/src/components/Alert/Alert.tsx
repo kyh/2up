@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { visible } from "../SpriteAnimation/animations";
+import { visible } from "styles/animations";
 
 const AlertTemplate = styled.div`
   color: ${({ theme }) => theme.ui.alert.text};
