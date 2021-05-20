@@ -62,7 +62,9 @@ const AnswerText = ({
 
   return (
     <AnswerTextForm onSubmit={submit}>
-      <Record onTranscribe={(value) => setValue(value)} />
+      <RecordContainer>
+        <Record onTranscribe={(value) => setValue(value)} autoStart />
+      </RecordContainer>
       <InputContainer>
         <Input
           value={value}
@@ -82,6 +84,22 @@ const AnswerText = ({
 const AnswerTextForm = styled.form`
   text-align: center;
   width: 100%;
+`;
+
+const RecordContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.3;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  > p {
+    margin: 0;
+  }
 `;
 
 const InputContainer = styled.div`

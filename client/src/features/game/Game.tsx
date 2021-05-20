@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useGameChannel } from "features/game/GameChannel";
+import { useGameChannel } from "features/game/GameProvider";
+import { useGame } from "features/game/gameSlice";
 import { usePlayhouse } from "features/home/playhouseSlice";
 
 import { Step0 } from "./steps/Step0";
@@ -8,20 +9,21 @@ import { Step2 } from "./steps/Step2";
 import { Step3 } from "./steps/Step3";
 
 export const Game = () => {
+  const { broadcast } = useGameChannel();
+  const { state: gameState, dispatch } = useGame();
   const {
     state: { userId, name },
   } = usePlayhouse();
-  const { state, broadcast, dispatch } = useGameChannel();
 
   useEffect(() => {
     window.scroll(0, 0);
-  }, [state.step]);
+  }, [gameState.step]);
 
-  switch (state.step) {
+  switch (gameState.step) {
     case 0:
       return (
         <Step0
-          state={state}
+          state={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
           userId={userId}
@@ -31,7 +33,7 @@ export const Game = () => {
     case 1:
       return (
         <Step1
-          state={state}
+          state={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
           userId={userId}
@@ -41,7 +43,7 @@ export const Game = () => {
     case 2:
       return (
         <Step2
-          state={state}
+          state={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
           userId={userId}
@@ -51,7 +53,7 @@ export const Game = () => {
     case 3:
       return (
         <Step3
-          state={state}
+          state={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
           userId={userId}
