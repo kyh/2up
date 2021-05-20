@@ -2,8 +2,6 @@ defmodule Web.GraphQL.Types.MutationType do
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation, :modern
 
-  alias Absinthe.Relay.Connection
-
   alias Web.GraphQL.Resolvers.{
     Catalog,
     Accounts,
@@ -134,14 +132,23 @@ defmodule Web.GraphQL.Types.MutationType do
         field :answer_type_slug, :string
         field :question, :string
         field :instruction, :string
-        field :scene_answers, list_of(:scene_answer)
+        field :scene_answers, list_of(:scene_answer_input)
       end
 
       output do
         field :scene, non_null(:scene)
       end
 
-      resolve(parsing_node_ids(&Catalog.scene_update/2, id: :scene))
+      middleware(Absinthe.Relay.Node.ParseIDs, id: :scene)
+
+      middleware(Absinthe.Relay.Node.ParseIDs,
+        scene_answers: [
+          id: :scene_answer,
+          scene_id: :scene
+        ]
+      )
+
+      resolve(&Catalog.scene_update/2)
     end
 
     @desc "Delete pack scene and scene (if no dependencies)"

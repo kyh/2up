@@ -8,7 +8,7 @@ defmodule Web.GraphQL.Resolvers.Catalog do
   end
 
   def scene_answer_list(_, args, _) do
-    Connection.from_list(Catalog.scene_answer_list(args), args)
+    {:ok, Catalog.scene_answer_list(args)}
   end
 
   def scene_list(args, _) do
