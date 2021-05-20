@@ -4,7 +4,7 @@ defmodule Web.GraphQL.Types.CatalogTypes do
 
   alias Web.GraphQL.Resolvers.Catalog
 
-  alias Database.Catalog.{Scene, QuestionType, AnswerType}
+  alias Database.Catalog.{QuestionType, AnswerType}
 
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
@@ -15,7 +15,7 @@ defmodule Web.GraphQL.Types.CatalogTypes do
     field :question_type, non_null(:question_type), resolve: dataloader(QuestionType)
     field :answer_type, non_null(:answer_type), resolve: dataloader(AnswerType)
 
-    connection field :scene_answers, node_type: :scene_answer do
+    field :scene_answers, list_of(:scene_answer) do
       resolve(fn parent, args, meta ->
         Catalog.scene_answer_list(parent, Map.merge(args, %{scene_id: parent.id}), meta)
       end)
@@ -43,5 +43,12 @@ defmodule Web.GraphQL.Types.CatalogTypes do
   object(:pack_scene) do
     field :id, :id
     field :order, non_null(:string)
+  end
+
+  input_object :scene_answer_input do
+    field :id, :id
+    field :scene_id, :id
+    field :content, non_null(:string)
+    field :is_correct, non_null(:boolean)
   end
 end

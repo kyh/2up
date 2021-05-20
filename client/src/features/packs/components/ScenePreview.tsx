@@ -11,12 +11,30 @@ import mobile from "./mobile.svg";
 import { SceneUpdateMutation } from "./__generated__/SceneUpdateMutation";
 import {
   ScenePreviewFragment,
-  ScenePreviewFragment_sceneAnswers_edges,
+  ScenePreviewFragment_sceneAnswers,
 } from "./__generated__/ScenePreviewFragment";
 
 type Props = {
   scene: ScenePreviewFragment;
   setSaving: (saved: boolean) => void;
+};
+
+const transformSceneAnswers = (
+  sceneId: string,
+  sceneAnswers: (ScenePreviewFragment_sceneAnswers | null)[] | null
+) => {
+  if (sceneAnswers === null) {
+    return [];
+  }
+
+  return sceneAnswers.map((sceneAnswer) => {
+    return {
+      id: sceneAnswer?.id || "",
+      content: sceneAnswer?.content || "",
+      sceneId: sceneId,
+      isCorrect: sceneAnswer?.isCorrect,
+    };
+  });
 };
 
 export const ScenePreview = ({ scene, setSaving }: Props) => {
@@ -26,14 +44,9 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
   const onChange = async (updatedScene = {}) => {
     setSaving(true);
     const newScene = { ...scene, ...updatedScene };
-    const newSceneAnswers = (newScene?.sceneAnswers?.edges || []).map(
-      (sceneAnswer: ScenePreviewFragment_sceneAnswers_edges | null) => {
-        return {
-          id: sceneAnswer?.node?.id,
-          content: sceneAnswer?.node?.content,
-          isCorrect: sceneAnswer?.node?.isCorrect,
-        };
-      }
+    const newSceneAnswers = transformSceneAnswers(
+      scene.id,
+      newScene.sceneAnswers
     );
 
     try {
@@ -56,12 +69,6 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
     }
   };
 
-  const sceneAnswers =
-    scene?.sceneAnswers?.edges?.map((edge) => {
-      const node = edge?.node;
-      return { ...node };
-    }) || [];
-
   return (
     <Container>
       <Monitor>
@@ -79,7 +86,9 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
         <Screen>
           <EditableAnswer
             sceneId={scene.id}
-            sceneAnswers={sceneAnswers}
+            sceneAnswers={
+              transformSceneAnswers(scene?.id, scene?.sceneAnswers) || []
+            }
             answerType={scene?.answerType?.slug}
             onChange={onChange}
           />
@@ -94,14 +103,10 @@ ScenePreview.fragments = {
     fragment ScenePreviewFragment on Scene {
       id
       question
-      sceneAnswers(first: 100) {
-        edges {
-          node {
-            id
-            content
-            isCorrect
-          }
-        }
+      sceneAnswers {
+        id
+        content
+        isCorrect
       }
       instruction
       questionType {
