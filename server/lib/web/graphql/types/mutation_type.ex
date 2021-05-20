@@ -2,8 +2,6 @@ defmodule Web.GraphQL.Types.MutationType do
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation, :modern
 
-  alias Absinthe.Relay.Connection
-
   alias Web.GraphQL.Resolvers.{
     Catalog,
     Accounts,

@@ -21,14 +21,6 @@ defmodule Database.Catalog do
     Repo.all(query)
   end
 
-  def scene_answer_list(args) do
-    query =
-      from scene_answer in SceneAnswer,
-        where: scene_answer.scene_id == ^args.scene_id
-
-    Repo.all(query)
-  end
-
   def scene_list(pack_id) do
     query =
       from scene in Scene,
@@ -49,6 +41,14 @@ defmodule Database.Catalog do
           question_type: question_type.slug
         },
         where: pack.id == ^pack_id
+
+    Repo.all(query)
+  end
+
+  def scene_answer_list(args) do
+    query =
+      from scene_answer in SceneAnswer,
+        where: scene_answer.scene_id == ^args.scene_id
 
     Repo.all(query)
   end
@@ -81,7 +81,7 @@ defmodule Database.Catalog do
   end
 
   def scene_create(
-        %User{} = user,
+        %User{} = _user,
         attrs
       ) do
     question_type = Repo.get_by(QuestionType, slug: "text")
@@ -112,7 +112,7 @@ defmodule Database.Catalog do
   end
 
   def calculate_new_order(%{
-        id: scene_id,
+        id: _scene_id,
         before_id: before_id,
         after_id: after_id,
         pack_id: pack_id
@@ -135,7 +135,7 @@ defmodule Database.Catalog do
   end
 
   def pack_scene_update(
-        %User{} = user,
+        %User{} = _user,
         attrs
       ) do
     new_order = calculate_new_order(attrs)
@@ -146,7 +146,7 @@ defmodule Database.Catalog do
   end
 
   def scene_update(
-        %User{} = user,
+        %User{} = _user,
         attrs
       ) do
     question_type = Repo.get_by(QuestionType, slug: attrs.question_type_slug)
@@ -160,19 +160,18 @@ defmodule Database.Catalog do
     Enum.each(attrs.scene_answers, fn a ->
       attrs = a |> Map.put(:scene_id, attrs.id)
 
-      new_or_updated_scene_answer =
-        case a.id do
-          "" ->
-            %SceneAnswer{}
+      case a.id do
+        "" ->
+          %SceneAnswer{}
 
-          scene_answer_id ->
-            case Repo.get(SceneAnswer, a.id) do
-              nil -> %SceneAnswer{}
-              scene_answer -> scene_answer
-            end
-        end
-        |> SceneAnswer.changeset(attrs)
-        |> Repo.insert_or_update()
+        _scene_answer_id ->
+          case Repo.get(SceneAnswer, a.id) do
+            nil -> %SceneAnswer{}
+            scene_answer -> scene_answer
+          end
+      end
+      |> SceneAnswer.changeset(attrs)
+      |> Repo.insert_or_update()
     end)
 
     Repo.get_by(Scene, id: attrs.id)
@@ -181,15 +180,14 @@ defmodule Database.Catalog do
   end
 
   def scene_delete(
-        %User{} = user,
+        %User{} = _user,
         %Scene{} = scene,
         attrs
       ) do
     pack = Repo.get_by(Pack, id: attrs.pack_id)
 
-    pack_scene =
-      Repo.get_by(PackScene, pack_id: pack.id, scene_id: scene.id)
-      |> Repo.delete()
+    Repo.get_by(PackScene, pack_id: pack.id, scene_id: scene.id)
+    |> Repo.delete()
 
     pack_scenes_query =
       from pack_scene in PackScene,

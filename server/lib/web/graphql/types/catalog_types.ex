@@ -4,7 +4,7 @@ defmodule Web.GraphQL.Types.CatalogTypes do
 
   alias Web.GraphQL.Resolvers.Catalog
 
-  alias Database.Catalog.{Scene, QuestionType, AnswerType}
+  alias Database.Catalog.{QuestionType, AnswerType}
 
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
