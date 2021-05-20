@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware, Action } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
 import logger from "redux-logger";
-import { socketMiddleware } from "utils/socketMiddleware";
+import { socketMiddleware } from "utils/socketUtils";
 import rootReducer, { RootState } from "./rootReducer";
 
 const middleware = [socketMiddleware, ...getDefaultMiddleware()];
