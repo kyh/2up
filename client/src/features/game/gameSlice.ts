@@ -5,7 +5,6 @@ import { RootState } from "app/rootReducer";
 export type GameState = {
   gameId: string;
   pack: string;
-  players: Player[];
   isHost: boolean;
   scene: number;
   step: number;
@@ -15,6 +14,8 @@ export type GameState = {
   sceneAnswers?: SceneAnswer[];
   answerType?: string;
   submissions: Submission[];
+  // comes from presence
+  players: Player[];
 };
 
 export type Player = {
@@ -46,7 +47,6 @@ export type StepProps = {
 export const initialState: GameState = {
   isHost: localStorage.getItem("isHost") === "true",
   gameId: "",
-  players: [],
   scene: 0,
   step: 0,
   instruction: "",
@@ -56,15 +56,12 @@ export const initialState: GameState = {
   answerType: "",
   submissions: [],
   pack: "",
+  players: [],
 };
 
 const sortByName = (a: Player, b: Player) => {
-  if (a.name < b.name) {
-    return -1;
-  }
-  if (a.name > b.name) {
-    return 1;
-  }
+  if (a.name < b.name) return -1;
+  if (a.name > b.name) return 1;
   return 0;
 };
 

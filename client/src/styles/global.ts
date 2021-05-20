@@ -12,6 +12,7 @@ export const GlobalStyle = createGlobalStyle`
         url('${publicUrl}/fonts/ChalkboardSE-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+    font-display: fallback;
   }
 
   html {
