@@ -4,19 +4,24 @@ import { Avatar } from "components";
 type PlayerProps = {
   isHost: boolean;
   playerName: string;
+  playerContent?: string;
   children: React.ReactNode;
 };
 
 export const Player = ({
   isHost,
   playerName,
+  playerContent,
   children,
   ...rest
 }: PlayerProps) => {
   return (
     <PlayerContainer className="player" {...rest}>
       <Avatar className="avatar" name={playerName} contain={!isHost} />
-      <PlayerName className="name">{playerName}</PlayerName>
+      <PlayerName className="name">
+        {playerName}
+        {playerContent}
+      </PlayerName>
       {children}
     </PlayerContainer>
   );
