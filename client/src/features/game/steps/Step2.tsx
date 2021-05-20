@@ -78,7 +78,8 @@ const Submissions = ({ gameState, sceneAnswer }: Props) => {
     return (
       <Player
         key={submission.id}
-        playerName={`${submission.name}: "${submission.content}"`}
+        playerName={submission.name}
+        playerContent={`: "${submission.content}"`}
         isHost={gameState.isHost}
       >
         {isCorrect && (
