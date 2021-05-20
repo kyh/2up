@@ -8,7 +8,7 @@ export const Step3 = ({ state, broadcast, name }: StepProps) => {
     <section>
       <h2>Question: {state.scene} / 10</h2>
       {state.players.map((player) => (
-        <PlayerContainer key={player.id}>
+        <PlayerContainer key={player.name}>
           <span>{player.name}</span>
           <span>{player.score}</span>
         </PlayerContainer>
@@ -34,7 +34,7 @@ export const Step3Spectate = ({ state }: StepProps) => {
     <section>
       <h2>Question: {state.scene} / 10</h2>
       {state.players.map((player) => (
-        <PlayerContainer key={player.id}>
+        <PlayerContainer key={player.name}>
           <span>{player.name}</span>
           <span>{player.score}</span>
         </PlayerContainer>

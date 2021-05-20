@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { visible } from "../SpriteAnimation/animations";
 
 const AlertTemplate = styled.div`
   color: ${({ theme }) => theme.ui.alert.text};
@@ -7,6 +8,8 @@ const AlertTemplate = styled.div`
   border-radius: ${({ theme }) => theme.border.wavyRadius};
   display: flex;
   align-items: flex-start;
+  animation: ${visible} 0s linear 0.1s forwards;
+  visibility: hidden;
 `;
 
 export const Alert = styled(AlertTemplate)`

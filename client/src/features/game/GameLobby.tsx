@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { Avatar, Button, Modal, SpriteAnimation, scaleIn } from "components";
-import { useGameChannel } from "features/game/GameChannel";
+import { useGameChannel } from "features/game/GameProvider";
+import { useGame } from "features/game/gameSlice";
 
 const Player = ({
   isHost,
@@ -25,7 +26,8 @@ const Player = ({
 export const GameLobby = () => {
   const history = useHistory();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { state: gameState, broadcast } = useGameChannel();
+  const { state: gameState } = useGame();
+  const { broadcast } = useGameChannel();
 
   const onClickStart = () => {
     if (gameState.players.length < 2) {

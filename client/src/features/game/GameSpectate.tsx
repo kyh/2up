@@ -1,4 +1,5 @@
-import { useGameChannel } from "features/game/GameChannel";
+import { useGameChannel } from "features/game/GameProvider";
+import { useGame } from "features/game/gameSlice";
 
 import { Step0Spectate } from "./steps/Step0";
 import { Step1Spectate } from "./steps/Step1";
@@ -6,14 +7,15 @@ import { Step2Spectate } from "./steps/Step2";
 import { Step3Spectate } from "./steps/Step3";
 
 export const GameSpectate = () => {
-  const { state, broadcast, dispatch } = useGameChannel();
+  const { broadcast } = useGameChannel();
+  const { state: gameState, dispatch } = useGame();
 
-  switch (state.step) {
+  switch (gameState.step) {
     case 0:
       return (
         <Step0Spectate
           broadcast={broadcast}
-          state={state}
+          state={gameState}
           dispatch={dispatch}
         />
       );
@@ -21,7 +23,7 @@ export const GameSpectate = () => {
       return (
         <Step1Spectate
           broadcast={broadcast}
-          state={state}
+          state={gameState}
           dispatch={dispatch}
         />
       );
@@ -29,7 +31,7 @@ export const GameSpectate = () => {
       return (
         <Step2Spectate
           broadcast={broadcast}
-          state={state}
+          state={gameState}
           dispatch={dispatch}
         />
       );
@@ -37,7 +39,7 @@ export const GameSpectate = () => {
       return (
         <Step3Spectate
           broadcast={broadcast}
-          state={state}
+          state={gameState}
           dispatch={dispatch}
         />
       );

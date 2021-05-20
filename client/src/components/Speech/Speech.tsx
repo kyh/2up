@@ -5,21 +5,21 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 
 type Props = {
-  showButton?: boolean;
+  autoStart?: boolean;
   onTranscribe: (value: string) => void;
 };
 
-export const Record = ({ onTranscribe, showButton = false }: Props) => {
+export const Record = ({ onTranscribe, autoStart = false }: Props) => {
   const { finalTranscript, listening } = useSpeechRecognition();
 
   useEffect(() => {
     if (finalTranscript) {
       onTranscribe(finalTranscript);
     }
-    if (!listening) {
+    if (autoStart && !listening) {
       SpeechRecognition.startListening();
     }
-  }, [finalTranscript, listening]);
+  }, [finalTranscript, listening, autoStart]);
 
   useEffect(() => {
     return () => {
@@ -27,12 +27,12 @@ export const Record = ({ onTranscribe, showButton = false }: Props) => {
     };
   }, []);
 
-  if (!showButton) {
-    return null;
-  }
-
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return <p>Voice is not supported</p>;
+  }
+
+  if (autoStart) {
+    return listening ? <p>Speak to answer...</p> : null;
   }
 
   return (

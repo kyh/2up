@@ -14,3 +14,9 @@ export const scaleIn = keyframes`
       transform: scale(1.0);
   }
 `;
+
+export const visible = keyframes`
+  to {
+    visibility: visible;
+  }
+`;
