@@ -37,7 +37,7 @@ export type Submission = {
 };
 
 export type StepProps = {
-  state: GameState;
+  gameState: GameState;
   broadcast: (_eventName: string, _payload?: object) => void;
   dispatch: (_action: object) => void;
   userId?: string;

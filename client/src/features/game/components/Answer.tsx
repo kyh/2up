@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 // import CanvasDraw from "react-canvas-draw";
 // import { HexColorPicker } from "react-colorful";
@@ -292,7 +292,7 @@ type EditableTypeProps = {
   onSelectType: (
     _updatedScene: Pick<any, "answerType" | "sceneAnswers">
   ) => void;
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 // TODO: Get answer types from backend

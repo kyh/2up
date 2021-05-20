@@ -1,19 +1,8 @@
 import styledNormalize from "styled-normalize";
 import { createGlobalStyle } from "styled-components";
 
-const publicUrl = process.env.PUBLIC_URL;
-
 export const GlobalStyle = createGlobalStyle`
   ${styledNormalize}
-
-  @font-face {
-    font-family: 'Chalkboard SE';
-    src: url('${publicUrl}/fonts/ChalkboardSE-Regular.woff2') format('woff2'),
-        url('${publicUrl}/fonts/ChalkboardSE-Regular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: fallback;
-  }
 
   html {
     box-sizing: border-box;
