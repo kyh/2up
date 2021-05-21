@@ -160,16 +160,18 @@ defmodule Database.Catalog do
     Enum.each(attrs.scene_answers, fn a ->
       attrs = a |> Map.put(:scene_id, attrs.id)
 
-      case a.id do
-        "" ->
-          %SceneAnswer{}
+      scene_answer =
+        case Map.has_key?(a, :id) do
+          false ->
+            %SceneAnswer{}
+          true ->
+            case Repo.get(SceneAnswer, a.id) do
+              nil -> %SceneAnswer{}
+              scene_answer -> scene_answer
+            end
+        end
 
-        _scene_answer_id ->
-          case Repo.get(SceneAnswer, a.id) do
-            nil -> %SceneAnswer{}
-            scene_answer -> scene_answer
-          end
-      end
+      scene_answer
       |> SceneAnswer.changeset(attrs)
       |> Repo.insert_or_update()
     end)
