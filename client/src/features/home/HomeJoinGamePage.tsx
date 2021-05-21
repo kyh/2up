@@ -51,14 +51,14 @@ export const HomeJoinGamePage = () => {
         />
         <Button type="submit">Join existing game</Button>
       </Form>
-      <HostNewGameText>
-        Or <Link to="/packs">host your own game</Link>
-      </HostNewGameText>
+      <StartNewGameText>
+        Or <Link to="/packs">start your own game</Link>
+      </StartNewGameText>
     </>
   );
 };
 
-export const HostNewGameText = styled.div`
+export const StartNewGameText = styled.div`
   display: flex;
   justify-content: center;
   margin-top: auto;

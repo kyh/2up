@@ -16,7 +16,7 @@ export const useHostGame = () => {
   const { dispatch } = useGame();
   const [gameCreate] = useMutation<GameCreateMutation>(GAME_CREATE);
 
-  const hostGame = async (packId: string) => {
+  const hostGame = async (packId: string, spectate = false) => {
     const { data } = await gameCreate({
       variables: { input: { packId } },
     });
@@ -24,7 +24,11 @@ export const useHostGame = () => {
     if (!data || !data.gameCreate) return;
     const gameId = data.gameCreate.code;
     dispatch(gameActions.new_game({ gameId }));
-    history.push("/join");
+    if (spectate) {
+      history.push(`/game/${gameId}/lobby/spectate`);
+    } else {
+      history.push("/join");
+    }
   };
 
   return hostGame;

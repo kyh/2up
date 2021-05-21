@@ -28,7 +28,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
 
   useEffect(() => {
     if (gameState.scene) {
-      history.push(`/game/${gameState.gameId}`);
+      history.push(`/game/${gameState.gameId}${isSpectate ? "/spectate" : ""}`);
     }
   }, [gameState.gameId, gameState.scene]);
 
