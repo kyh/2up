@@ -3,11 +3,7 @@ import { Button } from "components";
 import { StepProps, GameState, SceneAnswer } from "features/game/gameSlice";
 import { Answer } from "features/game/components/Answer";
 import correctSvg from "features/game/components/correct.svg";
-import {
-  Player,
-  PlayersGrid,
-  PlayersRow,
-} from "features/game/components/PlayerGrid";
+import { Player, PlayersGrid } from "features/game/components/PlayerGrid";
 
 const isCorrect = (sceneAnswer: SceneAnswer) => sceneAnswer.isCorrect;
 
@@ -80,7 +76,6 @@ const Submissions = ({ gameState, sceneAnswer }: Props) => {
         key={submission.id}
         playerName={submission.name}
         playerContent={`: "${submission.content}"`}
-        isHost={gameState.isHost}
       >
         {isCorrect && (
           <img className="correct" src={correctSvg} alt="Correct answer" />
@@ -88,12 +83,6 @@ const Submissions = ({ gameState, sceneAnswer }: Props) => {
       </Player>
     );
   });
-
-  if (gameState.isHost) {
-    return (
-      <SpectatorSubmissionsContainer>{players}</SpectatorSubmissionsContainer>
-    );
-  }
 
   return <SubmissionsContainer>{players}</SubmissionsContainer>;
 };
@@ -110,8 +99,6 @@ const SubmissionsContainer = styled(PlayersGrid)`
     text-align: center;
   }
 `;
-
-const SpectatorSubmissionsContainer = styled(PlayersRow)``;
 
 const NextButtonContainer = styled.div`
   text-align: center;

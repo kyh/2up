@@ -19,13 +19,18 @@ export const GameRoutes = () => {
             <GameLobby />
           </PageContainer>
         </Route>
+        <Route exact path={`/game/${gameId}/lobby/spectate`}>
+          <PageContainer size="full">
+            <GameLobby isSpectate />
+          </PageContainer>
+        </Route>
         <Route exact path={`/game/${gameId}`}>
           <PageContainer size="small">
             <Game />
           </PageContainer>
         </Route>
         <Route exact path={`/game/${gameId}/spectate`}>
-          <PageContainer size="large" align="center">
+          <PageContainer size="full" align="center">
             <GameSpectate />
           </PageContainer>
         </Route>
