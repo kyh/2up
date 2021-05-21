@@ -50,7 +50,7 @@ export const PackDetailsPage = () => {
             <h1 className="pack-name">{pack.name}</h1>
             <p className="pack-description">{pack.description}</p>
             <div className="pack-actions">
-              <Button onClick={() => hostGame(packId)}>Host a game</Button>
+              <Button onClick={() => hostGame(packId)}>Start a game</Button>
               {!!data && pack.user?.id === currentUser?.id && (
                 <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
               )}
