@@ -5,8 +5,8 @@ import { Provider as AlertProvider, transitions, positions } from "react-alert";
 import { ReactAlertTemplate } from "components";
 import { lightTheme, darkTheme } from "styles/theme";
 import { GlobalStyle } from "styles/global";
+import { useAppSelector } from "app/hooks";
 
-import { usePlayhouse } from "features/home/playhouseSlice";
 import { HomeRoutes } from "features/home/HomeRoutes";
 import { PackRoutes } from "features/packs/PackRoutes";
 import { GameRoutes } from "features/game/GameRoutes";
@@ -20,9 +20,9 @@ const alertOptions = {
 };
 
 export const App = () => {
-  const { state } = usePlayhouse();
+  const isDarkMode = useAppSelector((state) => state.playhouse.isDarkMode);
   return (
-    <ThemeProvider theme={state.isDarkMode ? darkTheme : lightTheme}>
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <AlertProvider template={ReactAlertTemplate} {...alertOptions}>
         <GlobalStyle />
         <Switch>

@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "app/rootReducer";
 
 export type GameState = {
   gameId: string;
@@ -90,8 +88,3 @@ const gameSlice = createSlice({
 
 export const gameActions = gameSlice.actions;
 export const gameReducer = gameSlice.reducer;
-export const useGame = () => {
-  const state = useSelector((state: RootState) => state.game);
-  const dispatch = useDispatch();
-  return { state, dispatch };
-};

@@ -1,36 +1,38 @@
-import { useState, SyntheticEvent } from "react";
+import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
-import { useGame } from "features/game/gameSlice";
+import { useAppDispatch, useAppSelector } from "app/hooks";
+import { playhouseActions } from "features/home/playhouseSlice";
 import { Button, Input } from "components";
 import { Form } from "features/home/components/Form";
 
+type FormProps = {
+  name: string;
+};
+
 export const HomeSetNamePage = () => {
   const history = useHistory();
-  const { state: playhouseState, dispatch } = usePlayhouse();
-  const { state: gameState } = useGame();
-  const [name, setName] = useState(playhouseState.name);
+  const dispatch = useAppDispatch();
+  const storedName = useAppSelector((state) => state.playhouse.name);
+  const gameId = useAppSelector((state) => state.game.gameId);
+  const { register, handleSubmit } = useForm<FormProps>();
 
-  const onSubmitName = (event: SyntheticEvent) => {
-    event.preventDefault();
+  const onSubmit = ({ name }: FormProps) => {
     dispatch(playhouseActions.update_user({ name }));
-    if (gameState.gameId) {
-      history.push(`/game/${gameState.gameId}/lobby`);
+    if (gameId) {
+      history.push(`/game/${gameId}/lobby`);
     } else {
       history.push(`/`);
     }
   };
 
   return (
-    <Form onSubmit={onSubmitName}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Input
+        {...register("name", { required: true })}
         placeholder="Username"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        defaultValue={storedName}
       />
-      <Button type="submit" disabled={!name}>
-        Join Game
-      </Button>
+      <Button type="submit">Join Game</Button>
     </Form>
   );
 };

@@ -1,11 +1,10 @@
 import { useContext, useEffect, useRef, createContext, ReactNode } from "react";
 import { Presence } from "phoenix";
-import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAlert } from "react-alert";
+import { useAppDispatch, useAppSelector } from "app/hooks";
 import { useChannel } from "utils/socketUtils";
 import { gameActions } from "features/game/gameSlice";
-import { RootState } from "app/rootReducer";
 
 export const GameContext = createContext({
   broadcast: (_eventName: string, _payload?: any) => {},
@@ -19,12 +18,12 @@ const PRESENCE_EVENTS = {
 };
 
 export const GameProvider = ({ children, gameId }: Props) => {
-  const state = useSelector((state: RootState) => state.game);
+  const storedGameId = useAppSelector((state) => state.game.gameId);
   const presencesRef = useRef({});
   const history = useHistory();
   const location = useLocation();
   const alert = useAlert();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { broadcast, connected, error } = useChannel(
     `game:${gameId}`,
     {
@@ -52,7 +51,7 @@ export const GameProvider = ({ children, gameId }: Props) => {
   );
 
   useEffect(() => {
-    if (!state.gameId && gameId) {
+    if (!storedGameId && gameId) {
       dispatch(gameActions.new_game({ gameId }));
     }
     if (error) {
@@ -60,7 +59,7 @@ export const GameProvider = ({ children, gameId }: Props) => {
       alert.show(`Error connecting to game ${gameId}`);
       history.push("/");
     }
-  }, [state.gameId, gameId, error]);
+  }, [storedGameId, gameId, error]);
 
   if (!connected) return null;
   return (

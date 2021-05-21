@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useGameChannel } from "features/game/GameProvider";
-import { useGame } from "features/game/gameSlice";
-import { usePlayhouse } from "features/home/playhouseSlice";
+import { useAppDispatch, useAppSelector } from "app/hooks";
 
 import { Step0 } from "./steps/Step0";
 import { Step1 } from "./steps/Step1";
@@ -10,10 +9,10 @@ import { Step3 } from "./steps/Step3";
 
 export const Game = () => {
   const { broadcast } = useGameChannel();
-  const { state: gameState, dispatch } = useGame();
-  const {
-    state: { userId, name },
-  } = usePlayhouse();
+  const dispatch = useAppDispatch();
+  const gameState = useAppSelector((state) => state.game);
+  const name = useAppSelector((state) => state.playhouse.name);
+  const userId = useAppSelector((state) => state.playhouse.userId);
 
   useEffect(() => {
     window.scroll(0, 0);
