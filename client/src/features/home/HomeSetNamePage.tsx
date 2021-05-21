@@ -1,7 +1,7 @@
 import { useState, SyntheticEvent } from "react";
 import { useHistory } from "react-router-dom";
 import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
-import { gameActions, useGame } from "features/game/gameSlice";
+import { useGame } from "features/game/gameSlice";
 import { Button, Input } from "components";
 import { Form } from "features/home/components/Form";
 
@@ -13,7 +13,6 @@ export const HomeSetNamePage = () => {
 
   const onSubmitName = (event: SyntheticEvent) => {
     event.preventDefault();
-    dispatch(gameActions.toggle_spectator(false));
     dispatch(playhouseActions.update_user({ name }));
     if (gameState.gameId) {
       history.push(`/game/${gameState.gameId}/lobby`);

@@ -98,6 +98,9 @@ const SubmissionsContainer = styled(PlayersGrid)`
   .name {
     text-align: center;
   }
+  ${({ theme }) => theme.media.desktop`
+    margin-bottom: 0;
+  `}
 `;
 
 const NextButtonContainer = styled.div`
