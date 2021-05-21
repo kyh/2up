@@ -2,14 +2,12 @@ import styled from "styled-components";
 import { Avatar } from "components";
 
 type PlayerProps = {
-  isHost: boolean;
   playerName: string;
   playerContent?: string;
   children: React.ReactNode;
 };
 
 export const Player = ({
-  isHost,
   playerName,
   playerContent,
   children,
@@ -17,7 +15,7 @@ export const Player = ({
 }: PlayerProps) => {
   return (
     <PlayerContainer className="player" {...rest}>
-      <Avatar className="avatar" name={playerName} contain={!isHost} />
+      <Avatar className="avatar" name={playerName} />
       <PlayerName className="name">
         {playerName}
         {playerContent}
@@ -43,28 +41,28 @@ export const PlayersGrid = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: ${({ theme }) => theme.spacings(3)};
-`;
 
-export const PlayersRow = styled.section`
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  left: ${({ theme }) => theme.spacings(8)};
-  right: ${({ theme }) => theme.spacings(8)};
-  bottom: 0;
-  pointer-events: none;
-  .player {
-    text-align: center;
-    overflow: hidden;
-    align-self: flex-end;
-    flex-direction: column-reverse;
-    .name {
-      margin-bottom: ${({ theme }) => theme.spacings(1)};
+  ${({ theme }) => theme.media.desktop`
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    left: ${theme.spacings(8)};
+    right: ${theme.spacings(8)};
+    bottom: 0;
+    pointer-events: none;
+    .player {
+      text-align: center;
+      overflow: hidden;
+      align-self: flex-end;
+      flex-direction: column-reverse;
+      .name {
+        margin-bottom: ${theme.spacings(1)};
+      }
+      .avatar {
+        margin-right: ${theme.spacings(2)};
+        max-width: 130px;
+        max-height: 300px;
+      }
     }
-    .avatar {
-      margin-right: ${({ theme }) => theme.spacings(2)};
-      max-width: 130px;
-      max-height: 300px;
-    }
-  }
+  `}
 `;

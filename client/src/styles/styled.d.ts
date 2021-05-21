@@ -29,6 +29,7 @@ declare module "styled-components" {
     space: Array<number>;
     media: {
       desktop: (...args: any[]) => FlattenSimpleInterpolation;
+      isDesktop: () => boolean;
     };
     spacings: (spacing: number) => string;
     border: {

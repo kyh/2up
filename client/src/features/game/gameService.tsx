@@ -1,9 +1,6 @@
 import { useHistory } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
-
-import { gameActions } from "features/game/gameSlice";
-import { usePlayhouse, playhouseActions } from "features/home/playhouseSlice";
-
+import { useGame, gameActions } from "features/game/gameSlice";
 import { GameCreateMutation } from "./__generated__/GameCreateMutation";
 
 const GAME_CREATE = gql`
@@ -16,7 +13,7 @@ const GAME_CREATE = gql`
 
 export const useHostGame = () => {
   const history = useHistory();
-  const { dispatch } = usePlayhouse();
+  const { dispatch } = useGame();
   const [gameCreate] = useMutation<GameCreateMutation>(GAME_CREATE);
 
   const hostGame = async (packId: string) => {
@@ -26,10 +23,8 @@ export const useHostGame = () => {
 
     if (!data || !data.gameCreate) return;
     const gameId = data.gameCreate.code;
-    dispatch(gameActions.toggle_spectator(true));
-    dispatch(playhouseActions.update_user({ name: "" }));
     dispatch(gameActions.new_game({ gameId }));
-    history.push(`/game/${gameId}/lobby`);
+    history.push("/join");
   };
 
   return hostGame;

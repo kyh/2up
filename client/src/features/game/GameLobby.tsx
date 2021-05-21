@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { Button, Modal, SpriteAnimation } from "components";
 import { scaleIn } from "styles/animations";
 import { useGameChannel } from "features/game/GameProvider";
 import { useGame } from "features/game/gameSlice";
-import {
-  Player,
-  PlayersGrid,
-  PlayersRow,
-} from "features/game/components/PlayerGrid";
+import { Player, PlayersGrid } from "features/game/components/PlayerGrid";
 
-export const GameLobby = () => {
+export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
+  const theme = useTheme();
   const history = useHistory();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { state: gameState } = useGame();
@@ -31,45 +28,33 @@ export const GameLobby = () => {
 
   useEffect(() => {
     if (gameState.scene) {
-      if (gameState.isHost) {
-        history.push(`/game/${gameState.gameId}/spectate`);
-      } else {
-        history.push(`/game/${gameState.gameId}`);
-      }
+      history.push(`/game/${gameState.gameId}`);
     }
-  }, [gameState.gameId, gameState.scene, gameState.isHost]);
-
-  const players = gameState.players.map((p) => (
-    <Player key={p.name} isHost={gameState.isHost} playerName={p.name}>
-      {!gameState.isHost && (
-        <SpriteAnimation name="bubbleExplosion3" left={-130} top={-35} />
-      )}
-    </Player>
-  ));
+  }, [gameState.gameId, gameState.scene]);
 
   return (
     <LobbyContainer>
       <TitleContainer>
         <h1 className="title">
-          {gameState.isHost ? (
-            <>
-              <div>
-                Go to <span className="highlight">playhouse.gg</span>
-              </div>
-              <div>and enter room code:</div>
-            </>
-          ) : (
-            <div>Waiting for players to join room...</div>
-          )}
+          <div>
+            Invite friends to <span className="highlight">playhouse.gg</span>
+          </div>
+          <div>and enter room code:</div>
         </h1>
         <div className="game-id">{gameState.gameId}</div>
       </TitleContainer>
-      {gameState.isHost ? (
-        <SpectatorPlayersContainer>{players}</SpectatorPlayersContainer>
-      ) : (
-        <PlayersContainer>{players}</PlayersContainer>
-      )}
-      {!gameState.isHost ? (
+      <PlayersContainer>
+        {gameState.players.map((p) => (
+          <Player key={p.name} playerName={p.name}>
+            <SpriteAnimation
+              name="bubbleExplosion3"
+              left={theme.media.isDesktop() ? -125 : -130}
+              top={theme.media.isDesktop() ? 30 : -55}
+            />
+          </Player>
+        ))}
+      </PlayersContainer>
+      {!isSpectate ? (
         <>
           <Button className="start-game-button" onClick={onClickStart}>
             Start game
@@ -82,15 +67,17 @@ export const GameLobby = () => {
             closeButton
           >
             <StartModalBody>
-              <p>
-                This game is only fun with 2 or more players. Invite more by
-                sending them to:
-              </p>
               <TitleContainer>
-                <h3 className="title">
-                  <span className="highlight">playhouse.gg</span>
-                </h3>
-                <h3 className="title">and enter the room code:</h3>
+                <p className="title">
+                  This game is only fun with 2 or more players
+                </p>
+                <p>
+                  <div>
+                    Invite friends to{" "}
+                    <span className="highlight">playhouse.gg</span>
+                  </div>
+                  <div>and enter the room code:</div>
+                </p>
                 <div className="game-id">{gameState.gameId}</div>
               </TitleContainer>
               <Button className="start-game-button" onClick={onStart}>
@@ -113,7 +100,7 @@ const LobbyContainer = styled.section`
   display: flex;
   flex-direction: column;
   .start-game-button {
-    margin: ${({ theme }) => theme.spacings(10)} auto;
+    margin: auto auto ${({ theme }) => theme.spacings(10)};
   }
   .join-button {
     display: block;
@@ -150,8 +137,6 @@ const PlayersContainer = styled(PlayersGrid)`
     animation: ${scaleIn} 0.3s ease forwards 0.4s;
   }
 `;
-
-const SpectatorPlayersContainer = styled(PlayersRow)``;
 
 const StartModalBody = styled.div`
   p {

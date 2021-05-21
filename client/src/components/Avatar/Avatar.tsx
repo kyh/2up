@@ -12,7 +12,7 @@ type Props = StyledComponentProps<
   DefaultTheme,
   {
     name: string;
-    contain?: boolean;
+    expandOnDesktop?: boolean;
   },
   never
 >;
@@ -30,47 +30,55 @@ export const avatarMap = {
 
 const length = Object.keys(avatarMap).length;
 
-export const Avatar = ({ name, contain = false, ...rest }: Props) => {
+export const Avatar = ({ name, expandOnDesktop = true, ...rest }: Props) => {
   const avatar = hashCode(name, length);
   const svg = avatarMap[avatar as keyof typeof avatarMap];
   if (!svg) return null;
   return (
     <StyledIcon
-      contain={contain}
+      expandOnDesktop={expandOnDesktop}
       dangerouslySetInnerHTML={{ __html: svg }}
       {...rest}
     />
   );
 };
 
-const StyledIcon = styled.div<{ contain: boolean }>`
-  display: inline-flex;
+const StyledIcon = styled.div<{ expandOnDesktop: boolean }>`
+  display: flex;
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  overflow: hidden;
+  justify-content: center;
+  align-items: flex-end;
+  padding: ${({ theme }) => theme.spacings(1)};
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: ${({ theme }) =>
+    `url("data:image/svg+xml,${fabBorder(theme.ui.button.border)}")`};
+
   > svg {
     width: 100%;
-    height: 100%;
+    height: 80%;
     path {
       fill: ${({ theme }) => theme.ui.text};
     }
   }
 
-  ${({ contain }) =>
-    contain &&
-    css`
-      width: 70px;
-      height: 70px;
-      border-radius: 100%;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      padding: ${({ theme }) => theme.spacings(1)};
-      background-repeat: no-repeat;
-      background-size: contain;
-      background-image: ${({ theme }) =>
-        `url("data:image/svg+xml,${fabBorder(theme.ui.button.border)}")`};
-      > svg {
-        width: 100%;
-        height: 80%;
-      }
-    `}
+  ${({ expandOnDesktop, theme }) =>
+    expandOnDesktop &&
+    theme.media.desktop`
+    display: inline-flex;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    overflow: hidden;
+    background: none;
+    overflow: auto;
+
+    > svg {
+      width: 100%;
+      height: 100%;
+    }
+  `}
 `;

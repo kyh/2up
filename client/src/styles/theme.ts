@@ -45,6 +45,7 @@ export const lightTheme: DefaultTheme = {
         ${css(mandatory, ...args)};
       }
     `,
+    isDesktop: () => window.innerWidth > mediaSizes.desktop,
   },
   border: {
     color: colors.darkGrey,
