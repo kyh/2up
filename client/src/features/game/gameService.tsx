@@ -1,6 +1,7 @@
 import { useHistory } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
-import { useGame, gameActions } from "features/game/gameSlice";
+import { useAppDispatch } from "app/hooks";
+import { gameActions } from "features/game/gameSlice";
 import { GameCreateMutation } from "./__generated__/GameCreateMutation";
 
 const GAME_CREATE = gql`
@@ -13,7 +14,7 @@ const GAME_CREATE = gql`
 
 export const useHostGame = () => {
   const history = useHistory();
-  const { dispatch } = useGame();
+  const dispatch = useAppDispatch();
   const [gameCreate] = useMutation<GameCreateMutation>(GAME_CREATE);
 
   const hostGame = async (packId: string, spectate = false) => {

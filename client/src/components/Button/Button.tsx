@@ -1,12 +1,11 @@
 import { ReactNode } from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled, {
   css,
   StyledComponentProps,
   DefaultTheme,
 } from "styled-components";
-import { RootState } from "app/rootReducer";
+import { useAppSelector } from "app/hooks";
 import { clickSound } from "styles/sound";
 import { border, borderActive, fabBorder, fabBorderActive } from "./borders";
 
@@ -28,13 +27,13 @@ type Props = StyledComponentProps<
 >;
 
 export const Button = ({ onClick = () => {}, ...rest }: Props) => {
-  const { isSFXOn } = useSelector((state: RootState) => state.playhouse);
+  const isSFXOn = useAppSelector((state) => state.playhouse.isSFXOn);
+
   const onButtonClick = () => {
-    if (isSFXOn) {
-      clickSound.play();
-    }
+    if (isSFXOn) clickSound.play();
     onClick();
   };
+
   return <StyledButton type="button" onClick={onButtonClick} {...rest} />;
 };
 

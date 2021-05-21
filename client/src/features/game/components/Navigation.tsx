@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 
-import { playhouseActions, usePlayhouse } from "features/home/playhouseSlice";
+import { useAppDispatch, useAppSelector } from "app/hooks";
+import { playhouseActions } from "features/home/playhouseSlice";
 import { gameActions } from "features/game/gameSlice";
 
 import { Icon } from "components/Icon/Icon";
@@ -11,12 +12,12 @@ import { Button, ButtonLink } from "components/Button/Button";
 
 export const Navigation = () => {
   const history = useHistory();
-  const [isOpen, setIsOpen] = useState(false);
-  const {
-    state: { isMusicOn, isSFXOn, isDarkMode },
-    dispatch,
-  } = usePlayhouse();
+  const dispatch = useAppDispatch();
+  const isMusicOn = useAppSelector((state) => state.playhouse.isMusicOn);
+  const isSFXOn = useAppSelector((state) => state.playhouse.isSFXOn);
+  const isDarkMode = useAppSelector((state) => state.playhouse.isDarkMode);
   const gameMatch = useRouteMatch<{ gameId: string }>("/game/:gameId");
+  const [isOpen, setIsOpen] = useState(false);
 
   const leaveGame = () => {
     dispatch(gameActions.reset());

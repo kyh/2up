@@ -3,15 +3,15 @@ import { useHistory, Link } from "react-router-dom";
 import styled, { useTheme } from "styled-components";
 import { Button, Modal, SpriteAnimation } from "components";
 import { scaleIn } from "styles/animations";
+import { useAppSelector } from "app/hooks";
 import { useGameChannel } from "features/game/GameProvider";
-import { useGame } from "features/game/gameSlice";
 import { Player, PlayersGrid } from "features/game/components/PlayerGrid";
 
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const theme = useTheme();
   const history = useHistory();
+  const gameState = useAppSelector((state) => state.game);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { state: gameState } = useGame();
   const { broadcast } = useGameChannel();
 
   const onClickStart = () => {

@@ -1,5 +1,5 @@
 import { useGameChannel } from "features/game/GameProvider";
-import { useGame } from "features/game/gameSlice";
+import { useAppDispatch, useAppSelector } from "app/hooks";
 
 import { Step0Spectate } from "./steps/Step0";
 import { Step1Spectate } from "./steps/Step1";
@@ -8,7 +8,8 @@ import { Step3Spectate } from "./steps/Step3";
 
 export const GameSpectate = () => {
   const { broadcast } = useGameChannel();
-  const { state: gameState, dispatch } = useGame();
+  const dispatch = useAppDispatch();
+  const gameState = useAppSelector((state) => state.game);
 
   switch (gameState.step) {
     case 0:

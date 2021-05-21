@@ -6,7 +6,7 @@ import { useAlert } from "react-alert";
 import { Card } from "components";
 import { Navigation } from "features/packs/components/Navigation";
 import { Page, Content } from "features/packs/components/Page";
-import { PackForm } from "features/packs/components/PackForm";
+import { PackForm, PackInputs } from "features/packs/components/PackForm";
 
 import { PackCreateMutation } from "./__generated__/PackCreateMutation";
 
@@ -20,13 +20,6 @@ const PACK_CREATE = gql`
     }
   }
 `;
-
-export type PackInputs = {
-  name: string;
-  description: string;
-  isRandom?: boolean;
-  length?: number;
-};
 
 export const PackNewPage = () => {
   const alert = useAlert();
