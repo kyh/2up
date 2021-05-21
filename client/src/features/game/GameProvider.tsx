@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, createContext, ReactNode } from "react";
 import { Presence } from "phoenix";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { useChannel } from "utils/socketUtils";
 import { gameActions } from "features/game/gameSlice";
@@ -19,18 +19,18 @@ const PRESENCE_EVENTS = {
 };
 
 export const GameProvider = ({ children, gameId }: Props) => {
-  const socketPayload = {
-    name: localStorage.getItem("name"),
-    isHost: localStorage.getItem("isHost") === "true",
-  };
   const state = useSelector((state: RootState) => state.game);
   const presencesRef = useRef({});
   const history = useHistory();
+  const location = useLocation();
   const alert = useAlert();
   const dispatch = useDispatch();
   const { broadcast, connected, error } = useChannel(
     `game:${gameId}`,
-    socketPayload,
+    {
+      name: localStorage.getItem("name"),
+      isHost: location.pathname.includes("spectate"),
+    },
     (event, payload) => {
       if (event === PRESENCE_EVENTS.state || event === PRESENCE_EVENTS.diff) {
         if (event === PRESENCE_EVENTS.state) {

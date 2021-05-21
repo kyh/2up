@@ -1,8 +1,4 @@
-import styled, {
-  StyledComponentProps,
-  DefaultTheme,
-  css,
-} from "styled-components";
+import styled, { StyledComponentProps, DefaultTheme } from "styled-components";
 import raw from "raw.macro";
 import { hashCode } from "utils/stringUtils";
 import { fabBorder } from "../Button/borders";

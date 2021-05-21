@@ -5,7 +5,6 @@ import { RootState } from "app/rootReducer";
 export type GameState = {
   gameId: string;
   pack: string;
-  isHost: boolean;
   scene: number;
   step: number;
   instruction?: string;
@@ -45,7 +44,6 @@ export type StepProps = {
 };
 
 export const initialState: GameState = {
-  isHost: localStorage.getItem("isHost") === "true",
   gameId: "",
   scene: 0,
   step: 0,
@@ -83,14 +81,10 @@ const gameSlice = createSlice({
       state.submissions = payload.submissions ?? state.submissions;
       state.pack = payload.pack ?? payload.pack;
     },
-    toggle_spectator: (state, { payload }: PayloadAction<boolean>) => {
-      state.isHost = payload;
-      localStorage.setItem("isHost", state.isHost.toString());
-    },
     players: (state, { payload }: PayloadAction<{ players: Player[] }>) => {
       state.players = payload.players.sort(sortByName) ?? state.players;
     },
-    reset: () => ({ ...initialState, isHost: false }),
+    reset: () => ({ ...initialState }),
   },
 });
 
