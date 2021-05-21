@@ -240,15 +240,17 @@ export const EditableAnswer = ({
     case "multi_text":
       return (
         <EditableType onSelectType={onChange} key={sceneId}>
-          {sceneAnswers.map((_, index) => (
+          {sceneAnswers.map((sceneAnswer, index) => (
             <InputContainer>
               <Input
                 type="radio"
                 name="correct"
                 value={index}
+                checked={sceneAnswer?.isCorrect}
                 onChange={() => setCorrectAnswerIndex(index)}
               />
               <Input
+                defaultValue={sceneAnswer?.content}
                 onBlur={(e) =>
                   onChangeSceneAnswer({ content: e.target.value }, index)
                 }
