@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npm run gql-gen && react-scripts start",
+    "start": "npm run gql && react-scripts start",
     "dev": "npm start",
     "build": "npm run codegen && react-scripts build",
-    "introspect-schema": "apollo schema:download --endpoint=http://localhost:4000/graphql schema.json",
+    "introspect": "apollo schema:download --endpoint=http://localhost:4000/graphql schema.json",
     "codegen": "apollo codegen:generate --localSchemaFile=schema.json --target=typescript --includes=src/**/*.tsx --tagName=gql --addTypename --globalTypesFile=src/__generated__/graphql-types.ts __generated__",
-    "gql-gen": "npm run introspect-schema && npm run codegen",
+    "gql": "npm run introspect && npm run codegen",
     "clean:codegen": "find . -name __generated__ -exec rm -rf {} \\;",
+    "clean:build": "rm -rf build",
     "prepare": "cd .. && husky install"
   },
   "dependencies": {
