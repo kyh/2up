@@ -29,7 +29,7 @@ const transformSceneAnswers = (
 
   return sceneAnswers.map((sceneAnswer) => {
     return {
-      id: sceneAnswer?.id || "",
+      id: sceneAnswer?.id || undefined,
       content: sceneAnswer?.content || "",
       sceneId: sceneId,
       isCorrect: sceneAnswer?.isCorrect,
