@@ -6,6 +6,8 @@ services:
     buildCommand: cd client && npm i && npm run build
     staticPublishPath: client/build
     autoDeploy: true
+    envVars:
+      - fromGroup: playhouse-client-env
     routes:
       - type: rewrite
         source: /*
@@ -18,3 +20,39 @@ services:
     buildCommand: cd server && ./build.sh
     startCommand: cd server && _build/prod/rel/playhouse/bin/playhouse start
     autoDeploy: true
+    envVars:
+      - fromGroup: playhouse-server-env
+
+databases:
+  - name: playhouse-db
+    databaseName: playhouse_db
+    user: playhouse_db_user
+
+envVarGroups:
+  - name: playhouse-client-env
+    envVars:
+      - key: PUBLIC_URL
+        value: https://playhouse.gg
+      - key: REACT_APP_API_URL
+        value: https://api.playhouse.gg
+      - key: REACT_APP_SOCKET_URL
+        value: wss://api.playhouse.gg
+
+  - name: playhouse-server-env
+    envVars:
+      - key: WEB_CLIENT_URL
+        value: https://playhouse.gg
+      - key: SECRET_KEY_BASE
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: playhouse-db
+          property: connectionString
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: playhouse-db
+          property: user
+      - key: POSTGRES_PASS
+        fromDatabase:
+          name: playhouse-db
+          property: password
