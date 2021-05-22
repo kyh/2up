@@ -8,34 +8,33 @@ defmodule Game.GamePlay do
   defstruct scene: 0, step: 0, scenes: [], players: [], pack: ""
 
   def new(question_sets, player_ids) do
-    players =
-      Enum.map(player_ids, fn player_id ->
-        %Player{id: player_id}
-      end)
-
-    scenes =
-      Enum.map(question_sets, fn question_set ->
-        %{
-          question: question,
-          scene_answers: scene_answers,
-          pack: pack,
-          instruction: instruction,
-          question_type: question_type,
-          answer_type: answer_type
-        } = question_set
-
-        %Scene{
-          question: question,
-          question_type: question_type,
-          scene_answers: scene_answers,
-          answer_type: answer_type,
-          pack: pack,
-          instruction: instruction,
-          submissions: []
-        }
-      end)
+    players = Enum.map(player_ids, &(%Player{id: &1}))
+    scenes = scenes_initialize(question_sets)
 
     %GamePlay{scenes: scenes, players: players}
+  end
+
+  def scenes_initialize(question_sets) do
+    Enum.map(question_sets, fn question_set ->
+      %{
+        question: question,
+        scene_answers: scene_answers,
+        pack: pack,
+        instruction: instruction,
+        question_type: question_type,
+        answer_type: answer_type
+      } = question_set
+
+      %Scene{
+        question: question,
+        question_type: question_type,
+        scene_answers: scene_answers,
+        answer_type: answer_type,
+        pack: pack,
+        instruction: instruction,
+        submissions: []
+      }
+    end)
   end
 
   def player_new(game, player) do
@@ -53,35 +52,42 @@ defmodule Game.GamePlay do
     end
   end
 
-  def points_calculate(scene_answers, submission) do
+  def points_calculate(game, current_index, name, submission) do
+    current_scene = Enum.at(game.scenes, current_index)
+
     correct_submission_count =
-      scene_answers
+      current_scene.scene_answers
       |> Enum.filter(& &1.isCorrect)
       |> Enum.filter(&(&1.content == submission["content"]))
       |> Enum.count()
 
     case correct_submission_count > 0 do
       true ->
-        %{game | scenes: new_scenes, step: current_step}
-        |> player_add_score(name, 100)
+        player_score_add(game, name, 100)
 
       false ->
-        %{game | scenes: new_scenes, step: current_step}
+        game
     end
   end
 
-  def player_submit(game, name, submission, player_count) do
-    current_index = game.scene - 1
+  def submissions_update(game, current_index, submission, player_count) do
     current_scene = Enum.at(game.scenes, current_index)
 
     new_submissions = Enum.shuffle(current_scene.submissions ++ [submission])
     new_scenes = List.update_at(game.scenes, current_index, &%{&1 | submissions: new_submissions})
     current_step = next_step_get(game, length(new_submissions), player_count)
-
-    points_calculate(current_scene.scene_answers, submission)
+    %{game | scenes: new_scenes, step: current_step}
   end
 
-  def player_add_score(game, name, score) do
+  def player_submit(game, name, submission, player_count) do
+    current_index = game.scene - 1
+
+    game
+    |> points_calculate(current_index, name, submission)
+    |> submissions_update(current_index, submission, player_count)
+  end
+
+  def player_score_add(game, name, score) do
     player =
       Enum.filter(game.players, fn x -> x.name === name end)
       |> Enum.at(0)
