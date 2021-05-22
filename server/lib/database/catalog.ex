@@ -164,6 +164,7 @@ defmodule Database.Catalog do
         case Map.has_key?(a, :id) do
           false ->
             %SceneAnswer{}
+
           true ->
             case Repo.get(SceneAnswer, a.id) do
               nil -> %SceneAnswer{}
