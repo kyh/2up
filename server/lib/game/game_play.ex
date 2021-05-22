@@ -46,35 +46,18 @@ defmodule Game.GamePlay do
     %{game | players: new_players}
   end
 
-  def player_submit(game, name, submission, player_count) do
-    new_submission = [submission]
-    current_index = game.scene - 1
-    current_scene = Enum.at(game.scenes, current_index)
-    current_submissions = current_scene.submissions
-    new_submissions = Enum.shuffle(current_submissions ++ new_submission)
-    updated_scene = %{current_scene | submissions: new_submissions}
+  def next_step_get(game, submissions_length, player_count) do
+    case submissions_length >= player_count do
+      true -> game.step + 1
+      false -> game.step
+    end
+  end
 
-    new_scenes =
-      game.scenes
-      |> Enum.with_index()
-      |> Enum.map(fn {x, i} ->
-        case i == current_index do
-          true -> updated_scene
-          false -> x
-        end
-      end)
-
-    # Extra player count for correct answer submission
-    current_step =
-      case length(new_submissions) >= player_count do
-        true -> game.step + 1
-        false -> game.step
-      end
-
+  def points_calculate(scene_answers, submission) do
     correct_submission_count =
-      current_scene.scene_answers
+      scene_answers
       |> Enum.filter(& &1.isCorrect)
-      |> Enum.filter(&(&1.content == submission.content))
+      |> Enum.filter(&(&1.content == submission["content"]))
       |> Enum.count()
 
     case correct_submission_count > 0 do
@@ -85,6 +68,17 @@ defmodule Game.GamePlay do
       false ->
         %{game | scenes: new_scenes, step: current_step}
     end
+  end
+
+  def player_submit(game, name, submission, player_count) do
+    current_index = game.scene - 1
+    current_scene = Enum.at(game.scenes, current_index)
+
+    new_submissions = Enum.shuffle(current_scene.submissions ++ [submission])
+    new_scenes = List.update_at(game.scenes, current_index, &%{&1 | submissions: new_submissions})
+    current_step = next_step_get(game, length(new_submissions), player_count)
+
+    points_calculate(current_scene.scene_answers, submission)
   end
 
   def player_add_score(game, name, score) do
