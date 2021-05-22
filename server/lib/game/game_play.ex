@@ -1,43 +1,51 @@
 defmodule Game.GamePlay do
   @moduledoc """
-  Main game logic
+  Question and answer game logic
   """
 
   alias Game.{Scene, GamePlay, Player}
 
   defstruct scene: 0, step: 0, scenes: [], players: [], pack: ""
 
+  @doc """
+  Initializes game play struct with scenes and players
+  """
   def new(question_sets, player_ids) do
-    players =
-      Enum.map(player_ids, fn player_id ->
-        %Player{id: player_id}
-      end)
-
-    scenes =
-      Enum.map(question_sets, fn question_set ->
-        %{
-          question: question,
-          scene_answers: scene_answers,
-          pack: pack,
-          instruction: instruction,
-          question_type: question_type,
-          answer_type: answer_type
-        } = question_set
-
-        %Scene{
-          question: question,
-          question_type: question_type,
-          scene_answers: scene_answers,
-          answer_type: answer_type,
-          pack: pack,
-          instruction: instruction,
-          submissions: []
-        }
-      end)
+    players = Enum.map(player_ids, &%Player{id: &1})
+    scenes = scenes_initialize(question_sets)
 
     %GamePlay{scenes: scenes, players: players}
   end
 
+  @doc """
+  Converts question sets into Scene structs
+  """
+  def scenes_initialize(question_sets) do
+    Enum.map(question_sets, fn question_set ->
+      %{
+        question: question,
+        scene_answers: scene_answers,
+        pack: pack,
+        instruction: instruction,
+        question_type: question_type,
+        answer_type: answer_type
+      } = question_set
+
+      %Scene{
+        question: question,
+        question_type: question_type,
+        scene_answers: scene_answers,
+        answer_type: answer_type,
+        pack: pack,
+        instruction: instruction,
+        submissions: []
+      }
+    end)
+  end
+
+  @doc """
+  Adds new player to game play struct if name is unique
+  """
   def player_new(game, player) do
     new_players =
       (game.players ++ [player])
@@ -46,48 +54,64 @@ defmodule Game.GamePlay do
     %{game | players: new_players}
   end
 
-  def player_submit(game, name, submission, player_count) do
-    new_submission = [submission]
-    current_index = game.scene - 1
+  @doc """
+  Moves to next step if all players have submitted
+  """
+  def next_step_get(game, submissions_length, player_count) do
+    case submissions_length >= player_count do
+      true -> game.step + 1
+      false -> game.step
+    end
+  end
+
+  @doc """
+  Increment 100 points for each correct answer
+  """
+  def points_calculate(game, current_index, name, submission) do
     current_scene = Enum.at(game.scenes, current_index)
-    current_submissions = current_scene.submissions
-    new_submissions = Enum.shuffle(current_submissions ++ new_submission)
-    updated_scene = %{current_scene | submissions: new_submissions}
-
-    new_scenes =
-      game.scenes
-      |> Enum.with_index()
-      |> Enum.map(fn {x, i} ->
-        case i == current_index do
-          true -> updated_scene
-          false -> x
-        end
-      end)
-
-    # Extra player count for correct answer submission
-    current_step =
-      case length(new_submissions) >= player_count do
-        true -> game.step + 1
-        false -> game.step
-      end
 
     correct_submission_count =
       current_scene.scene_answers
       |> Enum.filter(& &1.isCorrect)
-      |> Enum.filter(&(&1.content == submission.content))
+      |> Enum.filter(&(&1.content == submission["content"]))
       |> Enum.count()
 
     case correct_submission_count > 0 do
       true ->
-        %{game | scenes: new_scenes, step: current_step}
-        |> player_add_score(name, 100)
+        player_score_add(game, name, 100)
 
       false ->
-        %{game | scenes: new_scenes, step: current_step}
+        game
     end
   end
 
-  def player_add_score(game, name, score) do
+  @doc """
+  Update game play state with submission. Move to next step if all submissions received.
+  """
+  def submissions_update(game, current_index, submission, player_count) do
+    current_scene = Enum.at(game.scenes, current_index)
+
+    new_submissions = Enum.shuffle(current_scene.submissions ++ [submission])
+    new_scenes = List.update_at(game.scenes, current_index, &%{&1 | submissions: new_submissions})
+    current_step = next_step_get(game, length(new_submissions), player_count)
+    %{game | scenes: new_scenes, step: current_step}
+  end
+
+  @doc """
+  Update points and submissions with new submission
+  """
+  def player_submit(game, name, submission, player_count) do
+    current_index = game.scene - 1
+
+    game
+    |> points_calculate(current_index, name, submission)
+    |> submissions_update(current_index, submission, player_count)
+  end
+
+  @doc """
+  Add points to player and update players list
+  """
+  def player_score_add(game, name, score) do
     player =
       Enum.filter(game.players, fn x -> x.name === name end)
       |> Enum.at(0)
@@ -105,10 +129,16 @@ defmodule Game.GamePlay do
     %{game | players: new_players}
   end
 
+  @doc """
+  Moves to the next step
+  """
   def step_next(game) do
     %{game | step: game.step + 1}
   end
 
+  @doc """
+  Move to next scene unless it's end of game
+  """
   def scene_next(game) do
     case length(game.scenes) == game.scene do
       true -> %{game | scene: 0, step: 0}
@@ -116,6 +146,9 @@ defmodule Game.GamePlay do
     end
   end
 
+  @doc """
+  Start game play with first scene and step
+  """
   def start(game) do
     %{game | scene: 1, step: 1}
   end

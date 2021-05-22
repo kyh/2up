@@ -77,8 +77,8 @@ defmodule Web.GameChannel do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         end_game_state = GameServer.game_end(game_code)
-        pack = Live.pack_get(end_game_state.pack)
-        Live.play_create(pack, %{game_state: end_game_state})
+        # pack = Live.pack_get(end_game_state.pack)
+        # Live.play_create(pack, %{game_state: end_game_state})
         {:noreply, socket}
 
       nil ->
@@ -128,12 +128,6 @@ defmodule Web.GameChannel do
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        submission = %{
-          id: Ecto.UUID.generate(),
-          name: name,
-          content: submission
-        }
-
         game_state = GameServer.player_submit(game_code, name, submission, player_count(socket))
         player_score_update(socket, name, game_state.players)
         broadcast!(socket, "game/game_state", game_state)
