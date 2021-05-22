@@ -52,7 +52,6 @@
     "@types/webpack-env": "^1.16.0",
     "apollo": "^2.32.1",
     "babel-plugin-macros": "^3.0.1",
-    "graphql": "^15.5.0",
     "husky": "^6.0.0",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
