@@ -8,6 +8,7 @@ defmodule Playhouse.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
+      {Phoenix.PubSub, name: Playhouse.PubSub},
       # Start the Ecto repository
       Database.Repo,
       # Start the endpoint when the application starts

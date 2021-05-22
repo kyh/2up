@@ -70,5 +70,5 @@ defmodule Web.Presence do
   """
   use Phoenix.Presence,
     otp_app: :playhouse,
-    pubsub_server: Database.PubSub
+    pubsub_server: Playhouse.PubSub
 end
