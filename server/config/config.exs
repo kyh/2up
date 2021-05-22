@@ -20,7 +20,7 @@ config :playhouse, Web.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "XvP1K4u3s6kkRTKp2k3ypqzuzbn5zjEIZNLQALc7m1ayOyXzVL0ZVt7pp28Dm9ye",
   render_errors: [view: Web.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Database.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub_server: Playhouse.PubSub
 
 # Configures Elixir's Logger
 config :logger, :console,
