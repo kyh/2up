@@ -15,7 +15,7 @@ defmodule Web.GameChannel do
   def join("game:" <> game_code, payload, socket) do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        send(self(), {:after_join, game_code, payload["name"], payload["isHost"]})
+        send(self(), {:after_join, game_code, payload["name"], payload["isSpectator"]})
         {:ok, assign(socket, :name, payload["name"])}
 
       nil ->
@@ -26,18 +26,18 @@ defmodule Web.GameChannel do
   @doc """
   Presence is tracked and initial game state broadcasted
   """
-  def handle_info({:after_join, game_code, name, is_host}, socket) do
+  def handle_info({:after_join, game_code, name, is_spectator}, socket) do
     push(socket, "presence_state", Presence.list(socket))
 
     {:ok, _} =
       Presence.track(socket, socket.assigns.name, %{
         name: name,
-        isHost: is_host,
+        isSpectator: is_spectator,
         score: 0
       })
 
     game_state =
-      case is_host == true do
+      case is_spectator == true do
         true ->
           GameServer.game_state(game_code)
 

@@ -11,7 +11,7 @@ export const HomeRoutes = () => {
       <Navigation />
       <PageContainer size="large" align="center">
         <IntroContainer>
-          <img src="/logo/logomark.svg" alt="Playhouse" />
+          <IntroLogo src="/logo/logomark.svg" alt="Playhouse" />
           <IntroCard>
             <Switch>
               <Route exact path="/">
@@ -29,13 +29,14 @@ export const HomeRoutes = () => {
 };
 
 const IntroContainer = styled.section`
-  img {
-    display: block;
-    width: 60px;
-    height: 65px;
-    margin: ${({ theme }) => `0 auto ${theme.spacings(2)}`};
-  }
   transform: translateY(-70px);
+`;
+
+const IntroLogo = styled.img`
+  display: block;
+  width: 60px;
+  height: 65px;
+  margin: ${({ theme }) => `0 auto ${theme.spacings(3)}`};
 `;
 
 const IntroCard = styled(Card)`

@@ -28,7 +28,7 @@ export const GameProvider = ({ children, gameId }: Props) => {
     `game:${gameId}`,
     {
       name: localStorage.getItem("name"),
-      isHost: location.pathname.includes("spectate"),
+      isSpectator: location.pathname.includes("spectate"),
     },
     (event, payload) => {
       if (event === PRESENCE_EVENTS.state || event === PRESENCE_EVENTS.diff) {
@@ -42,7 +42,7 @@ export const GameProvider = ({ children, gameId }: Props) => {
         }
         const players = Presence.list(presencesRef.current)
           .map((p) => p.metas[0])
-          .filter((p) => !p.isHost);
+          .filter((p) => !p.isSpectator);
         dispatch({ type: "game/players", payload: { players } });
       } else {
         dispatch({ type: event, payload });
