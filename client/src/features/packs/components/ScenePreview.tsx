@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { gql, useMutation } from "@apollo/client";
 import { useAlert } from "react-alert";
 
-import { EditableQuestion } from "features/game/components/Question";
-import { EditableAnswer } from "features/game/components/Answer";
+import { EditableQuestion } from "features/packs/components/EditableQuestion";
+import { EditableAnswer } from "features/packs/components/EditableAnswer";
 
 import monitor from "./monitor.svg";
 import mobile from "./mobile.svg";
@@ -21,20 +21,14 @@ type Props = {
 
 const transformSceneAnswers = (
   sceneId: string,
-  sceneAnswers: (ScenePreviewFragment_sceneAnswers | null)[] | null
+  sceneAnswers: ScenePreviewFragment_sceneAnswers[]
 ) => {
-  if (sceneAnswers === null) {
-    return [];
-  }
-
-  return sceneAnswers.map((sceneAnswer) => {
-    return {
-      id: sceneAnswer?.id || undefined,
-      content: sceneAnswer?.content || "",
-      sceneId: sceneId,
-      isCorrect: sceneAnswer?.isCorrect,
-    };
-  });
+  return sceneAnswers.map((sceneAnswer) => ({
+    id: sceneAnswer.id,
+    content: sceneAnswer.content,
+    sceneId: sceneId,
+    isCorrect: sceneAnswer.isCorrect,
+  }));
 };
 
 export const ScenePreview = ({ scene, setSaving }: Props) => {
@@ -46,7 +40,7 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
     const newScene = { ...scene, ...updatedScene };
     const newSceneAnswers = transformSceneAnswers(
       scene.id,
-      newScene.sceneAnswers
+      newScene.sceneAnswers as ScenePreviewFragment_sceneAnswers[]
     );
 
     try {
@@ -75,9 +69,9 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
         <Screen>
           <EditableQuestion
             sceneId={scene.id}
-            instruction={scene?.instruction || ""}
-            question={scene?.question || ""}
-            questionType={scene?.questionType?.slug}
+            instruction={scene.instruction || ""}
+            question={scene.question || ""}
+            questionType={scene.questionType.slug}
             onChange={onChange}
           />
         </Screen>
@@ -87,9 +81,9 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
           <EditableAnswer
             sceneId={scene.id}
             sceneAnswers={
-              transformSceneAnswers(scene?.id, scene?.sceneAnswers) || []
+              scene.sceneAnswers as ScenePreviewFragment_sceneAnswers[]
             }
-            answerType={scene?.answerType?.slug}
+            answerType={scene.answerType.slug}
             onChange={onChange}
           />
         </Screen>

@@ -1,20 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-// import CanvasDraw from "react-canvas-draw";
-// import { HexColorPicker } from "react-colorful";
-import { Input, Button, Record } from "components";
-import type { SceneAnswer } from "features/game/gameSlice";
+import { Input, Button } from "components";
+import { SceneAnswer, Submission } from "features/game/gameSlice";
 
 type AnswerProps = {
-  sceneAnswer?: SceneAnswer;
-  answerType?: string;
-  submitted?: boolean;
-  onSubmit?: (_value: any) => void;
+  sceneAnswer: SceneAnswer;
+  answerType: string;
+  submitted: boolean;
+  onSubmit: (submission: Pick<Submission, "content">) => void;
   displayMode?: boolean;
 };
 
 export const Answer = ({
-  sceneAnswer = {},
+  sceneAnswer,
   answerType = "text",
   submitted = false,
   onSubmit = () => {},
@@ -27,6 +25,7 @@ export const Answer = ({
           sceneAnswer={sceneAnswer}
           submitted={submitted}
           onSubmit={onSubmit}
+          answerType={answerType}
           displayMode={displayMode}
         />
       );
@@ -37,6 +36,7 @@ export const Answer = ({
           sceneAnswer={sceneAnswer}
           submitted={submitted}
           onSubmit={onSubmit}
+          answerType={answerType}
           displayMode={displayMode}
         />
       );
@@ -44,27 +44,24 @@ export const Answer = ({
 };
 
 const AnswerText = ({
-  sceneAnswer = {},
-  submitted = false,
-  onSubmit = () => {},
-  displayMode = false,
+  sceneAnswer,
+  submitted,
+  onSubmit,
+  displayMode,
 }: AnswerProps) => {
   const [value, setValue] = useState("");
 
   const submit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    onSubmit(value);
+    onSubmit({ content: value });
   };
 
   if (displayMode) {
-    return <AnswerTextDisplay>{sceneAnswer?.content}</AnswerTextDisplay>;
+    return <AnswerTextDisplay>{sceneAnswer.content}</AnswerTextDisplay>;
   }
 
   return (
     <AnswerTextForm onSubmit={submit}>
-      <RecordContainer>
-        <Record onTranscribe={(value) => setValue(value)} autoStart />
-      </RecordContainer>
       <InputContainer>
         <Input
           value={value}
@@ -86,6 +83,52 @@ const AnswerTextForm = styled.form`
   width: 100%;
 `;
 
+const InputContainer = styled.div`
+  margin-bottom: ${({ theme }) => theme.spacings(3)};
+`;
+
+const AnswerTextDisplay = styled.div`
+  ${({ theme }) => theme.typography.h3};
+  text-align: center;
+  padding: ${({ theme }) => theme.spacings(3)};
+  border: 2px solid ${({ theme }) => theme.border.alternateColor};
+  border-radius: ${({ theme }) => theme.border.wavyRadius};
+`;
+
+const AnswerMulti = ({
+  sceneAnswer,
+  submitted,
+  onSubmit,
+  displayMode,
+}: AnswerProps) => {
+  if (displayMode) {
+    return (
+      <Button key={sceneAnswer.id} fullWidth disabled>
+        {sceneAnswer.content}
+      </Button>
+    );
+  }
+
+  return (
+    <Button
+      key={sceneAnswer.id}
+      disabled={submitted}
+      onClick={() => onSubmit({ content: sceneAnswer.content })}
+      fullWidth
+    >
+      {sceneAnswer.content}
+    </Button>
+  );
+};
+
+// import CanvasDraw from "react-canvas-draw";
+// import { HexColorPicker } from "react-colorful";
+
+/**
+<RecordContainer>
+<Record onTranscribe={(value) => setValue(value)} autoStart />
+</RecordContainer>
+
 const RecordContainer = styled.div`
   position: fixed;
   top: 0;
@@ -101,44 +144,7 @@ const RecordContainer = styled.div`
     margin: 0;
   }
 `;
-
-const InputContainer = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacings(3)};
-`;
-
-const AnswerTextDisplay = styled.div`
-  ${({ theme }) => theme.typography.h3};
-  text-align: center;
-  padding: ${({ theme }) => theme.spacings(3)};
-  border: 2px solid ${({ theme }) => theme.border.alternateColor};
-  border-radius: ${({ theme }) => theme.border.wavyRadius};
-`;
-
-const AnswerMulti = ({
-  sceneAnswer = {},
-  submitted = false,
-  onSubmit = () => {},
-  displayMode = false,
-}: AnswerProps) => {
-  if (displayMode) {
-    return (
-      <Button key={sceneAnswer?.id} fullWidth disabled>
-        {sceneAnswer?.content}
-      </Button>
-    );
-  }
-
-  return (
-    <Button
-      key={sceneAnswer?.id}
-      disabled={submitted}
-      onClick={() => onSubmit(sceneAnswer)}
-      fullWidth
-    >
-      {sceneAnswer?.content}
-    </Button>
-  );
-};
+**/
 
 // const AnswerCanvas: React.FC<
 //   AnswerProps & { height?: number; width?: number }
@@ -201,162 +207,3 @@ const AnswerMulti = ({
 //   background-color: ${(props) => props.hex ?? "transparent"};
 //   margin: 0 auto;
 // `;
-
-/**
- * Editable versions of the component above for Gamemaster Pages
- */
-type EditableAnswerProps = {
-  sceneId: string;
-  answerType: string;
-  sceneAnswers: SceneAnswer[];
-  onChange: (_updatedScene: any) => void;
-};
-
-export const EditableAnswer = ({
-  sceneId,
-  sceneAnswers,
-  answerType,
-  onChange,
-}: EditableAnswerProps) => {
-  // TODO: we should move this state stuff into its own component
-  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(0);
-
-  const onChangeSceneAnswer = (
-    updatedSceneAnswer: SceneAnswer = {},
-    index: number = 0
-  ) => {
-    const updatedSceneAnswers = [...sceneAnswers];
-    const original = updatedSceneAnswers[index];
-    updatedSceneAnswers[index] = { ...original, ...updatedSceneAnswer };
-    updatedSceneAnswers[correctAnswerIndex].isCorrect = true;
-    onChange({ sceneAnswers: updatedSceneAnswers });
-  };
-
-  useEffect(() => {
-    onChangeSceneAnswer();
-  }, [correctAnswerIndex]);
-
-  switch (answerType) {
-    case "multi_text":
-      return (
-        <EditableType onSelectType={onChange} key={sceneId}>
-          {sceneAnswers.map((sceneAnswer, index) => (
-            <InputContainer>
-              <Input
-                type="radio"
-                name="correct"
-                value={index}
-                checked={sceneAnswer?.isCorrect}
-                onChange={() => setCorrectAnswerIndex(index)}
-              />
-              <Input
-                defaultValue={sceneAnswer?.content}
-                onBlur={(e) =>
-                  onChangeSceneAnswer({ content: e.target.value }, index)
-                }
-              />
-            </InputContainer>
-          ))}
-          <Button
-            onClick={() =>
-              onChange({
-                sceneAnswers: [
-                  ...sceneAnswers,
-                  { isCorrect: false, content: "" },
-                ],
-              })
-            }
-          >
-            + Add Option
-          </Button>
-        </EditableType>
-      );
-    // "text"
-    default:
-      const [sceneAnswer] = sceneAnswers;
-      return (
-        <EditableType onSelectType={onChange} key={sceneId}>
-          <InputContainer>
-            <Input
-              defaultValue={sceneAnswer?.content}
-              onBlur={(e) =>
-                onChangeSceneAnswer({ content: e.target.value }, 0)
-              }
-            />
-          </InputContainer>
-          <Button disabled>Submit answer</Button>
-        </EditableType>
-      );
-  }
-};
-
-type EditableTypeProps = {
-  onSelectType: (
-    _updatedScene: Pick<any, "answerType" | "sceneAnswers">
-  ) => void;
-  children: React.ReactNode;
-};
-
-// TODO: Get answer types from backend
-const EditableType = ({ onSelectType, children }: EditableTypeProps) => {
-  return (
-    <EditableAnswerContainer>
-      {children}
-      <div className="button-container">
-        <Button
-          variant="fab"
-          onClick={() => {
-            onSelectType({
-              answerType: { slug: "text" },
-              sceneAnswers: [],
-            });
-          }}
-        >
-          T
-        </Button>
-        <Button
-          variant="fab"
-          onClick={() => {
-            onSelectType({
-              answerType: { slug: "multi_text" },
-              sceneAnswers: [],
-            });
-          }}
-        >
-          M
-        </Button>
-      </div>
-    </EditableAnswerContainer>
-  );
-};
-
-const EditableAnswerContainer = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background: ${({ theme }) => theme.ui.background};
-  padding-top: 35px;
-
-  input {
-    width: 100%;
-  }
-
-  &:hover .button-container {
-    display: block;
-  }
-
-  .button-container {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 100;
-
-    button {
-      width: 30px;
-      height: 30px;
-      border-radius: 100%;
-    }
-  }
-`;
