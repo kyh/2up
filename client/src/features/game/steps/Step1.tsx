@@ -1,24 +1,28 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { Alert, Timer } from "components";
-import { StepProps } from "features/game/gameSlice";
+import { Submission, StepProps } from "features/game/gameSlice";
 import { Question } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
 
-export const Step1 = ({ gameState, broadcast, userId, name }: StepProps) => {
+export const Step1 = ({ gameState, broadcast, name }: StepProps) => {
   const [submitted, setSubmitted] = useState(false);
 
   const submissions = gameState.submissions.length;
   const players = gameState.players.length;
   const waiting = players - submissions;
 
-  const onSubmit = (value = "") => {
+  const onSubmit = (
+    submission: Pick<Submission, "content"> = { content: "" }
+  ) => {
     if (submitted) return;
     setSubmitted(true);
     broadcast("submit", {
-      userId,
       name,
-      submission: value,
+      submission: {
+        ...submission,
+        name,
+      },
     });
   };
 

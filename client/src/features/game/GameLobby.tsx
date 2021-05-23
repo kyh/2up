@@ -68,15 +68,13 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
           >
             <StartModalBody>
               <TitleContainer>
-                <p className="title">
-                  This game is only fun with 2 or more players
-                </p>
+                <p>This game is only fun with 2 or more players.</p>
                 <p>
-                  <div>
+                  <span className="block">
                     Invite friends to{" "}
                     <span className="highlight">playhouse.gg</span>
-                  </div>
-                  <div>and enter the room code:</div>
+                  </span>
+                  <span className="block">and enter the room code:</span>
                 </p>
                 <div className="game-id">{gameState.gameId}</div>
               </TitleContainer>
@@ -114,6 +112,9 @@ const TitleContainer = styled.div`
   .title {
     margin: 0 0 ${({ theme }) => theme.spacings(5)};
   }
+  .block {
+    display: block;
+  }
   .highlight {
     color: ${({ theme }) => theme.colors.purple};
   }
@@ -148,6 +149,5 @@ const StartModalBody = styled.div`
   }
   .start-game-button {
     width: 100%;
-    margin-top: ${({ theme }) => theme.spacings(2)};
   }
 `;

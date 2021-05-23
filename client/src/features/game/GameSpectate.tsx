@@ -18,6 +18,7 @@ export const GameSpectate = () => {
           gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
+          name=""
         />
       );
     case 1:
@@ -26,6 +27,7 @@ export const GameSpectate = () => {
           gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
+          name=""
         />
       );
     case 2:
@@ -34,6 +36,7 @@ export const GameSpectate = () => {
           gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
+          name=""
         />
       );
     case 3:
@@ -42,6 +45,7 @@ export const GameSpectate = () => {
           gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
+          name=""
         />
       );
     default:

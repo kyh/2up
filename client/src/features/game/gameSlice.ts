@@ -5,40 +5,38 @@ export type GameState = {
   pack: string;
   scene: number;
   step: number;
-  instruction?: string;
-  question?: string;
-  questionType?: string;
-  sceneAnswers?: SceneAnswer[];
-  answerType?: string;
+  instruction: string;
+  question: string;
+  questionType: string;
+  sceneAnswers: SceneAnswer[];
+  answerType: string;
   submissions: Submission[];
   // comes from presence
   players: Player[];
 };
 
 export type Player = {
-  id: string;
   name: string;
   score: number;
+  isSpectator: boolean;
 };
 
 export type SceneAnswer = {
-  id?: string;
-  isCorrect?: boolean;
-  content?: string;
+  id: string;
+  isCorrect: boolean;
+  content: string;
 };
 
 export type Submission = {
-  id: number;
   name: string;
   content: string;
 };
 
 export type StepProps = {
+  name: string;
   gameState: GameState;
   broadcast: (_eventName: string, _payload?: object) => void;
   dispatch: (_action: object) => void;
-  userId?: string;
-  name?: string;
 };
 
 export const initialState: GameState = {

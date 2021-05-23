@@ -60,8 +60,10 @@ const AnswerResult = ({ gameState, sceneAnswer }: Props) => {
     <div className="answer-container">
       <h4 className="title">Correct Answer</h4>
       <Answer
-        answerType={gameState.answerType}
         sceneAnswer={sceneAnswer}
+        answerType={gameState.answerType}
+        onSubmit={() => {}}
+        submitted
         displayMode
       />
     </div>
@@ -73,7 +75,7 @@ const Submissions = ({ gameState, sceneAnswer }: Props) => {
     const isCorrect = submission.content === sceneAnswer.content;
     return (
       <Player
-        key={submission.id}
+        key={submission.name}
         playerName={submission.name}
         playerContent={`: "${submission.content}"`}
       >

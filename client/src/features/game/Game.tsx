@@ -12,7 +12,6 @@ export const Game = () => {
   const dispatch = useAppDispatch();
   const gameState = useAppSelector((state) => state.game);
   const name = useAppSelector((state) => state.playhouse.name);
-  const userId = useAppSelector((state) => state.playhouse.userId);
 
   useEffect(() => {
     window.scroll(0, 0);
@@ -25,7 +24,6 @@ export const Game = () => {
           gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
-          userId={userId}
           name={name}
         />
       );
@@ -35,7 +33,6 @@ export const Game = () => {
           gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
-          userId={userId}
           name={name}
         />
       );
@@ -45,7 +42,6 @@ export const Game = () => {
           gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
-          userId={userId}
           name={name}
         />
       );
@@ -55,7 +51,6 @@ export const Game = () => {
           gameState={gameState}
           broadcast={broadcast}
           dispatch={dispatch}
-          userId={userId}
           name={name}
         />
       );
