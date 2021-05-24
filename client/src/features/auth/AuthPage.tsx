@@ -6,32 +6,8 @@ import { useAlert } from "react-alert";
 
 import { PageContainer, TextField, Button, Card } from "components";
 
-import { SignupUserCreateMutation } from "./__generated__/SignupUserCreateMutation";
-import { LoginSessionCreateMutation } from "./__generated__/LoginSessionCreateMutation";
-
-const USER_CREATE = gql`
-  mutation SignupUserCreateMutation($input: UserCreateInput!) {
-    userCreate(input: $input) {
-      user {
-        username
-        email
-      }
-      token
-    }
-  }
-`;
-
-const SESSION_CREATE = gql`
-  mutation LoginSessionCreateMutation($input: SessionCreateInput!) {
-    sessionCreate(input: $input) {
-      user {
-        username
-        email
-      }
-      token
-    }
-  }
-`;
+import { AuthPageUserCreateMutation } from "./__generated__/AuthPageUserCreateMutation";
+import { AuthPageSessionCreateMutation } from "./__generated__/AuthPageSessionCreateMutation";
 
 type FormInputs = {
   username: string;
@@ -49,15 +25,14 @@ export const AuthPage = ({ isLogin }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
-
   const [
     userCreate,
     { loading: userCreateLoading },
-  ] = useMutation<SignupUserCreateMutation>(USER_CREATE);
+  ] = useMutation<AuthPageUserCreateMutation>(USER_CREATE);
   const [
     sessionCreate,
     { loading: sessionCreateLoading },
-  ] = useMutation<LoginSessionCreateMutation>(SESSION_CREATE);
+  ] = useMutation<AuthPageSessionCreateMutation>(SESSION_CREATE);
 
   const onSubmit = async ({ username, email, password }: FormInputs) => {
     try {
@@ -128,6 +103,30 @@ export const AuthPage = ({ isLogin }: Props) => {
     </Page>
   );
 };
+
+const USER_CREATE = gql`
+  mutation AuthPageUserCreateMutation($input: UserCreateInput!) {
+    userCreate(input: $input) {
+      user {
+        username
+        email
+      }
+      token
+    }
+  }
+`;
+
+const SESSION_CREATE = gql`
+  mutation AuthPageSessionCreateMutation($input: SessionCreateInput!) {
+    sessionCreate(input: $input) {
+      user {
+        username
+        email
+      }
+      token
+    }
+  }
+`;
 
 const Page = styled(PageContainer)<{ isLogin?: boolean }>`
   align-items: center;

@@ -87,6 +87,7 @@ defmodule Web.GraphQL.Types.MutationType do
       input do
         field :id, :id
         field :name, :string
+        field :description, :string
         field :is_random, :boolean
         field :length, :integer
       end

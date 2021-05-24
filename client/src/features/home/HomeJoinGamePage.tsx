@@ -7,15 +7,7 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { gameActions } from "features/game/gameSlice";
 import { Button, Input } from "components";
 import { Form } from "features/home/components/Form";
-import { HomeGameCheckMutation } from "./__generated__/HomeGameCheckMutation";
-
-const GAME_CHECK = gql`
-  mutation HomeGameCheckMutation($input: GameInput!) {
-    game(input: $input) {
-      isValid
-    }
-  }
-`;
+import { HomeJoinGamePageGameCheckMutation } from "./__generated__/HomeJoinGamePageGameCheckMutation";
 
 type FormInputs = {
   gameId: string;
@@ -27,7 +19,9 @@ export const HomeJoinGamePage = () => {
   const dispatch = useAppDispatch();
   const storedGameId = useAppSelector((state) => state.game.gameId);
   const { register, handleSubmit, reset } = useForm<FormInputs>();
-  const [gameCheck] = useMutation<HomeGameCheckMutation>(GAME_CHECK);
+  const [gameCheck] = useMutation<HomeJoinGamePageGameCheckMutation>(
+    GAME_CHECK
+  );
 
   // Joining an existing game:
   const onSubmit = async ({ gameId }: FormInputs) => {
@@ -61,6 +55,14 @@ export const HomeJoinGamePage = () => {
     </>
   );
 };
+
+const GAME_CHECK = gql`
+  mutation HomeJoinGamePageGameCheckMutation($input: GameInput!) {
+    game(input: $input) {
+      isValid
+    }
+  }
+`;
 
 export const StartNewGameText = styled.div`
   display: flex;

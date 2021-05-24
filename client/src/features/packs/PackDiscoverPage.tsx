@@ -6,38 +6,16 @@ import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
 import { PackSection } from "./components/Packs";
 import {
-  PackDiscoverPageQuery,
-  PackDiscoverPageQuery_my,
-  PackDiscoverPageQuery_featured,
-} from "./__generated__/PackDiscoverPageQuery";
-
-const PACKS_QUERY = gql`
-  query PackDiscoverPageQuery($username: String) {
-    featured: packs(first: 5) {
-      edges {
-        node {
-          id
-          name
-          description
-          imageUrl
-        }
-      }
-    }
-    my: packs(first: 10, username: $username) {
-      edges {
-        node {
-          id
-          name
-          imageUrl
-          description
-        }
-      }
-    }
-  }
-`;
+  PackDiscoverPagePacksQuery,
+  PackDiscoverPagePacksQuery_my,
+  PackDiscoverPagePacksQuery_featured,
+} from "./__generated__/PackDiscoverPagePacksQuery";
 
 type PacksProps = {
-  packs?: PackDiscoverPageQuery_my | PackDiscoverPageQuery_featured | null;
+  packs?:
+    | PackDiscoverPagePacksQuery_my
+    | PackDiscoverPagePacksQuery_featured
+    | null;
 };
 
 const Packs = ({ packs }: PacksProps) => {
@@ -60,7 +38,7 @@ const Packs = ({ packs }: PacksProps) => {
 };
 
 export const PackDiscoverPage = () => {
-  const { data } = useQuery<PackDiscoverPageQuery>(PACKS_QUERY, {
+  const { data } = useQuery<PackDiscoverPagePacksQuery>(PACKS_QUERY, {
     variables: { username: localStorage.getItem("username") || "" },
   });
 
@@ -95,3 +73,28 @@ export const PackDiscoverPage = () => {
     </Page>
   );
 };
+
+const PACKS_QUERY = gql`
+  query PackDiscoverPagePacksQuery($username: String) {
+    featured: packs(first: 5) {
+      edges {
+        node {
+          id
+          name
+          description
+          imageUrl
+        }
+      }
+    }
+    my: packs(first: 10, username: $username) {
+      edges {
+        node {
+          id
+          name
+          imageUrl
+          description
+        }
+      }
+    }
+  }
+`;
