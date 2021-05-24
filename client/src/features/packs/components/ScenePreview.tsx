@@ -152,4 +152,8 @@ const Screen = styled.section`
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+
+  > div {
+    height: 100%;
+  }
 `;

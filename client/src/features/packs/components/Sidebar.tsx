@@ -160,11 +160,6 @@ export const Sidebar = ({
                             className="right"
                             onClick={() => selectScene(scene.id)}
                           >
-                            {scene.instruction && (
-                              <div className="instruction">
-                                {scene.instruction}
-                              </div>
-                            )}
                             <h3 className="question">{scene.question}</h3>
                           </div>
                           {scenes.length > 1 && (
@@ -337,15 +332,6 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     width: 100%;
     overflow: hidden;
     padding: ${({ theme }) => theme.spacings(3)};
-  }
-
-  .instruction {
-    color: ${({ theme }) => theme.colors.darkGrey};
-    font-size: 14px;
-    margin-bottom: ${({ theme }) => theme.spacings(2)};
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .question {
