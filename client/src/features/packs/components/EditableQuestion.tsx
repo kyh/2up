@@ -27,7 +27,7 @@ export const EditableQuestion = ({
             onBlur={(e) => onChange({ instruction: e.target.value })}
           />
           <EditableQuestionImageContainer>
-            <EditableType onSelectType={onChange}>
+            <EditableQuestionSwitch onSelectType={onChange}>
               <input
                 type="text"
                 placeholder="Image URL"
@@ -35,7 +35,7 @@ export const EditableQuestion = ({
                 onBlur={(e) => onChange({ question: e.target.value })}
               />
               <QuestionImage alt={instruction} src={question} />
-            </EditableType>
+            </EditableQuestionSwitch>
           </EditableQuestionImageContainer>
         </EditableQuestionContainer>
       );
@@ -47,27 +47,30 @@ export const EditableQuestion = ({
             defaultValue={instruction}
             onBlur={(e) => onChange({ instruction: e.target.value })}
           />
-          <EditableType onSelectType={onChange}>
+          <EditableQuestionSwitch onSelectType={onChange}>
             <EditableQuestionText
               placeholder="Your question?"
               defaultValue={question}
               onBlur={(e) => onChange({ question: e.target.value })}
             />
-          </EditableType>
+          </EditableQuestionSwitch>
         </EditableQuestionContainer>
       );
   }
 };
 
-type EditableTypeProps = {
+type EditableQuestionSwitchProps = {
   onSelectType: (_updatedScene: Pick<any, "questionType" | "question">) => void;
   children: ReactNode;
 };
 
 // TODO: Get answer types from backend
-const EditableType = ({ onSelectType, children }: EditableTypeProps) => {
+const EditableQuestionSwitch = ({
+  onSelectType,
+  children,
+}: EditableQuestionSwitchProps) => {
   return (
-    <EditableTypeContainer>
+    <EditableQuestionSwitchContainer>
       {children}
       <div className="button-container">
         <Button
@@ -93,7 +96,7 @@ const EditableType = ({ onSelectType, children }: EditableTypeProps) => {
           I
         </Button>
       </div>
-    </EditableTypeContainer>
+    </EditableQuestionSwitchContainer>
   );
 };
 
@@ -102,7 +105,7 @@ const QuestionImage = styled.img`
   margin: 0 0 ${({ theme }) => theme.spacings(5)};
 `;
 
-const EditableTypeContainer = styled.div`
+const EditableQuestionSwitchContainer = styled.div`
   padding-top: 35px;
   position: relative;
 

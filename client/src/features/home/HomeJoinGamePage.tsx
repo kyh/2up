@@ -17,7 +17,7 @@ const GAME_CHECK = gql`
   }
 `;
 
-type FormProps = {
+type FormInputs = {
   gameId: string;
 };
 
@@ -26,11 +26,11 @@ export const HomeJoinGamePage = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const storedGameId = useAppSelector((state) => state.game.gameId);
-  const { register, handleSubmit, reset } = useForm<FormProps>();
+  const { register, handleSubmit, reset } = useForm<FormInputs>();
   const [gameCheck] = useMutation<HomeGameCheckMutation>(GAME_CHECK);
 
   // Joining an existing game:
-  const onSubmit = async ({ gameId }: FormProps) => {
+  const onSubmit = async ({ gameId }: FormInputs) => {
     const { data } = await gameCheck({
       variables: { input: { code: gameId } },
     });

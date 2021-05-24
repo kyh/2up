@@ -34,7 +34,7 @@ export const EditableAnswer = ({
   switch (answerType) {
     case "multi_text":
       return (
-        <EditableType onSelectType={onChange} key={sceneId}>
+        <EditableAnswerSwitch onSelectType={onChange} key={sceneId}>
           {sceneAnswers.map((sceneAnswer, index) => (
             <InputContainer>
               <Input
@@ -64,13 +64,13 @@ export const EditableAnswer = ({
           >
             + Add Option
           </Button>
-        </EditableType>
+        </EditableAnswerSwitch>
       );
     // "text"
     default:
       const [sceneAnswer] = sceneAnswers;
       return (
-        <EditableType onSelectType={onChange} key={sceneId}>
+        <EditableAnswerSwitch onSelectType={onChange} key={sceneId}>
           <InputContainer>
             <Input
               defaultValue={sceneAnswer?.content}
@@ -80,7 +80,7 @@ export const EditableAnswer = ({
             />
           </InputContainer>
           <Button disabled>Submit answer</Button>
-        </EditableType>
+        </EditableAnswerSwitch>
       );
   }
 };
@@ -89,7 +89,7 @@ const InputContainer = styled.div`
   margin-bottom: ${({ theme }) => theme.spacings(3)};
 `;
 
-type EditableTypeProps = {
+type EditableAnswerSwitchProps = {
   onSelectType: (
     _updatedScene: Pick<any, "answerType" | "sceneAnswers">
   ) => void;
@@ -97,9 +97,12 @@ type EditableTypeProps = {
 };
 
 // TODO: Get answer types from backend
-const EditableType = ({ onSelectType, children }: EditableTypeProps) => {
+const EditableAnswerSwitch = ({
+  onSelectType,
+  children,
+}: EditableAnswerSwitchProps) => {
   return (
-    <EditableAnswerContainer>
+    <EditableAnswerSwitchContainer>
       {children}
       <div className="button-container">
         <Button
@@ -125,11 +128,11 @@ const EditableType = ({ onSelectType, children }: EditableTypeProps) => {
           M
         </Button>
       </div>
-    </EditableAnswerContainer>
+    </EditableAnswerSwitchContainer>
   );
 };
 
-const EditableAnswerContainer = styled.div`
+const EditableAnswerSwitchContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;

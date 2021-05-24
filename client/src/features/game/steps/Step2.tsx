@@ -50,12 +50,12 @@ const Container = styled.div`
   }
 `;
 
-type Props = {
+type SubmissionProps = {
   gameState: GameState;
   sceneAnswer: SceneAnswer;
 };
 
-const AnswerResult = ({ gameState, sceneAnswer }: Props) => {
+const AnswerResult = ({ gameState, sceneAnswer }: SubmissionProps) => {
   return (
     <div className="answer-container">
       <h4 className="title">Correct Answer</h4>
@@ -70,7 +70,7 @@ const AnswerResult = ({ gameState, sceneAnswer }: Props) => {
   );
 };
 
-const Submissions = ({ gameState, sceneAnswer }: Props) => {
+const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
   const players = gameState.submissions.map((submission) => {
     const isCorrect = submission.content === sceneAnswer.content;
     return (

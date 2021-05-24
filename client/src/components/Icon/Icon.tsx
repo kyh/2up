@@ -26,8 +26,8 @@ export const iconMap = {
   list: raw("./svgs/list.svg"),
 };
 
-export type IconType = keyof typeof iconMap;
-export type IconSizeType = "xs" | "sm" | "md" | "lg" | number;
+type IconType = keyof typeof iconMap;
+type IconSizeType = "xs" | "sm" | "md" | "lg" | number;
 
 export const Icon = ({ icon, color, size, rotate, ...rest }: Props) => {
   const iconSvg = iconMap[icon];
