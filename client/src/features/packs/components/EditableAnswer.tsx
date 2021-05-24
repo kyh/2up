@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import produce from "immer";
 import styled from "styled-components";
 import { Input, Button } from "components";
 import { ScenePreviewFragment_sceneAnswers } from "./__generated__/ScenePreviewFragment";
@@ -16,20 +16,13 @@ export const EditableAnswer = ({
   answerType,
   onChange,
 }: EditableAnswerProps) => {
-  // TODO: we should move this state stuff into its own component
-  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(0);
-
-  const onChangeSceneAnswer = (updatedSceneAnswer: any, index: number = 0) => {
-    const updatedSceneAnswers = [...sceneAnswers];
-    const original = updatedSceneAnswers[index];
-    updatedSceneAnswers[index] = { ...original, ...updatedSceneAnswer };
-    updatedSceneAnswers[correctAnswerIndex].isCorrect = true;
-    onChange({ sceneAnswers: updatedSceneAnswers });
+  const onChangeSceneAnswer = (updatedSceneAnswer = {}, index: number = 0) => {
+    onChange({
+      sceneAnswers: produce(sceneAnswers, (draft) => {
+        draft[index] = { ...draft[index], ...updatedSceneAnswer };
+      }),
+    });
   };
-
-  useEffect(() => {
-    onChangeSceneAnswer({});
-  }, [correctAnswerIndex]);
 
   switch (answerType) {
     case "multi_text":
@@ -38,14 +31,16 @@ export const EditableAnswer = ({
           {sceneAnswers.map((sceneAnswer, index) => (
             <InputContainer>
               <Input
-                type="radio"
+                type="checkbox"
                 name="correct"
                 value={index}
-                checked={sceneAnswer?.isCorrect}
-                onChange={() => setCorrectAnswerIndex(index)}
+                checked={sceneAnswer.isCorrect}
+                onChange={(e) =>
+                  onChangeSceneAnswer({ isCorrect: e.target.checked }, index)
+                }
               />
               <Input
-                defaultValue={sceneAnswer?.content}
+                defaultValue={sceneAnswer.content}
                 onBlur={(e) =>
                   onChangeSceneAnswer({ content: e.target.value }, index)
                 }
@@ -75,7 +70,10 @@ export const EditableAnswer = ({
             <Input
               defaultValue={sceneAnswer?.content}
               onBlur={(e) =>
-                onChangeSceneAnswer({ content: e.target.value }, 0)
+                onChangeSceneAnswer({
+                  content: e.target.value,
+                  isCorrect: true,
+                })
               }
             />
           </InputContainer>
