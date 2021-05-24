@@ -8,7 +8,7 @@ import { EditableAnswer } from "features/packs/components/EditableAnswer";
 import monitor from "./monitor.svg";
 import mobile from "./mobile.svg";
 
-import { SceneUpdateMutation } from "./__generated__/SceneUpdateMutation";
+import { ScenePreviewSceneUpdateMutation } from "./__generated__/ScenePreviewSceneUpdateMutation";
 import {
   ScenePreviewFragment,
   ScenePreviewFragment_sceneAnswers,
@@ -33,7 +33,9 @@ const transformSceneAnswers = (
 
 export const ScenePreview = ({ scene, setSaving }: Props) => {
   const alert = useAlert();
-  const [sceneUpdate] = useMutation<SceneUpdateMutation>(SCENE_UPDATE);
+  const [sceneUpdate] = useMutation<ScenePreviewSceneUpdateMutation>(
+    SCENE_UPDATE
+  );
 
   const onChange = async (updatedScene = {}) => {
     setSaving(true);
@@ -116,7 +118,7 @@ ScenePreview.fragments = {
 };
 
 const SCENE_UPDATE = gql`
-  mutation SceneUpdateMutation($input: SceneUpdateInput!) {
+  mutation ScenePreviewSceneUpdateMutation($input: SceneUpdateInput!) {
     sceneUpdate(input: $input) {
       scene {
         ...ScenePreviewFragment

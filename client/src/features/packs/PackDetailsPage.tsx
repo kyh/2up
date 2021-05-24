@@ -1,32 +1,13 @@
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
-
-import { useHostGame } from "features/game/gameService";
-
 import { Button } from "components";
+import { useHostGame } from "features/game/gameService";
 
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
 
 import { PackDetailsPagePackQuery } from "./__generated__/PackDetailsPagePackQuery";
-
-const PACK_QUERY = gql`
-  query PackDetailsPagePackQuery($packId: ID!) {
-    currentUser {
-      id
-    }
-    pack(id: $packId) {
-      id
-      name
-      description
-      imageUrl
-      user {
-        id
-      }
-    }
-  }
-`;
 
 export const PackDetailsPage = () => {
   const { packId } = useParams<{ packId: string }>();
@@ -51,7 +32,7 @@ export const PackDetailsPage = () => {
             <p className="pack-description">{pack.description}</p>
             <div className="pack-actions">
               <Button onClick={() => hostGame(packId)}>Start a game</Button>
-              {!!data && pack.user?.id === currentUser?.id && (
+              {!!data && pack.user.id === currentUser?.id && (
                 <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
               )}
             </div>
@@ -61,6 +42,23 @@ export const PackDetailsPage = () => {
     </Page>
   );
 };
+
+const PACK_QUERY = gql`
+  query PackDetailsPagePackQuery($packId: ID!) {
+    currentUser {
+      id
+    }
+    pack(id: $packId) {
+      id
+      name
+      description
+      imageUrl
+      user {
+        id
+      }
+    }
+  }
+`;
 
 const PackDetailsPageContent = styled(Content)`
   display: block;

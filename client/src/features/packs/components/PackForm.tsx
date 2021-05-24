@@ -1,15 +1,11 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { Button, TextField, AreaField } from "components";
+import { TopbarPackFragment } from "./__generated__/TopbarPackFragment";
 
-export type PackFormInputs = {
-  name: string;
-  description: string;
-  isRandom?: boolean;
-  length?: number;
-};
+export type PackFormInputs = Omit<TopbarPackFragment, "id" | "__typename">;
 
-type PackFormProps = {
+type Props = {
   submitText?: string;
   loading?: boolean;
   defaultValues?: Object;
@@ -21,7 +17,7 @@ export const PackForm = ({
   loading = false,
   defaultValues = {},
   onSubmit,
-}: PackFormProps) => {
+}: Props) => {
   const {
     register,
     handleSubmit,

@@ -1,36 +1,16 @@
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
 import { useParams, Link } from "react-router-dom";
-
+import { ButtonLinkNative } from "components";
 import { Navigation } from "features/packs/components/Navigation";
 import { Page, Content } from "features/packs/components/Page";
 import { PackSection } from "features/packs/components/Packs";
 
-import { ButtonLinkNative } from "components";
-
-import { ProfileUserQuery } from "./__generated__/ProfileUserQuery";
-
-const USER_QUERY = gql`
-  query ProfileUserQuery($username: String!) {
-    currentUser {
-      username
-    }
-    packs(first: 100, username: $username) {
-      edges {
-        node {
-          id
-          name
-          imageUrl
-          description
-        }
-      }
-    }
-  }
-`;
+import { ProfilePageUserQuery } from "./__generated__/ProfilePageUserQuery";
 
 export const ProfilePage = () => {
   const { username } = useParams<{ username: string }>();
-  const { data } = useQuery<ProfileUserQuery>(USER_QUERY, {
+  const { data } = useQuery<ProfilePageUserQuery>(USER_QUERY, {
     variables: { username: username || "" },
   });
 
@@ -84,6 +64,24 @@ export const ProfilePage = () => {
     </Page>
   );
 };
+
+const USER_QUERY = gql`
+  query ProfilePageUserQuery($username: String!) {
+    currentUser {
+      username
+    }
+    packs(first: 100, username: $username) {
+      edges {
+        node {
+          id
+          name
+          imageUrl
+          description
+        }
+      }
+    }
+  }
+`;
 
 const ProfileContent = styled.section`
   .profile-header {

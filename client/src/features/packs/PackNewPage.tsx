@@ -2,30 +2,18 @@ import styled from "styled-components";
 import { gql, useMutation } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { useAlert } from "react-alert";
-
 import { Card } from "components";
 import { Navigation } from "features/packs/components/Navigation";
 import { Page, Content } from "features/packs/components/Page";
 import { PackForm, PackFormInputs } from "features/packs/components/PackForm";
 
-import { PackCreateMutation } from "./__generated__/PackCreateMutation";
-
-const PACK_CREATE = gql`
-  mutation PackCreateMutation($input: PackCreateInput!) {
-    packCreate(input: $input) {
-      pack {
-        id
-        name
-      }
-    }
-  }
-`;
+import { PackNewPagePackCreateMutation } from "./__generated__/PackNewPagePackCreateMutation";
 
 export const PackNewPage = () => {
   const alert = useAlert();
   const history = useHistory();
 
-  const [packCreate, { loading }] = useMutation<PackCreateMutation>(
+  const [packCreate, { loading }] = useMutation<PackNewPagePackCreateMutation>(
     PACK_CREATE
   );
 
@@ -65,6 +53,17 @@ export const PackNewPage = () => {
     </Page>
   );
 };
+
+const PACK_CREATE = gql`
+  mutation PackNewPagePackCreateMutation($input: PackCreateInput!) {
+    packCreate(input: $input) {
+      pack {
+        id
+        name
+      }
+    }
+  }
+`;
 
 const PackNewPageContent = styled(Content)`
   display: block;

@@ -13,7 +13,7 @@ import { Button, Icon } from "components";
 
 import { SidebarSceneCreateMutation } from "./__generated__/SidebarSceneCreateMutation";
 import { SidebarSceneDeleteMutation } from "./__generated__/SidebarSceneDeleteMutation";
-import { SidebarPackUpdateMutation } from "./__generated__/SidebarPackUpdateMutation";
+import { SidebarPackSceneUpdateMutation } from "./__generated__/SidebarPackSceneUpdateMutation";
 import { SidebarPackFragment } from "./__generated__/SidebarPackFragment";
 
 type Props = {
@@ -23,52 +23,6 @@ type Props = {
   refetch: () => void;
   setSaving: (saving: boolean) => void;
 };
-
-const SCENE_CREATE = gql`
-  mutation SidebarSceneCreateMutation($input: SceneCreateInput!) {
-    sceneCreate(input: $input) {
-      scene {
-        id
-        question
-        sceneAnswers {
-          id
-          content
-          isCorrect
-        }
-        instruction
-        questionType {
-          id
-          slug
-        }
-        answerType {
-          id
-          slug
-        }
-      }
-    }
-  }
-`;
-
-const SCENE_DELETE = gql`
-  mutation SidebarSceneDeleteMutation($input: SceneDeleteInput!) {
-    sceneDelete(input: $input) {
-      scene {
-        id
-      }
-    }
-  }
-`;
-
-const PACK_SCENE_UPDATE = gql`
-  mutation SidebarPackUpdateMutation($input: PackSceneUpdateInput!) {
-    packSceneUpdate(input: $input) {
-      packScene {
-        id
-        order
-      }
-    }
-  }
-`;
 
 export const Sidebar = ({
   pack,
@@ -80,7 +34,7 @@ export const Sidebar = ({
   const alert = useAlert();
   const [sceneCreate] = useMutation<SidebarSceneCreateMutation>(SCENE_CREATE);
   const [sceneDelete] = useMutation<SidebarSceneDeleteMutation>(SCENE_DELETE);
-  const [packSceneUpdate] = useMutation<SidebarPackUpdateMutation>(
+  const [packSceneUpdate] = useMutation<SidebarPackSceneUpdateMutation>(
     PACK_SCENE_UPDATE
   );
 
@@ -272,6 +226,52 @@ Sidebar.fragments = {
     }
   `,
 };
+
+const SCENE_CREATE = gql`
+  mutation SidebarSceneCreateMutation($input: SceneCreateInput!) {
+    sceneCreate(input: $input) {
+      scene {
+        id
+        question
+        sceneAnswers {
+          id
+          content
+          isCorrect
+        }
+        instruction
+        questionType {
+          id
+          slug
+        }
+        answerType {
+          id
+          slug
+        }
+      }
+    }
+  }
+`;
+
+const SCENE_DELETE = gql`
+  mutation SidebarSceneDeleteMutation($input: SceneDeleteInput!) {
+    sceneDelete(input: $input) {
+      scene {
+        id
+      }
+    }
+  }
+`;
+
+const PACK_SCENE_UPDATE = gql`
+  mutation SidebarPackSceneUpdateMutation($input: PackSceneUpdateInput!) {
+    packSceneUpdate(input: $input) {
+      packScene {
+        id
+        order
+      }
+    }
+  }
+`;
 
 const SidebarContainer = styled.section`
   grid-area: sidebar;
