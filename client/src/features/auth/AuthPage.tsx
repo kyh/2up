@@ -33,7 +33,7 @@ const SESSION_CREATE = gql`
   }
 `;
 
-type FormProps = {
+type FormInputs = {
   username: string;
   email: string;
   password: string;
@@ -48,7 +48,7 @@ export const AuthPage = ({ isLogin }: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormProps>();
+  } = useForm<FormInputs>();
 
   const [
     userCreate,
@@ -59,7 +59,7 @@ export const AuthPage = ({ isLogin }: Props) => {
     { loading: sessionCreateLoading },
   ] = useMutation<LoginSessionCreateMutation>(SESSION_CREATE);
 
-  const onSubmit = async ({ username, email, password }: FormProps) => {
+  const onSubmit = async ({ username, email, password }: FormInputs) => {
     try {
       const action = isLogin ? sessionCreate : userCreate;
       const responseKey = isLogin ? "sessionCreate" : "userCreate";

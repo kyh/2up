@@ -1,13 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { themeSong } from "styles/sound";
 
-type UserPayload = {
-  userId?: string;
-  name?: string;
+export type UserPayload = {
+  name: string;
 };
 
-type CurrentAppState = {
-  userId: string;
+export type CurrentAppState = {
   name: string;
   isMusicOn: boolean;
   isSFXOn: boolean;
@@ -24,7 +22,6 @@ const getIsDarkMode = () => {
 };
 
 export const initialState: CurrentAppState = {
-  userId: localStorage.getItem("userId") || "",
   name: localStorage.getItem("name") || "",
   isMusicOn: localStorage.getItem("isMusicOn") === "true",
   isSFXOn: localStorage.getItem("isSFXOn") === "true",
@@ -53,9 +50,7 @@ const playhouseSlice = createSlice({
       localStorage.setItem("isDarkMode", state.isDarkMode.toString());
     },
     update_user: (state, { payload }: PayloadAction<UserPayload>) => {
-      state.userId = payload.userId ?? state.userId;
       state.name = payload.name ?? state.name;
-      if (state.userId) localStorage.setItem("userId", state.userId);
       if (state.name) localStorage.setItem("name", state.name);
     },
   },

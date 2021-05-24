@@ -6,7 +6,7 @@ import { useAlert } from "react-alert";
 import { Card } from "components";
 import { Navigation } from "features/packs/components/Navigation";
 import { Page, Content } from "features/packs/components/Page";
-import { PackForm, PackInputs } from "features/packs/components/PackForm";
+import { PackForm, PackFormInputs } from "features/packs/components/PackForm";
 
 import { PackCreateMutation } from "./__generated__/PackCreateMutation";
 
@@ -34,7 +34,7 @@ export const PackNewPage = () => {
     description,
     isRandom = true,
     length = 10,
-  }: PackInputs) => {
+  }: PackFormInputs) => {
     try {
       const response = await packCreate({
         variables: {

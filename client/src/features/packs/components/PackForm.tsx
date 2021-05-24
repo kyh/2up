@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { Button, TextField, AreaField } from "components";
 
-export type PackInputs = {
+export type PackFormInputs = {
   name: string;
   description: string;
   isRandom?: boolean;
@@ -26,7 +26,7 @@ export const PackForm = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PackInputs>({
+  } = useForm<PackFormInputs>({
     defaultValues,
   });
   return (
