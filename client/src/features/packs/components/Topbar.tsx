@@ -43,7 +43,6 @@ export const Topbar = ({ pack, saving, setSaving }: Props) => {
       setSaving(false);
       setIsOpen(false);
     } catch (error) {
-      console.error(error);
       alert.show(error.message);
       setSaving(false);
     }

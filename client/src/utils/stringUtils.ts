@@ -1,4 +1,4 @@
-import { memoize } from "lodash";
+import { memoize, omit } from "lodash";
 
 const hashCodeFn = (string?: string, mod?: number) => {
   let hash = 0;
@@ -20,4 +20,30 @@ export const generateUuid = () => {
       v = c === "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
+};
+
+export const omitDeep = (input: any, ...props: string[]) => {
+  const omitDeepOnOwnProps = (obj = {}): any => {
+    if (typeof input === "undefined") return input;
+    if (!Array.isArray(obj) && !isObject(obj)) return obj;
+    if (Array.isArray(obj)) return omitDeep(obj, ...props);
+
+    const o: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      o[key] = !isNil(value) ? omitDeep(value, ...props) : value;
+    }
+
+    return omit(o, props);
+  };
+
+  if (Array.isArray(input)) return input.map(omitDeepOnOwnProps);
+  return omitDeepOnOwnProps(input);
+};
+
+const isNil = (value: any) => {
+  return value === null || value === undefined;
+};
+
+const isObject = (obj = {}) => {
+  return Object.prototype.toString.call(obj) === "[object Object]";
 };

@@ -1,13 +1,11 @@
 import styled from "styled-components";
 import { gql, useMutation } from "@apollo/client";
 import { useAlert } from "react-alert";
-
 import { EditableQuestion } from "features/packs/components/EditableQuestion";
 import { EditableAnswer } from "features/packs/components/EditableAnswer";
 
 import monitor from "./monitor.svg";
 import mobile from "./mobile.svg";
-
 import { ScenePreviewSceneUpdateMutation } from "./__generated__/ScenePreviewSceneUpdateMutation";
 import {
   ScenePreviewFragment,
@@ -19,42 +17,33 @@ type Props = {
   setSaving: (saved: boolean) => void;
 };
 
-const transformSceneAnswers = (
-  sceneId: string,
-  sceneAnswers: ScenePreviewFragment_sceneAnswers[]
-) => {
-  return sceneAnswers.map((sceneAnswer) => ({
-    id: sceneAnswer.id,
-    content: sceneAnswer.content,
-    sceneId: sceneId,
-    isCorrect: sceneAnswer.isCorrect,
-  }));
-};
-
 export const ScenePreview = ({ scene, setSaving }: Props) => {
   const alert = useAlert();
   const [sceneUpdate] = useMutation<ScenePreviewSceneUpdateMutation>(
     SCENE_UPDATE
   );
-
+  console.log("Render Scene Preview:", scene);
   const onChange = async (updatedScene = {}) => {
     setSaving(true);
     const newScene = { ...scene, ...updatedScene };
-    const newSceneAnswers = transformSceneAnswers(
-      scene.id,
-      newScene.sceneAnswers as ScenePreviewFragment_sceneAnswers[]
-    );
-
+    console.log("Update new Scene:", {
+      id: newScene.id || "",
+      instruction: newScene.instruction,
+      questionTypeSlug: newScene.questionType.slug,
+      question: newScene.question,
+      answerTypeSlug: newScene.answerType.slug,
+      sceneAnswers: newScene.sceneAnswers,
+    });
     try {
       await sceneUpdate({
         variables: {
           input: {
             id: newScene.id || "",
-            question: newScene.question,
-            questionTypeSlug: newScene.questionType.slug,
-            sceneAnswers: newSceneAnswers,
-            answerTypeSlug: newScene.answerType.slug,
             instruction: newScene.instruction,
+            questionTypeSlug: newScene.questionType.slug,
+            question: newScene.question,
+            answerTypeSlug: newScene.answerType.slug,
+            sceneAnswers: newScene.sceneAnswers,
           },
         },
       });
@@ -98,16 +87,16 @@ ScenePreview.fragments = {
   scene: gql`
     fragment ScenePreviewFragment on Scene {
       id
+      instruction
       question
+      questionType {
+        id
+        slug
+      }
       sceneAnswers {
         id
         content
         isCorrect
-      }
-      instruction
-      questionType {
-        id
-        slug
       }
       answerType {
         id
