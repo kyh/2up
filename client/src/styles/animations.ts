@@ -20,3 +20,9 @@ export const visible = keyframes`
     visibility: visible;
   }
 `;
+
+export const jitter = keyframes`
+  50% {
+    transform: skewY(0.7deg) skewX(-0.7deg) scale(1.006);
+  }
+`;

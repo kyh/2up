@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Avatar } from "components";
+import { jitter } from "styles/animations";
 
 type PlayerProps = {
   playerName: string;
@@ -41,6 +42,9 @@ export const PlayersGrid = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: ${({ theme }) => theme.spacings(3)};
+  .avatar > svg {
+    animation: ${jitter} 0.7s linear infinite;
+  }
 
   ${({ theme }) => theme.media.desktop`
     position: absolute;
@@ -62,6 +66,11 @@ export const PlayersGrid = styled.section`
         margin-right: ${theme.spacings(2)};
         max-width: 130px;
         max-height: 300px;
+      }
+      .correct {
+        top: auto;
+        left: auto;
+        bottom: -10px;
       }
     }
   `}
