@@ -39,11 +39,10 @@ export const Step3Spectate = ({ gameState }: StepProps) => {
 const PlayerScores = ({ gameState }: { gameState: GameState }) => {
   const players = gameState.players.map((player) => {
     return (
-      <Player
-        key={player.name}
-        playerName={player.name}
-        playerContent={` - ${player.score}`}
-      />
+      <PlayerContainer>
+        <Player key={player.name} playerName={player.name} />
+        <PlayerScore>{player.score}</PlayerScore>
+      </PlayerContainer>
     );
   });
   return (
@@ -51,7 +50,9 @@ const PlayerScores = ({ gameState }: { gameState: GameState }) => {
       <TitleContainer>
         <h2 className="title">Scoreboard</h2>
       </TitleContainer>
-      <PlayerContainer>{players}</PlayerContainer>
+      <PlayersContainer singleCol maxWidth={300}>
+        {players}
+      </PlayersContainer>
     </>
   );
 };
@@ -77,12 +78,23 @@ const TitleContainer = styled.div`
   }
 `;
 
-const PlayerContainer = styled(PlayersGrid)`
+const PlayersContainer = styled(PlayersGrid)`
   margin-bottom: ${({ theme }) => theme.spacings(5)};
-  .name {
-    text-align: center;
-  }
   ${({ theme }) => theme.media.desktop`
     margin-bottom: 0;
   `}
+`;
+
+const PlayerContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  ${({ theme }) => theme.media.desktop`
+    flex-direction: column-reverse;
+  `}
+`;
+
+const PlayerScore = styled.h2`
+  margin: 0;
+  transform: translateY(-10px);
 `;

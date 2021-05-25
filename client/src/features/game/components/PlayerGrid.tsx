@@ -39,11 +39,16 @@ const PlayerName = styled.p`
   margin-bottom: 0;
 `;
 
-export const PlayersGrid = styled.section`
+export const PlayersGrid = styled.section<{
+  singleCol?: boolean;
+  maxWidth?: number;
+}>`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: ${({ singleCol }) =>
+    singleCol ? "1fr" : "1fr 1fr 1fr"};
   grid-gap: ${({ theme }) => theme.spacings(3)};
   width: 100%;
+  max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "auto")};
   .avatar > svg {
     animation: ${jitter} 0.7s linear infinite;
   }
