@@ -1,32 +1,28 @@
 import styled from "styled-components";
 
 enum Size {
-  small = "small",
   large = "large",
   full = "full",
 }
 
 type Props = {
   size?: keyof typeof Size;
-  align?: "start" | "center" | "end" | "stretch";
+  justify?: "start" | "center" | "end" | "stretch";
 };
 
 const renderSize = ({ size }: Props) => {
-  if (size === Size.small) {
-    return "600px";
-  }
-  if (size === Size.large) {
-    return "900px";
-  }
-  return "none";
+  if (size === Size.large) return "900px";
+  if (size === Size.full) return "100%";
+  return "600px";
 };
 
 export const PageContainer = styled.section<Props>`
   display: flex;
   padding: ${({ theme }) => theme.spacings(4)};
   margin: 0 auto;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: ${({ justify }) => (justify ? justify : "center")};
+  align-items: center;
   height: calc(var(--vh, 100vh) - 50px);
   max-width: ${renderSize};
-  align-items: ${({ align }) => (align ? align : "start")};
 `;

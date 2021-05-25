@@ -27,7 +27,7 @@ export const Step1 = ({ gameState, broadcast, name }: StepProps) => {
   };
 
   return (
-    <Container>
+    <>
       {submitted && <Alert>Waiting for {waiting} players</Alert>}
       <Question
         question={gameState.question}
@@ -44,16 +44,9 @@ export const Step1 = ({ gameState, broadcast, name }: StepProps) => {
         />
       ))}
       <Timer shouldCallTimeout={!submitted} onTimeout={onSubmit} />
-    </Container>
+    </>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  height: 100%;
-`;
 
 export const Step1Spectate = ({ gameState }: StepProps) => {
   const submissions = gameState.submissions.length - 1;

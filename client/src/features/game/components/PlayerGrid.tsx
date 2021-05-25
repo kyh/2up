@@ -1,11 +1,12 @@
+import { ReactNode } from "react";
 import styled from "styled-components";
-import { Avatar } from "components";
+import { Avatar, Button } from "components";
 import { jitter } from "styles/animations";
 
 type PlayerProps = {
   playerName: string;
-  playerContent?: string;
-  children: React.ReactNode;
+  playerContent?: ReactNode;
+  children?: ReactNode;
 };
 
 export const Player = ({
@@ -42,6 +43,7 @@ export const PlayersGrid = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: ${({ theme }) => theme.spacings(3)};
+  width: 100%;
   .avatar > svg {
     animation: ${jitter} 0.7s linear infinite;
   }
@@ -74,4 +76,8 @@ export const PlayersGrid = styled.section`
       }
     }
   `}
+`;
+
+export const NextButton = styled(Button)`
+  margin: auto auto ${({ theme }) => theme.spacings(10)};
 `;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, SyntheticEvent } from "react";
 import styled from "styled-components";
 import { Input, Button } from "components";
 import { SceneAnswer, Submission } from "features/game/gameSlice";
@@ -51,7 +51,7 @@ const AnswerText = ({
 }: AnswerProps) => {
   const [value, setValue] = useState("");
 
-  const submit = (e: React.SyntheticEvent) => {
+  const submit = (e: SyntheticEvent) => {
     e.preventDefault();
     onSubmit({ content: value });
   };

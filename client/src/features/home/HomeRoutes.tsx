@@ -9,7 +9,7 @@ export const HomeRoutes = () => {
   return (
     <>
       <Navigation />
-      <PageContainer size="large" align="center">
+      <PageContainer>
         <IntroContainer>
           <IntroLogo src="/logo/logomark.svg" alt="Playhouse" />
           <IntroCard>
