@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import produce from "immer";
 import styled from "styled-components";
 import { Input, Button } from "components";
@@ -100,7 +101,7 @@ type EditableAnswerSwitchProps = {
     _updatedScene: Pick<any, "answerType" | "sceneAnswers">
   ) => void;
   sceneId: string;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 // TODO: Get answer types from backend

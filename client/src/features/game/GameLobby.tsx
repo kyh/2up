@@ -5,7 +5,11 @@ import { Button, Modal, SpriteAnimation } from "components";
 import { scaleIn } from "styles/animations";
 import { useAppSelector } from "app/hooks";
 import { useGameChannel } from "features/game/GameProvider";
-import { Player, PlayersGrid } from "features/game/components/PlayerGrid";
+import {
+  Player,
+  PlayersGrid,
+  NextButton,
+} from "features/game/components/PlayerGrid";
 
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const theme = useTheme();
@@ -33,7 +37,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   }, [gameState.gameId, gameState.scene]);
 
   return (
-    <LobbyContainer>
+    <>
       <TitleContainer>
         <h1 className="title">
           <div>
@@ -56,9 +60,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
       </PlayersContainer>
       {!isSpectate ? (
         <>
-          <Button className="start-game-button" onClick={onClickStart}>
-            Start game
-          </Button>
+          <NextButton onClick={onClickStart}>Start game</NextButton>
           <Modal
             open={isModalOpen}
             title="Are you sure?"
@@ -78,34 +80,26 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
                 </p>
                 <div className="game-id">{gameState.gameId}</div>
               </TitleContainer>
-              <Button className="start-game-button" onClick={onStart}>
+              <Button fullWidth onClick={onStart}>
                 Start anyways
               </Button>
             </StartModalBody>
           </Modal>
         </>
       ) : (
-        <Link className="join-button" to="/join">
+        <JoinRoomButton to="/join">
           Or join the room on this device
-        </Link>
+        </JoinRoomButton>
       )}
-    </LobbyContainer>
+    </>
   );
 };
 
-const LobbyContainer = styled.section`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  .start-game-button {
-    margin: auto auto ${({ theme }) => theme.spacings(10)};
-  }
-  .join-button {
-    display: block;
-    text-align: center;
-    text-decoration: underline;
-    margin-top: auto;
-  }
+const JoinRoomButton = styled(Link)`
+  display: block;
+  text-align: center;
+  text-decoration: underline;
+  margin-top: auto;
 `;
 
 const TitleContainer = styled.div`
@@ -146,8 +140,5 @@ const StartModalBody = styled.div`
   .game-id {
     font-size: 2rem;
     padding: ${({ theme }) => theme.spacings(5)};
-  }
-  .start-game-button {
-    width: 100%;
   }
 `;
