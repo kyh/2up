@@ -1,16 +1,17 @@
-import { ReactNode, PropsWithChildren } from "react";
+import { ReactNode } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import ReactModal from "react-modal";
 import { Button } from "components/Button/Button";
 import { Icon } from "components/Icon/Icon";
 
-type Props = PropsWithChildren<{
+type Props = {
   open: boolean;
   onRequestClose: () => void;
   title?: ReactNode;
   closeButton?: boolean;
   maxWidth?: number;
-}>;
+  children?: ReactNode;
+};
 
 const ModalStyle = createGlobalStyle`
   .modal {
