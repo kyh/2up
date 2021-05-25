@@ -10,6 +10,7 @@ export const Step3 = ({ gameState, broadcast, name }: StepProps) => {
   const [firstPlayer] = gameState.players;
   return (
     <>
+      <QuestionNumber>Question: {gameState.scene} / 10</QuestionNumber>
       <PlayerScores gameState={gameState} />
       {firstPlayer && (
         <NextButton
@@ -27,7 +28,12 @@ export const Step3 = ({ gameState, broadcast, name }: StepProps) => {
 };
 
 export const Step3Spectate = ({ gameState }: StepProps) => {
-  return <PlayerScores gameState={gameState} />;
+  return (
+    <>
+      <QuestionNumber>Question: {gameState.scene} / 10</QuestionNumber>
+      <PlayerScores gameState={gameState} />
+    </>
+  );
 };
 
 const PlayerScores = ({ gameState }: { gameState: GameState }) => {
@@ -40,16 +46,28 @@ const PlayerScores = ({ gameState }: { gameState: GameState }) => {
       />
     );
   });
-
   return (
     <>
       <TitleContainer>
-        <h2 className="title">Question: {gameState.scene} / 10</h2>
+        <h2 className="title">Scoreboard</h2>
       </TitleContainer>
       <PlayerContainer>{players}</PlayerContainer>
     </>
   );
 };
+
+const QuestionNumber = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.4;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+`;
 
 const TitleContainer = styled.div`
   margin-bottom: ${({ theme }) => theme.spacings(5)};
