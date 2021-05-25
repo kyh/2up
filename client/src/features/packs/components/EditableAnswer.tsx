@@ -27,7 +27,11 @@ export const EditableAnswer = ({
   switch (answerType) {
     case "multi_text":
       return (
-        <EditableAnswerSwitch onSelectType={onChange} key={sceneId}>
+        <EditableAnswerSwitch
+          onSelectType={onChange}
+          sceneId={sceneId}
+          key={sceneId}
+        >
           {sceneAnswers.map((sceneAnswer, index) => (
             <InputContainer>
               <Input
@@ -65,7 +69,11 @@ export const EditableAnswer = ({
     default:
       const [sceneAnswer] = sceneAnswers;
       return (
-        <EditableAnswerSwitch onSelectType={onChange} key={sceneId}>
+        <EditableAnswerSwitch
+          onSelectType={onChange}
+          sceneId={sceneId}
+          key={sceneId}
+        >
           <InputContainer>
             <Input
               defaultValue={sceneAnswer?.content}
@@ -91,6 +99,7 @@ type EditableAnswerSwitchProps = {
   onSelectType: (
     _updatedScene: Pick<any, "answerType" | "sceneAnswers">
   ) => void;
+  sceneId: string;
   children: React.ReactNode;
 };
 
