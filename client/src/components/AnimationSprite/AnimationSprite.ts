@@ -23,7 +23,7 @@ const sheets = {
 
 type AnimationNames = keyof typeof sheets;
 
-export const animate = (name: AnimationNames) => {
+export const animateSprite = (name: AnimationNames) => {
   const sprite = sheets[name];
   return css`
     position: absolute;
@@ -38,16 +38,8 @@ export const animate = (name: AnimationNames) => {
 
 type Props = {
   name: AnimationNames;
-  top?: number;
-  left?: number;
-  right?: number;
-  bottom?: number;
 };
 
-export const SpriteAnimation = styled.div<Props>`
-  ${({ name }) => animate(name)};
-  top: ${({ top }) => (top ? `${top}px` : "auto")};
-  left: ${({ left }) => (left ? `${left}px` : "auto")};
-  right: ${({ right }) => (right ? `${right}px` : "auto")};
-  bottom: ${({ bottom }) => (bottom ? `${bottom}px` : "auto")};
+export const AnimationSprite = styled.div<Props>`
+  ${({ name }) => animateSprite(name)};
 `;
