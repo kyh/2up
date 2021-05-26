@@ -161,8 +161,6 @@ const EditableAnswerSwitchContainer = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 100;
-
     button {
       width: 30px;
       height: 30px;

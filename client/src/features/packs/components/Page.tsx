@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Page = styled.section<{
   bgImage?: string;
@@ -20,24 +20,23 @@ export const Page = styled.section<{
     height: var(--vh, 100vh);
 
     ${
-      bgImage
-        ? `
-      &::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        height: 120%;
-        background-image: url(${bgImage});
-        background-repeat: no-repeat;
-        background-size: auto;
-        background-position: center top;
-        transform: translateY(${bgTop}) translateZ(-1px) scale(1.2);
-        pointer-events: none;
-      }
-    `
-        : ""
+      bgImage &&
+      css`
+        &::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: 0;
+          height: 120vh;
+          background-image: url(${bgImage});
+          background-repeat: no-repeat;
+          background-size: auto;
+          background-position: center top;
+          transform: translateY(${bgTop}) translateZ(-1px) scale(1.2);
+          pointer-events: none;
+        }
+      `
     }
   `}
 `;

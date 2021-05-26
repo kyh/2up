@@ -159,7 +159,6 @@ const EditableQuestionImageContainer = styled.div`
     top: 10px;
     transform: translateX(-50%);
   }
-
   img {
     width: 250px;
     height: 250px;

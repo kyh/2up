@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
-import styled, { useTheme } from "styled-components";
-import { Button, Modal, SpriteAnimation } from "components";
+import styled from "styled-components";
+import { Button, Modal, AnimationSprite } from "components";
 import { scaleIn } from "styles/animations";
 import { useAppSelector } from "app/hooks";
 import { useGameChannel } from "features/game/GameProvider";
@@ -12,7 +12,6 @@ import {
 } from "features/game/components/PlayerGrid";
 
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
-  const theme = useTheme();
   const history = useHistory();
   const gameState = useAppSelector((state) => state.game);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,10 +49,13 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
       <PlayersContainer>
         {gameState.players.map((p) => (
           <Player key={p.name} playerName={p.name}>
-            <SpriteAnimation
+            <AnimationSprite
               name="bubbleExplosion3"
-              left={theme.media.isDesktop() ? -125 : -130}
-              top={theme.media.isDesktop() ? 30 : -55}
+              style={{
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
             />
           </Player>
         ))}

@@ -29,7 +29,7 @@ export const HomeRoutes = () => {
 };
 
 const IntroContainer = styled.section`
-  transform: translateY(-70px);
+  transform: translateY(-50px);
 `;
 
 const IntroLogo = styled.img`

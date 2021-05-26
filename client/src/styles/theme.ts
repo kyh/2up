@@ -15,6 +15,7 @@ const colors = {
   grey: "#718096",
   darkGrey: "#2D3748",
   red: "#f05252",
+  yellow: "#ffca64",
 };
 
 const mediaSizes = {
@@ -45,7 +46,6 @@ export const lightTheme: DefaultTheme = {
         ${css(mandatory, ...args)};
       }
     `,
-    isDesktop: () => window.innerWidth > mediaSizes.desktop,
   },
   border: {
     color: colors.darkGrey,
