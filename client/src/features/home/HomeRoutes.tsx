@@ -30,7 +30,7 @@ export const HomeRoutes = () => {
 };
 
 const IntroContainer = styled.section`
-  transform: translateY(-50px);
+  transform: translateY(-70px);
 `;
 
 const IntroLogo = styled.img`

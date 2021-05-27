@@ -1,4 +1,8 @@
-import styled, { StyledComponentProps, DefaultTheme } from "styled-components";
+import styled, {
+  css,
+  StyledComponentProps,
+  DefaultTheme,
+} from "styled-components";
 import raw from "raw.macro";
 import { hashCode } from "utils/stringUtils";
 import { theme, getComputedBorder } from "styles/theme";
@@ -62,20 +66,22 @@ const StyledIcon = styled.div<{ expandOnDesktop: boolean }>`
     }
   }
 
-  ${({ expandOnDesktop, theme }) =>
-    expandOnDesktop &&
-    theme.media.desktop`
-    display: inline-flex;
-    width: auto;
-    height: auto;
-    border-radius: 0;
-    overflow: hidden;
-    background: none;
-    overflow: auto;
+  ${theme.breakpoints.desktop} {
+    ${({ expandOnDesktop }) =>
+      expandOnDesktop &&
+      css`
+        display: inline-flex;
+        width: auto;
+        height: auto;
+        border-radius: 0;
+        overflow: hidden;
+        background: none;
+        overflow: auto;
 
-    > svg {
-      width: 100%;
-      height: 100%;
-    }
-  `}
+        > svg {
+          width: 100%;
+          height: 100%;
+        }
+      `}
+  }
 `;

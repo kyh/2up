@@ -46,7 +46,7 @@ export const EditableAnswer = ({
                 }
               />
               <Input
-                defaultValue={sceneAnswer.content}
+                defaultValue={sceneAnswer.content || ""}
                 onBlur={(e) =>
                   onChangeSceneAnswer({ content: e.target.value }, index)
                 }
@@ -78,7 +78,7 @@ export const EditableAnswer = ({
         >
           <InputContainer>
             <Input
-              defaultValue={sceneAnswer?.content}
+              defaultValue={sceneAnswer?.content || ""}
               onBlur={(e) =>
                 onChangeSceneAnswer({
                   content: e.target.value,
