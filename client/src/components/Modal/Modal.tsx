@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import ReactModal from "react-modal";
+import { theme } from "styles/theme";
 import { Button } from "components/Button/Button";
 import { Icon } from "components/Icon/Icon";
 
@@ -21,10 +22,10 @@ const ModalStyle = createGlobalStyle`
     top: 40px;
     left: 20px;
     right: 20px;
-    border: 2px solid ${({ theme }) => theme.ui.modal.border};
+    border: 2px solid ${theme.ui.modalBorder};
     max-width: 600px;
-    background: ${({ theme }) => theme.colors.darkGrey};
-    border-radius: ${({ theme }) => theme.border.wavyRadius};
+    background: ${theme.colors.greyDark};
+    border-radius: ${theme.ui.borderWavyRadius};
     outline: none;
     margin: 0 auto;
   }
@@ -78,7 +79,7 @@ const CloseButton = styled(Button)`
   position: absolute;
   right: -20px;
   top: -20px;
-  background-color: ${({ theme }) => theme.ui.modal.background};
+  background-color: ${theme.ui.modalBackground};
   border-radius: 100%;
 `;
 
@@ -86,9 +87,9 @@ const ModalHeader = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: ${({ theme }) => theme.typography.h3.fontSize};
-  color: ${({ theme }) => theme.colors.white};
-  padding: ${({ theme }) => theme.spacings(3)};
+  font-size: ${theme.typography.h3.fontSize};
+  color: ${theme.colors.white};
+  padding: ${theme.spacings(3)};
   text-shadow: -1px 1px 0 #1a1919, 1px 1px 0 #1a1919, 1px -1px 0 #1a1919,
     -1px -1px 0 #1a1919;
 `;
@@ -96,11 +97,11 @@ const ModalHeader = styled.header`
 const ModalBody = styled.section`
   height: 100%;
   max-height: 550px;
-  background: ${({ theme }) => theme.ui.modal.background};
-  border: 2px solid ${({ theme }) => theme.ui.modal.border};
-  padding: ${({ theme }) => theme.spacings(3)};
-  margin: 0 ${({ theme }) => `${theme.spacings(3)} ${theme.spacings(3)}`};
-  border-radius: ${({ theme }) => theme.border.wavyRadius};
+  background: ${theme.ui.modalBackground};
+  border: 2px solid ${theme.ui.modalBorder};
+  padding: ${theme.spacings(3)};
+  margin: 0 ${`${theme.spacings(3)} ${theme.spacings(3)}`};
+  border-radius: ${theme.ui.borderWavyRadius};
   overflow: auto;
   -webkit-overflow-scroll: touch;
 `;

@@ -4,9 +4,8 @@ import { Link } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { useAlert } from "react-alert";
 import ReactTooltip from "react-tooltip";
-
+import { theme } from "styles/theme";
 import { useHostGame } from "features/game/gameService";
-
 import { NavigationContainer } from "features/packs/components/Navigation";
 import { PackForm } from "features/packs/components/PackForm";
 import { Button, Icon, Modal, Loader } from "components";
@@ -125,21 +124,21 @@ const PACK_UPDATE = gql`
 
 const StyledNavigationContainer = styled(NavigationContainer)`
   .left {
-    ${({ theme }) => theme.media.desktop`
+    ${theme.breakpoints.desktop} {
       border-right-color: ${theme.ui.backgroundInverse};
-    `}
+    }
   }
   .right {
     position: relative;
   }
   .loader {
     position: absolute;
-    left: ${({ theme }) => theme.spacings(4)};
-    top: ${({ theme }) => theme.spacings(4)};
-    color: ${({ theme }) => theme.ui.lightText};
+    left: ${theme.spacings(4)};
+    top: ${theme.spacings(4)};
+    color: ${theme.ui.textGrey};
   }
   .pack-ext-button {
-    margin-right: ${({ theme }) => theme.spacings(2)};
+    margin-right: ${theme.spacings(2)};
   }
   .pack-ext-button:last-child {
     margin-right: 0;

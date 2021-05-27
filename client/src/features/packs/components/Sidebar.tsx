@@ -8,7 +8,7 @@ import {
 import { useAlert } from "react-alert";
 import ReactTooltip from "react-tooltip";
 import { gql, useMutation } from "@apollo/client";
-
+import { theme } from "styles/theme";
 import { Button, Icon } from "components";
 
 import { SidebarSceneCreateMutation } from "./__generated__/SidebarSceneCreateMutation";
@@ -270,26 +270,26 @@ const PACK_SCENE_UPDATE = gql`
 
 const SidebarContainer = styled.section`
   grid-area: sidebar;
-  background: ${({ theme }) => theme.ui.background};
-  padding: ${({ theme }) => theme.spacings(3)};
+  background: ${theme.ui.background};
+  padding: ${theme.spacings(3)};
   display: grid;
   grid-template-rows: max-content auto max-content;
   height: 100%;
-  border-right: 1px solid ${({ theme }) => theme.ui.backgroundInverse};
+  border-right: 1px solid ${theme.ui.backgroundInverse};
 `;
 
 const SidebarHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacings(3)};
+  margin-bottom: ${theme.spacings(3)};
 
   h3 {
     margin: 0;
   }
 
   button {
-    padding: ${({ theme }) => theme.spacings(1)};
+    padding: ${theme.spacings(1)};
     min-width: 0;
   }
 `;
@@ -303,7 +303,7 @@ const SidebarContent = styled.section`
 `;
 
 const SidebarFooter = styled.footer`
-  padding: ${({ theme }) => theme.spacings(3)} 0 0;
+  padding: ${theme.spacings(3)} 0 0;
   button {
     min-width: 0;
   }
@@ -314,10 +314,10 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  border: 2px dotted ${({ theme }) => theme.colors.lightGrey};
-  border-radius: ${({ theme }) => theme.border.wavyRadius};
-  margin-bottom: ${({ theme }) => theme.spacings(3)};
-  background-color: ${({ theme, isSelected }) =>
+  border: 2px dotted ${theme.colors.greyLight};
+  border-radius: ${theme.ui.borderWavyRadius};
+  margin-bottom: ${theme.spacings(3)};
+  background-color: ${({ isSelected }) =>
     isSelected ? theme.ui.backgroundGrey : theme.ui.background};
 
   &:hover .delete {
@@ -325,18 +325,18 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
   }
 
   .left {
-    padding: ${({ theme }) => theme.spacings(3)};
+    padding: ${theme.spacings(3)};
   }
 
   .right {
     width: 100%;
     overflow: hidden;
-    padding: ${({ theme }) => theme.spacings(3)};
+    padding: ${theme.spacings(3)};
   }
 
   .question {
     font-size: 24px;
-    margin: 0 0 ${({ theme }) => theme.spacings(3)};
+    margin: 0 0 ${theme.spacings(3)};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -344,16 +344,16 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
 
   .type {
     height: fit-content;
-    padding: ${({ theme }) => theme.spacings(1)};
-    border: 2px solid ${({ theme }) => theme.border.color};
-    border-radius: ${({ theme }) => theme.border.wavyRadius};
+    padding: ${theme.spacings(1)};
+    border: 2px solid ${theme.ui.borderColor};
+    border-radius: ${theme.ui.borderWavyRadius};
     text-transform: uppercase;
   }
 
   .delete {
     display: none;
     position: absolute;
-    right: ${({ theme }) => theme.spacings(2)};
-    bottom: ${({ theme }) => theme.spacings(2)};
+    right: ${theme.spacings(2)};
+    bottom: ${theme.spacings(2)};
   }
 `;

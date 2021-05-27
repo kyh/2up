@@ -1,5 +1,4 @@
 import { Route, Switch } from "react-router-dom";
-
 import { AuthPage } from "features/auth/AuthPage";
 
 export const AuthRoutes = () => {

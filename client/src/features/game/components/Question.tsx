@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "styles/theme";
 
 type QuestionProps = {
   instruction: string;
@@ -31,15 +32,15 @@ export const Question = ({
 
 const QuestionInstructions = styled.div`
   text-align: center;
-  margin: 0 0 ${({ theme }) => theme.spacings(2)};
+  margin: 0 0 ${theme.spacings(2)};
 `;
 
 const QuestionText = styled.h1`
   text-align: center;
-  margin: 0 0 ${({ theme }) => theme.spacings(5)};
+  margin: 0 0 ${theme.spacings(5)};
 `;
 
 const QuestionImage = styled.img`
   object-fit: cover;
-  margin: 0 0 ${({ theme }) => theme.spacings(5)};
+  margin: 0 0 ${theme.spacings(5)};
 `;

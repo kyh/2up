@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { gql, useMutation } from "@apollo/client";
 import { useAlert } from "react-alert";
+import { theme } from "styles/theme";
 import { EditableQuestion } from "features/packs/components/EditableQuestion";
 import { EditableAnswer } from "features/packs/components/EditableAnswer";
 
@@ -144,11 +145,11 @@ const Mobile = styled.section`
 const Screen = styled.section`
   position: relative;
   text-align: center;
-  background-color: ${({ theme }) => theme.ui.background};
+  background-color: ${theme.ui.background};
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: ${({ theme }) => theme.spacings(2)};
+  padding: ${theme.spacings(2)};
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;

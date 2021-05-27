@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
-import { Avatar, Button } from "components";
+import { theme } from "styles/theme";
 import { jitter } from "styles/animations";
+import { Avatar, Button } from "components";
 
 type PlayerProps = {
   playerName: string;
@@ -35,7 +36,7 @@ const PlayerContainer = styled.div`
 `;
 
 const PlayerName = styled.p`
-  margin-top: ${({ theme }) => theme.spacings(1)};
+  margin-top: ${theme.spacings(1)};
   margin-bottom: 0;
 `;
 
@@ -46,14 +47,14 @@ export const PlayersGrid = styled.section<{
   display: grid;
   grid-template-columns: ${({ singleCol }) =>
     singleCol ? "1fr" : "1fr 1fr 1fr"};
-  grid-gap: ${({ theme }) => theme.spacings(3)};
+  grid-gap: ${theme.spacings(3)};
   width: 100%;
   max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "auto")};
   .avatar > svg {
     animation: ${jitter} 0.7s linear infinite;
   }
 
-  ${({ theme }) => theme.media.desktop`
+  ${theme.breakpoints.desktop} {
     position: absolute;
     display: flex;
     justify-content: space-between;
@@ -80,9 +81,9 @@ export const PlayersGrid = styled.section<{
         bottom: -10px;
       }
     }
-  `}
+  }
 `;
 
 export const NextButton = styled(Button)`
-  margin: auto auto ${({ theme }) => theme.spacings(10)};
+  margin: auto auto ${theme.spacings(10)};
 `;
