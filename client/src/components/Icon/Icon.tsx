@@ -4,13 +4,14 @@ import styled, {
   DefaultTheme,
 } from "styled-components";
 import raw from "raw.macro";
+import { theme, colors } from "styles/theme";
 
 type Props = StyledComponentProps<
   "div",
   DefaultTheme,
   {
     icon: IconType;
-    color?: keyof DefaultTheme["colors"];
+    color?: keyof typeof colors;
     size?: IconSizeType;
     rotate?: string;
   },
@@ -45,7 +46,7 @@ export const Icon = ({ icon, color, size, rotate, ...rest }: Props) => {
 };
 
 type StyledProps = {
-  iconColor?: keyof DefaultTheme["colors"];
+  iconColor?: keyof typeof colors;
   iconSize?: IconSizeType;
   rotate?: string;
 };
@@ -69,8 +70,7 @@ const getSvgStyles = (props: StyledProps) => {
     width: ${iconSize ? getDimensions(iconSize) : "initial"};
     height: ${iconSize ? getDimensions(iconSize) : "intial"};
     path {
-      fill: ${({ theme }) =>
-        iconColor ? theme.colors[iconColor] : theme.ui.text};
+      fill: ${iconColor ? theme.colors[iconColor] : theme.ui.text};
     }
     transform: rotate(${rotate});
     transition: fill 0.23s ease;
@@ -79,7 +79,7 @@ const getSvgStyles = (props: StyledProps) => {
 
 const StyledIcon = styled.div<StyledProps>`
   display: inline-flex;
-  padding: ${({ theme }) => theme.spacings(1)};
+  padding: ${theme.spacings(1)};
   > svg {
     ${getSvgStyles}
   }

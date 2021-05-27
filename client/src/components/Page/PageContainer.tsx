@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "styles/theme";
 
 enum Size {
   large = "large",
@@ -18,7 +19,7 @@ const renderSize = ({ size }: Props) => {
 
 export const PageContainer = styled.section<Props>`
   display: flex;
-  padding: ${({ theme }) => theme.spacings(4)};
+  padding: ${theme.spacings(4)};
   margin: 0 auto;
   flex-direction: column;
   justify-content: ${({ justify }) => (justify ? justify : "center")};
