@@ -149,7 +149,7 @@ const EditableQuestionInstructions = styled.input`
 const EditableQuestionText = styled.input`
   text-align: center;
   margin: 0 0 ${theme.spacings(5)};
-  font-size: ${theme.typography.h2.fontSize};
+  font-size: 2rem;
 `;
 
 const EditableQuestionImageContainer = styled.div`
@@ -159,9 +159,5 @@ const EditableQuestionImageContainer = styled.div`
     left: 50%;
     top: 10px;
     transform: translateX(-50%);
-  }
-  img {
-    width: 250px;
-    height: 250px;
   }
 `;

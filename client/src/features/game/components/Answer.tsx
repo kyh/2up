@@ -89,7 +89,7 @@ const InputContainer = styled.div`
 `;
 
 const AnswerTextDisplay = styled.div`
-  ${theme.typography.h3};
+  font-size: 1.2rem;
   text-align: center;
   padding: ${theme.spacings(3)};
   border: 2px solid ${theme.ui.borderColorAlternate};

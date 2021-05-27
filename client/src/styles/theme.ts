@@ -17,21 +17,6 @@ export const breakpoints = {
   desktop: "@media (min-width: 900px)",
 };
 
-export const typography = {
-  h1: {
-    fontSize: "40px",
-    lineHeight: "48px",
-  },
-  h2: {
-    fontSize: "32px",
-    lineHeight: "36px",
-  },
-  h3: {
-    fontSize: "18px",
-    lineHeight: "26px",
-  },
-};
-
 const SPACING_UNIT = 4;
 export const spacings = memoize((n: number): string => {
   return `${n * SPACING_UNIT}px`;
@@ -111,7 +96,6 @@ export const darkStyles = css`
 export const theme = {
   colors,
   breakpoints,
-  typography,
   spacings,
   ui,
 };
