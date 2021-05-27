@@ -43,4 +43,9 @@ const QuestionText = styled.h1`
 const QuestionImage = styled.img`
   object-fit: cover;
   margin: 0 0 ${theme.spacings(5)};
+  max-width: 100vw;
+  max-height: 50vh;
+  ${theme.breakpoints.desktop} {
+    max-width: 60vw;
+  }
 `;
