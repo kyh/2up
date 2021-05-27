@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
 import { useParams, Link } from "react-router-dom";
+import { theme } from "styles/theme";
 import { ButtonLinkNative } from "components";
 import { Navigation } from "features/packs/components/Navigation";
 import { Page, Content } from "features/packs/components/Page";
@@ -88,6 +89,6 @@ const ProfileContent = styled.section`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: ${({ theme }) => theme.spacings(5)};
+    margin-bottom: ${theme.spacings(5)};
   }
 `;

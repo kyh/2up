@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
-
+import { theme } from "styles/theme";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { playhouseActions } from "features/home/playhouseSlice";
 import { gameActions } from "features/game/gameSlice";
-
 import { Icon } from "components/Icon/Icon";
 import { Modal } from "components/Modal/Modal";
 import { Button, ButtonLink } from "components/Button/Button";
@@ -106,7 +105,7 @@ export const Navigation = () => {
 const StyledNav = styled.nav`
   display: flex;
   justify-content: flex-end;
-  padding: 0 ${({ theme }) => theme.spacings(1)};
+  padding: 0 ${theme.spacings(1)};
   align-items: center;
   height: 50px;
 `;
@@ -114,10 +113,9 @@ const StyledNav = styled.nav`
 const SettingsContainer = styled.div<{ single?: boolean; noBorder?: boolean }>`
   display: ${({ single }) => (single ? "block" : "grid")};
   grid-template-columns: 1fr 1fr;
-  padding-bottom: ${({ theme, noBorder }) =>
-    noBorder ? 0 : theme.spacings(2)};
-  margin-bottom: ${({ theme }) => theme.spacings(2)};
-  border-bottom: ${({ theme, noBorder }) =>
+  padding-bottom: ${({ noBorder }) => (noBorder ? 0 : theme.spacings(2))};
+  margin-bottom: ${theme.spacings(2)};
+  border-bottom: ${({ noBorder }) =>
     noBorder ? "none" : `2px solid ${theme.colors.black}`};
   &:last-child {
     border-bottom: none;
@@ -131,6 +129,6 @@ const SettingItem = styled.div`
   align-items: center;
   span {
     display: block;
-    margin-bottom: ${({ theme }) => theme.spacings(1)};
+    margin-bottom: ${theme.spacings(1)};
   }
 `;

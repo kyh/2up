@@ -3,6 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
+import { theme } from "styles/theme";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { gameActions } from "features/game/gameSlice";
 import { Button, Input } from "components";
@@ -70,7 +71,7 @@ export const StartNewGameText = styled.div`
   margin-top: auto;
 
   a {
-    margin-left: ${({ theme }) => theme.spacings(1.2)};
+    margin-left: ${theme.spacings(1.2)};
     text-decoration: underline;
   }
 `;

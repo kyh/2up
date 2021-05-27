@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import styled from "styled-components";
 import { Button, Modal, AnimationSprite } from "components";
+import { theme } from "styles/theme";
 import { scaleIn } from "styles/animations";
 import { useAppSelector } from "app/hooks";
 import { useGameChannel } from "features/game/GameProvider";
@@ -106,17 +107,17 @@ const JoinRoomButton = styled(Link)`
 
 const TitleContainer = styled.div`
   .title {
-    margin: 0 0 ${({ theme }) => theme.spacings(5)};
+    margin: 0 0 ${theme.spacings(5)};
   }
   .block {
     display: block;
   }
   .highlight {
-    color: ${({ theme }) => theme.colors.purple};
+    color: ${theme.colors.purple};
   }
   .game-id {
-    color: ${({ theme }) => theme.ui.alert.text};
-    background: ${({ theme }) => theme.ui.alert.background};
+    color: ${theme.ui.alertText};
+    background: ${theme.ui.alertBackground};
     font-size: 5.5rem;
     display: flex;
     justify-content: center;
@@ -124,7 +125,7 @@ const TitleContainer = styled.div`
     padding: 20px 30px 30px;
     line-height: 1;
     border-radius: 19px 22px 30% 16px / 19px 17px 14px 30px;
-    margin-bottom: ${({ theme }) => theme.spacings(5)};
+    margin-bottom: ${theme.spacings(5)};
   }
 `;
 
@@ -137,10 +138,10 @@ const PlayersContainer = styled(PlayersGrid)`
 
 const StartModalBody = styled.div`
   p {
-    margin: 0 0 ${({ theme }) => theme.spacings(3)};
+    margin: 0 0 ${theme.spacings(3)};
   }
   .game-id {
     font-size: 2rem;
-    padding: ${({ theme }) => theme.spacings(5)};
+    padding: ${theme.spacings(5)};
   }
 `;

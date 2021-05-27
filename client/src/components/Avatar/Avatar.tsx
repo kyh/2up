@@ -1,6 +1,7 @@
 import styled, { StyledComponentProps, DefaultTheme } from "styled-components";
 import raw from "raw.macro";
 import { hashCode } from "utils/stringUtils";
+import { theme, getComputedBorder } from "styles/theme";
 import { fabBorder } from "../Button/borders";
 
 type Props = StyledComponentProps<
@@ -47,17 +48,17 @@ const StyledIcon = styled.div<{ expandOnDesktop: boolean }>`
   overflow: hidden;
   justify-content: center;
   align-items: flex-end;
-  padding: ${({ theme }) => theme.spacings(1)};
+  padding: ${theme.spacings(1)};
   background-repeat: no-repeat;
   background-size: contain;
   background-image: ${({ theme }) =>
-    `url("data:image/svg+xml,${fabBorder(theme.ui.button.border)}")`};
+    `url("data:image/svg+xml,${fabBorder(getComputedBorder(theme))}")`};
 
   > svg {
     width: 100%;
     height: 80%;
     path {
-      fill: ${({ theme }) => theme.ui.text};
+      fill: ${theme.ui.text};
     }
   }
 

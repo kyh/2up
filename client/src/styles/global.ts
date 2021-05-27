@@ -1,8 +1,11 @@
 import styledNormalize from "styled-normalize";
 import { createGlobalStyle } from "styled-components";
+import { theme, lightStyles, darkStyles } from "styles/theme";
 
 export const GlobalStyle = createGlobalStyle`
   ${styledNormalize}
+
+  ${({ theme }: any) => (theme.isDarkMode ? darkStyles : lightStyles)}
 
   html {
     box-sizing: border-box;
@@ -15,8 +18,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    color: ${({ theme }) => theme.ui.text};
-    background-color: ${({ theme }) => theme.ui.background};
+    color: ${theme.ui.text};
+    background-color: ${theme.ui.background};
     text-rendering: optimizeLegibility;
     font-family: 'Chalkboard SE', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
       'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
@@ -41,7 +44,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6, p {
-    margin: 0 0 ${({ theme }) => theme.spacings(3)};
+    margin: 0 0 ${theme.spacings(3)};
   }
 
   p {
@@ -51,11 +54,11 @@ export const GlobalStyle = createGlobalStyle`
   fieldset {
     border: none;
     padding: 0;
-    margin: 0 0 ${({ theme }) => theme.spacings(3)};
+    margin: 0 0 ${theme.spacings(3)};
   }
 
   label {
     display: block;
-    margin: 0 0 ${({ theme }) => theme.spacings(1)};
+    margin: 0 0 ${theme.spacings(1)};
   }
 `;

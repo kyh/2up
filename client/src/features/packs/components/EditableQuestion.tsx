@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
+import { theme } from "styles/theme";
 import { Button } from "components";
 
 type EditableQuestionProps = {
@@ -102,7 +103,7 @@ const EditableQuestionSwitch = ({
 
 const QuestionImage = styled.img`
   object-fit: cover;
-  margin: 0 0 ${({ theme }) => theme.spacings(5)};
+  margin: 0 0 ${theme.spacings(5)};
 `;
 
 const EditableQuestionSwitchContainer = styled.div`
@@ -129,7 +130,7 @@ const EditableQuestionSwitchContainer = styled.div`
 
 const EditableQuestionContainer = styled.div`
   input {
-    border-radius: ${({ theme }) => theme.border.wavyRadius};
+    border-radius: ${theme.ui.borderWavyRadius};
     border: none;
     transition: all 0.23s ease;
 
@@ -142,13 +143,13 @@ const EditableQuestionContainer = styled.div`
 
 const EditableQuestionInstructions = styled.input`
   text-align: center;
-  margin: 0 0 ${({ theme }) => theme.spacings(2)};
+  margin: 0 0 ${theme.spacings(2)};
 `;
 
 const EditableQuestionText = styled.input`
   text-align: center;
-  margin: 0 0 ${({ theme }) => theme.spacings(5)};
-  font-size: ${({ theme }) => theme.typography.h2.fontSize};
+  margin: 0 0 ${theme.spacings(5)};
+  font-size: ${theme.typography.h2.fontSize};
 `;
 
 const EditableQuestionImageContainer = styled.div`

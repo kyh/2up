@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
-
+import { theme } from "styles/theme";
 import { Topbar } from "features/packs/components/Topbar";
 import { Sidebar } from "features/packs/components/Sidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";
@@ -75,7 +75,7 @@ const PACK_QUERY = gql`
 export const Page = styled.section`
   height: var(--vh, 100vh);
   display: grid;
-  background: ${({ theme }) => theme.ui.backgroundGrey};
+  background: ${theme.ui.backgroundGrey};
   grid-template-areas:
     "header  header  header"
     "sidebar content content"
@@ -89,11 +89,11 @@ export const Content = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: ${({ theme }) => theme.spacings(5)};
+  padding: ${theme.spacings(5)};
 `;
 
 // const Footer = styled.footer`
 //   grid-area: footer;
 //   display: flex;
-//   padding: ${({ theme }) => theme.spacings(4)};
+//   padding: ${theme.spacings(4)};
 // `;
