@@ -25,7 +25,7 @@ defmodule Web.GraphQL.Types.CatalogTypes do
   connection(node_type: :scene)
 
   node object(:scene_answer) do
-    field :content, non_null(:string)
+    field :content, :string
     field :is_correct, non_null(:boolean)
     # field :scene, non_null(:scene), resolve: dataloader(Scene)
   end
