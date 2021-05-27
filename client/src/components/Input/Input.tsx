@@ -18,8 +18,8 @@ const renderRegularStyles = () => {
     border-image-width: 5px;
     border-image-outset: 0;
     border-image-repeat: stretch stretch;
-    border-image-source: ${({ theme }) =>
-      `url("${border(getComputedBorder(theme))}")`};
+    border-image-source: ${({ theme: { isDarkMode } }) =>
+      `url("${border(getComputedBorder(isDarkMode))}")`};
   `;
 };
 

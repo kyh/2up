@@ -51,8 +51,8 @@ const StyledIcon = styled.div<{ expandOnDesktop: boolean }>`
   padding: ${theme.spacings(1)};
   background-repeat: no-repeat;
   background-size: contain;
-  background-image: ${({ theme }) =>
-    `url("data:image/svg+xml,${fabBorder(getComputedBorder(theme))}")`};
+  background-image: ${({ theme: { isDarkMode } }) =>
+    `url("data:image/svg+xml,${fabBorder(getComputedBorder(isDarkMode))}")`};
 
   > svg {
     width: 100%;

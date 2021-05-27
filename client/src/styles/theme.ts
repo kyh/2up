@@ -116,7 +116,7 @@ export const theme = {
   ui,
 };
 
-export const getComputedBorder = memoize((theme = { isDarkMode: false }) => {
-  const color = theme.isDarkMode ? colors.greyLight : colors.greyDark;
+export const getComputedBorder = memoize((isDarkMode: boolean) => {
+  const color = isDarkMode ? colors.greyLight : colors.greyDark;
   return color.replace("#", "");
 });

@@ -51,24 +51,24 @@ const renderRegularStyles = () => {
     border-image-width: 5px;
     border-image-outset: 0;
     border-image-repeat: stretch stretch;
-    border-image-source: ${({ theme }) =>
-      `url("${border(getComputedBorder(theme))}")`};
+    border-image-source: ${({ theme: { isDarkMode } }) =>
+      `url("${border(getComputedBorder(isDarkMode))}")`};
     min-width: 100px;
     &:hover {
-      border-image-source: ${({ theme }) =>
-        `url("${borderActive(getComputedBorder(theme))}")`};
+      border-image-source: ${({ theme: { isDarkMode } }) =>
+        `url("${borderActive(getComputedBorder(isDarkMode))}")`};
     }
     &:active {
       transform: scale(0.9);
-      border-image-source: ${({ theme }) =>
-        `url("${borderActive(getComputedBorder(theme))}")`};
+      border-image-source: ${({ theme: { isDarkMode } }) =>
+        `url("${borderActive(getComputedBorder(isDarkMode))}")`};
     }
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       &:hover {
-        border-image-source: ${({ theme }) =>
-          `url("${border(getComputedBorder(theme))}")`};
+        border-image-source: ${({ theme: { isDarkMode } }) =>
+          `url("${border(getComputedBorder(isDarkMode))}")`};
       }
     }
   `;
@@ -80,27 +80,29 @@ const renderFabStyles = () => {
     padding: ${theme.spacings(1)};
     background-repeat: no-repeat;
     background-size: contain;
-    background-image: ${({ theme }) =>
-      `url("data:image/svg+xml,${fabBorder(getComputedBorder(theme))}")`};
+    background-image: ${({ theme: { isDarkMode } }) =>
+      `url("data:image/svg+xml,${fabBorder(getComputedBorder(isDarkMode))}")`};
     &:hover {
-      background-image: ${({ theme }) =>
+      background-image: ${({ theme: { isDarkMode } }) =>
         `url("data:image/svg+xml,${fabBorderActive(
-          getComputedBorder(theme)
+          getComputedBorder(isDarkMode)
         )}")`};
     }
     &:active {
       transform: scale(0.9);
-      background-image: ${({ theme }) =>
+      background-image: ${({ theme: { isDarkMode } }) =>
         `url("data:image/svg+xml,${fabBorderActive(
-          getComputedBorder(theme)
+          getComputedBorder(isDarkMode)
         )}")`};
     }
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       &:hover {
-        background-image: ${({ theme }) =>
-          `url("data:image/svg+xml,${fabBorder(getComputedBorder(theme))}")`};
+        background-image: ${({ theme: { isDarkMode } }) =>
+          `url("data:image/svg+xml,${fabBorder(
+            getComputedBorder(isDarkMode)
+          )}")`};
       }
     }
   `;
