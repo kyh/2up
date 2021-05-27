@@ -89,11 +89,11 @@ export const Navigation = () => {
           <SettingItem>
             <ButtonLink
               fullWidth
-              href="https://join.slack.com/t/playhouse-gg/shared_invite/zt-dzouxy28-Z_sP6RrD4Ign1yUV1GEQkw"
+              href="https://discord.gg/YtafKzR"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Slack
+              Discord
             </ButtonLink>
           </SettingItem>
         </SettingsContainer>
