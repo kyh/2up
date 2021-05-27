@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "styles/theme";
 import { StepProps, GameState } from "features/game/gameSlice";
 import {
   PlayersGrid,
@@ -71,7 +72,7 @@ const QuestionNumber = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacings(5)};
+  margin-bottom: ${theme.spacings(5)};
   .title {
     text-align: center;
     margin: 0;
@@ -79,19 +80,19 @@ const TitleContainer = styled.div`
 `;
 
 const PlayersContainer = styled(PlayersGrid)`
-  margin-bottom: ${({ theme }) => theme.spacings(5)};
-  ${({ theme }) => theme.media.desktop`
+  margin-bottom: ${theme.spacings(5)};
+  ${theme.breakpoints.desktop} {
     margin-bottom: 0;
-  `}
+  }
 `;
 
 const PlayerContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  ${({ theme }) => theme.media.desktop`
+  ${theme.breakpoints.desktop} {
     flex-direction: column-reverse;
-  `}
+  }
 `;
 
 const PlayerScore = styled.h2`

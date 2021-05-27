@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import produce from "immer";
 import styled from "styled-components";
+import { theme } from "styles/theme";
 import { Input, Button } from "components";
 import { ScenePreviewFragment_sceneAnswers } from "./__generated__/ScenePreviewFragment";
 
@@ -93,7 +94,7 @@ export const EditableAnswer = ({
 };
 
 const InputContainer = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacings(3)};
+  margin-bottom: ${theme.spacings(3)};
 `;
 
 type EditableAnswerSwitchProps = {
@@ -145,7 +146,7 @@ const EditableAnswerSwitchContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  background: ${({ theme }) => theme.ui.background};
+  background: ${theme.ui.background};
   padding-top: 35px;
 
   input {

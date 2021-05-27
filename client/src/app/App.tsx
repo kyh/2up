@@ -3,7 +3,6 @@ import { ThemeProvider } from "styled-components";
 import { Provider as AlertProvider, transitions, positions } from "react-alert";
 
 import { ReactAlertTemplate } from "components";
-import { lightTheme, darkTheme } from "styles/theme";
 import { GlobalStyle } from "styles/global";
 import { useAppSelector } from "app/hooks";
 
@@ -22,7 +21,7 @@ const alertOptions = {
 export const App = () => {
   const isDarkMode = useAppSelector((state) => state.playhouse.isDarkMode);
   return (
-    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+    <ThemeProvider theme={{ isDarkMode }}>
       <AlertProvider template={ReactAlertTemplate} {...alertOptions}>
         <GlobalStyle />
         <Switch>

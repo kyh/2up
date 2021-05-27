@@ -1,5 +1,6 @@
 import { useState, SyntheticEvent } from "react";
 import styled from "styled-components";
+import { theme } from "styles/theme";
 import { Input, Button } from "components";
 import { SceneAnswer, Submission } from "features/game/gameSlice";
 
@@ -84,15 +85,15 @@ const AnswerTextForm = styled.form`
 `;
 
 const InputContainer = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacings(3)};
+  margin-bottom: ${theme.spacings(3)};
 `;
 
 const AnswerTextDisplay = styled.div`
-  ${({ theme }) => theme.typography.h3};
+  ${theme.typography.h3};
   text-align: center;
-  padding: ${({ theme }) => theme.spacings(3)};
-  border: 2px solid ${({ theme }) => theme.border.alternateColor};
-  border-radius: ${({ theme }) => theme.border.wavyRadius};
+  padding: ${theme.spacings(3)};
+  border: 2px solid ${theme.ui.borderColorAlternate};
+  border-radius: ${theme.ui.borderWavyRadius};
 `;
 
 const AnswerMulti = ({
@@ -196,7 +197,7 @@ const RecordContainer = styled.div`
 
 // const ColorPickerContainer = styled.div`
 //   .react-colorful {
-//     margin-bottom: ${({ theme }) => theme.spacings(2)};
+//     margin-bottom: ${ theme.spacings(2)};
 //   }
 // `;
 

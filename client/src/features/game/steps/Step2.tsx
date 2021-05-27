@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "styles/theme";
 import { StepProps, GameState, SceneAnswer } from "features/game/gameSlice";
 import { Answer } from "features/game/components/Answer";
 import correctSvg from "features/game/components/correct.svg";
@@ -64,7 +65,7 @@ const AnswerResult = ({ gameState, sceneAnswer }: SubmissionProps) => {
 };
 
 const AnswerContainer = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacings(5)};
+  margin-bottom: ${theme.spacings(5)};
   .title {
     text-align: center;
   }
@@ -90,17 +91,17 @@ const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
 };
 
 const SubmissionsContainer = styled(PlayersGrid)`
-  margin-bottom: ${({ theme }) => theme.spacings(5)};
+  margin-bottom: ${theme.spacings(5)};
   .correct {
     position: absolute;
     width: 50px;
-    top: ${({ theme }) => theme.spacings(-3)};
+    top: ${theme.spacings(-3)};
     left: 0;
   }
   .name {
     text-align: center;
   }
-  ${({ theme }) => theme.media.desktop`
+  ${theme.breakpoints.desktop} {
     margin-bottom: 0;
-  `}
+  }
 `;

@@ -6,6 +6,7 @@ import styled, {
   DefaultTheme,
 } from "styled-components";
 import { useAppSelector } from "app/hooks";
+import { theme, getComputedBorder } from "styles/theme";
 import { clickSound } from "styles/sound";
 import { border, borderActive, fabBorder, fabBorderActive } from "./borders";
 
@@ -45,29 +46,29 @@ type StyledProps = {
 const renderRegularStyles = () => {
   return css`
     transition: transform 0.2s ease;
-    padding: ${({ theme }) => theme.spacings(4)};
+    padding: ${theme.spacings(4)};
     border-image-slice: 4 4 3 5 fill;
     border-image-width: 5px;
     border-image-outset: 0;
     border-image-repeat: stretch stretch;
     border-image-source: ${({ theme }) =>
-      `url("${border(theme.ui.button.border)}")`};
+      `url("${border(getComputedBorder(theme))}")`};
     min-width: 100px;
     &:hover {
       border-image-source: ${({ theme }) =>
-        `url("${borderActive(theme.ui.button.border)}")`};
+        `url("${borderActive(getComputedBorder(theme))}")`};
     }
     &:active {
       transform: scale(0.9);
       border-image-source: ${({ theme }) =>
-        `url("${borderActive(theme.ui.button.border)}")`};
+        `url("${borderActive(getComputedBorder(theme))}")`};
     }
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       &:hover {
         border-image-source: ${({ theme }) =>
-          `url("${border(theme.ui.button.border)}")`};
+          `url("${border(getComputedBorder(theme))}")`};
       }
     }
   `;
@@ -76,26 +77,30 @@ const renderRegularStyles = () => {
 const renderFabStyles = () => {
   return css`
     transition: transform 0.2s ease;
-    padding: ${({ theme }) => theme.spacings(1)};
+    padding: ${theme.spacings(1)};
     background-repeat: no-repeat;
     background-size: contain;
     background-image: ${({ theme }) =>
-      `url("data:image/svg+xml,${fabBorder(theme.ui.button.border)}")`};
+      `url("data:image/svg+xml,${fabBorder(getComputedBorder(theme))}")`};
     &:hover {
       background-image: ${({ theme }) =>
-        `url("data:image/svg+xml,${fabBorderActive(theme.ui.button.border)}")`};
+        `url("data:image/svg+xml,${fabBorderActive(
+          getComputedBorder(theme)
+        )}")`};
     }
     &:active {
       transform: scale(0.9);
       background-image: ${({ theme }) =>
-        `url("data:image/svg+xml,${fabBorderActive(theme.ui.button.border)}")`};
+        `url("data:image/svg+xml,${fabBorderActive(
+          getComputedBorder(theme)
+        )}")`};
     }
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       &:hover {
         background-image: ${({ theme }) =>
-          `url("data:image/svg+xml,${fabBorder(theme.ui.button.border)}")`};
+          `url("data:image/svg+xml,${fabBorder(getComputedBorder(theme))}")`};
       }
     }
   `;

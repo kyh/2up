@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
-
+import { theme } from "styles/theme";
 import { PageContainer, TextField, Button, Card } from "components";
 
 import { AuthPageUserCreateMutation } from "./__generated__/AuthPageUserCreateMutation";
@@ -56,7 +56,7 @@ export const AuthPage = ({ isLogin }: Props) => {
   };
 
   return (
-    <Page isLogin={isLogin}>
+    <Page isLogin={isLogin} size="full">
       <FormContainer>
         <h1 className="title">{isLogin ? "Login" : "Sign up"}</h1>
         <Card background>
@@ -131,7 +131,7 @@ const SESSION_CREATE = gql`
 const Page = styled(PageContainer)<{ isLogin?: boolean }>`
   align-items: center;
   height: 100vh;
-  background: ${({ theme }) => theme.ui.backgroundGrey};
+  background: ${theme.ui.backgroundGrey};
   background-repeat: no-repeat;
   ${({ isLogin }) =>
     isLogin
@@ -151,6 +151,6 @@ const FormContainer = styled.section`
     text-align: center;
   }
   .submit {
-    margin-top: ${({ theme }) => theme.spacings(4)};
+    margin-top: ${theme.spacings(4)};
   }
 `;

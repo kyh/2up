@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
+import { theme } from "styles/theme";
 import { Button } from "components";
 import { useHostGame } from "features/game/gameService";
-
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
-
 import { PackDetailsPagePackQuery } from "./__generated__/PackDetailsPagePackQuery";
 
 export const PackDetailsPage = () => {
@@ -65,7 +64,7 @@ const PackDetailsPageContent = styled(Content)`
 
   .back-link {
     display: inline-block;
-    margin-bottom: ${({ theme }) => theme.spacings(5)};
+    margin-bottom: ${theme.spacings(5)};
     &:hover {
       text-decoration: underline;
     }
@@ -78,7 +77,7 @@ const PackDetailsPageContent = styled(Content)`
   }
 
   .pack-description {
-    margin-bottom: ${({ theme }) => theme.spacings(5)};
+    margin-bottom: ${theme.spacings(5)};
   }
 
   .pack-actions {
@@ -87,7 +86,7 @@ const PackDetailsPageContent = styled(Content)`
     align-items: center;
 
     button {
-      margin-bottom: ${({ theme }) => theme.spacings(2)};
+      margin-bottom: ${theme.spacings(2)};
       min-width: 150px;
     }
 

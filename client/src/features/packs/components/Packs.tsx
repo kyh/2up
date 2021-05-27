@@ -1,12 +1,13 @@
 import styled from "styled-components";
+import { theme } from "styles/theme";
 
 export const PackSection = styled.section`
   .pack-items {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 3fr));
-    grid-gap: ${({ theme }) => theme.spacings(5)};
+    grid-gap: ${theme.spacings(5)};
 
-    ${({ theme }) => theme.media.desktop`
+    ${theme.breakpoints.desktop} {
       &.staggered-pack-items {
         grid-template-columns: repeat(4, 1fr);
 
@@ -17,18 +18,18 @@ export const PackSection = styled.section`
           grid-row-end: span 2;
         }
       }
-    `}
+    }
   }
 
   .pack-section {
-    margin-bottom: ${({ theme }) => theme.spacings(12)};
+    margin-bottom: ${theme.spacings(12)};
   }
 
   .pack-section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: ${({ theme }) => theme.spacings(6)};
+    margin-bottom: ${theme.spacings(6)};
 
     &.main-header {
       justify-content: center;
@@ -39,30 +40,29 @@ export const PackSection = styled.section`
     display: flex;
     flex-direction: column;
     position: relative;
-    border: 2px solid ${({ theme }) => theme.border.alternateColor};
-    border-radius: ${({ theme }) => theme.border.wavyRadius};
-    background-color: ${({ theme }) => theme.ui.background};
+    border: 2px solid ${theme.ui.borderColorAlternate};
+    border-radius: ${theme.ui.borderWavyRadius};
+    background-color: ${theme.ui.background};
     min-height: 16em;
 
     &:hover {
-      border-color: ${({ theme }) => theme.border.color};
+      border-color: ${theme.ui.borderColor};
     }
 
     article {
-      padding: ${({ theme }) => theme.spacings(5)};
+      padding: ${theme.spacings(5)};
     }
 
     h2 {
-      margin-bottom: ${({ theme }) => theme.spacings(3)};
+      margin-bottom: ${theme.spacings(3)};
     }
 
     p {
-      color: ${({ theme }) => theme.ui.lightText};
+      color: ${theme.ui.textGrey};
     }
 
     .edit-pack-footer {
-      margin: ${({ theme }) =>
-        `auto ${theme.spacings(5)} ${theme.spacings(5)}`};
+      margin: ${`auto ${theme.spacings(5)} ${theme.spacings(5)}`};
       a {
         display: inline-flex;
       }
@@ -76,5 +76,5 @@ export const PackImage = styled.div<{ src?: string | null }>`
   background-color: #bcc7ff;
   background-image: ${({ src }) => (src ? `url("${src}")` : "none")};
   background-size: cover;
-  margin: ${({ theme }) => `0 auto ${theme.spacings(2)}`};
+  margin: ${`0 auto ${theme.spacings(2)}`};
 `;
