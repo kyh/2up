@@ -3,7 +3,7 @@ import { useHistory, Link } from "react-router-dom";
 import styled from "styled-components";
 import { Button, Modal, AnimationSprite } from "components";
 import { theme } from "styles/theme";
-import { scaleIn } from "styles/animations";
+import { bounceIn } from "styles/animations";
 import { useAppSelector } from "app/hooks";
 import { useGameChannel } from "features/game/GameProvider";
 import {
@@ -132,7 +132,7 @@ const TitleContainer = styled.div`
 const PlayersContainer = styled(PlayersGrid)`
   .avatar {
     transform: scale(0);
-    animation: ${scaleIn} 0.3s ease forwards 0.4s;
+    animation: ${bounceIn} 1s linear forwards 0.4s;
   }
 `;
 
