@@ -85,15 +85,16 @@ const renderFabStyles = () => {
     background-size: contain;
     background-image: ${({ theme: { isDarkMode } }) =>
       `url("data:image/svg+xml,${fabBorder(getComputedBorder(isDarkMode))}")`};
+    animation: ${bounceReturn} 1s;
     &:hover {
-      animation: ${bounceExpand} 1s linear both;
+      animation: ${bounceExpand} 1s;
       background-image: ${({ theme: { isDarkMode } }) =>
         `url("data:image/svg+xml,${fabBorderActive(
           getComputedBorder(isDarkMode)
         )}")`};
     }
     &:active {
-      transform: scale(0.9);
+      animation: ${bounceReturn} 1s;
       background-image: ${({ theme: { isDarkMode } }) =>
         `url("data:image/svg+xml,${fabBorderActive(
           getComputedBorder(isDarkMode)
