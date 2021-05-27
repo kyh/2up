@@ -23,18 +23,11 @@ export const ScenePreview = ({ scene, setSaving }: Props) => {
   const [sceneUpdate] = useMutation<ScenePreviewSceneUpdateMutation>(
     SCENE_UPDATE
   );
-  console.log("Render Scene Preview:", scene);
+
   const onChange = async (updatedScene = {}) => {
     setSaving(true);
     const newScene = { ...scene, ...updatedScene };
-    console.log("Update new Scene:", {
-      id: newScene.id || "",
-      instruction: newScene.instruction,
-      questionTypeSlug: newScene.questionType.slug,
-      question: newScene.question,
-      answerTypeSlug: newScene.answerType.slug,
-      sceneAnswers: newScene.sceneAnswers,
-    });
+    console.log("Update new Scene:", newScene);
     try {
       await sceneUpdate({
         variables: {

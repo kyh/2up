@@ -35,7 +35,7 @@ export const EditableAnswer = ({
           key={sceneId}
         >
           {sceneAnswers.map((sceneAnswer, index) => (
-            <InputContainer>
+            <InputContainer key={sceneAnswer.id}>
               <Input
                 type="checkbox"
                 name="correct"
