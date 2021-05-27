@@ -42,7 +42,7 @@ defmodule Web.GameChannel do
           GameServer.game_state(game_code)
 
         false ->
-          player = %{id: Ecto.UUID.generate(), name: name, score: 0}
+          player = %{name: name, score: 0}
           GameServer.player_new(game_code, player)
       end
 

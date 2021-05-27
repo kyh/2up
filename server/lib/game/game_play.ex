@@ -73,7 +73,7 @@ defmodule Game.GamePlay do
     correct_submission_count =
       current_scene.scene_answers
       |> Enum.filter(& &1.isCorrect)
-      |> Enum.filter(&(&1.content == submission["content"]))
+      |> Enum.filter(&(&1.content == submission))
       |> Enum.count()
 
     case correct_submission_count > 0 do
