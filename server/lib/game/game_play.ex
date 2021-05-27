@@ -5,7 +5,7 @@ defmodule Game.GamePlay do
 
   alias Game.{Scene, GamePlay, Player}
 
-  defstruct scene: 0, step: 0, scenes: [], players: [], pack: ""
+  defstruct scene: 0, step: 0, scenes: [], players: [], pack: "", start_time: 0, duration: 45000
 
   @doc """
   Initializes game play struct with scenes and players
@@ -68,7 +68,20 @@ defmodule Game.GamePlay do
   defp update_scores(correct_submission_count, game, name) do
     case correct_submission_count > 0 do
       true ->
-        player_score_add(game, name, 100)
+        current_timestamp = get_timestamp()
+        start_time = game.start_time
+        difference = current_timestamp - start_time
+
+        bonus_points =
+          case difference < game.duration do
+            true ->
+              round((game.duration - difference) / game.duration * 100)
+
+            false ->
+              0
+          end
+
+        player_score_add(game, name, 100 + bonus_points)
 
       false ->
         game
@@ -131,8 +144,11 @@ defmodule Game.GamePlay do
   """
   def scene_next(game) do
     case length(game.scenes) == game.scene do
-      true -> %{game | scene: 0, step: 0}
-      false -> %{game | scene: game.scene + 1, step: 1}
+      true ->
+        %{game | scene: 0, step: 0}
+
+      false ->
+        %{game | scene: game.scene + 1, step: 1, start_time: get_timestamp()}
     end
   end
 
@@ -140,6 +156,10 @@ defmodule Game.GamePlay do
   Start game play with first scene and step
   """
   def start(game) do
-    %{game | scene: 1, step: 1}
+    %{game | scene: 1, step: 1, start_time: get_timestamp()}
+  end
+
+  defp get_timestamp() do
+    :os.system_time(:millisecond)
   end
 end
