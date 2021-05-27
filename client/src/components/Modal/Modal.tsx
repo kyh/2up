@@ -87,7 +87,7 @@ const ModalHeader = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: ${theme.typography.h3.fontSize};
+  font-size: 1.1rem;
   color: ${theme.colors.white};
   padding: ${theme.spacings(3)};
   text-shadow: -1px 1px 0 #1a1919, 1px 1px 0 #1a1919, 1px -1px 0 #1a1919,
