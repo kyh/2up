@@ -13,7 +13,7 @@ defmodule Game.Scene do
             scene_answers: []
 
   def new(question_set) do
-    %Scene{
+    %Game.Scene{
       question: question_set.question,
       question_type: question_set.question_type,
       scene_answers: question_set.scene_answers,
