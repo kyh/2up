@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { bounceExpand, bounceReturn } from "styles/animations";
+import { bounceExpand, bounceContract } from "styles/animations";
 
 export const PackSection = styled.section`
   .pack-items {
@@ -45,7 +45,7 @@ export const PackSection = styled.section`
     border-radius: ${theme.ui.borderWavyRadius};
     background-color: ${theme.ui.background};
     min-height: 16em;
-    animation: ${bounceReturn} 1s;
+    animation: ${bounceContract} 1s;
 
     &:hover {
       animation: ${bounceExpand} 1s;
@@ -53,7 +53,7 @@ export const PackSection = styled.section`
     }
 
     &:active {
-      animation: ${bounceReturn} 1s;
+      animation: ${bounceContract} 1s;
     }
 
     article {
