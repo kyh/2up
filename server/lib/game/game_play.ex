@@ -21,26 +21,7 @@ defmodule Game.GamePlay do
   Converts question sets into Scene structs
   """
   def scenes_initialize(question_sets) do
-    Enum.map(question_sets, fn question_set ->
-      %{
-        question: question,
-        scene_answers: scene_answers,
-        pack: pack,
-        instruction: instruction,
-        question_type: question_type,
-        answer_type: answer_type
-      } = question_set
-
-      %Scene{
-        question: question,
-        question_type: question_type,
-        scene_answers: scene_answers,
-        answer_type: answer_type,
-        pack: pack,
-        instruction: instruction,
-        submissions: []
-      }
-    end)
+    Enum.map(question_sets, &Scene.new(&1))
   end
 
   @doc """
@@ -68,16 +49,23 @@ defmodule Game.GamePlay do
   Increment 100 points for each correct answer
   """
   def points_calculate(game, current_index, name, submission) do
-    current_scene = Enum.at(game.scenes, current_index)
+    get_current_scene(game, current_index)
+    |> Map.get(:scene_answers)
+    |> Enum.filter(& &1.isCorrect)
+    |> Enum.filter(&compare_content(&1, submission))
+    |> Enum.count()
+    |> update_scores(game, name)
+  end
 
-    correct_submission_count =
-      current_scene.scene_answers
-      |> Enum.filter(& &1.isCorrect)
-      |> Enum.filter(fn scene_answer ->
-        compare_content(scene_answer.content, submission["content"])
-      end)
-      |> Enum.count()
+  defp get_current_scene(game, current_index) do
+    Enum.at(game.scenes, current_index)
+  end
 
+  defp compare_content(scene_answer, submission) do
+    String.upcase(scene_answer.content) == String.upcase(submission["content"])
+  end
+
+  defp update_scores(correct_submission_count, game, name) do
     case correct_submission_count > 0 do
       true ->
         player_score_add(game, name, 100)
@@ -87,19 +75,15 @@ defmodule Game.GamePlay do
     end
   end
 
-  defp compare_content(a, b) do
-    String.upcase(a) == String.upcase(b)
-  end
-
   @doc """
   Update game play state with submission. Move to next step if all submissions received.
   """
   def submissions_update(game, current_index, submission, player_count) do
-    current_scene = Enum.at(game.scenes, current_index)
-
+    current_scene = get_current_scene(game, current_index)
     new_submissions = Enum.shuffle(current_scene.submissions ++ [submission])
     new_scenes = List.update_at(game.scenes, current_index, &%{&1 | submissions: new_submissions})
     current_step = next_step_get(game, length(new_submissions), player_count)
+
     %{game | scenes: new_scenes, step: current_step}
   end
 
