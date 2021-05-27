@@ -73,7 +73,9 @@ defmodule Game.GamePlay do
     correct_submission_count =
       current_scene.scene_answers
       |> Enum.filter(& &1.isCorrect)
-      |> Enum.filter(&(&1.content == submission["content"]))
+      |> Enum.filter(fn scene_answer ->
+        compare_content(scene_answer.content, submission["content"])
+      end)
       |> Enum.count()
 
     case correct_submission_count > 0 do
@@ -83,6 +85,10 @@ defmodule Game.GamePlay do
       false ->
         game
     end
+  end
+
+  defp compare_content(a, b) do
+    String.upcase(a) == String.upcase(b)
   end
 
   @doc """
@@ -103,7 +109,6 @@ defmodule Game.GamePlay do
   def player_submit(game, name, submission, player_count) do
     current_index = game.scene - 1
 
-    IO.puts "HERE"
     game
     |> points_calculate(current_index, name, submission)
     |> submissions_update(current_index, submission, player_count)
