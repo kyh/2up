@@ -7,6 +7,7 @@ import styled, {
 } from "styled-components";
 import { useAppSelector } from "app/hooks";
 import { theme, getComputedBorder } from "styles/theme";
+import { bounceExpand, bounceReturn } from "styles/animations";
 import { clickSound } from "styles/sound";
 import { border, borderActive, fabBorder, fabBorderActive } from "./borders";
 
@@ -54,12 +55,14 @@ const renderRegularStyles = () => {
     border-image-source: ${({ theme: { isDarkMode } }) =>
       `url("${border(getComputedBorder(isDarkMode))}")`};
     min-width: 100px;
+    animation: ${bounceReturn} 1s;
     &:hover {
+      animation: ${bounceExpand} 1s;
       border-image-source: ${({ theme: { isDarkMode } }) =>
         `url("${borderActive(getComputedBorder(isDarkMode))}")`};
     }
     &:active {
-      transform: scale(0.9);
+      animation: ${bounceReturn} 1s;
       border-image-source: ${({ theme: { isDarkMode } }) =>
         `url("${borderActive(getComputedBorder(isDarkMode))}")`};
     }
@@ -83,6 +86,7 @@ const renderFabStyles = () => {
     background-image: ${({ theme: { isDarkMode } }) =>
       `url("data:image/svg+xml,${fabBorder(getComputedBorder(isDarkMode))}")`};
     &:hover {
+      animation: ${bounceExpand} 1s linear both;
       background-image: ${({ theme: { isDarkMode } }) =>
         `url("data:image/svg+xml,${fabBorderActive(
           getComputedBorder(isDarkMode)
