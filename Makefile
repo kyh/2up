@@ -36,9 +36,6 @@ test:
 seeds:
 	cd server && mix run priv/repo/seeds.exs
 
-gql-gen:
-	cd client && npm run gql-gen
-
 format:
 	cd client && npm run format
 	cd server && mix format
