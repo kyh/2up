@@ -5,7 +5,7 @@ defmodule Database.Live.PackScene do
     belongs_to :pack, Pack
     belongs_to :scene, Scene
 
-    field :order, :integer
+    field :order, :decimal
 
     timestamps()
   end
