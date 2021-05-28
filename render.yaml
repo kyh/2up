@@ -22,6 +22,18 @@ services:
     autoDeploy: true
     envVars:
       - fromGroup: playhouse-server-env
+      - key: DATABASE_URL
+        fromDatabase:
+          name: playhouse-db
+          property: connectionString
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: playhouse-db
+          property: user
+      - key: POSTGRES_PASS
+        fromDatabase:
+          name: playhouse-db
+          property: password
 
 databases:
   - name: playhouse-db
@@ -44,15 +56,3 @@ envVarGroups:
         value: https://playhouse.gg
       - key: SECRET_KEY_BASE
         generateValue: true
-      - key: DATABASE_URL
-        fromDatabase:
-          name: playhouse-db
-          property: connectionString
-      - key: POSTGRES_USER
-        fromDatabase:
-          name: playhouse-db
-          property: user
-      - key: POSTGRES_PASS
-        fromDatabase:
-          name: playhouse-db
-          property: password
