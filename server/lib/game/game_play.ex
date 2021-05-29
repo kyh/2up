@@ -136,20 +136,21 @@ defmodule Game.GamePlay do
   Moves to the next step
   """
   def step_next(game) do
-    %{game | step: game.step + 1}
+    case length(game.scenes) == game.scene do
+      true ->
+        # Move directly into score page after answering last question
+        %{game | scene: 0, step: 0}
+
+      false ->
+        %{game | step: game.step + 1}
+    end
   end
 
   @doc """
   Move to next scene unless it's end of game
   """
   def scene_next(game) do
-    case length(game.scenes) == game.scene do
-      true ->
-        %{game | scene: 0, step: 0}
-
-      false ->
-        %{game | scene: game.scene + 1, step: 1, start_time: get_timestamp()}
-    end
+    %{game | scene: game.scene + 1, step: 1, start_time: get_timestamp()}
   end
 
   @doc """
