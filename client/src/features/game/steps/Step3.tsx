@@ -40,8 +40,8 @@ export const Step3Spectate = ({ gameState }: StepProps) => {
 const PlayerScores = ({ gameState }: { gameState: GameState }) => {
   const players = gameState.players.map((player) => {
     return (
-      <PlayerContainer>
-        <Player key={player.name} playerName={player.name} />
+      <PlayerContainer key={player.name}>
+        <Player playerName={player.name} />
         <PlayerScore>{player.score}</PlayerScore>
       </PlayerContainer>
     );
@@ -51,9 +51,7 @@ const PlayerScores = ({ gameState }: { gameState: GameState }) => {
       <TitleContainer>
         <h2 className="title">Scoreboard</h2>
       </TitleContainer>
-      <PlayersContainer singleCol maxWidth={300}>
-        {players}
-      </PlayersContainer>
+      <PlayersContainer singleCol>{players}</PlayersContainer>
     </>
   );
 };
@@ -81,8 +79,10 @@ const TitleContainer = styled.div`
 
 const PlayersContainer = styled(PlayersGrid)`
   margin-bottom: ${theme.spacings(5)};
+  max-width: 300px;
   ${theme.breakpoints.desktop} {
     margin-bottom: 0;
+    max-width: none;
   }
 `;
 
@@ -98,4 +98,7 @@ const PlayerContainer = styled.div`
 const PlayerScore = styled.h2`
   margin: 0;
   transform: translateY(-10px);
+  ${theme.breakpoints.desktop} {
+    margin-top: auto;
+  }
 `;

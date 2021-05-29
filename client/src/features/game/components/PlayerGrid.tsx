@@ -40,16 +40,14 @@ const PlayerName = styled.p`
   margin-bottom: 0;
 `;
 
-export const PlayersGrid = styled.section<{
+export const PlayersGrid = styled.div<{
   singleCol?: boolean;
-  maxWidth?: number;
 }>`
   display: grid;
   grid-template-columns: ${({ singleCol }) =>
     singleCol ? "1fr" : "1fr 1fr 1fr"};
   grid-gap: ${theme.spacings(3)};
   width: 100%;
-  max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "auto")};
   .avatar > svg {
     animation: ${jitter} 0.7s linear infinite;
   }
@@ -58,8 +56,7 @@ export const PlayersGrid = styled.section<{
     position: absolute;
     display: flex;
     justify-content: space-between;
-    left: ${theme.spacings(8)};
-    right: ${theme.spacings(8)};
+    width: 90%;
     bottom: 0;
     pointer-events: none;
     .player {
@@ -71,14 +68,16 @@ export const PlayersGrid = styled.section<{
         margin-bottom: ${theme.spacings(1)};
       }
       .avatar {
-        margin-right: ${theme.spacings(2)};
-        max-width: 130px;
-        max-height: 300px;
+        padding: 0;
+        svg {
+          max-width: 130px;
+          max-height: 300px;
+        }
       }
       .correct {
         top: auto;
         left: auto;
-        bottom: -10px;
+        bottom: -7px;
       }
     }
   }

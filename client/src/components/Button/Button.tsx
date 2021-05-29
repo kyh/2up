@@ -69,7 +69,9 @@ const renderRegularStyles = () => {
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+      animation: none;
       &:hover {
+        animation: none;
         border-image-source: ${({ theme: { isDarkMode } }) =>
           `url("${border(getComputedBorder(isDarkMode))}")`};
       }
