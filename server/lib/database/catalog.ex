@@ -48,7 +48,8 @@ defmodule Database.Catalog do
   def scene_answer_list(args) do
     query =
       from scene_answer in SceneAnswer,
-        where: scene_answer.scene_id == ^args.scene_id
+        where: scene_answer.scene_id == ^args.scene_id,
+        order_by: [asc: scene_answer.id]
 
     Repo.all(query)
   end
