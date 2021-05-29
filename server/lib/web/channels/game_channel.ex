@@ -138,6 +138,20 @@ defmodule Web.GameChannel do
     end
   end
 
+  @doc """
+  Send message to players in previous game to join new game
+  """
+  def handle_in("play_again", %{"game_code" => game_code, "new_code" => new_code}, socket) do
+    case GameServer.game_pid(game_code) do
+      pid when is_pid(pid) ->
+        broadcast!(socket, "game/play_again", new_code)
+        {:noreply, socket}
+
+      nil ->
+        {:reply, {:error, %{reason: "Game does not exist"}}, socket}
+    end
+  end
+
   # List of actively connected players used to determine if everyone is
   # done submitting or endorsing
   defp player_count(socket) do
