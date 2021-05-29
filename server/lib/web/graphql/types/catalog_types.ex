@@ -48,7 +48,7 @@ defmodule Web.GraphQL.Types.CatalogTypes do
   input_object :scene_answer_input do
     field :id, :id
     field :scene_id, :id
-    field :content, non_null(:string)
+    field :content, :string
     field :is_correct, non_null(:boolean)
   end
 end
