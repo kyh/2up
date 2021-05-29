@@ -126,7 +126,7 @@ defmodule Database.Catalog do
 
   def calculate_new_order(%{after_id: after_id, pack_id: pack_id}) do
     after_pack_scene = Repo.get_by(PackScene, scene_id: after_id, pack_id: pack_id)
-    Decimal.div(after_pack_scene.order, Decimal.cast(2))
+    Decimal.div(after_pack_scene.order, Decimal.new(2))
   end
 
   def calculate_new_order(%{before_id: before_id, pack_id: pack_id}) do

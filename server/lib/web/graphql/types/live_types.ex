@@ -4,7 +4,6 @@ defmodule Web.GraphQL.Types.LiveTypes do
 
   alias Web.GraphQL.Resolvers.Catalog
 
-  alias Database.Live.Pack
   alias Database.Accounts.User
 
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]

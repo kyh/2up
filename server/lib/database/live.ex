@@ -68,12 +68,6 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
-  def tag_create(attrs) do
-    %Tag{}
-    |> Tag.changeset(attrs)
-    |> Repo.insert()
-  end
-
   def pack_scene_create(%Pack{} = pack, %Scene{} = scene, attrs) do
     %PackScene{}
     |> PackScene.changeset(attrs)
