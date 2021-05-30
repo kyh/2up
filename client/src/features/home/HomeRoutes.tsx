@@ -37,7 +37,7 @@ const IntroLogo = styled.img`
   display: block;
   width: 60px;
   height: 65px;
-  margin: ${`0 auto ${theme.spacings(3)}`};
+  margin: 0 auto ${theme.spacings(3)};
 `;
 
 const IntroCard = styled(Card)`
