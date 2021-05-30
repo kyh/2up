@@ -49,9 +49,5 @@ const httpLink = createHttpLink({
 export const client = new ApolloClient({
   cache: cache,
   link: ApolloLink.from([cleanTypenameLink, authLink, errorLink, httpLink]),
-  defaultOptions: {
-    watchQuery: {
-      fetchPolicy: "cache-and-network",
-    },
-  },
+  credentials: "include",
 });

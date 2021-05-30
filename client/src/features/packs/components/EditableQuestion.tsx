@@ -103,6 +103,7 @@ const EditableQuestionSwitch = ({
 
 const QuestionImage = styled.img`
   object-fit: cover;
+  max-width: 100%;
   margin: 0 0 ${theme.spacings(5)};
 `;
 

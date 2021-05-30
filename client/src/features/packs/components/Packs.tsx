@@ -69,7 +69,7 @@ export const PackSection = styled.section`
     }
 
     .edit-pack-footer {
-      margin: ${`auto ${theme.spacings(5)} ${theme.spacings(5)}`};
+      margin: auto ${theme.spacings(5)} ${theme.spacings(5)};
       a {
         display: inline-flex;
       }
@@ -83,5 +83,5 @@ export const PackImage = styled.div<{ src?: string | null }>`
   background-color: #bcc7ff;
   background-image: ${({ src }) => (src ? `url("${src}")` : "none")};
   background-size: cover;
-  margin: ${`0 auto ${theme.spacings(2)}`};
+  margin: 0 auto ${theme.spacings(2)};
 `;

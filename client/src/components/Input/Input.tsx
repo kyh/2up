@@ -25,12 +25,12 @@ const renderRegularStyles = () => {
 
 const renderRoundedStyles = () => {
   return css`
-    padding: ${`${theme.spacings(4)} ${theme.spacings(6)}`};
+    padding: ${theme.spacings(4)} ${theme.spacings(6)};
     border-image-slice: 3 1 3 1 fill;
     border-image-width: 5px;
     border-image-outset: 0;
     border-image-repeat: stretch stretch;
-    border-image-source: ${`url("${borderRounded(theme.ui.buttonBorder)}")`};
+    border-image-source: url("${borderRounded(theme.ui.buttonBorder)}");
   `;
 };
 

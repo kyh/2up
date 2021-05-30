@@ -48,5 +48,5 @@ export const Content = styled.section`
   width: 100%;
   margin: 0 auto;
   grid-area: content;
-  padding: ${`${theme.spacings(10)} ${theme.spacings(5)}`};
+  padding: ${theme.spacings(10)} ${theme.spacings(5)};
 `;

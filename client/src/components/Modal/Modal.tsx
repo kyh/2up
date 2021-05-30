@@ -100,7 +100,7 @@ const ModalBody = styled.section`
   background: ${theme.ui.modalBackground};
   border: 2px solid ${theme.ui.modalBorder};
   padding: ${theme.spacings(3)};
-  margin: 0 ${`${theme.spacings(3)} ${theme.spacings(3)}`};
+  margin: 0 ${theme.spacings(3)} ${theme.spacings(3)};
   border-radius: ${theme.ui.borderWavyRadius};
   overflow: auto;
   -webkit-overflow-scroll: touch;

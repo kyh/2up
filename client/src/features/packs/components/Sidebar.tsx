@@ -97,17 +97,17 @@ export const Sidebar = ({
     }
   };
 
-  const addNewScene = async () => {
+  const addNewScene = async (extendInput = {}) => {
+    const defaultInput = {
+      packId,
+      question: "What's your name?",
+      order: (scenes?.length || 0) + 1,
+    };
     setSaving(true);
+
     try {
       const { data } = await sceneCreate({
-        variables: {
-          input: {
-            packId,
-            question: "What's your name?",
-            order: (scenes?.length || 0) + 1,
-          },
-        },
+        variables: { input: { ...defaultInput, ...extendInput } },
       });
       await refetch();
       selectScene(data?.sceneCreate?.scene.id);
@@ -115,6 +115,20 @@ export const Sidebar = ({
     } catch (error) {
       alert.show(error.message);
       setSaving(false);
+    }
+  };
+
+  const quickAddNewScene = () => {
+    if (scenes) {
+      const selectedScene = scenes.find((s) => s?.node?.id === selectedSceneId)
+        ?.node;
+      addNewScene({
+        instruction: selectedScene?.instruction,
+        questionTypeSlug: selectedScene?.questionType.slug,
+        question: selectedScene?.question,
+        answerTypeSlug: selectedScene?.answerType.slug,
+        sceneAnswers: selectedScene?.sceneAnswers,
+      });
     }
   };
 
@@ -183,7 +197,11 @@ export const Sidebar = ({
       </SidebarContent>
       <SidebarFooter>
         <Button onClick={addNewScene}>Add New Scene</Button>
-        <Button onClick={addNewScene} data-tip="Quick add">
+        <Button
+          onClick={quickAddNewScene}
+          data-tip="Quick add"
+          disabled={!selectedSceneId}
+        >
           +
         </Button>
         <ReactTooltip effect="solid" place="top" />
