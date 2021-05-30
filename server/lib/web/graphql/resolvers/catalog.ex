@@ -56,6 +56,21 @@ defmodule Web.GraphQL.Resolvers.Catalog do
     end
   end
 
+  def scene_answer_delete(args, %{context: %{current_user: user}}) do
+    scene_answer = Database.Repo.get_by(Database.Catalog.SceneAnswer, id: args.id)
+
+    case Catalog.scene_answer_delete(user, scene_answer, args) do
+      {:error, changeset} ->
+        {
+          :error,
+          message: "Scene answer delete failed", details: Errors.error_details(changeset)
+        }
+
+      {:ok, scene_answer} ->
+        {:ok, %{scene_answer: scene_answer}}
+    end
+  end
+
   def pack_scene_update(args, %{context: %{current_user: user}}) do
     case Catalog.pack_scene_update(user, args) do
       {:error, changeset} ->
