@@ -156,9 +156,8 @@ defmodule Web.GameChannel do
   # done submitting or endorsing
   defp player_count(socket) do
     Presence.list(socket)
-    |> Map.keys()
-    # don't include TV
-    |> Enum.filter(fn x -> x !== "" end)
+    |> Map.values()
+    |> Enum.filter(& Enum.at(&1.metas, 0).isSpectator === false)
     |> Enum.count()
   end
 

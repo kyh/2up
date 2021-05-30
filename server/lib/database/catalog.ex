@@ -206,6 +206,14 @@ defmodule Database.Catalog do
     end
   end
 
+  def scene_answer_delete(
+        %User{} = _user,
+        %SceneAnswer{} = scene_answer,
+        _attrs
+      ) do
+    scene_answer |> Repo.delete()
+  end
+
   def question_type_create(attrs) do
     %QuestionType{}
     |> QuestionType.changeset(attrs)
