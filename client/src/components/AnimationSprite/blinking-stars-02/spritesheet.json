@@ -1,0 +1,624 @@
+{
+  "frames": [
+    {
+      "filename": "Blinking Stars 02_00000.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00001.png",
+      "frame": {
+        "x": 360,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00002.png",
+      "frame": {
+        "x": 720,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00003.png",
+      "frame": {
+        "x": 1080,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00004.png",
+      "frame": {
+        "x": 1440,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00005.png",
+      "frame": {
+        "x": 1800,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00006.png",
+      "frame": {
+        "x": 2160,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00007.png",
+      "frame": {
+        "x": 2520,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00008.png",
+      "frame": {
+        "x": 2880,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00009.png",
+      "frame": {
+        "x": 3240,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00010.png",
+      "frame": {
+        "x": 3600,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00011.png",
+      "frame": {
+        "x": 3960,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00012.png",
+      "frame": {
+        "x": 4320,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00013.png",
+      "frame": {
+        "x": 4680,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00014.png",
+      "frame": {
+        "x": 5040,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00015.png",
+      "frame": {
+        "x": 5400,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00016.png",
+      "frame": {
+        "x": 5760,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00017.png",
+      "frame": {
+        "x": 6120,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00018.png",
+      "frame": {
+        "x": 6480,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00019.png",
+      "frame": {
+        "x": 6840,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00020.png",
+      "frame": {
+        "x": 7200,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00021.png",
+      "frame": {
+        "x": 7560,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00022.png",
+      "frame": {
+        "x": 7920,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00023.png",
+      "frame": {
+        "x": 8280,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00024.png",
+      "frame": {
+        "x": 8640,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00025.png",
+      "frame": {
+        "x": 9000,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00026.png",
+      "frame": {
+        "x": 9360,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00027.png",
+      "frame": {
+        "x": 9720,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Blinking Stars 02_00028.png",
+      "frame": {
+        "x": 10080,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "spritesheet.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 10440,
+      "h": 185
+    },
+    "scale": "1"
+  }
+}

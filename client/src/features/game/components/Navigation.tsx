@@ -19,7 +19,7 @@ export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const leaveGame = () => {
-    dispatch(gameActions.reset());
+    dispatch(gameActions.reset({ gameId: undefined }));
     history.push("/");
     setIsOpen(false);
   };

@@ -8,6 +8,7 @@ import {
   PlayersGrid,
   NextButton,
 } from "features/game/components/PlayerGrid";
+import { AnimationSprite } from "components";
 
 const isCorrect = (sceneAnswer: SceneAnswer) => sceneAnswer.isCorrect;
 
@@ -82,7 +83,10 @@ const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
         playerContent={`: "${submission.content}"`}
       >
         {isCorrect && (
-          <img className="correct" src={correctSvg} alt="Correct answer" />
+          <>
+            <img className="correct" src={correctSvg} alt="Correct answer" />
+            <Stars name="blinkingStars2" />
+          </>
         )}
       </Player>
     );
@@ -104,5 +108,14 @@ const SubmissionsContainer = styled(PlayersGrid)`
   }
   ${theme.breakpoints.desktop} {
     margin-bottom: 0;
+  }
+`;
+
+const Stars = styled(AnimationSprite)`
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  ${theme.breakpoints.desktop} {
+    top: 0;
   }
 `;

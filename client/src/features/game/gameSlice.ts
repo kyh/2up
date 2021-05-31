@@ -13,6 +13,9 @@ export type GameState = {
   submissions: Submission[];
   // comes from presence
   players: Player[];
+  // local states
+  prevScores: Player[]; // keep track of previous scores
+  invitedToGame: string | undefined; // whether to show "invited to" modal
 };
 
 export type Player = {
@@ -51,12 +54,8 @@ export const initialState: GameState = {
   submissions: [],
   pack: "",
   players: [],
-};
-
-const sortByName = (a: Player, b: Player) => {
-  if (a.name < b.name) return -1;
-  if (a.name > b.name) return 1;
-  return 0;
+  prevScores: [],
+  invitedToGame: undefined,
 };
 
 const gameSlice = createSlice({
@@ -78,9 +77,34 @@ const gameSlice = createSlice({
       state.pack = payload.pack ?? payload.pack;
     },
     players: (state, { payload }: PayloadAction<{ players: Player[] }>) => {
-      state.players = payload.players.sort(sortByName) ?? state.players;
+      state.prevScores = state.players;
+      state.players =
+        payload.players.sort((a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          return 0;
+        }) ?? state.players;
     },
-    reset: () => ({ ...initialState }),
+    invite: (
+      state,
+      { payload }: PayloadAction<{ gameId: GameState["invitedToGame"] }>
+    ) => {
+      state.invitedToGame = payload.gameId;
+      if (!payload.gameId) {
+        localStorage.removeItem("lastGameId");
+      }
+    },
+    reset: (
+      _state,
+      { payload }: PayloadAction<{ gameId: GameState["invitedToGame"] }>
+    ) => {
+      if (payload.gameId) {
+        localStorage.setItem("lastGameId", payload.gameId);
+      } else {
+        localStorage.removeItem("lastGameId");
+      }
+      return { ...initialState };
+    },
   },
 });
 

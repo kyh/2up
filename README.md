@@ -15,9 +15,9 @@
 │── /docs                        # App documentation
 └── /server                      # Phoenix server
     └── /lib
-        ├── /database            # Database access
+        ├── /database            # Database models
         ├── /game                # Game server
-        └── /web                 # Channels and routes
+        └── /web                 # Channels and graphql routes
 ```
 
 ## 🥞 Tech Stack

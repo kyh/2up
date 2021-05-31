@@ -15,3 +15,4 @@ export {
   animateSprite,
 } from "./AnimationSprite/AnimationSprite";
 export { Record } from "./Speech/Speech";
+export { Counter } from "./Counter/Counter";
