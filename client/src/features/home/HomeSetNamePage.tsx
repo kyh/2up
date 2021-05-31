@@ -31,6 +31,7 @@ export const HomeSetNamePage = () => {
         {...register("name", { required: true })}
         placeholder="Username"
         defaultValue={storedName}
+        autoFocus
       />
       <Button type="submit">Join Game</Button>
     </Form>

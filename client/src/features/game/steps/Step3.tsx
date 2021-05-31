@@ -47,8 +47,10 @@ const spring = {
   stiffness: 300,
 };
 
-const sortByScore = (scores: any) => {
-  return [...scores].sort((a, b) => b.score - a.score);
+const sortByKey = (map: GameState["playersMap"], key: string) => {
+  return Object.keys(map)
+    .map((key) => map[key])
+    .sort((a: any, b: any) => b[key] - a[key]);
 };
 
 export const PlayerScores = ({
@@ -59,12 +61,14 @@ export const PlayerScores = ({
   title: string;
 }) => {
   const [isOldState, setIsOldState] = useState(true);
-  const [players, setPlayers] = useState(sortByScore(gameState.prevScores));
+  const [players, setPlayers] = useState(
+    sortByKey(gameState.playersMap, "prevScore")
+  );
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setIsOldState(false);
-      setPlayers(sortByScore(gameState.players));
+      setPlayers(sortByKey(gameState.playersMap, "score"));
     }, 100);
     return () => clearTimeout(timeoutId);
   }, []);
@@ -76,18 +80,14 @@ export const PlayerScores = ({
       </TitleContainer>
       <PlayersContainer singleCol>
         {players.map((player) => {
-          const prevScore =
-            gameState.prevScores.find((p) => p.name === player.name)?.score ||
-            0;
-          const currentScore = player.score;
           return (
             <PlayerContainer key={player.name} layout transition={spring}>
               <Player playerName={player.name} />
               <PlayerScore>
                 {isOldState ? (
-                  <span>{currentScore}</span>
+                  <span>{player.score}</span>
                 ) : (
-                  <Counter from={prevScore} to={currentScore} />
+                  <Counter from={player.prevScore} to={player.score} />
                 )}
               </PlayerScore>
             </PlayerContainer>
