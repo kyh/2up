@@ -21,7 +21,6 @@
     "phoenix": "^1.5.7",
     "react": "^17.0.1",
     "react-alert": "^7.0.2",
-    "react-beautiful-dnd": "^13.0.0",
     "react-colorful": "^5.1.4",
     "react-dom": "^17.0.1",
     "react-hook-form": "^7.4.2",

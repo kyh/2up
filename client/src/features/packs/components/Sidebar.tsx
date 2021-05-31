@@ -1,13 +1,18 @@
+import { useEffect, useState, useCallback, ReactNode } from "react";
 import styled from "styled-components";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "react-beautiful-dnd";
 import { useAlert } from "react-alert";
 import ReactTooltip from "react-tooltip";
 import { gql, useMutation } from "@apollo/client";
+import { motion } from "framer-motion";
+import {
+  useDynamicList,
+  useDynamicListItem,
+  calculateSwapDistance,
+  arrayMove,
+  getDragStateZIndex,
+  DynamicListItemProps,
+  getDragCursor,
+} from "styles/animations";
 import { theme } from "styles/theme";
 import { Button, Icon } from "components";
 
@@ -37,33 +42,52 @@ export const Sidebar = ({
   const [packSceneUpdate] = useMutation<SidebarPackSceneUpdateMutation>(
     PACK_SCENE_UPDATE
   );
-
-  const scenes = pack.scenes?.edges;
+  const packScenes = pack.scenes?.edges || [];
+  const [scenes, setScenes] = useState(packScenes);
   const packId = pack.id;
 
-  const onDragEnd = async (result: DropResult) => {
-    if (!result.destination) return;
+  useEffect(() => {
+    if (JSON.stringify(scenes) !== JSON.stringify(packScenes)) {
+      setScenes(packScenes);
+    }
+  }, [packScenes]);
+
+  const onPositionUpdate = useCallback(
+    (startIndex: number, endIndex: number) => {
+      const newOrder = arrayMove(scenes, startIndex, endIndex);
+      setScenes(newOrder);
+
+      let beforeNodeId;
+      let afterNodeId;
+      if (endIndex !== 0) beforeNodeId = scenes[endIndex - 1]?.node?.id;
+      if (endIndex !== scenes.length - 1)
+        afterNodeId = scenes[endIndex + 1]?.node?.id;
+
+      onDragEnd(scenes[endIndex]?.node?.id, beforeNodeId, afterNodeId);
+    },
+    [scenes, setScenes]
+  );
+
+  const itemProps = useDynamicList({
+    items: scenes,
+    swapDistance: calculateSwapDistance,
+    onPositionUpdate,
+  });
+
+  const onDragEnd = async (
+    sceneId?: string,
+    beforeSceneId?: string,
+    afterSceneId?: string
+  ) => {
     setSaving(true);
-    const destinationIndex = result.destination.index;
-    const draggableId = result.draggableId;
-
-    let before;
-    let after;
-    if (destinationIndex !== 0 && scenes) {
-      before = scenes[destinationIndex];
-    }
-    if (scenes && destinationIndex !== scenes.length - 1) {
-      after = scenes[destinationIndex + 1];
-    }
-
     try {
       await packSceneUpdate({
         variables: {
           input: {
             packId,
-            id: draggableId,
-            beforeId: before?.node?.id,
-            afterId: after?.node?.id,
+            id: sceneId,
+            beforeId: beforeSceneId,
+            afterId: afterSceneId,
           },
         },
       });
@@ -138,62 +162,34 @@ export const Sidebar = ({
         <h3>Scenes:</h3>
       </SidebarHeader>
       <SidebarContent>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided) => (
-              <SidebarContent
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {scenes?.map((edge, index) => {
-                  const scene = edge?.node;
-                  if (!scene) return null;
-                  return (
-                    <Draggable
-                      key={scene.id}
-                      draggableId={scene.id}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <QuestionItem
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          isSelected={selectedSceneId === scene.id}
-                          style={{ ...provided.draggableProps.style }}
-                        >
-                          <div
-                            className="left"
-                            onClick={() => selectScene(scene.id)}
-                          >
-                            <div className="type">
-                              {scene.questionType.slug}
-                            </div>
-                          </div>
-                          <div
-                            className="right"
-                            onClick={() => selectScene(scene.id)}
-                          >
-                            <h3 className="question">{scene.question}</h3>
-                          </div>
-                          {scenes.length > 1 && (
-                            <button
-                              className="delete"
-                              onClick={() => deleteScene(scene.id, index)}
-                            >
-                              <Icon icon="trash" />
-                            </button>
-                          )}
-                        </QuestionItem>
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </SidebarContent>
-            )}
-          </Droppable>
-        </DragDropContext>
+        {scenes?.map((edge, index) => {
+          const scene = edge?.node;
+          if (!scene) return null;
+          return (
+            <SidebarItem
+              key={scene.id}
+              index={index}
+              itemProps={itemProps}
+              sceneId={scene.id}
+              isSelected={selectedSceneId === scene.id}
+            >
+              <div className="left" onClick={() => selectScene(scene.id)}>
+                <div className="type">{scene.questionType.slug}</div>
+              </div>
+              <div className="right" onClick={() => selectScene(scene.id)}>
+                <h3 className="question">{scene.question}</h3>
+              </div>
+              {scenes.length > 1 && (
+                <button
+                  className="delete"
+                  onClick={() => deleteScene(scene.id, index)}
+                >
+                  <Icon icon="trash" />
+                </button>
+              )}
+            </SidebarItem>
+          );
+        })}
       </SidebarContent>
       <SidebarFooter>
         <Button onClick={addNewScene}>Add New Scene</Button>
@@ -286,6 +282,44 @@ const PACK_SCENE_UPDATE = gql`
   }
 `;
 
+type SidebarItemProps = {
+  index: number;
+  sceneId: string;
+  isSelected: boolean;
+  children: ReactNode;
+  itemProps: DynamicListItemProps;
+};
+
+const SidebarItem = ({
+  index,
+  isSelected,
+  itemProps,
+  children,
+}: SidebarItemProps) => {
+  const [dragState, ref, eventHandlers] = useDynamicListItem<HTMLLIElement>(
+    index,
+    "y",
+    itemProps
+  );
+
+  return (
+    <QuestionItem
+      layout
+      initial={false}
+      drag="y"
+      ref={ref}
+      isSelected={isSelected}
+      style={{
+        zIndex: getDragStateZIndex(dragState),
+        cursor: getDragCursor(dragState),
+      }}
+      {...eventHandlers}
+    >
+      {children}
+    </QuestionItem>
+  );
+};
+
 const SidebarContainer = styled.section`
   grid-area: sidebar;
   background: ${theme.ui.background};
@@ -312,8 +346,10 @@ const SidebarHeader = styled.header`
   }
 `;
 
-const SidebarContent = styled.section`
+const SidebarContent = styled.ul`
   overflow: auto;
+  padding: 0;
+  margin: 0;
   .first-scene-button {
     width: 100%;
     height: 100px;
@@ -327,7 +363,7 @@ const SidebarFooter = styled.footer`
   }
 `;
 
-const QuestionItem = styled.div<{ isSelected: boolean }>`
+const QuestionItem = styled(motion.li)<{ isSelected: boolean }>`
   position: relative;
   display: flex;
   justify-content: space-between;
