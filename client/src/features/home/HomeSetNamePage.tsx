@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { playhouseActions } from "features/home/playhouseSlice";
 import { Button, Input } from "components";
 import { Form } from "features/home/components/Form";
+import { StartNewGameText } from "./HomeJoinGamePage";
 
 type FormInputs = {
   name: string;
@@ -26,14 +27,19 @@ export const HomeSetNamePage = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        {...register("name", { required: true })}
-        placeholder="Username"
-        defaultValue={storedName}
-        autoFocus
-      />
-      <Button type="submit">Join Game</Button>
-    </Form>
+    <>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          {...register("name", { required: true })}
+          placeholder="Username"
+          defaultValue={storedName}
+          autoFocus
+        />
+        <Button type="submit">Join Game</Button>
+      </Form>
+      <StartNewGameText>
+        Or <Link to={`/game/${gameId}/lobby/spectate`}>spectate this game</Link>
+      </StartNewGameText>
+    </>
   );
 };
