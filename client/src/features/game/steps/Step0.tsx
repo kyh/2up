@@ -18,7 +18,9 @@ export const Step0 = ({ gameState, broadcast, dispatch }: StepProps) => {
     <>
       <PlayerScores title="Game Finished" gameState={gameState} />
       <Footer>
-        <Button onClick={() => handleEnd(gameState.gameId)}>Play Again</Button>
+        <Button onClick={() => handleEnd(gameState.gameId)} autoFocus>
+          Play Again
+        </Button>
         <Link onClick={() => handleEnd()} to="/packs">
           Leave game
         </Link>

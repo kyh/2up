@@ -14,7 +14,7 @@ export type GameState = {
   // comes from presence
   players: Player[];
   // local states
-  prevScores: Player[]; // keep track of previous scores
+  playersMap: Record<string, Player & { prevScore: number }>; // map of name/score to keep track of previous scores
   invitedToGame: string | undefined; // whether to show "invited to" modal
 };
 
@@ -54,7 +54,7 @@ export const initialState: GameState = {
   submissions: [],
   pack: "",
   players: [],
-  prevScores: [],
+  playersMap: {},
   invitedToGame: undefined,
 };
 
@@ -77,7 +77,13 @@ const gameSlice = createSlice({
       state.pack = payload.pack ?? payload.pack;
     },
     players: (state, { payload }: PayloadAction<{ players: Player[] }>) => {
-      state.prevScores = state.players;
+      // Delete once scores come back from server
+      state.playersMap = payload.players.reduce((map, player) => {
+        const prevScore = state.playersMap[player.name]?.score || 0;
+        map[player.name] = { ...player, prevScore };
+        return map;
+      }, {} as GameState["playersMap"]);
+
       state.players =
         payload.players.sort((a, b) => {
           if (a.name < b.name) return -1;
