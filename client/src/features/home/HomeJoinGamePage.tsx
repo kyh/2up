@@ -5,8 +5,9 @@ import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
 import { theme } from "styles/theme";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { gameActions } from "features/game/gameSlice";
+import { useQueryParams } from "utils/queryUtils";
 import { Button, Input } from "components";
+import { gameActions } from "features/game/gameSlice";
 import { Form } from "features/home/components/Form";
 import { HomeJoinGamePageGameCheckMutation } from "./__generated__/HomeJoinGamePageGameCheckMutation";
 
@@ -19,6 +20,7 @@ export const HomeJoinGamePage = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const storedGameId = useAppSelector((state) => state.game.gameId);
+  const queryParams = useQueryParams();
   const { register, handleSubmit, reset } = useForm<FormInputs>();
   const [gameCheck] = useMutation<HomeJoinGamePageGameCheckMutation>(
     GAME_CHECK
@@ -46,7 +48,7 @@ export const HomeJoinGamePage = () => {
           {...register("gameId", { required: true })}
           type="tel"
           placeholder="Game ID"
-          defaultValue={storedGameId}
+          defaultValue={storedGameId || queryParams.get("gameId") || ""}
         />
         <Button type="submit">Join existing game</Button>
       </Form>

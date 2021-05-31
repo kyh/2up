@@ -25,6 +25,7 @@ export const iconMap = {
   play: raw("./svgs/play.svg"),
   trash: raw("./svgs/trash.svg"),
   list: raw("./svgs/list.svg"),
+  share: raw("./svgs/share.svg"),
 };
 
 type IconType = keyof typeof iconMap;
@@ -68,9 +69,9 @@ const getSvgStyles = (props: StyledProps) => {
 
   return css`
     width: ${iconSize ? getDimensions(iconSize) : "initial"};
-    height: ${iconSize ? getDimensions(iconSize) : "intial"};
+    height: ${iconSize ? getDimensions(iconSize) : "initial"};
     path {
-      fill: ${iconColor ? theme.colors[iconColor] : theme.ui.text};
+      fill: ${iconColor ? theme.colors[iconColor] : "currentColor"};
     }
     transform: rotate(${rotate});
     transition: fill 0.23s ease;

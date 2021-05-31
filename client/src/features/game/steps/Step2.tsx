@@ -112,10 +112,10 @@ const SubmissionsContainer = styled(PlayersGrid)`
 `;
 
 const Stars = styled(AnimationSprite)`
-  top: 50%;
+  top: 90%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.5);
   ${theme.breakpoints.desktop} {
-    top: 0;
+    top: 20px;
   }
 `;
