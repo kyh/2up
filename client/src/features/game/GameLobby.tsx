@@ -50,14 +50,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
       <PlayersContainer>
         {gameState.players.map((p) => (
           <Player key={p.name} playerName={p.name}>
-            <AnimationSprite
-              name="bubbleExplosion3"
-              style={{
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-              }}
-            />
+            <Explosion name="bubbleExplosion3" />
           </Player>
         ))}
       </PlayersContainer>
@@ -134,6 +127,12 @@ const PlayersContainer = styled(PlayersGrid)`
     transform: scale(0);
     animation: ${bounceIn} 1s linear forwards 0.4s;
   }
+`;
+
+const Explosion = styled(AnimationSprite)`
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const StartModalBody = styled.div`

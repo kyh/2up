@@ -1,18 +1,22 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 import { theme } from "styles/theme";
+import { visible } from "styles/animations";
 import { StepProps, GameState } from "features/game/gameSlice";
 import {
   PlayersGrid,
   Player,
   NextButton,
 } from "features/game/components/PlayerGrid";
+import { Counter } from "components";
 
 export const Step3 = ({ gameState, broadcast, name }: StepProps) => {
   const [firstPlayer] = gameState.players;
   return (
     <>
       <QuestionNumber>Question: {gameState.scene} / 10</QuestionNumber>
-      <PlayerScores gameState={gameState} />
+      <PlayerScores gameState={gameState} title="Scoreboard" />
       {firstPlayer && (
         <NextButton
           disabled={firstPlayer.name !== name}
@@ -32,26 +36,64 @@ export const Step3Spectate = ({ gameState }: StepProps) => {
   return (
     <>
       <QuestionNumber>Question: {gameState.scene} / 10</QuestionNumber>
-      <PlayerScores gameState={gameState} />
+      <PlayerScores gameState={gameState} title="Scoreboard" />
     </>
   );
 };
 
-const PlayerScores = ({ gameState }: { gameState: GameState }) => {
-  const players = gameState.players.map((player) => {
-    return (
-      <PlayerContainer key={player.name}>
-        <Player playerName={player.name} />
-        <PlayerScore>{player.score}</PlayerScore>
-      </PlayerContainer>
-    );
-  });
+const spring = {
+  type: "spring",
+  damping: 20,
+  stiffness: 300,
+};
+
+const sortByScore = (scores: any) => {
+  return [...scores].sort((a, b) => b.score - a.score);
+};
+
+export const PlayerScores = ({
+  gameState,
+  title,
+}: {
+  gameState: GameState;
+  title: string;
+}) => {
+  const [isOldState, setIsOldState] = useState(true);
+  const [players, setPlayers] = useState(sortByScore(gameState.prevScores));
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setIsOldState(false);
+      setPlayers(sortByScore(gameState.players));
+    }, 100);
+    return () => clearTimeout(timeoutId);
+  }, []);
+
   return (
     <>
       <TitleContainer>
-        <h2 className="title">Scoreboard</h2>
+        <h2 className="title">{title}</h2>
       </TitleContainer>
-      <PlayersContainer singleCol>{players}</PlayersContainer>
+      <PlayersContainer singleCol>
+        {players.map((player) => {
+          const prevScore =
+            gameState.prevScores.find((p) => p.name === player.name)?.score ||
+            0;
+          const currentScore = player.score;
+          return (
+            <PlayerContainer key={player.name} layout transition={spring}>
+              <Player playerName={player.name} />
+              <PlayerScore>
+                {isOldState ? (
+                  <span>{currentScore}</span>
+                ) : (
+                  <Counter from={prevScore} to={currentScore} />
+                )}
+              </PlayerScore>
+            </PlayerContainer>
+          );
+        })}
+      </PlayersContainer>
     </>
   );
 };
@@ -70,6 +112,8 @@ const QuestionNumber = styled.div`
 `;
 
 const TitleContainer = styled.div`
+  animation: ${visible} 0s linear 0.1s forwards;
+  visibility: hidden;
   margin-bottom: ${theme.spacings(5)};
   .title {
     text-align: center;
@@ -78,7 +122,7 @@ const TitleContainer = styled.div`
 `;
 
 const PlayersContainer = styled(PlayersGrid)`
-  margin-bottom: ${theme.spacings(5)};
+  margin: 0 auto ${theme.spacings(5)};
   max-width: 300px;
   ${theme.breakpoints.desktop} {
     margin-bottom: 0;
@@ -86,7 +130,7 @@ const PlayersContainer = styled(PlayersGrid)`
   }
 `;
 
-const PlayerContainer = styled.div`
+const PlayerContainer = styled(motion.div)`
   display: flex;
   justify-content: space-between;
   align-items: center;

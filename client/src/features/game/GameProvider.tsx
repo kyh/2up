@@ -55,11 +55,19 @@ export const GameProvider = ({ children, gameId }: Props) => {
       dispatch(gameActions.new_game({ gameId }));
     }
     if (error) {
-      dispatch(gameActions.reset());
+      dispatch(gameActions.reset({ gameId: undefined }));
       alert.show(`Error connecting to game ${gameId}`);
       history.push("/");
     }
   }, [storedGameId, gameId, error]);
+
+  useEffect(() => {
+    const inviteUsersFrom = localStorage.getItem("lastGameId");
+    if (connected && inviteUsersFrom) {
+      broadcast("invite", { game_code: inviteUsersFrom, new_code: gameId });
+      dispatch(gameActions.invite({ gameId: undefined }));
+    }
+  }, [connected]);
 
   if (!connected) return null;
   return (

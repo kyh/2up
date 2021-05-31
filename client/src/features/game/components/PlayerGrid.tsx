@@ -61,7 +61,6 @@ export const PlayersGrid = styled.div<{
     pointer-events: none;
     .player {
       text-align: center;
-      overflow: hidden;
       align-self: flex-end;
       flex-direction: column-reverse;
       .name {

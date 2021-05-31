@@ -139,12 +139,13 @@ defmodule Web.GameChannel do
   end
 
   @doc """
-  Send message to players in previous game to join new game
+  Send message to players in a game to join new game
   """
-  def handle_in("play_again", %{"game_code" => game_code, "new_code" => new_code}, socket) do
+  def handle_in("invite", %{"game_code" => game_code, "new_code" => new_code}, socket) do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        broadcast!(socket, "game/play_again", new_code)
+        # this should broadcast to the game:game_code topic
+        Web.GameChannel.broadcast_from!(self(), game_code, "game/invite", %{gameId: new_code})
         {:noreply, socket}
 
       nil ->
@@ -157,7 +158,7 @@ defmodule Web.GameChannel do
   defp player_count(socket) do
     Presence.list(socket)
     |> Map.values()
-    |> Enum.filter(& Enum.at(&1.metas, 0).isSpectator === false)
+    |> Enum.filter(&(Enum.at(&1.metas, 0).isSpectator === false))
     |> Enum.count()
   end
 
