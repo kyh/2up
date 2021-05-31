@@ -1,3 +1,11 @@
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  MutableRefObject,
+} from "react";
+import { PanInfo, AxisBox2D, BoxDelta } from "framer-motion";
 import { keyframes } from "styled-components";
 
 export const bounceIn = keyframes`
@@ -98,3 +106,208 @@ export const jitter = keyframes`
     transform: skewY(0.7deg) skewX(-0.7deg) scale(1.006);
   }
 `;
+
+export type Position = {
+  top: number;
+  height: number;
+};
+
+type SwapDistanceType = (sibling: number) => number;
+
+export type DynamicListItem = {
+  index: number;
+  drag?: "x" | "y";
+};
+
+export const findIndex = (
+  i: number,
+  yOffset: number,
+  sizes: any[],
+  swapDistance: SwapDistanceType
+) => {
+  let target = i;
+
+  // If moving down
+  if (yOffset > 0) {
+    const nextHeight = sizes[i + 1];
+    if (nextHeight === undefined) return i;
+
+    const swapOffset = swapDistance(nextHeight);
+    if (yOffset > swapOffset) target = i + 1;
+
+    // If moving up
+  } else if (yOffset < 0) {
+    const prevHeight = sizes[i - 1];
+    if (prevHeight === undefined) return i;
+
+    const swapOffset = swapDistance(prevHeight);
+    if (yOffset < -swapOffset) target = i - 1;
+  }
+
+  return Math.min(Math.max(target, 0), sizes.length);
+};
+
+export type DynamicListProps<T> = {
+  items: T[];
+  swapDistance: SwapDistanceType;
+  onPositionUpdate: (from: number, to: number) => void;
+  onPositionChange?: (startIndex: number, endIndex: number) => void;
+  onDragEnd?: (startIndex: number, endIndex: number) => Promise<void>;
+};
+
+export type DynamicListItemProps = {
+  handleChange: (i: number, dragOffset: number) => void;
+  handleDragStart: (index: number) => void;
+  handleDragEnd: (endIndex: number) => void;
+  handleMeasure: (index: number, size: number) => void;
+};
+
+export function useDynamicList<T>({
+  items,
+  swapDistance,
+  onPositionUpdate,
+  onPositionChange,
+  onDragEnd,
+}: DynamicListProps<T>): DynamicListItemProps {
+  const sizes = useRef(new Array(items.length).fill(0)).current;
+  const [startIndex, handleDragStart] = useState(-1);
+
+  const handleChange = useCallback(
+    (i: number, dragOffset: number) => {
+      const targetIndex = findIndex(i, dragOffset, sizes, swapDistance);
+      if (targetIndex !== i) {
+        const swapSize = sizes[targetIndex];
+        sizes[targetIndex] = sizes[i];
+        sizes[i] = swapSize;
+
+        onPositionUpdate(i, targetIndex);
+      }
+    },
+    [sizes, swapDistance, onPositionUpdate]
+  );
+
+  const handleDragEnd = useCallback(
+    (endIndex: number) => {
+      if (onPositionChange && startIndex !== endIndex) {
+        onPositionChange(startIndex, endIndex);
+      }
+      handleDragStart(-1);
+    },
+    [startIndex, onPositionChange]
+  );
+
+  const handleMeasure = useCallback(
+    (index: number, size: number) => {
+      sizes[index] = size;
+    },
+    [sizes]
+  );
+
+  return {
+    handleChange,
+    handleDragStart,
+    handleDragEnd,
+    handleMeasure,
+  };
+}
+
+type DragState = "idle" | "animating" | "dragging";
+
+type DynamicListItemResult<T> = [
+  DragState,
+  MutableRefObject<T>,
+  {
+    onDragStart(
+      event: MouseEvent | TouchEvent | PointerEvent,
+      info: PanInfo
+    ): void;
+    onDragEnd(
+      event: MouseEvent | TouchEvent | PointerEvent,
+      info: PanInfo
+    ): void;
+    onAnimationComplete(): void;
+    onViewportBoxUpdate(box: AxisBox2D, delta: BoxDelta): void;
+  }
+];
+
+export function useDynamicListItem<T extends HTMLElement>(
+  index: number,
+  drag: "x" | "y",
+  {
+    handleChange,
+    handleDragStart,
+    handleDragEnd,
+    handleMeasure,
+  }: DynamicListItemProps
+): DynamicListItemResult<T> {
+  const [state, setState] = useState<DragState>("idle");
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    if (ref && ref.current)
+      handleMeasure(
+        index,
+        drag === "y" ? ref.current.offsetHeight : ref.current.offsetWidth
+      );
+  }, [ref, handleMeasure, index, drag]);
+
+  return [
+    state,
+    ref as MutableRefObject<T>,
+    {
+      onDragStart: () => {
+        setState("dragging");
+        handleDragStart(index);
+      },
+      onDragEnd: () => {
+        setState("animating");
+        handleDragEnd(index);
+      },
+      onAnimationComplete: () => {
+        if (state === "animating") setState("idle");
+      },
+      onViewportBoxUpdate: (_viewportBox, delta) => {
+        if (state === "dragging") handleChange(index, delta.y.translate);
+      },
+    },
+  ];
+}
+
+export const arrayMoveMutate = (array: any[], from: number, to: number) => {
+  const startIndex = from < 0 ? array.length + from : from;
+
+  if (startIndex >= 0 && startIndex < array.length) {
+    const endIndex = to < 0 ? array.length + to : to;
+
+    const [item] = array.splice(from, 1);
+    array.splice(endIndex, 0, item);
+  }
+};
+
+export const arrayMove = (array: any[], from: number, to: number) => {
+  array = [...array];
+  arrayMoveMutate(array, from, to);
+  return array;
+};
+
+export const calculateSwapDistance = (sibling: number) => sibling;
+
+export const getDragStateZIndex = (state: string, base = 0) => {
+  switch (state) {
+    case "dragging":
+      return base + 3;
+    case "animating":
+      return base + 2;
+    default:
+      return base + 1;
+  }
+};
+
+export const getDragCursor = (state: string) => {
+  switch (state) {
+    case "dragging":
+      return "grabbing";
+    default:
+      return "grab";
+  }
+};
