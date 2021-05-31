@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { useAlert } from "react-alert";
 import { useHistory, Link } from "react-router-dom";
 import styled from "styled-components";
-import { Button, Modal, AnimationSprite } from "components";
+import { Button, Modal, AnimationSprite, Icon } from "components";
 import { theme } from "styles/theme";
 import { bounceIn } from "styles/animations";
 import { useAppSelector } from "app/hooks";
@@ -13,10 +14,12 @@ import {
 } from "features/game/components/PlayerGrid";
 
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
+  const alert = useAlert();
   const history = useHistory();
   const gameState = useAppSelector((state) => state.game);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { broadcast } = useGameChannel();
+  const gameLink = `${window.location.origin}?gameId=${gameState.gameId}`;
 
   const onClickStart = () => {
     if (gameState.players.length < 2) {
@@ -30,6 +33,20 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
     broadcast("start", { gameId: gameState.gameId });
   };
 
+  const onShare = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "Join my Playhouse game",
+          url: gameLink,
+        })
+        .catch(console.error);
+    } else {
+      navigator.clipboard.writeText(gameLink);
+      alert.show("Copied Link");
+    }
+  };
+
   useEffect(() => {
     if (gameState.scene) {
       history.push(`/game/${gameState.gameId}${isSpectate ? "/spectate" : ""}`);
@@ -41,7 +58,10 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
       <TitleContainer>
         <h1 className="title">
           <div>
-            Invite friends to <span className="highlight">playhouse.gg</span>
+            Invite friends to{" "}
+            <button type="button" onClick={onShare} className="highlight">
+              playhouse.gg <ShareIcon icon="share" size="md" />
+            </button>
           </div>
           <div>and enter room code:</div>
         </h1>
@@ -120,6 +140,11 @@ const TitleContainer = styled.div`
     border-radius: 19px 22px 30% 16px / 19px 17px 14px 30px;
     margin-bottom: ${theme.spacings(5)};
   }
+`;
+
+const ShareIcon = styled(Icon)`
+  position: relative;
+  left: -10px;
 `;
 
 const PlayersContainer = styled(PlayersGrid)`
