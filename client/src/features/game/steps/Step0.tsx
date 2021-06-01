@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
-import { Button, Modal } from "components";
+import { Button, Modal, Confetti } from "components";
 import { theme } from "styles/theme";
 import { gameActions, StepProps } from "features/game/gameSlice";
 import { PlayerScores } from "./Step3";
@@ -16,6 +16,7 @@ export const Step0 = ({ gameState, broadcast, dispatch }: StepProps) => {
 
   return (
     <>
+      <Confetti />
       <PlayerScores title="Game Finished" gameState={gameState} />
       <Footer>
         <Button onClick={() => handleEnd(gameState.gameId)} autoFocus>

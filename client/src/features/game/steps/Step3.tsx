@@ -37,7 +37,9 @@ export const Step3 = ({ gameState, broadcast, name }: StepProps) => {
 export const Step3Spectate = ({ gameState }: StepProps) => {
   return (
     <>
-      <QuestionNumber>Question: {gameState.scene} / 10</QuestionNumber>
+      <QuestionNumber>
+        Question: {gameState.scene} / {gameState.totalScenes}
+      </QuestionNumber>
       <PlayerScores gameState={gameState} title="Scoreboard" />
     </>
   );

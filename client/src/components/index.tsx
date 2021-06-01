@@ -10,9 +10,7 @@ export { Timer } from "./Timer/Timer";
 export { Loader } from "./Loader/Loader";
 export { Field, TextField } from "./TextField/TextField";
 export { AreaField } from "./TextField/AreaField";
-export {
-  AnimationSprite,
-  animateSprite,
-} from "./AnimationSprite/AnimationSprite";
+export { AnimationSprite, animateSprite } from "./Animations/AnimationSprite";
+export { Confetti } from "./Animations/Confetti";
 export { Record } from "./Speech/Speech";
 export { Counter } from "./Counter/Counter";
