@@ -15,7 +15,9 @@ export const Step3 = ({ gameState, broadcast, name }: StepProps) => {
   const [firstPlayer] = gameState.players;
   return (
     <>
-      <QuestionNumber>Question: {gameState.scene} / 10</QuestionNumber>
+      <QuestionNumber>
+        Question: {gameState.scene} / {gameState.totalScenes}
+      </QuestionNumber>
       <PlayerScores gameState={gameState} title="Scoreboard" />
       {firstPlayer && (
         <NextButton
