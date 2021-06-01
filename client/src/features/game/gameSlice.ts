@@ -16,6 +16,7 @@ export type GameState = {
   // local states
   playersMap: Record<string, Player & { prevScore: number }>; // map of name/score to keep track of previous scores
   invitedToGame: string | undefined; // whether to show "invited to" modal
+  totalScenes: number;
 };
 
 export type Player = {
@@ -56,6 +57,7 @@ export const initialState: GameState = {
   players: [],
   playersMap: {},
   invitedToGame: undefined,
+  totalScenes: 10,
 };
 
 const gameSlice = createSlice({

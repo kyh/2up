@@ -46,6 +46,8 @@ export const Sidebar = ({
   const [scenes, setScenes] = useState(packScenes);
   const packId = pack.id;
 
+  // This is pretty gross, we should figure out a better way of handling drag
+  // and drop updates.
   useEffect(() => {
     if (JSON.stringify(scenes) !== JSON.stringify(packScenes)) {
       setScenes(packScenes);
@@ -335,14 +337,8 @@ const SidebarHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   margin-bottom: ${theme.spacings(3)};
-
   h3 {
     margin: 0;
-  }
-
-  button {
-    padding: ${theme.spacings(1)};
-    min-width: 0;
   }
 `;
 
@@ -350,10 +346,6 @@ const SidebarContent = styled.ul`
   overflow: auto;
   padding: 0;
   margin: 0;
-  .first-scene-button {
-    width: 100%;
-    height: 100px;
-  }
 `;
 
 const SidebarFooter = styled.footer`
@@ -367,6 +359,7 @@ const QuestionItem = styled(motion.li)<{ isSelected: boolean }>`
   position: relative;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   border: 2px dotted ${theme.colors.greyLight};
   border-radius: ${theme.ui.borderWavyRadius};
@@ -389,8 +382,9 @@ const QuestionItem = styled(motion.li)<{ isSelected: boolean }>`
   }
 
   .question {
-    font-size: 24px;
-    margin: 0 0 ${theme.spacings(3)};
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
