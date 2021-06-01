@@ -9,6 +9,7 @@ export const Confetti = () => {
   const instance = useRef<any>(null);
 
   useEffect(() => {
+    requestAnimationFrame(fire);
     const intervalId = setInterval(() => {
       requestAnimationFrame(fire);
     }, 3000);
