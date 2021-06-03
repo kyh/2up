@@ -3,31 +3,36 @@ import { useEffect, useRef, useState } from "react";
 import { Input } from "./Input";
 
 type Props = {
-  amount: number;
-  autoFocus: boolean;
-  inputRegExp: RegExp;
-  password: boolean;
-  handleOutputString: (value: string) => void;
+  defaultValue?: string;
+  autoFocus?: boolean;
+  inputRegExp?: RegExp;
+  password?: boolean;
+  handleOutputString?: (value: string) => void;
 };
 
-export const LetterInputBox = (props: Props) => {
+export const SingleLetterInput = ({
+  defaultValue = "asdf",
+  autoFocus = true,
+  inputRegExp = /^[a-z0-9]+$/i,
+  handleOutputString = () => {},
+}: Props) => {
   const [characters, setCharacters] = useState({
-    characterArray: Array(props.amount).fill(null),
+    characterArray: defaultValue.split(""),
   });
 
   const inputElements = useRef<Record<string, HTMLInputElement>>({});
 
   useEffect(() => {
     const input = inputElements.current["input0"];
-    if (props.autoFocus && input) input.select();
+    if (autoFocus && input) input.select();
   }, []);
 
   useEffect(() => {
-    props.handleOutputString(characters.characterArray.join(""));
+    handleOutputString(characters.characterArray.join(""));
   }, [characters.characterArray]);
 
   const handleChange = ({ target }: { target: HTMLInputElement }) => {
-    if (target.value.match(props.inputRegExp)) {
+    if (target.value.match(inputRegExp)) {
       focusNextChar(target);
       setModuleOutput();
     } else {
@@ -65,7 +70,7 @@ export const LetterInputBox = (props: Props) => {
   };
 
   const focusNextChar = (target: HTMLInputElement) => {
-    const nextSibling = target.previousElementSibling as HTMLInputElement;
+    const nextSibling = target.nextElementSibling as HTMLInputElement;
     if (nextSibling !== null) {
       nextSibling.focus();
     }
@@ -92,6 +97,8 @@ export const LetterInputBox = (props: Props) => {
           onChange={handleChange}
           onFocus={handleFocus}
           name={`input${i}`}
+          maxLength={1}
+          defaultValue={c}
           ref={(el) => {
             if (!el) return;
             inputElements.current[el.name] = el;
@@ -104,6 +111,13 @@ export const LetterInputBox = (props: Props) => {
   return <InputContainer>{renderItems()}</InputContainer>;
 };
 
-const InputContainer = styled.div``;
+const InputContainer = styled.div`
+  display: flex;
+`;
 
-const InputBox = styled(Input)``;
+const InputBox = styled(Input)`
+  padding: 0;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+`;

@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import produce from "immer";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { Input, Button } from "components";
+import { Input, SingleLetterInput, Button } from "components";
 import { ScenePreviewFragment_sceneAnswers } from "./__generated__/ScenePreviewFragment";
 
 type EditableAnswerProps = {
@@ -18,6 +18,8 @@ export const EditableAnswer = ({
   answerType,
   onChange,
 }: EditableAnswerProps) => {
+  const [sceneAnswer] = sceneAnswers;
+
   const onChangeSceneAnswer = (updatedSceneAnswer = {}, index: number = 0) => {
     onChange({
       sceneAnswers: produce(sceneAnswers, (draft) => {
@@ -67,9 +69,30 @@ export const EditableAnswer = ({
           </Button>
         </EditableAnswerSwitch>
       );
+    case "text_letters":
+      return (
+        <EditableAnswerSwitch
+          onSelectType={onChange}
+          sceneId={sceneId}
+          key={sceneId}
+        >
+          <InputContainer>
+            <Input
+              defaultValue={sceneAnswer?.content || ""}
+              onBlur={(e) =>
+                onChangeSceneAnswer({
+                  content: e.target.value,
+                  isCorrect: true,
+                })
+              }
+            />
+            <SingleLetterInput defaultValue={sceneAnswer?.content || ""} />
+          </InputContainer>
+          <Button disabled>Submit answer</Button>
+        </EditableAnswerSwitch>
+      );
     // "text"
     default:
-      const [sceneAnswer] = sceneAnswers;
       return (
         <EditableAnswerSwitch
           onSelectType={onChange}
@@ -135,6 +158,17 @@ const EditableAnswerSwitch = ({
           }}
         >
           M
+        </Button>
+        <Button
+          variant="fab"
+          onClick={() => {
+            onSelectType({
+              answerType: { slug: "text_letter" },
+              sceneAnswers: [],
+            });
+          }}
+        >
+          L
         </Button>
       </div>
     </EditableAnswerSwitchContainer>
