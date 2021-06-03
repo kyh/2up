@@ -44,8 +44,11 @@ export const AuthPage = ({ isLogin }: Props) => {
       });
 
       if (data) {
-        // @ts-ignore
-        const token = data[responseKey].token;
+        const responseData = (data as unknown) as Record<
+          "sessionCreate" | "userCreate",
+          { token: string }
+        >;
+        const { token } = responseData[responseKey];
         localStorage.setItem("token", token);
         localStorage.setItem("username", username);
         history.push(`/${username}`);
