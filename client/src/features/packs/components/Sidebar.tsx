@@ -18,7 +18,7 @@ import { Button, Icon } from "components";
 
 import { SidebarSceneCreateMutation } from "./__generated__/SidebarSceneCreateMutation";
 import { SidebarSceneDeleteMutation } from "./__generated__/SidebarSceneDeleteMutation";
-import { SidebarPackSceneUpdateMutation } from "./__generated__/SidebarPackSceneUpdateMutation";
+import { SidebarSceneOrderUpdateMutation } from "./__generated__/SidebarSceneOrderUpdateMutation";
 import { SidebarPackFragment } from "./__generated__/SidebarPackFragment";
 
 type Props = {
@@ -39,11 +39,13 @@ export const Sidebar = ({
   const alert = useAlert();
   const [sceneCreate] = useMutation<SidebarSceneCreateMutation>(SCENE_CREATE);
   const [sceneDelete] = useMutation<SidebarSceneDeleteMutation>(SCENE_DELETE);
-  const [packSceneUpdate] = useMutation<SidebarPackSceneUpdateMutation>(
-    PACK_SCENE_UPDATE
+  const [sceneOrderUpdate] = useMutation<SidebarSceneOrderUpdateMutation>(
+    SCENE_ORDER_UPDATE
   );
   const packScenes = pack.scenes?.edges || [];
   const [scenes, setScenes] = useState(packScenes);
+
+  console.log("scenes", scenes);
   const packId = pack.id;
 
   // This is pretty gross, we should figure out a better way of handling drag
@@ -65,7 +67,8 @@ export const Sidebar = ({
       if (endIndex !== scenes.length - 1)
         afterNodeId = scenes[endIndex + 1]?.node?.id;
 
-      onDragEnd(scenes[endIndex]?.node?.id, beforeNodeId, afterNodeId);
+      const sceneId = scenes[startIndex]?.node?.id;
+      onDragEnd(sceneId, beforeNodeId, afterNodeId);
     },
     [scenes, setScenes]
   );
@@ -83,10 +86,9 @@ export const Sidebar = ({
   ) => {
     setSaving(true);
     try {
-      await packSceneUpdate({
+      await sceneOrderUpdate({
         variables: {
           input: {
-            packId,
             id: sceneId,
             beforeId: beforeSceneId,
             afterId: afterSceneId,
@@ -217,6 +219,7 @@ Sidebar.fragments = {
           node {
             id
             question
+            order
             sceneAnswers {
               id
               content
@@ -273,10 +276,10 @@ const SCENE_DELETE = gql`
   }
 `;
 
-const PACK_SCENE_UPDATE = gql`
-  mutation SidebarPackSceneUpdateMutation($input: PackSceneUpdateInput!) {
-    packSceneUpdate(input: $input) {
-      packScene {
+const SCENE_ORDER_UPDATE = gql`
+  mutation SidebarSceneOrderUpdateMutation($input: SceneOrderUpdateInput!) {
+    sceneOrderUpdate(input: $input) {
+      scene {
         id
         order
       }

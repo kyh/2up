@@ -99,7 +99,7 @@ defmodule Web.GraphQL.Types.MutationType do
       resolve(parsing_node_ids(&Live.pack_update/2, id: :pack))
     end
 
-    @desc "Create new scene and pack scene"
+    @desc "Create new scene"
     payload field :scene_create do
       input do
         field :pack_id, :id
@@ -169,10 +169,9 @@ defmodule Web.GraphQL.Types.MutationType do
       )
     end
 
-    @desc "Delete pack scene and scene (if no dependencies)"
+    @desc "Delete scene"
     payload field :scene_delete do
       input do
-        field :pack_id, :id
         field :id, :id
       end
 
@@ -180,31 +179,24 @@ defmodule Web.GraphQL.Types.MutationType do
         field :scene, non_null(:scene)
       end
 
-      resolve(
-        parsing_node_ids(&Catalog.scene_delete/2,
-          id: :scene,
-          pack_id: :pack
-        )
-      )
+      resolve(parsing_node_ids(&Catalog.scene_delete/2, id: :scene))
     end
 
-    @desc "Update pack scene"
-    payload field(:pack_scene_update) do
+    @desc "Update scene order"
+    payload field(:scene_order_update) do
       input do
         field :id, :id
-        field :pack_id, :id
         field :before_id, :id
         field :after_id, :id
       end
 
       output do
-        field :pack_scene, non_null(:pack_scene)
+        field :scene, non_null(:scene)
       end
 
       resolve(
-        parsing_node_ids(&Catalog.pack_scene_update/2,
+        parsing_node_ids(&Catalog.scene_order_update/2,
           id: :scene,
-          pack_id: :pack,
           before_id: :scene,
           after_id: :scene
         )

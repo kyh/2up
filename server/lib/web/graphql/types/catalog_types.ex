@@ -11,9 +11,10 @@ defmodule Web.GraphQL.Types.CatalogTypes do
   node object(:scene) do
     field :question, non_null(:string)
     field :instruction, :string
-
+    field :order, non_null(:string)
     field :question_type, non_null(:question_type), resolve: dataloader(QuestionType)
     field :answer_type, non_null(:answer_type), resolve: dataloader(AnswerType)
+    field :pack, non_null(:pack), resolve: dataloader(Pack)
 
     field :scene_answers, list_of(:scene_answer) do
       resolve(fn parent, args, meta ->
@@ -27,7 +28,7 @@ defmodule Web.GraphQL.Types.CatalogTypes do
   node object(:scene_answer) do
     field :content, :string
     field :is_correct, non_null(:boolean)
-    # field :scene, non_null(:scene), resolve: dataloader(Scene)
+    field :scene, non_null(:scene), resolve: dataloader(Scene)
   end
 
   connection(node_type: :scene_answer)
@@ -38,11 +39,6 @@ defmodule Web.GraphQL.Types.CatalogTypes do
 
   node object(:answer_type) do
     field :slug, non_null(:string)
-  end
-
-  object(:pack_scene) do
-    field :id, :id
-    field :order, non_null(:string)
   end
 
   input_object :scene_answer_input do

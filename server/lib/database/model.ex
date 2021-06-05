@@ -18,7 +18,6 @@ defmodule Database.Model do
 
       alias Database.Live.{
         Tag,
-        PackScene,
         PackTag,
         Pack,
         Tag,
