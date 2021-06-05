@@ -64,6 +64,9 @@ defmodule Game.GamePlay do
     String.upcase(scene_answer.content) == String.upcase(submission["content"])
   end
 
+  @doc """
+  Update scores based on correctness and speed of submission
+  """
   defp update_scores(correct_submission_count, game, name) do
     case correct_submission_count > 0 do
       true ->

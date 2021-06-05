@@ -156,8 +156,9 @@ defmodule Web.GameChannel do
     end
   end
 
-  # List of actively connected players used to determine if everyone is
-  # done submitting or endorsing
+  @doc """
+  List of actively connected players to determine if everyone is done
+  """
   defp player_count(socket) do
     Presence.list(socket)
     |> Map.values()
