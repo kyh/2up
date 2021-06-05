@@ -61,7 +61,7 @@ defmodule Game.GameServer do
     game =
       case :ets.lookup(:games_table, game_code) do
         [] ->
-          game = Game.GamePlay.new(questions, [])
+          game = Game.GamePlay.new(questions)
           :ets.insert(:games_table, {game_code, game})
           game
 

@@ -10,11 +10,10 @@ defmodule Game.GamePlay do
   @doc """
   Initializes game play struct with scenes and players
   """
-  def new(question_sets, player_ids) do
-    players = Enum.map(player_ids, &%Player{id: &1})
+  def new(question_sets) do
     scenes = scenes_initialize(question_sets)
 
-    %GamePlay{scenes: scenes, players: players}
+    %GamePlay{scenes: scenes}
   end
 
   @doc """
@@ -27,9 +26,9 @@ defmodule Game.GamePlay do
   @doc """
   Adds new player to game play struct if name is unique
   """
-  def player_new(game, player) do
+  def player_new(game, name) do
     new_players =
-      (game.players ++ [player])
+      (game.players ++ [%Player{name: name}])
       |> Enum.uniq_by(fn player -> player.name end)
 
     %{game | players: new_players}
@@ -119,7 +118,7 @@ defmodule Game.GamePlay do
       Enum.filter(game.players, fn x -> x.name === name end)
       |> Enum.at(0)
 
-    new_player = %{player | score: player.score + score}
+    new_player = %Player{player | prev_score: player.score, score: player.score + score}
 
     new_players =
       Enum.map(game.players, fn x ->

@@ -32,6 +32,7 @@ defmodule Web.GameChannel do
       Presence.track(socket, socket.assigns.name, %{
         name: name,
         isSpectator: is_spectator,
+        prevScore: 0,
         score: 0
       })
 
@@ -41,8 +42,7 @@ defmodule Web.GameChannel do
           GameServer.game_state(game_code)
 
         false ->
-          player = %{name: name, score: 0}
-          GameServer.player_new(game_code, player)
+          GameServer.player_new(game_code, name)
       end
 
     broadcast!(socket, "game/game_state", game_state)
@@ -164,10 +164,12 @@ defmodule Web.GameChannel do
 
   # Update player's score based on game state
   defp player_score_update(socket, name, players) do
-    score =
+    game_state_player =
       Enum.filter(players, fn x -> x.name === name end)
       |> Enum.at(0)
-      |> Map.get(:score)
+
+    score = game_state_player |> Map.get(:score)
+    prev_score = game_state_player |> Map.get(:prev_score)
 
     player =
       Presence.list(socket)
@@ -175,6 +177,10 @@ defmodule Web.GameChannel do
       |> Map.get(:metas)
       |> Enum.at(0)
 
-    Presence.update(socket, name, %{player | score: score})
+    Presence.update(
+      socket,
+      name,
+      %{player | prevScore: prev_score, score: score}
+    )
   end
 end
