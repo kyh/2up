@@ -2,9 +2,11 @@ defmodule Database.Live.Pack do
   use Database.Model
 
   schema "packs" do
-    belongs_to :user, User
+    has_many :scenes, Scene
+
     many_to_many :tags, Tag, join_through: PackTag
-    many_to_many :scenes, Scene, join_through: PackScene
+
+    belongs_to :user, User
 
     field :name, :string
     field :is_random, :boolean

@@ -71,16 +71,16 @@ defmodule Web.GraphQL.Resolvers.Catalog do
     end
   end
 
-  def pack_scene_update(args, %{context: %{current_user: user}}) do
-    case Catalog.pack_scene_update(user, args) do
+  def scene_order_update(args, %{context: %{current_user: user}}) do
+    case Catalog.scene_order_update(user, args) do
       {:error, changeset} ->
         {
           :error,
-          message: "Pack scene update failed", details: Errors.error_details(changeset)
+          message: "Scene order update failed", details: Errors.error_details(changeset)
         }
 
-      {:ok, pack_scene} ->
-        {:ok, %{pack_scene: pack_scene}}
+      {:ok, scene} ->
+        {:ok, %{scene: scene}}
     end
   end
 

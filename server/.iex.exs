@@ -12,17 +12,16 @@ alias Database.{
 alias Database.Accounts.User
 
 alias Database.Catalog.{
-  ActTag,
-  Act,
+  Scene,
+  SceneAnswer,
   AnswerType,
-  QuestionType,
-  Tag
+  QuestionType
 }
 
 alias Database.Live.{
-  Category,
-  PackAct,
-  PackCategory,
+  Tag,
+  PackTag,
   Pack,
+  Tag,
   Play
 }
