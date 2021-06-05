@@ -49,6 +49,7 @@ export const PackSection = styled.section`
 
     &:hover {
       animation: ${bounceExpand} 1s;
+      animation-fill-mode: forwards;
       border-color: ${theme.ui.borderColor};
     }
 

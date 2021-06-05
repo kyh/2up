@@ -58,6 +58,7 @@ const renderRegularStyles = () => {
     animation: ${bounceContract} 1s;
     &:hover {
       animation: ${bounceExpand} 1s;
+      animation-fill-mode: forwards;
       border-image-source: ${({ theme: { isDarkMode } }) =>
         `url("${borderActive(getComputedBorder(isDarkMode))}")`};
     }
@@ -90,6 +91,7 @@ const renderFabStyles = () => {
     animation: ${bounceContract} 1s;
     &:hover {
       animation: ${bounceExpand} 1s;
+      animation-fill-mode: forwards;
       background-image: ${({ theme: { isDarkMode } }) =>
         `url("data:image/svg+xml,${fabBorderActive(
           getComputedBorder(isDarkMode)
