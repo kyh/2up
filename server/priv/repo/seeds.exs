@@ -494,63 +494,63 @@ states_questions
 |> Enum.with_index()
 |> Enum.each(fn {x, i} ->
   {_, scene} =
-    Catalog.scene_create(image_question_type, text_answer_type, %{
+    Catalog.scene_create(user, states_pack, image_question_type, text_answer_type, %{
       question: Enum.at(x, 0),
-      answer: Enum.at(x, 1)
+      answer: Enum.at(x, 1),
+      order: i
     })
 
-  Catalog.scene_answer_create(scene, Enum.at(x, 1), true)
-  Live.pack_scene_create(states_pack, scene, %{order: i})
+  Catalog.scene_answer_create(user, scene, Enum.at(x, 1), true)
 end)
 
 flags_questions
 |> Enum.with_index()
 |> Enum.each(fn {x, i} ->
   {_, scene} =
-    Catalog.scene_create(image_question_type, text_answer_type, %{
+    Catalog.scene_create(user, flags_pack, image_question_type, text_answer_type, %{
       question: Enum.at(x, 0),
-      answer: Enum.at(x, 1)
+      answer: Enum.at(x, 1),
+      order: i
     })
 
-  Catalog.scene_answer_create(scene, Enum.at(x, 1), true)
-  Live.pack_scene_create(flags_pack, scene, %{order: i})
+  Catalog.scene_answer_create(user, scene, Enum.at(x, 1), true)
 end)
 
 capitals_questions
 |> Enum.with_index()
 |> Enum.each(fn {x, i} ->
   {_, scene} =
-    Catalog.scene_create(text_question_type, text_answer_type, %{
+    Catalog.scene_create(user, capitals_pack, image_question_type, text_answer_type, %{
       question: Enum.at(x, 0),
-      answer: Enum.at(x, 1)
+      answer: Enum.at(x, 1),
+      order: i
     })
 
-  Catalog.scene_answer_create(scene, Enum.at(x, 1), true)
-  Live.pack_scene_create(capitals_pack, scene, %{order: i})
+  Catalog.scene_answer_create(user, scene, Enum.at(x, 1), true)
 end)
 
 stocks_questions
 |> Enum.with_index()
 |> Enum.each(fn {x, i} ->
   {_, scene} =
-    Catalog.scene_create(image_question_type, text_answer_type, %{
+    Catalog.scene_create(user, stocks_pack, image_question_type, text_answer_type, %{
       question: Enum.at(x, 0),
-      answer: Enum.at(x, 1)
+      answer: Enum.at(x, 1),
+      order: i
     })
 
-  Catalog.scene_answer_create(scene, Enum.at(x, 1), true)
-  Live.pack_scene_create(stocks_pack, scene, %{order: i})
+  Catalog.scene_answer_create(user, scene, Enum.at(x, 1), true)
 end)
 
 crypto_questions
 |> Enum.with_index()
 |> Enum.each(fn {x, i} ->
   {_, scene} =
-    Catalog.scene_create(image_question_type, text_answer_type, %{
+    Catalog.scene_create(user, crypto_pack, image_question_type, text_answer_type, %{
       question: Enum.at(x, 0),
-      answer: Enum.at(x, 1)
+      answer: Enum.at(x, 1),
+      order: i
     })
 
-  Catalog.scene_answer_create(scene, Enum.at(x, 1), true)
-  Live.pack_scene_create(crypto_pack, scene, %{order: i})
+  Catalog.scene_answer_create(user, scene, Enum.at(x, 1), true)
 end)

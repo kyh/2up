@@ -68,30 +68,22 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
-  def pack_scene_create(%Pack{} = pack, %Scene{} = scene, attrs) do
-    %PackScene{}
-    |> PackScene.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:pack, pack)
-    |> Ecto.Changeset.put_assoc(:scene, scene)
-    |> Repo.insert()
-  end
-
   def rebalance_pack(%Pack{} = pack) do
     query =
-      from pack_scene in PackScene,
-        where: pack_scene.pack_id == ^pack.id,
-        order_by: [asc: pack_scene.order]
+      from scene in Scene,
+        where: scene.pack_id == ^pack.id,
+        order_by: [asc: scene.order]
 
-    Repo.all(query) |> rebalance_pack_scenes(10)
+    Repo.all(query) |> rebalance_scenes(10)
   end
 
-  def rebalance_pack_scenes([pack_scene | pack_scenes], new_order) do
-    pack_scene
-    |> PackScene.changeset(%{order: new_order})
+  def rebalance_scenes([scene | scenes], new_order) do
+    scene
+    |> Scene.changeset(%{order: new_order})
     |> Repo.update()
 
-    rebalance_pack_scenes(pack_scenes, new_order + 10)
+    rebalance_scenes(scenes, new_order + 10)
   end
 
-  def rebalance_pack_scenes([], _order), do: :ok
+  def rebalance_scenes([], _order), do: :ok
 end
