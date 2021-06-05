@@ -36,16 +36,15 @@ defmodule Web.GameChannel do
         score: 0
       })
 
-    game_state =
-      case is_spectator == true do
-        true ->
-          GameServer.game_state(game_code)
+    case is_spectator == true do
+      true ->
+        GameServer.game_state(game_code)
 
-        false ->
-          GameServer.player_new(game_code, name)
-      end
+      false ->
+        GameServer.player_new(game_code, name)
+    end
+    |> game_state_broadcast(socket)
 
-    broadcast!(socket, "game/game_state", game_state)
     {:noreply, socket}
   end
 
@@ -57,8 +56,9 @@ defmodule Web.GameChannel do
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        game_state = GameServer.game_start(game_code)
-        broadcast!(socket, "game/game_state", game_state)
+        GameServer.game_start(game_code)
+        |> game_state_broadcast(socket)
+
         {:noreply, socket}
 
       nil ->
@@ -94,8 +94,9 @@ defmodule Web.GameChannel do
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        game_state = GameServer.step_next(game_code)
-        broadcast!(socket, "game/game_state", game_state)
+        GameServer.step_next(game_code)
+        |> game_state_broadcast(socket)
+
         {:noreply, socket}
 
       nil ->
@@ -111,8 +112,9 @@ defmodule Web.GameChannel do
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        game_state = GameServer.scene_next(game_code)
-        broadcast!(socket, "game/game_state", game_state)
+        GameServer.scene_next(game_code)
+        |> game_state_broadcast(socket)
+
         {:noreply, socket}
 
       nil ->
@@ -128,9 +130,10 @@ defmodule Web.GameChannel do
 
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
-        game_state = GameServer.player_submit(game_code, name, submission, player_count(socket))
-        player_score_update(socket, name, game_state.players)
-        broadcast!(socket, "game/game_state", game_state)
+        GameServer.player_submit(game_code, name, submission, player_count(socket))
+        |> player_score_update(socket, name)
+        |> game_state_broadcast(socket)
+
         {:noreply, socket}
 
       nil ->
@@ -163,9 +166,9 @@ defmodule Web.GameChannel do
   end
 
   # Update player's score based on game state
-  defp player_score_update(socket, name, players) do
+  defp player_score_update(game_state, socket, name) do
     game_state_player =
-      Enum.filter(players, fn x -> x.name === name end)
+      Enum.filter(game_state.players, fn x -> x.name === name end)
       |> Enum.at(0)
 
     score = game_state_player |> Map.get(:score)
@@ -182,5 +185,21 @@ defmodule Web.GameChannel do
       name,
       %{player | prevScore: prev_score, score: score}
     )
+
+    game_state
+  end
+
+  @doc """
+  Removes players array from game state since it's returned in presence
+  """
+  defp game_state_format(game_state) do
+    Map.delete(game_state, :players)
+  end
+
+  @doc """
+  Formats and broadcasts game state to connected clients
+  """
+  defp game_state_broadcast(game_state, socket) do
+    broadcast!(socket, "game/game_state", game_state |> game_state_format())
   end
 end
