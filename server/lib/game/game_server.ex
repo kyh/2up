@@ -102,7 +102,9 @@ defmodule Game.GameServer do
       sceneAnswers: scene_answers,
       answerType: answer_type,
       submissions: current_scene.submissions,
-      instruction: instruction
+      instruction: instruction,
+      startTime: game.start_time,
+      duration: game.duratio
     }
   end
 
