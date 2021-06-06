@@ -25,7 +25,7 @@ migrate-gen:
 	cd server && mix ecto.gen.migration $(NAME)
 
 phx:
-	source .env && cd server && mix phx.server
+	source .env && cd server && iex -S mix phx.server
 
 react:
 	cd client && npm start
