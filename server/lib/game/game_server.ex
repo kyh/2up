@@ -104,7 +104,8 @@ defmodule Game.GameServer do
       submissions: current_scene.submissions,
       instruction: instruction,
       startTime: game.start_time,
-      duration: game.duratio
+      duration: game.duration,
+      totalScenes: Enum.count(game.scenes)
     }
   end
 
