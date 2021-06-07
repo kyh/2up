@@ -51,7 +51,12 @@ export const Topbar = ({ pack, saving, setSaving }: Props) => {
     <StyledNavigationContainer>
       <div className="left">
         <Link to={`/packs/${pack.id}`}>
-          <img className="logo" src="/logo/logomark.svg" alt="Playhouse" />
+          <img
+            className="logo"
+            src="/logo/logomark.svg"
+            alt="Playhouse"
+            height="35"
+          />
         </Link>
       </div>
       <div className="right">

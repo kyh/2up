@@ -17,7 +17,12 @@ export const Navigation = () => {
     <NavigationContainer>
       <div className="left">
         <Link to="/packs">
-          <img className="logo" src="/logo/logomark.svg" alt="Playhouse" />
+          <img
+            className="logo"
+            src="/logo/logomark.svg"
+            alt="Playhouse"
+            height="35"
+          />
         </Link>
       </div>
       <div className="right end">
@@ -54,9 +59,6 @@ export const NavigationContainer = styled.header`
   grid-area: header;
   background: ${theme.ui.background};
   border-bottom: 1px solid ${theme.ui.backgroundInverse};
-  .logo {
-    height: 35px;
-  }
   .left {
     display: flex;
     align-items: center;
