@@ -11,17 +11,19 @@ export type GameState = {
   sceneAnswers: SceneAnswer[];
   answerType: string;
   submissions: Submission[];
+  totalScenes: number;
+  duration: number;
+  startTime: number;
   // comes from presence
   players: Player[];
   // local states
-  playersMap: Record<string, Player & { prevScore: number }>; // map of name/score to keep track of previous scores
   invitedToGame: string | undefined; // whether to show "invited to" modal
-  totalScenes: number;
 };
 
 export type Player = {
   name: string;
   score: number;
+  prevScore: number;
   isSpectator: boolean;
 };
 
@@ -54,10 +56,11 @@ export const initialState: GameState = {
   answerType: "",
   submissions: [],
   pack: "",
-  players: [],
-  playersMap: {},
-  invitedToGame: undefined,
   totalScenes: 10,
+  duration: 45000,
+  startTime: Date.now(),
+  players: [],
+  invitedToGame: undefined,
 };
 
 const gameSlice = createSlice({
@@ -77,15 +80,11 @@ const gameSlice = createSlice({
       state.answerType = payload.answerType ?? state.answerType;
       state.submissions = payload.submissions ?? state.submissions;
       state.pack = payload.pack ?? payload.pack;
+      state.totalScenes = payload.totalScenes ?? state.totalScenes;
+      state.duration = payload.duration ?? state.duration;
+      state.startTime = payload.startTime ?? state.startTime;
     },
     players: (state, { payload }: PayloadAction<{ players: Player[] }>) => {
-      // Delete once scores come back from server
-      state.playersMap = payload.players.reduce((map, player) => {
-        const prevScore = state.playersMap[player.name]?.score || 0;
-        map[player.name] = { ...player, prevScore };
-        return map;
-      }, {} as GameState["playersMap"]);
-
       state.players =
         payload.players.sort((a, b) => {
           if (a.name < b.name) return -1;

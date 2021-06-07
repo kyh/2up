@@ -14,7 +14,12 @@ export const colors = {
 };
 
 export const breakpoints = {
-  desktop: "@media (min-width: 900px)",
+  desktop: "@media screen and (min-width: 900px)",
+};
+
+export const isDesktop = () => {
+  const mq = window.matchMedia(breakpoints.desktop.replace("@media ", ""));
+  return mq.matches;
 };
 
 const SPACING_UNIT = 4;
