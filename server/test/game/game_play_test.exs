@@ -43,9 +43,8 @@ defmodule Game.GamePlayTest do
       player_name = "Player 1"
       initial_game = GamePlay.new(context.question_set)
       updated_game = GamePlay.player_new(initial_game, player_name)
-      
-      matched_players =
-        Enum.filter(updated_game.players, & &1.name == player_name)
+
+      matched_players = Enum.filter(updated_game.players, &(&1.name == player_name))
 
       assert Enum.count(matched_players) == 1
       assert Enum.at(matched_players, 0).name == player_name
