@@ -5,8 +5,7 @@ import styled, {
 } from "styled-components";
 import raw from "raw.macro";
 import { hashCode } from "utils/stringUtils";
-import { theme, getComputedBorder } from "styles/theme";
-import { fabBorder } from "../Button/borders";
+import { theme } from "styles/theme";
 
 type Props = StyledComponentProps<
   "div",
@@ -55,8 +54,7 @@ const StyledIcon = styled.div<{ expandOnDesktop: boolean }>`
   padding: ${theme.spacings(1)};
   background-repeat: no-repeat;
   background-size: contain;
-  background-image: ${({ theme: { isDarkMode } }) =>
-    `url("data:image/svg+xml,${fabBorder(getComputedBorder(isDarkMode))}")`};
+  background-image: ${theme.ui.buttonFabBorderUrl};
 
   > svg {
     width: 100%;

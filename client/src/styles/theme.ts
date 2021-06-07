@@ -1,5 +1,14 @@
 import { css } from "styled-components";
 import { memoize } from "lodash";
+import {
+  buttonBorder,
+  buttonBorderActive,
+  buttonFabBorder,
+  buttonFabBorderActive,
+  inputBorder,
+  inputBorderRounded,
+  cardBorder,
+} from "./borders";
 
 export const colors = {
   purple: "#7247C4",
@@ -33,14 +42,27 @@ export const ui = {
   background: "var(--background)",
   backgroundGrey: "var(--background-grey)",
   backgroundInverse: "var(--background-inverse)",
+
   cardBorder: "var(--card-border)",
+  cardBorderUrl: "var(--card-border-url)",
+
+  inputBorderUrl: "var(--input-border-url)",
+  inputBorderRoundedUrl: "var(--input-border-rounded-url)",
+
   buttonText: "var(--button-text)",
   buttonBackground: "var(--button-background)",
   buttonBorder: "var(--button-border)",
+  buttonBorderUrl: "var(--button-border-url)",
+  buttonBorderActiveUrl: "var(--button-border-active-url)",
+  buttonFabBorderUrl: "var(--button-fab-border-url)",
+  buttonFabBorderActiveUrl: "var(--button-fab-border-active-url)",
+
   modalBorder: "var(--modal-border)",
   modalBackground: "var(--modal-background)",
+
   alertText: "var(--alert-text)",
   alertBackground: "var(--alert-background)",
+
   borderColor: "var(--border-color)",
   borderColorAlternate: "var(--border-color-alternate)",
   borderWavyRadius: "var(--border-wavy-radius)",
@@ -55,10 +77,20 @@ export const lightStyles = css`
     --background-inverse: ${colors.greyDark};
 
     --card-border: ${colors.black};
+    --card-border-url: url("${cardBorder(colors.greyDark)}");
+
+    --input-border-url: url("${inputBorder(colors.greyDark)}");
+    -url-url: url("${inputBorderRounded(colors.greyDark)}");
 
     --button-text: ${colors.black};
     --button-background: ${colors.white};
     --button-border: ${colors.black};
+    --button-border-url: url("${buttonBorder(colors.greyDark)}");
+    --button-border-active-url: url("${buttonBorderActive(colors.greyDark)}");
+    --button-fab-border-url: url("${buttonFabBorder(colors.greyDark)}");
+    --button-fab-border-active-url: url("${buttonFabBorderActive(
+      colors.greyDark
+    )}");
 
     --modal-border: ${colors.black};
     --modal-background: ${colors.white};
@@ -81,10 +113,20 @@ export const darkStyles = css`
     --background-inverse: ${colors.greyBackground};
 
     --card-border: ${colors.greyLight};
+    --card-border-url: url("${cardBorder(colors.greyLight)}");
+
+    --input-border-url: url("${inputBorder(colors.greyLight)}");
+    -url-url: url("${inputBorderRounded(colors.greyLight)}");
 
     --button-text: ${colors.white};
     --button-background: ${colors.black};
     --button-border: ${colors.greyLight};
+    --button-border-url: url("${buttonBorder(colors.greyLight)}");
+    --button-border-active-url: url("${buttonBorderActive(colors.greyLight)}");
+    --button-fab-border-url: url("${buttonFabBorder(colors.greyLight)}");
+    --button-fab-border-active-url: url("${buttonFabBorderActive(
+      colors.greyLight
+    )}");
 
     --modal-border: ${colors.greyLight};
     --modal-background: ${colors.black};
@@ -104,8 +146,3 @@ export const theme = {
   spacings,
   ui,
 };
-
-export const getComputedBorder = memoize((isDarkMode: boolean) => {
-  const color = isDarkMode ? colors.greyLight : colors.greyDark;
-  return color.replace("#", "");
-});

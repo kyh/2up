@@ -1,5 +1,4 @@
 import { Switch, Route, Redirect } from "react-router-dom";
-import { ThemeProvider } from "styled-components";
 import { Provider as AlertProvider, transitions, positions } from "react-alert";
 
 import { ReactAlertTemplate } from "components";
@@ -21,28 +20,26 @@ const alertOptions = {
 export const App = () => {
   const isDarkMode = useAppSelector((state) => state.playhouse.isDarkMode);
   return (
-    <ThemeProvider theme={{ isDarkMode }}>
-      <AlertProvider template={ReactAlertTemplate} {...alertOptions}>
-        <GlobalStyle />
-        <Switch>
-          <Route exact path={["/", "/join"]}>
-            <HomeRoutes />
-          </Route>
-          <Route path="/game/:gameId">
-            <GameRoutes />
-          </Route>
-          <Route path="/auth">
-            <AuthRoutes />
-          </Route>
-          <Route path="/packs">
-            <PackRoutes />
-          </Route>
-          <Route path="/@:username">
-            <ProfilePage />
-          </Route>
-          <Redirect to="/" />
-        </Switch>
-      </AlertProvider>
-    </ThemeProvider>
+    <AlertProvider template={ReactAlertTemplate} {...alertOptions}>
+      <GlobalStyle isDarkMode={isDarkMode} />
+      <Switch>
+        <Route exact path={["/", "/join"]}>
+          <HomeRoutes />
+        </Route>
+        <Route path="/game/:gameId">
+          <GameRoutes />
+        </Route>
+        <Route path="/auth">
+          <AuthRoutes />
+        </Route>
+        <Route path="/packs">
+          <PackRoutes />
+        </Route>
+        <Route path="/@:username">
+          <ProfilePage />
+        </Route>
+        <Redirect to="/" />
+      </Switch>
+    </AlertProvider>
   );
 };
