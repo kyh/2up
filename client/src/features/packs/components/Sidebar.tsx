@@ -45,7 +45,6 @@ export const Sidebar = ({
   const packScenes = pack.scenes?.edges || [];
   const [scenes, setScenes] = useState(packScenes);
 
-  console.log("scenes", scenes);
   const packId = pack.id;
 
   // This is pretty gross, we should figure out a better way of handling drag
