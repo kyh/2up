@@ -94,7 +94,7 @@ export const PlayerScores = ({
       <PlayersContainer singleCol>
         {players.map(({ name, prevScore, score }) => {
           return (
-            <PContainer
+            <PlayerContainer
               key={name}
               desktop={desktop}
               score={isOldState ? prevScore : score}
@@ -103,12 +103,12 @@ export const PlayerScores = ({
               <Player playerName={name} />
               <PlayerScore>
                 {isOldState ? (
-                  <span>{score}</span>
+                  <span>{prevScore}</span>
                 ) : (
                   <Counter from={prevScore} to={score} />
                 )}
               </PlayerScore>
-            </PContainer>
+            </PlayerContainer>
           );
         })}
       </PlayersContainer>
@@ -122,7 +122,7 @@ const spring = {
   stiffness: 300,
 };
 
-const PContainer = ({
+const PlayerContainer = ({
   children,
   desktop,
   score,
@@ -136,15 +136,15 @@ const PContainer = ({
   // Animate scores if on mobile
   if (!desktop) {
     return (
-      <AnimatedPlayerContainer layout transition={spring}>
+      <APC layout transition={spring}>
         {children}
-      </AnimatedPlayerContainer>
+      </APC>
     );
   }
   return (
-    <PlayerContainer score={score} totalScenes={totalScenes}>
+    <PC score={score} totalScenes={totalScenes}>
       {children}
-    </PlayerContainer>
+    </PC>
   );
 };
 
@@ -196,13 +196,13 @@ const PlayersContainer = styled(PlayersGrid)`
   }
 `;
 
-const AnimatedPlayerContainer = styled(motion.div)`
+const APC = styled(motion.div)`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-const PlayerContainer = styled.div<{ score: number; totalScenes: number }>`
+const PC = styled.div<{ score: number; totalScenes: number }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
