@@ -5,8 +5,8 @@ defmodule Database.Catalog.Scene do
     has_many :scene_answers, SceneAnswer
 
     belongs_to :pack, Pack
-    belongs_to :question_type, QuestionType
-    belongs_to :answer_type, AnswerType
+    belongs_to :question_type, QuestionType, on_replace: :update
+    belongs_to :answer_type, AnswerType, on_replace: :update
 
     field :question, :string
     field :instruction, :string
@@ -16,7 +16,13 @@ defmodule Database.Catalog.Scene do
   end
 
   def changeset(scene, attrs) do
-    required_fields = [:question, :instruction, :order]
+    required_fields = [
+      :question,
+      :instruction,
+      :order,
+      :question_type_id,
+      :answer_type_id
+    ]
 
     scene
     |> cast(attrs, required_fields)
