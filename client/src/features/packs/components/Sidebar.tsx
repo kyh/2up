@@ -45,7 +45,6 @@ export const Sidebar = ({
   const packScenes = pack.scenes?.edges || [];
   const [scenes, setScenes] = useState(packScenes);
 
-  console.log("scenes", scenes);
   const packId = pack.id;
 
   // This is pretty gross, we should figure out a better way of handling drag
@@ -110,7 +109,6 @@ export const Sidebar = ({
         variables: {
           input: {
             id: sceneId,
-            packId,
           },
         },
       });
@@ -128,7 +126,10 @@ export const Sidebar = ({
   const addNewScene = async (extendInput = {}) => {
     const defaultInput = {
       packId,
-      question: "What's your name?",
+      question: "Question?",
+      questionTypeSlug: "text",
+      answerTypeSlug: "text",
+      sceneAnswers: [{ content: "Answer!", isCorrect: true }],
       order: (scenes?.length || 0) + 1,
     };
     setSaving(true);

@@ -90,16 +90,27 @@ defmodule Database.Catalog do
     pack = Repo.get(Pack, attrs.pack_id)
 
     with {:ok} <- Authorization.check(:scene_create, user, pack) do
-      question_type = Repo.get_by(QuestionType, slug: "text")
-      answer_type = Repo.get_by(AnswerType, slug: "text")
+      question_type = Repo.get_by(QuestionType, slug: attrs.question_type_slug)
+      answer_type = Repo.get_by(AnswerType, slug: attrs.answer_type_slug)
+
       pack = Repo.get(Pack, attrs.pack_id)
 
-      %Scene{}
-      |> Scene.changeset(attrs)
-      |> Ecto.Changeset.put_assoc(:question_type, question_type)
-      |> Ecto.Changeset.put_assoc(:answer_type, answer_type)
-      |> Ecto.Changeset.put_assoc(:pack, pack)
-      |> Repo.insert()
+      scene =
+        %Scene{}
+        |> Scene.changeset(attrs)
+        |> Ecto.Changeset.put_assoc(:pack, pack)
+        |> Ecto.Changeset.put_assoc(:question_type, question_type)
+        |> Ecto.Changeset.put_assoc(:answer_type, answer_type)
+        |> Repo.insert!()
+
+      Enum.each(attrs.scene_answers, fn a ->
+        %SceneAnswer{}
+        |> SceneAnswer.changeset(a)
+        |> Ecto.Changeset.put_assoc(:scene, scene)
+        |> Repo.insert()
+      end)
+
+      {:ok, scene}
     end
   end
 
@@ -174,6 +185,11 @@ defmodule Database.Catalog do
         _attrs
       ) do
     with {:ok} <- Authorization.check(:scene_delete, user, scene) do
+      query =
+        from scene_answer in SceneAnswer,
+          where: scene_answer.scene_id == ^scene.id
+
+      Repo.delete_all(query)
       scene |> Repo.delete()
     end
   end
