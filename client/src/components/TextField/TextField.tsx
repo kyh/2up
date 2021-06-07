@@ -13,6 +13,7 @@ type Props = {
   id?: HTMLInputElement["id"];
   type?: HTMLInputElement["type"];
   placeholder?: HTMLInputElement["placeholder"];
+  autoComplete?: HTMLInputElement["autocomplete"];
   labelText?: ReactNode;
   children?: ReactNode;
   error?: boolean;
