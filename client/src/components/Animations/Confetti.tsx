@@ -11,8 +11,11 @@ export const Confetti = () => {
   useEffect(() => {
     requestAnimationFrame(fire);
     const intervalId = setInterval(() => {
-      requestAnimationFrame(fire);
+      if (document.hasFocus()) {
+        requestAnimationFrame(fire);
+      }
     }, 3000);
+
     return () => clearInterval(intervalId);
   }, []);
 
