@@ -110,7 +110,6 @@ export const Sidebar = ({
         variables: {
           input: {
             id: sceneId,
-            packId,
           },
         },
       });
@@ -128,7 +127,10 @@ export const Sidebar = ({
   const addNewScene = async (extendInput = {}) => {
     const defaultInput = {
       packId,
-      question: "What's your name?",
+      question: "Question?",
+      questionTypeSlug: "text",
+      answerTypeSlug: "text",
+      sceneAnswers: [{ content: "Answer!", isCorrect: true }],
       order: (scenes?.length || 0) + 1,
     };
     setSaving(true);
