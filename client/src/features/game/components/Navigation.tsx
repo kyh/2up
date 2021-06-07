@@ -79,7 +79,7 @@ export const Navigation = () => {
           <SettingItem>
             <ButtonLink
               fullWidth
-              href="https://github.com/kyh/playhouse"
+              href="https://github.com/playhousegg/playhouse"
               target="_blank"
               rel="noopener noreferrer"
             >
