@@ -5,12 +5,11 @@ import { theme } from "styles/theme";
 import { gameActions, StepProps } from "features/game/gameSlice";
 import { PlayerScores } from "./Step3";
 
-export const Step0 = ({ gameState, broadcast, dispatch }: StepProps) => {
+export const Step0 = ({ gameState, dispatch }: StepProps) => {
   const history = useHistory();
 
   const handleEnd = (gameId?: string) => {
     dispatch(gameActions.reset({ gameId }));
-    broadcast("end");
     history.push("/packs");
   };
 
