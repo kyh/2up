@@ -148,7 +148,7 @@ defmodule Web.GameChannel do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
         # this should broadcast to the game:game_code topic
-        Web.GameChannel.broadcast_from!(self(), game_code, "game/invite", %{gameId: new_code})
+        Web.Endpoint.broadcast_from!(self(), "game:#{game_code}", "game/invite", %{gameId: new_code})
         {:noreply, socket}
 
       nil ->
