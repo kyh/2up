@@ -149,7 +149,9 @@ defmodule Web.GameChannel do
     |> Enum.count()
   end
 
-  # Update player's score based on game state
+  @doc """
+  Update player's score based on game state
+  """
   defp player_score_update(game_state, socket, name) do
     game_state_player =
       Enum.filter(game_state.players, fn x -> x.name === name end)
