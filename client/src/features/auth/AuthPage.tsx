@@ -67,10 +67,10 @@ export const AuthPage = ({ isLogin }: Props) => {
             <TextField
               id="username"
               {...register("username", { required: true })}
-              labelText="Username"
+              labelText={isLogin ? "Email/Username" : "Username"}
               placeholder="Lil Jon Snow"
               error={!!errors.username}
-              errorText="Username is required"
+              errorText="This field is required"
             />
             {!isLogin && (
               <TextField
@@ -91,6 +91,7 @@ export const AuthPage = ({ isLogin }: Props) => {
               placeholder="Super secret password"
               error={!!errors.password}
               errorText="Password is required"
+              autoComplete="on"
             />
             <Button
               className="submit"
