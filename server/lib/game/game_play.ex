@@ -61,7 +61,8 @@ defmodule Game.GamePlay do
   end
 
   defp compare_content(scene_answer, submission) do
-    String.upcase(scene_answer.content) == String.upcase(submission["content"])
+    String.upcase(scene_answer.content) |> String.trim() ==
+      String.upcase(submission["content"]) |> String.trim()
   end
 
   @doc """
