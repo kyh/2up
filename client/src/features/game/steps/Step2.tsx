@@ -75,7 +75,8 @@ const AnswerContainer = styled.div`
 const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
   const players = gameState.submissions.map((submission) => {
     const isCorrect =
-      submission.content.toLowerCase() === sceneAnswer.content.toLowerCase();
+      submission.content.trim().toLowerCase() ===
+      sceneAnswer.content.trim().toLowerCase();
     return (
       <Player
         key={submission.name}
