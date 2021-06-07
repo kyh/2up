@@ -68,7 +68,7 @@ export const Modal = ({
             <Icon icon="close" />
           </CloseButton>
         )}
-        {title && <ModalHeader>{title}</ModalHeader>}
+        <ModalHeader>{title}</ModalHeader>
         <ModalBody>{children}</ModalBody>
       </ReactModal>
     </>

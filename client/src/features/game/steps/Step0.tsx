@@ -28,14 +28,29 @@ export const Step0 = ({ gameState, broadcast, dispatch }: StepProps) => {
       </Footer>
       <Modal
         open={!!gameState.invitedToGame}
-        title="Would you like to join your friends in a new game?"
         onRequestClose={() =>
           dispatch(gameActions.invite({ gameId: undefined }))
         }
-        maxWidth={500}
+        maxWidth={300}
         closeButton
       >
-        <Button>Join new game</Button>
+        <h3>Would you like to join your friends in a new game?</h3>
+        <InviteModalFooter>
+          <Link onClick={() => handleEnd()} to="/packs">
+            No thanks
+          </Link>
+          <Button
+            onClick={() => {
+              dispatch(
+                gameActions.new_game({ gameId: gameState.invitedToGame! })
+              );
+              dispatch(gameActions.invite({ gameId: undefined }));
+              history.push("/join");
+            }}
+          >
+            Join new game
+          </Button>
+        </InviteModalFooter>
       </Modal>
     </>
   );
@@ -54,6 +69,13 @@ const Footer = styled.div`
   > a {
     text-decoration: underline;
   }
+`;
+
+const InviteModalFooter = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: ${theme.spacings(6)};
 `;
 
 export const Step0Spectate = Step0;
