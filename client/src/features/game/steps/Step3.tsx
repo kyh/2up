@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
+import { useState, useEffect, ReactNode } from "react";
+import styled, { createGlobalStyle } from "styled-components";
 import { motion } from "framer-motion";
-import { theme } from "styles/theme";
+import { debounce } from "lodash";
+import { theme, isDesktop } from "styles/theme";
 import { visible } from "styles/animations";
 import { StepProps, GameState } from "features/game/gameSlice";
 import {
@@ -45,16 +46,8 @@ export const Step3Spectate = ({ gameState }: StepProps) => {
   );
 };
 
-const spring = {
-  type: "spring",
-  damping: 20,
-  stiffness: 300,
-};
-
-const sortByKey = (map: GameState["playersMap"], key: string) => {
-  return Object.keys(map)
-    .map((key) => map[key])
-    .sort((a: any, b: any) => b[key] - a[key]);
+const sortByKey = (players: GameState["players"], key: string) => {
+  return [...players].sort((a: any, b: any) => b[key] - a[key]);
 };
 
 export const PlayerScores = ({
@@ -66,40 +59,109 @@ export const PlayerScores = ({
 }) => {
   const [isOldState, setIsOldState] = useState(true);
   const [players, setPlayers] = useState(
-    sortByKey(gameState.playersMap, "prevScore")
+    sortByKey(gameState.players, "prevScore")
   );
+  const [desktop, setDesktop] = useState(isDesktop());
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setIsOldState(false);
-      setPlayers(sortByKey(gameState.playersMap, "score"));
-    }, 100);
-    return () => clearTimeout(timeoutId);
+      if (!desktop) {
+        // Sort players by score if they're not on a desktop
+        setPlayers(sortByKey(gameState.players, "score"));
+      }
+    }, 150);
+
+    const onResize = () => {
+      setDesktop(isDesktop());
+    };
+
+    const debouncedResize = debounce(onResize, 100);
+    window.addEventListener("resize", debouncedResize);
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", debouncedResize);
+    };
   }, []);
 
   return (
     <>
+      <NoScroll />
       <TitleContainer>
         <h2 className="title">{title}</h2>
       </TitleContainer>
       <PlayersContainer singleCol>
-        {players.map((player) => {
+        {players.map(({ name, prevScore, score }) => {
           return (
-            <PlayerContainer key={player.name} layout transition={spring}>
-              <Player playerName={player.name} />
+            <PContainer
+              key={name}
+              desktop={desktop}
+              score={isOldState ? prevScore : score}
+              totalScenes={gameState.totalScenes}
+            >
+              <Player playerName={name} />
               <PlayerScore>
                 {isOldState ? (
-                  <span>{player.score}</span>
+                  <span>{score}</span>
                 ) : (
-                  <Counter from={player.prevScore} to={player.score} />
+                  <Counter from={prevScore} to={score} />
                 )}
               </PlayerScore>
-            </PlayerContainer>
+            </PContainer>
           );
         })}
       </PlayersContainer>
     </>
   );
+};
+
+const spring = {
+  type: "spring",
+  damping: 20,
+  stiffness: 300,
+};
+
+const PContainer = ({
+  children,
+  desktop,
+  score,
+  totalScenes,
+}: {
+  children: ReactNode;
+  desktop: boolean;
+  score: number;
+  totalScenes: number;
+}) => {
+  // Animate scores if on mobile
+  if (!desktop) {
+    return (
+      <AnimatedPlayerContainer layout transition={spring}>
+        {children}
+      </AnimatedPlayerContainer>
+    );
+  }
+  return (
+    <PlayerContainer score={score} totalScenes={totalScenes}>
+      {children}
+    </PlayerContainer>
+  );
+};
+
+const NoScroll = createGlobalStyle`
+  ${theme.breakpoints.desktop} {
+    body { overflow: hidden }
+  }
+`;
+
+const maxScorePerScene = 200;
+const maxScoreHeight = "40vh";
+
+const calculateScorebarHeight = (score: number, totalScenes: number) => {
+  const maxScoreHeightNum = parseInt(maxScoreHeight.replace("vh", ""));
+  const maxScore = totalScenes * maxScorePerScene;
+  const percentage = score / maxScore;
+  return `-${maxScoreHeightNum * percentage}vh`;
 };
 
 const QuestionNumber = styled.div`
@@ -134,12 +196,30 @@ const PlayersContainer = styled(PlayersGrid)`
   }
 `;
 
-const PlayerContainer = styled(motion.div)`
+const AnimatedPlayerContainer = styled(motion.div)`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  ${theme.breakpoints.desktop} {
-    flex-direction: column-reverse;
+`;
+
+const PlayerContainer = styled.div<{ score: number; totalScenes: number }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column-reverse;
+  transition: transform 1s ease;
+  transform: translateY(
+    ${({ score, totalScenes }) => calculateScorebarHeight(score, totalScenes)}
+  );
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -${maxScoreHeight};
+    height: ${maxScoreHeight};
+    width: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background-color: ${theme.colors.purple};
   }
 `;
 
