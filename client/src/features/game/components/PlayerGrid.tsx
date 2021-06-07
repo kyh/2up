@@ -68,6 +68,7 @@ export const PlayersGrid = styled.div<{
       }
       .avatar {
         padding: 0;
+        overflow: hidden;
         svg {
           max-width: 130px;
           max-height: 300px;
