@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
-import { theme, getComputedBorder } from "styles/theme";
-import { border, borderRounded } from "./borders";
+import { theme } from "styles/theme";
 
 enum Variants {
   default = "default",
@@ -18,8 +17,7 @@ const renderRegularStyles = () => {
     border-image-width: 5px;
     border-image-outset: 0;
     border-image-repeat: stretch stretch;
-    border-image-source: ${({ theme: { isDarkMode } }) =>
-      `url("${border(getComputedBorder(isDarkMode))}")`};
+    border-image-source: ${theme.ui.inputBorderUrl};
   `;
 };
 
@@ -30,7 +28,7 @@ const renderRoundedStyles = () => {
     border-image-width: 5px;
     border-image-outset: 0;
     border-image-repeat: stretch stretch;
-    border-image-source: url("${borderRounded(theme.ui.buttonBorder)}");
+    border-image-source: ${theme.ui.inputBorderRoundedUrl};
   `;
 };
 

@@ -2,10 +2,8 @@ import styledNormalize from "styled-normalize";
 import { createGlobalStyle } from "styled-components";
 import { theme, lightStyles, darkStyles } from "styles/theme";
 
-export const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle<{ isDarkMode: boolean }>`
   ${styledNormalize}
-
-  ${({ theme }: any) => (theme.isDarkMode ? darkStyles : lightStyles)}
 
   html {
     box-sizing: border-box;
@@ -85,4 +83,6 @@ export const GlobalStyle = createGlobalStyle`
     display: block;
     margin: 0 0 ${theme.spacings(1)};
   }
+
+  ${({ isDarkMode }) => (isDarkMode ? darkStyles : lightStyles)}
 `;

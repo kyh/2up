@@ -6,10 +6,9 @@ import styled, {
   DefaultTheme,
 } from "styled-components";
 import { useAppSelector } from "app/hooks";
-import { theme, getComputedBorder } from "styles/theme";
+import { theme } from "styles/theme";
 import { bounceExpand, bounceContract } from "styles/animations";
 import { clickSound } from "styles/sound";
-import { border, borderActive, fabBorder, fabBorderActive } from "./borders";
 
 enum Variants {
   default = "default",
@@ -52,20 +51,17 @@ const renderRegularStyles = () => {
     border-image-width: 5px;
     border-image-outset: 0;
     border-image-repeat: stretch stretch;
-    border-image-source: ${({ theme: { isDarkMode } }) =>
-      `url("${border(getComputedBorder(isDarkMode))}")`};
+    border-image-source: ${theme.ui.buttonBorderUrl};
     min-width: 100px;
     animation: ${bounceContract} 1s;
     &:hover {
       animation: ${bounceExpand} 1s;
       animation-fill-mode: forwards;
-      border-image-source: ${({ theme: { isDarkMode } }) =>
-        `url("${borderActive(getComputedBorder(isDarkMode))}")`};
+      border-image-source: ${theme.ui.buttonBorderActiveUrl};
     }
     &:active {
       animation: ${bounceContract} 1s;
-      border-image-source: ${({ theme: { isDarkMode } }) =>
-        `url("${borderActive(getComputedBorder(isDarkMode))}")`};
+      border-image-source: ${theme.ui.buttonBorderActiveUrl};
     }
     &:disabled {
       opacity: 0.5;
@@ -73,8 +69,7 @@ const renderRegularStyles = () => {
       animation: none;
       &:hover {
         animation: none;
-        border-image-source: ${({ theme: { isDarkMode } }) =>
-          `url("${border(getComputedBorder(isDarkMode))}")`};
+        border-image-source: ${theme.ui.buttonBorderUrl};
       }
     }
   `;
@@ -86,32 +81,22 @@ const renderFabStyles = () => {
     padding: ${theme.spacings(1)};
     background-repeat: no-repeat;
     background-size: contain;
-    background-image: ${({ theme: { isDarkMode } }) =>
-      `url("data:image/svg+xml,${fabBorder(getComputedBorder(isDarkMode))}")`};
+    background-image: ${theme.ui.buttonFabBorderUrl};
     animation: ${bounceContract} 1s;
     &:hover {
       animation: ${bounceExpand} 1s;
       animation-fill-mode: forwards;
-      background-image: ${({ theme: { isDarkMode } }) =>
-        `url("data:image/svg+xml,${fabBorderActive(
-          getComputedBorder(isDarkMode)
-        )}")`};
+      background-image: ${theme.ui.buttonFabBorderActiveUrl};
     }
     &:active {
       animation: ${bounceContract} 1s;
-      background-image: ${({ theme: { isDarkMode } }) =>
-        `url("data:image/svg+xml,${fabBorderActive(
-          getComputedBorder(isDarkMode)
-        )}")`};
+      background-image: ${theme.ui.buttonFabBorderActiveUrl};
     }
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       &:hover {
-        background-image: ${({ theme: { isDarkMode } }) =>
-          `url("data:image/svg+xml,${fabBorder(
-            getComputedBorder(isDarkMode)
-          )}")`};
+        background-image: ${theme.ui.buttonFabBorderUrl};
       }
     }
   `;
