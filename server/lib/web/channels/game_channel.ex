@@ -67,26 +67,6 @@ defmodule Web.GameChannel do
   end
 
   @doc """
-  Triggered on last scene of game. In future this will take game state
-  and store it into database.
-  """
-  def handle_in("end", _payload, socket) do
-    "game:" <> game_code = socket.topic
-
-    case GameServer.game_pid(game_code) do
-      pid when is_pid(pid) ->
-        # TODO: Save game state to DB
-        # end_game_state = GameServer.game_end(game_code)
-        # pack = Live.pack_get(end_game_state.pack)
-        # Live.play_create(pack, %{game_state: end_game_state})
-        {:noreply, socket}
-
-      nil ->
-        {:reply, {:error, %{reason: "Game does not exist"}}, socket}
-    end
-  end
-
-  @doc """
   Increments step in game state
   """
   def handle_in("step:next", _payload, socket) do
