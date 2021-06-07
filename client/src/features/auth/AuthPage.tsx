@@ -7,7 +7,10 @@ import { theme } from "styles/theme";
 import { PageContainer, TextField, Button, Card } from "components";
 
 import { AuthPageUserCreateMutation } from "./__generated__/AuthPageUserCreateMutation";
-import { AuthPageSessionCreateMutation } from "./__generated__/AuthPageSessionCreateMutation";
+import {
+  AuthPageSessionCreateMutation,
+  AuthPageSessionCreateMutation_sessionCreate_user,
+} from "./__generated__/AuthPageSessionCreateMutation";
 
 type FormInputs = {
   username: string;
@@ -46,12 +49,17 @@ export const AuthPage = ({ isLogin }: Props) => {
       if (data) {
         const responseData = (data as unknown) as Record<
           "sessionCreate" | "userCreate",
-          { token: string }
+          {
+            token: string;
+            user: AuthPageSessionCreateMutation_sessionCreate_user;
+          }
         >;
-        const { token } = responseData[responseKey];
+        const { token, user } = responseData[responseKey];
+
         localStorage.setItem("token", token);
-        localStorage.setItem("username", username);
-        history.push(`/${username}`);
+        localStorage.setItem("username", user.username);
+
+        history.push(`/${user.username}`);
       }
     } catch (error) {
       alert.show(error.message);
