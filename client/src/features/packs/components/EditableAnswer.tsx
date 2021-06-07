@@ -69,7 +69,7 @@ export const EditableAnswer = ({
           </Button>
         </EditableAnswerSwitch>
       );
-    case "text_letters":
+    case "text_letter":
       return (
         <EditableAnswerSwitch
           onSelectType={onChange}

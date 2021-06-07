@@ -37,7 +37,7 @@ export const App = () => {
           <Route path="/packs">
             <PackRoutes />
           </Route>
-          <Route path="/:username">
+          <Route path="/@:username">
             <ProfilePage />
           </Route>
           <Redirect to="/" />

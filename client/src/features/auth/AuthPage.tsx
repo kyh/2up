@@ -59,7 +59,7 @@ export const AuthPage = ({ isLogin }: Props) => {
         localStorage.setItem("token", token);
         localStorage.setItem("username", user.username);
 
-        history.push(`/${user.username}`);
+        history.push(`/@${user.username}`);
       }
     } catch (error) {
       alert.show(error.message);
