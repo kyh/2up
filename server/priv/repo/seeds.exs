@@ -485,10 +485,13 @@ Live.pack_tag_create(crypto_pack, featured_tag)
 # Create question types
 {_, text_question_type} = Catalog.question_type_create(%{slug: "text"})
 {_, image_question_type} = Catalog.question_type_create(%{slug: "image"})
+Catalog.question_type_create(%{slug: "audio"})
+Catalog.question_type_create(%{slug: "video"})
 
 # Create answer types
 {_, text_answer_type} = Catalog.answer_type_create(%{slug: "text"})
 {_, multi_text_answer_type} = Catalog.answer_type_create(%{slug: "multi_text"})
+Catalog.answer_type_create(%{slug: "text_letter"})
 
 states_questions
 |> Enum.with_index()

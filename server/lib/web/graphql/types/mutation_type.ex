@@ -104,11 +104,12 @@ defmodule Web.GraphQL.Types.MutationType do
       input do
         field :pack_id, :id
         field :order, :integer
-        field :question_type_id, :id
-        field :answer_type_id, :id
+        field :question_type_slug, :string
+        field :answer_type_slug, :string
         field :question, :string
         field :answer, :string
         field :instruction, :string
+        field :scene_answers, list_of(:scene_answer_input)
       end
 
       output do
