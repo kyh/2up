@@ -98,3 +98,34 @@ const PACKS_QUERY = gql`
     }
   }
 `;
+
+/**
+const samplePacks = [
+  { id: 0, name: "Pack Name", description: "Sample pack 1212" },
+  { id: 1, name: "Pack Name", description: "Sample pack 1212" },
+  { id: 2, name: "Pack Name", description: "Sample pack 1212" },
+  { id: 3, name: "Pack Name", description: "Sample pack 1212" },
+  { id: 4, name: "Pack Name", description: "Sample pack 1212" },
+  { id: 5, name: "Pack Name", description: "Sample pack 1212" },
+  { id: 6, name: "Pack Name", description: "Sample pack 1212" },
+  { id: 7, name: "Pack Name", description: "Sample pack 1212" },
+  { id: 8, name: "Pack Name", description: "Sample pack 1212" },
+];
+
+<Carousel>
+  {samplePacks.map((pack) => (
+    <CarouselItem>
+      <Link
+        to={`/packs/${pack.id}`}
+        key={pack.id}
+        className="pack-item full-width"
+      >
+        <article>
+          <h2>{pack.name}</h2>
+          <p>{pack.description}</p>
+        </article>
+      </Link>
+    </CarouselItem>
+  ))}
+</Carousel>
+ */

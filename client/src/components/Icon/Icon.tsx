@@ -26,6 +26,8 @@ export const iconMap = {
   trash: raw("./svgs/trash.svg"),
   list: raw("./svgs/list.svg"),
   share: raw("./svgs/share.svg"),
+  leftArrow: raw("./svgs/left-arrow.svg"),
+  rightArrow: raw("./svgs/right-arrow.svg"),
 };
 
 type IconType = keyof typeof iconMap;

@@ -43,7 +43,6 @@ export const Page = styled.section<{
 `;
 
 export const Content = styled.section`
-  display: grid;
   max-width: 900px;
   width: 100%;
   margin: 0 auto;
