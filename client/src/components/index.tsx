@@ -15,3 +15,4 @@ export { AnimationSprite, animateSprite } from "./Animations/AnimationSprite";
 export { Confetti } from "./Animations/Confetti";
 export { Record } from "./Speech/Speech";
 export { Counter } from "./Counter/Counter";
+export { Carousel, CarouselContainer, CarouselItem } from "./Carousel/Carousel";

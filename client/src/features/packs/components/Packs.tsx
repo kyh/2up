@@ -44,8 +44,12 @@ export const PackSection = styled.section`
     border: 2px solid ${theme.ui.borderColorAlternate};
     border-radius: ${theme.ui.borderWavyRadius};
     background-color: ${theme.ui.background};
-    min-height: 16em;
+    min-height: 16rem;
     animation: ${bounceContract} 1s;
+
+    &.full-width {
+      width: 90%;
+    }
 
     &:hover {
       animation: ${bounceExpand} 1s;
