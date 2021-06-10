@@ -182,7 +182,18 @@ export const Sidebar = ({
                 <div className="type">{scene.questionType.slug}</div>
               </div>
               <div className="right" onClick={() => selectScene(scene.id)}>
-                <h3 className="question">{scene.question}</h3>
+                {scene.questionType.slug === "image" && (
+                  <img src={scene.question} height={30} />
+                )}
+                {scene.questionType.slug === "text" && (
+                  <h3 className="question">{scene.question}</h3>
+                )}
+                {scene.questionType.slug === "audio" && (
+                  <audio src={scene.question} />
+                )}
+                {scene.questionType.slug === "video" && (
+                  <video src={scene.question} />
+                )}
               </div>
               {scenes.length > 1 && (
                 <button
