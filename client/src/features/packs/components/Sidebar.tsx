@@ -44,6 +44,7 @@ export const Sidebar = ({
   );
   const packScenes = pack.scenes?.edges || [];
   const [scenes, setScenes] = useState(packScenes);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const packId = pack.id;
 
@@ -161,15 +162,36 @@ export const Sidebar = ({
     }
   };
 
+  const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
   return (
     <SidebarContainer>
       <SidebarHeader>
         <h3>Scenes:</h3>
+        <input
+          className="search"
+          onChange={onSearch}
+          type="text"
+          placeholder="Search by answers"
+        />
       </SidebarHeader>
       <SidebarContent>
         {scenes?.map((edge, index) => {
           const scene = edge?.node;
           if (!scene) return null;
+
+          const matchedAnswers = (scene?.sceneAnswers || []).filter(
+            (sceneAnswer) => {
+              return (sceneAnswer?.content || "").includes(searchQuery);
+            }
+          );
+
+          if (searchQuery !== "" && matchedAnswers.length < 1) {
+            return null;
+          }
+
           return (
             <SidebarItem
               key={scene.id}
