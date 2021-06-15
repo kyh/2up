@@ -181,7 +181,6 @@ const EditableAnswerSwitchContainer = styled.div`
   align-items: center;
   flex-direction: column;
   background: ${theme.ui.background};
-  padding-top: 35px;
 
   input {
     width: 100%;
