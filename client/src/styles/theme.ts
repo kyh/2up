@@ -43,7 +43,6 @@ export const ui = {
   textGrey: "var(--text-grey)",
   background: "var(--background)",
   backgroundGrey: "var(--background-grey)",
-  backgroundInverse: "var(--background-inverse)",
   backgroundPurple: "var(--background-purple)",
 
   cardBorder: "var(--card-border)",
@@ -77,7 +76,6 @@ export const lightStyles = css`
     --text-grey: ${colors.grey};
     --background: ${colors.white};
     --background-grey: ${colors.greyBackground};
-    --background-inverse: ${colors.greyDark};
     --background-purple: ${colors.purpleBackground};
 
     --card-border: ${colors.black};
@@ -114,7 +112,6 @@ export const darkStyles = css`
     --text-grey: ${colors.greyLight};
     --background: ${colors.black};
     --background-grey: ${colors.greyDark};
-    --background-inverse: ${colors.greyBackground};
     --background-purple: ${colors.purpleDark};
 
     --card-border: ${colors.greyLight};

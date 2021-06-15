@@ -58,7 +58,7 @@ export const NavigationContainer = styled.header`
   display: flex;
   grid-area: header;
   background: ${theme.ui.background};
-  border-bottom: 1px solid ${theme.ui.backgroundInverse};
+  border-bottom: 1px solid ${theme.ui.borderColor};
   .left {
     display: flex;
     align-items: center;

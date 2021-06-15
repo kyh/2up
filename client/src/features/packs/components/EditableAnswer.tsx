@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import produce from "immer";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { Input, SingleLetterInput, Button } from "components";
+import { Input, SingleLetterInput, Checkbox, Button } from "components";
 import { ScenePreviewFragment_sceneAnswers } from "./__generated__/ScenePreviewFragment";
 
 type EditableAnswerProps = {
@@ -39,12 +39,11 @@ export const EditableAnswer = ({
           <MultiAnswerContainer>
             {sceneAnswers.map((sceneAnswer, index) => (
               <InputContainer key={sceneAnswer.id}>
-                <Input
-                  type="checkbox"
+                <Checkbox
                   name="correct"
                   value={index}
                   checked={sceneAnswer.isCorrect}
-                  onChange={(e) =>
+                  onChange={(e: any) =>
                     onChangeSceneAnswer({ isCorrect: e.target.checked }, index)
                   }
                 />
