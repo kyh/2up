@@ -128,11 +128,6 @@ const PACK_UPDATE = gql`
 `;
 
 const StyledNavigationContainer = styled(NavigationContainer)`
-  .left {
-    ${theme.breakpoints.desktop} {
-      border-right-color: ${theme.ui.backgroundInverse};
-    }
-  }
   .right {
     position: relative;
   }

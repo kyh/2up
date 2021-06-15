@@ -26,25 +26,31 @@ export const PackCreatorPage = () => {
     refetch(newVariables);
   };
 
+  if (!data || !data.pack) {
+    return null;
+  }
+
   return (
     <Page>
-      {data?.pack && (
-        <>
-          <Topbar pack={data.pack} saving={saving} setSaving={setSaving} />
-          <Sidebar
-            pack={data.pack}
-            selectedSceneId={data.scene?.id}
-            selectScene={selectScene}
-            refetch={refetch}
-            setSaving={setSaving}
-          />
-        </>
-      )}
+      <Topbar pack={data.pack} saving={saving} setSaving={setSaving} />
+      <SidebarLeft>
+        <Sidebar
+          pack={data.pack}
+          selectedSceneId={data.scene?.id}
+          selectScene={selectScene}
+          refetch={refetch}
+          setSaving={setSaving}
+        />
+      </SidebarLeft>
       <Content>
-        {data?.scene && (
-          <ScenePreview scene={data.scene} setSaving={setSaving} />
-        )}
+        <Screen>
+          {data?.scene && (
+            <ScenePreview scene={data.scene} setSaving={setSaving} />
+          )}
+        </Screen>
       </Content>
+      <SidebarRight />
+      <Footer />
     </Page>
   );
 };
@@ -77,23 +83,46 @@ export const Page = styled.section`
   display: grid;
   background: ${theme.ui.backgroundGrey};
   grid-template-areas:
-    "header  header  header"
-    "sidebar content content"
-    "sidebar  footer  footer";
-  grid-template-columns: 345px 1fr 1fr;
-  grid-template-rows: 50px 1fr 0;
+    "header  header  header header"
+    "sidebarL content content sidebarR"
+    "sidebarL  footer  footer sidebarR";
+  grid-template-columns: 215px 1fr 1fr 100px;
+  grid-template-rows: 50px 1fr 50px;
+`;
+
+const SidebarLeft = styled.section`
+  grid-area: sidebarL;
+  display: grid;
+  grid-template-rows: max-content auto max-content;
+  height: 100%;
+  border-right: 1px solid ${theme.ui.borderColor};
 `;
 
 export const Content = styled.section`
   grid-area: content;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${theme.spacings(5)};
+  padding: ${theme.spacings(7)};
 `;
 
-// const Footer = styled.footer`
-//   grid-area: footer;
-//   display: flex;
-//   padding: ${theme.spacings(4)};
-// `;
+const Screen = styled.section`
+  text-align: center;
+  background-color: ${theme.ui.background};
+  padding: ${theme.spacings(2)};
+  width: 100%;
+  border: 2px solid ${theme.ui.borderColor};
+  border-radius: ${theme.ui.borderWavyRadius};
+  /* screen - top - padding - footer - padding */
+  height: calc(100vh - 50px - 40px - 50px - 16px);
+  overflow: auto;
+`;
+
+const SidebarRight = styled.section`
+  grid-area: sidebarR;
+  padding: ${theme.spacings(3)};
+  height: 100%;
+`;
+
+const Footer = styled.footer`
+  grid-area: footer;
+  display: flex;
+  padding: ${theme.spacings(4)};
+`;

@@ -62,10 +62,9 @@ export const NavigationContainer = styled.header`
   .left {
     display: flex;
     align-items: center;
-    border-right: 1px solid transparent;
     padding-left: ${theme.spacings(3)};
     ${theme.breakpoints.desktop} {
-      width: 345px;
+      width: 215px;
     }
   }
   .right {

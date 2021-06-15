@@ -1,7 +1,6 @@
-import { useEffect, useState, useCallback, ReactNode } from "react";
-import styled from "styled-components";
+import { useEffect, useState, useCallback } from "react";
+import styled, { css } from "styled-components";
 import { useAlert } from "react-alert";
-import ReactTooltip from "react-tooltip";
 import { gql, useMutation } from "@apollo/client";
 import { motion } from "framer-motion";
 import {
@@ -15,11 +14,16 @@ import {
 } from "styles/animations";
 import { theme } from "styles/theme";
 import { Button, Icon } from "components";
+import { Question } from "features/game/components/Question";
+import { Answer } from "features/game/components/Answer";
 
 import { SidebarSceneCreateMutation } from "./__generated__/SidebarSceneCreateMutation";
 import { SidebarSceneDeleteMutation } from "./__generated__/SidebarSceneDeleteMutation";
 import { SidebarSceneOrderUpdateMutation } from "./__generated__/SidebarSceneOrderUpdateMutation";
-import { SidebarPackFragment } from "./__generated__/SidebarPackFragment";
+import {
+  SidebarPackFragment,
+  SidebarPackFragment_scenes_edges_node,
+} from "./__generated__/SidebarPackFragment";
 
 type Props = {
   pack: SidebarPackFragment;
@@ -152,13 +156,17 @@ export const Sidebar = ({
     if (scenes) {
       const selectedScene = scenes.find((s) => s?.node?.id === selectedSceneId)
         ?.node;
-      addNewScene({
-        instruction: selectedScene?.instruction,
-        questionTypeSlug: selectedScene?.questionType.slug,
-        question: selectedScene?.question,
-        answerTypeSlug: selectedScene?.answerType.slug,
-        sceneAnswers: selectedScene?.sceneAnswers,
-      });
+      addNewScene(
+        selectedScene
+          ? {
+              instruction: selectedScene.instruction,
+              questionTypeSlug: selectedScene.questionType.slug,
+              question: selectedScene.question,
+              answerTypeSlug: selectedScene.answerType.slug,
+              sceneAnswers: selectedScene.sceneAnswers,
+            }
+          : {}
+      );
     }
   };
 
@@ -167,15 +175,14 @@ export const Sidebar = ({
   };
 
   return (
-    <SidebarContainer>
+    <>
       <SidebarHeader>
-        <h3>Scenes:</h3>
-        <input
+        {/* <input
           className="search"
           onChange={onSearch}
           type="text"
           placeholder="Search by answers"
-        />
+        /> */}
       </SidebarHeader>
       <SidebarContent>
         {scenes?.map((edge, index) => {
@@ -197,50 +204,21 @@ export const Sidebar = ({
               key={scene.id}
               index={index}
               itemProps={itemProps}
-              sceneId={scene.id}
+              scene={scene}
               isSelected={selectedSceneId === scene.id}
-            >
-              <div className="left" onClick={() => selectScene(scene.id)}>
-                <div className="type">{scene.questionType.slug}</div>
-              </div>
-              <div className="right" onClick={() => selectScene(scene.id)}>
-                {scene.questionType.slug === "image" && (
-                  <img src={scene.question} height={30} />
-                )}
-                {scene.questionType.slug === "text" && (
-                  <h3 className="question">{scene.question}</h3>
-                )}
-                {scene.questionType.slug === "audio" && (
-                  <audio src={scene.question} />
-                )}
-                {scene.questionType.slug === "video" && (
-                  <video src={scene.question} />
-                )}
-              </div>
-              {scenes.length > 1 && (
-                <button
-                  className="delete"
-                  onClick={() => deleteScene(scene.id, index)}
-                >
-                  <Icon icon="trash" />
-                </button>
-              )}
-            </SidebarItem>
+              selectScene={selectScene}
+              deleteScene={deleteScene}
+              showDelete={scenes.length > 1}
+            />
           );
         })}
       </SidebarContent>
       <SidebarFooter>
-        <Button onClick={addNewScene}>Add New Scene</Button>
-        <Button
-          onClick={quickAddNewScene}
-          data-tip="Quick add"
-          disabled={!selectedSceneId}
-        >
-          +
+        <Button onClick={quickAddNewScene} fullWidth>
+          Add New Scene
         </Button>
-        <ReactTooltip effect="solid" place="top" />
       </SidebarFooter>
-    </SidebarContainer>
+    </>
   );
 };
 
@@ -323,17 +301,22 @@ const SCENE_ORDER_UPDATE = gql`
 
 type SidebarItemProps = {
   index: number;
-  sceneId: string;
+  scene: SidebarPackFragment_scenes_edges_node;
   isSelected: boolean;
-  children: ReactNode;
+  selectScene: (sceneId: string) => any;
+  deleteScene: (sceneId: string, index: number) => any;
+  showDelete: boolean;
   itemProps: DynamicListItemProps;
 };
 
 const SidebarItem = ({
+  scene,
   index,
   isSelected,
+  selectScene,
+  deleteScene,
+  showDelete,
   itemProps,
-  children,
 }: SidebarItemProps) => {
   const [dragState, ref, eventHandlers] = useDynamicListItem<HTMLLIElement>(
     index,
@@ -342,32 +325,58 @@ const SidebarItem = ({
   );
 
   return (
-    <QuestionItem
+    <QuestionItemContainer
       layout
       initial={false}
       drag="y"
       ref={ref}
-      isSelected={isSelected}
       style={{
         zIndex: getDragStateZIndex(dragState),
         cursor: getDragCursor(dragState),
       }}
       {...eventHandlers}
     >
-      {children}
-    </QuestionItem>
+      <QuestionItem
+        isSelected={isSelected}
+        onClick={() => selectScene(scene.id)}
+      >
+        <div className="preview">
+          <Question
+            question={scene.question}
+            instruction={scene.instruction || ""}
+            questionType={scene.questionType.slug}
+          />
+          <div className="answers-container">
+            {scene.sceneAnswers?.map((sceneAnswer) => {
+              if (!sceneAnswer) return null;
+              return (
+                <Answer
+                  sceneAnswer={{
+                    id: sceneAnswer.id,
+                    content: sceneAnswer.content || "",
+                    isCorrect: sceneAnswer.isCorrect,
+                  }}
+                  answerType={scene.answerType.slug}
+                  submitted
+                  onSubmit={() => {}}
+                  displayMode
+                />
+              );
+            })}
+          </div>
+        </div>
+        {showDelete && (
+          <button
+            className="delete"
+            onClick={() => deleteScene(scene.id, index)}
+          >
+            <Icon icon="trash" />
+          </button>
+        )}
+      </QuestionItem>
+    </QuestionItemContainer>
   );
 };
-
-const SidebarContainer = styled.section`
-  grid-area: sidebar;
-  background: ${theme.ui.background};
-  padding: ${theme.spacings(3)};
-  display: grid;
-  grid-template-rows: max-content auto max-content;
-  height: 100%;
-  border-right: 1px solid ${theme.ui.backgroundInverse};
-`;
 
 const SidebarHeader = styled.header`
   display: flex;
@@ -380,65 +389,78 @@ const SidebarHeader = styled.header`
 `;
 
 const SidebarContent = styled.ul`
+  isolation: isolate;
   overflow: auto;
-  padding: 0;
+  padding: 0 ${theme.spacings(3)} 0 0;
   margin: 0;
 `;
 
 const SidebarFooter = styled.footer`
-  padding: ${theme.spacings(3)} 0 0;
-  button {
-    min-width: 0;
-  }
+  padding: ${theme.spacings(3)};
 `;
 
-const QuestionItem = styled(motion.li)<{ isSelected: boolean }>`
+const QuestionItemContainer = styled(motion.li)`
+  padding: ${theme.spacings(1)} 0;
+`;
+
+const QuestionItem = styled.div<{ isSelected: boolean }>`
   position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  border: 2px dotted ${theme.colors.greyLight};
-  border-radius: ${theme.ui.borderWavyRadius};
-  margin-bottom: ${theme.spacings(3)};
-  background-color: ${({ isSelected }) =>
-    isSelected ? theme.ui.backgroundGrey : theme.ui.background};
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: ${theme.spacings(2)};
+  padding-left: ${theme.spacings(6)};
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  ${({ isSelected }) =>
+    isSelected &&
+    css`
+      background-color: ${theme.colors.purpleBackground};
+      box-shadow: inset ${theme.spacings(1)} 0 0 0 ${theme.colors.purple};
+    `}
+
+  .preview {
+    font-size: 0.4rem;
+    background: ${theme.ui.background};
+    padding: ${theme.spacings(2)};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid ${theme.ui.borderColor};
+    border-radius: ${theme.ui.borderWavyRadius};
+    > div:first-child {
+      margin-bottom: ${theme.spacings(1)};
+    }
+    > img {
+      max-width: 100%;
+      max-height: 50px;
+      display: block;
+      margin: 0 auto ${theme.spacings(2)};
+    }
+    > h1 {
+      font-size: 0.7rem;
+      margin-bottom: ${theme.spacings(2)};
+    }
+    .answers-container {
+      display: flex;
+      column-gap: ${theme.spacings(1)};
+    }
+    .display-text {
+      font-size: 0.4rem;
+      padding: ${theme.spacings(1)} ${theme.spacings(2)};
+    }
+    > * {
+      pointer-events: none;
+    }
+  }
 
   &:hover .delete {
     display: block;
   }
 
-  .left {
-    padding: ${theme.spacings(3)};
-  }
-
-  .right {
-    width: 100%;
-    overflow: hidden;
-    padding: ${theme.spacings(3)};
-  }
-
-  .question {
-    font-size: 1.5rem;
-    line-height: 1.6;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .type {
-    height: fit-content;
-    padding: ${theme.spacings(1)};
-    border: 2px solid ${theme.ui.borderColor};
-    border-radius: ${theme.ui.borderWavyRadius};
-    text-transform: uppercase;
-  }
-
   .delete {
     display: none;
     position: absolute;
-    right: ${theme.spacings(2)};
-    bottom: ${theme.spacings(2)};
+    right: ${theme.spacings(-1)};
+    top: ${theme.spacings(-1)};
   }
 `;
