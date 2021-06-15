@@ -36,37 +36,41 @@ export const EditableAnswer = ({
           sceneId={sceneId}
           key={sceneId}
         >
-          {sceneAnswers.map((sceneAnswer, index) => (
-            <InputContainer key={sceneAnswer.id}>
-              <Input
-                type="checkbox"
-                name="correct"
-                value={index}
-                checked={sceneAnswer.isCorrect}
-                onChange={(e) =>
-                  onChangeSceneAnswer({ isCorrect: e.target.checked }, index)
+          <MultiAnswerContainer>
+            {sceneAnswers.map((sceneAnswer, index) => (
+              <InputContainer key={sceneAnswer.id}>
+                <Input
+                  type="checkbox"
+                  name="correct"
+                  value={index}
+                  checked={sceneAnswer.isCorrect}
+                  onChange={(e) =>
+                    onChangeSceneAnswer({ isCorrect: e.target.checked }, index)
+                  }
+                />
+                <Input
+                  defaultValue={sceneAnswer.content || ""}
+                  onBlur={(e) =>
+                    onChangeSceneAnswer({ content: e.target.value }, index)
+                  }
+                />
+              </InputContainer>
+            ))}
+            <InputContainer>
+              <Button
+                onClick={() =>
+                  onChange({
+                    sceneAnswers: [
+                      ...sceneAnswers,
+                      { isCorrect: false, content: "" },
+                    ],
+                  })
                 }
-              />
-              <Input
-                defaultValue={sceneAnswer.content || ""}
-                onBlur={(e) =>
-                  onChangeSceneAnswer({ content: e.target.value }, index)
-                }
-              />
+              >
+                + Add Option
+              </Button>
             </InputContainer>
-          ))}
-          <Button
-            onClick={() =>
-              onChange({
-                sceneAnswers: [
-                  ...sceneAnswers,
-                  { isCorrect: false, content: "" },
-                ],
-              })
-            }
-          >
-            + Add Option
-          </Button>
+          </MultiAnswerContainer>
         </EditableAnswerSwitch>
       );
     case "text_letter":
@@ -116,7 +120,16 @@ export const EditableAnswer = ({
   }
 };
 
+const MultiAnswerContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  grid-column-gap: ${theme.spacings(3)};
+`;
+
 const InputContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: ${theme.spacings(3)};
 `;
 

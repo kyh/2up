@@ -106,7 +106,7 @@ export const Content = styled.section`
 const Screen = styled.section`
   text-align: center;
   background-color: ${theme.ui.background};
-  padding: ${theme.spacings(2)};
+  padding: ${theme.spacings(5)};
   width: 100%;
   border: 2px solid ${theme.ui.borderColor};
   border-radius: ${theme.ui.borderWavyRadius};

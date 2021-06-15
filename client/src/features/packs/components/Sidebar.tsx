@@ -452,8 +452,9 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
       margin-bottom: ${theme.spacings(2)};
     }
     .answers-container {
-      display: flex;
-      column-gap: ${theme.spacings(1)};
+      display: grid;
+      grid-template-columns: repeat(2, max-content);
+      grid-gap: ${theme.spacings(1)};
     }
     .display-text {
       font-size: 0.4rem;
