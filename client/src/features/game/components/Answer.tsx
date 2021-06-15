@@ -58,7 +58,11 @@ const AnswerText = ({
   };
 
   if (displayMode) {
-    return <AnswerTextDisplay>{sceneAnswer.content}</AnswerTextDisplay>;
+    return (
+      <AnswerDisplay className="display-text">
+        {sceneAnswer.content}
+      </AnswerDisplay>
+    );
   }
 
   return (
@@ -88,7 +92,7 @@ const InputContainer = styled.div`
   margin-bottom: ${theme.spacings(3)};
 `;
 
-const AnswerTextDisplay = styled.div`
+const AnswerDisplay = styled.div`
   font-size: 1.2rem;
   text-align: center;
   padding: ${theme.spacings(3)};
@@ -104,9 +108,9 @@ const AnswerMulti = ({
 }: AnswerProps) => {
   if (displayMode) {
     return (
-      <Button key={sceneAnswer.id} fullWidth disabled>
+      <AnswerDisplay key={sceneAnswer.id} className="display-text">
         {sceneAnswer.content}
-      </Button>
+      </AnswerDisplay>
     );
   }
 

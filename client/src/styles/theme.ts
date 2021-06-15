@@ -12,6 +12,7 @@ import {
 
 export const colors = {
   purple: "#7247C4",
+  purpleBackground: "#e1d8f3",
   white: "#FFFFFF",
   black: "#1A202C",
   greyBackground: "#EDF2F7",
