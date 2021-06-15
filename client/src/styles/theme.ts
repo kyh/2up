@@ -11,6 +11,7 @@ import {
 } from "./borders";
 
 export const colors = {
+  purpleDark: "#2a194d",
   purple: "#7247C4",
   purpleBackground: "#e1d8f3",
   white: "#FFFFFF",
@@ -43,6 +44,7 @@ export const ui = {
   background: "var(--background)",
   backgroundGrey: "var(--background-grey)",
   backgroundInverse: "var(--background-inverse)",
+  backgroundPurple: "var(--background-purple)",
 
   cardBorder: "var(--card-border)",
   cardBorderUrl: "var(--card-border-url)",
@@ -76,6 +78,7 @@ export const lightStyles = css`
     --background: ${colors.white};
     --background-grey: ${colors.greyBackground};
     --background-inverse: ${colors.greyDark};
+    --background-purple: ${colors.purpleBackground};
 
     --card-border: ${colors.black};
     --card-border-url: url("${cardBorder(colors.greyDark)}");
@@ -112,6 +115,7 @@ export const darkStyles = css`
     --background: ${colors.black};
     --background-grey: ${colors.greyDark};
     --background-inverse: ${colors.greyBackground};
+    --background-purple: ${colors.purpleDark};
 
     --card-border: ${colors.greyLight};
     --card-border-url: url("${cardBorder(colors.greyLight)}");

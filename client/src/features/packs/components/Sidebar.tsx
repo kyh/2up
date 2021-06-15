@@ -413,9 +413,19 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
   ${({ isSelected }) =>
     isSelected &&
     css`
-      background-color: ${theme.colors.purpleBackground};
+      background-color: ${theme.ui.backgroundPurple};
       box-shadow: inset ${theme.spacings(1)} 0 0 0 ${theme.colors.purple};
     `}
+
+  &:hover {
+    .delete {
+      display: block;
+    }
+    .preview {
+      box-shadow: 0 0 3px 0 ${theme.colors.purple};
+      border-color: ${theme.colors.purple};
+    }
+  }
 
   .preview {
     font-size: 0.4rem;
@@ -427,6 +437,7 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     align-items: center;
     border: 1px solid ${theme.ui.borderColor};
     border-radius: ${theme.ui.borderWavyRadius};
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     > div:first-child {
       margin-bottom: ${theme.spacings(1)};
     }
@@ -451,10 +462,6 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     > * {
       pointer-events: none;
     }
-  }
-
-  &:hover .delete {
-    display: block;
   }
 
   .delete {

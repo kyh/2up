@@ -108,7 +108,6 @@ const QuestionImage = styled.img`
 `;
 
 const EditableQuestionSwitchContainer = styled.div`
-  padding-top: 35px;
   position: relative;
 
   &:hover .button-container {
