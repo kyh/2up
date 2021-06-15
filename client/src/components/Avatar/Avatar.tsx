@@ -26,6 +26,15 @@ export const avatarMap = {
   5: raw("./svgs/5.svg"),
   6: raw("./svgs/6.svg"),
   7: raw("./svgs/7.svg"),
+  8: raw("./svgs/8.svg"),
+  9: raw("./svgs/9.svg"),
+  10: raw("./svgs/10.svg"),
+  11: raw("./svgs/11.svg"),
+  12: raw("./svgs/12.svg"),
+  13: raw("./svgs/13.svg"),
+  14: raw("./svgs/14.svg"),
+  15: raw("./svgs/15.svg"),
+  16: raw("./svgs/16.svg"),
 };
 
 const length = Object.keys(avatarMap).length;
