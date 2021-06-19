@@ -41,11 +41,11 @@ const QuestionText = styled.h1`
 `;
 
 const QuestionImage = styled.img`
-  object-fit: cover;
+  object-fit: contain;
   margin: 0 0 ${theme.spacings(5)};
   max-width: 100vw;
-  max-height: 50vh;
+  height: 240px;
   ${theme.breakpoints.desktop} {
-    max-width: 60vw;
+    max-width: 40vw;
   }
 `;

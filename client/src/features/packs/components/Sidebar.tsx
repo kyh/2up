@@ -442,8 +442,9 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
       margin-bottom: ${theme.spacings(1)};
     }
     > img {
-      max-width: 100%;
-      max-height: 50px;
+      object-fit: contain;
+      max-width: 70px;
+      height: 40px;
       display: block;
       margin: 0 auto ${theme.spacings(2)};
     }
