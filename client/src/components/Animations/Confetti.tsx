@@ -9,14 +9,39 @@ export const Confetti = () => {
   const instance = useRef<any>(null);
 
   useEffect(() => {
-    requestAnimationFrame(fire);
-    const intervalId = setInterval(() => {
-      if (document.hasFocus()) {
-        requestAnimationFrame(fire);
-      }
-    }, 3000);
+    let intervalId: ReturnType<typeof setInterval>;
 
-    return () => clearInterval(intervalId);
+    const setFireInterval = () => {
+      intervalId = setInterval(() => {
+        requestAnimationFrame(fire);
+      }, 3000);
+    };
+
+    const cancelFireInterval = () => {
+      clearInterval(intervalId);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        cancelFireInterval();
+      } else {
+        setFireInterval();
+      }
+    };
+
+    document.addEventListener(
+      "visibilitychange",
+      handleVisibilityChange,
+      false
+    );
+
+    requestAnimationFrame(fire);
+    setFireInterval();
+
+    return () => {
+      cancelFireInterval();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   const makeShot = (particleRatio: number, opts = {}) => {

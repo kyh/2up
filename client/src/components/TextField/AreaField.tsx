@@ -27,7 +27,7 @@ export const AreaField = forwardRef<HTMLTextAreaElement, Props>(
         <Textarea
           id={id}
           placeholder={placeholder}
-          ref={ref}
+          ref={ref as any}
           as="textarea"
           {...rest}
         />

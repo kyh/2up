@@ -104,8 +104,11 @@ const EditableQuestionSwitch = ({
 const QuestionImage = styled.img`
   object-fit: cover;
   max-width: 100%;
-  max-height: 250px;
+  max-height: 200px;
   margin: 0 0 ${theme.spacings(5)};
+  ${theme.breakpoints.desktop} {
+    max-width: 500px;
+  }
 `;
 
 const EditableQuestionSwitchContainer = styled.div`
