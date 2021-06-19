@@ -194,10 +194,6 @@ const EditableAnswerSwitchContainer = styled.div`
   flex-direction: column;
   background: ${theme.ui.background};
 
-  input {
-    width: 100%;
-  }
-
   &:hover .button-container {
     display: block;
   }
