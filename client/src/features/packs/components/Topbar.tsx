@@ -1,3 +1,4 @@
+import { useReactiveVar } from "@apollo/client";
 import { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -12,21 +13,21 @@ import { Button, Icon, Modal, Loader } from "components";
 
 import { TopbarPackFragment } from "./__generated__/TopbarPackFragment";
 import { TopbarPackUpdateMutation } from "./__generated__/TopbarPackUpdateMutation";
+import { savingSceneVar } from "./cache";
 
 type Props = {
   pack: TopbarPackFragment;
-  saving: boolean;
-  setSaving: (saving: boolean) => void;
 };
 
-export const Topbar = ({ pack, saving, setSaving }: Props) => {
+export const Topbar = ({ pack }: Props) => {
+  const saving = useReactiveVar(savingSceneVar);
   const alert = useAlert();
   const [isOpen, setIsOpen] = useState(false);
   const [packUpdate] = useMutation<TopbarPackUpdateMutation>(PACK_UPDATE);
   const hostGame = useHostGame();
 
   const onSaveChanges = async (newPack: TopbarPackFragment) => {
-    setSaving(true);
+    savingSceneVar(true);
     try {
       await packUpdate({
         variables: {
@@ -39,11 +40,11 @@ export const Topbar = ({ pack, saving, setSaving }: Props) => {
           },
         },
       });
-      setSaving(false);
+      savingSceneVar(false);
       setIsOpen(false);
     } catch (error) {
+      savingSceneVar(false);
       alert.show(error.message);
-      setSaving(false);
     }
   };
 

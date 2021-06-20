@@ -1,7 +1,6 @@
-import { ReactNode } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { Button } from "components";
+import { VisibleQATypeMenu, visibleQATypeMenuVar } from "./cache";
 
 type EditableQuestionProps = {
   instruction: string;
@@ -18,6 +17,18 @@ export const EditableQuestion = ({
   questionType,
   onChange,
 }: EditableQuestionProps) => {
+  const onFocus = () => {
+    visibleQATypeMenuVar(VisibleQATypeMenu.Question);
+  };
+
+  const onBlurInstruction = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange({ instruction: e.target.value });
+  };
+
+  const onBlurQuestion = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange({ question: e.target.value });
+  };
+
   switch (questionType) {
     case "image":
       return (
@@ -25,18 +36,18 @@ export const EditableQuestion = ({
           <EditableQuestionInstructions
             placeholder="Instruction..."
             defaultValue={instruction}
-            onBlur={(e) => onChange({ instruction: e.target.value })}
+            onFocus={onFocus}
+            onBlur={onBlurInstruction}
           />
           <EditableQuestionImageContainer>
-            <EditableQuestionSwitch onSelectType={onChange}>
-              <input
-                type="text"
-                placeholder="Image URL"
-                defaultValue={question}
-                onBlur={(e) => onChange({ question: e.target.value })}
-              />
-              <QuestionImage alt={instruction} src={question} />
-            </EditableQuestionSwitch>
+            <input
+              type="text"
+              placeholder="Image URL"
+              defaultValue={question}
+              onFocus={onFocus}
+              onBlur={onBlurQuestion}
+            />
+            <QuestionImage alt={instruction} src={question} />
           </EditableQuestionImageContainer>
         </EditableQuestionContainer>
       );
@@ -46,59 +57,18 @@ export const EditableQuestion = ({
           <EditableQuestionInstructions
             placeholder="Instruction..."
             defaultValue={instruction}
-            onBlur={(e) => onChange({ instruction: e.target.value })}
+            onFocus={onFocus}
+            onBlur={onBlurInstruction}
           />
-          <EditableQuestionSwitch onSelectType={onChange}>
-            <EditableQuestionText
-              placeholder="Your question?"
-              defaultValue={question}
-              onBlur={(e) => onChange({ question: e.target.value })}
-            />
-          </EditableQuestionSwitch>
+          <EditableQuestionText
+            placeholder="Your question?"
+            defaultValue={question}
+            onFocus={onFocus}
+            onBlur={onBlurQuestion}
+          />
         </EditableQuestionContainer>
       );
   }
-};
-
-type EditableQuestionSwitchProps = {
-  onSelectType: (_updatedScene: Pick<any, "questionType" | "question">) => void;
-  children: ReactNode;
-};
-
-// TODO: Get answer types from backend
-const EditableQuestionSwitch = ({
-  onSelectType,
-  children,
-}: EditableQuestionSwitchProps) => {
-  return (
-    <EditableQuestionSwitchContainer>
-      {children}
-      <div className="button-container">
-        <Button
-          variant="fab"
-          onClick={() => {
-            onSelectType({
-              questionType: { slug: "text" },
-              question: "Hello in there?",
-            });
-          }}
-        >
-          T
-        </Button>
-        <Button
-          variant="fab"
-          onClick={() => {
-            onSelectType({
-              questionType: { slug: "image" },
-              question: `${process.env.PUBLIC_URL}/illustrations/pusheen.gif`,
-            });
-          }}
-        >
-          I
-        </Button>
-      </div>
-    </EditableQuestionSwitchContainer>
-  );
 };
 
 const QuestionImage = styled.img`
@@ -111,29 +81,10 @@ const QuestionImage = styled.img`
   }
 `;
 
-const EditableQuestionSwitchContainer = styled.div`
-  position: relative;
-
-  &:hover .button-container {
-    display: block;
-  }
-
-  .button-container {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 10px;
-  }
-
-  button {
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-  }
-`;
-
 const EditableQuestionContainer = styled.div`
   input {
+    display: block;
+    text-align: center;
     border-radius: ${theme.ui.borderWavyRadius};
     border: none;
     transition: all 0.23s ease;
@@ -146,13 +97,11 @@ const EditableQuestionContainer = styled.div`
 `;
 
 const EditableQuestionInstructions = styled.input`
-  text-align: center;
-  margin: 0 0 ${theme.spacings(2)};
+  margin: 0 auto ${theme.spacings(2)};
 `;
 
 const EditableQuestionText = styled.input`
-  text-align: center;
-  margin: 0 0 ${theme.spacings(5)};
+  margin: 0 auto ${theme.spacings(5)};
   font-size: 2rem;
 `;
 
