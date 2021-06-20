@@ -1,14 +1,11 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, makeVar } from "@apollo/client";
 import { useAlert } from "react-alert";
-import { Props, SCENE_UPDATE } from "./ScenePreview";
-import { savingSceneVar } from "./cache";
-import { ScenePreviewSceneUpdateMutation } from "./__generated__/ScenePreviewSceneUpdateMutation";
+import { Props, SCENE_UPDATE } from "./components/ScenePreview";
+import { SceneUpdateMutation } from "./components/__generated__/SceneUpdateMutation";
 
 export const useUpdateScene = ({ scene }: Props) => {
   const alert = useAlert();
-  const [sceneUpdate] = useMutation<ScenePreviewSceneUpdateMutation>(
-    SCENE_UPDATE
-  );
+  const [sceneUpdate] = useMutation<SceneUpdateMutation>(SCENE_UPDATE);
 
   const updateScene = async (updatedScene = {}) => {
     savingSceneVar(true);
@@ -36,3 +33,12 @@ export const useUpdateScene = ({ scene }: Props) => {
 
   return { updateScene };
 };
+
+export enum VisibleQATypeMenu {
+  None,
+  Question,
+  Answer,
+}
+
+export const visibleQATypeMenuVar = makeVar(VisibleQATypeMenu.None);
+export const savingSceneVar = makeVar(false);

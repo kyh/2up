@@ -11,7 +11,7 @@ import { SceneSettingsMenu } from "features/packs/components/SceneSettingsMenu";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
-} from "features/packs/components/cache";
+} from "features/packs/sceneService";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
 

@@ -5,7 +5,7 @@ import { Input, SingleLetterInput, Checkbox, Button } from "components";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
-} from "features/packs/components/cache";
+} from "features/packs/sceneService";
 import { AnswerTypeSlugs } from "features/game/gameSlice";
 
 import { ScenePreviewFragment_sceneAnswers } from "./__generated__/ScenePreviewFragment";
