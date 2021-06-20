@@ -6,7 +6,7 @@ import {
   ScenePreviewFragment,
   ScenePreviewFragment_sceneAnswers,
 } from "./__generated__/ScenePreviewFragment";
-import { useUpdateScene } from "./hooks";
+import { useUpdateScene } from "../sceneService";
 
 export type Props = {
   scene: ScenePreviewFragment;
@@ -57,7 +57,7 @@ ScenePreview.fragments = {
 };
 
 export const SCENE_UPDATE = gql`
-  mutation ScenePreviewSceneUpdateMutation($input: SceneUpdateInput!) {
+  mutation SceneUpdateMutation($input: SceneUpdateInput!) {
     sceneUpdate(input: $input) {
       scene {
         ...ScenePreviewFragment

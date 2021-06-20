@@ -9,7 +9,7 @@ import { Button, Icon, Modal, Loader } from "components";
 import { useHostGame } from "features/game/gameService";
 import { NavigationContainer } from "features/packs/components/Navigation";
 import { PackForm } from "features/packs/components/PackForm";
-import { savingSceneVar } from "features/packs/components/cache";
+import { savingSceneVar } from "features/packs/sceneService";
 
 import { TopbarPackFragment } from "./__generated__/TopbarPackFragment";
 import { TopbarPackUpdateMutation } from "./__generated__/TopbarPackUpdateMutation";

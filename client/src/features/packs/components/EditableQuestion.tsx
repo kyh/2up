@@ -4,7 +4,7 @@ import { QuestionTypeSlugs } from "features/game/gameSlice";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
-} from "features/packs/components/cache";
+} from "features/packs/sceneService";
 
 type EditableQuestionProps = {
   instruction: string;

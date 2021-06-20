@@ -16,7 +16,7 @@ import { theme } from "styles/theme";
 import { Button, Icon } from "components";
 import { Question } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
-import { savingSceneVar } from "features/packs/components/cache";
+import { savingSceneVar } from "features/packs/sceneService";
 
 import { SidebarSceneCreateMutation } from "./__generated__/SidebarSceneCreateMutation";
 import { SidebarSceneDeleteMutation } from "./__generated__/SidebarSceneDeleteMutation";
