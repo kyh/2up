@@ -2,8 +2,13 @@ import produce from "immer";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { Input, SingleLetterInput, Checkbox, Button } from "components";
+import {
+  VisibleQATypeMenu,
+  visibleQATypeMenuVar,
+} from "features/packs/components/cache";
+import { AnswerTypeSlugs } from "features/game/gameSlice";
+
 import { ScenePreviewFragment_sceneAnswers } from "./__generated__/ScenePreviewFragment";
-import { VisibleQATypeMenu, visibleQATypeMenuVar } from "./cache";
 
 type EditableAnswerProps = {
   sceneId: string;
@@ -33,7 +38,7 @@ export const EditableAnswer = ({
   };
 
   switch (answerType) {
-    case "multi_text":
+    case AnswerTypeSlugs.multiText.id:
       return (
         <MultiAnswerContainer key={sceneId}>
           {sceneAnswers.map((sceneAnswer, index) => (
@@ -71,7 +76,7 @@ export const EditableAnswer = ({
           </InputContainer>
         </MultiAnswerContainer>
       );
-    case "text_letter":
+    case AnswerTypeSlugs.letter.id:
       return (
         <>
           <InputContainer>

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { theme } from "styles/theme";
+import { QuestionTypeSlugs } from "features/game/gameSlice";
 
 type QuestionProps = {
   instruction: string;
@@ -13,7 +14,7 @@ export const Question = ({
   questionType,
 }: QuestionProps) => {
   switch (questionType) {
-    case "image":
+    case QuestionTypeSlugs.image.id:
       return (
         <>
           <QuestionInstructions>{instruction}</QuestionInstructions>
