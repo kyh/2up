@@ -17,6 +17,7 @@ import { Button, Icon } from "components";
 import { Question } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
 
+import { savingSceneVar } from "./cache";
 import { SidebarSceneCreateMutation } from "./__generated__/SidebarSceneCreateMutation";
 import { SidebarSceneDeleteMutation } from "./__generated__/SidebarSceneDeleteMutation";
 import { SidebarSceneOrderUpdateMutation } from "./__generated__/SidebarSceneOrderUpdateMutation";
@@ -30,7 +31,6 @@ type Props = {
   selectedSceneId?: string;
   selectScene: (scene: any) => void;
   refetch: () => void;
-  setSaving: (saving: boolean) => void;
 };
 
 export const Sidebar = ({
@@ -38,7 +38,6 @@ export const Sidebar = ({
   selectedSceneId,
   selectScene,
   refetch,
-  setSaving,
 }: Props) => {
   const alert = useAlert();
   const [sceneCreate] = useMutation<SidebarSceneCreateMutation>(SCENE_CREATE);
@@ -88,7 +87,7 @@ export const Sidebar = ({
     beforeSceneId?: string,
     afterSceneId?: string
   ) => {
-    setSaving(true);
+    savingSceneVar(true);
     try {
       await sceneOrderUpdate({
         variables: {
@@ -100,15 +99,15 @@ export const Sidebar = ({
         },
       });
       await refetch();
-      setSaving(false);
+      savingSceneVar(false);
     } catch (error) {
       alert.show(error.message);
-      setSaving(false);
+      savingSceneVar(false);
     }
   };
 
   const deleteScene = async (sceneId: string, index: number) => {
-    setSaving(true);
+    savingSceneVar(true);
     try {
       await sceneDelete({
         variables: {
@@ -121,10 +120,10 @@ export const Sidebar = ({
       if (sceneId === selectedSceneId) {
         selectScene(scenes![index - 1]?.node?.id);
       }
-      setSaving(false);
+      savingSceneVar(false);
     } catch (error) {
       alert.show(error.message);
-      setSaving(false);
+      savingSceneVar(false);
     }
   };
 
@@ -137,7 +136,7 @@ export const Sidebar = ({
       sceneAnswers: [{ content: "Answer!", isCorrect: true }],
       order: (scenes?.length || 0) + 1,
     };
-    setSaving(true);
+    savingSceneVar(true);
 
     try {
       const { data } = await sceneCreate({
@@ -145,10 +144,10 @@ export const Sidebar = ({
       });
       await refetch();
       selectScene(data?.sceneCreate?.scene.id);
-      setSaving(false);
+      savingSceneVar(false);
     } catch (error) {
       alert.show(error.message);
-      setSaving(false);
+      savingSceneVar(false);
     }
   };
 
@@ -351,6 +350,7 @@ const SidebarItem = ({
               if (!sceneAnswer) return null;
               return (
                 <Answer
+                  key={sceneAnswer.id}
                   sceneAnswer={{
                     id: sceneAnswer.id,
                     content: sceneAnswer.content || "",
@@ -428,6 +428,7 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
   }
 
   .preview {
+    cursor: pointer;
     font-size: 0.4rem;
     background: ${theme.ui.background};
     padding: ${theme.spacings(2)};

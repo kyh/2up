@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
@@ -6,11 +5,15 @@ import { theme } from "styles/theme";
 import { Topbar } from "features/packs/components/Topbar";
 import { Sidebar } from "features/packs/components/Sidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";
+import { SceneQATypeMenu } from "features/packs/components/SceneQATypeMenu";
+import {
+  VisibleQATypeMenu,
+  visibleQATypeMenuVar,
+} from "features/packs/components/cache";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
 
 export const PackCreatorPage = () => {
-  const [saving, setSaving] = useState(false);
   const { packId } = useParams<{ packId: string }>();
   const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
     variables: {
@@ -19,6 +22,7 @@ export const PackCreatorPage = () => {
   });
 
   const selectScene = (selectedSceneId: string) => {
+    visibleQATypeMenuVar(VisibleQATypeMenu.None);
     const newVariables = {
       packId,
       sceneId: selectedSceneId,
@@ -32,25 +36,20 @@ export const PackCreatorPage = () => {
 
   return (
     <Page>
-      <Topbar pack={data.pack} saving={saving} setSaving={setSaving} />
+      <Topbar pack={data.pack} />
       <SidebarLeft>
         <Sidebar
           pack={data.pack}
           selectedSceneId={data.scene?.id}
           selectScene={selectScene}
           refetch={refetch}
-          setSaving={setSaving}
         />
       </SidebarLeft>
       <Content>
-        <Screen>
-          {data?.scene && (
-            <ScenePreview scene={data.scene} setSaving={setSaving} />
-          )}
-        </Screen>
+        <Screen>{data?.scene && <ScenePreview scene={data.scene} />}</Screen>
       </Content>
       <SidebarRight />
-      <Footer />
+      <Footer>{data?.scene && <SceneQATypeMenu scene={data.scene} />}</Footer>
     </Page>
   );
 };
@@ -104,7 +103,9 @@ export const Content = styled.section`
 `;
 
 const Screen = styled.section`
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: ${theme.ui.background};
   padding: ${theme.spacings(5)};
   width: 100%;
@@ -123,6 +124,5 @@ const SidebarRight = styled.section`
 
 const Footer = styled.footer`
   grid-area: footer;
-  display: flex;
-  padding: ${theme.spacings(4)};
+  position: relative;
 `;
