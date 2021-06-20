@@ -4,16 +4,15 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { useAlert } from "react-alert";
-import ReactTooltip from "react-tooltip";
 import { theme } from "styles/theme";
+import { Button, Icon, Modal, Loader } from "components";
 import { useHostGame } from "features/game/gameService";
 import { NavigationContainer } from "features/packs/components/Navigation";
 import { PackForm } from "features/packs/components/PackForm";
-import { Button, Icon, Modal, Loader } from "components";
+import { savingSceneVar } from "features/packs/components/cache";
 
 import { TopbarPackFragment } from "./__generated__/TopbarPackFragment";
 import { TopbarPackUpdateMutation } from "./__generated__/TopbarPackUpdateMutation";
-import { savingSceneVar } from "./cache";
 
 type Props = {
   pack: TopbarPackFragment;
@@ -68,7 +67,6 @@ export const Topbar = ({ pack }: Props) => {
           <h4 className="pack-title">{pack?.name}</h4>
         </button>
         <div>
-          <ReactTooltip effect="solid" place="bottom" />
           <Button
             className="pack-ext-button"
             variant="fab"

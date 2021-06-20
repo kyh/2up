@@ -1,11 +1,13 @@
 import styled from "styled-components";
+import ReactTooltip from "react-tooltip";
 import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import { theme } from "styles/theme";
-import { Topbar } from "features/packs/components/Topbar";
-import { Sidebar } from "features/packs/components/Sidebar";
+import { Topbar } from "features/packs/components/PackCreatorTopbar";
+import { Sidebar } from "features/packs/components/PackCreatorLeftSidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";
 import { SceneQATypeMenu } from "features/packs/components/SceneQATypeMenu";
+import { SceneSettingsMenu } from "features/packs/components/SceneSettingsMenu";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
@@ -36,6 +38,7 @@ export const PackCreatorPage = () => {
 
   return (
     <Page>
+      <ReactTooltip effect="solid" place="bottom" />
       <Topbar pack={data.pack} />
       <SidebarLeft>
         <Sidebar
@@ -45,11 +48,21 @@ export const PackCreatorPage = () => {
           refetch={refetch}
         />
       </SidebarLeft>
-      <Content>
-        <Screen>{data?.scene && <ScenePreview scene={data.scene} />}</Screen>
-      </Content>
-      <SidebarRight />
-      <Footer>{data?.scene && <SceneQATypeMenu scene={data.scene} />}</Footer>
+      {data?.scene && (
+        <>
+          <Content>
+            <Screen>
+              <ScenePreview scene={data.scene} />
+            </Screen>
+          </Content>
+          <SidebarRight>
+            <SceneSettingsMenu scene={data.scene} />
+          </SidebarRight>
+          <Footer>
+            <SceneQATypeMenu scene={data.scene} />
+          </Footer>
+        </>
+      )}
     </Page>
   );
 };
@@ -118,7 +131,7 @@ const Screen = styled.section`
 
 const SidebarRight = styled.section`
   grid-area: sidebarR;
-  padding: ${theme.spacings(3)};
+  padding: ${theme.spacings(7)} ${theme.spacings(3)};
   height: 100%;
 `;
 

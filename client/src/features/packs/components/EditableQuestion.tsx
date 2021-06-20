@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { VisibleQATypeMenu, visibleQATypeMenuVar } from "./cache";
+import { QuestionTypeSlugs } from "features/game/gameSlice";
+import {
+  VisibleQATypeMenu,
+  visibleQATypeMenuVar,
+} from "features/packs/components/cache";
 
 type EditableQuestionProps = {
   instruction: string;
@@ -30,7 +34,7 @@ export const EditableQuestion = ({
   };
 
   switch (questionType) {
-    case "image":
+    case QuestionTypeSlugs.image.id:
       return (
         <EditableQuestionContainer key={sceneId}>
           <EditableQuestionInstructions

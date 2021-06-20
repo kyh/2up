@@ -2,7 +2,11 @@ import { useState, SyntheticEvent } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { Input, Button } from "components";
-import { SceneAnswer, Submission } from "features/game/gameSlice";
+import {
+  SceneAnswer,
+  Submission,
+  AnswerTypeSlugs,
+} from "features/game/gameSlice";
 
 type AnswerProps = {
   sceneAnswer: SceneAnswer;
@@ -20,7 +24,7 @@ export const Answer = ({
   displayMode = false,
 }: AnswerProps) => {
   switch (answerType) {
-    case "multi_text":
+    case AnswerTypeSlugs.multiText.id:
       return (
         <AnswerMulti
           sceneAnswer={sceneAnswer}

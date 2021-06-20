@@ -1,8 +1,8 @@
 import { useMutation } from "@apollo/client";
 import { useAlert } from "react-alert";
 import { Props, SCENE_UPDATE } from "./ScenePreview";
-import { ScenePreviewSceneUpdateMutation } from "./__generated__/ScenePreviewSceneUpdateMutation";
 import { savingSceneVar } from "./cache";
+import { ScenePreviewSceneUpdateMutation } from "./__generated__/ScenePreviewSceneUpdateMutation";
 
 export const useUpdateScene = ({ scene }: Props) => {
   const alert = useAlert();

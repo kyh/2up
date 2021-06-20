@@ -2,47 +2,13 @@ import styled from "styled-components";
 import { useReactiveVar } from "@apollo/client";
 import { theme } from "styles/theme";
 import { Button } from "components";
-import { Props as ScenePreviewProps } from "./ScenePreview";
-import { useUpdateScene } from "./hooks";
-import { visibleQATypeMenuVar, VisibleQATypeMenu } from "./cache";
-
-const QuestionTypeSlugs = {
-  text: {
-    id: "text",
-    display: "Text",
-    content: "Hello in there?",
-  },
-  image: {
-    id: "image",
-    display: "Image",
-    content: "/illustrations/pusheen.gif",
-  },
-  // video: {
-  //   id: "video",
-  //   display: "Video",
-  //   content: "",
-  // },
-  // audio: {
-  //   id: "audio",
-  //   display: "Audio",
-  //   content: "",
-  // },
-};
-
-const AnswerTypeSlugs = {
-  text: {
-    id: "text",
-    display: "Text",
-  },
-  multiText: {
-    id: "multi_text",
-    display: "Multiple Choice",
-  },
-  letter: {
-    id: "text_letter",
-    display: "Letters",
-  },
-};
+import { Props as ScenePreviewProps } from "features/packs/components/ScenePreview";
+import { useUpdateScene } from "features/packs/components/hooks";
+import {
+  visibleQATypeMenuVar,
+  VisibleQATypeMenu,
+} from "features/packs/components/cache";
+import { AnswerTypeSlugs, QuestionTypeSlugs } from "features/game/gameSlice";
 
 export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
   const { updateScene } = useUpdateScene({ scene });
@@ -132,6 +98,7 @@ export const QATypeMenuContainer = styled.div<{ content: string }>`
   border: 2px solid;
   border-radius: 50px;
   background: ${theme.ui.background};
+  display: flex;
 
   > button,
   > button:hover {

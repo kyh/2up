@@ -117,3 +117,41 @@ const gameSlice = createSlice({
 
 export const gameActions = gameSlice.actions;
 export const gameReducer = gameSlice.reducer;
+
+export const QuestionTypeSlugs = {
+  text: {
+    id: "text",
+    display: "Text",
+    content: "Hello in there?",
+  },
+  image: {
+    id: "image",
+    display: "Image",
+    content: "/illustrations/pusheen.gif",
+  },
+  // video: {
+  //   id: "video",
+  //   display: "Video",
+  //   content: "",
+  // },
+  // audio: {
+  //   id: "audio",
+  //   display: "Audio",
+  //   content: "",
+  // },
+};
+
+export const AnswerTypeSlugs = {
+  text: {
+    id: "text",
+    display: "Text",
+  },
+  multiText: {
+    id: "multi_text",
+    display: "Multiple Choice",
+  },
+  letter: {
+    id: "text_letter",
+    display: "Letters",
+  },
+};
