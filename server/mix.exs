@@ -41,7 +41,7 @@ defmodule Database.MixProject do
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
+      {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"},
       {:absinthe, "~> 1.4.2"},
       {:absinthe_plug, "~> 1.4.0"},
@@ -50,7 +50,11 @@ defmodule Database.MixProject do
       {:cors_plug, "~> 2.0"},
       {:httpoison, "~> 1.6"},
       {:poison, "~> 3.1"},
-      {:absinthe_relay, "~> 1.4"}
+      {:absinthe_relay, "~> 1.4"},
+      {:ex_aws, "~> 2.2"},
+      {:ex_aws_s3, "~> 2.2"},
+      {:sweet_xml, "~> 0.6"},
+      {:hackney, "~> 1.9"}
     ]
   end
 
