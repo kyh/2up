@@ -31,7 +31,7 @@ export const ScenePreview = ({ scene }: Props) => {
 
   return (
     <>
-      <button onClick={createPresignedUrl}>Create url</button>
+      {/* <button onClick={createPresignedUrl}>Create url</button> */}
       <EditableQuestion
         sceneId={scene.id}
         instruction={scene.instruction || ""}
