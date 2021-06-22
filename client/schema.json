@@ -1690,14 +1690,14 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "packId",
+            "name": "path",
             "description": null,
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "ID",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -1714,7 +1714,7 @@
         "description": null,
         "fields": [
           {
-            "name": "url",
+            "name": "presignedUrl",
             "description": null,
             "args": [],
             "type": {
