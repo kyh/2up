@@ -212,7 +212,7 @@ defmodule Web.GraphQL.Types.MutationType do
       end
 
       output do
-        field(:url, non_null(:string))
+        field(:presigned_url, non_null(:string))
       end
 
       resolve(&AssetLibrary.presigned_url/3)

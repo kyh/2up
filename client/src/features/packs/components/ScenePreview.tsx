@@ -86,7 +86,7 @@ export const SCENE_UPDATE = gql`
 const PRESIGNED_URL_CREATE = gql`
   mutation PresignedUrlCreateMutation($input: PresignedUrlCreateInput!) {
     presignedUrlCreate(input: $input) {
-      url
+      presignedUrl
     }
   }
 `;
