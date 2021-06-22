@@ -14,14 +14,6 @@ const hashCodeFn = (string?: string, mod?: number) => {
 
 export const hashCode = memoize(hashCodeFn);
 
-export const generateUuid = () => {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0,
-      v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-};
-
 export const omitDeep = (input: any, ...props: string[]) => {
   const omitDeepOnOwnProps = (obj = {}): any => {
     if (typeof input === "undefined") return input;

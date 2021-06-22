@@ -56,3 +56,7 @@ envVarGroups:
         value: https://playhouse.gg
       - key: SECRET_KEY_BASE
         generateValue: true
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false

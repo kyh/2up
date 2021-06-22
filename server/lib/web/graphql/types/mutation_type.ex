@@ -203,5 +203,21 @@ defmodule Web.GraphQL.Types.MutationType do
         )
       )
     end
+
+    @desc "Get S3 presigned url"
+    payload field(:presigned_url_create) do
+      input do
+        field(:path, non_null(:string))
+      end
+
+      output do
+        field(:url, non_null(:string))
+      end
+
+      # To get the url:
+      # ExAws.Config.new(:s3)
+      #   |> ExAws.S3.presigned_url(:get, "playhouse.gg", :path, [expires_in: 300])
+      resolve()
+    end
   end
 end
