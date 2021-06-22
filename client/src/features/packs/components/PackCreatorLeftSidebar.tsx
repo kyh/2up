@@ -438,7 +438,7 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     align-items: center;
     border: 1px solid ${theme.ui.borderColor};
     border-radius: ${theme.ui.borderWavyRadius};
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.1s ease, box-shadow 0.1s ease;
     > div:first-child {
       margin-bottom: ${theme.spacings(1)};
     }
