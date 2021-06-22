@@ -5,7 +5,8 @@ defmodule Web.GraphQL.Types.MutationType do
   alias Web.GraphQL.Resolvers.{
     Catalog,
     Accounts,
-    Live
+    Live,
+    AssetLibrary
   }
 
   object :mutation_type do
@@ -214,10 +215,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field(:url, non_null(:string))
       end
 
-      # To get the url:
-      # ExAws.Config.new(:s3)
-      #   |> ExAws.S3.presigned_url(:get, "playhouse.gg", :path, [expires_in: 300])
-      resolve()
+      resolve(&AssetLibrary.presigned_url/3)
     end
   end
 end
