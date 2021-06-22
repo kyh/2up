@@ -104,6 +104,8 @@ export const QATypeMenuContainer = styled.div<{ content: string }>`
   > button:hover {
     border: none;
     border-right: 2px solid;
+    animation: none;
+    transition: background-color 0.1s ease;
 
     &:first-child {
       border-top-left-radius: 30px;
@@ -119,6 +121,10 @@ export const QATypeMenuContainer = styled.div<{ content: string }>`
     &.selected {
       background-color: ${theme.colors.purple};
     }
+  }
+
+  > button:hover {
+    background-color: ${theme.ui.backgroundGrey};
   }
 
   &:after {

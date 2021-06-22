@@ -45,7 +45,6 @@ type StyledProps = {
 
 const renderRegularStyles = () => {
   return css`
-    transition: transform 0.2s ease;
     padding: ${theme.spacings(4)};
     border-image-slice: 4 4 3 5 fill;
     border-image-width: 5px;
@@ -77,7 +76,6 @@ const renderRegularStyles = () => {
 
 const renderFabStyles = () => {
   return css`
-    transition: transform 0.2s ease;
     padding: ${theme.spacings(1)};
     background-repeat: no-repeat;
     background-size: contain;
