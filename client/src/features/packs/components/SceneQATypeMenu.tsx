@@ -41,7 +41,7 @@ export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
 
 type Props = {
   currentType: string;
-  onSelectType: (_updatedScene: any) => void;
+  onSelectType: (scene: any) => void;
 };
 
 const QuestionTypeMenu = ({ currentType, onSelectType }: Props) => {

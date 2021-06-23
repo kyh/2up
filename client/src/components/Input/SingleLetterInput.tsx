@@ -1,3 +1,4 @@
+import { KeyboardEvent } from "react";
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./Input";
@@ -41,7 +42,9 @@ export const SingleLetterInput = ({
     }
   };
 
-  const handleKeyDown = ({ target, key }: any) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement;
+    const key = e.key;
     const prevSibling = target.previousElementSibling as HTMLInputElement;
     if (key === "Backspace") {
       if (target.value === "" && prevSibling !== null) {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "styles/theme";
@@ -14,7 +14,7 @@ type EditableQuestionProps = {
   question: string;
   questionType: string;
   sceneId: string;
-  onChange: (_updatedAct: any) => void;
+  onChange: (scene: any) => void;
 };
 
 export const EditableQuestion = ({
@@ -28,11 +28,11 @@ export const EditableQuestion = ({
     visibleQATypeMenuVar(VisibleQATypeMenu.Question);
   };
 
-  const onBlurInstruction = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onBlurInstruction = (e: ChangeEvent<HTMLInputElement>) => {
     onChange({ instruction: e.target.value });
   };
 
-  const onBlurQuestion = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onBlurQuestion = (e: ChangeEvent<HTMLInputElement>) => {
     onChange({ question: e.target.value });
   };
 
@@ -79,7 +79,7 @@ type EditableQuestionImageProps = Pick<
   "instruction" | "question"
 > & {
   onFocus: () => void;
-  onChange: (_updatedAct: any) => void;
+  onChange: (scene: any) => void;
 };
 
 const EditableQuestionImage = ({
