@@ -1,7 +1,12 @@
 defmodule Web.GraphQL.Types.QueryType do
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation, :modern
-  alias Web.GraphQL.Resolvers.{Accounts, Catalog, Live}
+  alias Web.GraphQL.Resolvers.{
+    Accounts,
+    Catalog,
+    Live,
+    AssetLibrary
+  }
 
   object :query_type do
     connection field :packs, node_type: :pack do
@@ -30,6 +35,11 @@ defmodule Web.GraphQL.Types.QueryType do
 
     field :answer_types, list_of(:answer_type) do
       resolve(&Catalog.answer_type_list/3)
+    end
+    
+    field :assets, list_of(:asset) do
+      arg(:path, :string)
+      resolve(&AssetLibrary.list/3)
     end
   end
 end
