@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, ChangeEvent } from "react";
 import styled, { css } from "styled-components";
 import { useAlert } from "react-alert";
 import { gql, useMutation } from "@apollo/client";
@@ -171,12 +171,8 @@ export const Sidebar = ({
     }
   };
 
-  const importCsv = () => {
-    openCsvImport();
-  };
-
-  const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
+  const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
   };
 
   return (
@@ -222,7 +218,7 @@ export const Sidebar = ({
         <Button onClick={quickAddNewScene} fullWidth>
           Add New Scene
         </Button>
-        <Button onClick={importCsv} fullWidth>
+        <Button onClick={openCsvImport} fullWidth>
           CSV Import
         </Button>
       </SidebarFooter>

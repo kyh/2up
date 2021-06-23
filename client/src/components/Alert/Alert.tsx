@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { visible } from "styles/animations";
@@ -18,9 +19,14 @@ export const Alert = styled(AlertTemplate)`
   top: ${theme.spacings(3)};
 `;
 
-export const ReactAlertTemplate = ({ style, message, close }: any) => {
+type Props = {
+  message: ReactNode;
+  close: () => void;
+};
+
+export const ReactAlertTemplate = ({ message, close }: Props) => {
   return (
-    <AlertTemplate style={style}>
+    <AlertTemplate>
       {message}
       <CloseButton onClick={close}>X</CloseButton>
     </AlertTemplate>

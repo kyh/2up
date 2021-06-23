@@ -1,11 +1,10 @@
 import { useEffect, useContext, useState } from "react";
+import { Middleware } from "redux";
 import { SocketContext } from "./SocketProvider";
 
 const WHITELIST_EVENTS = ["playhouse", "game"].join("|");
 
-export const socketMiddleware = (_store: any) => (next: any) => (
-  action: any
-) => {
+export const socketMiddleware: Middleware = (_store) => (next) => (action) => {
   const reg = new RegExp(WHITELIST_EVENTS, "gi");
   if (reg.test(action.type)) {
     next(action);

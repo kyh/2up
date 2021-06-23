@@ -46,8 +46,11 @@ export const Step3Spectate = ({ gameState }: StepProps) => {
   );
 };
 
-const sortByKey = (players: GameState["players"], key: string) => {
-  return [...players].sort((a: any, b: any) => b[key] - a[key]);
+const sortByKey = (
+  players: GameState["players"],
+  key: "score" | "prevScore"
+) => {
+  return [...players].sort((a, b) => b[key] - a[key]);
 };
 
 export const PlayerScores = ({

@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 import produce from "immer";
 import styled from "styled-components";
 import { theme } from "styles/theme";
@@ -14,7 +15,7 @@ type EditableAnswerProps = {
   sceneId: string;
   answerType: string;
   sceneAnswers: ScenePreviewFragment_sceneAnswers[];
-  onChange: (_updatedScene: any) => void;
+  onChange: (scene: any) => void;
 };
 
 export const EditableAnswer = ({
@@ -37,6 +38,12 @@ export const EditableAnswer = ({
     });
   };
 
+  const onAddSceneAnswer = () => {
+    onChange({
+      sceneAnswers: [...sceneAnswers, { isCorrect: false, content: "" }],
+    });
+  };
+
   switch (answerType) {
     case AnswerTypeSlugs.multiText.id:
       return (
@@ -47,7 +54,7 @@ export const EditableAnswer = ({
                 name="correct"
                 value={index}
                 checked={sceneAnswer.isCorrect}
-                onChange={(e: any) =>
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   onChangeSceneAnswer({ isCorrect: e.target.checked }, index)
                 }
               />
@@ -61,18 +68,7 @@ export const EditableAnswer = ({
             </InputContainer>
           ))}
           <InputContainer>
-            <Button
-              onClick={() =>
-                onChange({
-                  sceneAnswers: [
-                    ...sceneAnswers,
-                    { isCorrect: false, content: "" },
-                  ],
-                })
-              }
-            >
-              + Add Option
-            </Button>
+            <Button onClick={onAddSceneAnswer}>+ Add Option</Button>
           </InputContainer>
         </MultiAnswerContainer>
       );
