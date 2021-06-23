@@ -96,4 +96,14 @@ defmodule Web.GraphQL.Resolvers.Catalog do
     scene = Catalog.scene_get_by_id(args)
     {:ok, scene}
   end
+
+  def csv_import(args, %{context: %{current_user: user}}) do
+    case Catalog.csv_import(user, args) do
+      {:error, changeset} ->
+        {:error, message: "Csv import failed"}
+
+      {:ok, pack} ->
+        {:ok, %{pack: pack}}
+    end
+  end
 end

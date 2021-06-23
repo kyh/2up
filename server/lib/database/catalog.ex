@@ -185,11 +185,6 @@ defmodule Database.Catalog do
         _attrs
       ) do
     with {:ok} <- Authorization.check(:scene_delete, user, scene) do
-      query =
-        from scene_answer in SceneAnswer,
-          where: scene_answer.scene_id == ^scene.id
-
-      Repo.delete_all(query)
       scene |> Repo.delete()
     end
   end
@@ -232,6 +227,147 @@ defmodule Database.Catalog do
         limit: 1
 
     Repo.one(query)
+  end
+
+  @doc """
+  id, instruction, question type, question, answer type
+  answer 1 content, answer 1 is correct, ...
+  """
+  def csv_import(%User{} = user, attrs) do
+    pack = Repo.get(Pack, attrs[:pack_id])
+
+    with {:ok} <- Authorization.check(:pack_update, user, pack) do
+      question_types = question_type_list()
+      answer_types = answer_type_list()
+
+      scenes =
+        attrs[:csv]
+        |> String.split("\n")
+        |> Enum.map(&String.split(&1, ","))
+
+      scenes
+      |> Enum.with_index()
+      |> Enum.each(fn {scene, i} ->
+        [
+          external_id,
+          instruction,
+          question_type_slug,
+          question,
+          answer_type_slug | scene_answers
+        ] = scene
+
+        question_type =
+          Enum.filter(question_types, fn question_type ->
+            question_type.slug === question_type_slug
+          end)
+          |> Enum.at(0)
+
+        answer_type =
+          Enum.filter(answer_types, fn answer_type ->
+            answer_type.slug === answer_type_slug
+          end)
+          |> Enum.at(0)
+
+        scene_attrs = %{
+          external_id: external_id,
+          instruction: instruction,
+          question: question,
+          question_type_id: question_type.id,
+          answer_type_id: answer_type.id,
+          order: i
+        }
+
+        updated_scene =
+          case Repo.get_by(Scene, %{external_id: external_id, pack_id: pack.id}) do
+            nil ->
+              %Scene{}
+              |> Scene.changeset(scene_attrs)
+              |> Ecto.Changeset.put_assoc(:pack, pack)
+              |> Repo.insert!()
+
+            existing_scene ->
+              existing_scene
+              |> Scene.changeset(scene_attrs)
+              |> Repo.update!()
+          end
+
+        scene_answers_sets = scene_answers_to_sets([], scene_answers)
+
+        scene_answers_attrs =
+          Enum.map(scene_answers_sets, fn scene_answer ->
+            is_correct =
+              case Enum.at(scene_answer, 1) do
+                "true" -> true
+                _ -> false
+              end
+
+            %{
+              content: Enum.at(scene_answer, 0),
+              is_correct: is_correct,
+              scene_id: updated_scene.id,
+              inserted_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second),
+              updated_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+            }
+          end)
+
+        {updated_count, updated_scene_answers} =
+          scene_answers_insert_or_update(scene_answers_attrs)
+
+        updated_scene_answers_ids = Enum.map(updated_scene_answers, & &1.id)
+        scene_answers_delete_unmatched(updated_scene_answers_ids, updated_scene.id)
+      end)
+
+      scene_external_ids = Enum.map(scenes, &Enum.at(&1, 0))
+      scenes_delete_unmatched(scene_external_ids, pack.id)
+
+      {:ok, pack}
+    end
+  end
+
+  def scene_answers_to_sets(accum, []) do
+    accum
+  end
+
+  def scene_answers_to_sets(accum, remaining) do
+    [answer, is_correct | rest] = remaining
+    scene_answers_to_sets([[answer, is_correct] | accum], rest)
+  end
+
+  defp scene_answers_insert_or_update(scene_answers_attrs) do
+    # Insert or update scene answers
+    Repo.insert_all(
+      SceneAnswer,
+      scene_answers_attrs,
+      on_conflict: {:replace_all_except, [:id, :inserted_at]},
+      conflict_target: :id,
+      returning: true
+    )
+  end
+
+  @doc """
+  Delete existing scene answers that do not have a match
+  """
+  defp scene_answers_delete_unmatched(scene_answer_ids, scene_id) do
+    scene_answer_list(%{scene_id: scene_id})
+    |> Enum.each(fn scene_answer ->
+      if !Enum.member?(scene_answer_ids, scene_answer.id) do
+        scene_answer |> Repo.delete()
+      end
+    end)
+  end
+
+  @doc """
+  Delete existing scenes that do not have a match
+  """
+  defp scenes_delete_unmatched(scene_external_ids, pack_id) do
+    ordered_scene_list(%{pack_id: pack_id})
+    |> Enum.each(fn scene ->
+      if !Enum.member?(scene_external_ids, scene.external_id) do
+        # delete all scene answers
+        from(sa in SceneAnswer, where: sa.scene_id == ^scene.id) |> Repo.delete_all()
+        scene |> Repo.delete()
+      end
+    end)
   end
 
   defp calculate_new_order(%{before_id: before_id, after_id: after_id}) do
