@@ -3,6 +3,7 @@ export { PageContainer } from "./Page/PageContainer";
 export { Button, ButtonLink, ButtonLinkNative } from "./Button/Button";
 export { Input } from "./Input/Input";
 export { SingleLetterInput } from "./Input/SingleLetterInput";
+export { Uploader } from "./Input/Uploader";
 export { Checkbox } from "./Input/Checkbox";
 export { Card } from "./Card/Card";
 export { Avatar } from "./Avatar/Avatar";

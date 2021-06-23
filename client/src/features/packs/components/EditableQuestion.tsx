@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { QuestionTypeSlugs } from "features/game/gameSlice";
@@ -5,6 +7,7 @@ import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
 } from "features/packs/sceneService";
+import { Button, Icon, Modal, Uploader } from "components";
 
 type EditableQuestionProps = {
   instruction: string;
@@ -43,16 +46,12 @@ export const EditableQuestion = ({
             onFocus={onFocus}
             onBlur={onBlurInstruction}
           />
-          <EditableQuestionImageContainer>
-            <input
-              type="text"
-              placeholder="Image URL"
-              defaultValue={question}
-              onFocus={onFocus}
-              onBlur={onBlurQuestion}
-            />
-            <QuestionImage alt={instruction} src={question} />
-          </EditableQuestionImageContainer>
+          <EditableQuestionImage
+            instruction={instruction}
+            question={question}
+            onFocus={onFocus}
+            onChange={onBlurQuestion}
+          />
         </EditableQuestionContainer>
       );
     default:
@@ -73,6 +72,55 @@ export const EditableQuestion = ({
         </EditableQuestionContainer>
       );
   }
+};
+
+type EditableQuestionImageProps = Pick<
+  EditableQuestionProps,
+  "instruction" | "question"
+> & {
+  onFocus: () => void;
+  onChange: (_updatedAct: any) => void;
+};
+
+const EditableQuestionImage = ({
+  instruction,
+  question,
+  onFocus,
+  onChange,
+}: EditableQuestionImageProps) => {
+  const { packId } = useParams<{ packId: string }>();
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <EditableQuestionImageContainer>
+      <button className="image-container" onFocus={onFocus}>
+        <QuestionImage alt={instruction} src={question} />
+      </button>
+      <input
+        className="image-input"
+        type="text"
+        placeholder="Image URL"
+        defaultValue={question}
+        onFocus={onFocus}
+        onBlur={onChange}
+      />
+      {/* <Button
+        className="edit-button"
+        variant="fab"
+        onClick={() => setIsOpen(true)}
+      >
+        <Icon icon="pencil" />
+      </Button>
+      <Modal
+        open={isOpen}
+        title="Asset Library"
+        onRequestClose={() => setIsOpen(false)}
+        closeButton
+      >
+        <Uploader pathPrefix={`packs/${packId}`} />
+      </Modal> */}
+    </EditableQuestionImageContainer>
+  );
 };
 
 const QuestionImage = styled.img`
@@ -111,10 +159,28 @@ const EditableQuestionText = styled.input`
 
 const EditableQuestionImageContainer = styled.div`
   position: relative;
-  input {
+  .image-input {
     position: absolute;
     left: 50%;
     top: 10px;
     transform: translateX(-50%);
+  }
+  .image-container {
+    margin-bottom: ${theme.spacings(5)};
+    transition: all 0.23s ease;
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px ${theme.ui.background};
+    }
+    > img {
+      margin: 0;
+    }
+  }
+  .edit-button {
+    background-color: ${theme.ui.background};
+    border-radius: 100%;
+    position: absolute;
+    top: ${theme.spacings(2)};
+    right: ${theme.spacings(2)};
   }
 `;

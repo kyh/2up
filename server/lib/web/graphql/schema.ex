@@ -14,7 +14,8 @@ defmodule Web.GraphQL.Schema do
     CatalogTypes,
     LiveTypes,
     AccountsTypes,
-    GameTypes
+    GameTypes,
+    AssetLibraryTypes
   })
 
   query(do: import_fields(:query_type))
