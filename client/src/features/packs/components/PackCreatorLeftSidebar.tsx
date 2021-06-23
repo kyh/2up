@@ -31,6 +31,7 @@ type Props = {
   selectedSceneId?: string;
   selectScene: (scene: any) => void;
   refetch: () => void;
+  openCsvImport: () => void;
 };
 
 export const Sidebar = ({
@@ -38,6 +39,7 @@ export const Sidebar = ({
   selectedSceneId,
   selectScene,
   refetch,
+  openCsvImport,
 }: Props) => {
   const alert = useAlert();
   const [sceneCreate] = useMutation<SidebarSceneCreateMutation>(SCENE_CREATE);
@@ -169,6 +171,10 @@ export const Sidebar = ({
     }
   };
 
+  const importCsv = () => {
+    openCsvImport();
+  };
+
   const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
@@ -215,6 +221,9 @@ export const Sidebar = ({
       <SidebarFooter>
         <Button onClick={quickAddNewScene} fullWidth>
           Add New Scene
+        </Button>
+        <Button onClick={importCsv} fullWidth>
+          CSV Import
         </Button>
       </SidebarFooter>
     </>

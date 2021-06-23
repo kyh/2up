@@ -18,6 +18,7 @@ type Props = {
   children?: ReactNode;
   error?: boolean;
   errorText?: ReactNode;
+  isTextarea?: boolean;
 };
 
 export const TextField = forwardRef<HTMLInputElement, Props>(

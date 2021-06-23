@@ -217,5 +217,23 @@ defmodule Web.GraphQL.Types.MutationType do
 
       resolve(&AssetLibrary.presigned_url/3)
     end
+
+    @desc "Import csv"
+    payload field(:csv_import) do
+      input do
+        field :pack_id, :id
+        field :csv, :string
+      end
+
+      output do
+        field :pack, non_null(:pack)
+      end
+
+      resolve(
+        parsing_node_ids(&Catalog.csv_import/2,
+          pack_id: :pack
+        )
+      )
+    end
   end
 end
