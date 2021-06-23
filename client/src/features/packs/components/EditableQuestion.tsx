@@ -104,7 +104,7 @@ const EditableQuestionImage = ({
         onFocus={onFocus}
         onBlur={onChange}
       />
-      {/* <Button
+      <Button
         className="edit-button"
         variant="fab"
         onClick={() => setIsOpen(true)}
@@ -118,7 +118,7 @@ const EditableQuestionImage = ({
         closeButton
       >
         <Uploader pathPrefix={`packs/${packId}`} />
-      </Modal> */}
+      </Modal>
     </EditableQuestionImageContainer>
   );
 };

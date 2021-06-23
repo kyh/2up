@@ -2,20 +2,17 @@ import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { theme } from "styles/theme";
+import { uuid } from "utils/stringUtils";
 
 import { PresignedUrlCreateMutation } from "./__generated__/PresignedUrlCreateMutation";
 
 type DragAndDropProps = {
-  handleFileDrop: (_files: File[]) => void;
+  onFileDrop: (_files: File[]) => void;
   disabled: boolean;
   children: ReactNode;
 };
 
-const DragAndDrop = ({
-  handleFileDrop,
-  disabled,
-  children,
-}: DragAndDropProps) => {
+const DragAndDrop = ({ onFileDrop, disabled, children }: DragAndDropProps) => {
   const [dragging, setDragging] = useState(false);
   const dragCounterRef = useRef(0);
   const dropRef = useRef<HTMLDivElement>(null);
@@ -48,14 +45,13 @@ const DragAndDrop = ({
     e.stopPropagation();
     setDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      handleFileDrop(e.dataTransfer.files);
+      onFileDrop(e.dataTransfer.files);
       e.dataTransfer.clearData();
       dragCounterRef.current = 0;
     }
   }, []);
 
   const addListeners = useCallback(() => {
-    console.log("add listeners");
     if (dropRef && dropRef.current) {
       dropRef.current.addEventListener("dragenter", handleDragIn);
       dropRef.current.addEventListener("dragleave", handleDragOut);
@@ -65,7 +61,6 @@ const DragAndDrop = ({
   }, []);
 
   const removeListeners = useCallback(() => {
-    console.log("remove listeners");
     if (dropRef && dropRef.current) {
       dropRef.current.removeEventListener("dragenter", handleDragIn);
       dropRef.current.removeEventListener("dragleave", handleDragOut);
@@ -83,17 +78,14 @@ const DragAndDrop = ({
   }, [disabled]);
 
   return (
-    <DragAndDropContainer
-      style={{ position: "relative" }}
-      ref={dropRef}
-      dragging={!disabled && dragging}
-    >
+    <DragAndDropContainer ref={dropRef} dragging={!disabled && dragging}>
       {children}
     </DragAndDropContainer>
   );
 };
 
 const DragAndDropContainer = styled.div<{ dragging: boolean }>`
+  position: relative;
   border: 2px dotted;
   border-radius: ${theme.ui.borderWavyRadius};
   border-color: ${({ dragging }) =>
@@ -116,8 +108,10 @@ export const Uploader = ({ pathPrefix }: UploaderProps) => {
     setFilesToUpload([...files]);
 
     for (const file of files) {
+      const extension = file.name.split(".").pop();
+      const path = `${pathPrefix}/${uuid()}.${extension}`;
       const { data } = await presignedUrlCreate({
-        variables: { input: { path: `${pathPrefix}/${file.name}` } },
+        variables: { input: { path } },
       });
       const url = data?.presignedUrlCreate?.presignedUrl;
       if (url) {
@@ -127,8 +121,9 @@ export const Uploader = ({ pathPrefix }: UploaderProps) => {
           body: file,
         });
         console.log("uploaded:");
-        console.log(result);
+        console.log(result, { rawName: file.name, path });
         // call mutation to backend to save url
+        // mutation({ rawName: file.name, path })
       }
     }
 
@@ -136,7 +131,7 @@ export const Uploader = ({ pathPrefix }: UploaderProps) => {
   };
 
   return (
-    <DragAndDrop handleFileDrop={upload} disabled={!!filesToUpload.length}>
+    <DragAndDrop onFileDrop={upload} disabled={!!filesToUpload.length}>
       <UploaderContainer>
         <input
           className="uploader-input"
