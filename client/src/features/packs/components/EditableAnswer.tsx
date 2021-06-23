@@ -63,7 +63,7 @@ export const EditableAnswer = ({
           <InputContainer>
             <Button
               onClick={() =>
-                onChangeSceneAnswer({
+                onChange({
                   sceneAnswers: [
                     ...sceneAnswers,
                     { isCorrect: false, content: "" },
@@ -78,7 +78,7 @@ export const EditableAnswer = ({
       );
     case AnswerTypeSlugs.letter.id:
       return (
-        <>
+        <div key={sceneId}>
           <InputContainer>
             <Input
               defaultValue={sceneAnswer?.content || ""}
@@ -93,12 +93,12 @@ export const EditableAnswer = ({
             <SingleLetterInput defaultValue={sceneAnswer?.content || ""} />
           </InputContainer>
           <Button disabled>Submit answer</Button>
-        </>
+        </div>
       );
     // "text"
     default:
       return (
-        <>
+        <div key={sceneId}>
           <InputContainer>
             <Input
               defaultValue={sceneAnswer?.content || ""}
@@ -112,7 +112,7 @@ export const EditableAnswer = ({
             />
           </InputContainer>
           <Button disabled>Submit answer</Button>
-        </>
+        </div>
       );
   }
 };
