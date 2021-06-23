@@ -63,7 +63,7 @@ export const EditableAnswer = ({
           <InputContainer>
             <Button
               onClick={() =>
-                onChangeSceneAnswer({
+                onChange({
                   sceneAnswers: [
                     ...sceneAnswers,
                     { isCorrect: false, content: "" },
