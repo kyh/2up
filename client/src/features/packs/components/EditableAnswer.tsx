@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import produce from "immer";
 import { theme } from "styles/theme";
 import { Input, SingleLetterInput, Checkbox, Button } from "components";
@@ -47,26 +47,28 @@ export const EditableAnswer = ({
   switch (answerType) {
     case AnswerTypeSlugs.multiText.id:
       return (
-        <AnswerContainer multi key={sceneId}>
-          {sceneAnswers.map((sceneAnswer, index) => (
-            <InputContainer key={sceneAnswer.id}>
-              <Checkbox
-                name="correct"
-                value={index}
-                checked={sceneAnswer.isCorrect}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  onChangeSceneAnswer({ isCorrect: e.target.checked }, index)
-                }
-              />
-              <Input
-                defaultValue={sceneAnswer.content || ""}
-                onFocus={onFocus}
-                onBlur={(e) =>
-                  onChangeSceneAnswer({ content: e.target.value }, index)
-                }
-              />
-            </InputContainer>
-          ))}
+        <AnswerContainer key={sceneId}>
+          <Grid>
+            {sceneAnswers.map((sceneAnswer, index) => (
+              <InputContainer key={sceneAnswer.id}>
+                <Checkbox
+                  name="correct"
+                  value={index}
+                  checked={sceneAnswer.isCorrect}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    onChangeSceneAnswer({ isCorrect: e.target.checked }, index)
+                  }
+                />
+                <Input
+                  defaultValue={sceneAnswer.content || ""}
+                  onFocus={onFocus}
+                  onBlur={(e) =>
+                    onChangeSceneAnswer({ content: e.target.value }, index)
+                  }
+                />
+              </InputContainer>
+            ))}
+          </Grid>
           <InputContainer>
             <Button onClick={onAddSceneAnswer}>+ Add Option</Button>
           </InputContainer>
@@ -113,17 +115,16 @@ export const EditableAnswer = ({
   }
 };
 
-const AnswerContainer = styled.div<{ multi?: boolean }>`
+const AnswerContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  ${({ multi }) =>
-    multi &&
-    css`
-      display: grid;
-      grid-template-columns: repeat(2, max-content);
-      grid-column-gap: ${theme.spacings(3)};
-    `}
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  grid-column-gap: ${theme.spacings(3)};
 `;
 
 const InputContainer = styled.div`
