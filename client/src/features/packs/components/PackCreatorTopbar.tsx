@@ -6,7 +6,6 @@ import { gql, useMutation } from "@apollo/client";
 import { useAlert } from "react-alert";
 import { theme } from "styles/theme";
 import { Button, Icon, Modal, Loader } from "components";
-import { useHostGame } from "features/game/gameService";
 import { NavigationContainer } from "features/packs/components/Navigation";
 import { PackForm, PackFormInputs } from "features/packs/components/PackForm";
 import { savingSceneVar } from "features/packs/sceneService";
@@ -16,14 +15,14 @@ import { TopbarPackUpdateMutation } from "./__generated__/TopbarPackUpdateMutati
 
 type Props = {
   pack: TopbarPackFragment;
+  testPlay: () => void;
 };
 
-export const Topbar = ({ pack }: Props) => {
+export const Topbar = ({ pack, testPlay }: Props) => {
   const saving = useReactiveVar(savingSceneVar);
   const alert = useAlert();
   const [isOpen, setIsOpen] = useState(false);
   const [packUpdate] = useMutation<TopbarPackUpdateMutation>(PACK_UPDATE);
-  const hostGame = useHostGame();
 
   const onSaveChanges = async (newPack: PackFormInputs) => {
     savingSceneVar(true);
@@ -75,7 +74,7 @@ export const Topbar = ({ pack }: Props) => {
           <Button
             className="pack-ext-button"
             variant="fab"
-            onClick={() => hostGame(pack.id)}
+            onClick={testPlay}
             data-tip="Test play"
           >
             <Icon icon="play" />

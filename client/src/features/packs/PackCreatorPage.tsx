@@ -1,21 +1,31 @@
+import { useState, useRef } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
 import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
+import { useHotkeys } from "@react-hook/hotkey";
 import { theme } from "styles/theme";
 import { Topbar } from "features/packs/components/PackCreatorTopbar";
 import { Sidebar } from "features/packs/components/PackCreatorLeftSidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";
 import { SceneQATypeMenu } from "features/packs/components/SceneQATypeMenu";
 import { SceneSettingsMenu } from "features/packs/components/SceneSettingsMenu";
+import { Button, Modal, Icon } from "components";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
+  keybindings,
+  instructionElementAttribute,
 } from "features/packs/sceneService";
+import { useHostGame } from "features/game/gameService";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
+import { SidebarPackFragment_scenes_edges_node } from "./components/__generated__/SidebarPackFragment";
 
 export const PackCreatorPage = () => {
+  const screenRef = useRef<null | HTMLDivElement>(null);
+  const hostGame = useHostGame();
+  const [isOpen, setIsOpen] = useState(false);
   const { packId } = useParams<{ packId: string }>();
   const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
     variables: {
@@ -32,17 +42,71 @@ export const PackCreatorPage = () => {
     refetch(newVariables);
   };
 
+  const testPlay = () => {
+    hostGame(packId);
+  };
+
+  const toggleHelpModal = () => {
+    setIsOpen((open) => {
+      return !open;
+    });
+  };
+
+  const selectScenePosition = (position: 1 | -1) => () => {
+    const currentSceneIndex = packScenes.findIndex((scene) => {
+      return scene.id === data?.scene?.id;
+    });
+    if (currentSceneIndex !== -1) {
+      const newSelectedScene =
+        packScenes[
+          position === 1 ? currentSceneIndex + 1 : currentSceneIndex - 1
+        ];
+      if (newSelectedScene) {
+        selectScene(newSelectedScene.id);
+      }
+    }
+  };
+
+  const focusElement = (query: string) => () => {
+    if (screenRef && screenRef.current) {
+      const element = screenRef.current.querySelector(
+        query
+      ) as HTMLInputElement;
+      element.focus();
+    }
+  };
+
+  useHotkeys(window, [
+    [keybindings.testPlay.hotkey, testPlay],
+    [keybindings.showShortcuts.hotkey, toggleHelpModal],
+    [keybindings.previousScene.hotkey, selectScenePosition(-1)],
+    [keybindings.nextScene.hotkey, selectScenePosition(1)],
+    [
+      keybindings.focusScene.hotkey,
+      focusElement(`[data-focusable="${instructionElementAttribute}"]`),
+    ],
+  ]);
+
   if (!data || !data.pack) {
     return null;
   }
 
+  const packScenes = (data.pack.scenes?.edges || [])
+    .map((edge) => {
+      const scene = edge?.node;
+      if (!scene) return null;
+      return scene;
+    })
+    .filter(Boolean) as SidebarPackFragment_scenes_edges_node[];
+
   return (
     <Page>
       <ReactTooltip effect="solid" place="bottom" />
-      <Topbar pack={data.pack} />
+      <Topbar pack={data.pack} testPlay={testPlay} />
       <SidebarLeft>
         <Sidebar
-          pack={data.pack}
+          packId={packId}
+          packScenes={packScenes}
           selectedSceneId={data.scene?.id}
           selectScene={selectScene}
           refetch={refetch}
@@ -51,7 +115,7 @@ export const PackCreatorPage = () => {
       {data?.scene && (
         <>
           <Content>
-            <Screen>
+            <Screen ref={screenRef}>
               <ScenePreview scene={data.scene} />
             </Screen>
           </Content>
@@ -63,6 +127,25 @@ export const PackCreatorPage = () => {
           </Footer>
         </>
       )}
+      <HelpButton variant="fab" onClick={toggleHelpModal}>
+        <Icon icon="question" size="sm" />
+      </HelpButton>
+      <Modal
+        open={isOpen}
+        title="Keyboard shortcuts"
+        onRequestClose={toggleHelpModal}
+        maxWidth={500}
+        closeButton
+      >
+        <HelpModalContent>
+          {Object.values(keybindings).map((binding) => (
+            <div className="keybinding" key={binding.display}>
+              <div>{binding.description}</div>
+              <code>{binding.display}</code>
+            </div>
+          ))}
+        </HelpModalContent>
+      </Modal>
     </Page>
   );
 };
@@ -138,4 +221,26 @@ const SidebarRight = styled.section`
 const Footer = styled.footer`
   grid-area: footer;
   position: relative;
+`;
+
+const HelpButton = styled(Button)`
+  position: fixed;
+  bottom: ${theme.spacings(3)};
+  right: ${theme.spacings(3)};
+  padding: ${theme.spacings(2)};
+`;
+
+const HelpModalContent = styled.div`
+  .keybinding {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: ${theme.spacings(2)};
+
+    > code {
+      background-color: ${theme.ui.backgroundGrey};
+      padding: ${theme.spacings(1)} ${theme.spacings(2)};
+      font-size: 0.9rem;
+    }
+  }
 `;

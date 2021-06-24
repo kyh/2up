@@ -6,6 +6,7 @@ import { QuestionTypeSlugs } from "features/game/gameSlice";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
+  instructionElementAttribute,
 } from "features/packs/sceneService";
 import { Button, Icon, Modal, Uploader } from "components";
 
@@ -36,16 +37,21 @@ export const EditableQuestion = ({
     onChange({ question: e.target.value });
   };
 
+  const instructionElement = (
+    <EditableQuestionInstructions
+      data-focusable={instructionElementAttribute}
+      placeholder="Instruction..."
+      defaultValue={instruction}
+      onFocus={onFocus}
+      onBlur={onBlurInstruction}
+    />
+  );
+
   switch (questionType) {
     case QuestionTypeSlugs.image.id:
       return (
         <EditableQuestionContainer key={sceneId}>
-          <EditableQuestionInstructions
-            placeholder="Instruction..."
-            defaultValue={instruction}
-            onFocus={onFocus}
-            onBlur={onBlurInstruction}
-          />
+          {instructionElement}
           <EditableQuestionImage
             instruction={instruction}
             question={question}
@@ -57,12 +63,7 @@ export const EditableQuestion = ({
     default:
       return (
         <EditableQuestionContainer key={sceneId}>
-          <EditableQuestionInstructions
-            placeholder="Instruction..."
-            defaultValue={instruction}
-            onFocus={onFocus}
-            onBlur={onBlurInstruction}
-          />
+          {instructionElement}
           <EditableQuestionText
             placeholder="Your question?"
             defaultValue={question}
@@ -73,6 +74,15 @@ export const EditableQuestion = ({
       );
   }
 };
+
+const EditableQuestionInstructions = styled.input`
+  margin: 0 auto ${theme.spacings(2)};
+`;
+
+const EditableQuestionText = styled.input`
+  margin: 0 auto ${theme.spacings(5)};
+  font-size: 2rem;
+`;
 
 type EditableQuestionImageProps = Pick<
   EditableQuestionProps,
@@ -123,40 +133,6 @@ const EditableQuestionImage = ({
   );
 };
 
-const QuestionImage = styled.img`
-  object-fit: cover;
-  max-width: 100%;
-  max-height: 200px;
-  margin: 0 0 ${theme.spacings(5)};
-  ${theme.breakpoints.desktop} {
-    max-width: 500px;
-  }
-`;
-
-const EditableQuestionContainer = styled.div`
-  input {
-    display: block;
-    text-align: center;
-    border-radius: ${theme.ui.borderWavyRadius};
-    border: none;
-    transition: all 0.23s ease;
-
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);
-    }
-  }
-`;
-
-const EditableQuestionInstructions = styled.input`
-  margin: 0 auto ${theme.spacings(2)};
-`;
-
-const EditableQuestionText = styled.input`
-  margin: 0 auto ${theme.spacings(5)};
-  font-size: 2rem;
-`;
-
 const EditableQuestionImageContainer = styled.div`
   position: relative;
   .image-input {
@@ -182,5 +158,32 @@ const EditableQuestionImageContainer = styled.div`
     position: absolute;
     top: ${theme.spacings(2)};
     right: ${theme.spacings(2)};
+  }
+`;
+
+const QuestionImage = styled.img`
+  object-fit: cover;
+  max-width: 100%;
+  max-height: 200px;
+  margin: 0 0 ${theme.spacings(5)};
+  ${theme.breakpoints.desktop} {
+    max-width: 500px;
+  }
+`;
+
+const EditableQuestionContainer = styled.div.attrs(() => ({
+  "data-question-container": true,
+}))`
+  input {
+    display: block;
+    text-align: center;
+    border-radius: ${theme.ui.borderWavyRadius};
+    border: none;
+    transition: all 0.23s ease;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);
+    }
   }
 `;

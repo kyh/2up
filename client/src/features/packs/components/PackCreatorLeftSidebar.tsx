@@ -13,29 +13,33 @@ import {
   getDragCursor,
 } from "styles/animations";
 import { theme } from "styles/theme";
+import { useHotkeys } from "@react-hook/hotkey";
 import { Modal, Button, Icon, AreaField } from "components";
 import { Question } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
-import { savingSceneVar, toCSVString } from "features/packs/sceneService";
+import {
+  keybindings,
+  savingSceneVar,
+  toCSVString,
+} from "features/packs/sceneService";
 
 import { SidebarSceneCreateMutation } from "./__generated__/SidebarSceneCreateMutation";
 import { SidebarSceneDeleteMutation } from "./__generated__/SidebarSceneDeleteMutation";
 import { SidebarSceneOrderUpdateMutation } from "./__generated__/SidebarSceneOrderUpdateMutation";
-import {
-  SidebarPackFragment,
-  SidebarPackFragment_scenes_edges_node,
-} from "./__generated__/SidebarPackFragment";
+import { SidebarPackFragment_scenes_edges_node } from "./__generated__/SidebarPackFragment";
 import { CsvImportMutation } from "./__generated__/CsvImportMutation";
 
 type Props = {
-  pack: SidebarPackFragment;
+  packId: string;
+  packScenes: SidebarPackFragment_scenes_edges_node[];
   selectedSceneId?: string;
   selectScene: (scene: any) => void;
   refetch: () => void;
 };
 
 export const Sidebar = ({
-  pack,
+  packId,
+  packScenes,
   selectedSceneId,
   selectScene,
   refetch,
@@ -46,13 +50,6 @@ export const Sidebar = ({
   const [sceneOrderUpdate] = useMutation<SidebarSceneOrderUpdateMutation>(
     SCENE_ORDER_UPDATE
   );
-  const packScenes = (pack.scenes?.edges || [])
-    .map((edge) => {
-      const scene = edge?.node;
-      if (!scene) return null;
-      return scene;
-    })
-    .filter(Boolean) as SidebarPackFragment_scenes_edges_node[];
   const [scenes, setScenes] = useState(packScenes);
   const draggingRef = useRef(false);
   // const [searchQuery, setSearchQuery] = useState("");
@@ -135,7 +132,7 @@ export const Sidebar = ({
   const addNewScene = async () => {
     const selectedScene = scenes.find((s) => s.id === selectedSceneId);
     const input = {
-      packId: pack.id,
+      packId: packId,
       instruction: selectedScene ? selectedScene.instruction : "",
       questionTypeSlug: selectedScene
         ? selectedScene.questionType.slug
@@ -164,6 +161,8 @@ export const Sidebar = ({
       savingSceneVar(false);
     }
   };
+
+  useHotkeys(window, [[keybindings.addNewScene.hotkey, addNewScene]]);
 
   // const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
   //   setSearchQuery(e.target.value);
@@ -210,7 +209,7 @@ export const Sidebar = ({
         <Button onClick={addNewScene} fullWidth>
           Add New Scene
         </Button>
-        <CsvImportButton packId={pack.id} scenes={scenes} refetch={refetch} />
+        <CsvImportButton packId={packId} scenes={scenes} refetch={refetch} />
       </SidebarFooter>
     </>
   );
