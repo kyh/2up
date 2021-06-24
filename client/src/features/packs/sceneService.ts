@@ -1,4 +1,5 @@
 import { useMutation, makeVar } from "@apollo/client";
+import { Hotkey } from "@react-hook/hotkey";
 import { useAlert } from "react-alert";
 import { Props, SCENE_UPDATE } from "./components/ScenePreview";
 import {
@@ -71,3 +72,46 @@ export const toCSVString = (
     })
     .join("\n");
 };
+
+type Keybindings = {
+  [key: string]: {
+    hotkey: Hotkey[];
+    display: string;
+    description: string;
+  };
+};
+
+export const keybindings: Keybindings = {
+  showShortcuts: {
+    hotkey: ["mod", "/"],
+    display: "⌘ + /",
+    description: "Show keyboard shortcuts",
+  },
+  previousScene: {
+    hotkey: ["up"],
+    display: "Up arrow",
+    description: "Select previous Scene",
+  },
+  nextScene: {
+    hotkey: ["down"],
+    display: "Down arrow",
+    description: "Select next Scene",
+  },
+  addNewScene: {
+    hotkey: ["mod", "d"],
+    display: "⌘ + d",
+    description: "Add new Scene",
+  },
+  focusScene: {
+    hotkey: ["mod", "a"],
+    display: "⌘ + a",
+    description: "Update Scene properties",
+  },
+  testPlay: {
+    hotkey: ["mod", "enter"],
+    display: "⌘ + Enter",
+    description: "Test play pack",
+  },
+};
+
+export const instructionElementAttribute = "instruction-input";

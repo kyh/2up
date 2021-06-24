@@ -29,6 +29,7 @@ export const iconMap = {
   leftArrow: raw("./svgs/left-arrow.svg"),
   rightArrow: raw("./svgs/right-arrow.svg"),
   time: raw("./svgs/time.svg"),
+  question: raw("./svgs/question.svg"),
 };
 
 type IconType = keyof typeof iconMap;

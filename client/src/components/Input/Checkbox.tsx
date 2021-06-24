@@ -21,6 +21,7 @@ const CheckboxContainer = styled.label`
   position: relative;
   display: inline-block;
   padding: ${theme.spacings(3)};
+  margin: 0;
 
   > input,
   > svg {

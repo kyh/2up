@@ -16,6 +16,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.7",
     "@react-hook/debounce": "^4.0.0",
+    "@react-hook/hotkey": "^3.1.0",
     "@reduxjs/toolkit": "^1.5.0",
     "framer-motion": "^4.1.17",
     "lodash": "^4.17.20",

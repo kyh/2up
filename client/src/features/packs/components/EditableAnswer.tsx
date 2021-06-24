@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
+import styled, { css } from "styled-components";
 import produce from "immer";
-import styled from "styled-components";
 import { theme } from "styles/theme";
 import { Input, SingleLetterInput, Checkbox, Button } from "components";
 import {
@@ -47,7 +47,7 @@ export const EditableAnswer = ({
   switch (answerType) {
     case AnswerTypeSlugs.multiText.id:
       return (
-        <MultiAnswerContainer key={sceneId}>
+        <AnswerContainer multi key={sceneId}>
           {sceneAnswers.map((sceneAnswer, index) => (
             <InputContainer key={sceneAnswer.id}>
               <Checkbox
@@ -70,7 +70,7 @@ export const EditableAnswer = ({
           <InputContainer>
             <Button onClick={onAddSceneAnswer}>+ Add Option</Button>
           </InputContainer>
-        </MultiAnswerContainer>
+        </AnswerContainer>
       );
     case AnswerTypeSlugs.letter.id:
       return (
@@ -113,16 +113,17 @@ export const EditableAnswer = ({
   }
 };
 
-const MultiAnswerContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, max-content);
-  grid-column-gap: ${theme.spacings(3)};
-`;
-
-const AnswerContainer = styled.div`
+const AnswerContainer = styled.div<{ multi?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  ${({ multi }) =>
+    multi &&
+    css`
+      display: grid;
+      grid-template-columns: repeat(2, max-content);
+      grid-column-gap: ${theme.spacings(3)};
+    `}
 `;
 
 const InputContainer = styled.div`

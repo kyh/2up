@@ -84,5 +84,11 @@ export const GlobalStyle = createGlobalStyle<{ isDarkMode: boolean }>`
     margin: 0 0 ${theme.spacings(1)};
   }
 
+  button:focus,
+  input:focus {
+    outline: 2px dashed ${theme.ui.borderColor};
+    outline-offset: 2px;
+  }
+
   ${({ isDarkMode }) => (isDarkMode ? darkStyles : lightStyles)}
 `;
