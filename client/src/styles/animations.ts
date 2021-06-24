@@ -122,7 +122,7 @@ export type DynamicListItem = {
 export const findIndex = (
   i: number,
   yOffset: number,
-  sizes: any[],
+  sizes: number[],
   swapDistance: SwapDistanceType
 ) => {
   let target = i;
@@ -276,7 +276,7 @@ export function useDynamicListItem<T extends HTMLElement>(
   ];
 }
 
-export const arrayMoveMutate = (array: any[], from: number, to: number) => {
+export const arrayMoveMutate = <T>(array: T[], from: number, to: number) => {
   const startIndex = from < 0 ? array.length + from : from;
 
   if (startIndex >= 0 && startIndex < array.length) {
@@ -287,9 +287,9 @@ export const arrayMoveMutate = (array: any[], from: number, to: number) => {
   }
 };
 
-export const arrayMove = (array: any[], from: number, to: number) => {
+export const arrayMove = <T>(array: T[], from: number, to: number) => {
   array = [...array];
-  arrayMoveMutate(array, from, to);
+  arrayMoveMutate<T>(array, from, to);
   return array;
 };
 

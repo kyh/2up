@@ -14,13 +14,15 @@ const hashCodeFn = (string?: string, mod?: number) => {
 
 export const hashCode = memoize(hashCodeFn);
 
-export const omitDeep = (input: any, ...props: string[]) => {
-  const omitDeepOnOwnProps = (obj = {}): any => {
+type OmitInput = Record<string, any>;
+
+export const omitDeep = (input: OmitInput, ...props: string[]) => {
+  const omitDeepOnOwnProps = (obj: OmitInput): OmitInput => {
     if (typeof input === "undefined") return input;
     if (!Array.isArray(obj) && !isObject(obj)) return obj;
     if (Array.isArray(obj)) return omitDeep(obj, ...props);
 
-    const o: any = {};
+    const o: OmitInput = {};
     for (const [key, value] of Object.entries(obj)) {
       o[key] = !isNil(value) ? omitDeep(value, ...props) : value;
     }
@@ -32,7 +34,7 @@ export const omitDeep = (input: any, ...props: string[]) => {
   return omitDeepOnOwnProps(input);
 };
 
-const isNil = (value: any) => {
+const isNil = (value: unknown) => {
   return value === null || value === undefined;
 };
 

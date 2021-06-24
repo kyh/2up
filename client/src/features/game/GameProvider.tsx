@@ -7,7 +7,7 @@ import { useChannel } from "utils/socketUtils";
 import { gameActions } from "features/game/gameSlice";
 
 export const GameContext = createContext({
-  broadcast: (_eventName: string, _payload?: any) => {},
+  broadcast: (_eventName: string, _payload?: Record<string, any>) => {},
 });
 
 type Props = { gameId?: string; children?: ReactNode };
@@ -30,14 +30,14 @@ export const GameProvider = ({ children, gameId }: Props) => {
       name: localStorage.getItem("name"),
       isSpectator: location.pathname.includes("spectate"),
     },
-    (event, payload) => {
+    (event, payload = {}) => {
       if (event === PRESENCE_EVENTS.state || event === PRESENCE_EVENTS.diff) {
         if (event === PRESENCE_EVENTS.state) {
           presencesRef.current = payload;
         } else {
           presencesRef.current = Presence.syncDiff(
             presencesRef.current,
-            payload
+            payload as { joins: object; leaves: object }
           );
         }
         const players = Presence.list(presencesRef.current)

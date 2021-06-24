@@ -8,7 +8,7 @@ import { theme } from "styles/theme";
 import { Button, Icon, Modal, Loader } from "components";
 import { useHostGame } from "features/game/gameService";
 import { NavigationContainer } from "features/packs/components/Navigation";
-import { PackForm } from "features/packs/components/PackForm";
+import { PackForm, PackFormInputs } from "features/packs/components/PackForm";
 import { savingSceneVar } from "features/packs/sceneService";
 
 import { TopbarPackFragment } from "./__generated__/TopbarPackFragment";
@@ -25,17 +25,14 @@ export const Topbar = ({ pack }: Props) => {
   const [packUpdate] = useMutation<TopbarPackUpdateMutation>(PACK_UPDATE);
   const hostGame = useHostGame();
 
-  const onSaveChanges = async (newPack: TopbarPackFragment) => {
+  const onSaveChanges = async (newPack: PackFormInputs) => {
     savingSceneVar(true);
     try {
       await packUpdate({
         variables: {
           input: {
-            id: newPack.id,
-            name: newPack.name,
-            description: newPack.description,
-            is_random: newPack.isRandom,
-            length: newPack.length,
+            id: pack.id,
+            ...newPack,
           },
         },
       });

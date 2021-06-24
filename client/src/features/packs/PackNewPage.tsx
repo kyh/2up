@@ -10,28 +10,18 @@ import { PackForm, PackFormInputs } from "features/packs/components/PackForm";
 import { PackNewPagePackCreateMutation } from "./__generated__/PackNewPagePackCreateMutation";
 
 export const PackNewPage = () => {
+  const defaultPackValues = { isRandom: true, length: 10 };
   const alert = useAlert();
   const history = useHistory();
-
   const [packCreate, { loading }] = useMutation<PackNewPagePackCreateMutation>(
     PACK_CREATE
   );
 
-  const createPack = async ({
-    name,
-    description,
-    isRandom = true,
-    length = 10,
-  }: PackFormInputs) => {
+  const createPack = async (newPack: PackFormInputs) => {
     try {
       const response = await packCreate({
         variables: {
-          input: {
-            name,
-            description,
-            isRandom,
-            length,
-          },
+          input: { ...newPack },
         },
       });
       const pack = response.data?.packCreate?.pack;
@@ -47,7 +37,11 @@ export const PackNewPage = () => {
       <PackNewPageContent>
         <h1 className="title">New Pack</h1>
         <Card background>
-          <PackForm onSubmit={createPack} loading={loading} />
+          <PackForm
+            onSubmit={createPack}
+            loading={loading}
+            defaultValues={defaultPackValues}
+          />
         </Card>
       </PackNewPageContent>
     </Page>
