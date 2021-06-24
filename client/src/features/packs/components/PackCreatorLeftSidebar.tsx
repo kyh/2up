@@ -83,8 +83,8 @@ export const Sidebar = ({
       afterSceneId = scenes[endIndex + 1].id;
     }
 
-    savingSceneVar(true);
     try {
+      savingSceneVar(true);
       await sceneOrderUpdate({
         variables: {
           input: {
@@ -94,8 +94,8 @@ export const Sidebar = ({
           },
         },
       });
-      savingSceneVar(false);
       draggingRef.current = false;
+      savingSceneVar(false);
     } catch (error) {
       alert.show(error.message);
       savingSceneVar(false);
@@ -110,8 +110,8 @@ export const Sidebar = ({
   });
 
   const deleteScene = async (sceneId: string, index: number) => {
-    savingSceneVar(true);
     try {
+      savingSceneVar(true);
       const { data } = await sceneDelete({
         variables: {
           input: {
@@ -132,20 +132,26 @@ export const Sidebar = ({
     }
   };
 
-  const addNewScene = async (extendInput = {}) => {
-    const defaultInput = {
+  const addNewScene = async () => {
+    const selectedScene = scenes.find((s) => s.id === selectedSceneId);
+    const input = {
       packId: pack.id,
-      question: "Question?",
-      questionTypeSlug: "text",
-      answerTypeSlug: "text",
-      sceneAnswers: [{ content: "Answer!", isCorrect: true }],
+      instruction: selectedScene ? selectedScene.instruction : "",
+      questionTypeSlug: selectedScene
+        ? selectedScene.questionType.slug
+        : "text",
+      question: selectedScene ? selectedScene.question : "Question?",
+      answerTypeSlug: selectedScene ? selectedScene.answerType.slug : "text",
+      sceneAnswers: selectedScene
+        ? selectedScene.sceneAnswers
+        : [{ content: "Answer!", isCorrect: true }],
       order: (scenes?.length || 0) + 1,
     };
-    savingSceneVar(true);
 
     try {
+      savingSceneVar(true);
       const { data } = await sceneCreate({
-        variables: { input: { ...defaultInput, ...extendInput } },
+        variables: { input },
       });
       const newScene = data?.sceneCreate
         ?.scene as SidebarPackFragment_scenes_edges_node;
@@ -156,23 +162,6 @@ export const Sidebar = ({
     } catch (error) {
       alert.show(error.message);
       savingSceneVar(false);
-    }
-  };
-
-  const quickAddNewScene = () => {
-    if (scenes) {
-      const selectedScene = scenes.find((s) => s.id === selectedSceneId);
-      addNewScene(
-        selectedScene
-          ? {
-              instruction: selectedScene.instruction,
-              questionTypeSlug: selectedScene.questionType.slug,
-              question: selectedScene.question,
-              answerTypeSlug: selectedScene.answerType.slug,
-              sceneAnswers: selectedScene.sceneAnswers,
-            }
-          : {}
-      );
     }
   };
 
@@ -187,18 +176,19 @@ export const Sidebar = ({
           className="search"
           onChange={onSearch}
           type="text"
-          placeholder="Search by answers"
+          placeholder="Search by question/answers"
         /> */}
       </SidebarHeader>
       <SidebarContent>
         {scenes.map((scene, index) => {
-          // const matchedAnswers = (scene?.sceneAnswers || []).filter(
+          // const matchedQuestion = scene.question.includes(searchQuery);
+          // const matchedAnswers = (scene.sceneAnswers || []).filter(
           //   (sceneAnswer) => {
           //     return (sceneAnswer?.content || "").includes(searchQuery);
           //   }
-          // );
+          // ).length < 1;
 
-          // if (searchQuery !== "" && matchedAnswers.length < 1) {
+          // if (searchQuery !== "" && matchedAnswers && matchedQuestion) {
           //   return null;
           // }
 
@@ -217,7 +207,7 @@ export const Sidebar = ({
         })}
       </SidebarContent>
       <SidebarFooter>
-        <Button onClick={quickAddNewScene} fullWidth>
+        <Button onClick={addNewScene} fullWidth>
           Add New Scene
         </Button>
         <CsvImportButton packId={pack.id} scenes={scenes} refetch={refetch} />

@@ -1,7 +1,7 @@
 import { useState, useEffect, ReactNode } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { motion } from "framer-motion";
-import { debounce } from "lodash";
+import { useDebounce } from "@react-hook/debounce";
 import { theme, isDesktop } from "styles/theme";
 import { visible } from "styles/animations";
 import { StepProps, GameState } from "features/game/gameSlice";
@@ -64,7 +64,7 @@ export const PlayerScores = ({
   const [players, setPlayers] = useState(
     sortByKey(gameState.players, "prevScore")
   );
-  const [desktop, setDesktop] = useState(isDesktop());
+  const [desktop, setDesktop] = useDebounce(isDesktop());
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -79,12 +79,11 @@ export const PlayerScores = ({
       setDesktop(isDesktop());
     };
 
-    const debouncedResize = debounce(onResize, 100);
-    window.addEventListener("resize", debouncedResize);
+    window.addEventListener("resize", onResize);
 
     return () => {
       clearTimeout(timeoutId);
-      window.removeEventListener("resize", debouncedResize);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 

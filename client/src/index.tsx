@@ -1,6 +1,5 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom";
-import { debounce } from "lodash";
 import { ApolloProvider } from "@apollo/client";
 import { Provider as ReduxProvider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -11,15 +10,6 @@ import { client } from "app/apollo";
 
 import { App } from "./app/App";
 import reportWebVitals from "./reportWebVitals";
-
-const onResize = () => {
-  const vh = window.innerHeight;
-  document.documentElement.style.setProperty("--vh", `${vh}px`);
-};
-
-const debouncedResize = debounce(onResize, 100);
-window.addEventListener("resize", debouncedResize);
-onResize();
 
 ReactDOM.render(
   <StrictMode>

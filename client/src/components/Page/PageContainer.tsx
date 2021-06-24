@@ -24,6 +24,6 @@ export const PageContainer = styled.section<Props>`
   flex-direction: column;
   justify-content: ${({ justify }) => (justify ? justify : "center")};
   align-items: center;
-  height: calc(var(--vh, 100vh) - 50px);
+  height: calc(100vh - 50px);
   max-width: ${renderSize};
 `;

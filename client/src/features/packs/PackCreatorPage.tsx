@@ -91,7 +91,7 @@ const PACK_QUERY = gql`
 `;
 
 export const Page = styled.section`
-  height: var(--vh, 100vh);
+  height: 100vh;
   display: grid;
   background: ${theme.ui.backgroundGrey};
   grid-template-areas:
