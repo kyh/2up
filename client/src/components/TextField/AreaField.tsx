@@ -1,4 +1,4 @@
-import { ReactNode, forwardRef } from "react";
+import { ReactNode, ChangeEventHandler, forwardRef } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { Input } from "../Input/Input";
@@ -17,6 +17,8 @@ type Props = {
   children?: ReactNode;
   error?: boolean;
   errorText?: ReactNode;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  value?: string;
 };
 
 export const AreaField = forwardRef<HTMLTextAreaElement, Props>(

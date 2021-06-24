@@ -74,7 +74,7 @@ export const EditableAnswer = ({
       );
     case AnswerTypeSlugs.letter.id:
       return (
-        <div key={sceneId}>
+        <AnswerContainer key={sceneId}>
           <InputContainer>
             <Input
               defaultValue={sceneAnswer?.content || ""}
@@ -89,12 +89,12 @@ export const EditableAnswer = ({
             <SingleLetterInput defaultValue={sceneAnswer?.content || ""} />
           </InputContainer>
           <Button disabled>Submit answer</Button>
-        </div>
+        </AnswerContainer>
       );
     // "text"
     default:
       return (
-        <div key={sceneId}>
+        <AnswerContainer key={sceneId}>
           <InputContainer>
             <Input
               defaultValue={sceneAnswer?.content || ""}
@@ -108,7 +108,7 @@ export const EditableAnswer = ({
             />
           </InputContainer>
           <Button disabled>Submit answer</Button>
-        </div>
+        </AnswerContainer>
       );
   }
 };
@@ -117,6 +117,12 @@ const MultiAnswerContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, max-content);
   grid-column-gap: ${theme.spacings(3)};
+`;
+
+const AnswerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const InputContainer = styled.div`

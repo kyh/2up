@@ -16,7 +16,9 @@ export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
 
   const onSelectType = (updatedScene = {}) => {
     visibleQATypeMenuVar(VisibleQATypeMenu.None);
-    updateScene(updatedScene);
+    if (updatedScene) {
+      updateScene(updatedScene);
+    }
   };
 
   switch (openMenu) {
@@ -53,10 +55,14 @@ const QuestionTypeMenu = ({ currentType, onSelectType }: Props) => {
             key={key}
             className={currentType === value.id ? "selected" : ""}
             onClick={() => {
-              onSelectType({
-                questionType: { slug: value.id },
-                question: value.content,
-              });
+              onSelectType(
+                currentType === value.id
+                  ? false
+                  : {
+                      questionType: { slug: value.id },
+                      question: value.content,
+                    }
+              );
             }}
           >
             {value.display}
@@ -76,10 +82,14 @@ const AnswerTypeMenu = ({ currentType, onSelectType }: Props) => {
             key={key}
             className={currentType === value.id ? "selected" : ""}
             onClick={() => {
-              onSelectType({
-                answerType: { slug: value.id },
-                sceneAnswers: [],
-              });
+              onSelectType(
+                currentType === value.id
+                  ? false
+                  : {
+                      answerType: { slug: value.id },
+                      sceneAnswers: [],
+                    }
+              );
             }}
           >
             {value.display}
