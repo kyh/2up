@@ -19,7 +19,7 @@ export const Page = styled.section<{
       overflow-x: hidden;
       overflow-y: auto;
       perspective: 5px;
-      height: var(--vh, 100vh);
+      height: 100vh;
 
       ${bgImage &&
       css`
