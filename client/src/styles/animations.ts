@@ -247,11 +247,12 @@ export function useDynamicListItem<T extends HTMLElement>(
   const ref = useRef<T>(null);
 
   useEffect(() => {
-    if (ref && ref.current)
+    if (ref && ref.current) {
       handleMeasure(
         index,
         drag === "y" ? ref.current.offsetHeight : ref.current.offsetWidth
       );
+    }
   }, [ref, handleMeasure, index, drag]);
 
   return [
