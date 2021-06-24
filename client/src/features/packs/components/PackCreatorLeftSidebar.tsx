@@ -339,6 +339,16 @@ const SidebarItem = ({
     itemProps
   );
 
+  useEffect(() => {
+    if (ref && ref.current && isSelected) {
+      ref.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "nearest",
+      });
+    }
+  }, [isSelected]);
+
   return (
     <QuestionItemContainer
       layout
