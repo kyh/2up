@@ -191,6 +191,9 @@ export function useDynamicList<T>({
       if (onPositionChange && startIndex !== endIndex) {
         onPositionChange(startIndex, endIndex);
       }
+      if (onDragEnd) {
+        onDragEnd(startIndex, endIndex);
+      }
       handleDragStart(-1);
     },
     [startIndex, onPositionChange]

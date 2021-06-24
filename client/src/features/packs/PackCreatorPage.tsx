@@ -1,10 +1,7 @@
-import { useState } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
 import { useParams } from "react-router-dom";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { useAlert } from "react-alert";
-import { useForm } from "react-hook-form";
+import { gql, useQuery } from "@apollo/client";
 import { theme } from "styles/theme";
 import { Topbar } from "features/packs/components/PackCreatorTopbar";
 import { Sidebar } from "features/packs/components/PackCreatorLeftSidebar";
@@ -15,30 +12,16 @@ import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
 } from "features/packs/sceneService";
-import { Modal } from "components";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
-import { PackCreatorPageCsvImportMutation } from "./__generated__/PackCreatorPageCsvImportMutation";
-
-type FormInputs = {
-  csv: string;
-};
 
 export const PackCreatorPage = () => {
-  const alert = useAlert();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { packId } = useParams<{ packId: string }>();
   const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
     variables: {
       packId: packId || "",
     },
   });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInputs>();
-  const [csvImport] = useMutation<PackCreatorPageCsvImportMutation>(CSV_IMPORT);
 
   const selectScene = (selectedSceneId: string) => {
     visibleQATypeMenuVar(VisibleQATypeMenu.None);
@@ -47,22 +30,6 @@ export const PackCreatorPage = () => {
       sceneId: selectedSceneId,
     };
     refetch(newVariables);
-  };
-
-  const openCsvImport = () => {
-    setIsModalOpen(true);
-  };
-
-  const onSubmit = async ({ csv }: FormInputs) => {
-    try {
-      csvImport({
-        variables: {
-          input: { packId, csv },
-        },
-      });
-    } catch (error) {
-      alert.show(error.message);
-    }
   };
 
   if (!data || !data.pack) {
@@ -79,7 +46,6 @@ export const PackCreatorPage = () => {
           selectedSceneId={data.scene?.id}
           selectScene={selectScene}
           refetch={refetch}
-          openCsvImport={openCsvImport}
         />
       </SidebarLeft>
       {data?.scene && (
@@ -97,16 +63,6 @@ export const PackCreatorPage = () => {
           </Footer>
         </>
       )}
-      <Modal open={isModalOpen} onRequestClose={() => setIsModalOpen(false)}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <textarea
-            id="csv"
-            {...register("csv", { required: true })}
-          ></textarea>
-          <input type="submit" value="Import CSV" />
-        </form>
-      </Modal>
-      <Footer />
     </Page>
   );
 };
@@ -132,17 +88,6 @@ const PACK_QUERY = gql`
   ${Topbar.fragments.pack}
   ${Sidebar.fragments.pack}
   ${ScenePreview.fragments.scene}
-`;
-
-const CSV_IMPORT = gql`
-  mutation PackCreatorPageCsvImportMutation($input: CsvImportInput!) {
-    csvImport(input: $input) {
-      pack {
-        id
-        name
-      }
-    }
-  }
 `;
 
 export const Page = styled.section`

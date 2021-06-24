@@ -1,7 +1,10 @@
 import { useMutation, makeVar } from "@apollo/client";
 import { useAlert } from "react-alert";
 import { Props, SCENE_UPDATE } from "./components/ScenePreview";
-import { SceneUpdateMutation } from "./components/__generated__/SceneUpdateMutation";
+import {
+  SceneUpdateMutation,
+  SceneUpdateMutation_sceneUpdate_scene,
+} from "./components/__generated__/SceneUpdateMutation";
 
 export const useUpdateScene = ({ scene }: Props) => {
   const alert = useAlert();
@@ -42,3 +45,29 @@ export enum VisibleQATypeMenu {
 
 export const visibleQATypeMenuVar = makeVar(VisibleQATypeMenu.None);
 export const savingSceneVar = makeVar(false);
+
+export const toCSVString = (
+  scenes: Pick<
+    SceneUpdateMutation_sceneUpdate_scene,
+    | "id"
+    | "instruction"
+    | "question"
+    | "questionType"
+    | "sceneAnswers"
+    | "answerType"
+  >[]
+) => {
+  return scenes
+    .map((s) => {
+      const sceneAnswers = s.sceneAnswers?.map((a) => a?.content || "");
+      return [
+        s.id,
+        s.instruction,
+        s.questionType.slug,
+        s.question,
+        s.answerType.slug,
+        ...(sceneAnswers || []),
+      ].join();
+    })
+    .join("\n");
+};
