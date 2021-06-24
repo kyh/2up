@@ -17,21 +17,22 @@ const DragAndDrop = ({ onFileDrop, disabled, children }: DragAndDropProps) => {
   const dragCounterRef = useRef(0);
   const dropRef = useRef<HTMLDivElement>(null);
 
-  const handleDrag = useCallback((e: any) => {
+  const handleDrag = useCallback((e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
   }, []);
 
-  const handleDragIn = useCallback((e: any) => {
+  const handleDragIn = useCallback((e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    const dataTransfer = e.dataTransfer;
     dragCounterRef.current = dragCounterRef.current + 1;
-    if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+    if (dataTransfer && dataTransfer.items && dataTransfer.items.length > 0) {
       setDragging(true);
     }
   }, []);
 
-  const handleDragOut = useCallback((e: any) => {
+  const handleDragOut = useCallback((e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     dragCounterRef.current = dragCounterRef.current - 1;
@@ -40,13 +41,14 @@ const DragAndDrop = ({ onFileDrop, disabled, children }: DragAndDropProps) => {
     }
   }, []);
 
-  const handleDrop = useCallback((e: any) => {
+  const handleDrop = useCallback((e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setDragging(false);
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      onFileDrop(e.dataTransfer.files);
-      e.dataTransfer.clearData();
+    const dataTransfer = e.dataTransfer;
+    if (dataTransfer && dataTransfer.files && dataTransfer.files.length > 0) {
+      onFileDrop(Array.from(dataTransfer.files));
+      dataTransfer.clearData();
       dragCounterRef.current = 0;
     }
   }, []);
