@@ -14,11 +14,11 @@ export const socketMiddleware: Middleware = (_store) => (next) => (action) => {
 export const useChannel = (
   channelTopic: string,
   initialPayload = {},
-  onMessage = (_eventName: string, _payload?: any) => {}
+  onMessage = (_eventName: string, _payload?: Record<string, any>) => {}
 ) => {
   const socket = useContext(SocketContext);
   const [connected, setConnected] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [broadcast, setBroadcast] = useState(errorMessage);
 
   useEffect(() => {
@@ -34,12 +34,12 @@ export const useChannel = (
 
     channel
       .join()
-      .receive("ok", ({ messages }: any) => {
+      .receive("ok", ({ messages }: { messages: string }) => {
         setConnected(true);
-        setError(null);
+        setError("");
         console.log("successfully joined channel", messages || "");
       })
-      .receive("error", ({ reason }: any) => {
+      .receive("error", ({ reason }: { reason: string }) => {
         setConnected(false);
         setError(reason);
         console.error("failed to join channel", reason);
@@ -55,7 +55,10 @@ export const useChannel = (
   return { broadcast, connected, error };
 };
 
-const errorMessage = () => (_eventName: string, _payload?: any) =>
+const errorMessage = () => (
+  _eventName: string,
+  _payload?: Record<string, any>
+) =>
   console.error(
     "useChannel broadcast function cannot be invoked before the channel has been joined"
   );

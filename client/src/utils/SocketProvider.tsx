@@ -5,7 +5,7 @@ export const SocketContext = createContext({} as Socket);
 
 type Props = {
   wsUrl: string;
-  options?: any;
+  options?: Record<string, string>;
   children: ReactNode;
 };
 

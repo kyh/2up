@@ -9,7 +9,7 @@ type Props = {
   submitText?: string;
   loading?: boolean;
   defaultValues?: Object;
-  onSubmit: any;
+  onSubmit: (pack: PackFormInputs) => void;
 };
 
 export const PackForm = ({
