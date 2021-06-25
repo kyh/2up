@@ -130,7 +130,7 @@ export const QATypeMenuContainer = styled.div<{ content: string }>`
     }
 
     &.selected {
-      background-color: ${theme.colors.purple};
+      background-color: ${theme.ui.backgroundPurpleAlt};
     }
   }
 
