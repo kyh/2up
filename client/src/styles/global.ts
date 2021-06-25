@@ -65,12 +65,16 @@ export const GlobalStyle = createGlobalStyle<{ isDarkMode: boolean }>`
     font-size: 0.6rem;
   }
 
-  h1, h2, h3, h4, h5, h6, p {
+  h1, h2, h3, h4, h5, h6, p, ul {
     margin: 0 0 ${theme.spacings(3)};
   }
 
   p {
     line-height: 1.6;
+  }
+
+  li {
+    margin-bottom: ${theme.spacings(2)};
   }
 
   fieldset {
