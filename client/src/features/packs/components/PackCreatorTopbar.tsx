@@ -92,7 +92,12 @@ export const Topbar = ({ pack, testPlay }: Props) => {
           onSubmit={onSaveChanges}
           loading={saving}
           submitText="Save Changes"
-          defaultValues={pack}
+          defaultValues={{
+            name: pack.name,
+            description: pack.description,
+            length: pack.length,
+            isRandom: pack.isRandom,
+          }}
         />
       </Modal>
     </StyledNavigationContainer>
