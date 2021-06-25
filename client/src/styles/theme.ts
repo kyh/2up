@@ -45,7 +45,6 @@ export const ui = {
   background: "var(--background)",
   backgroundGrey: "var(--background-grey)",
   backgroundPurple: "var(--background-purple)",
-  backgroundPurpleAlt: "var(--background-purple-alt)",
 
   cardBorder: "var(--card-border)",
   cardBorderUrl: "var(--card-border-url)",
@@ -60,6 +59,7 @@ export const ui = {
   buttonBorderActiveUrl: "var(--button-border-active-url)",
   buttonFabBorderUrl: "var(--button-fab-border-url)",
   buttonFabBorderActiveUrl: "var(--button-fab-border-active-url)",
+  buttonSelected: "var(--button-selected)",
 
   modalBorder: "var(--modal-border)",
   modalBackground: "var(--modal-background)",
@@ -80,7 +80,6 @@ export const lightStyles = css`
     --background: ${colors.white};
     --background-grey: ${colors.greyBackground};
     --background-purple: ${colors.purpleBackground};
-    --background-purple-alt: ${colors.purpleBackground};
 
     --card-border: ${colors.black};
     --card-border-url: url("${cardBorder(colors.greyDark)}");
@@ -97,6 +96,7 @@ export const lightStyles = css`
     --button-fab-border-active-url: url("${buttonFabBorderActive(
       colors.greyDark
     )}");
+    --button-selected: ${colors.purpleBackground};
 
     --modal-border: ${colors.black};
     --modal-background: ${colors.white};
@@ -118,7 +118,6 @@ export const darkStyles = css`
     --background: ${colors.black};
     --background-grey: ${colors.greyDark};
     --background-purple: ${colors.purpleDark};
-    --background-purple-alt: ${colors.purple};
 
     --card-border: ${colors.greyLight};
     --card-border-url: url("${cardBorder(colors.greyLight)}");
@@ -135,6 +134,7 @@ export const darkStyles = css`
     --button-fab-border-active-url: url("${buttonFabBorderActive(
       colors.greyLight
     )}");
+    --button-selected: ${colors.purple};
 
     --modal-border: ${colors.greyLight};
     --modal-background: ${colors.black};
