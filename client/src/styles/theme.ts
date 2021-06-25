@@ -41,9 +41,11 @@ export const spacings = memoize((n: number): string => {
 export const ui = {
   text: "var(--text)",
   textGrey: "var(--text-grey)",
+
   background: "var(--background)",
   backgroundGrey: "var(--background-grey)",
   backgroundPurple: "var(--background-purple)",
+  backgroundPurpleAlt: "var(--background-purple-alt)",
 
   cardBorder: "var(--card-border)",
   cardBorderUrl: "var(--card-border-url)",
@@ -74,9 +76,11 @@ export const lightStyles = css`
   :root {
     --text: ${colors.black};
     --text-grey: ${colors.grey};
+
     --background: ${colors.white};
     --background-grey: ${colors.greyBackground};
     --background-purple: ${colors.purpleBackground};
+    --background-purple-alt: ${colors.purpleBackground};
 
     --card-border: ${colors.black};
     --card-border-url: url("${cardBorder(colors.greyDark)}");
@@ -110,9 +114,11 @@ export const darkStyles = css`
   :root {
     --text: ${colors.white};
     --text-grey: ${colors.greyLight};
+
     --background: ${colors.black};
     --background-grey: ${colors.greyDark};
     --background-purple: ${colors.purpleDark};
+    --background-purple-alt: ${colors.purple};
 
     --card-border: ${colors.greyLight};
     --card-border-url: url("${cardBorder(colors.greyLight)}");

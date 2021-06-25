@@ -173,16 +173,20 @@ export const AnswerTypeSlugs = {
   //   id: "multi_image",
   //   display: "Multiple Image",
   // },
+  // swipeText: {
+  //   id: "swipe_text",
+  //   display: "Swipe Text",
+  // },
+  // swipeImage: {
+  //   id: "swipe_image",
+  //   display: "Swipe Image",
+  // },
+  // sortText: {
+  //   id: "sort_text",
+  //   display: "Sort",
+  // },
   // code: {
   //   id: "code",
   //   display: "Code",
-  // },
-  // knob: {
-  //   id: "knob",
-  //   display: "Knob",
-  // },
-  // color: {
-  //   id: "color",
-  //   display: "Color",
   // },
 };
