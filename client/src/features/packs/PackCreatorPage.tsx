@@ -1,5 +1,5 @@
 import raw from "raw.macro";
-import { useState, useRef } from "react";
+import { useState, useRef, SyntheticEvent } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
 import { useParams } from "react-router-dom";
@@ -70,6 +70,16 @@ export const PackCreatorPage = () => {
     }
   };
 
+  const hideQATypeMenu = (e: SyntheticEvent) => {
+    if (
+      e.target instanceof HTMLInputElement ||
+      e.target instanceof HTMLTextAreaElement
+    ) {
+      return;
+    }
+    visibleQATypeMenuVar(VisibleQATypeMenu.None);
+  };
+
   const focusElement = (query: string) => (e: KeyboardEvent) => {
     if (
       e.target instanceof HTMLInputElement ||
@@ -123,7 +133,7 @@ export const PackCreatorPage = () => {
       </SidebarLeft>
       {data?.scene ? (
         <>
-          <Content>
+          <Content onClick={hideQATypeMenu}>
             <Screen ref={screenRef}>
               <ScenePreview scene={data.scene} />
             </Screen>
