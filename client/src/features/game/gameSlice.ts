@@ -124,6 +124,11 @@ export const QuestionTypeSlugs = {
     display: "Text",
     content: "Hello in there?",
   },
+  // richText: {
+  //   id: "rich_text",
+  //   display: "Rich Text",
+  //   content: "",
+  // },
   image: {
     id: "image",
     display: "Image",
@@ -137,11 +142,6 @@ export const QuestionTypeSlugs = {
   // audio: {
   //   id: "audio",
   //   display: "Audio",
-  //   content: "",
-  // },
-  // richText: {
-  //   id: "rich_text",
-  //   display: "Rich Text",
   //   content: "",
   // },
   // code: {
@@ -171,8 +171,8 @@ export const AnswerTypeSlugs = {
   },
   // multiImage: {
   //   id: "multi_image",
-  //   display: "Choose Image",
-  // }
+  //   display: "Multiple Image",
+  // },
   // code: {
   //   id: "code",
   //   display: "Code",

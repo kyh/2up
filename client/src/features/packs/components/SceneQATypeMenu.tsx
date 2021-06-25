@@ -109,6 +109,7 @@ export const QATypeMenuContainer = styled.div<{ content: string }>`
   border-radius: 50px;
   background: ${theme.ui.background};
   display: flex;
+  width: fit-content;
 
   > button,
   > button:hover {
