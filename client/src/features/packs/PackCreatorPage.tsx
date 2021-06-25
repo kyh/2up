@@ -1,3 +1,4 @@
+import raw from "raw.macro";
 import { useState, useRef } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
@@ -10,7 +11,7 @@ import { Sidebar } from "features/packs/components/PackCreatorLeftSidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";
 import { SceneQATypeMenu } from "features/packs/components/SceneQATypeMenu";
 import { SceneSettingsMenu } from "features/packs/components/SceneSettingsMenu";
-import { Button, Modal, Icon } from "components";
+import { Button, Modal, Icon, Svg } from "components";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
@@ -21,6 +22,8 @@ import { useHostGame } from "features/game/gameService";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
 import { SidebarPackFragment_scenes_edges_node } from "./components/__generated__/SidebarPackFragment";
+
+const arrowSvg = raw("./svgs/arrow.svg");
 
 export const PackCreatorPage = () => {
   const screenRef = useRef<null | HTMLDivElement>(null);
@@ -67,7 +70,13 @@ export const PackCreatorPage = () => {
     }
   };
 
-  const focusElement = (query: string) => () => {
+  const focusElement = (query: string) => (e: KeyboardEvent) => {
+    if (
+      e.target instanceof HTMLInputElement ||
+      e.target instanceof HTMLTextAreaElement
+    ) {
+      return;
+    }
     if (screenRef && screenRef.current) {
       const element = screenRef.current.querySelector(
         query
@@ -112,7 +121,7 @@ export const PackCreatorPage = () => {
           refetch={refetch}
         />
       </SidebarLeft>
-      {data?.scene && (
+      {data?.scene ? (
         <>
           <Content>
             <Screen ref={screenRef}>
@@ -126,6 +135,23 @@ export const PackCreatorPage = () => {
             <SceneQATypeMenu scene={data.scene} />
           </Footer>
         </>
+      ) : (
+        <EmptyContent>
+          <div className="empty-content">
+            <h1>Wow it's a brand new pack!</h1>
+            <p>Here's how it works:</p>
+            <ul>
+              <li>A pack contains many scenes</li>
+              <li>A scene has a question and answer</li>
+              <li>
+                There are different types of question/answer (text questions,
+                image questions, single answers, multiple choice answers etc.)
+              </li>
+              <li>You get the gist of it, add your first scene to begin</li>
+            </ul>
+          </div>
+          <Svg className="arrow" content={arrowSvg} />
+        </EmptyContent>
       )}
       <HelpButton variant="fab" onClick={toggleHelpModal}>
         <Icon icon="question" size="sm" />
@@ -173,7 +199,7 @@ const PACK_QUERY = gql`
   ${ScenePreview.fragments.scene}
 `;
 
-export const Page = styled.section`
+const Page = styled.section`
   height: 100vh;
   display: grid;
   background: ${theme.ui.backgroundGrey};
@@ -193,9 +219,39 @@ const SidebarLeft = styled.section`
   border-right: 1px solid ${theme.ui.borderColor};
 `;
 
-export const Content = styled.section`
+const Content = styled.section`
   grid-area: content;
   padding: ${theme.spacings(7)};
+`;
+
+const EmptyContent = styled(Content)`
+  display: flex;
+
+  .arrow {
+    position: absolute;
+    bottom: 65px;
+    left: 225px;
+    opacity: 0.5;
+
+    > svg {
+      width: 250px;
+      height: auto;
+    }
+  }
+
+  .empty-content {
+    text-align: center;
+    max-width: 600px;
+    margin: auto;
+
+    > p {
+      margin-bottom: ${theme.spacings(5)};
+    }
+  }
+
+  ul {
+    text-align: left;
+  }
 `;
 
 const Screen = styled.section`

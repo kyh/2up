@@ -139,6 +139,21 @@ export const QuestionTypeSlugs = {
   //   display: "Audio",
   //   content: "",
   // },
+  // richText: {
+  //   id: "rich_text",
+  //   display: "Rich Text",
+  //   content: "",
+  // },
+  // code: {
+  //   id: "code",
+  //   display: "Code",
+  //   content: "",
+  // },
+  // sheet: {
+  //   id: "sheet",
+  //   display: "Spreadsheet",
+  //   content: "",
+  // },
 };
 
 export const AnswerTypeSlugs = {
@@ -151,7 +166,23 @@ export const AnswerTypeSlugs = {
     display: "Multiple Choice",
   },
   letter: {
-    id: "text_letter",
+    id: "letter_text",
     display: "Letters",
   },
+  // multiImage: {
+  //   id: "multi_image",
+  //   display: "Choose Image",
+  // }
+  // code: {
+  //   id: "code",
+  //   display: "Code",
+  // },
+  // knob: {
+  //   id: "knob",
+  //   display: "Knob",
+  // },
+  // color: {
+  //   id: "color",
+  //   display: "Color",
+  // },
 };
