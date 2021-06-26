@@ -1,18 +1,10 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
 import { theme } from "styles/theme";
-import { NavigationCurrentUserQuery } from "./__generated__/NavigationCurrentUserQuery";
+import { useAuth } from "utils/AuthProvider";
 
 export const Navigation = () => {
-  const { data } = useQuery<NavigationCurrentUserQuery>(CURRENT_USER);
-
-  const onLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    window.location.reload();
-  };
-
+  const auth = useAuth();
   return (
     <NavigationContainer>
       <div className="left">
@@ -26,11 +18,11 @@ export const Navigation = () => {
         </Link>
       </div>
       <div className="right end">
-        {data?.currentUser?.username ? (
+        {auth.user?.username ? (
           <>
             <Link to="/">Play</Link>
-            <Link to={`/@${data?.currentUser?.username}`}>Profile</Link>
-            <Link to="/packs" onClick={onLogout}>
+            <Link to={`/@${auth.user?.username}`}>Profile</Link>
+            <Link to="/packs" onClick={auth.signout}>
               Logout
             </Link>
           </>
@@ -45,14 +37,6 @@ export const Navigation = () => {
     </NavigationContainer>
   );
 };
-
-const CURRENT_USER = gql`
-  query NavigationCurrentUserQuery {
-    currentUser {
-      username
-    }
-  }
-`;
 
 export const NavigationContainer = styled.header`
   display: flex;

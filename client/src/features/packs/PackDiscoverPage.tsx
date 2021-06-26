@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
-
+import { useAuth } from "utils/AuthProvider";
 import { ButtonLinkNative } from "components";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
@@ -38,8 +38,9 @@ const Packs = ({ packs }: PacksProps) => {
 };
 
 export const PackDiscoverPage = () => {
+  const auth = useAuth();
   const { data } = useQuery<PackDiscoverPagePacksQuery>(PACKS_QUERY, {
-    variables: { username: localStorage.getItem("username") || "" },
+    variables: { username: auth.user?.username || "" },
   });
 
   return (
