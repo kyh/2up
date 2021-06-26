@@ -38,6 +38,7 @@ ScenePreview.fragments = {
   scene: gql`
     fragment ScenePreviewFragment on Scene {
       id
+      externalId
       instruction
       question
       questionType {
