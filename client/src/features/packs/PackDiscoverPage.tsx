@@ -5,31 +5,8 @@ import { collectConnectionNodes } from "utils/collectionUtil";
 import { Carousel, CarouselItem, ButtonLinkNative } from "components";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
-import { PackSection } from "./components/Packs";
-import {
-  PackDiscoverPagePacksQuery,
-  PackDiscoverPagePacksQuery_featured_edges_node,
-} from "./__generated__/PackDiscoverPagePacksQuery";
-
-type PacksProps = {
-  pack: PackDiscoverPagePacksQuery_featured_edges_node;
-  className?: string;
-};
-
-export const Pack = ({ pack, className = "" }: PacksProps) => {
-  return (
-    <Link
-      to={`/packs/${pack.id}`}
-      key={pack.id}
-      className={`pack-item ${className}`}
-    >
-      <article>
-        <h2>{pack.name}</h2>
-        <p>{pack.description}</p>
-      </article>
-    </Link>
-  );
-};
+import { PackSection, Pack } from "./components/Packs";
+import { PackDiscoverPagePacksQuery } from "./__generated__/PackDiscoverPagePacksQuery";
 
 export const PackDiscoverPage = () => {
   const auth = useAuth();
@@ -51,7 +28,7 @@ export const PackDiscoverPage = () => {
             </header>
             <div className="pack-items staggered-pack-items">
               {featured.map((pack) => (
-                <Pack pack={pack} />
+                <Pack key={pack.id} pack={pack} />
               ))}
             </div>
           </div>
@@ -73,7 +50,7 @@ export const PackDiscoverPage = () => {
               <div className="pack-items">
                 <Carousel>
                   {myPacks.map((pack) => (
-                    <CarouselItem>
+                    <CarouselItem key={pack.id}>
                       <Pack pack={pack} className="full-width" />
                     </CarouselItem>
                   ))}

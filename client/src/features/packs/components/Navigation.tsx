@@ -38,7 +38,7 @@ export const Navigation = () => {
   );
 };
 
-export const NavigationContainer = styled.header`
+export const NavigationContainer = styled.nav`
   display: flex;
   grid-area: header;
   background: ${theme.ui.background};

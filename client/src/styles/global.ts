@@ -10,8 +10,8 @@ export const GlobalStyle = createGlobalStyle<{ isDarkMode: boolean }>`
   }
 
   *,
-  *:before,
-  *:after {
+  *::before,
+  *::after {
     box-sizing: inherit;
   }
 
@@ -88,6 +88,7 @@ export const GlobalStyle = createGlobalStyle<{ isDarkMode: boolean }>`
     margin: 0 0 ${theme.spacings(1)};
   }
 
+  a:focus,
   button:focus,
   input:focus {
     outline: 2px dashed ${theme.ui.borderColor};

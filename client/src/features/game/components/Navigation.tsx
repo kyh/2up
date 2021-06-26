@@ -25,7 +25,7 @@ export const Navigation = () => {
   };
 
   return (
-    <StyledNav>
+    <NavigationContainer>
       <Button variant="fab" onClick={() => setIsOpen(true)}>
         <Icon icon="setting" />
       </Button>
@@ -98,11 +98,11 @@ export const Navigation = () => {
           </SettingItem>
         </SettingsContainer>
       </Modal>
-    </StyledNav>
+    </NavigationContainer>
   );
 };
 
-const StyledNav = styled.nav`
+const NavigationContainer = styled.nav`
   display: flex;
   justify-content: flex-end;
   padding: 0 ${theme.spacings(1)};

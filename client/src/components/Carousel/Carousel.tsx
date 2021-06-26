@@ -45,14 +45,16 @@ export const CarouselContainer = styled(Swiper)`
   }
   .swiper-button-prev,
   .swiper-button-next {
-    transition: transform 0.2s ease;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
     padding: ${theme.spacings(1)};
     background-repeat: no-repeat;
     background-size: contain;
     background-image: ${theme.ui.buttonFabBorderUrl};
+    background-color: ${theme.ui.background};
+    transition: transform 0.2s ease;
     animation: ${bounceContract} 1s;
-    width: 40px;
-    height: 40px;
     &:hover {
       animation: ${bounceExpand} 1s;
       animation-fill-mode: forwards;
