@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { theme } from "styles/theme";
 import { ButtonLinkNative } from "components";
 import { Navigation } from "features/packs/components/Navigation";
 import { Page, Content } from "features/packs/components/Page";
-import { PackSection } from "features/packs/components/Packs";
+import { PackSection, Pack } from "features/packs/components/Packs";
 import { collectConnectionNodes } from "utils/collectionUtil";
 
 import { ProfilePageUserQuery } from "./__generated__/ProfilePageUserQuery";
@@ -38,25 +38,14 @@ export const ProfilePage = () => {
           </header>
           <PackSection>
             <div className="pack-items">
-              {packs.map((pack) => {
-                return (
-                  <div key={pack.id} className="pack-item">
-                    <Link to={`/packs/${pack.id}`}>
-                      <article>
-                        <h2>{pack.name}</h2>
-                        <p>{pack.description}</p>
-                      </article>
-                    </Link>
-                    {isMyPage && (
-                      <div className="edit-pack-footer">
-                        <ButtonLinkNative to={`/packs/${pack.id}/edit`}>
-                          Edit Pack
-                        </ButtonLinkNative>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+              {packs.map((pack) => (
+                <Pack
+                  key={pack.id}
+                  pack={pack}
+                  showEditButton
+                  showPlayButton={false}
+                />
+              ))}
             </div>
           </PackSection>
         </ProfileContent>

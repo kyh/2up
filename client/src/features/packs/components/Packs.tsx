@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { bounceExpand, bounceContract } from "styles/animations";
+import { fadeIn, bounceExpand, bounceContract } from "styles/animations";
+import { Button, ButtonLinkNative, Icon } from "components";
+import { useHostGame } from "features/game/gameService";
+
 import { PackDiscoverPagePacksQuery_featured_edges_node } from "../__generated__/PackDiscoverPagePacksQuery";
 
 export const PackSection = styled.section`
@@ -64,37 +67,55 @@ export const PackSection = styled.section`
     min-height: 16rem;
     animation: ${bounceContract} 1s;
 
-    &.full-width {
+    &.carousel-item {
       width: 90%;
+      height: 16rem;
     }
 
     &:hover {
       animation: ${bounceExpand} 1s;
       animation-fill-mode: forwards;
       border-color: ${theme.ui.borderColor};
+      .pack-item-play {
+        display: block;
+      }
     }
 
     &:active {
       animation: ${bounceContract} 1s;
     }
 
-    article {
+    .pack-item-link {
+      display: block;
+      height: 100%;
       padding: ${theme.spacings(5)};
     }
 
-    h2 {
+    .pack-item-title {
       margin-bottom: ${theme.spacings(3)};
     }
 
-    p {
+    .pack-item-description {
       color: ${theme.ui.textGrey};
     }
 
-    .edit-pack-footer {
-      margin: auto ${theme.spacings(5)} ${theme.spacings(5)};
-      a {
-        display: inline-flex;
+    .pack-item-play {
+      display: none;
+      position: absolute;
+      right: ${theme.spacings(5)};
+      bottom: ${theme.spacings(5)};
+      animation: ${fadeIn} 0.3s ease forwards;
+      > button {
+        padding: ${theme.spacings(2)};
+        background-color: ${theme.ui.background};
+        border-radius: 100%;
       }
+    }
+
+    .pack-item-edit {
+      position: absolute;
+      left: ${theme.spacings(5)};
+      bottom: ${theme.spacings(10)};
     }
   }
 `;
@@ -111,19 +132,43 @@ export const PackImage = styled.div<{ src?: string | null }>`
 type PacksProps = {
   pack: PackDiscoverPagePacksQuery_featured_edges_node;
   className?: string;
+  containerClassName?: string;
+  showPlayButton?: boolean;
+  showEditButton?: boolean;
 };
 
-export const Pack = ({ pack, className = "" }: PacksProps) => {
+export const Pack = ({
+  pack,
+  className = "",
+  showPlayButton = true,
+  showEditButton = false,
+}: PacksProps) => {
+  const hostGame = useHostGame();
+
+  const play = () => {
+    hostGame(pack.id);
+  };
+
   return (
-    <Link
-      to={`/packs/${pack.id}`}
-      key={pack.id}
-      className={`pack-item ${className}`}
-    >
-      <article>
-        <h2>{pack.name}</h2>
-        <p>{pack.description}</p>
-      </article>
-    </Link>
+    <div className={`pack-item ${className}`}>
+      <Link className="pack-item-link" to={`/packs/${pack.id}`}>
+        <h2 className="pack-item-title">{pack.name}</h2>
+        <p className="pack-item-description">{pack.description}</p>
+      </Link>
+      {showPlayButton && (
+        <div className="pack-item-play">
+          <Button variant="fab" onClick={play}>
+            <Icon icon="play" />
+          </Button>
+        </div>
+      )}
+      {showEditButton && (
+        <div className="pack-item-edit">
+          <ButtonLinkNative to={`/packs/${pack.id}/edit`}>
+            Edit Pack
+          </ButtonLinkNative>
+        </div>
+      )}
+    </div>
   );
 };

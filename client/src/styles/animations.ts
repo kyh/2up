@@ -107,6 +107,11 @@ export const jitter = keyframes`
   }
 `;
 
+export const fadeIn = keyframes`
+  from { opacity: 0; }
+  to   { opacity: 1; }
+`;
+
 export type Position = {
   top: number;
   height: number;
