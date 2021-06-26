@@ -35,10 +35,20 @@ export const PackSection = styled.section`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-transform: capitalize;
 
     &.main-header {
       justify-content: center;
-      margin-bottom: ${theme.spacings(4)};
+      margin-bottom: ${theme.spacings(8)};
+    }
+
+    &.mb {
+      margin-bottom: ${theme.spacings(8)};
+    }
+
+    h1,
+    h2 {
+      margin: 0;
     }
 
     .category-link {

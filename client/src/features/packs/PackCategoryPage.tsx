@@ -1,3 +1,4 @@
+import { Link, useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import { useAuth } from "utils/AuthProvider";
 import { collectConnectionNodes } from "utils/collectionUtil";
@@ -7,6 +8,7 @@ import { PackSection, Pack } from "./components/Packs";
 import { PackCategoryPagePacksQuery } from "./__generated__/PackCategoryPagePacksQuery";
 
 export const PackCategoryPage = () => {
+  const { categoryId } = useParams<{ categoryId: string }>();
   const auth = useAuth();
   const { data } = useQuery<PackCategoryPagePacksQuery>(PACKS_QUERY, {
     variables: { username: auth.user?.username || "" },
@@ -18,10 +20,13 @@ export const PackCategoryPage = () => {
     <Page>
       <Navigation />
       <Content>
+        <Link to="/packs" className="back-link">
+          &#171; Back to packs
+        </Link>
         <PackSection>
           <div className="pack-section">
-            <header className="pack-section-header main-header">
-              <h1>Featured Games</h1>
+            <header className="pack-section-header mb">
+              <h1>{categoryId} Games</h1>
             </header>
             <div className="pack-items">
               {featured.map((pack) => (
