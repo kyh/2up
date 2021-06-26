@@ -19,7 +19,7 @@ export const useUpdateScene = ({ scene }: Props) => {
       await sceneUpdate({
         variables: {
           input: {
-            id: newScene.id || "",
+            id: newScene.externalId || "",
             instruction: newScene.instruction,
             questionTypeSlug: newScene.questionType.slug,
             question: newScene.question,
@@ -50,7 +50,7 @@ export const savingSceneVar = makeVar(false);
 export const scenesToCsv = (
   scenes: Pick<
     SceneUpdateMutation_sceneUpdate_scene,
-    | "id"
+    | "externalId"
     | "instruction"
     | "question"
     | "questionType"
@@ -62,7 +62,7 @@ export const scenesToCsv = (
     .map((s) => {
       const sceneAnswers = s.sceneAnswers?.map((a) => a?.content || "");
       return [
-        s.id,
+        s.externalId,
         s.instruction,
         s.questionType.slug,
         s.question,
