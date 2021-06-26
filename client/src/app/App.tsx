@@ -10,7 +10,7 @@ import { HomeRoutes } from "features/home/HomeRoutes";
 import { PackRoutes } from "features/packs/PackRoutes";
 import { GameRoutes } from "features/game/GameRoutes";
 import { AuthRoutes } from "features/auth/AuthRoutes";
-import { ProfilePage } from "features/profile/ProfilePage";
+import { ProfileRoutes } from "features/profile/ProfileRoutes";
 
 const alertOptions = {
   position: positions.TOP_CENTER,
@@ -38,7 +38,7 @@ export const App = () => {
             <PackRoutes />
           </Route>
           <Route path="/@:username">
-            <ProfilePage />
+            <ProfileRoutes />
           </Route>
           <Redirect to="/" />
         </Switch>
