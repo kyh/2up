@@ -1,16 +1,9 @@
+import { useState } from "react";
 import styled, { css } from "styled-components";
-import { useHistory } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { useAlert } from "react-alert";
 import { theme } from "styles/theme";
 import { PageContainer, TextField, Button, Card } from "components";
-
-import { AuthPageUserCreateMutation } from "./__generated__/AuthPageUserCreateMutation";
-import {
-  AuthPageSessionCreateMutation,
-  AuthPageSessionCreateMutation_sessionCreate_user,
-} from "./__generated__/AuthPageSessionCreateMutation";
+import { useAuth } from "utils/AuthProvider";
 
 type FormInputs = {
   username: string;
@@ -21,49 +14,22 @@ type FormInputs = {
 type Props = { isLogin?: boolean };
 
 export const AuthPage = ({ isLogin }: Props) => {
-  const alert = useAlert();
-  const history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
+  const auth = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
-  const [
-    userCreate,
-    { loading: userCreateLoading },
-  ] = useMutation<AuthPageUserCreateMutation>(USER_CREATE);
-  const [
-    sessionCreate,
-    { loading: sessionCreateLoading },
-  ] = useMutation<AuthPageSessionCreateMutation>(SESSION_CREATE);
 
   const onSubmit = async ({ username, email, password }: FormInputs) => {
-    try {
-      const action = isLogin ? sessionCreate : userCreate;
-      const responseKey = isLogin ? "sessionCreate" : "userCreate";
-
-      const { data } = await action({
-        variables: { input: { username, email, password } },
-      });
-
-      if (data) {
-        const responseData = (data as unknown) as Record<
-          "sessionCreate" | "userCreate",
-          {
-            token: string;
-            user: AuthPageSessionCreateMutation_sessionCreate_user;
-          }
-        >;
-        const { token, user } = responseData[responseKey];
-
-        localStorage.setItem("token", token);
-        localStorage.setItem("username", user.username);
-
-        history.push(`/@${user.username}`);
-      }
-    } catch (error) {
-      alert.show(error.message);
+    setIsLoading(true);
+    if (isLogin && auth.signin) {
+      await auth.signin(username, password);
+    } else if (auth.signup) {
+      await auth.signup(username, email, password);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -105,7 +71,7 @@ export const AuthPage = ({ isLogin }: Props) => {
               className="submit"
               type="submit"
               fullWidth
-              disabled={userCreateLoading || sessionCreateLoading}
+              disabled={isLoading}
             >
               {isLogin ? "Login" : "Sign up"}
             </Button>
@@ -115,30 +81,6 @@ export const AuthPage = ({ isLogin }: Props) => {
     </Page>
   );
 };
-
-const USER_CREATE = gql`
-  mutation AuthPageUserCreateMutation($input: UserCreateInput!) {
-    userCreate(input: $input) {
-      user {
-        username
-        email
-      }
-      token
-    }
-  }
-`;
-
-const SESSION_CREATE = gql`
-  mutation AuthPageSessionCreateMutation($input: SessionCreateInput!) {
-    sessionCreate(input: $input) {
-      user {
-        username
-        email
-      }
-      token
-    }
-  }
-`;
 
 const Page = styled(PageContainer)<{ isLogin?: boolean }>`
   align-items: center;
