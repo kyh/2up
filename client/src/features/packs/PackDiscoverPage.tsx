@@ -28,7 +28,7 @@ export const PackDiscoverPage = () => {
             </header>
             <div className="pack-items staggered-pack-items">
               {featured.map((pack) => (
-                <Pack key={pack.id} pack={pack} />
+                <Pack key={pack.id} pack={pack} showPlayButton />
               ))}
             </div>
           </div>
@@ -51,7 +51,7 @@ export const PackDiscoverPage = () => {
                 <Carousel>
                   {myPacks.map((pack) => (
                     <CarouselItem key={pack.id}>
-                      <Pack pack={pack} className="full-width" />
+                      <Pack pack={pack} className="carousel-item" />
                     </CarouselItem>
                   ))}
                 </Carousel>

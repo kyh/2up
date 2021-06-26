@@ -18,7 +18,6 @@ export const Carousel = ({ children }: Props) => {
   return (
     <CarouselContainer
       slidesPerView={3}
-      spaceBetween={8}
       slidesPerGroup={3}
       navigation
       loop
