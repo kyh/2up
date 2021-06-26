@@ -60,11 +60,9 @@ const Footer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   > button {
     margin-bottom: ${theme.spacings(3)};
   }
-
   > a {
     text-decoration: underline;
   }

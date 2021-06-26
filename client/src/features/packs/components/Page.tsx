@@ -42,7 +42,7 @@ export const Page = styled.section<{
   }
 `;
 
-export const Content = styled.section`
+export const Content = styled.main`
   max-width: 900px;
   width: 100%;
   margin: 0 auto;

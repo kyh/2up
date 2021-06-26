@@ -138,7 +138,7 @@ export const QATypeMenuContainer = styled.div<{ content: string }>`
     background-color: ${theme.ui.backgroundGrey};
   }
 
-  &:after {
+  &::after {
     position: absolute;
     content: "${({ content }) => content}";
     display: inline-block;

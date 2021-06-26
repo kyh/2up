@@ -172,16 +172,13 @@ const QuestionImage = styled.img`
   }
 `;
 
-const EditableQuestionContainer = styled.div.attrs(() => ({
-  "data-question-container": true,
-}))`
+const EditableQuestionContainer = styled.div`
   input {
     display: block;
     text-align: center;
     border-radius: ${theme.ui.borderWavyRadius};
     border: none;
     transition: all 0.23s ease;
-
     &:focus {
       outline: none;
       box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);

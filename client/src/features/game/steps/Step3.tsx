@@ -60,11 +60,11 @@ export const PlayerScores = ({
   gameState: GameState;
   title: string;
 }) => {
+  const [desktop, setDesktop] = useDebounce(isDesktop());
   const [isOldState, setIsOldState] = useState(true);
   const [players, setPlayers] = useState(
     sortByKey(gameState.players, "prevScore")
   );
-  const [desktop, setDesktop] = useDebounce(isDesktop());
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -213,7 +213,7 @@ const PC = styled.div<{ score: number; totalScenes: number }>`
   transform: translateY(
     ${({ score, totalScenes }) => calculateScorebarHeight(score, totalScenes)}
   );
-  &:after {
+  &::after {
     content: "";
     position: absolute;
     bottom: -${maxScoreHeight};

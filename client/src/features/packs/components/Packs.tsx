@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { bounceExpand, bounceContract } from "styles/animations";
+import { PackDiscoverPagePacksQuery_featured_edges_node } from "../__generated__/PackDiscoverPagePacksQuery";
 
 export const PackSection = styled.section`
   .pack-items {
@@ -33,18 +35,19 @@ export const PackSection = styled.section`
 
     &.main-header {
       justify-content: center;
+      margin-bottom: ${theme.spacings(4)};
     }
 
     .category-link {
       display: inline-block;
-      &:after {
+      &::after {
         display: inline-block;
         content: "»";
         margin-left: ${theme.spacings(1)};
         transition: transform 0.2s ease;
       }
       &:hover {
-        &:after {
+        &::after {
           transform: translateX(4px);
         }
       }
@@ -104,3 +107,23 @@ export const PackImage = styled.div<{ src?: string | null }>`
   background-size: cover;
   margin: 0 auto ${theme.spacings(2)};
 `;
+
+type PacksProps = {
+  pack: PackDiscoverPagePacksQuery_featured_edges_node;
+  className?: string;
+};
+
+export const Pack = ({ pack, className = "" }: PacksProps) => {
+  return (
+    <Link
+      to={`/packs/${pack.id}`}
+      key={pack.id}
+      className={`pack-item ${className}`}
+    >
+      <article>
+        <h2>{pack.name}</h2>
+        <p>{pack.description}</p>
+      </article>
+    </Link>
+  );
+};

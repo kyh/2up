@@ -3,8 +3,7 @@ import { useAuth } from "utils/AuthProvider";
 import { collectConnectionNodes } from "utils/collectionUtil";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
-import { PackSection } from "./components/Packs";
-import { Pack } from "./PackDiscoverPage";
+import { PackSection, Pack } from "./components/Packs";
 import { PackCategoryPagePacksQuery } from "./__generated__/PackCategoryPagePacksQuery";
 
 export const PackCategoryPage = () => {
