@@ -540,13 +540,15 @@ const CsvImportButton = ({ packId, scenes, refetch }: CsvImportButtonProps) => {
             target="_blank"
             rel="noreferrer"
           >
-            Example spreadsheet
+            Example CSV
           </a>
         </CsvImportHeader>
         <CsvImportArea onChange={handleChange} value={csv} />
-        <Button onClick={handleSubmit} disabled={isSaving}>
-          Update Pack
-        </Button>
+        <CsvImportFooter>
+          <Button onClick={handleSubmit} disabled={isSaving}>
+            Update Pack
+          </Button>
+        </CsvImportFooter>
       </Modal>
     </CsvImportButtonContainer>
   );
@@ -583,4 +585,11 @@ const CsvImportHeader = styled.header`
 const CsvImportArea = styled(AreaField)`
   width: 100%;
   min-height: 300px;
+`;
+
+const CsvImportFooter = styled.footer`
+  display: flex;
+  > button {
+    margin-left: auto;
+  }
 `;
