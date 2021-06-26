@@ -30,10 +30,24 @@ export const PackSection = styled.section`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: ${theme.spacings(6)};
 
     &.main-header {
       justify-content: center;
+    }
+
+    .category-link {
+      display: inline-block;
+      &:after {
+        display: inline-block;
+        content: "»";
+        margin-left: ${theme.spacings(1)};
+        transition: transform 0.2s ease;
+      }
+      &:hover {
+        &:after {
+          transform: translateX(4px);
+        }
+      }
     }
   }
 
