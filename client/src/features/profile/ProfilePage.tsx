@@ -6,6 +6,7 @@ import { ButtonLinkNative } from "components";
 import { Navigation } from "features/packs/components/Navigation";
 import { Page, Content } from "features/packs/components/Page";
 import { PackSection } from "features/packs/components/Packs";
+import { collectConnectionNodes } from "utils/collectionUtil";
 
 import { ProfilePageUserQuery } from "./__generated__/ProfilePageUserQuery";
 
@@ -19,6 +20,7 @@ export const ProfilePage = () => {
     return null;
   }
 
+  const packs = collectConnectionNodes(data.packs);
   const isMyPage = data?.currentUser?.username === username;
 
   return (
@@ -36,10 +38,7 @@ export const ProfilePage = () => {
           </header>
           <PackSection>
             <div className="pack-items">
-              {data.packs?.edges?.map((edge) => {
-                const pack = edge?.node;
-                if (!pack) return null;
-
+              {packs.map((pack) => {
                 return (
                   <div key={pack.id} className="pack-item">
                     <Link to={`/packs/${pack.id}`}>

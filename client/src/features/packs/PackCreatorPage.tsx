@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import { useHotkeys } from "@react-hook/hotkey";
 import { theme } from "styles/theme";
+import { collectConnectionNodes } from "utils/collectionUtil";
 import { Topbar } from "features/packs/components/PackCreatorTopbar";
 import { Sidebar } from "features/packs/components/PackCreatorLeftSidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";
@@ -21,7 +22,6 @@ import {
 import { useHostGame } from "features/game/gameService";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
-import { SidebarPackFragment_scenes_edges_node } from "./components/__generated__/SidebarPackFragment";
 
 const arrowSvg = raw("./svgs/arrow.svg");
 
@@ -110,13 +110,7 @@ export const PackCreatorPage = () => {
     return null;
   }
 
-  const packScenes = (data.pack.scenes?.edges || [])
-    .map((edge) => {
-      const scene = edge?.node;
-      if (!scene) return null;
-      return scene;
-    })
-    .filter(Boolean) as SidebarPackFragment_scenes_edges_node[];
+  const packScenes = collectConnectionNodes(data.pack.scenes);
 
   return (
     <Page>

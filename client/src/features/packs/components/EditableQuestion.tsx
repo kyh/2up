@@ -142,6 +142,7 @@ const EditableQuestionImageContainer = styled.div`
     transform: translateX(-50%);
   }
   .image-container {
+    width: 100%;
     margin-bottom: ${theme.spacings(5)};
     transition: all 0.23s ease;
     &:focus {
