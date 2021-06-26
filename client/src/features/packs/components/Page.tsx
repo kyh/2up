@@ -48,4 +48,12 @@ export const Content = styled.main`
   margin: 0 auto;
   grid-area: content;
   padding: ${theme.spacings(10)} ${theme.spacings(5)};
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: ${theme.spacings(1)};
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;

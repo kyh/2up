@@ -62,14 +62,6 @@ const PACK_QUERY = gql`
 const PackDetailsPageContent = styled(Content)`
   display: block;
 
-  .back-link {
-    display: inline-block;
-    margin-bottom: ${theme.spacings(5)};
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
   .pack-header {
     text-align: center;
     margin: auto;
