@@ -37,7 +37,7 @@ export const PackCategoryPage = () => {
 };
 
 const PACKS_QUERY = gql`
-  query PackCategoryPagePacksQuery() {
+  query PackCategoryPagePacksQuery {
     featured: packs(first: 10) {
       edges {
         node {
