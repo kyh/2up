@@ -224,6 +224,7 @@ Sidebar.fragments = {
         edges {
           node {
             id
+            externalId
             question
             order
             sceneAnswers {
