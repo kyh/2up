@@ -4,7 +4,7 @@ import { ProfilePage } from "features/profile/ProfilePage";
 export const ProfileRoutes = () => {
   return (
     <Switch>
-      <Route path="/@:username">
+      <Route exact path="/@:username">
         <ProfilePage />
       </Route>
     </Switch>

@@ -14,22 +14,22 @@ export const GameRoutes = () => {
     <Switch>
       <GameProvider gameId={gameId}>
         <Navigation />
-        <Route exact path={`/game/${gameId}/lobby`}>
+        <Route exact path="/game/:gameId/lobby">
           <PageContainer justify="start">
             <GameLobby />
           </PageContainer>
         </Route>
-        <Route exact path={`/game/${gameId}`}>
+        <Route exact path="/game/:gameId">
           <PageContainer justify="start">
             <Game />
           </PageContainer>
         </Route>
-        <Route exact path={`/game/${gameId}/lobby/spectate`}>
+        <Route exact path="/game/:gameId/lobby/spectate">
           <PageContainer justify="start">
             <GameLobby isSpectate />
           </PageContainer>
         </Route>
-        <Route exact path={`/game/${gameId}/spectate`}>
+        <Route exact path="/game/:gameId/spectate">
           <PageContainer justify="start">
             <GameSpectate />
           </PageContainer>
