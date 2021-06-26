@@ -47,7 +47,7 @@ export enum VisibleQATypeMenu {
 export const visibleQATypeMenuVar = makeVar(VisibleQATypeMenu.None);
 export const savingSceneVar = makeVar(false);
 
-export const toCSVString = (
+export const scenesToCsv = (
   scenes: Pick<
     SceneUpdateMutation_sceneUpdate_scene,
     | "id"
@@ -71,6 +71,25 @@ export const toCSVString = (
       ].join();
     })
     .join("\n");
+};
+
+export const fileToCsv = (file: File) => {
+  return new Promise<string>((resolve) => {
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => {
+      if (reader.result) {
+        const csvText = reader.result.toString();
+        const out = csvText
+          .split("\r\n")
+          .filter((_row, index) => index !== 0)
+          .map((row) => row.split(",").filter(Boolean).join(","))
+          .join("\n");
+
+        resolve(out);
+      }
+    };
+  });
 };
 
 type Keybindings = {
