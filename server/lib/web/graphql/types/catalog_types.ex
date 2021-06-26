@@ -9,6 +9,7 @@ defmodule Web.GraphQL.Types.CatalogTypes do
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
   node object(:scene) do
+    field :external_id, :string
     field :question, non_null(:string)
     field :instruction, :string
     field :order, non_null(:string)

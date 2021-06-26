@@ -523,7 +523,7 @@ capitals_questions
 |> Enum.with_index()
 |> Enum.each(fn {x, i} ->
   {_, scene} =
-    Catalog.scene_create(user, capitals_pack, image_question_type, text_answer_type, %{
+    Catalog.scene_create(user, capitals_pack, text_question_type, text_answer_type, %{
       question: Enum.at(x, 0),
       answer: Enum.at(x, 1),
       order: i
