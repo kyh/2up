@@ -5,15 +5,15 @@ import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
 import { PackSection } from "./components/Packs";
 import { Pack } from "./PackDiscoverPage";
-import { PackDiscoverPagePacksQuery } from "./__generated__/PackDiscoverPagePacksQuery";
+import { PackCategoryPagePacksQuery } from "./__generated__/PackCategoryPagePacksQuery";
 
 export const PackCategoryPage = () => {
   const auth = useAuth();
-  const { data } = useQuery<PackDiscoverPagePacksQuery>(PACKS_QUERY, {
+  const { data } = useQuery<PackCategoryPagePacksQuery>(PACKS_QUERY, {
     variables: { username: auth.user?.username || "" },
   });
 
-  const featured = collectConnectionNodes(data?.featured);
+  const featured = collectConnectionNodes(data?.packs);
 
   return (
     <Page>
@@ -37,14 +37,14 @@ export const PackCategoryPage = () => {
 };
 
 const PACKS_QUERY = gql`
-  query PackCategoryPagePacksQuery() {
-    featured: packs(first: 10) {
+  query PackCategoryPagePacksQuery($username: String) {
+    packs(first: 10, username: $username) {
       edges {
         node {
           id
           name
-          description
           imageUrl
+          description
         }
       }
     }
