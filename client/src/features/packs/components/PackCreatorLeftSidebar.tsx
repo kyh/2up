@@ -20,7 +20,8 @@ import { Answer } from "features/game/components/Answer";
 import {
   keybindings,
   savingSceneVar,
-  toCSVString,
+  scenesToCsv,
+  fileToCsv,
 } from "features/packs/sceneService";
 
 import { SidebarSceneCreateMutation } from "./__generated__/SidebarSceneCreateMutation";
@@ -489,11 +490,19 @@ const CsvImportButton = ({ packId, scenes, refetch }: CsvImportButtonProps) => {
   const alert = useAlert();
   const [isSaving, setIsSaving] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [csv, setCsv] = useState(toCSVString(scenes));
+  const [csv, setCsv] = useState(scenesToCsv(scenes));
   const [csvImport] = useMutation<CsvImportMutation>(CSV_IMPORT);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setCsv(e.target.value);
+  };
+
+  const handleCsvInput = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length) {
+      const [file] = Array.from(e.target.files);
+      const csv = await fileToCsv(file);
+      setCsv(csv);
+    }
   };
 
   const handleSubmit = async () => {
@@ -524,6 +533,16 @@ const CsvImportButton = ({ packId, scenes, refetch }: CsvImportButtonProps) => {
         onRequestClose={() => setIsOpen(false)}
         closeButton
       >
+        <CsvImportHeader>
+          <input type="file" accept=".csv" onChange={handleCsvInput} />
+          <a
+            href="https://docs.google.com/spreadsheets/d/1OQHLadGoh3hzkZ_J4SfZ1kJ_f7C4YfV7YSGrqZ9wYC4/edit?usp=sharing"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Example spreadsheet
+          </a>
+        </CsvImportHeader>
         <CsvImportArea onChange={handleChange} value={csv} />
         <Button onClick={handleSubmit} disabled={isSaving}>
           Update Pack
@@ -549,6 +568,14 @@ const CsvImportButtonContainer = styled.div`
   margin-top: ${theme.spacings(1)};
   > .modal-button {
     font-size: 0.9rem;
+    text-decoration: underline;
+  }
+`;
+
+const CsvImportHeader = styled.header`
+  display: flex;
+  justify-content: space-between;
+  a {
     text-decoration: underline;
   }
 `;

@@ -152,10 +152,14 @@ export const PackCreatorPage = () => {
             <p>Here's how it works:</p>
             <ul>
               <li>A pack contains many scenes</li>
-              <li>A scene has a question and answer</li>
+              <li>A scene has a question and a answer</li>
               <li>
-                There are different types of question/answer (text questions,
-                image questions, single answers, multiple choice answers etc.)
+                There are many different types of questions & answers (text
+                questions, image questions, single answers, multiple choice
+                answers etc.)
+              </li>
+              <li>
+                Mix & match your own combinations for a unique trivia experience
               </li>
               <li>You get the gist of it, add your first scene to begin</li>
             </ul>
