@@ -11,6 +11,19 @@ defmodule Database.Accounts do
     |> Repo.insert()
   end
 
+  def user_update(
+        %User{} = current_user,
+        attrs
+      ) do
+    user = Repo.get_by(User, id: attrs.id)
+
+    with {:ok} <- Authorization.check(:user_update, current_user, user) do
+      user
+      |> User.changeset(attrs)
+      |> Repo.update()
+    end
+  end
+
   def session_create(identifier, password) do
     user_get_by_identifier(identifier)
     |> password_check(password)

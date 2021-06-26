@@ -33,11 +33,7 @@ export const PackCreatorPage = () => {
       packId: packId || "",
     },
   });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInputs>();
+  const { register, handleSubmit } = useForm<FormInputs>();
   const [csvImport] = useMutation<PackCreatorPageCsvImportMutation>(CSV_IMPORT);
 
   const selectScene = (selectedSceneId: string) => {
