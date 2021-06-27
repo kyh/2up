@@ -71,7 +71,9 @@ export const scenesToCsv = (
 ) => {
   return scenes
     .map((s) => {
-      const sceneAnswers = s.sceneAnswers?.map((a) => a?.content || "");
+      const sceneAnswers = s.sceneAnswers?.map((a) => {
+        return `${a?.content || ""},${a?.isCorrect ? "TRUE" : ""}`;
+      });
       return [
         s.externalId,
         s.instruction,
