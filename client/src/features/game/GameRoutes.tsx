@@ -2,7 +2,6 @@ import { Route, Switch, useParams } from "react-router-dom";
 
 import { GameProvider } from "features/game/GameProvider";
 import { GameLobby } from "features/game/GameLobby";
-import { GameSpectate } from "features/game/GameSpectate";
 import { Game } from "features/game/Game";
 
 import { Navigation } from "features/game/components/Navigation";
@@ -31,7 +30,7 @@ export const GameRoutes = () => {
         </Route>
         <Route exact path="/game/:gameId/spectate">
           <PageContainer justify="start">
-            <GameSpectate />
+            <Game isSpectate />
           </PageContainer>
         </Route>
       </GameProvider>
