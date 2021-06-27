@@ -26,6 +26,21 @@ defmodule Web.GraphQL.Types.MutationType do
       resolve(&Accounts.user_create/3)
     end
 
+    @desc "Update user"
+    payload field :user_update do
+      input do
+        field :username, non_null(:string)
+        field :email, non_null(:string)
+        field :password, non_null(:string)
+      end
+
+      output do
+        field :user, non_null(:user)
+      end
+
+      resolve(&Accounts.user_update/3)
+    end
+
     @desc "Sign in user"
     payload field :session_create do
       input do
