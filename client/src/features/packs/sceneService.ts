@@ -19,7 +19,7 @@ export const useUpdateScene = ({ scene }: Props) => {
       await sceneUpdate({
         variables: {
           input: {
-            id: newScene.externalId || "",
+            id: newScene.id || "",
             instruction: newScene.instruction,
             questionTypeSlug: newScene.questionType.slug,
             question: newScene.question,
