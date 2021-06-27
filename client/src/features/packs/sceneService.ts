@@ -46,6 +46,17 @@ export enum VisibleQATypeMenu {
 
 export const visibleQATypeMenuVar = makeVar(VisibleQATypeMenu.None);
 export const savingSceneVar = makeVar(false);
+export const packScenesVar = makeVar<any[]>([]);
+
+export const getRandomAnswer = () => {
+  const packScenes = packScenesVar();
+  const { sceneAnswers } = packScenes[
+    Math.floor(Math.random() * packScenes.length)
+  ];
+  const randomAnswer =
+    sceneAnswers[Math.floor(Math.random() * sceneAnswers.length)];
+  return randomAnswer;
+};
 
 export const scenesToCsv = (
   scenes: Pick<

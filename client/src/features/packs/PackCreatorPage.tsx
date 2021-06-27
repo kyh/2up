@@ -16,6 +16,7 @@ import { Button, Modal, Icon, Svg } from "components";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
+  packScenesVar,
   keybindings,
   instructionElementAttribute,
 } from "features/packs/sceneService";
@@ -111,6 +112,7 @@ export const PackCreatorPage = () => {
   }
 
   const packScenes = collectConnectionNodes(data.pack.scenes);
+  packScenesVar(packScenes);
 
   return (
     <Page>

@@ -6,6 +6,7 @@ import { Input, SingleLetterInput, Checkbox, Button } from "components";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
+  getRandomAnswer,
 } from "features/packs/sceneService";
 import { AnswerTypeSlugs } from "features/game/gameSlice";
 
@@ -35,6 +36,16 @@ export const EditableAnswer = ({
       sceneAnswers: produce(sceneAnswers, (draft) => {
         draft[index] = { ...draft[index], ...updatedSceneAnswer };
       }),
+    });
+  };
+
+  const onAddRandomSceneAnswer = () => {
+    const randomAnswer = getRandomAnswer();
+    onChange({
+      sceneAnswers: [
+        ...sceneAnswers,
+        { isCorrect: false, content: randomAnswer.content },
+      ],
     });
   };
 
@@ -69,9 +80,10 @@ export const EditableAnswer = ({
               </InputContainer>
             ))}
           </Grid>
-          <InputContainer>
+          <AddOptionContainer>
             <Button onClick={onAddSceneAnswer}>+ Add Option</Button>
-          </InputContainer>
+            <button onClick={onAddRandomSceneAnswer}>+ random answer</button>
+          </AddOptionContainer>
         </AnswerContainer>
       );
     case AnswerTypeSlugs.letter.id:
@@ -132,4 +144,11 @@ const InputContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: ${theme.spacings(3)};
+`;
+
+const AddOptionContainer = styled(InputContainer)`
+  flex-direction: column;
+  > button {
+    margin-bottom: ${theme.spacings(1)};
+  }
 `;
