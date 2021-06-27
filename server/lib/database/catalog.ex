@@ -191,6 +191,11 @@ defmodule Database.Catalog do
         _attrs
       ) do
     with {:ok} <- Authorization.check(:scene_delete, user, scene) do
+      scene_answers_query = 
+        from scene_answer in SceneAnswer,
+          where: scene_answer.scene_id == ^scene.id
+
+      Repo.delete_all(scene_answers_query)
       scene |> Repo.delete()
     end
   end
