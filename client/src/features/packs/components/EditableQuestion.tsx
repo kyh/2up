@@ -33,7 +33,9 @@ export const EditableQuestion = ({
     onChange({ instruction: e.target.value });
   };
 
-  const onBlurQuestion = (e: ChangeEvent<HTMLInputElement>) => {
+  const onBlurQuestion = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     onChange({ question: e.target.value });
   };
 
@@ -79,9 +81,11 @@ const EditableQuestionInstructions = styled.input`
   margin: 0 auto ${theme.spacings(2)};
 `;
 
-const EditableQuestionText = styled.input`
+const EditableQuestionText = styled.textarea`
   margin: 0 auto ${theme.spacings(5)};
   font-size: 2rem;
+  width: 100%;
+  resize: vertical;
 `;
 
 type EditableQuestionImageProps = Pick<
@@ -144,7 +148,7 @@ const EditableQuestionImageContainer = styled.div`
   .image-container {
     width: 100%;
     margin-bottom: ${theme.spacings(5)};
-    transition: all 0.23s ease;
+    transition: box-shadow 0.23s ease;
     &:focus {
       outline: none;
       box-shadow: 0 0 0 3px ${theme.ui.background};
@@ -173,12 +177,14 @@ const QuestionImage = styled.img`
 `;
 
 const EditableQuestionContainer = styled.div`
-  input {
+  width: 70%;
+  input,
+  textarea {
     display: block;
     text-align: center;
     border-radius: ${theme.ui.borderWavyRadius};
     border: none;
-    transition: all 0.23s ease;
+    transition: box-shadow 0.23s ease;
     &:focus {
       outline: none;
       box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);
