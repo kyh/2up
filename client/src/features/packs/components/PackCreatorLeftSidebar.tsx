@@ -467,6 +467,13 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     .display-text {
       font-size: 0.4rem;
       padding: ${theme.spacings(1)} ${theme.spacings(2)};
+      max-width: 70px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &.correct {
+        border-color: ${theme.colors.purple};
+      }
     }
     > * {
       pointer-events: none;
