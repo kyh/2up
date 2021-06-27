@@ -42,8 +42,8 @@ export const ProfilePage = () => {
                 <Pack
                   key={pack.id}
                   pack={pack}
-                  showEditButton
-                  showPlayButton={false}
+                  showEditButton={isMyPage}
+                  showPlayButton={!isMyPage}
                 />
               ))}
             </div>
