@@ -165,33 +165,11 @@ export const Sidebar = ({
 
   useHotkeys(window, [[keybindings.addNewScene.hotkey, addNewScene]]);
 
-  // const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setSearchQuery(e.target.value);
-  // };
-
   return (
     <>
-      <SidebarHeader>
-        {/* <input
-          className="search"
-          onChange={onSearch}
-          type="text"
-          placeholder="Search by question/answers"
-        /> */}
-      </SidebarHeader>
+      <SidebarHeader />
       <SidebarContent>
         {scenes.map((scene, index) => {
-          // const matchedQuestion = scene.question.includes(searchQuery);
-          // const matchedAnswers = (scene.sceneAnswers || []).filter(
-          //   (sceneAnswer) => {
-          //     return (sceneAnswer?.content || "").includes(searchQuery);
-          //   }
-          // ).length < 1;
-
-          // if (searchQuery !== "" && matchedAnswers && matchedQuestion) {
-          //   return null;
-          // }
-
           return (
             <SidebarItem
               key={scene.id}
@@ -220,7 +198,7 @@ Sidebar.fragments = {
   pack: gql`
     fragment SidebarPackFragment on Pack {
       id
-      scenes(first: 100) {
+      scenes(first: 500) {
         edges {
           node {
             id
