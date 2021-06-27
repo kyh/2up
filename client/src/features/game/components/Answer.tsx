@@ -63,7 +63,9 @@ const AnswerText = ({
 
   if (displayMode) {
     return (
-      <AnswerDisplay className="display-text">
+      <AnswerDisplay
+        className={`display-text ${sceneAnswer.isCorrect ? "correct" : ""}`}
+      >
         {sceneAnswer.content}
       </AnswerDisplay>
     );
@@ -112,7 +114,10 @@ const AnswerMulti = ({
 }: AnswerProps) => {
   if (displayMode) {
     return (
-      <AnswerDisplay key={sceneAnswer.id} className="display-text">
+      <AnswerDisplay
+        key={sceneAnswer.id}
+        className={`display-text ${sceneAnswer.isCorrect ? "correct" : ""}`}
+      >
         {sceneAnswer.content}
       </AnswerDisplay>
     );
