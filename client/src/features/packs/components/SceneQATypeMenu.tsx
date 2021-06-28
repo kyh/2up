@@ -1,16 +1,19 @@
+import { useRef, forwardRef } from "react";
 import styled from "styled-components";
 import { useReactiveVar } from "@apollo/client";
 import { theme } from "styles/theme";
 import { Button } from "components";
 import { Props as ScenePreviewProps } from "features/packs/components/ScenePreview";
+import { AnswerTypeSlugs, QuestionTypeSlugs } from "features/game/gameSlice";
 import {
   useUpdateScene,
   visibleQATypeMenuVar,
   VisibleQATypeMenu,
 } from "features/packs/packService";
-import { AnswerTypeSlugs, QuestionTypeSlugs } from "features/game/gameSlice";
+import { useOnClickOutside } from "utils/hooks";
 
 export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
+  const ref = useRef(null);
   const { updateScene } = useUpdateScene(scene);
   const openMenu = useReactiveVar(visibleQATypeMenuVar);
 
@@ -21,12 +24,17 @@ export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
     }
   };
 
+  useOnClickOutside(ref, () => {
+    visibleQATypeMenuVar(VisibleQATypeMenu.None);
+  });
+
   switch (openMenu) {
     case VisibleQATypeMenu.Question:
       return (
         <QuestionTypeMenu
           currentType={scene.questionType.slug}
           onSelectType={onSelectType}
+          ref={ref}
         />
       );
     case VisibleQATypeMenu.Answer:
@@ -34,6 +42,7 @@ export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
         <AnswerTypeMenu
           currentType={scene.answerType.slug}
           onSelectType={onSelectType}
+          ref={ref}
         />
       );
     default:
@@ -46,59 +55,63 @@ type Props = {
   onSelectType: (scene: any) => void;
 };
 
-const QuestionTypeMenu = ({ currentType, onSelectType }: Props) => {
-  return (
-    <QATypeMenuContainer content="Question type:">
-      {Object.entries(QuestionTypeSlugs).map(([key, value]) => {
-        return (
-          <Button
-            key={key}
-            className={currentType === value.id ? "selected" : ""}
-            onClick={() => {
-              onSelectType(
-                currentType === value.id
-                  ? false
-                  : {
-                      questionType: { slug: value.id },
-                      question: value.content,
-                    }
-              );
-            }}
-          >
-            {value.display}
-          </Button>
-        );
-      })}
-    </QATypeMenuContainer>
-  );
-};
+const QuestionTypeMenu = forwardRef<HTMLDivElement, Props>(
+  ({ currentType, onSelectType }, ref) => {
+    return (
+      <QATypeMenuContainer content="Question type:" ref={ref}>
+        {Object.entries(QuestionTypeSlugs).map(([key, value]) => {
+          return (
+            <Button
+              key={key}
+              className={currentType === value.id ? "selected" : ""}
+              onClick={() => {
+                onSelectType(
+                  currentType === value.id
+                    ? false
+                    : {
+                        questionType: { slug: value.id },
+                        question: value.content,
+                      }
+                );
+              }}
+            >
+              {value.display}
+            </Button>
+          );
+        })}
+      </QATypeMenuContainer>
+    );
+  }
+);
 
-const AnswerTypeMenu = ({ currentType, onSelectType }: Props) => {
-  return (
-    <QATypeMenuContainer content="Answer type:">
-      {Object.entries(AnswerTypeSlugs).map(([key, value]) => {
-        return (
-          <Button
-            key={key}
-            className={currentType === value.id ? "selected" : ""}
-            onClick={() => {
-              onSelectType(
-                currentType === value.id
-                  ? false
-                  : {
-                      answerType: { slug: value.id },
-                      sceneAnswers: [],
-                    }
-              );
-            }}
-          >
-            {value.display}
-          </Button>
-        );
-      })}
-    </QATypeMenuContainer>
-  );
-};
+const AnswerTypeMenu = forwardRef<HTMLDivElement, Props>(
+  ({ currentType, onSelectType }, ref) => {
+    return (
+      <QATypeMenuContainer content="Answer type:" ref={ref}>
+        {Object.entries(AnswerTypeSlugs).map(([key, value]) => {
+          return (
+            <Button
+              key={key}
+              className={currentType === value.id ? "selected" : ""}
+              onClick={() => {
+                onSelectType(
+                  currentType === value.id
+                    ? false
+                    : {
+                        answerType: { slug: value.id },
+                        sceneAnswers: [],
+                      }
+                );
+              }}
+            >
+              {value.display}
+            </Button>
+          );
+        })}
+      </QATypeMenuContainer>
+    );
+  }
+);
 
 export const QATypeMenuContainer = styled.div<{ content: string }>`
   position: absolute;
