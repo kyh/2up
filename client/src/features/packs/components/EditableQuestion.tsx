@@ -1,6 +1,5 @@
-import { useState, ChangeEvent } from "react";
+import { useRef, useState, ChangeEvent } from "react";
 import { useParams } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { QuestionTypeSlugs } from "features/game/gameSlice";
@@ -9,8 +8,8 @@ import {
   visibleQATypeMenuVar,
   instructionElementAttribute,
 } from "features/packs/packService";
-import { Button, Icon, Modal, Uploader } from "components";
-import { PackAssetCreateMutation } from "./__generated__/PackAssetCreateMutation";
+import { Button, Icon } from "components";
+import { PackAssetModal } from "features/packs/components/PackAssetModal";
 
 type EditableQuestionProps = {
   instruction: string;
@@ -36,9 +35,13 @@ export const EditableQuestion = ({
   };
 
   const onBlurQuestion = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string
   ) => {
-    onChange({ question: e.target.value });
+    if (typeof e === "string") {
+      onChange({ question: e });
+    } else {
+      onChange({ question: e.target.value });
+    }
   };
 
   const instructionElement = (
@@ -95,7 +98,9 @@ type EditableQuestionImageProps = Pick<
   "instruction" | "question"
 > & {
   onFocus: () => void;
-  onChange: (scene: any) => void;
+  onChange: (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string
+  ) => void;
 };
 
 const EditableQuestionImage = ({
@@ -106,24 +111,15 @@ const EditableQuestionImage = ({
 }: EditableQuestionImageProps) => {
   const { packId } = useParams<{ packId: string }>();
   const [isOpen, setIsOpen] = useState(false);
-  const [packAssetCreate] = useMutation<PackAssetCreateMutation>(
-    PACK_ASSET_CREATE
-  );
-
-  const onUploaded = async (rawName: string, path: string) => {
-    await packAssetCreate({
-      variables: {
-        input: { rawName, path, packId },
-      },
-    });
-  };
+  const inputRef = useRef<null | HTMLInputElement>(null);
 
   return (
     <EditableQuestionImageContainer>
-      <button className="image-container" onFocus={onFocus}>
+      <div className="image-container">
         <QuestionImage alt={instruction} src={question} />
-      </button>
+      </div>
       <input
+        ref={inputRef}
         className="image-input"
         type="text"
         placeholder="Image URL"
@@ -138,27 +134,22 @@ const EditableQuestionImage = ({
       >
         <Icon icon="pencil" />
       </Button>
-      <Modal
-        open={isOpen}
-        title="Asset Library"
-        onRequestClose={() => setIsOpen(false)}
-        closeButton
-      >
-        <Uploader onUploaded={onUploaded} pathPrefix={`packs/${packId}`} />
-      </Modal>
+      {isOpen && (
+        <PackAssetModal
+          packId={packId}
+          onRequestClose={() => setIsOpen(false)}
+          onSelectAsset={(path) => {
+            onChange(path);
+            setIsOpen(false);
+            if (inputRef.current) {
+              inputRef.current.value = path;
+            }
+          }}
+        />
+      )}
     </EditableQuestionImageContainer>
   );
 };
-
-const PACK_ASSET_CREATE = gql`
-  mutation PackAssetCreateMutation($input: PackAssetCreateInput!) {
-    packAssetCreate(input: $input) {
-      packAsset {
-        id
-      }
-    }
-  }
-`;
 
 const EditableQuestionImageContainer = styled.div`
   position: relative;
@@ -169,15 +160,10 @@ const EditableQuestionImageContainer = styled.div`
     transform: translateX(-50%);
   }
   .image-container {
-    width: 100%;
+    display: flex;
     margin-bottom: ${theme.spacings(5)};
-    transition: box-shadow 0.23s ease;
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px ${theme.ui.background};
-    }
     > img {
-      margin: 0;
+      margin: auto;
     }
   }
   .edit-button {
