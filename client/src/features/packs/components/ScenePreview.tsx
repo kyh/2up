@@ -1,15 +1,16 @@
 import { gql } from "@apollo/client";
 import { EditableQuestion } from "features/packs/components/EditableQuestion";
 import { EditableAnswer } from "features/packs/components/EditableAnswer";
-import { useUpdateScene } from "features/packs/sceneService";
+import { useUpdateScene } from "features/packs/packService";
+import { SCENE_FRAGMENT } from "features/packs/packFragments";
 
 import {
-  ScenePreviewFragment,
-  ScenePreviewFragment_sceneAnswers,
-} from "./__generated__/ScenePreviewFragment";
+  SceneFragment,
+  SceneFragment_sceneAnswers,
+} from "../__generated__/SceneFragment";
 
 export type Props = {
-  scene: ScenePreviewFragment;
+  scene: SceneFragment;
 };
 
 export const ScenePreview = ({ scene }: Props) => {
@@ -26,7 +27,7 @@ export const ScenePreview = ({ scene }: Props) => {
       />
       <EditableAnswer
         sceneId={scene.id}
-        sceneAnswers={scene.sceneAnswers as ScenePreviewFragment_sceneAnswers[]}
+        sceneAnswers={scene.sceneAnswers as SceneFragment_sceneAnswers[]}
         answerType={scene.answerType.slug}
         onChange={updateScene}
       />
@@ -34,37 +35,13 @@ export const ScenePreview = ({ scene }: Props) => {
   );
 };
 
-ScenePreview.fragments = {
-  scene: gql`
-    fragment ScenePreviewFragment on Scene {
-      id
-      externalId
-      instruction
-      question
-      questionType {
-        id
-        slug
-      }
-      sceneAnswers {
-        id
-        content
-        isCorrect
-      }
-      answerType {
-        id
-        slug
-      }
-    }
-  `,
-};
-
 export const SCENE_UPDATE = gql`
   mutation SceneUpdateMutation($input: SceneUpdateInput!) {
     sceneUpdate(input: $input) {
       scene {
-        ...ScenePreviewFragment
+        ...SceneFragment
       }
     }
   }
-  ${ScenePreview.fragments.scene}
+  ${SCENE_FRAGMENT}
 `;

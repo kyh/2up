@@ -7,15 +7,15 @@ import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
   getRandomAnswer,
-} from "features/packs/sceneService";
+} from "features/packs/packService";
 import { AnswerTypeSlugs } from "features/game/gameSlice";
 
-import { ScenePreviewFragment_sceneAnswers } from "./__generated__/ScenePreviewFragment";
+import { SceneFragment_sceneAnswers } from "../__generated__/SceneFragment";
 
 type EditableAnswerProps = {
   sceneId: string;
   answerType: string;
-  sceneAnswers: ScenePreviewFragment_sceneAnswers[];
+  sceneAnswers: SceneFragment_sceneAnswers[];
   onChange: (scene: any) => void;
 };
 

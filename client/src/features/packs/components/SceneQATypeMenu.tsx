@@ -3,11 +3,11 @@ import { useReactiveVar } from "@apollo/client";
 import { theme } from "styles/theme";
 import { Button } from "components";
 import { Props as ScenePreviewProps } from "features/packs/components/ScenePreview";
-import { useUpdateScene } from "features/packs/sceneService";
 import {
+  useUpdateScene,
   visibleQATypeMenuVar,
   VisibleQATypeMenu,
-} from "features/packs/sceneService";
+} from "features/packs/packService";
 import { AnswerTypeSlugs, QuestionTypeSlugs } from "features/game/gameSlice";
 
 export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {

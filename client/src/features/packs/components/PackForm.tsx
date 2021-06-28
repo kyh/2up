@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { Button, TextField, AreaField } from "components";
-import { TopbarPackFragment } from "./__generated__/TopbarPackFragment";
 
-export type PackFormInputs = Omit<TopbarPackFragment, "id" | "__typename">;
+import { PackFragment } from "../__generated__/PackFragment";
+
+export type PackFormInputs = Omit<PackFragment, "id" | "__typename">;
 
 type Props = {
   submitText?: string;

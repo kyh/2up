@@ -19,7 +19,12 @@ import {
   packScenesVar,
   keybindings,
   instructionElementAttribute,
-} from "features/packs/sceneService";
+} from "features/packs/packService";
+import {
+  PACK_FRAGMENT,
+  SCENES_FRAGMENT,
+  SCENE_FRAGMENT,
+} from "features/packs/packFragments";
 import { useHostGame } from "features/game/gameService";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
@@ -111,6 +116,8 @@ export const PackCreatorPage = () => {
     return null;
   }
 
+  console.log(data.pack.scenes);
+
   const packScenes = collectConnectionNodes(data.pack.scenes);
   packScenesVar(packScenes);
 
@@ -189,24 +196,16 @@ export const PackCreatorPage = () => {
 const PACK_QUERY = gql`
   query PackCreatorPagePackQuery($packId: ID!, $sceneId: ID) {
     pack(id: $packId) {
-      ...TopbarPackFragment
-      ...SidebarPackFragment
+      ...PackFragment
+      ...ScenesFragment
     }
     scene(id: $sceneId, packId: $packId) {
-      ...ScenePreviewFragment
-    }
-    questionTypes {
-      id
-      slug
-    }
-    answerTypes {
-      id
-      slug
+      ...SceneFragment
     }
   }
-  ${Topbar.fragments.pack}
-  ${Sidebar.fragments.pack}
-  ${ScenePreview.fragments.scene}
+  ${PACK_FRAGMENT}
+  ${SCENES_FRAGMENT}
+  ${SCENE_FRAGMENT}
 `;
 
 const Page = styled.section`

@@ -8,13 +8,14 @@ import { theme } from "styles/theme";
 import { Button, Icon, Modal, Loader } from "components";
 import { NavigationContainer } from "features/packs/components/Navigation";
 import { PackForm, PackFormInputs } from "features/packs/components/PackForm";
-import { savingSceneVar } from "features/packs/sceneService";
+import { savingSceneVar } from "features/packs/packService";
+import { PACK_FRAGMENT } from "features/packs/packFragments";
 
-import { TopbarPackFragment } from "./__generated__/TopbarPackFragment";
-import { TopbarPackUpdateMutation } from "./__generated__/TopbarPackUpdateMutation";
+import { PackUpdateMutation } from "./__generated__/PackUpdateMutation";
+import { PackFragment } from "../__generated__/PackFragment";
 
 type Props = {
-  pack: TopbarPackFragment;
+  pack: PackFragment;
   testPlay: () => void;
 };
 
@@ -22,7 +23,7 @@ export const Topbar = ({ pack, testPlay }: Props) => {
   const saving = useReactiveVar(savingSceneVar);
   const alert = useAlert();
   const [isOpen, setIsOpen] = useState(false);
-  const [packUpdate] = useMutation<TopbarPackUpdateMutation>(PACK_UPDATE);
+  const [packUpdate] = useMutation<PackUpdateMutation>(PACK_UPDATE);
 
   const onSaveChanges = async (newPack: PackFormInputs) => {
     savingSceneVar(true);
@@ -104,27 +105,15 @@ export const Topbar = ({ pack, testPlay }: Props) => {
   );
 };
 
-Topbar.fragments = {
-  pack: gql`
-    fragment TopbarPackFragment on Pack {
-      id
-      name
-      description
-      length
-      isRandom
-    }
-  `,
-};
-
-const PACK_UPDATE = gql`
-  mutation TopbarPackUpdateMutation($input: PackUpdateInput!) {
+export const PACK_UPDATE = gql`
+  mutation PackUpdateMutation($input: PackUpdateInput!) {
     packUpdate(input: $input) {
       pack {
-        ...TopbarPackFragment
+        ...PackFragment
       }
     }
   }
-  ${Topbar.fragments.pack}
+  ${PACK_FRAGMENT}
 `;
 
 const StyledNavigationContainer = styled(NavigationContainer)`
