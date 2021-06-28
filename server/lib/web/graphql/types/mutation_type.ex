@@ -169,23 +169,6 @@ defmodule Web.GraphQL.Types.MutationType do
       resolve(&Catalog.scene_update/2)
     end
 
-    @desc "Delete scene answer"
-    payload field :scene_answer_delete do
-      input do
-        field :id, :id
-      end
-
-      output do
-        field :scene_answer, non_null(:scene_answer)
-      end
-
-      resolve(
-        parsing_node_ids(&Catalog.scene_answer_delete/2,
-          id: :scene_answer
-        )
-      )
-    end
-
     @desc "Delete scene"
     payload field :scene_delete do
       input do

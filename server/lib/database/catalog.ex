@@ -198,18 +198,6 @@ defmodule Database.Catalog do
     end
   end
 
-  def scene_answer_delete(
-        %User{} = user,
-        %SceneAnswer{} = scene_answer,
-        _attrs
-      ) do
-    scene = Repo.get_by(Scene, id: scene_answer.scene_id)
-
-    with {:ok} <- Authorization.check(:scene_answer_delete, user, scene) do
-      scene_answer |> Repo.delete()
-    end
-  end
-
   def question_type_create(attrs) do
     %QuestionType{}
     |> QuestionType.changeset(attrs)

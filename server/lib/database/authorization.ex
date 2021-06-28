@@ -25,10 +25,6 @@ defmodule Database.Authorization do
     scene_owner_check(user_id, scene_id)
   end
 
-  def check(:scene_answer_delete, %User{id: user_id}, %SceneAnswer{scene_id: scene_id}) do
-    scene_owner_check(user_id, scene_id)
-  end
-
   defp pack_owner_check(user_id, pack_id) do
     pack = Repo.get_by(Pack, %{id: pack_id})
 
