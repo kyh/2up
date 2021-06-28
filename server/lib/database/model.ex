@@ -21,7 +21,8 @@ defmodule Database.Model do
         PackTag,
         Pack,
         Tag,
-        Play
+        Play,
+        PackAsset
       }
     end
   end

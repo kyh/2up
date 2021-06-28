@@ -79,4 +79,38 @@ defmodule Web.GraphQL.Resolvers.Live do
         {:ok, %{pack: pack}}
     end
   end
+
+  def pack_asset_create(args, %{context: %{current_user: user}}) do
+    pack = Live.pack_get_by_id(args.pack_id)
+
+    case Live.pack_asset_create(user, pack, args) do
+      {:error, changeset} ->
+        {
+          :error,
+          message: "Pack asset create failed", details: Errors.error_details(changeset)
+        }
+
+      {:ok, pack_asset} ->
+        {:ok, %{pack_asset: pack_asset}}
+    end
+  end
+
+  def pack_asset_delete(args, %{context: %{current_user: user}}) do
+    pack = Live.pack_get_by_id(args.pack_id)
+
+    case Live.pack_asset_create(user, pack, args) do
+      {:error, changeset} ->
+        {
+          :error,
+          message: "Pack asset delete failed", details: Errors.error_details(changeset)
+        }
+
+      {:ok, pack_asset} ->
+        {:ok, %{pack_asset: pack_asset}}
+    end
+  end
+
+  def pack_asset_list(_, args, _) do
+    Connection.from_list(Live.pack_asset_list(args), args)
+  end
 end

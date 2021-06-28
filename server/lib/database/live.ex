@@ -1,5 +1,6 @@
 defmodule Database.Live do
   use Database.Context
+  alias Database.Authorization
 
   def play_create(%Pack{} = pack, attrs) do
     %Play{}
@@ -86,4 +87,28 @@ defmodule Database.Live do
   end
 
   def rebalance_scenes([], _order), do: :ok
+
+  def pack_asset_list(args) do
+    query =
+      from pack_asset in PackAsset,
+        where: pack_asset.pack_id == ^args.pack_id
+
+    Repo.all(query)
+  end
+
+  def pack_asset_create(%User{} = user, %Pack{} = pack, args) do
+    with {:ok} <- Authorization.check(:pack_asset_create, user, pack) do
+      %PackAsset{}
+      |> PackAsset.changeset(%{raw_name: args.raw_name, path: args.path})
+      |> Ecto.Changeset.put_assoc(:pack, pack)
+      |> Repo.insert()
+    end
+  end
+
+  def pack_asset_delete(%User{} = user, %PackAsset{} = pack, args) do
+    with {:ok} <- Authorization.check(:pack_asset_delete, user, pack) do
+      Repo.get_by(PackAsset, id: args.id)
+      |> Repo.delete()
+    end
+  end
 end
