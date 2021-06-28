@@ -1,13 +1,15 @@
+import { gql } from "@apollo/client";
 import { useMutation, makeVar } from "@apollo/client";
 import { Hotkey } from "@react-hook/hotkey";
 import { useAlert } from "react-alert";
-import { Props, SCENE_UPDATE } from "./components/ScenePreview";
+import { SCENE_FRAGMENT } from "features/packs/packFragments";
 import {
   SceneUpdateMutation,
   SceneUpdateMutation_sceneUpdate_scene,
 } from "./components/__generated__/SceneUpdateMutation";
+import { SceneFragment } from "./__generated__/SceneFragment";
 
-export const useUpdateScene = ({ scene }: Props) => {
+export const useUpdateScene = (scene: SceneFragment) => {
   const alert = useAlert();
   const [sceneUpdate] = useMutation<SceneUpdateMutation>(SCENE_UPDATE);
 
@@ -37,6 +39,17 @@ export const useUpdateScene = ({ scene }: Props) => {
 
   return { updateScene };
 };
+
+const SCENE_UPDATE = gql`
+  mutation SceneUpdateMutation($input: SceneUpdateInput!) {
+    sceneUpdate(input: $input) {
+      scene {
+        ...SceneFragment
+      }
+    }
+  }
+  ${SCENE_FRAGMENT}
+`;
 
 export enum VisibleQATypeMenu {
   None,

@@ -1,9 +1,6 @@
-import { gql } from "@apollo/client";
 import { EditableQuestion } from "features/packs/components/EditableQuestion";
 import { EditableAnswer } from "features/packs/components/EditableAnswer";
 import { useUpdateScene } from "features/packs/packService";
-import { SCENE_FRAGMENT } from "features/packs/packFragments";
-
 import {
   SceneFragment,
   SceneFragment_sceneAnswers,
@@ -14,7 +11,7 @@ export type Props = {
 };
 
 export const ScenePreview = ({ scene }: Props) => {
-  const { updateScene } = useUpdateScene({ scene });
+  const { updateScene } = useUpdateScene(scene);
 
   return (
     <>
@@ -34,14 +31,3 @@ export const ScenePreview = ({ scene }: Props) => {
     </>
   );
 };
-
-export const SCENE_UPDATE = gql`
-  mutation SceneUpdateMutation($input: SceneUpdateInput!) {
-    sceneUpdate(input: $input) {
-      scene {
-        ...SceneFragment
-      }
-    }
-  }
-  ${SCENE_FRAGMENT}
-`;
