@@ -118,10 +118,7 @@ export const Uploader = ({ pathPrefix, onUploaded }: UploaderProps) => {
       });
       const url = data?.presignedUrlCreate?.presignedUrl;
       if (url) {
-        console.log("uploading to:", url);
         await fetch(url, { method: "PUT", body: file });
-
-        console.log("uploaded:");
         await onUploaded(file.name, path);
       }
     }
