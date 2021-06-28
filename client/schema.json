@@ -265,11 +265,11 @@
       {
         "kind": "INTERFACE",
         "name": "Node",
-        "description": null,
+        "description": "An object with an ID",
         "fields": [
           {
             "name": "id",
-            "description": "The ID of the object.",
+            "description": "The id of the object.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -716,19 +716,23 @@
         "fields": [
           {
             "name": "cursor",
-            "description": null,
+            "description": "A cursor for use in pagination",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
             "name": "node",
-            "description": null,
+            "description": "The item at the end of the edge",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -948,19 +952,23 @@
         "fields": [
           {
             "name": "cursor",
-            "description": null,
+            "description": "A cursor for use in pagination",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
             "name": "node",
-            "description": null,
+            "description": "The item at the end of the edge",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -1305,19 +1313,23 @@
         "fields": [
           {
             "name": "cursor",
-            "description": null,
+            "description": "A cursor for use in pagination",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
             "name": "node",
-            "description": null,
+            "description": "The item at the end of the edge",
             "args": [],
             "type": {
               "kind": "OBJECT",
