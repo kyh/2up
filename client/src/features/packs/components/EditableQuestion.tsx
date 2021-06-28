@@ -7,7 +7,7 @@ import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
   instructionElementAttribute,
-} from "features/packs/sceneService";
+} from "features/packs/packService";
 import { Button, Icon, Modal, Uploader } from "components";
 
 type EditableQuestionProps = {

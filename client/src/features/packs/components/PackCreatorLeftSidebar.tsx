@@ -22,17 +22,17 @@ import {
   savingSceneVar,
   scenesToCsv,
   fileToCsv,
-} from "features/packs/sceneService";
+} from "features/packs/packService";
 
-import { SidebarSceneCreateMutation } from "./__generated__/SidebarSceneCreateMutation";
-import { SidebarSceneDeleteMutation } from "./__generated__/SidebarSceneDeleteMutation";
-import { SidebarSceneOrderUpdateMutation } from "./__generated__/SidebarSceneOrderUpdateMutation";
-import { SidebarPackFragment_scenes_edges_node } from "./__generated__/SidebarPackFragment";
+import { SceneCreateMutation } from "./__generated__/SceneCreateMutation";
+import { SceneDeleteMutation } from "./__generated__/SceneDeleteMutation";
+import { SceneOrderUpdateMutation } from "./__generated__/SceneOrderUpdateMutation";
 import { CsvImportMutation } from "./__generated__/CsvImportMutation";
+import { ScenesFragment_scenes_edges_node } from "../__generated__/ScenesFragment";
 
 type Props = {
   packId: string;
-  packScenes: SidebarPackFragment_scenes_edges_node[];
+  packScenes: ScenesFragment_scenes_edges_node[];
   selectedSceneId?: string;
   selectScene: (scene: any) => void;
   refetch: () => void;
@@ -46,9 +46,9 @@ export const Sidebar = ({
   refetch,
 }: Props) => {
   const alert = useAlert();
-  const [sceneCreate] = useMutation<SidebarSceneCreateMutation>(SCENE_CREATE);
-  const [sceneDelete] = useMutation<SidebarSceneDeleteMutation>(SCENE_DELETE);
-  const [sceneOrderUpdate] = useMutation<SidebarSceneOrderUpdateMutation>(
+  const [sceneCreate] = useMutation<SceneCreateMutation>(SCENE_CREATE);
+  const [sceneDelete] = useMutation<SceneDeleteMutation>(SCENE_DELETE);
+  const [sceneOrderUpdate] = useMutation<SceneOrderUpdateMutation>(
     SCENE_ORDER_UPDATE
   );
   const [scenes, setScenes] = useState(packScenes);
@@ -152,7 +152,7 @@ export const Sidebar = ({
         variables: { input },
       });
       const newScene = data?.sceneCreate
-        ?.scene as SidebarPackFragment_scenes_edges_node;
+        ?.scene as ScenesFragment_scenes_edges_node;
       if (newScene) {
         selectScene(newScene.id);
       }
@@ -194,65 +194,18 @@ export const Sidebar = ({
   );
 };
 
-Sidebar.fragments = {
-  pack: gql`
-    fragment SidebarPackFragment on Pack {
-      id
-      scenes(first: 500) {
-        edges {
-          node {
-            id
-            externalId
-            question
-            order
-            sceneAnswers {
-              id
-              content
-              isCorrect
-            }
-            instruction
-            questionType {
-              id
-              slug
-            }
-            answerType {
-              id
-              slug
-            }
-          }
-        }
-      }
-    }
-  `,
-};
-
 const SCENE_CREATE = gql`
-  mutation SidebarSceneCreateMutation($input: SceneCreateInput!) {
+  mutation SceneCreateMutation($input: SceneCreateInput!) {
     sceneCreate(input: $input) {
       scene {
         id
-        question
-        sceneAnswers {
-          id
-          content
-          isCorrect
-        }
-        instruction
-        questionType {
-          id
-          slug
-        }
-        answerType {
-          id
-          slug
-        }
       }
     }
   }
 `;
 
 const SCENE_DELETE = gql`
-  mutation SidebarSceneDeleteMutation($input: SceneDeleteInput!) {
+  mutation SceneDeleteMutation($input: SceneDeleteInput!) {
     sceneDelete(input: $input) {
       scene {
         id
@@ -262,7 +215,7 @@ const SCENE_DELETE = gql`
 `;
 
 const SCENE_ORDER_UPDATE = gql`
-  mutation SidebarSceneOrderUpdateMutation($input: SceneOrderUpdateInput!) {
+  mutation SceneOrderUpdateMutation($input: SceneOrderUpdateInput!) {
     sceneOrderUpdate(input: $input) {
       scene {
         id
@@ -295,7 +248,7 @@ const SidebarFooter = styled.footer`
 
 type SidebarItemProps = {
   index: number;
-  scene: SidebarPackFragment_scenes_edges_node;
+  scene: ScenesFragment_scenes_edges_node;
   isSelected: boolean;
   selectScene: (sceneId: string) => any;
   deleteScene: (sceneId: string, index: number) => any;
@@ -468,7 +421,7 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
 
 type CsvImportButtonProps = {
   packId: string;
-  scenes: SidebarPackFragment_scenes_edges_node[];
+  scenes: ScenesFragment_scenes_edges_node[];
   refetch: () => void;
 };
 
