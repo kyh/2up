@@ -53,8 +53,8 @@ export const Sidebar = ({
   );
   const [scenes, setScenes] = useState(packScenes);
   const draggingRef = useRef(false);
-  // const [searchQuery, setSearchQuery] = useState("");
 
+  // Remove this and just use packScenes
   useEffect(() => {
     if (draggingRef.current) return;
     if (JSON.stringify(scenes) !== JSON.stringify(packScenes)) {
@@ -151,8 +151,8 @@ export const Sidebar = ({
       const { data } = await sceneCreate({
         variables: { input },
       });
-      const newScene = data?.sceneCreate
-        ?.scene as ScenesFragment_scenes_edges_node;
+      await refetch();
+      const newScene = data?.sceneCreate?.scene;
       if (newScene) {
         selectScene(newScene.id);
       }

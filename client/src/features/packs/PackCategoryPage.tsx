@@ -14,7 +14,8 @@ export const PackCategoryPage = () => {
     variables: { username: auth.user?.username || "" },
   });
 
-  const featured = collectConnectionNodes(data?.packs);
+  const featuredMap = collectConnectionNodes(data?.packs);
+  const featured = Object.values(featuredMap);
 
   return (
     <Page>
