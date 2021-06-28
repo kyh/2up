@@ -11,6 +11,8 @@ defmodule Web.Router do
 
     forward "/graphql", Absinthe.Plug, schema: Web.GraphQL.Schema
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: Web.GraphQL.Schema
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: Web.GraphQL.Schema,
+      interface: :playground
   end
 end
