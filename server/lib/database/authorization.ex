@@ -9,6 +9,14 @@ defmodule Database.Authorization do
 
   def check(:pack_update, %User{}, %Pack{}), do: {:unauthorized}
 
+  def check(:pack_asset_create, %User{id: user_id}, %Pack{user_id: user_id}), do: {:ok}
+
+  def check(:pack_asset_create, %User{}, %Pack{}), do: {:unauthorized}
+
+  def check(:pack_asset_delete, %User{id: user_id}, %Pack{user_id: user_id}), do: {:ok}
+
+  def check(:pack_asset_delete, %User{}, %Pack{}), do: {:unauthorized}
+
   def check(:scene_create, %User{id: user_id}, %Pack{user_id: user_id}), do: {:ok}
 
   def check(:scene_create, %User{}, %Pack{}), do: {:unauthorized}
@@ -22,10 +30,6 @@ defmodule Database.Authorization do
   end
 
   def check(:scene_answer_create, %User{id: user_id}, %Scene{id: scene_id}) do
-    scene_owner_check(user_id, scene_id)
-  end
-
-  def check(:scene_answer_delete, %User{id: user_id}, %SceneAnswer{scene_id: scene_id}) do
     scene_owner_check(user_id, scene_id)
   end
 

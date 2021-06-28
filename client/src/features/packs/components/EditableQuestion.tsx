@@ -1,5 +1,6 @@
 import { useState, ChangeEvent } from "react";
 import { useParams } from "react-router-dom";
+import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { QuestionTypeSlugs } from "features/game/gameSlice";
@@ -9,6 +10,7 @@ import {
   instructionElementAttribute,
 } from "features/packs/packService";
 import { Button, Icon, Modal, Uploader } from "components";
+import { PackAssetCreateMutation } from "./__generated__/PackAssetCreateMutation";
 
 type EditableQuestionProps = {
   instruction: string;
@@ -104,6 +106,17 @@ const EditableQuestionImage = ({
 }: EditableQuestionImageProps) => {
   const { packId } = useParams<{ packId: string }>();
   const [isOpen, setIsOpen] = useState(false);
+  const [packAssetCreate] = useMutation<PackAssetCreateMutation>(
+    PACK_ASSET_CREATE
+  );
+
+  const onUploaded = async (rawName: string, path: string) => {
+    await packAssetCreate({
+      variables: {
+        input: { rawName, path, packId },
+      },
+    });
+  };
 
   return (
     <EditableQuestionImageContainer>
@@ -131,11 +144,21 @@ const EditableQuestionImage = ({
         onRequestClose={() => setIsOpen(false)}
         closeButton
       >
-        <Uploader pathPrefix={`packs/${packId}`} />
+        <Uploader onUploaded={onUploaded} pathPrefix={`packs/${packId}`} />
       </Modal>
     </EditableQuestionImageContainer>
   );
 };
+
+const PACK_ASSET_CREATE = gql`
+  mutation PackAssetCreateMutation($input: PackAssetCreateInput!) {
+    packAssetCreate(input: $input) {
+      packAsset {
+        id
+      }
+    }
+  }
+`;
 
 const EditableQuestionImageContainer = styled.div`
   position: relative;
