@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import { useHotkeys } from "@react-hook/hotkey";
 import { theme } from "styles/theme";
+import { visible } from "styles/animations";
 import { collectConnectionNodes } from "utils/collectionUtil";
 import { Topbar } from "features/packs/components/PackCreatorTopbar";
 import { Sidebar } from "features/packs/components/PackCreatorLeftSidebar";
@@ -42,7 +43,6 @@ export const PackCreatorPage = () => {
   const packScenesMap = collectConnectionNodes(data?.pack?.scenes);
   const packScenes = Object.values(packScenesMap);
   const selectedScene = packScenesMap[selectedSceneId];
-  packScenesVar(packScenes);
 
   const selectScene = (selectedSceneId: string) => {
     visibleQATypeMenuVar(VisibleQATypeMenu.None);
@@ -111,9 +111,9 @@ export const PackCreatorPage = () => {
   ]);
 
   useEffect(() => {
-    const sceneIds = Object.keys(packScenesMap);
-    if (sceneIds.length !== 0 && !selectedSceneId) {
-      setSelectedSceneId(sceneIds[0]);
+    if (packScenes.length !== 0 && !selectedSceneId) {
+      setSelectedSceneId(packScenes[0].id);
+      packScenesVar(packScenes);
     }
   }, [packScenesMap]);
 
@@ -231,6 +231,8 @@ const Content = styled.section`
 
 const EmptyContent = styled(Content)`
   display: flex;
+  animation: ${visible} 0s linear 0.1s forwards;
+  visibility: hidden;
 
   .arrow {
     position: absolute;
