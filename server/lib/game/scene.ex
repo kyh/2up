@@ -16,7 +16,7 @@ defmodule Game.Scene do
     %Game.Scene{
       question: question_set.question,
       question_type: question_set.question_type,
-      scene_answers: question_set.scene_answers,
+      scene_answers: Enum.shuffle(question_set.scene_answers),
       answer_type: question_set.answer_type,
       pack: question_set.pack,
       instruction: question_set.instruction,

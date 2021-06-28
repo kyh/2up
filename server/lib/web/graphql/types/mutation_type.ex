@@ -26,6 +26,21 @@ defmodule Web.GraphQL.Types.MutationType do
       resolve(&Accounts.user_create/3)
     end
 
+    @desc "Update user"
+    payload field :user_update do
+      input do
+        field :username, non_null(:string)
+        field :email, non_null(:string)
+        field :password, non_null(:string)
+      end
+
+      output do
+        field :user, non_null(:user)
+      end
+
+      resolve(&Accounts.user_update/3)
+    end
+
     @desc "Sign in user"
     payload field :session_create do
       input do
@@ -100,6 +115,34 @@ defmodule Web.GraphQL.Types.MutationType do
       resolve(parsing_node_ids(&Live.pack_update/2, id: :pack))
     end
 
+    @desc "Create pack asset"
+    payload field :pack_asset_create do
+      input do
+        field :pack_id, :id
+        field :raw_name, :string
+        field :path, :string
+      end
+
+      output do
+        field :pack_asset, non_null(:pack_asset)
+      end
+
+      resolve(parsing_node_ids(&Live.pack_asset_create/2, pack_id: :pack))
+    end
+
+    @desc "Delete pack scene"
+    payload field :pack_asset_delete do
+      input do
+        field :id, :id
+      end
+
+      output do
+        field :pack_asset, non_null(:pack_asset)
+      end
+
+      resolve(parsing_node_ids(&Live.pack_asset_delete/2, id: :pack_asset))
+    end
+
     @desc "Create new scene"
     payload field :scene_create do
       input do
@@ -152,23 +195,6 @@ defmodule Web.GraphQL.Types.MutationType do
       )
 
       resolve(&Catalog.scene_update/2)
-    end
-
-    @desc "Delete scene answer"
-    payload field :scene_answer_delete do
-      input do
-        field :id, :id
-      end
-
-      output do
-        field :scene_answer, non_null(:scene_answer)
-      end
-
-      resolve(
-        parsing_node_ids(&Catalog.scene_answer_delete/2,
-          id: :scene_answer
-        )
-      )
     end
 
     @desc "Delete scene"
