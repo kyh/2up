@@ -1,5 +1,5 @@
 import raw from "raw.macro";
-import { useEffect, useState, useRef, SyntheticEvent } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
 import { useParams } from "react-router-dom";
@@ -7,7 +7,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useHotkeys } from "@react-hook/hotkey";
 import { theme } from "styles/theme";
 import { visible } from "styles/animations";
-import { collectConnectionNodes } from "utils/collectionUtil";
+import { collectConnectionNodes } from "utils/collectionUtils";
 import { Topbar } from "features/packs/components/PackCreatorTopbar";
 import { Sidebar } from "features/packs/components/PackCreatorLeftSidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";
@@ -74,16 +74,6 @@ export const PackCreatorPage = () => {
     }
   };
 
-  const hideQATypeMenu = (e: SyntheticEvent) => {
-    if (
-      e.target instanceof HTMLInputElement ||
-      e.target instanceof HTMLTextAreaElement
-    ) {
-      return;
-    }
-    visibleQATypeMenuVar(VisibleQATypeMenu.None);
-  };
-
   const focusElement = (query: string) => (e: KeyboardEvent) => {
     if (
       e.target instanceof HTMLInputElement ||
@@ -136,7 +126,7 @@ export const PackCreatorPage = () => {
       </SidebarLeft>
       {selectedScene ? (
         <>
-          <Content onClick={hideQATypeMenu}>
+          <Content>
             <Screen ref={screenRef}>
               <ScenePreview scene={selectedScene} />
             </Screen>

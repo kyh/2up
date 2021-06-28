@@ -3,7 +3,7 @@ import { Provider as AlertProvider, transitions, positions } from "react-alert";
 
 import { ReactAlertTemplate } from "components";
 import { GlobalStyle } from "styles/global";
-import { useAppSelector } from "app/hooks";
+import { useAppSelector } from "utils/sliceUtils";
 import { AuthProvider } from "utils/AuthProvider";
 
 import { HomeRoutes } from "features/home/HomeRoutes";

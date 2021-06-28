@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, createContext, ReactNode } from "react";
 import { Presence } from "phoenix";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAlert } from "react-alert";
-import { useAppDispatch, useAppSelector } from "app/hooks";
+import { useAppDispatch, useAppSelector } from "utils/sliceUtils";
 import { useChannel } from "utils/socketUtils";
 import { gameActions } from "features/game/gameSlice";
 

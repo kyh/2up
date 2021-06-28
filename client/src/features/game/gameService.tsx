@@ -1,6 +1,6 @@
 import { useHistory } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
-import { useAppDispatch } from "app/hooks";
+import { useAppDispatch } from "utils/sliceUtils";
 import { gameActions } from "features/game/gameSlice";
 import { GameCreateMutation } from "./__generated__/GameCreateMutation";
 

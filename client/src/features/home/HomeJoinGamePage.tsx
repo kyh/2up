@@ -4,7 +4,7 @@ import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
 import { theme } from "styles/theme";
-import { useAppDispatch, useAppSelector } from "app/hooks";
+import { useAppDispatch, useAppSelector } from "utils/sliceUtils";
 import { useQueryParams } from "utils/queryUtils";
 import { Button, Input } from "components";
 import { gameActions } from "features/game/gameSlice";

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import { useAuth } from "utils/AuthProvider";
-import { collectConnectionNodes } from "utils/collectionUtil";
+import { collectConnectionNodes } from "utils/collectionUtils";
 import { Carousel, CarouselItem, ButtonLinkNative } from "components";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
