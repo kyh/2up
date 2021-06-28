@@ -11,7 +11,7 @@ import {
 import { AnswerTypeSlugs, QuestionTypeSlugs } from "features/game/gameSlice";
 
 export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
-  const { updateScene } = useUpdateScene({ scene });
+  const { updateScene } = useUpdateScene(scene);
   const openMenu = useReactiveVar(visibleQATypeMenuVar);
 
   const onSelectType = (updatedScene = {}) => {

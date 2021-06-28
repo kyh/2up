@@ -1,16 +1,10 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloLink,
-  createHttpLink,
-} from "@apollo/client";
+import { ApolloClient, ApolloLink, createHttpLink } from "@apollo/client";
 import { OperationDefinitionNode } from "graphql";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { getMainDefinition } from "apollo-utilities";
 import { omitDeep } from "utils/stringUtils";
-
-const cache = new InMemoryCache();
+import { cache } from "./cache";
 
 const cleanTypenameLink = new ApolloLink((operation, forward) => {
   const keysToOmit = ["__typename"];
@@ -47,7 +41,7 @@ const httpLink = createHttpLink({
 });
 
 export const client = new ApolloClient({
-  cache: cache,
+  cache,
   link: ApolloLink.from([cleanTypenameLink, authLink, errorLink, httpLink]),
   credentials: "include",
 });

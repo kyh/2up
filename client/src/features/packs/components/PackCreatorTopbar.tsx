@@ -1,8 +1,7 @@
-import { useReactiveVar } from "@apollo/client";
 import { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useReactiveVar } from "@apollo/client";
 import { useAlert } from "react-alert";
 import { theme } from "styles/theme";
 import { Button, Icon, Modal, Loader } from "components";
@@ -20,8 +19,8 @@ type Props = {
 };
 
 export const Topbar = ({ pack, testPlay }: Props) => {
-  const saving = useReactiveVar(savingSceneVar);
   const alert = useAlert();
+  const saving = useReactiveVar(savingSceneVar);
   const [isOpen, setIsOpen] = useState(false);
   const [packUpdate] = useMutation<PackUpdateMutation>(PACK_UPDATE);
 
