@@ -153,31 +153,29 @@ defmodule Database.Catalog do
         |> Map.put(:question_type_id, question_type.id)
         |> Map.put(:answer_type_id, answer_type.id)
 
-      case attrs.scene_answers do
-        [] ->
-          from(sa in SceneAnswer, where: sa.scene_id == ^scene.id) |> Repo.delete_all()
+      Enum.filter(attrs.scene_answers, &Map.has_key?(&1, :id))
+      |> Enum.map(& &1.id)
+      |> scene_answers_delete_unmatched(scene.id)
 
-        scene_answers ->
-          Enum.each(scene_answers, fn a ->
-            attrs = a |> Map.put(:scene_id, attrs.id)
+      Enum.each(attrs.scene_answers, fn a ->
+        attrs = a |> Map.put(:scene_id, attrs.id)
 
-            scene_answer =
-              case Map.has_key?(a, :id) do
-                false ->
-                  %SceneAnswer{}
+        scene_answer =
+          case Map.has_key?(a, :id) do
+            false ->
+              %SceneAnswer{}
 
-                true ->
-                  case Repo.get(SceneAnswer, a.id) do
-                    nil -> %SceneAnswer{}
-                    scene_answer -> scene_answer
-                  end
+            true ->
+              case Repo.get(SceneAnswer, a.id) do
+                nil -> %SceneAnswer{}
+                scene_answer -> scene_answer
               end
+          end
 
-            scene_answer
-            |> SceneAnswer.changeset(attrs)
-            |> Repo.insert_or_update()
-          end)
-      end
+        scene_answer
+        |> SceneAnswer.changeset(attrs)
+        |> Repo.insert_or_update()
+      end)
 
       scene
       |> Scene.changeset(attrs)
@@ -191,7 +189,7 @@ defmodule Database.Catalog do
         _attrs
       ) do
     with {:ok} <- Authorization.check(:scene_delete, user, scene) do
-      scene_answers_query = 
+      scene_answers_query =
         from scene_answer in SceneAnswer,
           where: scene_answer.scene_id == ^scene.id
 
