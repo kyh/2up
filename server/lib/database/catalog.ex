@@ -292,8 +292,10 @@ defmodule Database.Catalog do
 
         scene_answers_attrs =
           Enum.map(scene_answers_sets, fn scene_answer ->
+            formatted_scene_answer = Enum.at(scene_answer, 1) |> String.downcase()
+
             is_correct =
-              case Enum.at(scene_answer, 1) do
+              case Enum.at(formatted_scene_answer, 1) do
                 "true" -> true
                 _ -> false
               end
