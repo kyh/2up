@@ -49,6 +49,8 @@ envVarGroups:
         value: https://api.playhouse.gg
       - key: REACT_APP_SOCKET_URL
         value: wss://api.playhouse.gg
+      - key: REACT_APP_ASSET_URL
+        value: https://assets.playhouse.gg
 
   - name: playhouse-server-env
     envVars:
