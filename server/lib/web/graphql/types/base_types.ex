@@ -3,13 +3,16 @@ defmodule Web.GraphQL.Types.BaseTypes do
   use Absinthe.Relay.Schema.Notation, :modern
 
   alias Database.Catalog.{Scene, SceneAnswer, QuestionType, AnswerType}
-  alias Database.Live.Pack
+  alias Database.Live.{Pack, PackAsset}
   alias Database.Accounts.User
 
   node interface do
     resolve_type(fn
       %Pack{}, _ ->
         :pack
+
+      %PackAsset{}, _ ->
+        :pack_asset
 
       %Scene{}, _ ->
         :scene
