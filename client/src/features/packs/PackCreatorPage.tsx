@@ -29,11 +29,11 @@ import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQue
 const arrowSvg = raw("./svgs/arrow.svg");
 
 export const PackCreatorPage = () => {
+  const { packId } = useParams<{ packId: string }>();
   const screenRef = useRef<null | HTMLDivElement>(null);
   const hostGame = useHostGame();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedSceneId, setSelectedSceneId] = useState("");
-  const { packId } = useParams<{ packId: string }>();
   const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
     variables: {
       packId: packId || "",
