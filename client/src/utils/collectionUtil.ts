@@ -1,4 +1,4 @@
-export const collectConnectionNodes = <T>(
+export const collectConnectionNodes = <T extends { id?: string }>(
   connectionObj:
     | null
     | undefined
@@ -7,14 +7,17 @@ export const collectConnectionNodes = <T>(
       }
 ) => {
   if (connectionObj && connectionObj.edges && connectionObj.edges.length > 0) {
-    return connectionObj.edges.reduce((acc, curr) => {
+    return connectionObj.edges.reduce((acc, curr, i) => {
       if (curr && curr.node) {
-        acc.push(curr.node);
+        if (curr.node.id) {
+          acc[curr.node.id] = curr.node;
+        } else {
+          acc[i] = curr.node;
+        }
       }
-
       return acc;
-    }, [] as T[]);
+    }, {} as Record<string, T>);
   }
 
-  return [];
+  return {};
 };

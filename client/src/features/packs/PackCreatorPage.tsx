@@ -1,5 +1,5 @@
 import raw from "raw.macro";
-import { useState, useRef, SyntheticEvent } from "react";
+import { useEffect, useState, useRef, SyntheticEvent } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
 import { useParams } from "react-router-dom";
@@ -20,11 +20,7 @@ import {
   keybindings,
   instructionElementAttribute,
 } from "features/packs/packService";
-import {
-  PACK_FRAGMENT,
-  SCENES_FRAGMENT,
-  SCENE_FRAGMENT,
-} from "features/packs/packFragments";
+import { PACK_FRAGMENT, SCENES_FRAGMENT } from "features/packs/packFragments";
 import { useHostGame } from "features/game/gameService";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
@@ -35,6 +31,7 @@ export const PackCreatorPage = () => {
   const screenRef = useRef<null | HTMLDivElement>(null);
   const hostGame = useHostGame();
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedSceneId, setSelectedSceneId] = useState("");
   const { packId } = useParams<{ packId: string }>();
   const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
     variables: {
@@ -42,13 +39,14 @@ export const PackCreatorPage = () => {
     },
   });
 
+  const packScenesMap = collectConnectionNodes(data?.pack?.scenes);
+  const packScenes = Object.values(packScenesMap);
+  const selectedScene = packScenesMap[selectedSceneId];
+  packScenesVar(packScenes);
+
   const selectScene = (selectedSceneId: string) => {
     visibleQATypeMenuVar(VisibleQATypeMenu.None);
-    const newVariables = {
-      packId,
-      sceneId: selectedSceneId,
-    };
-    refetch(newVariables);
+    setSelectedSceneId(selectedSceneId);
   };
 
   const testPlay = () => {
@@ -63,7 +61,7 @@ export const PackCreatorPage = () => {
 
   const selectScenePosition = (position: 1 | -1) => () => {
     const currentSceneIndex = packScenes.findIndex((scene) => {
-      return scene.id === data?.scene?.id;
+      return scene.id === selectedSceneId;
     });
     if (currentSceneIndex !== -1) {
       const newSelectedScene =
@@ -112,14 +110,16 @@ export const PackCreatorPage = () => {
     ],
   ]);
 
+  useEffect(() => {
+    const sceneIds = Object.keys(packScenesMap);
+    if (sceneIds.length !== 0 && !selectedSceneId) {
+      setSelectedSceneId(sceneIds[0]);
+    }
+  }, [packScenesMap]);
+
   if (!data || !data.pack) {
     return null;
   }
-
-  console.log(data.pack.scenes);
-
-  const packScenes = collectConnectionNodes(data.pack.scenes);
-  packScenesVar(packScenes);
 
   return (
     <Page>
@@ -129,23 +129,23 @@ export const PackCreatorPage = () => {
         <Sidebar
           packId={packId}
           packScenes={packScenes}
-          selectedSceneId={data.scene?.id}
+          selectedSceneId={selectedSceneId}
           selectScene={selectScene}
           refetch={refetch}
         />
       </SidebarLeft>
-      {data?.scene ? (
+      {selectedScene ? (
         <>
           <Content onClick={hideQATypeMenu}>
             <Screen ref={screenRef}>
-              <ScenePreview scene={data.scene} />
+              <ScenePreview scene={selectedScene} />
             </Screen>
           </Content>
           <SidebarRight>
-            <SceneSettingsMenu scene={data.scene} />
+            <SceneSettingsMenu scene={selectedScene} />
           </SidebarRight>
           <Footer>
-            <SceneQATypeMenu scene={data.scene} />
+            <SceneQATypeMenu scene={selectedScene} />
           </Footer>
         </>
       ) : (
@@ -194,18 +194,14 @@ export const PackCreatorPage = () => {
 };
 
 const PACK_QUERY = gql`
-  query PackCreatorPagePackQuery($packId: ID!, $sceneId: ID) {
+  query PackCreatorPagePackQuery($packId: ID!) {
     pack(id: $packId) {
       ...PackFragment
       ...ScenesFragment
     }
-    scene(id: $sceneId, packId: $packId) {
-      ...SceneFragment
-    }
   }
   ${PACK_FRAGMENT}
   ${SCENES_FRAGMENT}
-  ${SCENE_FRAGMENT}
 `;
 
 const Page = styled.section`

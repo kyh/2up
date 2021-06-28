@@ -14,8 +14,10 @@ export const PackDiscoverPage = () => {
     variables: { username: auth.user?.username || "" },
   });
 
-  const featured = collectConnectionNodes(data?.featured);
-  const myPacks = collectConnectionNodes(data?.my);
+  const featuredMap = collectConnectionNodes(data?.featured);
+  const featured = Object.values(featuredMap);
+  const myPacksMap = collectConnectionNodes(data?.my);
+  const myPacks = Object.values(myPacksMap);
 
   return (
     <Page bgImage="/illustrations/space.svg" bgTop="100px">

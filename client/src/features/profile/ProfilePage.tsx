@@ -20,7 +20,8 @@ export const ProfilePage = () => {
     return null;
   }
 
-  const packs = collectConnectionNodes(data.packs);
+  const packsMap = collectConnectionNodes(data.packs);
+  const packs = Object.values(packsMap);
   const isMyPage = data?.currentUser?.username === username;
 
   return (
