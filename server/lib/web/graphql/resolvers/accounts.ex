@@ -28,6 +28,19 @@ defmodule Web.GraphQL.Resolvers.Accounts do
     end
   end
 
+  def user_update(_, args, %{context: %{current_user: user}}) do
+    case Accounts.user_update(args, user) do
+      {:error, changeset} ->
+        {
+          :error,
+          message: "User update failed", details: Errors.error_details(changeset)
+        }
+
+      {:ok, user} ->
+        {:ok, %{user: user}}
+    end
+  end
+
   def current_user(_, _args, %{context: %{current_user: user}}) do
     {:ok, user}
   end
