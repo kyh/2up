@@ -7,16 +7,14 @@ defmodule Web.GraphQL.Schema do
   alias Database.Accounts.User
   alias Database.Live.Pack
 
-  import_types(Web.GraphQL.Types.{
-    QueryType,
-    MutationType,
-    BaseTypes,
-    CatalogTypes,
-    LiveTypes,
-    AccountsTypes,
-    GameTypes,
-    AssetLibraryTypes
-  })
+  import_types(Web.GraphQL.Types.BaseTypes)
+  import_types(Web.GraphQL.Types.CatalogTypes)
+  import_types(Web.GraphQL.Types.LiveTypes)
+  import_types(Web.GraphQL.Types.AccountsTypes)
+  import_types(Web.GraphQL.Types.GameTypes)
+  import_types(Web.GraphQL.Types.AssetLibraryTypes)
+  import_types(Web.GraphQL.Types.QueryType)
+  import_types(Web.GraphQL.Types.MutationType)
 
   query(do: import_fields(:query_type))
   mutation(do: import_fields(:mutation_type))
