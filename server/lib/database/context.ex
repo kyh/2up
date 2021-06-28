@@ -21,7 +21,8 @@ defmodule Database.Context do
         PackTag,
         Pack,
         Tag,
-        Play
+        Play,
+        PackAsset
       }
     end
   end

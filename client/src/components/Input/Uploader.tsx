@@ -98,9 +98,10 @@ const DragAndDropContainer = styled.div<{ dragging: boolean }>`
 
 type UploaderProps = {
   pathPrefix: string;
+  onUploaded: (rawName: string, path: string) => Promise<void>;
 };
 
-export const Uploader = ({ pathPrefix }: UploaderProps) => {
+export const Uploader = ({ pathPrefix, onUploaded }: UploaderProps) => {
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
   const [presignedUrlCreate] = useMutation<PresignedUrlCreateMutation>(
     PRESIGNED_URL_CREATE
@@ -118,14 +119,10 @@ export const Uploader = ({ pathPrefix }: UploaderProps) => {
       const url = data?.presignedUrlCreate?.presignedUrl;
       if (url) {
         console.log("uploading to:", url);
-        const result = await fetch(url, {
-          method: "PUT",
-          body: file,
-        });
+        await fetch(url, { method: "PUT", body: file });
+
         console.log("uploaded:");
-        console.log(result, { rawName: file.name, path });
-        // call mutation to backend to save url
-        // mutation({ rawName: file.name, path })
+        await onUploaded(file.name, path);
       }
     }
 

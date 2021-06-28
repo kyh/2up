@@ -115,6 +115,34 @@ defmodule Web.GraphQL.Types.MutationType do
       resolve(parsing_node_ids(&Live.pack_update/2, id: :pack))
     end
 
+    @desc "Create pack asset"
+    payload field :pack_asset_create do
+      input do
+        field :pack_id, :id
+        field :raw_name, :string
+        field :path, :string
+      end
+
+      output do
+        field :pack_asset, non_null(:pack_asset)
+      end
+
+      resolve(parsing_node_ids(&Live.pack_asset_create/2, pack_id: :pack))
+    end
+
+    @desc "Delete pack scene"
+    payload field :pack_asset_delete do
+      input do
+        field :id, :id
+      end
+
+      output do
+        field :pack_asset, non_null(:pack_asset)
+      end
+
+      resolve(parsing_node_ids(&Live.pack_asset_delete/2, id: :pack_asset))
+    end
+
     @desc "Create new scene"
     payload field :scene_create do
       input do

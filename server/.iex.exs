@@ -23,5 +23,6 @@ alias Database.Live.{
   PackTag,
   Pack,
   Tag,
-  Play
+  Play,
+  PackAsset
 }
