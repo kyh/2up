@@ -6,7 +6,7 @@ import { SCENE_FRAGMENT } from "features/packs/packFragments";
 import {
   SceneUpdateMutation,
   SceneUpdateMutation_sceneUpdate_scene,
-} from "./components/__generated__/SceneUpdateMutation";
+} from "./__generated__/SceneUpdateMutation";
 import { SceneFragment } from "./__generated__/SceneFragment";
 
 export const useUpdateScene = (scene: SceneFragment) => {
