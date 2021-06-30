@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
-import { useAuth } from "utils/AuthProvider";
-import { collectConnectionNodes } from "utils/collectionUtils";
+import { useAuth } from "util/AuthProvider";
+import { collectConnectionNodes } from "util/collection";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
 import { PackSection, Pack } from "./components/Packs";

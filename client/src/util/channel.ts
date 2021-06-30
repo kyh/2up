@@ -1,6 +1,6 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import { Middleware } from "redux";
-import { SocketContext } from "./SocketProvider";
+import { useSocket } from "./SocketProvider";
 
 const WHITELIST_EVENTS = ["playhouse", "game"].join("|");
 
@@ -16,7 +16,7 @@ export const useChannel = (
   initialPayload = {},
   onMessage = (_eventName: string, _payload?: Record<string, any>) => {}
 ) => {
-  const socket = useContext(SocketContext);
+  const socket = useSocket();
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState("");
   const [broadcast, setBroadcast] = useState(errorMessage);

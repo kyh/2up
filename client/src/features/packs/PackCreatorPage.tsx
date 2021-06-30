@@ -7,7 +7,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useHotkeys } from "@react-hook/hotkey";
 import { theme } from "styles/theme";
 import { visible } from "styles/animations";
-import { collectConnectionNodes } from "utils/collectionUtils";
+import { collectConnectionNodes } from "util/collection";
 import { Topbar } from "features/packs/components/PackCreatorTopbar";
 import { Sidebar } from "features/packs/components/PackCreatorLeftSidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { theme } from "styles/theme";
-import { useAuth } from "utils/AuthProvider";
+import { useAuth } from "util/AuthProvider";
 
 export const Navigation = () => {
   const auth = useAuth();

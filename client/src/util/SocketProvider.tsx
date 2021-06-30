@@ -1,7 +1,7 @@
-import { useEffect, createContext, ReactNode } from "react";
+import { useContext, useEffect, createContext, ReactNode } from "react";
 import { Socket } from "phoenix";
 
-export const SocketContext = createContext({} as Socket);
+const SocketContext = createContext({} as Socket);
 
 type Props = {
   wsUrl: string;
@@ -23,4 +23,8 @@ export const SocketProvider = ({
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
+};
+
+export const useSocket = () => {
+  return useContext(SocketContext);
 };

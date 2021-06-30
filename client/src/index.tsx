@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/client";
 import { Provider as ReduxProvider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { SocketProvider } from "utils/SocketProvider";
+import { SocketProvider } from "util/SocketProvider";
 
 import { store } from "app/store";
 import { client } from "app/apollo";

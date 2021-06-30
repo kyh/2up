@@ -4,7 +4,7 @@ import styled, {
   DefaultTheme,
 } from "styled-components";
 import raw from "raw.macro";
-import { hashCode } from "utils/stringUtils";
+import { hashCode } from "util/string";
 import { theme } from "styles/theme";
 
 type Props = StyledComponentProps<

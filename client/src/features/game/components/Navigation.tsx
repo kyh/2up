@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { useAppDispatch, useAppSelector } from "utils/sliceUtils";
+import { useAppDispatch, useAppSelector } from "util/redux";
 import { playhouseActions } from "features/home/playhouseSlice";
 import { gameActions } from "features/game/gameSlice";
 import { Icon } from "components/Icon/Icon";

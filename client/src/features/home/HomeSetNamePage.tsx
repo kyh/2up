@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "utils/sliceUtils";
+import { useAppDispatch, useAppSelector } from "util/redux";
 import { playhouseActions } from "features/home/playhouseSlice";
 import { Button, Input } from "components";
 import { Form } from "features/home/components/Form";

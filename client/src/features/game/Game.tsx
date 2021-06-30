@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useGameChannel } from "features/game/GameProvider";
-import { useAppDispatch, useAppSelector } from "utils/sliceUtils";
+import { useAppDispatch, useAppSelector } from "util/redux";
 
 import { Step0 } from "./steps/Step0";
 import { Step1 } from "./steps/Step1";

@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { useForm } from "react-hook-form";
 import { theme } from "styles/theme";
 import { PageContainer, TextField, Button, Card } from "components";
-import { useAuth } from "utils/AuthProvider";
+import { useAuth } from "util/AuthProvider";
 
 type FormInputs = {
   username: string;
