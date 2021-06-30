@@ -119,6 +119,7 @@ export const Sidebar = ({
       });
       const deletedScene = data?.sceneDelete?.scene;
       if (deletedScene) {
+        await refetch();
         if (sceneId === selectedSceneId && scenes[index - 1]) {
           selectScene(scenes[index - 1].id);
         }
@@ -151,9 +152,9 @@ export const Sidebar = ({
       const { data } = await sceneCreate({
         variables: { input },
       });
-      await refetch();
       const newScene = data?.sceneCreate?.scene;
       if (newScene) {
+        await refetch();
         selectScene(newScene.id);
       }
       savingSceneVar(false);
@@ -236,7 +237,6 @@ const SidebarHeader = styled.header`
 `;
 
 const SidebarContent = styled.ul`
-  isolation: isolate;
   overflow: auto;
   padding: 0 ${theme.spacings(3)} 0 0;
   margin: 0;
@@ -302,6 +302,10 @@ const SidebarItem = ({
             question={scene.question}
             instruction={scene.instruction || ""}
             questionType={scene.questionType.slug}
+            videoStyle={{
+              width: 70,
+              height: 40,
+            }}
           />
           <div className="answers-container">
             {scene.sceneAnswers?.map((sceneAnswer) => {
@@ -384,11 +388,12 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
       max-width: 70px;
       height: 40px;
       display: block;
-      margin: 0 auto ${theme.spacings(2)};
     }
     > h1 {
       font-size: 0.7rem;
-      margin-bottom: ${theme.spacings(2)};
+    }
+    .question {
+      margin: 0 auto ${theme.spacings(2)};
     }
     .answers-container {
       display: grid;

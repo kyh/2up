@@ -491,7 +491,7 @@ Catalog.question_type_create(%{slug: "video"})
 # Create answer types
 {_, text_answer_type} = Catalog.answer_type_create(%{slug: "text"})
 {_, multi_text_answer_type} = Catalog.answer_type_create(%{slug: "multi_text"})
-Catalog.answer_type_create(%{slug: "text_letter"})
+Catalog.answer_type_create(%{slug: "letter_text"})
 
 states_questions
 |> Enum.with_index()
