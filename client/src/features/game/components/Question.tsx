@@ -1,21 +1,18 @@
-import { CSSProperties } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { QuestionTypeSlugs } from "features/game/gameSlice";
-import ReactPlayer from "react-player/lazy";
+import { VideoPlayer, AudioPlayer } from "components";
 
 type QuestionProps = {
   instruction: string;
   question: string;
   questionType: string;
-  videoStyle?: CSSProperties;
 };
 
 export const Question = ({
   instruction,
   question,
   questionType,
-  videoStyle,
 }: QuestionProps) => {
   switch (questionType) {
     case QuestionTypeSlugs.image.id:
@@ -40,7 +37,7 @@ export const Question = ({
       return (
         <>
           <QuestionInstructions>{instruction}</QuestionInstructions>
-          <QuestionVideo src={question} style={videoStyle} />
+          <QuestionVideo src={question} />
         </>
       );
     default:
@@ -73,28 +70,26 @@ const QuestionImage = styled.img`
   }
 `;
 
-const QuestionAudio = ({ src }: { src: string }) => {
-  return null;
-};
-
-type QuestionVideoProp = {
+type PlayerProp = {
   src: string;
-  style?: CSSProperties;
 };
 
-const QuestionVideo = ({ src, style }: QuestionVideoProp) => {
+const QuestionAudio = ({ src }: PlayerProp) => {
   return (
-    <QuestionVideoContainer className="question">
-      <ReactPlayer
-        url={src}
-        style={style}
-        width={style?.width}
-        height={style?.height}
-      />
-    </QuestionVideoContainer>
+    <PlayerContainer className="question">
+      <AudioPlayer src={src} />
+    </PlayerContainer>
   );
 };
 
-const QuestionVideoContainer = styled.div`
+const QuestionVideo = ({ src }: PlayerProp) => {
+  return (
+    <PlayerContainer className="question">
+      <VideoPlayer url={src} width="auto" height="auto" />
+    </PlayerContainer>
+  );
+};
+
+const PlayerContainer = styled.div`
   margin: 0 0 ${theme.spacings(5)};
 `;

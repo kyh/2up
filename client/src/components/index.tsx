@@ -19,3 +19,5 @@ export { Confetti } from "./Animations/Confetti";
 export { Record } from "./Speech/Speech";
 export { Counter } from "./Counter/Counter";
 export { Carousel, CarouselContainer, CarouselItem } from "./Carousel/Carousel";
+export { AudioPlayer } from "./Players/AudioPlayer";
+export { VideoPlayer } from "./Players/VideoPlayer";

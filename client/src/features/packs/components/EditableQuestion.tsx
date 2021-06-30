@@ -2,8 +2,7 @@ import { useRef, useState, ChangeEvent, ReactNode } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import ReactPlayer from "react-player/lazy";
-import { Button, Icon } from "components";
+import { VideoPlayer, AudioPlayer, Button, Icon } from "components";
 import { PackAssetModal } from "features/packs/components/PackAssetModal";
 import {
   VisibleQATypeMenu,
@@ -150,7 +149,13 @@ const EditableQuestionAudio = ({
   onFocus,
   onChange,
 }: AssetManagerProps) => {
-  return null;
+  return (
+    <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
+      <PlayerContainer>
+        <AudioPlayer src={question} style={{ margin: "auto" }} />
+      </PlayerContainer>
+    </AssetManager>
+  );
 };
 
 const EditableQuestionVideo = ({
@@ -160,19 +165,19 @@ const EditableQuestionVideo = ({
 }: AssetManagerProps) => {
   return (
     <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
-      <VideoContainer>
-        <ReactPlayer
+      <PlayerContainer>
+        <VideoPlayer
           url={question}
           width={530}
           height={300}
           style={{ margin: "auto" }}
         />
-      </VideoContainer>
+      </PlayerContainer>
     </AssetManager>
   );
 };
 
-const VideoContainer = styled.div`
+const PlayerContainer = styled.div`
   margin-bottom: ${theme.spacings(5)};
 `;
 
