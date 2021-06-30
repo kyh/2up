@@ -1,7 +1,7 @@
 import { useState, SyntheticEvent } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { Input, Button } from "components";
+import { Input, Button, SingleLetterInput } from "components";
 import {
   SceneAnswer,
   Submission,
@@ -16,36 +16,19 @@ type AnswerProps = {
   displayMode?: boolean;
 };
 
-export const Answer = ({
-  sceneAnswer,
-  answerType = "text",
-  submitted = false,
-  onSubmit = () => {},
-  displayMode = false,
-}: AnswerProps) => {
-  switch (answerType) {
+export const Answer = (props: AnswerProps) => {
+  switch (props.answerType) {
     case AnswerTypeSlugs.multiText.id:
-      return (
-        <AnswerMulti
-          sceneAnswer={sceneAnswer}
-          submitted={submitted}
-          onSubmit={onSubmit}
-          answerType={answerType}
-          displayMode={displayMode}
-        />
-      );
-    // "text"
+      return <AnswerMulti {...props} />;
+    case AnswerTypeSlugs.letterText.id:
+      return <AnswerLetter {...props} />;
     default:
-      return (
-        <AnswerText
-          sceneAnswer={sceneAnswer}
-          submitted={submitted}
-          onSubmit={onSubmit}
-          answerType={answerType}
-          displayMode={displayMode}
-        />
-      );
+      return <AnswerText {...props} />;
   }
+};
+
+const getDisplayClassName = (isCorrect: boolean) => {
+  return `display-text ${isCorrect ? "correct" : ""}`;
 };
 
 const AnswerText = ({
@@ -63,9 +46,7 @@ const AnswerText = ({
 
   if (displayMode) {
     return (
-      <AnswerDisplay
-        className={`display-text ${sceneAnswer.isCorrect ? "correct" : ""}`}
-      >
+      <AnswerDisplay className={getDisplayClassName(sceneAnswer.isCorrect)}>
         {sceneAnswer.content}
       </AnswerDisplay>
     );
@@ -89,21 +70,52 @@ const AnswerText = ({
   );
 };
 
+const AnswerLetter = ({
+  sceneAnswer,
+  submitted,
+  onSubmit,
+  displayMode,
+}: AnswerProps) => {
+  const [value, setValue] = useState(" ".repeat(sceneAnswer.content.length));
+
+  const submit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    onSubmit({ content: value });
+  };
+
+  if (displayMode) {
+    return (
+      <AnswerDisplay className={getDisplayClassName(sceneAnswer.isCorrect)}>
+        {sceneAnswer.content}
+      </AnswerDisplay>
+    );
+  }
+
+  return (
+    <AnswerTextForm onSubmit={submit}>
+      <InputContainer>
+        <SingleLetterInput
+          value={value}
+          handleOutputString={(value) => setValue(value)}
+          autoFocus
+        />
+      </InputContainer>
+      <Button type="submit" disabled={!value || submitted}>
+        Submit answer
+      </Button>
+    </AnswerTextForm>
+  );
+};
+
 const AnswerTextForm = styled.form`
   text-align: center;
   width: 100%;
 `;
 
 const InputContainer = styled.div`
+  display: flex;
+  justify-content: center;
   margin-bottom: ${theme.spacings(3)};
-`;
-
-const AnswerDisplay = styled.div`
-  font-size: 1.2rem;
-  text-align: center;
-  padding: ${theme.spacings(3)};
-  border: 2px solid ${theme.ui.borderColorAlternate};
-  border-radius: ${theme.ui.borderWavyRadius};
 `;
 
 const AnswerMulti = ({
@@ -114,10 +126,7 @@ const AnswerMulti = ({
 }: AnswerProps) => {
   if (displayMode) {
     return (
-      <AnswerDisplay
-        key={sceneAnswer.id}
-        className={`display-text ${sceneAnswer.isCorrect ? "correct" : ""}`}
-      >
+      <AnswerDisplay className={getDisplayClassName(sceneAnswer.isCorrect)}>
         {sceneAnswer.content}
       </AnswerDisplay>
     );
@@ -134,6 +143,14 @@ const AnswerMulti = ({
     </Button>
   );
 };
+
+const AnswerDisplay = styled.div`
+  font-size: 1.2rem;
+  text-align: center;
+  padding: ${theme.spacings(3)};
+  border: 2px solid ${theme.ui.borderColorAlternate};
+  border-radius: ${theme.ui.borderWavyRadius};
+`;
 
 // import CanvasDraw from "react-canvas-draw";
 // import { HexColorPicker } from "react-colorful";

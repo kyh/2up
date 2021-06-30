@@ -1,15 +1,16 @@
-import { useRef, useState, ChangeEvent } from "react";
+import { useRef, useState, ChangeEvent, ReactNode } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { QuestionTypeSlugs } from "features/game/gameSlice";
+import ReactPlayer from "react-player/lazy";
+import { Button, Icon } from "components";
+import { PackAssetModal } from "features/packs/components/PackAssetModal";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
   instructionElementAttribute,
 } from "features/packs/packService";
-import { Button, Icon } from "components";
-import { PackAssetModal } from "features/packs/components/PackAssetModal";
+import { QuestionTypeSlugs } from "features/game/gameSlice";
 
 type EditableQuestionProps = {
   instruction: string;
@@ -67,6 +68,28 @@ export const EditableQuestion = ({
           />
         </EditableQuestionContainer>
       );
+    case QuestionTypeSlugs.audio.id:
+      return (
+        <EditableQuestionContainer key={sceneId}>
+          {instructionElement}
+          <EditableQuestionAudio
+            question={question}
+            onFocus={onFocus}
+            onChange={onBlurQuestion}
+          />
+        </EditableQuestionContainer>
+      );
+    case QuestionTypeSlugs.video.id:
+      return (
+        <EditableQuestionContainer key={sceneId}>
+          {instructionElement}
+          <EditableQuestionVideo
+            question={question}
+            onFocus={onFocus}
+            onChange={onBlurQuestion}
+          />
+        </EditableQuestionContainer>
+      );
     default:
       return (
         <EditableQuestionContainer key={sceneId}>
@@ -93,36 +116,90 @@ const EditableQuestionText = styled.textarea`
   resize: vertical;
 `;
 
-type EditableQuestionImageProps = Pick<
-  EditableQuestionProps,
-  "instruction" | "question"
-> & {
-  onFocus: () => void;
-  onChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string
-  ) => void;
-};
-
 const EditableQuestionImage = ({
   instruction,
   question,
   onFocus,
   onChange,
-}: EditableQuestionImageProps) => {
+}: AssetManagerProps & { instruction: string }) => {
+  return (
+    <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
+      <ImageContainer>
+        <img alt={instruction} src={question} />
+      </ImageContainer>
+    </AssetManager>
+  );
+};
+
+const ImageContainer = styled.div`
+  display: flex;
+  > img {
+    margin: auto;
+    object-fit: cover;
+    max-width: 100%;
+    max-height: 200px;
+    margin: 0 auto ${theme.spacings(5)};
+    ${theme.breakpoints.desktop} {
+      max-width: 500px;
+    }
+  }
+`;
+
+const EditableQuestionAudio = ({
+  question,
+  onFocus,
+  onChange,
+}: AssetManagerProps) => {
+  return null;
+};
+
+const EditableQuestionVideo = ({
+  question,
+  onFocus,
+  onChange,
+}: AssetManagerProps) => {
+  return (
+    <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
+      <VideoContainer>
+        <ReactPlayer
+          url={question}
+          width={530}
+          height={300}
+          style={{ margin: "auto" }}
+        />
+      </VideoContainer>
+    </AssetManager>
+  );
+};
+
+const VideoContainer = styled.div`
+  margin-bottom: ${theme.spacings(5)};
+`;
+
+type AssetManagerProps = Pick<EditableQuestionProps, "question"> & {
+  onFocus: () => void;
+  onChange: (e: ChangeEvent<HTMLInputElement> | string) => void;
+  children?: ReactNode;
+};
+
+const AssetManager = ({
+  question,
+  onFocus,
+  onChange,
+  children,
+}: AssetManagerProps) => {
   const { packId } = useParams<{ packId: string }>();
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<null | HTMLInputElement>(null);
 
   return (
-    <EditableQuestionImageContainer>
-      <div className="image-container">
-        <QuestionImage alt={instruction} src={question} />
-      </div>
+    <AssetManagerContainer>
+      {children}
       <input
         ref={inputRef}
-        className="image-input"
+        className="url-input"
         type="text"
-        placeholder="Image URL"
+        placeholder="URL"
         defaultValue={question}
         onFocus={onFocus}
         onBlur={onChange}
@@ -147,24 +224,17 @@ const EditableQuestionImage = ({
           }}
         />
       )}
-    </EditableQuestionImageContainer>
+    </AssetManagerContainer>
   );
 };
 
-const EditableQuestionImageContainer = styled.div`
+const AssetManagerContainer = styled.div`
   position: relative;
-  .image-input {
+  .url-input {
     position: absolute;
     left: 50%;
     top: 10px;
     transform: translateX(-50%);
-  }
-  .image-container {
-    display: flex;
-    margin-bottom: ${theme.spacings(5)};
-    > img {
-      margin: auto;
-    }
   }
   .edit-button {
     background-color: ${theme.ui.background};
@@ -172,16 +242,6 @@ const EditableQuestionImageContainer = styled.div`
     position: absolute;
     top: ${theme.spacings(2)};
     right: ${theme.spacings(2)};
-  }
-`;
-
-const QuestionImage = styled.img`
-  object-fit: cover;
-  max-width: 100%;
-  max-height: 200px;
-  margin: 0 0 ${theme.spacings(5)};
-  ${theme.breakpoints.desktop} {
-    max-width: 500px;
   }
 `;
 

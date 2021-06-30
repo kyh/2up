@@ -122,37 +122,30 @@ export const QuestionTypeSlugs = {
   text: {
     id: "text",
     display: "Text",
-    content: "Hello in there?",
   },
   // richText: {
   //   id: "rich_text",
   //   display: "Rich Text",
-  //   content: "",
   // },
   image: {
     id: "image",
     display: "Image",
-    content: "/illustrations/pusheen.gif",
   },
-  // video: {
-  //   id: "video",
-  //   display: "Video",
-  //   content: "",
-  // },
-  // audio: {
-  //   id: "audio",
-  //   display: "Audio",
-  //   content: "",
-  // },
+  video: {
+    id: "video",
+    display: "Video",
+  },
+  audio: {
+    id: "audio",
+    display: "Audio",
+  },
   // code: {
   //   id: "code",
   //   display: "Code",
-  //   content: "",
   // },
   // sheet: {
   //   id: "sheet",
   //   display: "Spreadsheet",
-  //   content: "",
   // },
 };
 
@@ -165,7 +158,7 @@ export const AnswerTypeSlugs = {
     id: "multi_text",
     display: "Multiple Choice",
   },
-  letter: {
+  letterText: {
     id: "letter_text",
     display: "Letters",
   },

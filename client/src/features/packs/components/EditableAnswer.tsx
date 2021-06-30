@@ -86,7 +86,7 @@ export const EditableAnswer = ({
           </AddOptionContainer>
         </AnswerContainer>
       );
-    case AnswerTypeSlugs.letter.id:
+    case AnswerTypeSlugs.letterText.id:
       return (
         <AnswerContainer key={sceneId}>
           <InputContainer>
@@ -100,7 +100,9 @@ export const EditableAnswer = ({
                 })
               }
             />
-            <SingleLetterInput defaultValue={sceneAnswer?.content || ""} />
+          </InputContainer>
+          <InputContainer>
+            <SingleLetterInput value={sceneAnswer?.content || ""} />
           </InputContainer>
           <Button disabled>Submit answer</Button>
         </AnswerContainer>

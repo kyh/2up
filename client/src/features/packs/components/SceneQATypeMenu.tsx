@@ -42,6 +42,7 @@ export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
         <AnswerTypeMenu
           currentType={scene.answerType.slug}
           onSelectType={onSelectType}
+          sceneAnswers={scene.sceneAnswers}
           ref={ref}
         />
       );
@@ -53,6 +54,15 @@ export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
 type Props = {
   currentType: string;
   onSelectType: (scene: any) => void;
+  sceneAnswers?: any[] | null;
+};
+
+// Maps question type to the default set of questions
+const defaultQuestionsMap = {
+  [QuestionTypeSlugs.text.id]: "Hello in there?",
+  [QuestionTypeSlugs.image.id]: "/illustrations/pusheen.gif",
+  [QuestionTypeSlugs.audio.id]: "",
+  [QuestionTypeSlugs.video.id]: "https://youtu.be/dQw4w9WgXcQ",
 };
 
 const QuestionTypeMenu = forwardRef<HTMLDivElement, Props>(
@@ -70,7 +80,7 @@ const QuestionTypeMenu = forwardRef<HTMLDivElement, Props>(
                     ? false
                     : {
                         questionType: { slug: value.id },
-                        question: value.content,
+                        question: defaultQuestionsMap[value.id],
                       }
                 );
               }}
@@ -84,8 +94,19 @@ const QuestionTypeMenu = forwardRef<HTMLDivElement, Props>(
   }
 );
 
+// Maps answer type to the default set of answers
+const defaultAnswersMap = {
+  [AnswerTypeSlugs.text.id]: [],
+  [AnswerTypeSlugs.multiText.id]: [
+    { content: "", isCorrect: false },
+    { content: "", isCorrect: false },
+    { content: "", isCorrect: false },
+  ],
+  [AnswerTypeSlugs.letterText.id]: [],
+};
+
 const AnswerTypeMenu = forwardRef<HTMLDivElement, Props>(
-  ({ currentType, onSelectType }, ref) => {
+  ({ currentType, onSelectType, sceneAnswers }, ref) => {
     return (
       <QATypeMenuContainer content="Answer type:" ref={ref}>
         {Object.entries(AnswerTypeSlugs).map(([key, value]) => {
@@ -94,12 +115,16 @@ const AnswerTypeMenu = forwardRef<HTMLDivElement, Props>(
               key={key}
               className={currentType === value.id ? "selected" : ""}
               onClick={() => {
+                const correct = sceneAnswers?.find((a) => a.isCorrect);
                 onSelectType(
                   currentType === value.id
                     ? false
                     : {
                         answerType: { slug: value.id },
-                        sceneAnswers: [],
+                        sceneAnswers: [
+                          ...[correct || { content: "", isCorrect: true }],
+                          ...defaultAnswersMap[value.id],
+                        ],
                       }
                 );
               }}

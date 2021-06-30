@@ -4,21 +4,23 @@ import { useEffect, useRef, useState } from "react";
 import { Input } from "./Input";
 
 type Props = {
-  defaultValue?: string;
+  value?: string;
   autoFocus?: boolean;
   inputRegExp?: RegExp;
   password?: boolean;
+  className?: string;
   handleOutputString?: (value: string) => void;
 };
 
 export const SingleLetterInput = ({
-  defaultValue = "asdf",
+  value = "",
   autoFocus = true,
   inputRegExp = /^[a-z0-9]+$/i,
+  className = "",
   handleOutputString = () => {},
 }: Props) => {
   const [characters, setCharacters] = useState({
-    characterArray: defaultValue.split(""),
+    characterArray: value.split(""),
   });
 
   const inputElements = useRef<Record<string, HTMLInputElement>>({});
@@ -95,13 +97,14 @@ export const SingleLetterInput = ({
       return (
         <InputBox
           key={i}
+          className="letter"
           type="text"
           onKeyDown={handleKeyDown}
           onChange={handleChange}
           onFocus={handleFocus}
           name={`input${i}`}
           maxLength={1}
-          defaultValue={c}
+          defaultValue={c.trim()}
           ref={(el) => {
             if (!el) return;
             inputElements.current[el.name] = el;
@@ -111,7 +114,7 @@ export const SingleLetterInput = ({
     });
   };
 
-  return <InputContainer>{renderItems()}</InputContainer>;
+  return <InputContainer className={className}>{renderItems()}</InputContainer>;
 };
 
 const InputContainer = styled.div`
