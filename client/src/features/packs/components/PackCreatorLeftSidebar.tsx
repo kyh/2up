@@ -302,10 +302,6 @@ const SidebarItem = ({
             question={scene.question}
             instruction={scene.instruction || ""}
             questionType={scene.questionType.slug}
-            videoStyle={{
-              width: 70,
-              height: 40,
-            }}
           />
           <div className="answers-container">
             {scene.sceneAnswers?.map((sceneAnswer) => {
@@ -394,6 +390,15 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     }
     .question {
       margin: 0 auto ${theme.spacings(2)};
+    }
+    .video-player {
+      width: 70px !important;
+      height: 40px !important;
+    }
+    .audio-player {
+      transform: scale(0.5);
+      transform-origin: 40px;
+      margin: -20px 0;
     }
     .answers-container {
       display: grid;

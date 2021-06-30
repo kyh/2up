@@ -61,7 +61,7 @@ type Props = {
 const defaultQuestionsMap = {
   [QuestionTypeSlugs.text.id]: "Hello in there?",
   [QuestionTypeSlugs.image.id]: "/illustrations/pusheen.gif",
-  [QuestionTypeSlugs.audio.id]: "",
+  [QuestionTypeSlugs.audio.id]: "/sounds/theme.mp3",
   [QuestionTypeSlugs.video.id]: "https://youtu.be/dQw4w9WgXcQ",
 };
 

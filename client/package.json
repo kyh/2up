@@ -26,6 +26,7 @@
     "react-canvas-confetti": "^1.2.0",
     "react-colorful": "^5.1.4",
     "react-dom": "^17.0.1",
+    "react-h5-audio-player": "^3.7.1",
     "react-hook-form": "^7.4.2",
     "react-modal": "^3.12.1",
     "react-player": "^2.9.0",
