@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Button, Modal, AnimationSprite, Icon } from "components";
 import { theme } from "styles/theme";
 import { bounceIn } from "styles/animations";
-import { useAppSelector } from "utils/sliceUtils";
+import { useAppSelector } from "util/redux";
 import { useGameChannel } from "features/game/GameProvider";
 import {
   Player,

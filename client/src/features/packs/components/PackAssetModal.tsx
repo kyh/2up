@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { Modal, Uploader } from "components";
-import { collectConnectionNodes } from "utils/collectionUtils";
+import { collectConnectionNodes } from "util/collection";
 
 import { PackAssetModalPackQuery } from "./__generated__/PackAssetModalPackQuery";
 import { PackAssetCreateMutation } from "./__generated__/PackAssetCreateMutation";

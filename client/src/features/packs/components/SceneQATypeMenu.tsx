@@ -10,7 +10,7 @@ import {
   visibleQATypeMenuVar,
   VisibleQATypeMenu,
 } from "features/packs/packService";
-import { useOnClickOutside } from "utils/hooks";
+import { useOnClickOutside } from "util/element";
 
 export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
   const ref = useRef(null);

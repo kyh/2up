@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { uuid } from "utils/stringUtils";
+import { uuid } from "util/string";
 
 import { PresignedUrlCreateMutation } from "./__generated__/PresignedUrlCreateMutation";
 

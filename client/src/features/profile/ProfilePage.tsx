@@ -6,7 +6,7 @@ import { ButtonLinkNative } from "components";
 import { Navigation } from "features/packs/components/Navigation";
 import { Page, Content } from "features/packs/components/Page";
 import { PackSection, Pack } from "features/packs/components/Packs";
-import { collectConnectionNodes } from "utils/collectionUtils";
+import { collectConnectionNodes } from "util/collection";
 
 import { ProfilePageUserQuery } from "./__generated__/ProfilePageUserQuery";
 

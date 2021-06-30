@@ -3,7 +3,7 @@ import { OperationDefinitionNode } from "graphql";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { getMainDefinition } from "apollo-utilities";
-import { omitDeep } from "utils/stringUtils";
+import { omitDeep } from "util/string";
 import { cache } from "./cache";
 
 const cleanTypenameLink = new ApolloLink((operation, forward) => {

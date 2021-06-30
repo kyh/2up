@@ -5,7 +5,7 @@ import styled, {
   StyledComponentProps,
   DefaultTheme,
 } from "styled-components";
-import { useAppSelector } from "utils/sliceUtils";
+import { useAppSelector } from "util/redux";
 import { theme } from "styles/theme";
 import { bounceExpand, bounceContract } from "styles/animations";
 import { clickSound } from "styles/sound";

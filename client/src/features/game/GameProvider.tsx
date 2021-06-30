@@ -2,8 +2,8 @@ import { useContext, useEffect, useRef, createContext, ReactNode } from "react";
 import { Presence } from "phoenix";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAlert } from "react-alert";
-import { useAppDispatch, useAppSelector } from "utils/sliceUtils";
-import { useChannel } from "utils/socketUtils";
+import { useAppDispatch, useAppSelector } from "util/redux";
+import { useChannel } from "util/channel";
 import { gameActions } from "features/game/gameSlice";
 
 export const GameContext = createContext({
