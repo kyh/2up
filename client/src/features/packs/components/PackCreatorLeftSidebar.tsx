@@ -397,8 +397,12 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     }
     .audio-player {
       transform: scale(0.5);
-      transform-origin: 40px;
+      transform-origin: 75px;
       margin: -20px 0;
+      .rhap_additional-controls,
+      .rhap_volume-controls {
+        display: none;
+      }
     }
     .answers-container {
       display: grid;
