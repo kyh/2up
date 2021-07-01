@@ -30,6 +30,15 @@ export const iconMap = {
   rightArrow: raw("./svgs/right-arrow.svg"),
   time: raw("./svgs/time.svg"),
   question: raw("./svgs/question.svg"),
+  pause: raw("./svgs/pause.svg"),
+  rewind: raw("./svgs/rewind.svg"),
+  forward: raw("./svgs/forward.svg"),
+  previous: raw("./svgs/previous.svg"),
+  next: raw("./svgs/next.svg"),
+  loop: raw("./svgs/loop.svg"),
+  loopOff: raw("./svgs/loop-off.svg"),
+  volume: raw("./svgs/volume.svg"),
+  volumeMute: raw("./svgs/volume-mute.svg"),
 };
 
 type IconType = keyof typeof iconMap;
@@ -74,11 +83,11 @@ const getSvgStyles = (props: StyledProps) => {
   return css`
     width: ${iconSize ? getDimensions(iconSize) : "initial"};
     height: ${iconSize ? getDimensions(iconSize) : "initial"};
+    transform: rotate(${rotate || 0});
+    transition: fill 0.23s ease;
     path {
       fill: ${iconColor ? theme.colors[iconColor] : "currentColor"};
     }
-    transform: rotate(${rotate});
-    transition: fill 0.23s ease;
   `;
 };
 
