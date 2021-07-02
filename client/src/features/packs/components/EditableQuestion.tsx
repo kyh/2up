@@ -2,7 +2,7 @@ import { useRef, useState, ChangeEvent, ReactNode } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { VideoPlayer, AudioPlayer, Button, Icon } from "components";
+import { VideoPlayer, AudioPlayer, Code, Button, Icon } from "components";
 import { PackAssetModal } from "features/packs/components/PackAssetModal";
 import {
   VisibleQATypeMenu,
@@ -89,6 +89,17 @@ export const EditableQuestion = ({
           />
         </EditableQuestionContainer>
       );
+    case QuestionTypeSlugs.code.id:
+      return (
+        <EditableQuestionContainer key={sceneId}>
+          {instructionElement}
+          <EditableQuestionCode
+            question={question}
+            onFocus={onFocus}
+            onChange={onBlurQuestion}
+          />
+        </EditableQuestionContainer>
+      );
     default:
       return (
         <EditableQuestionContainer key={sceneId}>
@@ -115,12 +126,21 @@ const EditableQuestionText = styled.textarea`
   resize: vertical;
 `;
 
+type EditableQuestionComponentProps = Pick<
+  EditableQuestionProps,
+  "question"
+> & {
+  onFocus: () => void;
+  onChange: (e: ChangeEvent<HTMLInputElement> | string) => void;
+  children?: ReactNode;
+};
+
 const EditableQuestionImage = ({
   instruction,
   question,
   onFocus,
   onChange,
-}: AssetManagerProps & { instruction: string }) => {
+}: EditableQuestionComponentProps & { instruction: string }) => {
   return (
     <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
       <ImageContainer>
@@ -148,12 +168,12 @@ const EditableQuestionAudio = ({
   question,
   onFocus,
   onChange,
-}: AssetManagerProps) => {
+}: EditableQuestionComponentProps) => {
   return (
     <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
-      <PlayerContainer>
+      <Container>
         <AudioPlayer src={question} style={{ margin: "auto" }} />
-      </PlayerContainer>
+      </Container>
     </AssetManager>
   );
 };
@@ -162,37 +182,43 @@ const EditableQuestionVideo = ({
   question,
   onFocus,
   onChange,
-}: AssetManagerProps) => {
+}: EditableQuestionComponentProps) => {
   return (
     <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
-      <PlayerContainer>
+      <Container>
         <VideoPlayer
           url={question}
           width={530}
           height={300}
           style={{ margin: "auto" }}
         />
-      </PlayerContainer>
+      </Container>
     </AssetManager>
   );
 };
 
-const PlayerContainer = styled.div`
+const EditableQuestionCode = ({
+  question,
+  onFocus,
+  onChange,
+}: EditableQuestionComponentProps) => {
+  return (
+    <Container>
+      <Code content={question} onFocus={onFocus} onBlur={onChange} editable />
+    </Container>
+  );
+};
+
+const Container = styled.div`
   margin-bottom: ${theme.spacings(5)};
 `;
-
-type AssetManagerProps = Pick<EditableQuestionProps, "question"> & {
-  onFocus: () => void;
-  onChange: (e: ChangeEvent<HTMLInputElement> | string) => void;
-  children?: ReactNode;
-};
 
 const AssetManager = ({
   question,
   onFocus,
   onChange,
   children,
-}: AssetManagerProps) => {
+}: EditableQuestionComponentProps) => {
   const { packId } = useParams<{ packId: string }>();
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<null | HTMLInputElement>(null);
@@ -252,8 +278,8 @@ const AssetManagerContainer = styled.div`
 
 const EditableQuestionContainer = styled.div`
   width: 70%;
-  input,
-  textarea {
+  ${EditableQuestionInstructions},
+  ${EditableQuestionText} {
     display: block;
     text-align: center;
     border-radius: ${theme.ui.borderWavyRadius};
