@@ -68,7 +68,7 @@ export const PackDiscoverPage = () => {
 
 const PACKS_QUERY = gql`
   query PackDiscoverPagePacksQuery($username: String) {
-    featured: packs(first: 5) {
+    featured: packs(tags: ["featured"], first: 5) {
       edges {
         node {
           id
