@@ -6,10 +6,10 @@ import { Button } from "components";
 import { Props as ScenePreviewProps } from "features/packs/components/ScenePreview";
 import { AnswerTypeSlugs, QuestionTypeSlugs } from "features/game/gameSlice";
 import {
-  useUpdateScene,
   visibleQATypeMenuVar,
   VisibleQATypeMenu,
 } from "features/packs/packService";
+import { useUpdateScene } from "features/packs/sceneService";
 import { useOnClickOutside } from "util/element";
 
 export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {

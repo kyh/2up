@@ -1,7 +1,5 @@
-import { useEffect, useState, useRef, ChangeEvent } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled, { css } from "styled-components";
-import { useAlert } from "react-alert";
-import { gql, useMutation } from "@apollo/client";
 import { motion } from "framer-motion";
 import {
   useDynamicList,
@@ -14,25 +12,22 @@ import {
 } from "styles/animations";
 import { theme } from "styles/theme";
 import { useHotkeys } from "@react-hook/hotkey";
-import { Modal, Button, Icon, AreaField } from "components";
+import { Button, Icon } from "components";
 import { Question } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
+import { keybindings } from "features/packs/packService";
 import {
-  keybindings,
-  savingSceneVar,
-  scenesToCsv,
-  fileToCsv,
-} from "features/packs/packService";
+  useCreateScene,
+  useDeleteScene,
+  useUpdateSceneOrder,
+} from "features/packs/sceneService";
+import { CsvImportButton } from "features/packs/components/PackCsvImport";
 
-import { SceneCreateMutation } from "./__generated__/SceneCreateMutation";
-import { SceneDeleteMutation } from "./__generated__/SceneDeleteMutation";
-import { SceneOrderUpdateMutation } from "./__generated__/SceneOrderUpdateMutation";
-import { CsvImportMutation } from "./__generated__/CsvImportMutation";
-import { ScenesFragment_scenes_edges_node } from "../__generated__/ScenesFragment";
+import { SceneFragment } from "../__generated__/SceneFragment";
 
 type Props = {
   packId: string;
-  packScenes: ScenesFragment_scenes_edges_node[];
+  packScenes: SceneFragment[];
   selectedSceneId?: string;
   selectScene: (scene: any) => void;
   refetch: () => void;
@@ -45,12 +40,9 @@ export const Sidebar = ({
   selectScene,
   refetch,
 }: Props) => {
-  const alert = useAlert();
-  const [sceneCreate] = useMutation<SceneCreateMutation>(SCENE_CREATE);
-  const [sceneDelete] = useMutation<SceneDeleteMutation>(SCENE_DELETE);
-  const [sceneOrderUpdate] = useMutation<SceneOrderUpdateMutation>(
-    SCENE_ORDER_UPDATE
-  );
+  const { createScene } = useCreateScene();
+  const { deleteScene } = useDeleteScene();
+  const { updateSceneOrder } = useUpdateSceneOrder();
   const [scenes, setScenes] = useState(packScenes);
   const draggingRef = useRef(false);
 
@@ -81,23 +73,8 @@ export const Sidebar = ({
       afterSceneId = scenes[endIndex + 1].id;
     }
 
-    try {
-      savingSceneVar(true);
-      await sceneOrderUpdate({
-        variables: {
-          input: {
-            id: sceneId,
-            beforeId: beforeSceneId,
-            afterId: afterSceneId,
-          },
-        },
-      });
-      draggingRef.current = false;
-      savingSceneVar(false);
-    } catch (error) {
-      alert.show(error.message);
-      savingSceneVar(false);
-    }
+    await updateSceneOrder(sceneId, beforeSceneId, afterSceneId);
+    draggingRef.current = false;
   };
 
   const itemProps = useDynamicList({
@@ -107,70 +84,33 @@ export const Sidebar = ({
     onDragEnd,
   });
 
-  const deleteScene = async (sceneId: string, index: number) => {
-    try {
-      savingSceneVar(true);
-      const { data } = await sceneDelete({
-        variables: {
-          input: {
-            id: sceneId,
-          },
-        },
-      });
-      const deletedScene = data?.sceneDelete?.scene;
-      if (deletedScene) {
-        await refetch();
-        if (sceneId === selectedSceneId) {
-          const prev = scenes[index - 1];
-          const next = scenes[index + 1];
-          if (prev) {
-            selectScene(prev.id);
-          } else if (next) {
-            selectScene(next.id);
-          }
+  const onDeleteScene = async (sceneId: string, index: number) => {
+    const deletedScene = await deleteScene(sceneId, index);
+    if (deletedScene) {
+      await refetch();
+      if (sceneId === selectedSceneId) {
+        const prev = scenes[index - 1];
+        const next = scenes[index + 1];
+        if (prev) {
+          selectScene(prev.id);
+        } else if (next) {
+          selectScene(next.id);
         }
       }
-      savingSceneVar(false);
-    } catch (error) {
-      alert.show(error.message);
-      savingSceneVar(false);
     }
   };
 
-  const addNewScene = async () => {
+  const onCreateScene = async () => {
     const selectedScene = scenes.find((s) => s.id === selectedSceneId);
-    const input = {
-      packId: packId,
-      instruction: selectedScene ? selectedScene.instruction : "",
-      questionTypeSlug: selectedScene
-        ? selectedScene.questionType.slug
-        : "text",
-      question: selectedScene ? selectedScene.question : "Question?",
-      answerTypeSlug: selectedScene ? selectedScene.answerType.slug : "text",
-      sceneAnswers: selectedScene
-        ? selectedScene.sceneAnswers
-        : [{ content: "Answer!", isCorrect: true }],
-      order: (scenes?.length || 0) + 1,
-    };
-
-    try {
-      savingSceneVar(true);
-      const { data } = await sceneCreate({
-        variables: { input },
-      });
-      const newScene = data?.sceneCreate?.scene;
-      if (newScene) {
-        await refetch();
-        selectScene(newScene.id);
-      }
-      savingSceneVar(false);
-    } catch (error) {
-      alert.show(error.message);
-      savingSceneVar(false);
+    const order = (scenes?.length || 0) + 1;
+    const newScene = await createScene(packId, order, selectedScene);
+    await refetch();
+    if (newScene) {
+      selectScene(newScene.id);
     }
   };
 
-  useHotkeys(window, [[keybindings.addNewScene.hotkey, addNewScene]]);
+  useHotkeys(window, [[keybindings.addNewScene.hotkey, onCreateScene]]);
 
   return (
     <>
@@ -185,14 +125,14 @@ export const Sidebar = ({
               scene={scene}
               isSelected={selectedSceneId === scene.id}
               selectScene={selectScene}
-              deleteScene={deleteScene}
+              onDeleteScene={onDeleteScene}
               showDelete={scenes.length > 1}
             />
           );
         })}
       </SidebarContent>
       <SidebarFooter>
-        <Button onClick={addNewScene} fullWidth>
+        <Button onClick={onCreateScene} fullWidth>
           Add New Scene
         </Button>
         <CsvImportButton packId={packId} scenes={scenes} refetch={refetch} />
@@ -200,37 +140,6 @@ export const Sidebar = ({
     </>
   );
 };
-
-const SCENE_CREATE = gql`
-  mutation SceneCreateMutation($input: SceneCreateInput!) {
-    sceneCreate(input: $input) {
-      scene {
-        id
-      }
-    }
-  }
-`;
-
-const SCENE_DELETE = gql`
-  mutation SceneDeleteMutation($input: SceneDeleteInput!) {
-    sceneDelete(input: $input) {
-      scene {
-        id
-      }
-    }
-  }
-`;
-
-const SCENE_ORDER_UPDATE = gql`
-  mutation SceneOrderUpdateMutation($input: SceneOrderUpdateInput!) {
-    sceneOrderUpdate(input: $input) {
-      scene {
-        id
-        order
-      }
-    }
-  }
-`;
 
 const SidebarHeader = styled.header`
   display: flex;
@@ -254,10 +163,10 @@ const SidebarFooter = styled.footer`
 
 type SidebarItemProps = {
   index: number;
-  scene: ScenesFragment_scenes_edges_node;
+  scene: SceneFragment;
   isSelected: boolean;
   selectScene: (sceneId: string) => any;
-  deleteScene: (sceneId: string, index: number) => any;
+  onDeleteScene: (sceneId: string, index: number) => any;
   showDelete: boolean;
   itemProps: DynamicListItemProps;
 };
@@ -267,7 +176,7 @@ const SidebarItem = ({
   index,
   isSelected,
   selectScene,
-  deleteScene,
+  onDeleteScene,
   showDelete,
   itemProps,
 }: SidebarItemProps) => {
@@ -333,7 +242,7 @@ const SidebarItem = ({
         {showDelete && (
           <button
             className="delete"
-            onClick={() => deleteScene(scene.id, index)}
+            onClick={() => onDeleteScene(scene.id, index)}
           >
             <Icon icon="trash" />
           </button>
@@ -438,119 +347,5 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     position: absolute;
     right: ${theme.spacings(-1)};
     top: ${theme.spacings(-1)};
-  }
-`;
-
-type CsvImportButtonProps = {
-  packId: string;
-  scenes: ScenesFragment_scenes_edges_node[];
-  refetch: () => void;
-};
-
-const CsvImportButton = ({ packId, scenes, refetch }: CsvImportButtonProps) => {
-  const alert = useAlert();
-  const [isSaving, setIsSaving] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [csv, setCsv] = useState(scenesToCsv(scenes));
-  const [csvImport] = useMutation<CsvImportMutation>(CSV_IMPORT);
-
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setCsv(e.target.value);
-  };
-
-  const handleCsvInput = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length) {
-      const [file] = Array.from(e.target.files);
-      const csv = await fileToCsv(file);
-      setCsv(csv);
-    }
-  };
-
-  const handleSubmit = async () => {
-    setIsSaving(true);
-    try {
-      await csvImport({
-        variables: {
-          input: { packId, csv },
-        },
-      });
-      await refetch();
-    } catch (error) {
-      alert.show(error.message);
-    } finally {
-      setIsSaving(false);
-      setIsOpen(false);
-    }
-  };
-
-  return (
-    <CsvImportButtonContainer>
-      <button className="modal-button" onClick={() => setIsOpen(true)}>
-        CSV Import
-      </button>
-      <Modal
-        title="Your pack as a CSV"
-        open={isOpen}
-        onRequestClose={() => setIsOpen(false)}
-        closeButton
-      >
-        <CsvImportHeader>
-          <input type="file" accept=".csv" onChange={handleCsvInput} />
-          <a
-            href="https://docs.google.com/spreadsheets/d/1OQHLadGoh3hzkZ_J4SfZ1kJ_f7C4YfV7YSGrqZ9wYC4/edit?usp=sharing"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Example CSV
-          </a>
-        </CsvImportHeader>
-        <CsvImportArea onChange={handleChange} value={csv} />
-        <CsvImportFooter>
-          <Button onClick={handleSubmit} disabled={isSaving}>
-            Update Pack
-          </Button>
-        </CsvImportFooter>
-      </Modal>
-    </CsvImportButtonContainer>
-  );
-};
-
-const CSV_IMPORT = gql`
-  mutation CsvImportMutation($input: CsvImportInput!) {
-    csvImport(input: $input) {
-      pack {
-        id
-        name
-      }
-    }
-  }
-`;
-
-const CsvImportButtonContainer = styled.div`
-  text-align: center;
-  margin-top: ${theme.spacings(1)};
-  > .modal-button {
-    font-size: 0.9rem;
-    text-decoration: underline;
-  }
-`;
-
-const CsvImportHeader = styled.header`
-  display: flex;
-  justify-content: space-between;
-  a {
-    text-decoration: underline;
-  }
-`;
-
-const CsvImportArea = styled(AreaField)`
-  width: 100%;
-  min-height: 300px;
-`;
-
-const CsvImportFooter = styled.footer`
-  display: flex;
-  > button {
-    margin-left: auto;
   }
 `;

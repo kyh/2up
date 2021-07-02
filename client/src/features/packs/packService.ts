@@ -1,55 +1,6 @@
-import { gql } from "@apollo/client";
-import { useMutation, makeVar } from "@apollo/client";
+import { makeVar } from "@apollo/client";
 import { Hotkey } from "@react-hook/hotkey";
-import { useAlert } from "react-alert";
-import { SCENE_FRAGMENT } from "features/packs/packFragments";
-import {
-  SceneUpdateMutation,
-  SceneUpdateMutation_sceneUpdate_scene,
-} from "./__generated__/SceneUpdateMutation";
-import { SceneFragment } from "./__generated__/SceneFragment";
-
-export const useUpdateScene = (scene: SceneFragment) => {
-  const alert = useAlert();
-  const [sceneUpdate] = useMutation<SceneUpdateMutation>(SCENE_UPDATE);
-
-  const updateScene = async (updatedScene = {}) => {
-    savingSceneVar(true);
-    const newScene = { ...scene, ...updatedScene };
-    console.log("Update new Scene:", newScene);
-    try {
-      await sceneUpdate({
-        variables: {
-          input: {
-            id: newScene.id || "",
-            instruction: newScene.instruction,
-            questionTypeSlug: newScene.questionType.slug,
-            question: newScene.question,
-            answerTypeSlug: newScene.answerType.slug,
-            sceneAnswers: newScene.sceneAnswers,
-          },
-        },
-      });
-      savingSceneVar(false);
-    } catch (error) {
-      alert.show(error.message);
-      savingSceneVar(false);
-    }
-  };
-
-  return { updateScene };
-};
-
-const SCENE_UPDATE = gql`
-  mutation SceneUpdateMutation($input: SceneUpdateInput!) {
-    sceneUpdate(input: $input) {
-      scene {
-        ...SceneFragment
-      }
-    }
-  }
-  ${SCENE_FRAGMENT}
-`;
+import { SceneUpdateMutation_sceneUpdate_scene } from "./__generated__/SceneUpdateMutation";
 
 export enum VisibleQATypeMenu {
   None,
