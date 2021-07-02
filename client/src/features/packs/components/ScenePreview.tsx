@@ -1,6 +1,6 @@
 import { EditableQuestion } from "features/packs/components/EditableQuestion";
 import { EditableAnswer } from "features/packs/components/EditableAnswer";
-import { useUpdateScene } from "features/packs/packService";
+import { useUpdateScene } from "features/packs/sceneService";
 import {
   SceneFragment,
   SceneFragment_sceneAnswers,

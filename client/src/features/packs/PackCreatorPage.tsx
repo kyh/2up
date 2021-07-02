@@ -21,7 +21,8 @@ import {
   keybindings,
   instructionElementAttribute,
 } from "features/packs/packService";
-import { PACK_FRAGMENT, SCENES_FRAGMENT } from "features/packs/packFragments";
+import { PACK_FRAGMENT } from "features/packs/packFragments";
+import { SCENES_FRAGMENT } from "features/packs/sceneFragments";
 import { useHostGame } from "features/game/gameService";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
