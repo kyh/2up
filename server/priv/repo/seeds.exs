@@ -25,7 +25,7 @@ alias Database.{
   })
 
 # Create featured tag
-{_, featured_tag} = Live.tag_create(%{name: "Featured"})
+{_, featured_tag} = Live.tag_create(%{name: "featured"})
 
 # Create packs
 

@@ -106,13 +106,7 @@ export const fileToCsv = (file: File) => {
     reader.onload = () => {
       if (reader.result) {
         const csvText = reader.result.toString();
-        const out = csvText
-          .split("\r\n")
-          .filter((_row, index) => index !== 0)
-          .map((row) => row.split(",").filter(Boolean).join(","))
-          .join("\n");
-
-        resolve(out);
+        resolve(csvText);
       }
     };
   });

@@ -80,6 +80,19 @@ defmodule Web.GraphQL.Resolvers.Live do
     end
   end
 
+  def pack_delete(args, %{context: %{current_user: user}}) do
+    case Live.pack_delete(user, args) do
+      {:error, changeset} ->
+        {
+          :error,
+          message: "Pack delete failed", details: Errors.error_details(changeset)
+        }
+
+      {:ok, pack} ->
+        {:ok, %{pack: pack}}
+    end
+  end
+
   def pack_asset_create(args, %{context: %{current_user: user}}) do
     pack = Live.pack_get_by_id(args.pack_id)
 

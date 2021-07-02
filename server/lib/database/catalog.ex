@@ -1,6 +1,7 @@
 defmodule Database.Catalog do
   use Database.Context
   alias Database.Authorization
+  NimbleCSV.define(CSVParser, separator: ",", escape: "\"")
 
   def ordered_scene_list(args) do
     query =
@@ -85,8 +86,17 @@ defmodule Database.Catalog do
 
   def scene_create(
         %User{} = user,
-        attrs
+        initial_attrs
       ) do
+    attrs =
+      case initial_attrs do
+        %{external_d: external_id} ->
+          initial_attrs
+
+        _ ->
+          Map.put(initial_attrs, :external_id, Ecto.UUID.generate())
+      end
+
     pack = Repo.get(Pack, attrs.pack_id)
 
     with {:ok} <- Authorization.check(:scene_create, user, pack) do
@@ -189,11 +199,6 @@ defmodule Database.Catalog do
         _attrs
       ) do
     with {:ok} <- Authorization.check(:scene_delete, user, scene) do
-      scene_answers_query =
-        from scene_answer in SceneAnswer,
-          where: scene_answer.scene_id == ^scene.id
-
-      Repo.delete_all(scene_answers_query)
       scene |> Repo.delete()
     end
   end
@@ -237,10 +242,7 @@ defmodule Database.Catalog do
       question_types = question_type_list()
       answer_types = answer_type_list()
 
-      scenes =
-        attrs[:csv]
-        |> String.split("\n")
-        |> Enum.map(&String.split(&1, ","))
+      scenes = CSVParser.parse_string(attrs[:csv])
 
       scenes
       |> Enum.with_index()
@@ -252,6 +254,8 @@ defmodule Database.Catalog do
           question,
           answer_type_slug | scene_answers
         ] = scene
+
+        scene_answers = Enum.filter(scene_answers, &(&1 !== ""))
 
         question_type =
           Enum.filter(question_types, fn question_type ->
@@ -295,7 +299,7 @@ defmodule Database.Catalog do
             formatted_scene_answer = Enum.at(scene_answer, 1) |> String.downcase()
 
             is_correct =
-              case Enum.at(formatted_scene_answer, 1) do
+              case formatted_scene_answer do
                 "true" -> true
                 _ -> false
               end

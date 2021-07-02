@@ -54,7 +54,8 @@ defmodule Database.MixProject do
       {:ex_aws, "~> 2.2"},
       {:ex_aws_s3, "~> 2.2"},
       {:sweet_xml, "~> 0.6"},
-      {:hackney, "~> 1.9"}
+      {:hackney, "~> 1.9"},
+      {:nimble_csv, "~> 1.1"}
     ]
   end
 
