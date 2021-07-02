@@ -25,7 +25,6 @@ export const AudioPlayer = (props: any) => {
 };
 
 const StyledAudioPlayer = styled(ReactAudioPlayer)`
-  .rhap_container {
-    box-shadow: none;
-  }
+  min-width: 320px;
+  box-shadow: none;
 `;

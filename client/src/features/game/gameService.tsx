@@ -17,19 +17,20 @@ export const useHostGame = () => {
   const dispatch = useAppDispatch();
   const [gameCreate] = useMutation<GameCreateMutation>(GAME_CREATE);
 
-  const hostGame = async (packId: string, spectate = false) => {
+  const hostGame = async (packId: string, testMode = false) => {
     const { data } = await gameCreate({
       variables: { input: { packId } },
     });
 
     if (!data || !data.gameCreate) return;
     const gameId = data.gameCreate.code;
+    const testSuffix = testMode ? `?test=${packId}` : "";
+
     dispatch(gameActions.new_game({ gameId }));
-    if (spectate) {
-      history.push(`/game/${gameId}/lobby/spectate`);
-    } else {
-      history.push("/join");
-    }
+    history.push({
+      pathname: "/join",
+      search: testSuffix,
+    });
   };
 
   return hostGame;

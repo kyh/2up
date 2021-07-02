@@ -25,7 +25,9 @@ export const PackNewPage = () => {
         },
       });
       const pack = response.data?.packCreate?.pack;
-      history.push(`/packs/${pack?.id}/edit`);
+      if (pack) {
+        history.push(`/packs/${pack.id}/edit`);
+      }
     } catch (error) {
       alert.show(error.message);
     }

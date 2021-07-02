@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "util/redux";
 import { playhouseActions } from "features/home/playhouseSlice";
 import { Button, Input } from "components";
@@ -11,6 +11,7 @@ type FormInputs = {
 };
 
 export const HomeSetNamePage = () => {
+  const location = useLocation();
   const history = useHistory();
   const dispatch = useAppDispatch();
   const storedName = useAppSelector((state) => state.playhouse.name);
@@ -20,7 +21,10 @@ export const HomeSetNamePage = () => {
   const onSubmit = ({ name }: FormInputs) => {
     dispatch(playhouseActions.update_user({ name }));
     if (gameId) {
-      history.push(`/game/${gameId}/lobby`);
+      history.push({
+        pathname: `/game/${gameId}/lobby`,
+        search: location.search,
+      });
     } else {
       history.push(`/`);
     }
@@ -38,7 +42,15 @@ export const HomeSetNamePage = () => {
         <Button type="submit">Join Game</Button>
       </Form>
       <StartNewGameText>
-        Or <Link to={`/game/${gameId}/lobby/spectate`}>spectate this game</Link>
+        Or{" "}
+        <Link
+          to={{
+            pathname: `/game/${gameId}/lobby/spectate`,
+            search: location.search,
+          }}
+        >
+          spectate this game
+        </Link>
       </StartNewGameText>
     </>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAlert } from "react-alert";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory, useLocation, Link } from "react-router-dom";
 import styled from "styled-components";
 import { Button, Modal, AnimationSprite, Icon } from "components";
 import { theme } from "styles/theme";
@@ -15,6 +15,7 @@ import {
 
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const alert = useAlert();
+  const location = useLocation();
   const history = useHistory();
   const gameState = useAppSelector((state) => state.game);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,7 +50,10 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
 
   useEffect(() => {
     if (gameState.scene) {
-      history.push(`/game/${gameState.gameId}${isSpectate ? "/spectate" : ""}`);
+      history.push({
+        pathname: `/game/${gameState.gameId}${isSpectate ? "/spectate" : ""}`,
+        search: location.search,
+      });
     }
   }, [gameState.gameId, gameState.scene]);
 
