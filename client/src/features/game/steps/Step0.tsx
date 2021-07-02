@@ -1,16 +1,23 @@
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
-import { Button, Modal, Confetti } from "components";
+import { Button, ButtonLink, Modal, Confetti } from "components";
 import { theme } from "styles/theme";
 import { gameActions, StepProps } from "features/game/gameSlice";
+import { useQueryParams } from "util/query";
 import { PlayerScores } from "./Step3";
 
 export const Step0 = ({ gameState, dispatch }: StepProps) => {
+  const queryParams = useQueryParams();
   const history = useHistory();
 
   const handleEnd = (gameId?: string) => {
+    const testingPack = queryParams.get("test");
     dispatch(gameActions.reset({ gameId }));
-    history.push("/packs");
+    if (testingPack) {
+      history.push(`/packs/${testingPack}/edit`);
+    } else {
+      history.push("/packs");
+    }
   };
 
   return (
@@ -18,12 +25,16 @@ export const Step0 = ({ gameState, dispatch }: StepProps) => {
       <Confetti />
       <PlayerScores title="Game Finished" gameState={gameState} />
       <Footer>
-        <Button onClick={() => handleEnd(gameState.gameId)} autoFocus>
+        <Button
+          className="play-again"
+          onClick={() => handleEnd(gameState.gameId)}
+          autoFocus
+        >
           Play Again
         </Button>
-        <Link onClick={() => handleEnd()} to="/packs">
+        <button className="link" onClick={() => handleEnd()}>
           Leave game
-        </Link>
+        </button>
       </Footer>
       <Modal
         open={!!gameState.invitedToGame}
@@ -60,10 +71,10 @@ const Footer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  > button {
+  > .play-again {
     margin-bottom: ${theme.spacings(3)};
   }
-  > a {
+  > .link {
     text-decoration: underline;
   }
 `;

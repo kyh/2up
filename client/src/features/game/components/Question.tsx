@@ -7,12 +7,14 @@ type QuestionProps = {
   instruction: string;
   question: string;
   questionType: string;
+  displayMode?: boolean;
 };
 
 export const Question = ({
   instruction,
   question,
   questionType,
+  displayMode = false,
 }: QuestionProps) => {
   switch (questionType) {
     case QuestionTypeSlugs.image.id:
@@ -30,14 +32,14 @@ export const Question = ({
       return (
         <>
           <QuestionInstructions>{instruction}</QuestionInstructions>
-          <QuestionAudio src={question} />
+          <QuestionAudio src={question} displayMode={displayMode} />
         </>
       );
     case QuestionTypeSlugs.video.id:
       return (
         <>
           <QuestionInstructions>{instruction}</QuestionInstructions>
-          <QuestionVideo src={question} />
+          <QuestionVideo src={question} displayMode={displayMode} />
         </>
       );
     default:
@@ -72,20 +74,35 @@ const QuestionImage = styled.img`
 
 type PlayerProp = {
   src: string;
+  displayMode: boolean;
 };
 
-const QuestionAudio = ({ src }: PlayerProp) => {
+const QuestionAudio = ({ src, displayMode }: PlayerProp) => {
   return (
     <PlayerContainer className="question">
-      <AudioPlayer src={src} />
+      <AudioPlayer src={src} autoPlay={!displayMode} loop />
     </PlayerContainer>
   );
 };
 
-const QuestionVideo = ({ src }: PlayerProp) => {
+const QuestionVideo = ({ src, displayMode }: PlayerProp) => {
   return (
     <PlayerContainer className="question">
-      <VideoPlayer url={src} width="auto" height="auto" />
+      <VideoPlayer
+        url={src}
+        width="auto"
+        height="auto"
+        config={{
+          youtube: {
+            playerVars: {
+              showinfo: displayMode ? 0 : 1,
+              disablekb: 1,
+              loop: 1,
+              modestbranding: 1,
+            },
+          },
+        }}
+      />
     </PlayerContainer>
   );
 };

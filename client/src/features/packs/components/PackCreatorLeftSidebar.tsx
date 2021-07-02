@@ -120,8 +120,14 @@ export const Sidebar = ({
       const deletedScene = data?.sceneDelete?.scene;
       if (deletedScene) {
         await refetch();
-        if (sceneId === selectedSceneId && scenes[index - 1]) {
-          selectScene(scenes[index - 1].id);
+        if (sceneId === selectedSceneId) {
+          const prev = scenes[index - 1];
+          const next = scenes[index + 1];
+          if (prev) {
+            selectScene(prev.id);
+          } else if (next) {
+            selectScene(next.id);
+          }
         }
       }
       savingSceneVar(false);
@@ -302,6 +308,7 @@ const SidebarItem = ({
             question={scene.question}
             instruction={scene.instruction || ""}
             questionType={scene.questionType.slug}
+            displayMode
           />
           <div className="answers-container">
             {scene.sceneAnswers?.map((sceneAnswer) => {
@@ -315,8 +322,8 @@ const SidebarItem = ({
                     isCorrect: sceneAnswer.isCorrect,
                   }}
                   answerType={scene.answerType.slug}
-                  submitted
                   onSubmit={() => {}}
+                  submitted
                   displayMode
                 />
               );
@@ -399,6 +406,7 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
       transform: scale(0.5);
       transform-origin: 75px;
       margin: -20px 0;
+      min-width: auto;
       .rhap_additional-controls,
       .rhap_volume-controls {
         display: none;

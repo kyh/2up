@@ -50,7 +50,7 @@ export const PackCreatorPage = () => {
   };
 
   const testPlay = () => {
-    hostGame(packId);
+    hostGame(packId, true);
   };
 
   const toggleHelpModal = () => {

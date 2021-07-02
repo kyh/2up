@@ -139,10 +139,10 @@ export const QuestionTypeSlugs = {
     id: "audio",
     display: "Audio",
   },
-  // code: {
-  //   id: "code",
-  //   display: "Code",
-  // },
+  code: {
+    id: "code",
+    display: "Code",
+  },
   // sheet: {
   //   id: "sheet",
   //   display: "Spreadsheet",
