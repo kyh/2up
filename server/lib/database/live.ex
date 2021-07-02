@@ -9,6 +9,25 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
+  def pack_list(%{username: username, tags: tags}) do
+    user = Repo.get_by(User, username: username)
+
+    case user do
+      nil ->
+        []
+
+      _ ->
+        query =
+          from pack in Pack,
+            join: pack_tag in PackTag,
+            join: tag in Tag,
+            where: pack.user_id == ^user.id,
+            where: tag.name in ^tags
+
+        Repo.all(query)
+    end
+  end
+
   def pack_list(%{username: username}) do
     user = Repo.get_by(User, username: username)
 
@@ -23,6 +42,16 @@ defmodule Database.Live do
 
         Repo.all(query)
     end
+  end
+
+  def pack_list(%{tags: tags}) do
+    query =
+      from pack in Pack,
+        join: pack_tag in PackTag,
+        join: tag in Tag,
+        where: tag.name in ^tags
+
+    Repo.all(query)
   end
 
   def pack_list(_) do
