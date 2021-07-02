@@ -63,6 +63,10 @@ const defaultQuestionsMap = {
   [QuestionTypeSlugs.image.id]: "/illustrations/pusheen.gif",
   [QuestionTypeSlugs.audio.id]: "/sounds/theme.mp3",
   [QuestionTypeSlugs.video.id]: "https://youtu.be/dQw4w9WgXcQ",
+  [QuestionTypeSlugs.code.id]: JSON.stringify({
+    code: "console.log('Hello World')",
+    language: "javascript",
+  }),
 };
 
 const QuestionTypeMenu = forwardRef<HTMLDivElement, Props>(

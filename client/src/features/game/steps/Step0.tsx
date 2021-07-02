@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
-import { Button, ButtonLink, Modal, Confetti } from "components";
+import { Button, Modal, Confetti } from "components";
 import { theme } from "styles/theme";
 import { gameActions, StepProps } from "features/game/gameSlice";
 import { useQueryParams } from "util/query";

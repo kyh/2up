@@ -487,6 +487,7 @@ Live.pack_tag_create(crypto_pack, featured_tag)
 {_, image_question_type} = Catalog.question_type_create(%{slug: "image"})
 Catalog.question_type_create(%{slug: "audio"})
 Catalog.question_type_create(%{slug: "video"})
+Catalog.question_type_create(%{slug: "code"})
 
 # Create answer types
 {_, text_answer_type} = Catalog.answer_type_create(%{slug: "text"})
