@@ -62,7 +62,11 @@ export const Code = ({ content, editable, onFocus, onBlur }: Props) => {
     return (
       <>
         <EditableCodeHeader>
-          <select value={language} onChange={onSelectLanguage}>
+          <select
+            value={language}
+            onChange={onSelectLanguage}
+            onBlur={onCodeBlur}
+          >
             <option value="markup">Markup</option>
             <option value="css">CSS</option>
             <option value="javascript">JavaScript</option>
