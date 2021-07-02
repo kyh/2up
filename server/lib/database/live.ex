@@ -61,6 +61,14 @@ defmodule Database.Live do
     |> Repo.update()
   end
 
+  def pack_delete(%User{} = user, attrs) do
+    pack = Repo.get_by(Pack, id: attrs.id)
+
+    with {:ok} <- Authorization.check(:pack_asset_create, user, pack) do
+      pack |> Repo.delete()
+    end
+  end
+
   def pack_tag_create(%Pack{} = pack, %Tag{} = tag) do
     %PackTag{}
     |> PackTag.changeset(%{})
