@@ -10,7 +10,7 @@ const parseCodeContent = (content: string) => {
     try {
       return JSON.parse(content);
     } catch (error) {
-      return defaultValue;
+      return { ...defaultValue, code: content };
     }
   }
   return defaultValue;
