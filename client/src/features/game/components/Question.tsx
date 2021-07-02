@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { QuestionTypeSlugs } from "features/game/gameSlice";
-import { VideoPlayer, AudioPlayer } from "components";
+import { VideoPlayer, AudioPlayer, Code } from "components";
 
 type QuestionProps = {
   instruction: string;
@@ -32,14 +32,21 @@ export const Question = ({
       return (
         <>
           <QuestionInstructions>{instruction}</QuestionInstructions>
-          <QuestionAudio src={question} displayMode={displayMode} />
+          <QuestionAudio question={question} displayMode={displayMode} />
         </>
       );
     case QuestionTypeSlugs.video.id:
       return (
         <>
           <QuestionInstructions>{instruction}</QuestionInstructions>
-          <QuestionVideo src={question} displayMode={displayMode} />
+          <QuestionVideo question={question} displayMode={displayMode} />
+        </>
+      );
+    case QuestionTypeSlugs.code.id:
+      return (
+        <>
+          <QuestionInstructions>{instruction}</QuestionInstructions>
+          <QuestionCode question={question} displayMode={displayMode} />
         </>
       );
     default:
@@ -72,24 +79,24 @@ const QuestionImage = styled.img`
   }
 `;
 
-type PlayerProp = {
-  src: string;
+type QuestionComponentProp = {
+  question: string;
   displayMode: boolean;
 };
 
-const QuestionAudio = ({ src, displayMode }: PlayerProp) => {
+const QuestionAudio = ({ question, displayMode }: QuestionComponentProp) => {
   return (
-    <PlayerContainer className="question">
-      <AudioPlayer src={src} autoPlay={!displayMode} loop />
-    </PlayerContainer>
+    <QuestionContainer className="question">
+      <AudioPlayer src={question} autoPlay={!displayMode} loop />
+    </QuestionContainer>
   );
 };
 
-const QuestionVideo = ({ src, displayMode }: PlayerProp) => {
+const QuestionVideo = ({ question, displayMode }: QuestionComponentProp) => {
   return (
-    <PlayerContainer className="question">
+    <QuestionContainer className="question">
       <VideoPlayer
-        url={src}
+        url={question}
         width="auto"
         height="auto"
         config={{
@@ -103,10 +110,18 @@ const QuestionVideo = ({ src, displayMode }: PlayerProp) => {
           },
         }}
       />
-    </PlayerContainer>
+    </QuestionContainer>
   );
 };
 
-const PlayerContainer = styled.div`
+const QuestionCode = ({ question }: QuestionComponentProp) => {
+  return (
+    <QuestionContainer className="question">
+      <Code content={question} />
+    </QuestionContainer>
+  );
+};
+
+const QuestionContainer = styled.div`
   margin: 0 0 ${theme.spacings(5)};
 `;
