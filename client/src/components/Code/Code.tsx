@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import Prism from "prismjs";
@@ -40,6 +40,14 @@ export const Code = ({ content, editable, onFocus, onBlur }: Props) => {
 
   const onCodeChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setCode(e.target.value);
+  };
+
+  const onCodeKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Tab" && !e.shiftKey) {
+      document.execCommand("insertText", false, "    ");
+      e.preventDefault();
+      return false;
+    }
   };
 
   const onCodeBlur = () => {
@@ -221,6 +229,7 @@ export const Code = ({ content, editable, onFocus, onBlur }: Props) => {
           onFocus={onFocus}
           value={code}
           onBlur={onCodeBlur}
+          onKeyDown={onCodeKeyDown}
         />
         {codeBlock}
       </EditableCodeContainer>
