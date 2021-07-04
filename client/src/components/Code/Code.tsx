@@ -77,7 +77,6 @@ export const Code = ({ content, editable, onFocus, onBlur }: Props) => {
           <option value="markup">Markup</option>
           <option value="css">CSS</option>
           <option value="javascript">JavaScript</option>
-          <option value="jsx">React JSX</option>
           <option value="python">Python</option>
           <option value="ruby">Ruby</option>
           <option value="elixir">Elixir</option>
@@ -188,6 +187,7 @@ export const Code = ({ content, editable, onFocus, onBlur }: Props) => {
           <option value="q">Q (kdb+ database)</option>
           <option value="qore">Qore</option>
           <option value="r">R</option>
+          <option value="jsx">React JSX</option>
           <option value="tsx">React TSX</option>
           <option value="renpy">Ren'py</option>
           <option value="reason">Reason</option>
@@ -258,6 +258,10 @@ const EditableCodeContainer = styled.div`
     word-wrap: normal;
     line-height: 1.5;
     resize: none;
+    min-height: 56px;
+  }
+  > pre {
+    min-height: 56px;
   }
   > select {
     position: absolute;
