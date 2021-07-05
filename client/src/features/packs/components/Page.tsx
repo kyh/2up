@@ -13,6 +13,7 @@ export const Page = styled.section<{
     "footer";
   grid-template-columns: 1fr;
   grid-template-rows: 50px 1fr 50px;
+  min-height: 100vh;
 
   ${theme.breakpoints.desktop} {
     ${({ bgImage, bgTop = "0" }) => css`
@@ -47,7 +48,7 @@ export const Content = styled.main`
   width: 100%;
   margin: 0 auto;
   grid-area: content;
-  padding: ${theme.spacings(10)} ${theme.spacings(5)};
+  padding: ${theme.spacings(5)} ${theme.spacings(3)};
 
   .back-link {
     display: inline-block;
@@ -55,6 +56,10 @@ export const Content = styled.main`
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  ${theme.breakpoints.desktop} {
+    padding: ${theme.spacings(10)} ${theme.spacings(5)};
   }
 `;
 
