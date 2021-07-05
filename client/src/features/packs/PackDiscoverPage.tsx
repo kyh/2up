@@ -37,7 +37,7 @@ export const PackDiscoverPage = () => {
         <PackSection>
           <div className="pack-section">
             <header className="pack-section-header main-header">
-              <h1>Featured Games</h1>
+              <h1>Featured Packs</h1>
             </header>
             <div className="pack-items staggered-pack-items">
               {featured.map((pack) => (
