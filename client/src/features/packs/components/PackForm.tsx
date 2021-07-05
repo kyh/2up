@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { Button, TextField, AreaField } from "components";
+import { Button, TextField, AreaField, TagInput, Field } from "components";
 
 import { PackFragment } from "../__generated__/PackFragment";
 
@@ -44,6 +44,10 @@ export const PackForm = ({
         error={!!errors.description}
         errorText="A short description is required"
       />
+      <Field>
+        <label htmlFor="tag">Tags</label>
+        <TagInput id="tag" placeholder="pokemon, fun" />
+      </Field>
       <Button className="submit" type="submit" disabled={loading}>
         {submitText}
       </Button>
