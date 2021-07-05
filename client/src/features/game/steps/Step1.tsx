@@ -43,7 +43,11 @@ export const Step1 = ({ gameState, broadcast, name }: StepProps) => {
           onSubmit={onSubmit}
         />
       ))}
-      <Timer shouldCallTimeout={!submitted} onTimeout={onSubmit} />
+      <Timer
+        shouldCallTimeout={!submitted}
+        onTimeout={onSubmit}
+        initialSeconds={gameState.durationInSeconds}
+      />
     </>
   );
 };
@@ -62,7 +66,7 @@ export const Step1Spectate = ({ gameState }: StepProps) => {
           questionType={gameState.questionType}
         />
       </SpectateConatiner>
-      <Timer />
+      <Timer shouldCallTimeout={false} />
     </>
   );
 };

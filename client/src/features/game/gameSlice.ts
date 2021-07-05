@@ -13,6 +13,7 @@ export type GameState = {
   submissions: Submission[];
   totalScenes: number;
   duration: number;
+  durationInSeconds: number;
   startTime: number;
   // comes from presence
   players: Player[];
@@ -58,6 +59,7 @@ export const initialState: GameState = {
   pack: "",
   totalScenes: 10,
   duration: 45000,
+  durationInSeconds: 45,
   startTime: Date.now(),
   players: [],
   invitedToGame: undefined,
@@ -82,6 +84,7 @@ const gameSlice = createSlice({
       state.pack = payload.pack ?? payload.pack;
       state.totalScenes = payload.totalScenes ?? state.totalScenes;
       state.duration = payload.duration ?? state.duration;
+      state.durationInSeconds = state.duration / 1000;
       state.startTime = payload.startTime ?? state.startTime;
     },
     players: (state, { payload }: PayloadAction<{ players: Player[] }>) => {
