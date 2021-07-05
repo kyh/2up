@@ -4,7 +4,7 @@ import { useAuth } from "util/AuthProvider";
 import { collectConnectionNodes } from "util/collection";
 import { Carousel, CarouselItem, ButtonLinkNative } from "components";
 import { Navigation } from "./components/Navigation";
-import { Page, Content } from "./components/Page";
+import { Page, Content, Footer } from "./components/Page";
 import { PackSection, Pack } from "./components/Packs";
 import { PackDiscoverPagePacksQuery } from "./__generated__/PackDiscoverPagePacksQuery";
 
@@ -62,6 +62,9 @@ export const PackDiscoverPage = () => {
           )}
         </PackSection>
       </Content>
+      <Footer>
+        <Link to="/auth/request">Want to build your own pack?</Link>
+      </Footer>
     </Page>
   );
 };
