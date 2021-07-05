@@ -2,7 +2,7 @@ import { ChangeEvent } from "react";
 import styled from "styled-components";
 import produce from "immer";
 import { theme } from "styles/theme";
-import { Input, SingleLetterInput, Checkbox, Button } from "components";
+import { Input, SingleLetterInput, Checkbox, Button, Icon } from "components";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
@@ -55,6 +55,12 @@ export const EditableAnswer = ({
     });
   };
 
+  const onDeleteSceneAnswer = (id: string) => {
+    onChange({
+      sceneAnswers: sceneAnswers.filter((sa) => sa.id !== id),
+    });
+  };
+
   switch (answerType) {
     case AnswerTypeSlugs.multiText.id:
       return (
@@ -77,6 +83,14 @@ export const EditableAnswer = ({
                     onChangeSceneAnswer({ content: e.target.value }, index)
                   }
                 />
+                {sceneAnswers.length > 1 && (
+                  <button
+                    className="delete"
+                    onClick={() => onDeleteSceneAnswer(sceneAnswer.id)}
+                  >
+                    <Icon icon="trash" />
+                  </button>
+                )}
               </InputContainer>
             ))}
           </Grid>
@@ -142,10 +156,16 @@ const Grid = styled.div`
 `;
 
 const InputContainer = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: ${theme.spacings(3)};
+  /* Multi */
+  .delete {
+    position: absolute;
+    right: ${theme.spacings(1)};
+  }
 `;
 
 const AddOptionContainer = styled(InputContainer)`
