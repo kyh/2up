@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import styled, { keyframes } from "styled-components";
 import raw from "raw.macro";
 import dust from "./dust.svg";
+import { theme } from "styles/theme";
 
 type Props = {
   initialSeconds?: number;
@@ -72,11 +73,14 @@ const dustAnimation = keyframes`
 
 const Container = styled.div`
   position: absolute;
-  bottom: 20px;
+  bottom: 0;
   left: 0;
   right: 0;
   overflow: hidden;
   pointer-events: none;
+  ${theme.breakpoints.desktop} {
+    bottom: ${theme.spacings(5)};
+  }
 `;
 
 const TimerContainer = styled.div<{ initialSeconds: number }>`

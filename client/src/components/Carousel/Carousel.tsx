@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper/core";
-import { theme } from "styles/theme";
+import { theme, isDesktop } from "styles/theme";
 import { bounceExpand, bounceContract } from "styles/animations";
 
 import "swiper/swiper.min.css";
@@ -17,8 +17,8 @@ type Props = {
 export const Carousel = ({ children }: Props) => {
   return (
     <CarouselContainer
-      slidesPerView={3}
-      slidesPerGroup={3}
+      slidesPerView={isDesktop() ? 3 : 2}
+      slidesPerGroup={isDesktop() ? 3 : 2}
       navigation
       loop
       loopFillGroupWithBlank
