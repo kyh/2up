@@ -29,7 +29,7 @@ export const Navigation = () => {
         ) : (
           <>
             <Link to="/">Play</Link>
-            <Link to="/auth/signup">Sign Up</Link>
+            <Link to="/auth/request">Sign Up</Link>
             <Link to="/auth/login">Login</Link>
           </>
         )}

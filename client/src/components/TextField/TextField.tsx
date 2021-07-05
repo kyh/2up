@@ -18,7 +18,7 @@ type Props = {
   children?: ReactNode;
   error?: boolean;
   errorText?: ReactNode;
-  isTextarea?: boolean;
+  fullWidth?: boolean;
 };
 
 export const TextField = forwardRef<HTMLInputElement, Props>(

@@ -51,6 +51,10 @@ envVarGroups:
         value: wss://api.playhouse.gg
       - key: REACT_APP_ASSET_URL
         value: https://assets.playhouse.gg
+      - key: REACT_APP_SHEETS_ENDPOINT
+        value: https://v1.nocodeapi.com/kaiyu/google_sheets/EoyQeVVLXABcoPen
+      - key: REACT_APP_SHEETS_API_KEY
+        sync: false
 
   - name: playhouse-server-env
     envVars:
