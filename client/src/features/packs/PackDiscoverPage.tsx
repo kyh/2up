@@ -2,16 +2,27 @@ import { Link } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import { useAuth } from "util/AuthProvider";
 import { collectConnectionNodes } from "util/collection";
+import { useQueryParams } from "util/query";
 import { Carousel, CarouselItem, ButtonLinkNative } from "components";
 import { Navigation } from "./components/Navigation";
 import { Page, Content, Footer } from "./components/Page";
 import { PackSection, Pack } from "./components/Packs";
 import { PackDiscoverPagePacksQuery } from "./__generated__/PackDiscoverPagePacksQuery";
 
+const refToTags: Record<string, string[]> = {
+  producthunt: ["product"],
+  devto: ["code"],
+};
+
 export const PackDiscoverPage = () => {
+  const queryParams = useQueryParams();
+  const ref = queryParams.get("ref") || "";
   const auth = useAuth();
   const { data } = useQuery<PackDiscoverPagePacksQuery>(PACKS_QUERY, {
-    variables: { username: auth.user?.username || "" },
+    variables: {
+      username: auth.user?.username || "",
+      featured: refToTags[ref] || ["featured"],
+    },
   });
 
   const featuredMap = collectConnectionNodes(data?.featured);
@@ -70,8 +81,8 @@ export const PackDiscoverPage = () => {
 };
 
 const PACKS_QUERY = gql`
-  query PackDiscoverPagePacksQuery($username: String) {
-    featured: packs(tags: ["featured"], first: 5) {
+  query PackDiscoverPagePacksQuery($username: String, $featured: [String]) {
+    featured: packs(tags: $featured, first: 5) {
       edges {
         node {
           id
