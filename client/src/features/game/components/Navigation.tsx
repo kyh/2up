@@ -79,21 +79,21 @@ export const Navigation = () => {
           <SettingItem>
             <ButtonLink
               fullWidth
-              href="https://github.com/playhousegg/playhouse"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Github
-            </ButtonLink>
-          </SettingItem>
-          <SettingItem>
-            <ButtonLink
-              fullWidth
               href="https://discord.gg/YtafKzR"
               target="_blank"
               rel="noopener noreferrer"
             >
               Discord
+            </ButtonLink>
+          </SettingItem>
+          <SettingItem>
+            <ButtonLink
+              fullWidth
+              href="https://github.com/playhousegg/playhouse"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Github
             </ButtonLink>
           </SettingItem>
         </SettingsContainer>
