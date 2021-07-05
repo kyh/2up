@@ -48,19 +48,8 @@ export const RequestPage = () => {
       <Container>
         <h1 className="title">🎉 Welcome!</h1>
         <p>
-          Interested in building your own Packs? We're currently still in closed
-          beta as we crank out new features.
-        </p>
-        <p>
-          Request an invite below to be a Pack Creator or reach out to us
-          directly on{" "}
-          <a
-            href="https://discord.gg/YtafKzR"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Discord
-          </a>
+          Interested in building your own Packs? Join our Pack Creator beta
+          program to build, test, and play your own games.
         </p>
         <Card background>
           {isComplete ? (
@@ -96,6 +85,16 @@ export const RequestPage = () => {
             </form>
           )}
         </Card>
+        <p className="sub">
+          You can also find us on{" "}
+          <a
+            href="https://discord.gg/YtafKzR"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Discord
+          </a>
+        </p>
       </Container>
     </Page>
   );
@@ -120,6 +119,10 @@ const Container = styled.section`
   }
   .submit {
     margin-top: ${theme.spacings(4)};
+  }
+  .sub {
+    margin-top: ${theme.spacings(2)};
+    text-align: center;
   }
   a {
     text-decoration: underline;
