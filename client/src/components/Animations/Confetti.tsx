@@ -21,7 +21,7 @@ export const Confetti = () => {
       clearInterval(intervalId);
     };
 
-    const handleVisibilityChange = () => {
+    const onVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
         cancelFireInterval();
       } else {
@@ -29,18 +29,14 @@ export const Confetti = () => {
       }
     };
 
-    document.addEventListener(
-      "visibilitychange",
-      handleVisibilityChange,
-      false
-    );
+    document.addEventListener("visibilitychange", onVisibilityChange, false);
 
     requestAnimationFrame(fire);
     setFireInterval();
 
     return () => {
       cancelFireInterval();
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, []);
 

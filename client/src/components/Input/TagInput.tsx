@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, KeyboardEvent } from "react";
+import { useEffect, useState, ChangeEvent, KeyboardEvent } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 
@@ -8,6 +8,7 @@ type Props = {
   id?: HTMLInputElement["id"];
   type?: HTMLInputElement["type"];
   placeholder?: HTMLInputElement["placeholder"];
+  onTagChange?: (value: string[]) => void;
 };
 
 export const TagInput = ({
@@ -16,10 +17,15 @@ export const TagInput = ({
   id = "",
   type = "text",
   placeholder = "",
+  onTagChange = () => {},
 }: Props) => {
   const [input, setInput] = useState("");
   const [tags, setTags] = useState(defaultTags);
   const [isKeyReleased, setIsKeyReleased] = useState(false);
+
+  useEffect(() => {
+    onTagChange(tags);
+  }, [tags]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);

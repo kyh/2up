@@ -9,7 +9,7 @@ type Props = {
   inputRegExp?: RegExp;
   password?: boolean;
   className?: string;
-  handleOutputString?: (value: string) => void;
+  onLetterChange?: (value: string) => void;
 };
 
 export const SingleLetterInput = ({
@@ -17,7 +17,7 @@ export const SingleLetterInput = ({
   autoFocus = true,
   inputRegExp = /^[a-z0-9]+$/i,
   className = "",
-  handleOutputString = () => {},
+  onLetterChange = () => {},
 }: Props) => {
   const [characters, setCharacters] = useState({
     characterArray: value.split(""),
@@ -31,10 +31,10 @@ export const SingleLetterInput = ({
   }, []);
 
   useEffect(() => {
-    handleOutputString(characters.characterArray.join(""));
+    onLetterChange(characters.characterArray.join(""));
   }, [characters.characterArray]);
 
-  const handleChange = ({ target }: { target: HTMLInputElement }) => {
+  const onChange = ({ target }: { target: HTMLInputElement }) => {
     if (target.value.match(inputRegExp)) {
       focusNextChar(target);
       setModuleOutput();
@@ -44,7 +44,7 @@ export const SingleLetterInput = ({
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     const key = e.key;
     const prevSibling = target.previousElementSibling as HTMLInputElement;
@@ -63,7 +63,7 @@ export const SingleLetterInput = ({
     }
   };
 
-  const handleFocus = ({ target }: { target: HTMLInputElement }) => {
+  const onFocus = ({ target }: { target: HTMLInputElement }) => {
     setTimeout(target.select, 0);
   };
 
@@ -99,9 +99,9 @@ export const SingleLetterInput = ({
           key={i}
           className="letter"
           type="text"
-          onKeyDown={handleKeyDown}
-          onChange={handleChange}
-          onFocus={handleFocus}
+          onKeyDown={onKeyDown}
+          onChange={onChange}
+          onFocus={onFocus}
           name={`input${i}`}
           maxLength={1}
           defaultValue={c.trim()}
