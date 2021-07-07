@@ -9,7 +9,7 @@ setup: install
 	cd server && mix ecto.setup
 
 install:
-	cd client && npm i
+	npm i
 	cd server && mix deps.get
 
 console:
@@ -28,14 +28,10 @@ phx:
 	source .env && cd server && iex -S mix phx.server
 
 react:
-	cd client && npm start
+	npm run dev
 
 test:
 	cd server && mix test
 
 seeds:
 	cd server && mix run priv/repo/seeds.exs
-
-format:
-	cd client && npm run format
-	cd server && mix format

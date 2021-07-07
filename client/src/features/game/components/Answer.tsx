@@ -96,7 +96,7 @@ const AnswerLetter = ({
       <InputContainer>
         <SingleLetterInput
           value={value}
-          handleOutputString={(value) => setValue(value)}
+          onLetterChange={(value) => setValue(value)}
           autoFocus
         />
       </InputContainer>

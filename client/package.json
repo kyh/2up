@@ -1,5 +1,5 @@
 {
-  "name": "playhouse",
+  "name": "playhouse-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,8 +10,7 @@
     "codegen": "apollo client:codegen --target=typescript --localSchemaFile=schema.json",
     "gql": "npm run introspect && npm run codegen",
     "clean:codegen": "find . -name __generated__ -exec rm -rf {} \\;",
-    "clean:build": "rm -rf build",
-    "prepare": "cd .. && husky install"
+    "clean:build": "rm -rf build"
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
@@ -44,7 +43,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.168",
-    "@types/node": "^15.0.2",
+    "@types/node": "^16.0.0",
     "@types/phoenix": "^1.5.1",
     "@types/prismjs": "^1.16.5",
     "@types/react": "^17.0.0",
@@ -59,9 +58,6 @@
     "@types/styled-components": "^5.1.7",
     "@types/webpack-env": "^1.16.0",
     "apollo": "^2.32.1",
-    "husky": "^7.0.0",
-    "prettier": "^2.2.1",
-    "pretty-quick": "^3.1.0",
     "raw.macro": "^0.4.2",
     "react-scripts": "^4.0.1",
     "typescript": "^4.1.3"
