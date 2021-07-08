@@ -60,7 +60,9 @@ export const PackCreatorPage = () => {
     });
   };
 
-  const selectScenePosition = (position: 1 | -1) => () => {
+  const selectScenePosition = (position: 1 | -1) => (e: KeyboardEvent) => {
+    const target = e.target as HTMLElement;
+    if (target && target.tagName === "TEXTAREA") return;
     const currentSceneIndex = packScenes.findIndex((scene) => {
       return scene.id === selectedSceneId;
     });
