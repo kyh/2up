@@ -94,9 +94,10 @@ export const Topbar = ({ pack, testPlay }: Props) => {
           submitText="Save Changes"
           defaultValues={{
             name: pack.name,
-            description: pack.description,
-            length: pack.length,
-            isRandom: pack.isRandom,
+            description: pack.description || "",
+            length: pack.length || 10,
+            isRandom: !!pack.isRandom,
+            tags: [], // should be pack.tags
           }}
         />
       </Modal>

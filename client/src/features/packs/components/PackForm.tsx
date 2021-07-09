@@ -2,23 +2,27 @@ import styled from "styled-components";
 import { useForm, Controller } from "react-hook-form";
 import { Button, TextField, AreaField, TagInput, Field } from "components";
 
-import { PackFragment } from "../__generated__/PackFragment";
-
-export type PackFormInputs = Omit<PackFragment, "id" | "__typename"> & {
-  tags: string[];
+const defaultPackValues = {
+  name: "",
+  description: "",
+  isRandom: true,
+  length: 10,
+  tags: [] as string[],
 };
+
+export type PackFormInputs = typeof defaultPackValues;
 
 type Props = {
   submitText?: string;
   loading?: boolean;
-  defaultValues?: Record<string, any>;
+  defaultValues?: PackFormInputs;
   onSubmit: (pack: PackFormInputs) => void;
 };
 
 export const PackForm = ({
   submitText = "Create Pack",
   loading = false,
-  defaultValues = {},
+  defaultValues = defaultPackValues,
   onSubmit,
 }: Props) => {
   const {
