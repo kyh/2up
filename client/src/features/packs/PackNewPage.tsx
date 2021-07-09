@@ -10,7 +10,6 @@ import { PackForm, PackFormInputs } from "features/packs/components/PackForm";
 import { PackNewPagePackCreateMutation } from "./__generated__/PackNewPagePackCreateMutation";
 
 export const PackNewPage = () => {
-  const defaultPackValues = { isRandom: true, length: 10 };
   const alert = useAlert();
   const history = useHistory();
   const [packCreate, { loading }] =
@@ -38,11 +37,7 @@ export const PackNewPage = () => {
       <PackNewPageContent>
         <h1 className="title">New Pack</h1>
         <Card background>
-          <PackForm
-            onSubmit={createPack}
-            loading={loading}
-            defaultValues={defaultPackValues}
-          />
+          <PackForm onSubmit={createPack} loading={loading} />
         </Card>
       </PackNewPageContent>
     </Page>
