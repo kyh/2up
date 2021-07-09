@@ -23,11 +23,13 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const gameLink = `${window.location.origin}?gameId=${gameState.gameId}`;
 
   const onClickStart = () => {
-    if (gameState.players.length < 2) {
-      setIsModalOpen(true);
-    } else {
-      onStart();
-    }
+    // Adopt single player mode for now...
+    // if (gameState.players.length < 2) {
+    //   setIsModalOpen(true);
+    // } else {
+    //   onStart();
+    // }
+    onStart();
   };
 
   const onStart = () => {
@@ -126,12 +128,15 @@ const TitleContainer = styled.div`
   .title {
     margin: 0 0 ${theme.spacings(5)};
   }
+
   .block {
     display: block;
   }
+
   .highlight {
     color: ${theme.colors.purple};
   }
+
   .game-id {
     color: ${theme.ui.alertText};
     background: ${theme.ui.alertBackground};
@@ -168,6 +173,7 @@ const StartModalBody = styled.div`
   p {
     margin: 0 0 ${theme.spacings(3)};
   }
+
   .game-id {
     font-size: 2rem;
     padding: ${theme.spacings(5)};

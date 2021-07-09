@@ -146,6 +146,7 @@ const SidebarHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   margin-bottom: ${theme.spacings(3)};
+
   h3 {
     margin: 0;
   }
@@ -269,11 +270,11 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
       background-color: ${theme.ui.backgroundPurple};
       box-shadow: inset ${theme.spacings(1)} 0 0 0 ${theme.colors.purple};
     `}
-
   &:hover {
     .delete {
       display: block;
     }
+
     .preview {
       box-shadow: 0 0 3px 0 ${theme.colors.purple};
       border-color: ${theme.colors.purple};
@@ -292,40 +293,49 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     border: 1px solid ${theme.ui.borderColor};
     border-radius: ${theme.ui.borderWavyRadius};
     transition: border-color 0.1s ease, box-shadow 0.1s ease;
+
     > div:first-child {
       margin-bottom: ${theme.spacings(1)};
     }
+
     > img {
       object-fit: contain;
       max-width: 70px;
       height: 40px;
       display: block;
     }
+
     > h1 {
       font-size: 0.7rem;
     }
+
     .question {
       margin: 0 auto ${theme.spacings(2)};
     }
+
     .video-player {
       width: 70px !important;
       height: 40px !important;
     }
+
     .audio-player {
       transform: scale(0.5);
       transform-origin: 75px;
       margin: -20px 0;
       min-width: auto;
+
       .rhap_additional-controls,
       .rhap_volume-controls {
         display: none;
       }
     }
+
     .answers-container {
       display: grid;
       grid-template-columns: repeat(2, max-content);
       grid-gap: ${theme.spacings(1)};
     }
+
     .display-text {
       font-size: 0.4rem;
       padding: ${theme.spacings(1)} ${theme.spacings(2)};
@@ -337,6 +347,7 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
         border-color: ${theme.colors.purple};
       }
     }
+
     > * {
       pointer-events: none;
     }

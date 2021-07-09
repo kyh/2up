@@ -78,6 +78,7 @@ const Container = styled.div`
   right: 0;
   overflow: hidden;
   pointer-events: none;
+
   ${theme.breakpoints.desktop} {
     bottom: ${theme.spacings(5)};
   }
@@ -98,10 +99,12 @@ const Snail = styled.div`
     animation: ${eyeAnimation} 1s ease infinite;
     animation-delay: 0.1s;
   }
+
   .body {
     animation: ${scaleAnimation} 1s ease infinite;
     animation-delay: 0.1s;
   }
+
   .shell {
     animation: ${scaleAnimation} 1s ease infinite;
   }

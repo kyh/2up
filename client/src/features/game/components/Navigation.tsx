@@ -127,6 +127,7 @@ const SettingItem = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   span {
     display: block;
     margin-bottom: ${theme.spacings(1)};

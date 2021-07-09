@@ -152,12 +152,14 @@ const EditableQuestionImage = ({
 
 const ImageContainer = styled.div`
   display: flex;
+
   > img {
     margin: auto;
     object-fit: cover;
     max-width: 100%;
     max-height: 200px;
     margin: 0 auto ${theme.spacings(5)};
+
     ${theme.breakpoints.desktop} {
       max-width: 500px;
     }
@@ -261,12 +263,14 @@ const AssetManager = ({
 
 const AssetManagerContainer = styled.div`
   position: relative;
+
   .url-input {
     position: absolute;
     left: 50%;
     top: 10px;
     transform: translateX(-50%);
   }
+
   .edit-button {
     background-color: ${theme.ui.background};
     border-radius: 100%;
@@ -278,6 +282,7 @@ const AssetManagerContainer = styled.div`
 
 const EditableQuestionContainer = styled.div`
   width: 70%;
+
   ${EditableQuestionInstructions},
   ${EditableQuestionText} {
     display: block;

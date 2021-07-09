@@ -170,6 +170,7 @@ const InputContainer = styled.div`
 
 const AddOptionContainer = styled(InputContainer)`
   flex-direction: column;
+
   > button {
     margin-bottom: ${theme.spacings(1)};
   }

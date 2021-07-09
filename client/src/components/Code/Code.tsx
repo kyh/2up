@@ -241,6 +241,7 @@ export const Code = ({ content, editable, onFocus, onBlur }: Props) => {
 
 const EditableCodeContainer = styled.div`
   position: relative;
+
   > textarea {
     width: 100%;
     height: 100%;
@@ -260,9 +261,11 @@ const EditableCodeContainer = styled.div`
     resize: none;
     min-height: 56px;
   }
+
   > pre {
     min-height: 56px;
   }
+
   > select {
     position: absolute;
     right: 8px;

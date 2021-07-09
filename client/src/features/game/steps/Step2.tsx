@@ -67,6 +67,7 @@ const AnswerResult = ({ gameState, sceneAnswer }: SubmissionProps) => {
 
 const AnswerContainer = styled.div`
   margin-bottom: ${theme.spacings(5)};
+
   .title {
     text-align: center;
   }

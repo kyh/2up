@@ -52,6 +52,7 @@ export const Record = ({ onTranscribe, autoStart = false }: Props) => {
 const Button = styled.button`
   width: 50px;
   height: 50px;
+
   > svg {
     width: 100%;
     height: 100%;

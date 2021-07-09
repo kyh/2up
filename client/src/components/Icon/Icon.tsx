@@ -94,6 +94,7 @@ const getSvgStyles = (props: StyledProps) => {
 const StyledIcon = styled.div<StyledProps>`
   display: inline-flex;
   padding: ${theme.spacings(1)};
+
   > svg {
     ${getSvgStyles}
   }
