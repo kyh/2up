@@ -74,7 +74,9 @@ export const PackDiscoverPage = () => {
         </PackSection>
       </Content>
       <Footer>
-        <Link to="/auth/request">Want to build your own pack?</Link>
+        {!auth.user && (
+          <Link to="/auth/request">Want to build your own pack?</Link>
+        )}
       </Footer>
     </Page>
   );
