@@ -1,15 +1,17 @@
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { Button, TextField, AreaField, TagInput, Field } from "components";
 
 import { PackFragment } from "../__generated__/PackFragment";
 
-export type PackFormInputs = Omit<PackFragment, "id" | "__typename">;
+export type PackFormInputs = Omit<PackFragment, "id" | "__typename"> & {
+  tags: string[];
+};
 
 type Props = {
   submitText?: string;
   loading?: boolean;
-  defaultValues?: Object;
+  defaultValues?: Record<string, any>;
   onSubmit: (pack: PackFormInputs) => void;
 };
 
@@ -20,6 +22,7 @@ export const PackForm = ({
   onSubmit,
 }: Props) => {
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -45,8 +48,20 @@ export const PackForm = ({
         errorText="A short description is required"
       />
       <Field>
-        <label htmlFor="tag">Tags</label>
-        <TagInput id="tag" placeholder="pokemon, fun" />
+        <label htmlFor="tags">Tags</label>
+        <Controller
+          name="tags"
+          control={control}
+          defaultValue={defaultValues.tags || []}
+          render={({ field: { onChange, value } }) => (
+            <TagInput
+              id="tags"
+              placeholder="pokemon, fun"
+              onTagChange={onChange}
+              defaultTags={value}
+            />
+          )}
+        />
       </Field>
       <Button className="submit" type="submit" disabled={loading}>
         {submitText}

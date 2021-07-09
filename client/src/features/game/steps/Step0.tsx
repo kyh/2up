@@ -71,9 +71,11 @@ const Footer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   > .play-again {
     margin-bottom: ${theme.spacings(3)};
   }
+
   > .link {
     text-decoration: underline;
   }

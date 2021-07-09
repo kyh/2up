@@ -48,6 +48,7 @@ export const PlayersGrid = styled.div<{
     singleCol ? "1fr" : "1fr 1fr 1fr"};
   grid-gap: ${theme.spacings(3)};
   width: 100%;
+
   .avatar > svg {
     animation: ${jitter} 0.7s linear infinite;
   }
@@ -59,13 +60,16 @@ export const PlayersGrid = styled.div<{
     width: 90%;
     bottom: 0;
     pointer-events: none;
+
     .player {
       text-align: center;
       align-self: flex-end;
       flex-direction: column-reverse;
+
       .name {
         margin-bottom: ${theme.spacings(1)};
       }
+
       .avatar {
         padding: 0;
         overflow: hidden;
@@ -74,6 +78,7 @@ export const PlayersGrid = styled.div<{
           max-height: 300px;
         }
       }
+
       .correct {
         top: auto;
         left: auto;

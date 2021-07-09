@@ -43,14 +43,17 @@ export const NavigationContainer = styled.nav`
   grid-area: header;
   background: ${theme.ui.background};
   border-bottom: 1px solid ${theme.ui.borderColor};
+
   .left {
     display: flex;
     align-items: center;
     padding-left: ${theme.spacings(3)};
+
     ${theme.breakpoints.desktop} {
       width: 215px;
     }
   }
+
   .right {
     display: flex;
     justify-content: space-between;
@@ -59,6 +62,7 @@ export const NavigationContainer = styled.nav`
     padding: 0 ${theme.spacings(3)};
     &.end {
       justify-content: flex-end;
+
       > a {
         padding: ${theme.spacings(3)};
         &:hover {
@@ -67,6 +71,7 @@ export const NavigationContainer = styled.nav`
       }
     }
   }
+
   .pack-title {
     margin: 0;
   }

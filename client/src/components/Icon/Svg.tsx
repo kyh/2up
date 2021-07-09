@@ -21,6 +21,7 @@ export const Svg = ({ content, ...rest }: Props) => {
 
 const StyledIcon = styled.div`
   display: inline-flex;
+
   > svg {
     path {
       fill: currentColor;

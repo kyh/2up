@@ -101,6 +101,7 @@ const CSV_IMPORT = gql`
 const CsvImportButtonContainer = styled.div`
   text-align: center;
   margin-top: ${theme.spacings(1)};
+
   > .modal-button {
     font-size: 0.9rem;
     text-decoration: underline;
@@ -110,6 +111,7 @@ const CsvImportButtonContainer = styled.div`
 const CsvImportHeader = styled.header`
   display: flex;
   justify-content: space-between;
+
   a {
     text-decoration: underline;
   }
@@ -122,6 +124,7 @@ const CsvImportArea = styled(AreaField)`
 
 const CsvImportFooter = styled.footer`
   display: flex;
+
   > button {
     margin-left: auto;
   }

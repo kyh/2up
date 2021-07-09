@@ -101,9 +101,11 @@ const Page = styled(PageContainer)<{ isLogin?: boolean }>`
 
 const FormContainer = styled.section`
   transform: translateY(-70px);
+
   .title {
     text-align: center;
   }
+
   .submit {
     margin-top: ${theme.spacings(4)};
   }

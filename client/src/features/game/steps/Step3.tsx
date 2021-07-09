@@ -183,6 +183,7 @@ const TitleContainer = styled.div`
   animation: ${visible} 0s linear 0.1s forwards;
   visibility: hidden;
   margin-bottom: ${theme.spacings(5)};
+
   .title {
     text-align: center;
     margin: 0;
@@ -192,6 +193,7 @@ const TitleContainer = styled.div`
 const PlayersContainer = styled(PlayersGrid)`
   margin: 0 auto ${theme.spacings(5)};
   max-width: 300px;
+
   ${theme.breakpoints.desktop} {
     margin-bottom: 0;
     max-width: none;
@@ -228,6 +230,7 @@ const PC = styled.div<{ score: number; totalScenes: number }>`
 const PlayerScore = styled.h2`
   margin: 0;
   transform: translateY(-10px);
+
   ${theme.breakpoints.desktop} {
     margin-top: auto;
   }

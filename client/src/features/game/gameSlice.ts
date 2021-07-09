@@ -169,13 +169,9 @@ export const AnswerTypeSlugs = {
   //   id: "multi_image",
   //   display: "Multiple Image",
   // },
-  // swipeText: {
-  //   id: "swipe_text",
-  //   display: "Swipe Text",
-  // },
-  // swipeImage: {
-  //   id: "swipe_image",
-  //   display: "Swipe Image",
+  // swipe: {
+  //   id: "swipe",
+  //   display: "Swipe",
   // },
   // sortText: {
   //   id: "sort_text",

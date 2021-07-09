@@ -13,9 +13,8 @@ export const PackNewPage = () => {
   const defaultPackValues = { isRandom: true, length: 10 };
   const alert = useAlert();
   const history = useHistory();
-  const [packCreate, { loading }] = useMutation<PackNewPagePackCreateMutation>(
-    PACK_CREATE
-  );
+  const [packCreate, { loading }] =
+    useMutation<PackNewPagePackCreateMutation>(PACK_CREATE);
 
   const createPack = async (newPack: PackFormInputs) => {
     try {

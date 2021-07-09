@@ -113,17 +113,21 @@ const Container = styled.section`
   max-width: 500px;
   margin: 0 auto;
   transform: translateY(-70px);
+
   .title {
     text-align: center;
     margin-bottom: ${theme.spacings(5)};
   }
+
   .submit {
     margin-top: ${theme.spacings(4)};
   }
+
   .sub {
     margin-top: ${theme.spacings(2)};
     text-align: center;
   }
+
   a {
     text-decoration: underline;
   }

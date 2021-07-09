@@ -74,6 +74,7 @@ const QuestionImage = styled.img`
   margin: 0 0 ${theme.spacings(5)};
   max-width: 100vw;
   height: 240px;
+
   ${theme.breakpoints.desktop} {
     max-width: 40vw;
   }
