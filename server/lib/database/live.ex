@@ -77,17 +77,62 @@ defmodule Database.Live do
     |> Repo.insert()
   end
 
+  def pack_sync(pack, tags) do
+    Enum.each(tags, fn tag_name ->
+      tag =
+        case Repo.get_by(Tag, %{name: tag_name}) do
+          nil ->
+            %Tag{}
+            |> Tag.changeset(%{name: tag_name})
+            |> Repo.insert!()
+
+          existing_tag ->
+            existing_tag
+        end
+
+      existing_pack_tag = Repo.get_by(PackTag, %{tag_id: tag.id, pack_id: pack.id})
+
+      if is_nil(existing_pack_tag) do
+        %PackTag{}
+        |> PackTag.changeset(%{})
+        |> Ecto.Changeset.put_assoc(:pack, pack)
+        |> Ecto.Changeset.put_assoc(:tag, tag)
+        |> Repo.insert()
+      end
+    end)
+
+    query =
+      from pack_tag in PackTag,
+        join: tag in Tag,
+        on: pack_tag.tag_id == tag.id,
+        where: pack_tag.pack_id == ^pack.id,
+        where: tag.name not in ^tags
+
+    query |> Repo.delete_all()
+
+    {:ok, pack}
+  end
+
   def pack_create(%User{} = user, attrs) do
+    %{tags: tags} = attrs
+
     %Pack{}
     |> Pack.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:user, user)
-    |> Repo.insert()
+    |> Repo.insert!()
+    |> pack_sync(tags)
   end
 
-  def pack_update(%User{} = _user, attrs) do
-    Repo.get_by(Pack, id: attrs.id)
-    |> Pack.changeset(attrs)
-    |> Repo.update()
+  def pack_update(%User{} = user, attrs) do
+    %{tags: tags} = attrs
+    pack = Repo.get_by(Pack, id: attrs.id)
+
+    with {:ok} <- Authorization.check(:pack_update, user, pack) do
+      pack
+      |> Pack.changeset(attrs)
+      |> Repo.update!()
+      |> pack_sync(tags)
+    end
   end
 
   def pack_delete(%User{} = user, attrs) do
@@ -129,6 +174,15 @@ defmodule Database.Live do
     query =
       from pack_asset in PackAsset,
         where: pack_asset.pack_id == ^args.pack_id
+
+    Repo.all(query)
+  end
+
+  def pack_tag_list(args) do
+    query =
+      from tag in Tag,
+        join: pack_tag in PackTag,
+        where: pack_tag.pack_id == ^args.pack_id
 
     Repo.all(query)
   end

@@ -7,5 +7,9 @@ export const PACK_FRAGMENT = gql`
     description
     length
     isRandom
+    tags {
+      id
+      name
+    }
   }
 `;

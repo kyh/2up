@@ -89,6 +89,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :description, non_null(:string)
         field :is_random, non_null(:boolean)
         field :length, non_null(:integer)
+        field :tags, list_of(:string)
       end
 
       output do
@@ -106,6 +107,7 @@ defmodule Web.GraphQL.Types.MutationType do
         field :description, :string
         field :is_random, :boolean
         field :length, :integer
+        field :tags, list_of(:string)
       end
 
       output do
@@ -143,7 +145,7 @@ defmodule Web.GraphQL.Types.MutationType do
       resolve(parsing_node_ids(&Live.pack_asset_create/2, pack_id: :pack))
     end
 
-    @desc "Delete pack scene"
+    @desc "Delete pack asset"
     payload field :pack_asset_delete do
       input do
         field :id, :id

@@ -27,6 +27,12 @@ defmodule Web.GraphQL.Types.LiveTypes do
         Live.pack_asset_list(parent, Map.merge(args, %{pack_id: parent.id}), meta)
       end)
     end
+
+    field :tags, list_of(:pack_tag) do
+      resolve(fn parent, args, meta ->
+        Live.pack_tag_list(parent, Map.merge(args, %{pack_id: parent.id}), meta)
+      end)
+    end
   end
 
   connection(node_type: :pack)
@@ -34,6 +40,11 @@ defmodule Web.GraphQL.Types.LiveTypes do
   node object(:pack_asset) do
     field :raw_name, non_null(:string)
     field :path, :string
+    field :pack, non_null(:pack), resolve: dataloader(Pack)
+  end
+
+  node object(:pack_tag) do
+    field :name, :string
     field :pack, non_null(:pack), resolve: dataloader(Pack)
   end
 
