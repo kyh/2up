@@ -126,4 +126,8 @@ defmodule Web.GraphQL.Resolvers.Live do
   def pack_asset_list(_, args, _) do
     Connection.from_list(Live.pack_asset_list(args), args)
   end
+
+  def pack_tag_list(_, args, _) do
+    {:ok, Live.pack_tag_list(args)}
+  end
 end
