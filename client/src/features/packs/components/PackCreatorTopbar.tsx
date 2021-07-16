@@ -97,7 +97,7 @@ export const Topbar = ({ pack, testPlay }: Props) => {
             description: pack.description || "",
             length: pack.length || 10,
             isRandom: !!pack.isRandom,
-            tags: [], // should be pack.tags
+            tags: pack.tags || [],
           }}
         />
       </Modal>

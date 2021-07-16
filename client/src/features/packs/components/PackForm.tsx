@@ -7,7 +7,7 @@ const defaultPackValues = {
   description: "",
   isRandom: true,
   length: 10,
-  tags: [] as string[],
+  tags: [] as any[],
 };
 
 export type PackFormInputs = typeof defaultPackValues;
