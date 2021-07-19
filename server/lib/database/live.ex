@@ -182,6 +182,7 @@ defmodule Database.Live do
     query =
       from tag in Tag,
         join: pack_tag in PackTag,
+        on: tag.id == pack_tag.tag_id,
         where: pack_tag.pack_id == ^args.pack_id
 
     Repo.all(query)
