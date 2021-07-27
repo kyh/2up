@@ -12,7 +12,7 @@ export const Page = styled.section<{
     "content"
     "footer";
   grid-template-columns: 1fr;
-  grid-template-rows: 50px 1fr 50px;
+  grid-template-rows: 50px 1fr auto;
   min-height: 100vh;
 
   ${theme.breakpoints.desktop} {
