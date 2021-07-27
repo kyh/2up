@@ -68,6 +68,7 @@ export const Footer = styled.footer`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: ${theme.spacings(20)};
 
   a {
     text-decoration: underline;
