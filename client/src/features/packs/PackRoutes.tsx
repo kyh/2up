@@ -14,7 +14,7 @@ export const PackRoutes = () => {
       <Route exact path="/packs/new">
         <PackNewPage />
       </Route>
-      <Route exact path="/packs/category/:categoryId">
+      <Route exact path="/packs/category/:tagSlug">
         <PackCategoryPage />
       </Route>
       <Route exact path="/packs/:packId">

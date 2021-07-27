@@ -1,6 +1,5 @@
 import { Link, useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
-import { useAuth } from "util/AuthProvider";
 import { collectConnectionNodes } from "util/collection";
 import { Navigation } from "./components/Navigation";
 import { Page, Content } from "./components/Page";
@@ -8,10 +7,9 @@ import { PackSection, Pack } from "./components/Packs";
 import { PackCategoryPagePacksQuery } from "./__generated__/PackCategoryPagePacksQuery";
 
 export const PackCategoryPage = () => {
-  const { categoryId } = useParams<{ categoryId: string }>();
-  const auth = useAuth();
+  const { tagSlug } = useParams<{ tagSlug: string }>();
   const { data } = useQuery<PackCategoryPagePacksQuery>(PACKS_QUERY, {
-    variables: { username: auth.user?.username || "" },
+    variables: { tags: [tagSlug] },
   });
 
   const featuredMap = collectConnectionNodes(data?.packs);
@@ -27,7 +25,7 @@ export const PackCategoryPage = () => {
         <PackSection>
           <div className="pack-section">
             <header className="pack-section-header mb">
-              <h1>{categoryId} Games</h1>
+              <h1>{tagSlug} Packs</h1>
             </header>
             <div className="pack-items">
               {featured.map((pack) => (
@@ -42,8 +40,8 @@ export const PackCategoryPage = () => {
 };
 
 const PACKS_QUERY = gql`
-  query PackCategoryPagePacksQuery($username: String) {
-    packs(first: 10, username: $username) {
+  query PackCategoryPagePacksQuery($tags: [String]) {
+    packs(tags: $tags, first: 10) {
       edges {
         node {
           id
