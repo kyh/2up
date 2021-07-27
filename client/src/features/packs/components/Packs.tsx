@@ -5,7 +5,7 @@ import { fadeIn, bounceExpand, bounceContract } from "styles/animations";
 import { Button, ButtonLinkNative, Icon } from "components";
 import { useHostGame } from "features/game/gameService";
 
-import { PackDiscoverPagePacksQuery_featured_edges_node } from "../__generated__/PackDiscoverPagePacksQuery";
+import { PackDiscoverPagePacksQuery_my_edges_node } from "../__generated__/PackDiscoverPagePacksQuery";
 
 export const PackSection = styled.section`
   .pack-items {
@@ -139,8 +139,8 @@ export const PackImage = styled.div<{ src?: string | null }>`
   margin: 0 auto ${theme.spacings(2)};
 `;
 
-type PacksProps = {
-  pack: PackDiscoverPagePacksQuery_featured_edges_node;
+export type PacksProps = {
+  pack: PackDiscoverPagePacksQuery_my_edges_node;
   className?: string;
   containerClassName?: string;
   showPlayButton?: boolean;
