@@ -68,7 +68,11 @@ export const Footer = styled.footer`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: ${theme.spacings(20)};
+  padding: ${theme.spacings(5)} 0 ${theme.spacings(20)};
+  background-image: url("/illustrations/rainbow.svg");
+  background-repeat: no-repeat;
+  background-size: 300px;
+  background-position: center -30px;
 
   a {
     text-decoration: underline;
