@@ -73,7 +73,7 @@ export const PackDiscoverPage = () => {
       <Navigation />
       <Content>
         <PackSection>
-          <div className="pack-section">
+          <div className="pack-section spaced">
             <header className="pack-section-header main-header">
               <h1>{section1.title}</h1>
             </header>

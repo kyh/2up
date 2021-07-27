@@ -28,7 +28,10 @@ export const PackSection = styled.section`
   }
 
   .pack-section {
-    margin-bottom: ${theme.spacings(12)};
+    margin-bottom: ${theme.spacings(5)};
+    &.spaced {
+      margin-bottom: ${theme.spacings(12)};
+    }
   }
 
   .pack-section-header {
