@@ -15,12 +15,7 @@ import { client } from "util/apollo";
 
 // import "util/analytics";
 
-const progress = new ProgressBar({
-  size: 2,
-  color: "#38a169",
-  className: "bar-of-progress",
-  delay: 100,
-});
+const progress = new ProgressBar();
 
 const alertOptions = {
   position: positions.TOP_CENTER,
