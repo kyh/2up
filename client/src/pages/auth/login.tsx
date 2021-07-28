@@ -1,12 +1,10 @@
-import Head from "next/head";
+import { SEO } from "components";
 import { Auth } from "features/auth/Auth";
 
 const LoginPage = () => {
   return (
     <>
-      <Head>
-        <title>Playhouse | Login</title>
-      </Head>
+      <SEO title="Login" />
       <Auth isLogin />
     </>
   );

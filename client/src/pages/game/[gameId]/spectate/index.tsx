@@ -1,4 +1,4 @@
-import Head from "next/head";
+import { SEO } from "components";
 import { PageContainer } from "features/home/components/Page";
 import { GameLayout } from "features/game/GameLayout";
 import { Game } from "features/game/Game";
@@ -6,9 +6,7 @@ import { Game } from "features/game/Game";
 const GameSpectatePage = () => {
   return (
     <>
-      <Head>
-        <title>Playhouse | Spectate Game</title>
-      </Head>
+      <SEO title="Spectate Game" />
       <PageContainer justify="start">
         <Game isSpectate />
       </PageContainer>

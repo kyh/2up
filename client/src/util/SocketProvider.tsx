@@ -1,6 +1,5 @@
 import { useContext, useEffect, createContext, ReactNode } from "react";
 import { Socket } from "phoenix";
-import { isBrowser } from "util/browser";
 
 const SocketContext = createContext({} as Socket);
 
@@ -15,9 +14,10 @@ export const SocketProvider = ({
   options = {},
   children,
 }: Props) => {
-  const socket = isBrowser
-    ? new Socket(wsUrl, { params: options })
-    : ({} as Socket);
+  const socket =
+    typeof window !== "undefined"
+      ? new Socket(wsUrl, { params: options })
+      : ({} as Socket);
 
   useEffect(() => {
     socket.connect();
