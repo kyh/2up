@@ -1,8 +1,8 @@
 # Playhouse
 
-> Web frontend bootstrapped with `create-react-app`
+> Web frontend
 
-- Create react app: https://github.com/facebook/create-react-app
+- Next.js: https://nextjs.org/
 - React: https://reactjs.org/docs/getting-started.html
 - Typescript cheatsheet: https://react-typescript-cheatsheet.netlify.app/docs/basic/setup
 - Global state management: https://redux.js.org/introduction/getting-started

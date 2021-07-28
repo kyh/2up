@@ -1,22 +1,20 @@
 import styled from "styled-components";
-import { Link, useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 import { Button, Modal, Confetti } from "components";
 import { theme } from "styles/theme";
 import { gameActions, StepProps } from "features/game/gameSlice";
-import { useQueryParams } from "util/query";
 import { PlayerScores } from "./Step3";
 
 export const Step0 = ({ gameState, dispatch }: StepProps) => {
-  const queryParams = useQueryParams();
-  const history = useHistory();
+  const router = useRouter();
+  const { test } = router.query;
 
   const handleEnd = (gameId?: string) => {
-    const testingPack = queryParams.get("test");
     dispatch(gameActions.reset({ gameId }));
-    if (testingPack) {
-      history.push(`/packs/${testingPack}/edit`);
+    if (test) {
+      router.push(`/packs/${test}/edit`);
     } else {
-      history.push("/packs");
+      router.push("/packs");
     }
   };
 
@@ -46,16 +44,16 @@ export const Step0 = ({ gameState, dispatch }: StepProps) => {
       >
         <h3>Would you like to join your friends in a new game?</h3>
         <InviteModalFooter>
-          <Link onClick={() => handleEnd()} to="/packs">
+          <button className="link" onClick={() => handleEnd()}>
             No thanks
-          </Link>
+          </button>
           <Button
             onClick={() => {
               dispatch(
                 gameActions.new_game({ gameId: gameState.invitedToGame! })
               );
               dispatch(gameActions.invite({ gameId: undefined }));
-              history.push("/join");
+              router.push("/join");
             }}
           >
             Join new game

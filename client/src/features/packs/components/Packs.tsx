@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { fadeIn, bounceExpand, bounceContract } from "styles/animations";
-import { Button, ButtonLinkNative, Icon } from "components";
+import { Link, Button, ButtonLinkNative, Icon } from "components";
 import { useHostGame } from "features/game/gameService";
 
 import { PackDiscoverPagePacksQuery_my_edges_node } from "../__generated__/PackDiscoverPagePacksQuery";

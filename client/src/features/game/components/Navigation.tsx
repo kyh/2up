@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { useAppDispatch, useAppSelector } from "util/redux";
@@ -10,17 +10,17 @@ import { Modal } from "components/Modal/Modal";
 import { Button, ButtonLink } from "components/Button/Button";
 
 export const Navigation = () => {
-  const history = useHistory();
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const isMusicOn = useAppSelector((state) => state.playhouse.isMusicOn);
   const isSFXOn = useAppSelector((state) => state.playhouse.isSFXOn);
   const isDarkMode = useAppSelector((state) => state.playhouse.isDarkMode);
-  const gameMatch = useRouteMatch<{ gameId: string }>("/game/:gameId");
   const [isOpen, setIsOpen] = useState(false);
+  const { gameId } = router.query;
 
   const leaveGame = () => {
     dispatch(gameActions.reset({ gameId: undefined }));
-    history.push("/");
+    router.push("/");
     setIsOpen(false);
   };
 
@@ -36,7 +36,7 @@ export const Navigation = () => {
         maxWidth={300}
         closeButton
       >
-        {!!gameMatch && (
+        {!!gameId && (
           <>
             <SettingsContainer noBorder>
               <SettingItem>

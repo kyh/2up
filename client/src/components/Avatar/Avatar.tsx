@@ -3,9 +3,26 @@ import styled, {
   StyledComponentProps,
   DefaultTheme,
 } from "styled-components";
-import raw from "raw.macro";
 import { hashCode } from "util/string";
 import { theme } from "styles/theme";
+
+import svg0 from "./svgs/0.svg";
+import svg1 from "./svgs/1.svg";
+import svg2 from "./svgs/2.svg";
+import svg3 from "./svgs/3.svg";
+import svg4 from "./svgs/4.svg";
+import svg5 from "./svgs/5.svg";
+import svg6 from "./svgs/6.svg";
+import svg7 from "./svgs/7.svg";
+import svg8 from "./svgs/8.svg";
+import svg9 from "./svgs/9.svg";
+import svg10 from "./svgs/10.svg";
+import svg11 from "./svgs/11.svg";
+import svg12 from "./svgs/12.svg";
+import svg13 from "./svgs/13.svg";
+import svg14 from "./svgs/14.svg";
+import svg15 from "./svgs/15.svg";
+import svg16 from "./svgs/16.svg";
 
 type Props = StyledComponentProps<
   "div",
@@ -18,37 +35,35 @@ type Props = StyledComponentProps<
 >;
 
 export const avatarMap = {
-  0: raw("./svgs/0.svg"),
-  1: raw("./svgs/1.svg"),
-  2: raw("./svgs/2.svg"),
-  3: raw("./svgs/3.svg"),
-  4: raw("./svgs/4.svg"),
-  5: raw("./svgs/5.svg"),
-  6: raw("./svgs/6.svg"),
-  7: raw("./svgs/7.svg"),
-  8: raw("./svgs/8.svg"),
-  9: raw("./svgs/9.svg"),
-  10: raw("./svgs/10.svg"),
-  11: raw("./svgs/11.svg"),
-  12: raw("./svgs/12.svg"),
-  13: raw("./svgs/13.svg"),
-  14: raw("./svgs/14.svg"),
-  15: raw("./svgs/15.svg"),
-  16: raw("./svgs/16.svg"),
+  0: svg0,
+  1: svg1,
+  2: svg2,
+  3: svg3,
+  4: svg4,
+  5: svg5,
+  6: svg6,
+  7: svg7,
+  8: svg8,
+  9: svg9,
+  10: svg10,
+  11: svg11,
+  12: svg12,
+  13: svg13,
+  14: svg14,
+  15: svg15,
+  16: svg16,
 };
 
 const length = Object.keys(avatarMap).length;
 
 export const Avatar = ({ name, expandOnDesktop = true, ...rest }: Props) => {
   const avatar = hashCode(name, length);
-  const svg = avatarMap[avatar as keyof typeof avatarMap];
-  if (!svg) return null;
+  const Svg = avatarMap[avatar as keyof typeof avatarMap];
+  if (!Svg) return null;
   return (
-    <StyledIcon
-      expandOnDesktop={expandOnDesktop}
-      dangerouslySetInnerHTML={{ __html: svg }}
-      {...rest}
-    />
+    <StyledIcon expandOnDesktop={expandOnDesktop} {...rest}>
+      <Svg />
+    </StyledIcon>
   );
 };
 

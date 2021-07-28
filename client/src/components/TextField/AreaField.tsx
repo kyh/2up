@@ -22,7 +22,10 @@ type Props = {
 };
 
 export const AreaField = forwardRef<HTMLTextAreaElement, Props>(
-  ({ id, labelText, placeholder, error, errorText, ...rest }, ref) => {
+  function AreaField(
+    { id, labelText, placeholder, error, errorText, ...rest },
+    ref
+  ) {
     return (
       <Field>
         <label htmlFor={id}>{labelText}</label>

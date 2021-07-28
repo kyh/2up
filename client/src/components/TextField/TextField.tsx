@@ -21,23 +21,21 @@ type Props = {
   fullWidth?: boolean;
 };
 
-export const TextField = forwardRef<HTMLInputElement, Props>(
-  (
-    { id, labelText, type = "text", placeholder, error, errorText, ...rest },
-    ref
-  ) => {
-    return (
-      <Field>
-        <label htmlFor={id}>{labelText}</label>
-        <Input
-          id={id}
-          type={type}
-          placeholder={placeholder}
-          ref={ref}
-          {...rest}
-        />
-        {error && <div className="error">{errorText}</div>}
-      </Field>
-    );
-  }
-);
+export const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
+  { id, labelText, type = "text", placeholder, error, errorText, ...rest },
+  ref
+) {
+  return (
+    <Field>
+      <label htmlFor={id}>{labelText}</label>
+      <Input
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        ref={ref}
+        {...rest}
+      />
+      {error && <div className="error">{errorText}</div>}
+    </Field>
+  );
+});

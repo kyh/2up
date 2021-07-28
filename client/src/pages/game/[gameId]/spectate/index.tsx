@@ -1,0 +1,21 @@
+import Head from "next/head";
+import { PageContainer } from "features/home/components/Page";
+import { GameLayout } from "features/game/GameLayout";
+import { Game } from "features/game/Game";
+
+const GameSpectatePage = () => {
+  return (
+    <>
+      <Head>
+        <title>Playhouse | Spectate Game</title>
+      </Head>
+      <PageContainer justify="start">
+        <Game isSpectate />
+      </PageContainer>
+    </>
+  );
+};
+
+GameSpectatePage.Layout = GameLayout;
+
+export default GameSpectatePage;

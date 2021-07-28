@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { themeSong } from "styles/sound";
+import { localStorage } from "util/localstorage";
+// import { themeSong } from "styles/sound";
 
 export type UserPayload = {
   name: string;
@@ -16,15 +17,15 @@ const getIsDarkMode = () => {
   const isDarkMode = localStorage.getItem("isDarkMode");
   if (isDarkMode === "true") return true;
   if (isDarkMode === "false") return false;
-  if (window.matchMedia)
+  if (typeof window !== "undefined" && window.matchMedia)
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   return true;
 };
 
 export const initialState: CurrentAppState = {
   name: localStorage.getItem("name") || "",
-  isMusicOn: localStorage.getItem("isMusicOn") === "true",
-  isSFXOn: localStorage.getItem("isSFXOn") === "true",
+  isMusicOn: localStorage.getItem("isMusicOn"),
+  isSFXOn: localStorage.getItem("isSFXOn"),
   isDarkMode: getIsDarkMode(),
 };
 
@@ -34,20 +35,20 @@ const playhouseSlice = createSlice({
   reducers: {
     toggle_music: (state) => {
       state.isMusicOn = !state.isMusicOn;
-      if (state.isMusicOn) {
-        themeSong.play();
-      } else {
-        themeSong.pause();
-      }
-      localStorage.setItem("isMusicOn", state.isMusicOn.toString());
+      // if (state.isMusicOn) {
+      //   // themeSong.play();
+      // } else {
+      //   // themeSong.pause();
+      // }
+      localStorage.setItem("isMusicOn", state.isMusicOn);
     },
     toggle_SFX: (state) => {
       state.isSFXOn = !state.isSFXOn;
-      localStorage.setItem("isSFXOn", state.isSFXOn.toString());
+      localStorage.setItem("isSFXOn", state.isSFXOn);
     },
     toggle_dark_mode: (state) => {
       state.isDarkMode = !state.isDarkMode;
-      localStorage.setItem("isDarkMode", state.isDarkMode.toString());
+      localStorage.setItem("isDarkMode", state.isDarkMode);
     },
     update_user: (state, { payload }: PayloadAction<UserPayload>) => {
       state.name = payload.name ?? state.name;
