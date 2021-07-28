@@ -99,7 +99,7 @@ const renderFabStyles = () => {
   `;
 };
 
-export const StyledButton = styled.button<StyledProps>`
+const StyledButton = styled.button<StyledProps>`
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
   ${({ variant = Variants.default }) =>
     variant === Variants.default ? renderRegularStyles() : renderFabStyles()}

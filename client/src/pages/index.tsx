@@ -1,13 +1,11 @@
-import Head from "next/head";
+import { SEO } from "components";
 import { HomeLayout } from "features/home/HomeLayout";
 import { HomeJoinGame } from "features/home/HomeJoinGame";
 
 const HomePage = () => {
   return (
     <>
-      <Head>
-        <title>Playhouse</title>
-      </Head>
+      <SEO />
       <HomeJoinGame />
     </>
   );

@@ -1,12 +1,10 @@
-import Head from "next/head";
+import { SEO } from "components";
 import { PackCreator } from "features/packs/PackCreator";
 
 const PackCreatorPage = () => {
   return (
     <>
-      <Head>
-        <title>Playhouse | Pack</title>
-      </Head>
+      <SEO title="Edit Pack" />
       <PackCreator />
     </>
   );

@@ -1,12 +1,10 @@
-import Head from "next/head";
+import { SEO } from "components";
 import { PackDetails } from "features/packs/PackDetails";
 
 const PackDetailsPage = () => {
   return (
     <>
-      <Head>
-        <title>Playhouse | Pack</title>
-      </Head>
+      <SEO title="Pack Details" />
       <PackDetails />
     </>
   );

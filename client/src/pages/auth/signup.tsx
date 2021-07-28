@@ -1,12 +1,10 @@
-import Head from "next/head";
+import { SEO } from "components";
 import { Auth } from "features/auth/Auth";
 
 const SignupPage = () => {
   return (
     <>
-      <Head>
-        <title>Playhouse | Sign up</title>
-      </Head>
+      <SEO title="Sign Up" />
       <Auth />
     </>
   );

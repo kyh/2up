@@ -1,12 +1,10 @@
-import Head from "next/head";
+import { SEO } from "components";
 import { PackCategory } from "features/packs/PackCategory";
 
 const PackCategoryPage = () => {
   return (
     <>
-      <Head>
-        <title>Playhouse | Category</title>
-      </Head>
+      <SEO title="Pack Category" />
       <PackCategory />
     </>
   );

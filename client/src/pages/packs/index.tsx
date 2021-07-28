@@ -1,12 +1,10 @@
-import Head from "next/head";
+import { SEO } from "components";
 import { PackDiscover } from "features/packs/PackDiscover";
 
 const PackDiscoverPage = () => {
   return (
     <>
-      <Head>
-        <title>Playhouse | Discover</title>
-      </Head>
+      <SEO title="Discover Packs" />
       <PackDiscover />
     </>
   );
