@@ -26,9 +26,8 @@ export const PackAssetModal = ({
       },
     }
   );
-  const [packAssetCreate] = useMutation<PackAssetCreateMutation>(
-    PACK_ASSET_CREATE
-  );
+  const [packAssetCreate] =
+    useMutation<PackAssetCreateMutation>(PACK_ASSET_CREATE);
 
   const onUploaded = async (rawName: string, path: string) => {
     await packAssetCreate({
@@ -51,7 +50,7 @@ export const PackAssetModal = ({
       <Uploader onUploaded={onUploaded} pathPrefix={`packs/${packId}`} />
       <AssetsContainer>
         {Object.values(assetsMap).map((asset) => {
-          const fullPath = `${process.env.REACT_APP_ASSET_URL}/${
+          const fullPath = `${process.env.NEXT_PUBLIC_ASSET_URL}/${
             asset.path ?? ""
           }`;
           return (

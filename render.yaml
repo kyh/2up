@@ -45,15 +45,15 @@ envVarGroups:
     envVars:
       - key: PUBLIC_URL
         value: https://playhouse.gg
-      - key: REACT_APP_API_URL
+      - key: NEXT_PUBLIC_API_URL
         value: https://api.playhouse.gg
-      - key: REACT_APP_SOCKET_URL
+      - key: NEXT_PUBLIC_SOCKET_URL
         value: wss://api.playhouse.gg
-      - key: REACT_APP_ASSET_URL
+      - key: NEXT_PUBLIC_ASSET_URL
         value: https://assets.playhouse.gg
-      - key: REACT_APP_SHEETS_ENDPOINT
+      - key: NEXT_PUBLIC_SHEETS_ENDPOINT
         value: https://v1.nocodeapi.com/kaiyu/google_sheets/EoyQeVVLXABcoPen
-      - key: REACT_APP_SHEETS_API_KEY
+      - key: NEXT_PUBLIC_SHEETS_API_KEY
         sync: false
 
   - name: playhouse-server-env

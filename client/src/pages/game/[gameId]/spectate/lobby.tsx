@@ -1,5 +1,5 @@
+import { ReactNode } from "react";
 import { SEO } from "components";
-import { PageContainer } from "features/home/components/Page";
 import { GameLayout } from "features/game/GameLayout";
 import { GameLobby } from "features/game/GameLobby";
 
@@ -7,13 +7,12 @@ const GameLobbySpectatePage = () => {
   return (
     <>
       <SEO title="Spectate Game" />
-      <PageContainer justify="start">
-        <GameLobby isSpectate />
-      </PageContainer>
+      <GameLobby isSpectate />
     </>
   );
 };
 
-GameLobbySpectatePage.Layout = GameLayout;
+const getLayout = (page: ReactNode) => <GameLayout>{page}</GameLayout>;
+GameLobbySpectatePage.getLayout = getLayout;
 
 export default GameLobbySpectatePage;

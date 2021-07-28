@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { SEO } from "components";
 import { HomeLayout } from "features/home/HomeLayout";
 import { HomeSetName } from "features/home/HomeSetName";
@@ -11,6 +12,7 @@ const SetNamePage = () => {
   );
 };
 
-SetNamePage.Layout = HomeLayout;
+const getLayout = (page: ReactNode) => <HomeLayout>{page}</HomeLayout>;
+SetNamePage.getLayout = getLayout;
 
 export default SetNamePage;
