@@ -13,6 +13,7 @@ const GameLobbyPage = () => {
 };
 
 const getLayout = (page: ReactNode) => <GameLayout>{page}</GameLayout>;
+
 GameLobbyPage.getLayout = getLayout;
 
 export default GameLobbyPage;

@@ -3,8 +3,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { theme } from "styles/theme";
 import { ButtonLinkNative } from "components";
-import { Navigation } from "features/packs/components/Navigation";
-import { Page, Content } from "features/packs/components/Page";
+import { Content } from "features/packs/components/Page";
 import { PackSection, Pack } from "features/packs/components/Packs";
 import { collectConnectionNodes } from "util/collection";
 
@@ -26,33 +25,26 @@ export const Profile = () => {
   const isMyPage = data?.currentUser?.username === username;
 
   return (
-    <Page>
-      <Navigation />
-      <Content>
-        <ProfileContent>
-          <header className="profile-header">
-            <h1>@{username}'s packs</h1>
-            {isMyPage && (
-              <ButtonLinkNative to="/packs/new">
-                Create new Pack
-              </ButtonLinkNative>
-            )}
-          </header>
-          <PackSection>
-            <div className="pack-items">
-              {packs.map((pack) => (
-                <Pack
-                  key={pack.id}
-                  pack={pack}
-                  showEditButton={isMyPage}
-                  showPlayButton={!isMyPage}
-                />
-              ))}
-            </div>
-          </PackSection>
-        </ProfileContent>
-      </Content>
-    </Page>
+    <ProfileContent>
+      <header className="profile-header">
+        <h1>@{username}'s packs</h1>
+        {isMyPage && (
+          <ButtonLinkNative to="/packs/new">Create new Pack</ButtonLinkNative>
+        )}
+      </header>
+      <PackSection>
+        <div className="pack-items">
+          {packs.map((pack) => (
+            <Pack
+              key={pack.id}
+              pack={pack}
+              showEditButton={isMyPage}
+              showPlayButton={!isMyPage}
+            />
+          ))}
+        </div>
+      </PackSection>
+    </ProfileContent>
   );
 };
 
@@ -74,7 +66,7 @@ const USER_QUERY = gql`
   }
 `;
 
-const ProfileContent = styled.section`
+const ProfileContent = styled(Content)`
   .profile-header {
     display: flex;
     justify-content: space-between;
