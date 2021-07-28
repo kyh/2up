@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { Link } from "react-router-dom";
 import styled, {
   css,
   StyledComponentProps,
@@ -8,7 +7,7 @@ import styled, {
 import { useAppSelector } from "util/redux";
 import { theme } from "styles/theme";
 import { bounceExpand, bounceContract } from "styles/animations";
-import { clickSound } from "styles/sound";
+import { Link } from "../Link/Link";
 
 enum Variants {
   default = "default",
@@ -31,7 +30,7 @@ export const Button = ({ onClick = () => {}, ...rest }: Props) => {
   const isSFXOn = useAppSelector((state) => state.playhouse.isSFXOn);
 
   const onButtonClick = () => {
-    if (isSFXOn) clickSound.play();
+    // if (isSFXOn) clickSound.play();
     onClick();
   };
 

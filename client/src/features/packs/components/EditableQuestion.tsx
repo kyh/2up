@@ -1,5 +1,5 @@
 import { useRef, useState, ChangeEvent, ReactNode } from "react";
-import { useParams } from "react-router-dom";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { VideoPlayer, AudioPlayer, Code, Button, Icon } from "components";
@@ -221,7 +221,8 @@ const AssetManager = ({
   onChange,
   children,
 }: EditableQuestionComponentProps) => {
-  const { packId } = useParams<{ packId: string }>();
+  const router = useRouter();
+  const packId = router.query.packId as string;
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<null | HTMLInputElement>(null);
 

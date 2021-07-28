@@ -1,6 +1,6 @@
 export { Alert, ReactAlertTemplate } from "./Alert/Alert";
-export { PageContainer } from "./Page/PageContainer";
 export { Button, ButtonLink, ButtonLinkNative } from "./Button/Button";
+export { Link } from "./Link/Link";
 export { Input } from "./Input/Input";
 export { SingleLetterInput } from "./Input/SingleLetterInput";
 export { TagInput } from "./Input/TagInput";
@@ -17,9 +17,9 @@ export { Field, TextField } from "./TextField/TextField";
 export { AreaField } from "./TextField/AreaField";
 export { AnimationSprite, animateSprite } from "./Animations/AnimationSprite";
 export { Confetti } from "./Animations/Confetti";
-export { Record } from "./Speech/Speech";
 export { Counter } from "./Counter/Counter";
 export { Carousel, CarouselContainer, CarouselItem } from "./Carousel/Carousel";
 export { AudioPlayer } from "./Players/AudioPlayer";
 export { VideoPlayer } from "./Players/VideoPlayer";
 export { Code } from "./Code/Code";
+export { SEO } from "./SEO/SEO";

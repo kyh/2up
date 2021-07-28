@@ -3,7 +3,7 @@ import styled, { css, keyframes } from "styled-components";
 const sheets = {
   bubbleExplosion3: {
     // url to spritesheet
-    spritesheet: require("./bubble-explosion-03/spritesheet.png").default,
+    spritesheet: "/sprites/bubble-explosion-03/spritesheet.png",
     // frame width
     width: 360,
     // frame height
@@ -23,7 +23,7 @@ const sheets = {
   },
   blinkingStars2: {
     // url to spritesheet
-    spritesheet: require("./blinking-stars-02/spritesheet.png").default,
+    spritesheet: "/sprites/blinking-stars-02/spritesheet.png",
     // frame width
     width: 360,
     // frame height
@@ -52,7 +52,7 @@ export const animateSprite = (name: AnimationNames) => {
     pointer-events: none;
     width: ${sprite.width}px;
     height: ${sprite.height}px;
-    background: transparent url(${sprite.spritesheet}) 0 0 no-repeat;
+    background: transparent url("${sprite.spritesheet}") 0 0 no-repeat;
     animation: ${sprite.animation} ${sprite.duration}s steps(${sprite.steps})
       ${sprite.animationFillMode} ${sprite.animationIterationCount};
   `;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link } from "components";
 import { theme } from "styles/theme";
 import { useAuth } from "util/AuthProvider";
 

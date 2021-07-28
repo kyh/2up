@@ -7,8 +7,9 @@ import {
   ReactNode,
 } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
-import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 import { useAlert } from "react-alert";
+import { localStorage } from "util/localstorage";
 import { CurrentUserQuery } from "./__generated__/CurrentUserQuery";
 import { UserCreateMutation } from "./__generated__/UserCreateMutation";
 import { SessionCreateMutation } from "./__generated__/SessionCreateMutation";
@@ -51,7 +52,7 @@ const useAuthProvider = () => {
   const [sessionCreate] = useMutation<SessionCreateMutation>(SESSION_CREATE);
   const [user, setUser] = useState(data?.currentUser);
   const alert = useAlert();
-  const history = useHistory();
+  const router = useRouter();
 
   // Handle response from authentication functions
   const handleAuth = async (
@@ -60,7 +61,7 @@ const useAuthProvider = () => {
   ) => {
     localStorage.setItem("token", token);
     if (user) {
-      history.push(`/@${user.username}`);
+      router.push(`/@${user.username}`);
       setUser(user);
     }
   };
@@ -105,7 +106,7 @@ const useAuthProvider = () => {
 
   const signout = useCallback(async () => {
     localStorage.removeItem("token");
-    window.location.reload();
+    router.reload();
   }, []);
 
   const sendPasswordResetEmail = useCallback(async (_email: string) => {
