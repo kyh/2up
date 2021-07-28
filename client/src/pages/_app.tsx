@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import Router from "next/router";
-import { ComponentType, Fragment } from "react";
+import { ReactElement, ReactNode } from "react";
 import { ApolloProvider } from "@apollo/client";
 import { Provider as ReduxProvider } from "react-redux";
 import { AuthProvider } from "util/AuthProvider";
@@ -29,7 +29,7 @@ const alertOptions = {
 };
 
 type Page<P = {}> = NextPage<P> & {
-  Layout?: ComponentType;
+  getLayout?: (page: ReactElement) => ReactNode;
 };
 
 type Props = AppProps & {
@@ -41,7 +41,7 @@ Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
 
 const MyApp = ({ Component, pageProps }: Props) => {
-  const Layout = Component.Layout ? Component.Layout : Fragment;
+  const getLayout = Component.getLayout || ((page) => page);
   return (
     <ReduxProvider store={store}>
       <ApolloProvider client={client}>
@@ -49,9 +49,7 @@ const MyApp = ({ Component, pageProps }: Props) => {
           <StyleProvider>
             <AlertProvider template={ReactAlertTemplate} {...alertOptions}>
               <AuthProvider>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
+                {getLayout(<Component {...pageProps} />)}
               </AuthProvider>
             </AlertProvider>
           </StyleProvider>

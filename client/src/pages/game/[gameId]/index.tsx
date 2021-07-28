@@ -1,19 +1,18 @@
 import { SEO } from "components";
-import { PageContainer } from "features/home/components/Page";
 import { GameLayout } from "features/game/GameLayout";
 import { Game } from "features/game/Game";
+import { ReactNode } from "react";
 
 const GamePage = () => {
   return (
     <>
       <SEO title="Game" />
-      <PageContainer justify="start">
-        <Game />
-      </PageContainer>
+      <Game />
     </>
   );
 };
 
-GamePage.Layout = GameLayout;
+const getLayout = (page: ReactNode) => <GameLayout>{page}</GameLayout>;
+GamePage.getLayout = getLayout;
 
 export default GamePage;
