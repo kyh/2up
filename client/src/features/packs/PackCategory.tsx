@@ -2,9 +2,9 @@ import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { collectConnectionNodes } from "util/collection";
 import { Link } from "components";
-import { Navigation } from "./components/Navigation";
-import { Page, Content } from "./components/Page";
-import { PackSection, Pack } from "./components/Packs";
+import { Content } from "features/packs/components/Page";
+import { PackSection, Pack } from "features/packs/components/Packs";
+
 import { PackCategoryPagePacksQuery } from "./__generated__/PackCategoryPagePacksQuery";
 
 export const PackCategory = () => {
@@ -18,26 +18,23 @@ export const PackCategory = () => {
   const featured = Object.values(featuredMap);
 
   return (
-    <Page>
-      <Navigation />
-      <Content>
-        <Link to="/packs" className="back-link">
-          &#171; Back to packs
-        </Link>
-        <PackSection>
-          <div className="pack-section">
-            <header className="pack-section-header mb">
-              <h1>{tagSlug} Packs</h1>
-            </header>
-            <div className="pack-items">
-              {featured.map((pack) => (
-                <Pack key={pack.id} pack={pack} />
-              ))}
-            </div>
+    <Content>
+      <Link to="/packs" className="back-link">
+        &#171; Back to packs
+      </Link>
+      <PackSection>
+        <div className="pack-section">
+          <header className="pack-section-header mb">
+            <h1>{tagSlug} Packs</h1>
+          </header>
+          <div className="pack-items">
+            {featured.map((pack) => (
+              <Pack key={pack.id} pack={pack} />
+            ))}
           </div>
-        </PackSection>
-      </Content>
-    </Page>
+        </div>
+      </PackSection>
+    </Content>
   );
 };
 

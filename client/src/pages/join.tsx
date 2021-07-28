@@ -13,6 +13,7 @@ const SetNamePage = () => {
 };
 
 const getLayout = (page: ReactNode) => <HomeLayout>{page}</HomeLayout>;
+
 SetNamePage.getLayout = getLayout;
 
 export default SetNamePage;

@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "util/AuthProvider";
 import { collectConnectionNodes } from "util/collection";
 import { Link, Carousel, CarouselItem, ButtonLinkNative } from "components";
-import { Navigation } from "./components/Navigation";
-import { Page, Content, Footer } from "./components/Page";
+import { Content, Footer } from "./components/Page";
 import { PackSection, Pack, PacksProps } from "./components/Packs";
 import { PackDiscoverPagePacksQuery } from "./__generated__/PackDiscoverPagePacksQuery";
 
@@ -68,8 +67,7 @@ export const PackDiscover = () => {
   const myPacks = Object.values(myPacksMap);
 
   return (
-    <Page bgImage="/illustrations/space.svg" bgTop="100px">
-      <Navigation />
+    <>
       <Content>
         <PackSection>
           <div className="pack-section spaced">
@@ -110,7 +108,7 @@ export const PackDiscover = () => {
           <Link to="/auth/request">Want to build your own pack?</Link>
         )}
       </Footer>
-    </Page>
+    </>
   );
 };
 

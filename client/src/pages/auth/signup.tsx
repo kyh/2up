@@ -13,8 +13,9 @@ const SignupPage = () => {
 };
 
 const getLayout = (page: ReactNode) => (
-  <AuthLayout bgImg="glasses">{page}</AuthLayout>
+  <AuthLayout bgImage="glasses">{page}</AuthLayout>
 );
+
 SignupPage.getLayout = getLayout;
 
 export default SignupPage;

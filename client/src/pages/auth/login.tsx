@@ -13,8 +13,9 @@ const LoginPage = () => {
 };
 
 const getLayout = (page: ReactNode) => (
-  <AuthLayout bgImg="crown">{page}</AuthLayout>
+  <AuthLayout bgImage="crown">{page}</AuthLayout>
 );
+
 LoginPage.getLayout = getLayout;
 
 export default LoginPage;

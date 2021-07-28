@@ -4,8 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 import { theme } from "styles/theme";
 import { Link, Button } from "components";
 import { useHostGame } from "features/game/gameService";
-import { Navigation } from "./components/Navigation";
-import { Page, Content } from "./components/Page";
+import { Content } from "features/packs/components/Page";
 import { PackDetailsPagePackQuery } from "./__generated__/PackDetailsPagePackQuery";
 
 export const PackDetails = () => {
@@ -20,26 +19,23 @@ export const PackDetails = () => {
   const { pack, currentUser } = data || {};
 
   return (
-    <Page>
-      <Navigation />
-      <PackDetailsPageContent>
-        <Link to="/packs" className="back-link">
-          &#171; Back to packs
-        </Link>
-        {pack && (
-          <header className="pack-header">
-            <h1 className="pack-name">{pack.name}</h1>
-            <p className="pack-description">{pack.description}</p>
-            <div className="pack-actions">
-              <Button onClick={() => hostGame(packId)}>Start a game</Button>
-              {!!data && pack.user.id === currentUser?.id && (
-                <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
-              )}
-            </div>
-          </header>
-        )}
-      </PackDetailsPageContent>
-    </Page>
+    <PackDetailsPageContent>
+      <Link to="/packs" className="back-link">
+        &#171; Back to packs
+      </Link>
+      {pack && (
+        <header className="pack-header">
+          <h1 className="pack-name">{pack.name}</h1>
+          <p className="pack-description">{pack.description}</p>
+          <div className="pack-actions">
+            <Button onClick={() => hostGame(packId)}>Start a game</Button>
+            {!!data && pack.user.id === currentUser?.id && (
+              <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
+            )}
+          </div>
+        </header>
+      )}
+    </PackDetailsPageContent>
   );
 };
 

@@ -5,25 +5,25 @@ import { PageContainer } from "features/home/components/Page";
 
 export const AuthLayout = ({
   children,
-  bgImg,
+  bgImage,
 }: {
   children: ReactNode;
-  bgImg: "crown" | "glasses";
+  bgImage: "crown" | "glasses";
 }) => {
   return (
-    <Page size="full" bgImg={bgImg}>
+    <Page size="full" bgImage={bgImage}>
       {children}
     </Page>
   );
 };
 
-const Page = styled(PageContainer)<{ bgImg: "crown" | "glasses" }>`
+const Page = styled(PageContainer)<{ bgImage: "crown" | "glasses" }>`
   align-items: center;
   height: 100vh;
   background: ${theme.ui.backgroundGrey};
   background-repeat: no-repeat;
-  ${({ bgImg }) =>
-    bgImg === "crown"
+  ${({ bgImage }) =>
+    bgImage === "crown"
       ? css`
           background-image: url("/illustrations/kitty-crown.svg");
           background-position: 23% 102%;

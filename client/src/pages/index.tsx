@@ -13,6 +13,7 @@ const HomePage = () => {
 };
 
 const getLayout = (page: ReactNode) => <HomeLayout>{page}</HomeLayout>;
+
 HomePage.getLayout = getLayout;
 
 export default HomePage;
