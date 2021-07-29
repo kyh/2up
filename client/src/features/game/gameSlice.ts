@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { localStorage } from "util/localstorage";
+import { localStorage } from "util/window";
 
 export type GameState = {
   gameId: string;

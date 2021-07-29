@@ -75,7 +75,7 @@ export class ProgressBar {
       height: "100%",
     };
 
-    let timeout: number | undefined | null;
+    let timeout: ReturnType<typeof setTimeout> | null = null;
     let current!: HTMLElement;
 
     this.start = () => {
@@ -93,7 +93,7 @@ export class ProgressBar {
       if (timeout != null) {
         clearTimeout(timeout);
       }
-      timeout = window.setTimeout(() => {
+      timeout = setTimeout(() => {
         timeout = null;
         current.className = config.className + " started";
         assign(current.style, startedStyle);

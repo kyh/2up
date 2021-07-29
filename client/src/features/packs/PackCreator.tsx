@@ -91,7 +91,7 @@ export const PackCreator = () => {
     }
   };
 
-  useHotkeys(window, [
+  useHotkeys(typeof window !== "undefined" ? window : null, [
     [keybindings.testPlay.hotkey, testPlay],
     [keybindings.showShortcuts.hotkey, toggleHelpModal],
     [keybindings.previousScene.hotkey, selectScenePosition(-1)],

@@ -5,6 +5,7 @@ import { playhouseActions } from "features/home/playhouseSlice";
 import { Link, Button, Input } from "components";
 import { Form } from "features/home/components/Form";
 import { StartNewGameText } from "features/home/HomeJoinGame";
+import { location } from "util/window";
 
 type FormInputs = {
   name: string;

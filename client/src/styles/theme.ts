@@ -29,8 +29,11 @@ export const breakpoints = {
 };
 
 export const isDesktop = () => {
-  const mq = window.matchMedia(breakpoints.desktop.replace("@media ", ""));
-  return mq.matches;
+  if (typeof window !== "undefined" && window.matchMedia) {
+    const mq = window.matchMedia(breakpoints.desktop.replace("@media ", ""));
+    return mq.matches;
+  }
+  return false;
 };
 
 const SPACING_UNIT = 4;

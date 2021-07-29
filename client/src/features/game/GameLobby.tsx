@@ -12,6 +12,7 @@ import {
   PlayersGrid,
   NextButton,
 } from "features/game/components/PlayerGrid";
+import { location } from "util/window";
 
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const alert = useAlert();
