@@ -1,4 +1,5 @@
 module.exports = {
+  ignoreDuringBuilds: true,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
