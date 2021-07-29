@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 import styled from "styled-components";
 import { gql, useMutation, useReactiveVar } from "@apollo/client";
 import { useAlert } from "react-alert";
@@ -46,11 +47,12 @@ export const Topbar = ({ pack, testPlay }: Props) => {
     <StyledNavigationContainer>
       <div className="left">
         <Link to={`/packs/${pack.id}`}>
-          <img
+          <Image
             className="logo"
             src="/logo/logomark.svg"
             alt="Playhouse"
             height="35"
+            width="35"
           />
         </Link>
       </div>

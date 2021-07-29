@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Image from "next/image";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { Navigation } from "features/game/components/Navigation";
@@ -11,7 +12,14 @@ export const HomeLayout = ({ children }: { children: ReactNode }) => {
       <Navigation />
       <PageContainer>
         <IntroContainer>
-          <IntroLogo src="/logo/logomark.svg" alt="Playhouse" />
+          <IntroLogoContaier>
+            <Image
+              src="/logo/logomark.svg"
+              alt="Playhouse"
+              width="60"
+              height="65"
+            />
+          </IntroLogoContaier>
           <IntroCard>{children}</IntroCard>
         </IntroContainer>
       </PageContainer>
@@ -23,11 +31,10 @@ const IntroContainer = styled.section`
   transform: translateY(-70px);
 `;
 
-const IntroLogo = styled.img`
-  display: block;
-  width: 60px;
-  height: 65px;
-  margin: 0 auto ${theme.spacings(3)};
+const IntroLogoContaier = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: ${theme.spacings(3)};
 `;
 
 const IntroCard = styled(Card)`
