@@ -15,7 +15,8 @@ const GAME_CREATE = gql`
 export const useHostGame = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [gameCreate] = useMutation<GameCreateMutation>(GAME_CREATE);
+  const [gameCreate, { loading }] =
+    useMutation<GameCreateMutation>(GAME_CREATE);
 
   const hostGame = async (packId: string, testMode = false) => {
     const { data } = await gameCreate({
@@ -32,5 +33,5 @@ export const useHostGame = () => {
     });
   };
 
-  return hostGame;
+  return { hostGame, loading };
 };

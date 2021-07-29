@@ -20,7 +20,7 @@ export const HomeJoinGame = () => {
   const dispatch = useAppDispatch();
   const storedGameId = useAppSelector((state) => state.game.gameId);
   const { register, handleSubmit, reset } = useForm<FormInputs>();
-  const [gameCheck] =
+  const [gameCheck, { loading }] =
     useMutation<HomeJoinGamePageGameCheckMutation>(GAME_CHECK);
   const queryParams = router.query;
 
@@ -48,7 +48,9 @@ export const HomeJoinGame = () => {
           placeholder="Game ID"
           defaultValue={storedGameId || queryParams.gameId || ""}
         />
-        <Button type="submit">Join existing game</Button>
+        <Button type="submit" disabled={loading}>
+          Join existing game
+        </Button>
       </Form>
       <StartNewGameText>
         Or <Link to="/packs">start your own game</Link>

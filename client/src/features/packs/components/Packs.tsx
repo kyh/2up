@@ -155,7 +155,7 @@ export const Pack = ({
   showPlayButton = true,
   showEditButton = false,
 }: PacksProps) => {
-  const hostGame = useHostGame();
+  const { hostGame, loading } = useHostGame();
 
   const play = () => {
     hostGame(pack.id);
@@ -169,7 +169,7 @@ export const Pack = ({
       </Link>
       {showPlayButton && (
         <div className="pack-item-play">
-          <Button variant="fab" onClick={play}>
+          <Button variant="fab" onClick={play} disabled={loading}>
             <Icon icon="play" />
           </Button>
         </div>

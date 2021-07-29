@@ -19,8 +19,8 @@ export const Navigation = () => {
   const { gameId } = router.query;
 
   const leaveGame = () => {
-    dispatch(gameActions.reset({ gameId: undefined }));
     router.push("/");
+    dispatch(gameActions.reset({ gameId: undefined }));
     setIsOpen(false);
   };
 
