@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 import NextLink from "next/link";
 
 type Props = {
   to: string;
   children?: ReactNode;
   className?: string;
-  onClick?: (event: MouseEvent) => void;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 };
 
 export const Link = ({ children, to, ...rest }: Props) => {
