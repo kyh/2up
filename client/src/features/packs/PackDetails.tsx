@@ -10,8 +10,7 @@ import { PackDetailsPagePackQuery } from "./__generated__/PackDetailsPagePackQue
 export const PackDetails = () => {
   const router = useRouter();
   const packId = router.query.packId as string;
-  const hostGame = useHostGame();
-
+  const { hostGame, loading } = useHostGame();
   const { data } = useQuery<PackDetailsPagePackQuery>(PACK_QUERY, {
     variables: { packId },
   });
@@ -28,7 +27,9 @@ export const PackDetails = () => {
           <h1 className="pack-name">{pack.name}</h1>
           <p className="pack-description">{pack.description}</p>
           <div className="pack-actions">
-            <Button onClick={() => hostGame(packId)}>Start a game</Button>
+            <Button onClick={() => hostGame(packId)} disabled={loading}>
+              Start a game
+            </Button>
             {!!data && pack.user.id === currentUser?.id && (
               <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
             )}

@@ -30,9 +30,9 @@ import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQue
 export const PackCreator = () => {
   const router = useRouter();
   const screenRef = useRef<null | HTMLDivElement>(null);
-  const hostGame = useHostGame();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedSceneId, setSelectedSceneId] = useState("");
+  const { hostGame } = useHostGame();
   const packId = router.query.packId as string;
   const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
     variables: {
