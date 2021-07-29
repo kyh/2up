@@ -1,10 +1,11 @@
 import { useContext, useEffect, useRef, createContext, ReactNode } from "react";
 import { Presence } from "phoenix";
-import { useHistory, useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 import { useAlert } from "react-alert";
 import { useAppDispatch, useAppSelector } from "util/redux";
 import { useChannel } from "util/channel";
 import { gameActions } from "features/game/gameSlice";
+import { localStorage } from "util/localstorage";
 
 export const GameContext = createContext({
   broadcast: (_eventName: string, _payload?: Record<string, any>) => {},
@@ -20,15 +21,14 @@ const PRESENCE_EVENTS = {
 export const GameProvider = ({ children, gameId }: Props) => {
   const storedGameId = useAppSelector((state) => state.game.gameId);
   const presencesRef = useRef({});
-  const history = useHistory();
-  const location = useLocation();
+  const router = useRouter();
   const alert = useAlert();
   const dispatch = useAppDispatch();
   const { broadcast, connected, error } = useChannel(
     `game:${gameId}`,
     {
       name: localStorage.getItem("name"),
-      isSpectator: location.pathname.includes("spectate"),
+      isSpectator: router.pathname.includes("spectate"),
     },
     (event, payload = {}) => {
       if (event === PRESENCE_EVENTS.state || event === PRESENCE_EVENTS.diff) {
@@ -57,7 +57,7 @@ export const GameProvider = ({ children, gameId }: Props) => {
     if (error) {
       dispatch(gameActions.reset({ gameId: undefined }));
       alert.show(`Error connecting to game ${gameId}`);
-      history.push("/");
+      router.push("/");
     }
   }, [storedGameId, gameId, error]);
 

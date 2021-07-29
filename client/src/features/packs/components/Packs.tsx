@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { fadeIn, bounceExpand, bounceContract } from "styles/animations";
-import { Button, ButtonLinkNative, Icon } from "components";
+import { Link, Button, ButtonLinkNative, Icon } from "components";
 import { useHostGame } from "features/game/gameService";
 
 import { PackDiscoverPagePacksQuery_my_edges_node } from "../__generated__/PackDiscoverPagePacksQuery";
@@ -156,7 +155,7 @@ export const Pack = ({
   showPlayButton = true,
   showEditButton = false,
 }: PacksProps) => {
-  const hostGame = useHostGame();
+  const { hostGame, loading } = useHostGame();
 
   const play = () => {
     hostGame(pack.id);
@@ -170,7 +169,7 @@ export const Pack = ({
       </Link>
       {showPlayButton && (
         <div className="pack-item-play">
-          <Button variant="fab" onClick={play}>
+          <Button variant="fab" onClick={play} disabled={loading}>
             <Icon icon="play" />
           </Button>
         </div>

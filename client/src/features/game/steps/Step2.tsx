@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { theme } from "styles/theme";
 import { StepProps, GameState, SceneAnswer } from "features/game/gameSlice";
 import { Answer } from "features/game/components/Answer";
-import correctSvg from "features/game/components/correct.svg";
 import {
   Player,
   PlayersGrid,
@@ -86,7 +85,11 @@ const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
       >
         {isCorrect && (
           <>
-            <img className="correct" src={correctSvg} alt="Correct answer" />
+            <img
+              className="correct"
+              src="/illustrations/correct.svg"
+              alt="Correct answer"
+            />
             <Stars name="blinkingStars2" />
           </>
         )}

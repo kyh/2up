@@ -1,10 +1,10 @@
 import { useState } from "react";
+import Image from "next/image";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { gql, useMutation, useReactiveVar } from "@apollo/client";
 import { useAlert } from "react-alert";
 import { theme } from "styles/theme";
-import { Button, Icon, Modal, Loader } from "components";
+import { Link, Button, Icon, Modal, Loader } from "components";
 import { NavigationContainer } from "features/packs/components/Navigation";
 import { PackForm, PackFormInputs } from "features/packs/components/PackForm";
 import { savingSceneVar } from "features/packs/packService";
@@ -47,11 +47,12 @@ export const Topbar = ({ pack, testPlay }: Props) => {
     <StyledNavigationContainer>
       <div className="left">
         <Link to={`/packs/${pack.id}`}>
-          <img
+          <Image
             className="logo"
             src="/logo/logomark.svg"
             alt="Playhouse"
             height="35"
+            width="35"
           />
         </Link>
       </div>
