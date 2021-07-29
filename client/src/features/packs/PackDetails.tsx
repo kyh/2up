@@ -12,7 +12,7 @@ export const PackDetails = () => {
   const packId = router.query.packId as string;
   const { hostGame, loading } = useHostGame();
   const { data } = useQuery<PackDetailsPagePackQuery>(PACK_QUERY, {
-    variables: { packId },
+    variables: { packId: packId || "" },
   });
 
   const { pack, currentUser } = data || {};
