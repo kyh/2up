@@ -5,7 +5,7 @@ import { useAlert } from "react-alert";
 import { useAppDispatch, useAppSelector } from "util/redux";
 import { useChannel } from "util/channel";
 import { gameActions } from "features/game/gameSlice";
-import { localStorage } from "util/localstorage";
+import { localStorage } from "util/window";
 
 export const GameContext = createContext({
   broadcast: (_eventName: string, _payload?: Record<string, any>) => {},

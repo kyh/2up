@@ -4,7 +4,7 @@ import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { getMainDefinition } from "apollo-utilities";
 import { omitDeep } from "util/string";
-import { localStorage } from "util/localstorage";
+import { localStorage } from "util/window";
 import { cache } from "./cache";
 
 const cleanTypenameLink = new ApolloLink((operation, forward) => {
