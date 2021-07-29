@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styled from "styled-components";
 import { Link } from "components";
 import { theme } from "styles/theme";
@@ -9,11 +10,12 @@ export const Navigation = () => {
     <NavigationContainer>
       <div className="left">
         <Link to="/packs">
-          <img
+          <Image
             className="logo"
             src="/logo/logomark.svg"
             alt="Playhouse"
             height="35"
+            width="35"
           />
         </Link>
       </div>
