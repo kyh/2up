@@ -41,7 +41,7 @@ export const Confetti = () => {
   }, []);
 
   const makeShot = (particleRatio: number, opts = {}) => {
-    instance &&
+    if (instance && instance.current) {
       instance.current({
         ...opts,
         origin: {
@@ -50,6 +50,7 @@ export const Confetti = () => {
         },
         particleCount: Math.floor(200 * particleRatio),
       });
+    }
   };
 
   const fire = () => {

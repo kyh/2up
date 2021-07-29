@@ -14,7 +14,10 @@ export const SocketProvider = ({
   options = {},
   children,
 }: Props) => {
-  const socket = new Socket(wsUrl, { params: options });
+  const socket =
+    typeof window !== "undefined"
+      ? new Socket(wsUrl, { params: options })
+      : ({} as Socket);
 
   useEffect(() => {
     socket.connect();

@@ -1,4 +1,4 @@
-import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import { useAppDispatch } from "util/redux";
 import { gameActions } from "features/game/gameSlice";
@@ -13,9 +13,10 @@ const GAME_CREATE = gql`
 `;
 
 export const useHostGame = () => {
-  const history = useHistory();
+  const router = useRouter();
   const dispatch = useAppDispatch();
-  const [gameCreate] = useMutation<GameCreateMutation>(GAME_CREATE);
+  const [gameCreate, { loading }] =
+    useMutation<GameCreateMutation>(GAME_CREATE);
 
   const hostGame = async (packId: string, testMode = false) => {
     const { data } = await gameCreate({
@@ -27,11 +28,10 @@ export const useHostGame = () => {
     const testSuffix = testMode ? `?test=${packId}` : "";
 
     dispatch(gameActions.new_game({ gameId }));
-    history.push({
-      pathname: "/join",
-      search: testSuffix,
+    router.push({
+      pathname: `/join${testSuffix}`,
     });
   };
 
-  return hostGame;
+  return { hostGame, loading };
 };

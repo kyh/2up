@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useAlert } from "react-alert";
-import { useHistory, useLocation, Link } from "react-router-dom";
+import { useRouter } from "next/router";
 import styled from "styled-components";
-import { Button, Modal, AnimationSprite, Icon } from "components";
+import { useAlert } from "react-alert";
+import { Link, Button, Modal, AnimationSprite, Icon } from "components";
 import { theme } from "styles/theme";
 import { bounceIn } from "styles/animations";
 import { useAppSelector } from "util/redux";
@@ -15,12 +15,11 @@ import {
 
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const alert = useAlert();
-  const location = useLocation();
-  const history = useHistory();
+  const router = useRouter();
   const gameState = useAppSelector((state) => state.game);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { broadcast } = useGameChannel();
-  const gameLink = `${window.location.origin}?gameId=${gameState.gameId}`;
+  const gameLink = `${location.origin}?gameId=${gameState.gameId}`;
 
   const onClickStart = () => {
     // Adopt single player mode for now...
@@ -52,10 +51,11 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
 
   useEffect(() => {
     if (gameState.scene) {
-      history.push({
-        pathname: `/game/${gameState.gameId}${isSpectate ? "/spectate" : ""}`,
-        search: location.search,
-      });
+      router.push(
+        `/game/${gameState.gameId}${isSpectate ? "/spectate" : ""}${
+          location.search
+        }`
+      );
     }
   }, [gameState.gameId, gameState.scene]);
 
