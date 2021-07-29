@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import Image from "next/image";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { Navigation } from "features/game/components/Navigation";
@@ -13,7 +12,7 @@ export const HomeLayout = ({ children }: { children: ReactNode }) => {
       <PageContainer>
         <IntroContainer>
           <IntroLogoContaier>
-            <Image
+            <img
               src="/logo/logomark.svg"
               alt="Playhouse"
               width="60"
