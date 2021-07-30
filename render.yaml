@@ -8,10 +8,6 @@ services:
     autoDeploy: true
     envVars:
       - fromGroup: playhouse-client-env
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
 
   - type: web
     name: playhouse-server
