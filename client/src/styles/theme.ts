@@ -1,5 +1,5 @@
 import { css } from "styled-components";
-import { memoize } from "lodash";
+import memoize from "lodash/memoize";
 import {
   buttonBorder,
   buttonBorderActive,
