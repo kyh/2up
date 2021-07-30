@@ -7,6 +7,7 @@ import styled, {
 import { useAppSelector } from "util/redux";
 import { theme } from "styles/theme";
 import { bounceExpand, bounceContract } from "styles/animations";
+import { createOrGetFx } from "styles/sound";
 import { Link } from "../Link/Link";
 
 enum Variants {
@@ -30,7 +31,8 @@ export const Button = ({ onClick = () => {}, ...rest }: Props) => {
   const isSFXOn = useAppSelector((state) => state.playhouse.isSFXOn);
 
   const onButtonClick = () => {
-    // if (isSFXOn) clickSound.play();
+    const clickSound = createOrGetFx("click");
+    if (clickSound && isSFXOn) clickSound.play();
     onClick();
   };
 

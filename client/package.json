@@ -10,6 +10,7 @@
     "introspect": "apollo client:download-schema",
     "codegen": "apollo client:codegen --target=typescript --localSchemaFile=schema.json",
     "gql": "npm run introspect && npm run codegen",
+    "analyze": "ANALYZE=true npm run build",
     "clean:codegen": "find . -name __generated__ -exec rm -rf {} \\;",
     "clean:build": "rm -rf build"
   },
@@ -64,6 +65,7 @@
     "apollo": "^2.32.1",
     "eslint": "7.31.0",
     "eslint-config-next": "11.0.1",
-    "typescript": "4.3.5"
+    "typescript": "4.3.5",
+    "webpack-bundle-analyzer": "^4.4.2"
   }
 }

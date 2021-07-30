@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { localStorage } from "util/window";
-// import { themeSong } from "styles/sound";
+import { createOrGetThemesong } from "styles/sound";
 
 export type UserPayload = {
   name: string;
@@ -34,12 +34,11 @@ const playhouseSlice = createSlice({
   initialState,
   reducers: {
     toggle_music: (state) => {
+      const themeSong = createOrGetThemesong();
       state.isMusicOn = !state.isMusicOn;
-      // if (state.isMusicOn) {
-      //   // themeSong.play();
-      // } else {
-      //   // themeSong.pause();
-      // }
+      if (themeSong) {
+        state.isMusicOn ? themeSong.play() : themeSong.pause();
+      }
       localStorage.setItem("isMusicOn", state.isMusicOn);
     },
     toggle_SFX: (state) => {

@@ -1,3 +1,6 @@
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+
 module.exports = {
   eslint: {
     ignoreDuringBuilds: true,
@@ -18,6 +21,16 @@ module.exports = {
         },
       ],
     });
+
+    if (process.env.ANALYZE) {
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: "server",
+          analyzerPort: 8888,
+          openAnalyzer: true,
+        })
+      );
+    }
 
     return config;
   },

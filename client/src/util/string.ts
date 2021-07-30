@@ -1,4 +1,5 @@
-import { memoize, omit } from "lodash";
+import memoize from "lodash/memoize";
+import omit from "lodash/omit";
 
 const hashCodeFn = (string?: string, mod?: number) => {
   let hash = 0;
