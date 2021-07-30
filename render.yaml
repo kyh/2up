@@ -4,7 +4,7 @@ services:
     env: static
     branch: main
     buildCommand: cd client && npm i && npm run build
-    staticPublishPath: client/build
+    staticPublishPath: client/out
     autoDeploy: true
     envVars:
       - fromGroup: playhouse-client-env
