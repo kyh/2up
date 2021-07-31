@@ -21,8 +21,8 @@ const GlobalStyle = createGlobalStyle<{ isDarkMode: boolean }>`
     color: ${theme.ui.text};
     background-color: ${theme.ui.background};
     text-rendering: optimizeLegibility;
-    font-family: 'Chalkboard SE', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
-      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    font-family: "Chalkboard SE", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   }
 
   a {
