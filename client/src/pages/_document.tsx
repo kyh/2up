@@ -7,7 +7,7 @@ import Document, {
   DocumentContext,
 } from "next/document";
 import { ServerStyleSheet } from "styled-components";
-
+import { GA_TRACKING_ID } from "util/analytics";
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     // Render app and page and get the context of the page with collected side effects.
@@ -63,17 +63,21 @@ export default class MyDocument extends Document {
             sizes="16x16"
             href="/favicon/favicon-16x16.png"
           />
-          <link
-            rel="preload"
-            href="/fonts/ChalkboardSE-Regular.woff2"
-            as="font"
-            type="font/woff2"
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
           />
-          <link
-            rel="preload"
-            href="/fonts/ChalkboardSE-Regular.woff"
-            as="font"
-            type="font/woff"
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+            }}
           />
         </Head>
         <body>
