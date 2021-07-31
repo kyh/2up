@@ -22,7 +22,7 @@ export const Navigation = () => {
         {auth.user?.username ? (
           <>
             <Link to="/">Play</Link>
-            <Link to={`/@${auth.user?.username}`}>Profile</Link>
+            <Link to={`/u/${auth.user?.username}`}>Profile</Link>
             <Link to="/packs" onClick={auth.signout}>
               Logout
             </Link>
