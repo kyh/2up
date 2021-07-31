@@ -13,7 +13,7 @@ import { ProgressBar, ReactAlertTemplate } from "components";
 import { store } from "util/store";
 import { client } from "util/apollo";
 
-// import "util/analytics";
+import "util/analytics";
 
 const progress = new ProgressBar();
 

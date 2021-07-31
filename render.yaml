@@ -51,6 +51,8 @@ envVarGroups:
         value: https://v1.nocodeapi.com/kaiyu/google_sheets/EoyQeVVLXABcoPen
       - key: NEXT_PUBLIC_SHEETS_API_KEY
         sync: false
+      - key: NEXT_PUBLIC_GA_TRACKING_ID
+        sync: false
 
   - name: playhouse-server-env
     envVars:
