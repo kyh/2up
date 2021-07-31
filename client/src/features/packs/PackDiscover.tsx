@@ -20,18 +20,18 @@ const refToTags: Record<
     section1: { title: "Packs for you", tags: ["product"] },
     section2: { title: "Featured Packs", tags: ["code"] },
     section3: { title: "Learn your geography", tags: ["geography"] },
-    section4: { title: "Get in early", tags: ["crypto"] },
+    section4: { title: "Trending now", tags: ["crypto"] },
   },
   devto: {
     section1: { title: "Packs for you", tags: ["code"] },
     section2: { title: "Top played", tags: ["crypto"] },
     section3: { title: "Learn your geography", tags: ["geography"] },
-    section4: { title: "Get in early", tags: ["product"] },
+    section4: { title: "Trending now", tags: ["product"] },
   },
   default: {
     section1: { title: "Featured Packs", tags: ["featured"] },
-    section2: { title: "For the computer geeks", tags: ["code"] },
-    section3: { title: "Get in early", tags: ["product", "crypto"] },
+    section2: { title: "For the hackers", tags: ["code"] },
+    section3: { title: "Trending now", tags: ["product", "crypto"] },
     section4: { title: "Learn your geography", tags: ["geography"] },
   },
 };
