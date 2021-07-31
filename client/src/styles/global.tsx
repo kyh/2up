@@ -7,6 +7,15 @@ import { useAppSelector } from "util/redux";
 const GlobalStyle = createGlobalStyle<{ isDarkMode: boolean }>`
   ${styledNormalize}
 
+  @font-face {
+    font-family: "Chalkboard SE";
+    src: url("/fonts/ChalkboardSE-Regular.woff2") format("woff2"),
+      url("/fonts/ChalkboardSE-Regular.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: fallback;
+  }
+
   html {
     box-sizing: border-box;
   }
