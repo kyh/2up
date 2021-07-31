@@ -12,8 +12,7 @@ import { ProgressBar, ReactAlertTemplate } from "components";
 
 import { store } from "util/store";
 import { client } from "util/apollo";
-
-import "util/analytics";
+import * as gtag from "util/analytics";
 
 const progress = new ProgressBar();
 
@@ -26,8 +25,11 @@ type Props = AppProps & {
 };
 
 Router.events.on("routeChangeStart", progress.start);
-Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
+Router.events.on("routeChangeComplete", (url) => {
+  gtag.pageview(url);
+  progress.finish();
+});
 
 const MyApp = ({ Component, pageProps }: Props) => {
   const getLayout = Component.getLayout || ((page) => page);

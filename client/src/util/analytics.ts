@@ -1,24 +1,17 @@
-import Analytics from "analytics";
-import googleAnalyticsPlugin from "@analytics/google-analytics";
-import Router from "next/router";
+export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID;
 
-// Initialize analytics and plugins
-// Documentation: https://getanalytics.io
-export const analytics = Analytics({
-  debug: process.env.NODE_ENV !== "production",
-  plugins: [
-    googleAnalyticsPlugin({
-      trackingId: process.env.NEXT_PUBLIC_GA_TRACKING_ID!,
-    }),
-  ],
-});
+// https://developers.google.com/analytics/devguides/collection/gtagjs/pages
+export const pageview = (url: string) => {
+  (window as any).gtag("config", GA_TRACKING_ID, {
+    page_path: url,
+  });
+};
 
-// Track initial pageview
-if (typeof window !== "undefined") {
-  analytics.page();
-}
-
-// Track pageview on route change
-Router.events.on("routeChangeComplete", (url) => {
-  analytics.page();
-});
+// https://developers.google.com/analytics/devguides/collection/gtagjs/events
+export const event = ({ action, category, label, value }: any) => {
+  (window as any).gtag("event", action, {
+    event_category: category,
+    event_label: label,
+    value: value,
+  });
+};
