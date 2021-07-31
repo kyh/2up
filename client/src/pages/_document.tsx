@@ -74,18 +74,12 @@ export default class MyDocument extends Document {
             as="font"
             type="font/woff2"
           />
-          <style jsx global>
-            {`
-              @font-face {
-                font-family: "Chalkboard SE";
-                src: url("/fonts/ChalkboardSE-Regular.woff2") format("woff2"),
-                  url("/fonts/ChalkboardSE-Regular.woff") format("woff");
-                font-weight: normal;
-                font-style: normal;
-                font-display: fallback;
-              }
-            `}
-          </style>
+          <link
+            rel="preload"
+            href="/fonts/ChalkboardSE-Regular.woff"
+            as="font"
+            type="font/woff"
+          />
         </Head>
         <body>
           <Main />
