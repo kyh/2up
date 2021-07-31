@@ -8,11 +8,6 @@ import Document, {
 } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 
-const NAME = "Playhouse";
-const TITLE = "Playhouse";
-const DESCRIPTION = "Create your own trivia quiz game and play with friends";
-const URL = "https://playhouse.gg";
-
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     // Render app and page and get the context of the page with collected side effects.
@@ -45,7 +40,7 @@ export default class MyDocument extends Document {
       <Html lang="en" dir="ltr">
         <Head>
           <meta name="referrer" content="origin" />
-          <meta name="application-name" content={NAME} />
+          <meta name="application-name" content="Playhouse" />
           <meta name="theme-color" content="#1F2937" />
           <meta name="robots" content="index, follow" />
           <meta property="fb:app_id" content="{FB_ID}" />
