@@ -103,9 +103,8 @@ type UploaderProps = {
 
 export const Uploader = ({ pathPrefix, onUploaded }: UploaderProps) => {
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
-  const [presignedUrlCreate] = useMutation<PresignedUrlCreateMutation>(
-    PRESIGNED_URL_CREATE
-  );
+  const [presignedUrlCreate] =
+    useMutation<PresignedUrlCreateMutation>(PRESIGNED_URL_CREATE);
 
   const upload = async (files: File[]) => {
     setFilesToUpload([...files]);

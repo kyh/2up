@@ -14,9 +14,8 @@ export const packScenesVar = makeVar<any[]>([]);
 
 export const getRandomAnswer = () => {
   const packScenes = packScenesVar();
-  const { sceneAnswers } = packScenes[
-    Math.floor(Math.random() * packScenes.length)
-  ];
+  const { sceneAnswers } =
+    packScenes[Math.floor(Math.random() * packScenes.length)];
   const randomAnswer =
     sceneAnswers[Math.floor(Math.random() * sceneAnswers.length)];
   return randomAnswer;

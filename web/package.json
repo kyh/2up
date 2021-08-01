@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npm run gql && next dev",
-    "build": "npm run codegen && next build && next export",
+    "build": "npm run codegen && next build",
     "start": "next start",
     "lint": "next lint",
     "introspect": "apollo client:download-schema",
