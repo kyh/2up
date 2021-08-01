@@ -8,6 +8,7 @@ import Document, {
 } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 import { GA_TRACKING_ID } from "util/analytics";
+
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     // Render app and page and get the context of the page with collected side effects.
