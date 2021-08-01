@@ -138,9 +138,8 @@ const SCENE_DELETE = gql`
 
 export const useUpdateSceneOrder = () => {
   const alert = useAlert();
-  const [sceneOrderUpdate] = useMutation<SceneOrderUpdateMutation>(
-    SCENE_ORDER_UPDATE
-  );
+  const [sceneOrderUpdate] =
+    useMutation<SceneOrderUpdateMutation>(SCENE_ORDER_UPDATE);
   const updateSceneOrder = async (
     sceneId: string,
     beforeSceneId?: string,

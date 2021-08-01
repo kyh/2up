@@ -1,10 +1,10 @@
 services:
   - type: web
-    name: playhouse-client
-    env: static
+    name: playhouse-web
+    env: node
     branch: main
-    buildCommand: cd client && npm i && npm run build
-    staticPublishPath: client/out
+    buildCommand: cd web && npm i && npm run build
+    startCommand: cd web && npm start
     autoDeploy: true
     envVars:
       - fromGroup: playhouse-client-env

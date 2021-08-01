@@ -55,10 +55,8 @@ export const useChannel = (
   return { broadcast, connected, error };
 };
 
-const errorMessage = () => (
-  _eventName: string,
-  _payload?: Record<string, any>
-) =>
-  console.error(
-    "useChannel broadcast function cannot be invoked before the channel has been joined"
-  );
+const errorMessage =
+  () => (_eventName: string, _payload?: Record<string, any>) =>
+    console.error(
+      "useChannel broadcast function cannot be invoked before the channel has been joined"
+    );
