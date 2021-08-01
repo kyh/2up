@@ -1,10 +1,10 @@
 {
   "name": "playhouse",
   "workspaces": [
-    "client"
+    "web"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace=client",
+    "dev": "npm run dev --workspace=web",
     "postinstall": "husky install"
   },
   "devDependencies": {
