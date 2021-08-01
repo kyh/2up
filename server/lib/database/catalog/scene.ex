@@ -10,6 +10,7 @@ defmodule Database.Catalog.Scene do
 
     field :question, :string
     field :instruction, :string
+    field :description, :string
     field :order, :decimal
     field :external_id, :string
 
