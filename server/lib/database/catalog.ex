@@ -252,7 +252,8 @@ defmodule Database.Catalog do
           instruction,
           question_type_slug,
           question,
-          answer_type_slug | scene_answers
+          answer_type_slug,
+          answer_description | scene_answers
         ] = scene
 
         scene_answers = Enum.filter(scene_answers, &(&1 !== ""))
@@ -274,6 +275,7 @@ defmodule Database.Catalog do
           instruction: instruction,
           question: question,
           question_type_id: question_type.id,
+          answer_description: answer_description,
           answer_type_id: answer_type.id,
           order: i
         }
