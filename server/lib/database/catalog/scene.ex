@@ -10,6 +10,7 @@ defmodule Database.Catalog.Scene do
 
     field :question, :string
     field :instruction, :string
+    field :answer_description, :string
     field :order, :decimal
     field :external_id, :string
 
@@ -23,6 +24,7 @@ defmodule Database.Catalog.Scene do
       :order,
       :question_type_id,
       :answer_type_id,
+      :answer_description,
       :external_id
     ]
 
