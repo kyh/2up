@@ -67,9 +67,9 @@ export default class MyDocument extends Document {
           <link
             rel="mask-icon"
             href="/favicon/safari-pinned-tab.svg"
-            color="#5bbad5"
+            color="#7247C4"
           />
-          <meta name="msapplication-TileColor" content="#da532c" />
+          <meta name="msapplication-TileColor" content="#7247C4" />
           <meta name="theme-color" content="#ffffff" />
           <script
             async
