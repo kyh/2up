@@ -1,6 +1,7 @@
 import Head from "next/head";
 
 const url = "https://playhouse.gg";
+const ogImage = `${url}/favicon/featured.png`;
 
 export const SEO = ({
   title = "",
@@ -19,7 +20,9 @@ export const SEO = ({
       <meta property="og:description" content={description} />
       <meta property="og:site_name" content={siteTitle} />
       <meta property="og:url" content={url} />
-      <meta property="og:image" content="/featured.png" />
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="628" />
       <meta property="og:locale" content="en_US" />
 
       <meta property="twitter:card" content="summary" />
@@ -28,7 +31,7 @@ export const SEO = ({
       <meta property="twitter:description" content={description} />
       <meta name="twitter:site" content={siteTitle} />
       <meta name="twitter:url" content={url} />
-      <meta name="twitter:image" content="/featured.png" />
+      <meta name="twitter:image" content={ogImage} />
     </Head>
   );
 };
