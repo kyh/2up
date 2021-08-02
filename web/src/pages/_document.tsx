@@ -42,7 +42,6 @@ export default class MyDocument extends Document {
         <Head>
           <meta name="referrer" content="origin" />
           <meta name="application-name" content="Playhouse" />
-          <meta name="theme-color" content="#1F2937" />
           <meta name="robots" content="index, follow" />
           <meta property="fb:app_id" content="{FB_ID}" />
 
@@ -70,7 +69,7 @@ export default class MyDocument extends Document {
             color="#7247C4"
           />
           <meta name="msapplication-TileColor" content="#7247C4" />
-          <meta name="theme-color" content="#ffffff" />
+          <meta name="theme-color" content="#1A202C" />
           <script
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
