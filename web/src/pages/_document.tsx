@@ -68,8 +68,14 @@ export default class MyDocument extends Document {
             href="/favicon/safari-pinned-tab.svg"
             color="#7247C4"
           />
+          <link rel="shortcut icon" href="/favicon/favicon.ico" />
           <meta name="msapplication-TileColor" content="#7247C4" />
+          <meta
+            name="msapplication-config"
+            content="/favicon/browserconfig.xml"
+          />
           <meta name="theme-color" content="#1A202C" />
+
           <script
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
