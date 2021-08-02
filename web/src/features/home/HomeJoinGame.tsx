@@ -32,7 +32,7 @@ export const HomeJoinGame = () => {
 
     if (data?.game?.isValid) {
       dispatch(gameActions.new_game({ gameId }));
-      router.push("/join");
+      router.push("/game_name");
     } else {
       alert.show("Game code does not exist");
       reset();
