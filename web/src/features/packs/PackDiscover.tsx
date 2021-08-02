@@ -97,7 +97,7 @@ export const PackDiscover = () => {
           />
           <PackCarouselContainer
             title="My Packs"
-            url={`/@${auth.user?.username}`}
+            url={`/u/${auth.user?.username}`}
             packs={myPacks}
             showNewPackButton
           />
