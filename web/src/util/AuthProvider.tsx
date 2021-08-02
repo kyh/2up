@@ -61,7 +61,7 @@ const useAuthProvider = () => {
   ) => {
     localStorage.setItem("token", token);
     if (user) {
-      router.push(`/@${user.username}`);
+      router.push(`/u/${user.username}`);
       setUser(user);
     }
   };
