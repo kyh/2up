@@ -40,7 +40,7 @@ export const HomeSetName = () => {
       </Form>
       <StartNewGameText>
         Or{" "}
-        <Link to={`/game/${gameId}/lobby/spectate${location.search}`}>
+        <Link to={`/game/${gameId}/spectate/lobby${location.search}`}>
           spectate this game
         </Link>
       </StartNewGameText>

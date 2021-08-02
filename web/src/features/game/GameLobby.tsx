@@ -110,7 +110,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
           </Modal>
         </>
       ) : (
-        <JoinRoomButton to="/join">
+        <JoinRoomButton to="/game_name">
           Or join the room on this device
         </JoinRoomButton>
       )}

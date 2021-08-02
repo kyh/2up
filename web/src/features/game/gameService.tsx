@@ -29,7 +29,7 @@ export const useHostGame = () => {
 
     dispatch(gameActions.new_game({ gameId }));
     router.push({
-      pathname: `/join${testSuffix}`,
+      pathname: `/game_name${testSuffix}`,
     });
   };
 
