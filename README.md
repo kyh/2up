@@ -5,13 +5,13 @@
 ## 📁 Directory Layout
 
 ```
-├── /client                      # ReactJS client
+├── /web                         # Web ReactJS client
 |   └── /src
-│       ├── /app                 # Root app setup files
+│       ├── /pages               # Next.js renderable pages
 │       ├── /components          # Shared React components
 │       ├── /features            # App features and routes
 │       ├── /styles              # Theme and global styling
-│       └── /utils               # Utility modules
+│       └── /util                # Utility modules
 │── /docs                        # App documentation
 └── /server                      # Phoenix server
     └── /lib

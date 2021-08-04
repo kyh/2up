@@ -1,6 +1,6 @@
 {
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsdk": "./client/node_modules/typescript/lib",
+  "typescript.tsdk": "./web/node_modules/typescript/lib",
   "elixir.projectPath": "./server",
   "editor.formatOnSave": true
 }
