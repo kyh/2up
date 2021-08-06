@@ -25,11 +25,11 @@ export const useHostGame = () => {
 
     if (!data || !data.gameCreate) return;
     const gameId = data.gameCreate.code;
-    const testSuffix = testMode ? `?test=${packId}` : "";
 
     dispatch(gameActions.new_game({ gameId }));
     router.push({
-      pathname: `/game_name${testSuffix}`,
+      pathname: "/game_name",
+      query: { test: packId },
     });
   };
 

@@ -12,7 +12,7 @@ import { Sidebar } from "features/packs/components/PackCreatorLeftSidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";
 import { SceneQATypeMenu } from "features/packs/components/SceneQATypeMenu";
 import { SceneSettingsMenu } from "features/packs/components/SceneSettingsMenu";
-import { Button, Modal, Icon, Svg } from "components";
+import { Button, Modal, Icon } from "components";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
@@ -23,7 +23,7 @@ import {
 import { PACK_FRAGMENT } from "features/packs/packFragments";
 import { SCENES_FRAGMENT } from "features/packs/sceneFragments";
 import { useHostGame } from "features/game/gameService";
-import arrowSvg from "./svgs/arrow.svg";
+import ArrowSvg from "./svgs/arrow.svg";
 
 import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
 
@@ -159,7 +159,7 @@ export const PackCreator = () => {
               <li>You get the gist of it, add your first scene to begin</li>
             </ul>
           </div>
-          <Svg className="arrow" content={arrowSvg} />
+          <ArrowSvg className="arrow" />
         </EmptyContent>
       )}
       <HelpButton variant="fab" onClick={toggleHelpModal}>
@@ -230,7 +230,7 @@ const EmptyContent = styled(Content)`
     position: absolute;
     bottom: 65px;
     left: 225px;
-    opacity: 0.5;
+    filter: brightness(0.5);
 
     > svg {
       width: 250px;
