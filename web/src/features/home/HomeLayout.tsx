@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ReactNode } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
@@ -12,7 +13,7 @@ export const HomeLayout = ({ children }: { children: ReactNode }) => {
       <PageContainer>
         <IntroContainer>
           <IntroLogoContaier>
-            <img
+            <Image
               src="/logo/logomark.svg"
               alt="Playhouse"
               width="60"

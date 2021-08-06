@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useDebounce } from "@react-hook/debounce";
 import { css } from "styled-components";
 import memoize from "lodash/memoize";
 import {
@@ -156,4 +158,22 @@ export const theme = {
   breakpoints,
   spacings,
   ui,
+};
+
+export const useIsDesktop = () => {
+  const [desktop, setDesktop] = useDebounce(isDesktop());
+
+  useEffect(() => {
+    const onResize = () => {
+      setDesktop(isDesktop());
+    };
+
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  return desktop;
 };

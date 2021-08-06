@@ -50,6 +50,11 @@ const GlobalStyle = createGlobalStyle<{ isDarkMode: boolean }>`
     font: inherit;
     cursor: pointer;
     outline: inherit;
+
+    &:disabled {
+      filter: brightness(0.5);
+      cursor: not-allowed;
+    }
   }
 
   h1 {

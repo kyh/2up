@@ -30,20 +30,22 @@ export const Timer = ({
     return () => clearInterval(interval);
   }, [seconds]);
 
-  return createPortal(
-    <Container>
-      <TimerContainer initialSeconds={initialSeconds}>
-        <SnailContainer>
-          <Snail>
-            <SnailSvg />
-          </Snail>
-          <Dust />
-        </SnailContainer>
-        <TimerText>{seconds} seconds remaining</TimerText>
-      </TimerContainer>
-    </Container>,
-    document.body
-  );
+  return typeof window !== "undefined"
+    ? createPortal(
+        <Container>
+          <TimerContainer initialSeconds={initialSeconds}>
+            <SnailContainer>
+              <Snail>
+                <SnailSvg />
+              </Snail>
+              <Dust />
+            </SnailContainer>
+            <TimerText>{seconds} seconds remaining</TimerText>
+          </TimerContainer>
+        </Container>,
+        document.body
+      )
+    : null;
 };
 
 const scaleAnimation = keyframes`

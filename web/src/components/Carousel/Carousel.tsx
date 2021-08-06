@@ -64,7 +64,7 @@ export const CarouselContainer = styled(Swiper)`
       background-image: ${theme.ui.buttonFabBorderActiveUrl};
     }
     &:disabled {
-      opacity: 0.5;
+      filter: brightness(0.5);
       cursor: not-allowed;
       &:hover {
         background-image: ${theme.ui.buttonFabBorderUrl};
@@ -78,3 +78,4 @@ export const CarouselContainer = styled(Swiper)`
 `;
 
 export const CarouselItem = SwiperSlide;
+export const RawCarousel = Swiper;

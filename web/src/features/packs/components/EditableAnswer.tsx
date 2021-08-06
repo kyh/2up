@@ -75,6 +75,10 @@ export const EditableAnswer = ({
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     onChangeSceneAnswer({ isCorrect: e.target.checked }, index)
                   }
+                  disabled={
+                    sceneAnswer.isCorrect &&
+                    sceneAnswers.filter((a) => a.isCorrect).length < 2
+                  }
                 />
                 <Input
                   defaultValue={sceneAnswer.content || ""}
@@ -95,32 +99,42 @@ export const EditableAnswer = ({
             ))}
           </Grid>
           <AddOptionContainer>
-            <Button onClick={onAddSceneAnswer}>+ Add Option</Button>
-            <button onClick={onAddRandomSceneAnswer}>+ random answer</button>
+            <Button
+              onClick={onAddSceneAnswer}
+              disabled={sceneAnswers.length > 3}
+            >
+              + Add Option
+            </Button>
+            <button
+              onClick={onAddRandomSceneAnswer}
+              disabled={sceneAnswers.length > 3}
+            >
+              + random answer
+            </button>
           </AddOptionContainer>
         </AnswerContainer>
       );
-    case AnswerTypeSlugs.letterText.id:
-      return (
-        <AnswerContainer key={sceneId}>
-          <InputContainer>
-            <Input
-              defaultValue={sceneAnswer?.content || ""}
-              onFocus={onFocus}
-              onBlur={(e) =>
-                onChangeSceneAnswer({
-                  content: e.target.value,
-                  isCorrect: true,
-                })
-              }
-            />
-          </InputContainer>
-          <InputContainer>
-            <SingleLetterInput value={sceneAnswer?.content || ""} />
-          </InputContainer>
-          <Button disabled>Submit answer</Button>
-        </AnswerContainer>
-      );
+    // case AnswerTypeSlugs.letterText.id:
+    //   return (
+    //     <AnswerContainer key={sceneId}>
+    //       <InputContainer>
+    //         <Input
+    //           defaultValue={sceneAnswer?.content || ""}
+    //           onFocus={onFocus}
+    //           onBlur={(e) =>
+    //             onChangeSceneAnswer({
+    //               content: e.target.value,
+    //               isCorrect: true,
+    //             })
+    //           }
+    //         />
+    //       </InputContainer>
+    //       <InputContainer>
+    //         <SingleLetterInput value={sceneAnswer?.content || ""} />
+    //       </InputContainer>
+    //       <Button disabled>Submit answer</Button>
+    //     </AnswerContainer>
+    //   );
     // "text"
     default:
       return (

@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Alert, Timer } from "components";
 import { Submission, StepProps } from "features/game/gameSlice";
+import { Instruction } from "features/game/components/Instruction";
 import { Question } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
 
@@ -29,9 +30,9 @@ export const Step1 = ({ gameState, broadcast, name }: StepProps) => {
   return (
     <>
       {submitted && <Alert>Waiting for {waiting} players</Alert>}
+      <Instruction instruction={gameState.instruction} />
       <Question
         question={gameState.question}
-        instruction={gameState.instruction}
         questionType={gameState.questionType}
       />
       {gameState.sceneAnswers?.map((sceneAnswer) => (
@@ -60,9 +61,9 @@ export const Step1Spectate = ({ gameState }: StepProps) => {
         <Alert>{submissions} players have submitted their answers</Alert>
       )}
       <SpectateConatiner>
+        <Instruction instruction={gameState.instruction} />
         <Question
           question={gameState.question}
-          instruction={gameState.instruction}
           questionType={gameState.questionType}
         />
       </SpectateConatiner>

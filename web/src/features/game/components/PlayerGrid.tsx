@@ -57,8 +57,9 @@ export const PlayersGrid = styled.div<{
     position: absolute;
     display: flex;
     justify-content: space-between;
-    width: 90%;
+    right: 0;
     bottom: 0;
+    left: 0;
     pointer-events: none;
 
     .player {
@@ -89,5 +90,13 @@ export const PlayersGrid = styled.div<{
 `;
 
 export const NextButton = styled(Button)`
-  margin: auto auto ${theme.spacings(10)};
+  position: absolute;
+  bottom: ${theme.spacings(10)};
+  left: 50%;
+  width: 120px;
+  margin-left: -60px;
+
+  ${theme.breakpoints.desktop} {
+    background-color: ${theme.ui.background};
+  }
 `;
