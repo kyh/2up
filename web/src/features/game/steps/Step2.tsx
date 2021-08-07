@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import styled from "styled-components";
+import sample from "lodash/sample";
 import { theme, useIsDesktop } from "styles/theme";
 import { StepProps, GameState, SceneAnswer } from "features/game/gameSlice";
 import { Instruction } from "features/game/components/Instruction";
@@ -12,35 +13,48 @@ import {
   NextButton,
 } from "features/game/components/PlayerGrid";
 import { RawCarousel, CarouselItem, AnimationSprite } from "components";
+import { useTimeout } from "styles/animations";
 
-const isCorrect = (sceneAnswer: SceneAnswer) => sceneAnswer.isCorrect;
+const sprites = {
+  correct: ["wineGlassClinking", "checkMark", "bubbleLike"],
+  wrong: ["crossMark", "bubbleCryEmoji"],
+};
 
 export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
   const desktop = useIsDesktop();
   const swiperRef = useRef<any>(null);
   const [showSubmissions, setShowSubmissions] = useState(false);
+  const [animationSpriteName, setAnimationSpriteName] = useState<any>(null);
+
   const [firstPlayer] = gameState.players;
-  // We only support single answers for now
-  const correctAnswer = gameState.sceneAnswers?.find(isCorrect)!;
+  const correctAnswer = gameState.sceneAnswers.find(
+    (sceneAnswer) => sceneAnswer.isCorrect
+  )!;
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (gameState.submissions.length > 1) {
-        if (desktop) {
-          setShowSubmissions(true);
-        } else if (swiperRef && swiperRef.current) {
-          swiperRef.current.swiper.slideTo(1);
-        }
+  useTimeout(() => {
+    const isCurrentPlayerCorrect =
+      gameState.submissions.find((s) => s.name === name)?.content ===
+      correctAnswer.content;
+    if (isCurrentPlayerCorrect) {
+      setAnimationSpriteName(sample(sprites.correct));
+    } else {
+      setAnimationSpriteName(sample(sprites.wrong));
+    }
+  }, 300);
+
+  useTimeout(() => {
+    if (gameState.submissions.length > 1) {
+      if (desktop) {
+        setShowSubmissions(true);
+      } else if (swiperRef && swiperRef.current) {
+        swiperRef.current.swiper.slideTo(1);
       }
-    }, 2000);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [swiperRef]);
+    }
+  }, 3000);
 
   return (
     <>
+      {animationSpriteName && <CorrectSprite name={animationSpriteName} />}
       {desktop ? (
         <>
           <AnswerResult gameState={gameState} sceneAnswer={correctAnswer} />
@@ -49,7 +63,7 @@ export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
           )}
         </>
       ) : (
-        <RawCarousel effect="fade" ref={swiperRef}>
+        <RawCarousel ref={swiperRef}>
           <CarouselItem>
             <AnswerResult gameState={gameState} sceneAnswer={correctAnswer} />
           </CarouselItem>
@@ -74,7 +88,10 @@ export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
 };
 
 export const Step2Spectate = ({ gameState }: StepProps) => {
-  const correctAnswer = gameState.sceneAnswers?.find(isCorrect)!;
+  const correctAnswer = gameState.sceneAnswers?.find(
+    (sceneAnswer) => sceneAnswer.isCorrect
+  )!;
+
   return (
     <>
       <AnswerResult gameState={gameState} sceneAnswer={correctAnswer} />
@@ -96,19 +113,23 @@ const AnswerResult = ({ gameState }: SubmissionProps) => {
         question={gameState.question}
         questionType={gameState.questionType}
       />
-      {gameState.sceneAnswers?.map((sceneAnswer) => (
-        <Answer
-          key={sceneAnswer.id}
-          sceneAnswer={sceneAnswer}
-          answerType={gameState.answerType}
-          onSubmit={() => {}}
-          submitted
-          displayMode
-        />
-      ))}
+      <AnswerContainer>
+        {gameState.sceneAnswers?.map((sceneAnswer) => (
+          <Answer
+            key={sceneAnswer.id}
+            sceneAnswer={sceneAnswer}
+            answerType={gameState.answerType}
+            onSubmit={() => {}}
+            submitted
+            displayMode
+          />
+        ))}
+      </AnswerContainer>
     </>
   );
 };
+
+const AnswerContainer = styled.div``;
 
 const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
   const players = gameState.submissions.map((submission) => {
@@ -143,14 +164,17 @@ const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
 
 const SubmissionsContainer = styled(PlayersGrid)`
   padding: ${theme.spacings(20)} 0 ${theme.spacings(5)};
+
   .correct {
     position: absolute;
     top: ${theme.spacings(-3)};
     left: 0;
   }
+
   .name {
     text-align: center;
   }
+
   ${theme.breakpoints.desktop} {
     padding: 0 ${theme.spacings(5)};
   }
@@ -160,7 +184,13 @@ const Stars = styled(AnimationSprite)`
   top: 40px;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.5);
+
   ${theme.breakpoints.desktop} {
     top: 20px;
   }
+`;
+
+const CorrectSprite = styled(AnimationSprite)`
+  left: 50%;
+  transform: translateX(-50%);
 `;

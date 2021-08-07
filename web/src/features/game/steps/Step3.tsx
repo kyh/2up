@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from "react";
+import { useState, ReactNode } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { motion } from "framer-motion";
 import { theme, useIsDesktop } from "styles/theme";
@@ -10,6 +10,7 @@ import {
   NextButton,
 } from "features/game/components/PlayerGrid";
 import { Counter } from "components";
+import { useTimeout } from "styles/animations";
 
 export const Step3 = ({ gameState, broadcast, name }: StepProps) => {
   const [firstPlayer] = gameState.players;
@@ -65,19 +66,13 @@ export const PlayerScores = ({
     sortByKey(gameState.players, "prevScore")
   );
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setIsOldState(false);
-      if (!desktop) {
-        // Sort players by score if they're not on a desktop
-        setPlayers(sortByKey(gameState.players, "score"));
-      }
-    }, 150);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, []);
+  useTimeout(() => {
+    setIsOldState(false);
+    if (!desktop) {
+      // Sort players by score if they're not on a desktop
+      setPlayers(sortByKey(gameState.players, "score"));
+    }
+  }, 150);
 
   return (
     <>

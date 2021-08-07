@@ -48,12 +48,12 @@ const dummySteps = {
     questionType: "code",
     sceneAnswers: [
       {
-        content: "b",
+        content: "boy",
         id: "1651",
         isCorrect: false,
       },
       {
-        content: "a",
+        content: "ape",
         id: "1650",
         isCorrect: true,
       },
@@ -98,7 +98,7 @@ const dummySteps = {
     answerType: "multi_text",
     submissions: [
       {
-        content: "boy",
+        content: "ape",
         name: "kai",
       },
       {
