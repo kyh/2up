@@ -1,5 +1,5 @@
 import { useState, SyntheticEvent } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { theme } from "styles/theme";
 import { Input, Button } from "components";
 import {
@@ -29,14 +29,6 @@ const getDisplayClassName = (isCorrect: boolean) => {
   return `display-text ${isCorrect ? "correct" : ""}`;
 };
 
-const AnswerDisplay = styled.div`
-  font-size: 1.2rem;
-  text-align: center;
-  padding: ${theme.spacings(3)};
-  border: 2px solid ${theme.ui.borderColorAlternate};
-  border-radius: ${theme.ui.borderWavyRadius};
-`;
-
 const AnswerText = ({
   sceneAnswer,
   submitted,
@@ -52,9 +44,9 @@ const AnswerText = ({
 
   if (displayMode) {
     return (
-      <AnswerDisplay className={getDisplayClassName(sceneAnswer.isCorrect)}>
+      <AnswerTextDisplay className={getDisplayClassName(sceneAnswer.isCorrect)}>
         {sceneAnswer.content}
-      </AnswerDisplay>
+      </AnswerTextDisplay>
     );
   }
 
@@ -76,6 +68,18 @@ const AnswerText = ({
   );
 };
 
+const AnswerTextDisplay = styled.div`
+  border-image-slice: 4 4 3 5 fill;
+  border-image-width: 5px;
+  border-image-outset: 0;
+  border-image-repeat: stretch stretch;
+  border-image-source: ${theme.ui.inputBorderUrl};
+  padding: ${theme.spacings(4)};
+  color: ${theme.ui.buttonText};
+  background-color: ${theme.ui.buttonBackground};
+  width: 100%;
+`;
+
 const AnswerTextForm = styled.form`
   text-align: center;
   width: 100%;
@@ -95,9 +99,11 @@ const AnswerMulti = ({
 }: AnswerProps) => {
   if (displayMode) {
     return (
-      <AnswerDisplay className={getDisplayClassName(sceneAnswer.isCorrect)}>
+      <AnswerMultiDisplay
+        className={getDisplayClassName(sceneAnswer.isCorrect)}
+      >
         {sceneAnswer.content}
-      </AnswerDisplay>
+      </AnswerMultiDisplay>
     );
   }
 
@@ -115,4 +121,15 @@ const AnswerMulti = ({
 
 const AnswerMultiButton = styled(Button)`
   margin-bottom: ${theme.spacings(3)};
+`;
+
+const AnswerMultiDisplay = styled.div`
+  text-align: center;
+  margin-bottom: ${theme.spacings(3)};
+  padding: ${theme.spacings(4)};
+  border-image-slice: 4 4 3 5 fill;
+  border-image-width: 5px;
+  border-image-outset: 0;
+  border-image-repeat: stretch stretch;
+  border-image-source: ${theme.ui.buttonBorderUrl};
 `;
