@@ -13,7 +13,7 @@ import {
   PlayersGrid,
   NextButton,
 } from "features/game/components/PlayerGrid";
-import { RawCarousel, CarouselItem, AnimationSprite } from "components";
+import { Carousel, AnimationSprite } from "components";
 import { useTimeout } from "styles/animations";
 
 const sprites = {
@@ -21,9 +21,13 @@ const sprites = {
   wrong: ["crossMark", "bubbleCryEmoji"],
 };
 
+const compareAnswer = (answer: string, answerToCompare: string) => {
+  return answer.trim().toLowerCase() === answerToCompare.trim().toLowerCase();
+};
+
 export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
   const desktop = useIsDesktop();
-  const swiperRef = useRef<any>(null);
+  const carouselRef = useRef<any>(null);
   const [showSubmissions, setShowSubmissions] = useState(false);
   const [animationSpriteName, setAnimationSpriteName] = useState<any>(null);
 
@@ -33,9 +37,11 @@ export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
   )!;
 
   useTimeout(() => {
-    const isCurrentPlayerCorrect =
-      gameState.submissions.find((s) => s.name === name)?.content ===
-      correctAnswer.content;
+    const isCurrentPlayerCorrect = compareAnswer(
+      gameState.submissions.find((s) => s.name === name)?.content || "",
+      correctAnswer.content
+    );
+
     if (isCurrentPlayerCorrect) {
       setAnimationSpriteName(sample(sprites.correct));
     } else {
@@ -47,8 +53,8 @@ export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
     if (gameState.submissions.length > 1) {
       if (desktop) {
         setShowSubmissions(true);
-      } else if (swiperRef && swiperRef.current) {
-        swiperRef.current.swiper.slideTo(1);
+      } else if (carouselRef && carouselRef.current) {
+        carouselRef.current.slideNext();
       }
     }
   }, 3000);
@@ -66,14 +72,12 @@ export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
           )}
         </>
       ) : (
-        <RawCarousel ref={swiperRef}>
-          <CarouselItem>
+        <Carousel ref={carouselRef} count={1} hideControls>
+          <div>
             <AnswerResult gameState={gameState} sceneAnswer={correctAnswer} />
-          </CarouselItem>
-          <CarouselItem>
-            <Submissions gameState={gameState} sceneAnswer={correctAnswer} />
-          </CarouselItem>
-        </RawCarousel>
+          </div>
+          <Submissions gameState={gameState} sceneAnswer={correctAnswer} />
+        </Carousel>
       )}
       {firstPlayer && (
         <NextButton
@@ -174,9 +178,7 @@ const AnswerContainer = styled.div`
 
 const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
   const players = gameState.submissions.map((submission) => {
-    const isCorrect =
-      submission.content.trim().toLowerCase() ===
-      sceneAnswer.content.trim().toLowerCase();
+    const isCorrect = compareAnswer(submission.content, sceneAnswer.content);
     return (
       <Player
         key={submission.name}
