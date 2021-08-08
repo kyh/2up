@@ -5,8 +5,22 @@ import {
   useCallback,
   MutableRefObject,
 } from "react";
-import { PanInfo, AxisBox2D, BoxDelta } from "framer-motion";
+import {
+  animate,
+  PanInfo,
+  AxisBox2D,
+  BoxDelta,
+  MotionValue,
+} from "framer-motion";
 import { keyframes } from "styled-components";
+
+export const animateSpring = (index: MotionValue<number>, to: number) => {
+  animate(index, to, {
+    bounce: 0,
+    type: "spring",
+    velocity: 0,
+  });
+};
 
 export const bounceIn = keyframes`
   0% { transform: matrix3d(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
