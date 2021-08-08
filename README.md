@@ -22,7 +22,7 @@
 
 ## 🥞 Tech Stack
 
-- **Client**: The web client is a `React/Redux` application bootstrapped with `create-react-app`
+- **Client**: The web client is a `React/Redux` application bootstrapped with `next.js`
 - **Data Transport**: The `Game` itself uses websockets but the rest of the pages use `Apollo` with `Graphql`
 - **Server**: Elixir/Phoenix API server
 - **Database**: Postgres
