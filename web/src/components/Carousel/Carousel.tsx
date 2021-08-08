@@ -49,8 +49,11 @@ export const Carousel = forwardRef(function Carousel(
     slidePrev,
   }));
 
+  const childrenLength = getValidChildren(children).length;
   const defaultCount =
-    count || getValidChildren(children).length < 2 ? 1 : desktop ? 3 : 2;
+    count || desktop
+      ? Math.max(childrenLength, 3)
+      : Math.max(childrenLength, 2);
 
   return (
     <CarouselContainer>
