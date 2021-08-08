@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import sample from "lodash/sample";
 import { theme, useIsDesktop } from "styles/theme";
-import { bounceOut, drawIn } from "styles/animations";
+import { bounceIn, bounceOut, drawIn } from "styles/animations";
 import { StepProps, GameState, SceneAnswer } from "features/game/gameSlice";
 import { Instruction } from "features/game/components/Instruction";
 import { Question } from "features/game/components/Question";
@@ -55,7 +55,9 @@ export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
 
   return (
     <>
-      {animationSpriteName && <CorrectSprite name={animationSpriteName} />}
+      {animationSpriteName && (
+        <CorrectSprite name={animationSpriteName} delay={0.2} />
+      )}
       {desktop ? (
         <>
           <AnswerResult gameState={gameState} sceneAnswer={correctAnswer} />
@@ -131,20 +133,37 @@ const AnswerResult = ({ gameState }: SubmissionProps) => {
 };
 
 const AnswerContainer = styled.div`
-  .display-text.correct {
-    animation: none;
-    > svg {
-      stroke: ${theme.colors.green};
-      stroke-width: ${theme.spacings(3)};
-      > path {
-        animation: ${drawIn} 0.6s cubic-bezier(0.7, 0, 0.3, 1) forwards;
-      }
-    }
-  }
-
-  .display-text {
+  .answer-display {
     animation: ${bounceOut} 1s;
     animation-fill-mode: forwards;
+
+    &.correct {
+      animation: none;
+      > svg {
+        stroke: ${theme.colors.green};
+        stroke-width: ${theme.spacings(3)};
+        > path {
+          animation: ${drawIn} 0.6s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+        }
+      }
+    }
+
+    &.answer-text {
+      overflow: visible;
+      text-align: center;
+      background-color: ${theme.ui.backgroundGrey};
+      transform: scale(0);
+      animation: ${bounceIn} 1s 0.1s forwards;
+
+      &::before {
+        content: "answer:";
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        width: 150px;
+        margin-left: -75px;
+      }
+    }
   }
 `;
 
