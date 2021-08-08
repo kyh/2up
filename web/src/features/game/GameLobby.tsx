@@ -126,6 +126,8 @@ const JoinRoomButton = styled(Link)`
 `;
 
 const TitleContainer = styled.div`
+  padding-top: 50px;
+
   .title {
     margin: 0 0 ${theme.spacings(5)};
   }
