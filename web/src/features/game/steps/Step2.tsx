@@ -141,7 +141,7 @@ const AnswerContainer = styled.div`
       animation: none;
       > svg {
         stroke: ${theme.colors.green};
-        stroke-width: ${theme.spacings(3)};
+        stroke-width: 5px;
         > path {
           animation: ${drawIn} 0.6s cubic-bezier(0.7, 0, 0.3, 1) forwards;
         }
@@ -152,16 +152,21 @@ const AnswerContainer = styled.div`
       overflow: visible;
       text-align: center;
       background-color: ${theme.ui.backgroundGrey};
+      padding-top: ${theme.spacings(6)};
       transform: scale(0);
       animation: ${bounceIn} 1s 0.1s forwards;
 
       &::before {
-        content: "answer:";
+        content: "answer";
         position: absolute;
-        top: -25px;
+        top: ${theme.spacings(-3)};
         left: 50%;
-        width: 150px;
-        margin-left: -75px;
+        width: 100px;
+        margin-left: -50px;
+        padding: ${theme.spacings(1)} 0;
+        border-radius: 4px;
+        border: 2px solid ${theme.ui.borderColor};
+        background-color: ${theme.ui.background};
       }
     }
   }

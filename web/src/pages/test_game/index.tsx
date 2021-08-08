@@ -142,6 +142,49 @@ const dummySteps = {
     ],
     invitedToGame: undefined,
   },
+  3: {
+    gameId: "9584",
+    scene: 1,
+    step: 3,
+    instruction: "clickz",
+    question: '{"code":"console.log(\'Hello World\')","language":"javascript"}',
+    questionType: "code",
+    sceneAnswers: [
+      {
+        content: "b",
+        id: 1651,
+        isCorrect: false,
+      },
+      {
+        content: "a",
+        id: 1650,
+        isCorrect: true,
+      },
+    ],
+    answerType: "multi_text",
+    submissions: [
+      {
+        content: "a",
+        name: "kai",
+      },
+    ],
+    pack: "Test pack",
+    totalScenes: 6,
+    duration: 45000,
+    durationInSeconds: 45,
+    startTime: 1628399489068,
+    players: [
+      {
+        isSpectator: false,
+        name: "kai",
+        phx_ref: "Fpk8teyScCsZ-6ID",
+        phx_ref_prev: "Fpk8F5PDnfsZ-6Hj",
+        prevScore: 0,
+        score: 193,
+      },
+    ],
+    invitedToGame: undefined,
+  },
 };
 
 const Game = () => {

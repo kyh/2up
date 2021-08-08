@@ -170,6 +170,7 @@ const TitleContainer = styled.div`
   animation: ${visible} 0s linear 0.1s forwards;
   visibility: hidden;
   margin-bottom: ${theme.spacings(5)};
+  padding-top: 50px;
 
   .title {
     text-align: center;
