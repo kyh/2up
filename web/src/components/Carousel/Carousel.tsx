@@ -52,8 +52,8 @@ export const Carousel = forwardRef(function Carousel(
   const childrenLength = getValidChildren(children).length;
   const defaultCount =
     count || desktop
-      ? Math.max(childrenLength, 3)
-      : Math.max(childrenLength, 2);
+      ? Math.min(childrenLength, 3)
+      : Math.min(childrenLength, 2);
 
   return (
     <CarouselContainer>
