@@ -65,10 +65,12 @@ export const Step0 = ({ gameState, dispatch }: StepProps) => {
 };
 
 const Footer = styled.div`
-  margin: auto auto ${theme.spacings(10)};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: absolute;
+  bottom: ${theme.spacings(20)};
+  left: 50%;
+  width: 150px;
+  text-align: center;
+  margin-left: -75px;
 
   > .play-again {
     margin-bottom: ${theme.spacings(3)};

@@ -70,7 +70,7 @@ const defaultQuestionsMap = {
 };
 
 const QuestionTypeMenu = forwardRef<HTMLDivElement, Props>(
-  ({ currentType, onSelectType }, ref) => {
+  function QuestionTypeMenu({ currentType, onSelectType }, ref) {
     return (
       <QATypeMenuContainer content="Question type:" ref={ref}>
         {Object.entries(QuestionTypeSlugs).map(([key, value]) => {
@@ -106,11 +106,11 @@ const defaultAnswersMap = {
     { content: "", isCorrect: false },
     { content: "", isCorrect: false },
   ],
-  [AnswerTypeSlugs.letterText.id]: [],
+  // [AnswerTypeSlugs.letterText.id]: [],
 };
 
 const AnswerTypeMenu = forwardRef<HTMLDivElement, Props>(
-  ({ currentType, onSelectType, sceneAnswers }, ref) => {
+  function AnswerTypeMenu({ currentType, onSelectType, sceneAnswers }, ref) {
     return (
       <QATypeMenuContainer content="Answer type:" ref={ref}>
         {Object.entries(AnswerTypeSlugs).map(([key, value]) => {

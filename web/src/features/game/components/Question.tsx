@@ -4,74 +4,58 @@ import { QuestionTypeSlugs } from "features/game/gameSlice";
 import { VideoPlayer, AudioPlayer, Code } from "components";
 
 type QuestionProps = {
-  instruction: string;
   question: string;
   questionType: string;
   displayMode?: boolean;
 };
 
 export const Question = ({
-  instruction,
   question,
   questionType,
   displayMode = false,
 }: QuestionProps) => {
   switch (questionType) {
     case QuestionTypeSlugs.image.id:
-      return (
-        <>
-          <QuestionInstructions>{instruction}</QuestionInstructions>
-          <QuestionImage
-            className="question"
-            alt={instruction}
-            src={question}
-          />
-        </>
-      );
+      return <QuestionImage question={question} displayMode={displayMode} />;
     case QuestionTypeSlugs.audio.id:
-      return (
-        <>
-          <QuestionInstructions>{instruction}</QuestionInstructions>
-          <QuestionAudio question={question} displayMode={displayMode} />
-        </>
-      );
+      return <QuestionAudio question={question} displayMode={displayMode} />;
     case QuestionTypeSlugs.video.id:
-      return (
-        <>
-          <QuestionInstructions>{instruction}</QuestionInstructions>
-          <QuestionVideo question={question} displayMode={displayMode} />
-        </>
-      );
+      return <QuestionVideo question={question} displayMode={displayMode} />;
     case QuestionTypeSlugs.code.id:
-      return (
-        <>
-          <QuestionInstructions>{instruction}</QuestionInstructions>
-          <QuestionCode question={question} displayMode={displayMode} />
-        </>
-      );
+      return <QuestionCode question={question} displayMode={displayMode} />;
     default:
-      return (
-        <>
-          <QuestionInstructions>{instruction}</QuestionInstructions>
-          <QuestionText className="question">{question}</QuestionText>
-        </>
-      );
+      return <QuestionText question={question} displayMode={displayMode} />;
   }
 };
 
-const QuestionInstructions = styled.div`
+type QuestionComponentProp = {
+  question: string;
+  displayMode: boolean;
+};
+
+const QuestionText = ({ question }: QuestionComponentProp) => {
+  return (
+    <QuestionContainer className="question">
+      <Text>{question}</Text>
+    </QuestionContainer>
+  );
+};
+
+const Text = styled.h1`
   text-align: center;
-  margin: 0 0 ${theme.spacings(2)};
+  margin: 0;
 `;
 
-const QuestionText = styled.h1`
-  text-align: center;
-  margin: 0 0 ${theme.spacings(5)};
-`;
+const QuestionImage = ({ question }: QuestionComponentProp) => {
+  return (
+    <QuestionContainer className="question">
+      <Image src={question} alt="image" />
+    </QuestionContainer>
+  );
+};
 
-const QuestionImage = styled.img`
+const Image = styled.img`
   object-fit: contain;
-  margin: 0 0 ${theme.spacings(5)};
   max-width: 100vw;
   height: 240px;
 
@@ -79,11 +63,6 @@ const QuestionImage = styled.img`
     max-width: 40vw;
   }
 `;
-
-type QuestionComponentProp = {
-  question: string;
-  displayMode: boolean;
-};
 
 const QuestionAudio = ({ question, displayMode }: QuestionComponentProp) => {
   return (
@@ -123,6 +102,14 @@ const QuestionCode = ({ question }: QuestionComponentProp) => {
   );
 };
 
-const QuestionContainer = styled.div`
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   margin: 0 0 ${theme.spacings(5)};
+`;
+
+const QuestionContainer = styled(Container)`
+  height: 240px;
 `;

@@ -5,8 +5,22 @@ import {
   useCallback,
   MutableRefObject,
 } from "react";
-import { PanInfo, AxisBox2D, BoxDelta } from "framer-motion";
+import {
+  animate,
+  PanInfo,
+  AxisBox2D,
+  BoxDelta,
+  MotionValue,
+} from "framer-motion";
 import { keyframes } from "styled-components";
+
+export const animateSpring = (index: MotionValue<number>, to: number) => {
+  animate(index, to, {
+    bounce: 0,
+    type: "spring",
+    velocity: 0,
+  });
+};
 
 export const bounceIn = keyframes`
   0% { transform: matrix3d(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
@@ -35,6 +49,35 @@ export const bounceIn = keyframes`
   85.49% { transform: matrix3d(0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
   90.69% { transform: matrix3d(0.999, 0, 0, 0, 0, 0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
   100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+`;
+
+export const bounceOut = keyframes`
+  0% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  3.4% { transform: matrix3d(0.968, 0, 0, 0, 0, 0.959, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  4.7% { transform: matrix3d(0.955, 0, 0, 0, 0, 0.94, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  6.81% { transform: matrix3d(0.934, 0, 0, 0, 0, 0.911, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  9.41% { transform: matrix3d(0.912, 0, 0, 0, 0, 0.883, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  10.21% { transform: matrix3d(0.906, 0, 0, 0, 0, 0.877, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  13.61% { transform: matrix3d(0.888, 0, 0, 0, 0, 0.867, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  14.11% { transform: matrix3d(0.886, 0, 0, 0, 0, 0.867, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  17.52% { transform: matrix3d(0.879, 0, 0, 0, 0, 0.876, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  18.72% { transform: matrix3d(0.879, 0, 0, 0, 0, 0.881, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  21.32% { transform: matrix3d(0.88, 0, 0, 0, 0, 0.893, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  24.32% { transform: matrix3d(0.885, 0, 0, 0, 0, 0.904, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  25.23% { transform: matrix3d(0.887, 0, 0, 0, 0, 0.906, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  29.03% { transform: matrix3d(0.894, 0, 0, 0, 0, 0.91, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  29.93% { transform: matrix3d(0.895, 0, 0, 0, 0, 0.91, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  35.54% { transform: matrix3d(0.902, 0, 0, 0, 0, 0.904, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  36.74% { transform: matrix3d(0.903, 0, 0, 0, 0, 0.902, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  41.04% { transform: matrix3d(0.904, 0, 0, 0, 0, 0.898, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  44.44% { transform: matrix3d(0.903, 0, 0, 0, 0, 0.897, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  52.15% { transform: matrix3d(0.901, 0, 0, 0, 0, 0.899, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  59.86% { transform: matrix3d(0.899, 0, 0, 0, 0, 0.901, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  63.26% { transform: matrix3d(0.899, 0, 0, 0, 0, 0.901, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  75.28% { transform: matrix3d(0.9, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  85.49% { transform: matrix3d(0.9, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  90.69% { transform: matrix3d(0.9, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  100% { transform: matrix3d(0.9, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
 `;
 
 export const bounceExpand = keyframes`
@@ -110,6 +153,11 @@ export const jitter = keyframes`
 export const fadeIn = keyframes`
   from { opacity: 0; }
   to   { opacity: 1; }
+`;
+
+export const drawIn = keyframes`
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
 `;
 
 export type Position = {
@@ -319,4 +367,26 @@ export const getDragCursor = (state: string) => {
     default:
       return "grab";
   }
+};
+
+export const useTimeout = (
+  callback: () => void,
+  timeout: number = 0
+): (() => void) => {
+  const timeoutIdRef = useRef<NodeJS.Timeout>();
+
+  const cancel = useCallback(() => {
+    const timeoutId = timeoutIdRef.current;
+    if (timeoutId) {
+      timeoutIdRef.current = undefined;
+      clearTimeout(timeoutId);
+    }
+  }, [timeoutIdRef]);
+
+  useEffect(() => {
+    timeoutIdRef.current = setTimeout(callback, timeout);
+    return cancel;
+  }, []);
+
+  return cancel;
 };

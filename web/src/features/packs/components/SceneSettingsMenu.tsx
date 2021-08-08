@@ -16,6 +16,16 @@ export const SceneSettingsMenu = ({ scene }: ScenePreviewProps) => {
         </Button>
         <div className="scene-setting-text">45s</div>
       </div>
+      <div className="scene-setting">
+        <Button
+          className="scene-setting-button"
+          variant="fab"
+          data-tip="Scene answer description"
+        >
+          <Icon icon="list" />
+        </Button>
+        <div className="scene-setting-text">details</div>
+      </div>
     </SceneSettingsMenuContainer>
   );
 };
@@ -24,7 +34,7 @@ const SceneSettingsMenuContainer = styled.div`
   text-align: center;
 
   .scene-setting {
-    margin-bottom: ${theme.spacings(3)};
+    margin-bottom: ${theme.spacings(4)};
   }
 
   .scene-setting-button {

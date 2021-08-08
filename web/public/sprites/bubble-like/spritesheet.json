@@ -1,0 +1,1044 @@
+{
+  "frames": [
+    {
+      "filename": "Bubble Like_00000.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00001.png",
+      "frame": {
+        "x": 360,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00002.png",
+      "frame": {
+        "x": 720,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00003.png",
+      "frame": {
+        "x": 1080,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00004.png",
+      "frame": {
+        "x": 1440,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00005.png",
+      "frame": {
+        "x": 1800,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00006.png",
+      "frame": {
+        "x": 2160,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00007.png",
+      "frame": {
+        "x": 2520,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00008.png",
+      "frame": {
+        "x": 2880,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00009.png",
+      "frame": {
+        "x": 3240,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00010.png",
+      "frame": {
+        "x": 3600,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00011.png",
+      "frame": {
+        "x": 3960,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00012.png",
+      "frame": {
+        "x": 4320,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00013.png",
+      "frame": {
+        "x": 4680,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00014.png",
+      "frame": {
+        "x": 5040,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00015.png",
+      "frame": {
+        "x": 5400,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00016.png",
+      "frame": {
+        "x": 5760,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00017.png",
+      "frame": {
+        "x": 6120,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00018.png",
+      "frame": {
+        "x": 6480,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00019.png",
+      "frame": {
+        "x": 6840,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00020.png",
+      "frame": {
+        "x": 7200,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00021.png",
+      "frame": {
+        "x": 7560,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00022.png",
+      "frame": {
+        "x": 7920,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00023.png",
+      "frame": {
+        "x": 8280,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00024.png",
+      "frame": {
+        "x": 8640,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00025.png",
+      "frame": {
+        "x": 9000,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00026.png",
+      "frame": {
+        "x": 9360,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00027.png",
+      "frame": {
+        "x": 9720,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00028.png",
+      "frame": {
+        "x": 10080,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00029.png",
+      "frame": {
+        "x": 10440,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00030.png",
+      "frame": {
+        "x": 10800,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00031.png",
+      "frame": {
+        "x": 11160,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00032.png",
+      "frame": {
+        "x": 11520,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00033.png",
+      "frame": {
+        "x": 11880,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00034.png",
+      "frame": {
+        "x": 12240,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00035.png",
+      "frame": {
+        "x": 12600,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00036.png",
+      "frame": {
+        "x": 12960,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00037.png",
+      "frame": {
+        "x": 13320,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00038.png",
+      "frame": {
+        "x": 13680,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00039.png",
+      "frame": {
+        "x": 14040,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00040.png",
+      "frame": {
+        "x": 14400,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00041.png",
+      "frame": {
+        "x": 14760,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00042.png",
+      "frame": {
+        "x": 15120,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00043.png",
+      "frame": {
+        "x": 15480,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00044.png",
+      "frame": {
+        "x": 15840,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00045.png",
+      "frame": {
+        "x": 16200,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00046.png",
+      "frame": {
+        "x": 16560,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00047.png",
+      "frame": {
+        "x": 16920,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    },
+    {
+      "filename": "Bubble Like_00048.png",
+      "frame": {
+        "x": 17280,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 185
+      },
+      "sourceSize": {
+        "w": 360,
+        "h": 185
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "spritesheet.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 17640,
+      "h": 185
+    },
+    "scale": "1"
+  }
+}

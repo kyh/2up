@@ -47,7 +47,7 @@ export const Input = styled.input<Props>`
   }
 
   &:read-only {
-    opacity: 0.5;
+    filter: brightness(0.5);
     cursor: not-allowed;
   }
 `;

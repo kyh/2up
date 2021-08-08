@@ -38,6 +38,7 @@ export const PackSection = styled.section`
     justify-content: space-between;
     align-items: center;
     text-transform: capitalize;
+    margin-bottom: ${theme.spacings(3)};
 
     &.main-header {
       justify-content: center;
@@ -80,8 +81,8 @@ export const PackSection = styled.section`
     animation: ${bounceContract} 1s;
 
     &.carousel-item {
-      width: 90%;
       height: 16rem;
+      margin: ${theme.spacings(2)};
     }
 
     &:hover {
