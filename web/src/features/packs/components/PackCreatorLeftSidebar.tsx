@@ -13,6 +13,7 @@ import {
 import { theme } from "styles/theme";
 import { useHotkeys } from "@react-hook/hotkey";
 import { Button, Icon } from "components";
+import { Instruction } from "features/game/components/Instruction";
 import { Question } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
 import { keybindings } from "features/packs/packService";
@@ -214,9 +215,9 @@ const SidebarItem = ({
         onClick={() => selectScene(scene.id)}
       >
         <div className="preview">
+          <Instruction instruction={scene.instruction || ""} />
           <Question
             question={scene.question}
-            instruction={scene.instruction || ""}
             questionType={scene.questionType.slug}
             displayMode
           />
@@ -294,23 +295,25 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
     border-radius: ${theme.ui.borderWavyRadius};
     transition: border-color 0.1s ease, box-shadow 0.1s ease;
 
-    > div:first-child {
+    .instruction {
+      height: auto;
       margin-bottom: ${theme.spacings(1)};
     }
 
-    > img {
-      object-fit: contain;
-      max-width: 70px;
-      height: 40px;
-      display: block;
-    }
-
-    > h1 {
-      font-size: 0.7rem;
-    }
-
     .question {
+      height: auto;
       margin: 0 auto ${theme.spacings(2)};
+
+      > h1 {
+        font-size: 0.7rem;
+      }
+
+      > img {
+        object-fit: contain;
+        max-width: 70px;
+        height: 40px;
+        display: block;
+      }
     }
 
     .video-player {
@@ -343,6 +346,10 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      margin: 0;
+      border: 2px solid ${theme.ui.borderColor};
+      border-radius: ${theme.ui.borderWavyRadius};
+
       &.correct {
         border-color: ${theme.colors.purple};
       }
