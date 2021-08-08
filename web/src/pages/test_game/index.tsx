@@ -47,18 +47,18 @@ const dummySteps = {
     question: '{"code":"console.log(\'Hello World\')","language":"javascript"}',
     questionType: "code",
     sceneAnswers: [
-      {
-        content: "boy",
-        id: "1651",
-        isCorrect: false,
-      },
+      // {
+      //   content: "boy",
+      //   id: "1651",
+      //   isCorrect: false,
+      // },
       {
         content: "ape",
         id: "1650",
         isCorrect: true,
       },
     ],
-    answerType: "multi_text",
+    answerType: "text",
     submissions: [],
     pack: "Test pack",
     totalScenes: 6,
@@ -84,18 +84,18 @@ const dummySteps = {
     question: '{"code":"console.log(\'Hello World\')","language":"javascript"}',
     questionType: "code",
     sceneAnswers: [
-      {
-        content: "boy",
-        id: "1651",
-        isCorrect: false,
-      },
+      // {
+      //   content: "boy",
+      //   id: "1651",
+      //   isCorrect: false,
+      // },
       {
         content: "ape",
         id: "1650",
         isCorrect: true,
       },
     ],
-    answerType: "multi_text",
+    answerType: "text",
     submissions: [
       {
         content: "ape",

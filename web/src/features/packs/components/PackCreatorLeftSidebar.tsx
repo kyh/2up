@@ -336,7 +336,7 @@ const QuestionItem = styled.div<{ isSelected: boolean }>`
       grid-gap: ${theme.spacings(1)};
     }
 
-    .display-text {
+    .answer-display {
       font-size: 0.4rem;
       padding: ${theme.spacings(1)} ${theme.spacings(2)};
       max-width: 70px;
