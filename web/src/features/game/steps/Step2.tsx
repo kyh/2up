@@ -1,8 +1,9 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import sample from "lodash/sample";
 import { theme, useIsDesktop } from "styles/theme";
+import { bounceOut, drawIn } from "styles/animations";
 import { StepProps, GameState, SceneAnswer } from "features/game/gameSlice";
 import { Instruction } from "features/game/components/Instruction";
 import { Question } from "features/game/components/Question";
@@ -129,7 +130,23 @@ const AnswerResult = ({ gameState }: SubmissionProps) => {
   );
 };
 
-const AnswerContainer = styled.div``;
+const AnswerContainer = styled.div`
+  .display-text.correct {
+    animation: none;
+    > svg {
+      stroke: ${theme.colors.green};
+      stroke-width: ${theme.spacings(3)};
+      > path {
+        animation: ${drawIn} 0.6s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+      }
+    }
+  }
+
+  .display-text {
+    animation: ${bounceOut} 1s;
+    animation-fill-mode: forwards;
+  }
+`;
 
 const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
   const players = gameState.submissions.map((submission) => {

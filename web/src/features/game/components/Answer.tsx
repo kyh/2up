@@ -25,10 +25,6 @@ export const Answer = (props: AnswerProps) => {
   }
 };
 
-const getDisplayClassName = (isCorrect: boolean) => {
-  return `display-text ${isCorrect ? "correct" : ""}`;
-};
-
 const AnswerText = ({
   sceneAnswer,
   submitted,
@@ -44,7 +40,9 @@ const AnswerText = ({
 
   if (displayMode) {
     return (
-      <AnswerTextDisplay className={getDisplayClassName(sceneAnswer.isCorrect)}>
+      <AnswerTextDisplay
+        className={`display-text ${sceneAnswer.isCorrect ? "correct" : ""}`}
+      >
         {sceneAnswer.content}
       </AnswerTextDisplay>
     );
@@ -100,9 +98,15 @@ const AnswerMulti = ({
   if (displayMode) {
     return (
       <AnswerMultiDisplay
-        className={getDisplayClassName(sceneAnswer.isCorrect)}
+        className={`display-text ${sceneAnswer.isCorrect ? "correct" : ""}`}
       >
         {sceneAnswer.content}
+        <svg width="100%" height="9" viewBox="0 0 101 9">
+          <path
+            d="M.426 1.973C4.144 1.567 17.77-.514 21.443 1.48 24.296 3.026 24.844 4.627 27.5 7c3.075 2.748 6.642-4.141 10.066-4.688 7.517-1.2 13.237 5.425 17.59 2.745C58.5 3 60.464-1.786 66 2c1.996 1.365 3.174 3.737 5.286 4.41 5.423 1.727 25.34-7.981 29.14-1.294"
+            pathLength="1"
+          ></path>
+        </svg>
       </AnswerMultiDisplay>
     );
   }
@@ -124,6 +128,8 @@ const AnswerMultiButton = styled(Button)`
 `;
 
 const AnswerMultiDisplay = styled.div`
+  overflow: hidden;
+  position: relative;
   text-align: center;
   margin-bottom: ${theme.spacings(3)};
   padding: ${theme.spacings(4)};
@@ -132,4 +138,21 @@ const AnswerMultiDisplay = styled.div`
   border-image-outset: 0;
   border-image-repeat: stretch stretch;
   border-image-source: ${theme.ui.buttonBorderUrl};
+
+  > svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: "";
+    z-index: -1;
+    pointer-events: none;
+    fill: none;
+
+    > path {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+  }
 `;

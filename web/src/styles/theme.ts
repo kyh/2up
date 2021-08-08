@@ -24,6 +24,7 @@ export const colors = {
   greyDark: "#2D3748",
   red: "#f05252",
   yellow: "#ffca64",
+  green: "#5cb85c",
 };
 
 export const breakpoints = {
