@@ -2,7 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useAuth } from "util/AuthProvider";
 import { collectConnectionNodes } from "util/collection";
-import { Link, Carousel, CarouselItem, ButtonLinkNative } from "components";
+import { Link, Carousel, ButtonLinkNative } from "components";
 import { Content, Footer } from "./components/Page";
 import { PackSection, Pack, PacksProps } from "./components/Packs";
 import { PackDiscoverPagePacksQuery } from "./__generated__/PackDiscoverPagePacksQuery";
@@ -194,9 +194,7 @@ const PackCarouselContainer = ({
       <div className="pack-items">
         <Carousel>
           {packs.map((pack) => (
-            <CarouselItem key={pack.id}>
-              <Pack pack={pack} className="carousel-item" />
-            </CarouselItem>
+            <Pack key={pack.id} pack={pack} className="carousel-item" />
           ))}
         </Carousel>
       </div>

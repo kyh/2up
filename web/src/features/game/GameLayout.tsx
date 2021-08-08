@@ -1,8 +1,9 @@
+import styled from "styled-components";
 import { ReactNode } from "react";
 import { useRouter } from "next/router";
+import { theme } from "styles/theme";
 import { GameProvider } from "features/game/GameProvider";
 import { Navigation } from "features/game/components/Navigation";
-import { PageContainer } from "features/home/components/Page";
 
 export const GameLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
@@ -10,7 +11,15 @@ export const GameLayout = ({ children }: { children: ReactNode }) => {
   return (
     <GameProvider gameId={gameId as string}>
       <Navigation />
-      <PageContainer justify="start">{children}</PageContainer>
+      <GamePage>{children}</GamePage>
     </GameProvider>
   );
 };
+
+export const GamePage = styled.section`
+  padding: 0 ${theme.spacings(4)};
+  margin: 0 auto;
+  height: 100vh;
+  margin-top: -50px;
+  max-width: 600px;
+`;

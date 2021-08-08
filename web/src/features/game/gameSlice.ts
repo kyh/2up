@@ -162,10 +162,10 @@ export const AnswerTypeSlugs = {
     id: "multi_text",
     display: "Multiple Choice",
   },
-  letterText: {
-    id: "letter_text",
-    display: "Letters",
-  },
+  // letterText: {
+  //   id: "letter_text",
+  //   display: "Letters",
+  // },
   // multiImage: {
   //   id: "multi_image",
   //   display: "Multiple Image",

@@ -1,80 +1,91 @@
-import { ReactNode } from "react";
+import {
+  ReactNode,
+  forwardRef,
+  useRef,
+  useImperativeHandle,
+  Children,
+  isValidElement,
+  ReactElement,
+} from "react";
 import styled from "styled-components";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation } from "swiper/core";
-import { theme, isDesktop } from "styles/theme";
-import { bounceExpand, bounceContract } from "styles/animations";
-
-import "swiper/swiper.min.css";
-import "swiper/components/navigation/navigation.min.css";
-
-SwiperCore.use([Navigation]);
+import { theme, useIsDesktop } from "styles/theme";
+import { BaseCarousel } from "./BaseCarousel";
+import { Button } from "../Button/Button";
+import { Icon } from "../Icon/Icon";
 
 type Props = {
   children: ReactNode;
+  hideControls?: boolean;
+  count?: number;
 };
 
-export const Carousel = ({ children }: Props) => {
+const getValidChildren = (children: ReactNode) => {
+  return Children.toArray(children).filter((child) =>
+    isValidElement(child)
+  ) as ReactElement[];
+};
+
+export const Carousel = forwardRef(function Carousel(
+  { children, count, hideControls }: Props,
+  ref
+) {
+  const desktop = useIsDesktop();
+  const carouselRef = useRef<any>(null);
+
+  const slideNext = () => {
+    if (carouselRef && carouselRef.current) {
+      carouselRef.current.slideNext();
+    }
+  };
+
+  const slidePrev = () => {
+    if (carouselRef && carouselRef.current) {
+      carouselRef.current.slidePrev();
+    }
+  };
+
+  useImperativeHandle(ref, () => ({
+    slideNext,
+    slidePrev,
+  }));
+
+  const defaultCount =
+    count || getValidChildren(children).length < 2 ? 1 : desktop ? 3 : 2;
+
   return (
-    <CarouselContainer
-      slidesPerView={isDesktop() ? 3 : 2}
-      slidesPerGroup={isDesktop() ? 3 : 2}
-      navigation
-      loop
-      loopFillGroupWithBlank
-    >
-      {children}
+    <CarouselContainer>
+      <BaseCarousel count={defaultCount} ref={carouselRef}>
+        {children}
+      </BaseCarousel>
+      {!hideControls && (
+        <>
+          <PaginationButton className="left" variant="fab" onClick={slidePrev}>
+            <Icon icon="leftArrow" />
+          </PaginationButton>
+          <PaginationButton className="right" variant="fab" onClick={slideNext}>
+            <Icon icon="rightArrow" />
+          </PaginationButton>
+        </>
+      )}
     </CarouselContainer>
   );
-};
+});
 
-export const CarouselContainer = styled(Swiper)`
-  width: 100%;
-  height: 20rem;
-  .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+const CarouselContainer = styled.div`
+  position: relative;
+
+  .left {
+    left: ${theme.spacings(-3)};
   }
-  .swiper-button-prev {
-    left: 0;
-  }
-  .swiper-button-next {
-    right: 0;
-  }
-  .swiper-button-prev,
-  .swiper-button-next {
-    width: 40px;
-    height: 40px;
-    border-radius: 100%;
-    padding: ${theme.spacings(1)};
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-image: ${theme.ui.buttonFabBorderUrl};
-    background-color: ${theme.ui.background};
-    transition: transform 0.2s ease;
-    animation: ${bounceContract} 1s;
-    &:hover {
-      animation: ${bounceExpand} 1s;
-      animation-fill-mode: forwards;
-      background-image: ${theme.ui.buttonFabBorderActiveUrl};
-    }
-    &:active {
-      animation: ${bounceContract} 1s;
-      background-image: ${theme.ui.buttonFabBorderActiveUrl};
-    }
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      &:hover {
-        background-image: ${theme.ui.buttonFabBorderUrl};
-      }
-    }
-    &::after {
-      font-size: 1rem;
-      color: ${theme.ui.text};
-    }
+
+  .right {
+    right: ${theme.spacings(-3)};
   }
 `;
 
-export const CarouselItem = SwiperSlide;
+const PaginationButton = styled(Button)`
+  position: absolute;
+  top: 40%;
+  background-color: ${theme.ui.background};
+  border-radius: 100%;
+`;

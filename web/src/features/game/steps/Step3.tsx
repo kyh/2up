@@ -1,8 +1,7 @@
-import { useState, useEffect, ReactNode } from "react";
+import { useState, ReactNode } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { motion } from "framer-motion";
-import { useDebounce } from "@react-hook/debounce";
-import { theme, isDesktop } from "styles/theme";
+import { theme, useIsDesktop } from "styles/theme";
 import { visible } from "styles/animations";
 import { StepProps, GameState } from "features/game/gameSlice";
 import {
@@ -11,6 +10,7 @@ import {
   NextButton,
 } from "features/game/components/PlayerGrid";
 import { Counter } from "components";
+import { useTimeout } from "styles/animations";
 
 export const Step3 = ({ gameState, broadcast, name }: StepProps) => {
   const [firstPlayer] = gameState.players;
@@ -60,32 +60,19 @@ export const PlayerScores = ({
   gameState: GameState;
   title: string;
 }) => {
-  const [desktop, setDesktop] = useDebounce(isDesktop());
+  const desktop = useIsDesktop();
   const [isOldState, setIsOldState] = useState(true);
   const [players, setPlayers] = useState(
     sortByKey(gameState.players, "prevScore")
   );
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setIsOldState(false);
-      if (!desktop) {
-        // Sort players by score if they're not on a desktop
-        setPlayers(sortByKey(gameState.players, "score"));
-      }
-    }, 150);
-
-    const onResize = () => {
-      setDesktop(isDesktop());
-    };
-
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener("resize", onResize);
-    };
-  }, []);
+  useTimeout(() => {
+    setIsOldState(false);
+    if (!desktop) {
+      // Sort players by score if they're not on a desktop
+      setPlayers(sortByKey(gameState.players, "score"));
+    }
+  }, 150);
 
   return (
     <>
@@ -171,7 +158,7 @@ const QuestionNumber = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  opacity: 0.4;
+  filter: brightness(0.4);
   height: 50px;
   display: flex;
   align-items: center;
@@ -183,6 +170,7 @@ const TitleContainer = styled.div`
   animation: ${visible} 0s linear 0.1s forwards;
   visibility: hidden;
   margin-bottom: ${theme.spacings(5)};
+  padding-top: 50px;
 
   .title {
     text-align: center;

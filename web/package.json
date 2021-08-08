@@ -44,7 +44,6 @@
     "redux-logger": "^3.0.6",
     "styled-components": "^5.2.1",
     "styled-normalize": "^8.0.7",
-    "swiper": "^6.7.0",
     "uifx": "^2.0.7"
   },
   "devDependencies": {
@@ -54,19 +53,17 @@
     "@types/node": "^16.0.0",
     "@types/phoenix": "^1.5.1",
     "@types/prismjs": "^1.16.5",
-    "@types/react": "17.0.15",
+    "@types/react": "^17.0.16",
     "@types/react-alert": "^5.2.0",
-    "@types/react-beautiful-dnd": "^13.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-modal": "^3.10.6",
     "@types/react-redux": "^7.1.16",
-    "@types/react-speech-recognition": "^3.6.0",
     "@types/redux-logger": "^3.0.8",
     "@types/styled-components": "^5.1.7",
     "apollo": "^2.32.1",
-    "eslint": "7.32.0",
-    "eslint-config-next": "11.0.1",
-    "typescript": "4.3.5",
+    "eslint": "^7.32.0",
+    "eslint-config-next": "^11.0.1",
+    "typescript": "^4.3.5",
     "webpack-bundle-analyzer": "^4.4.2"
   }
 }

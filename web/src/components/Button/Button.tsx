@@ -64,7 +64,7 @@ const renderRegularStyles = () => {
       border-image-source: ${theme.ui.buttonBorderActiveUrl};
     }
     &:disabled {
-      opacity: 0.5;
+      filter: brightness(0.5);
       cursor: not-allowed;
       animation: none;
       &:hover {
@@ -92,7 +92,7 @@ const renderFabStyles = () => {
       background-image: ${theme.ui.buttonFabBorderActiveUrl};
     }
     &:disabled {
-      opacity: 0.5;
+      filter: brightness(0.5);
       cursor: not-allowed;
       &:hover {
         background-image: ${theme.ui.buttonFabBorderUrl};
