@@ -84,7 +84,9 @@ export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
                 />
               </StyledSheet.Content>
             </StyledSheet.Container>
-            <StyledSheet.Backdrop onClick={() => setShowSubmissions(false)} />
+            <button onClick={() => setShowSubmissions(false)}>
+              <StyledSheet.Backdrop />
+            </button>
           </StyledSheet>
         </>
       )}
