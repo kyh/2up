@@ -1,9 +1,10 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import sample from "lodash/sample";
+import Sheet from "react-modal-sheet";
 import { theme, useIsDesktop } from "styles/theme";
-import { bounceIn, bounceOut, drawIn } from "styles/animations";
+import { bounceIn, bounceOut, fadeUpIn, drawIn } from "styles/animations";
 import { StepProps, GameState, SceneAnswer } from "features/game/gameSlice";
 import { Instruction } from "features/game/components/Instruction";
 import { Question } from "features/game/components/Question";
@@ -13,7 +14,7 @@ import {
   PlayersGrid,
   NextButton,
 } from "features/game/components/PlayerGrid";
-import { Carousel, AnimationSprite } from "components";
+import { AnimationSprite } from "components";
 import { useTimeout } from "styles/animations";
 
 const sprites = {
@@ -27,7 +28,6 @@ const compareAnswer = (answer: string, answerToCompare: string) => {
 
 export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
   const desktop = useIsDesktop();
-  const carouselRef = useRef<any>(null);
   const [showSubmissions, setShowSubmissions] = useState(false);
   const [animationSpriteName, setAnimationSpriteName] = useState<any>(null);
 
@@ -47,23 +47,17 @@ export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
     } else {
       setAnimationSpriteName(sample(sprites.wrong));
     }
-  }, 300);
+  }, 500);
 
   useTimeout(() => {
     if (gameState.submissions.length > 1) {
-      if (desktop) {
-        setShowSubmissions(true);
-      } else if (carouselRef && carouselRef.current) {
-        carouselRef.current.slideNext();
-      }
+      setShowSubmissions(true);
     }
-  }, 3000);
+  }, 2000);
 
   return (
     <>
-      {animationSpriteName && (
-        <CorrectSprite name={animationSpriteName} delay={0.2} />
-      )}
+      {animationSpriteName && <CorrectSprite name={animationSpriteName} />}
       {desktop ? (
         <>
           <AnswerResult gameState={gameState} sceneAnswer={correctAnswer} />
@@ -72,12 +66,27 @@ export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
           )}
         </>
       ) : (
-        <Carousel ref={carouselRef} count={1} hideControls>
-          <div>
-            <AnswerResult gameState={gameState} sceneAnswer={correctAnswer} />
-          </div>
-          <Submissions gameState={gameState} sceneAnswer={correctAnswer} />
-        </Carousel>
+        <>
+          <AnswerResult
+            gameState={gameState}
+            sceneAnswer={correctAnswer}
+            onAnswerContainerClick={() => setShowSubmissions(true)}
+          />
+          <StyledSheet
+            isOpen={showSubmissions}
+            onClose={() => setShowSubmissions(false)}
+          >
+            <StyledSheet.Container>
+              <StyledSheet.Content>
+                <Submissions
+                  gameState={gameState}
+                  sceneAnswer={correctAnswer}
+                />
+              </StyledSheet.Content>
+            </StyledSheet.Container>
+            <StyledSheet.Backdrop onClick={() => setShowSubmissions(false)} />
+          </StyledSheet>
+        </>
       )}
       {firstPlayer && (
         <NextButton
@@ -93,6 +102,13 @@ export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
     </>
   );
 };
+
+const StyledSheet = styled(Sheet)`
+  z-index: 1 !important;
+  .react-modal-sheet-container {
+    background-color: ${theme.ui.background} !important;
+  }
+`;
 
 export const Step2Spectate = ({ gameState }: StepProps) => {
   const correctAnswer = gameState.sceneAnswers?.find(
@@ -110,9 +126,13 @@ export const Step2Spectate = ({ gameState }: StepProps) => {
 type SubmissionProps = {
   gameState: GameState;
   sceneAnswer: SceneAnswer;
+  onAnswerContainerClick?: () => void;
 };
 
-const AnswerResult = ({ gameState }: SubmissionProps) => {
+const AnswerResult = ({
+  gameState,
+  onAnswerContainerClick,
+}: SubmissionProps) => {
   return (
     <>
       <Instruction instruction={gameState.instruction} />
@@ -120,7 +140,7 @@ const AnswerResult = ({ gameState }: SubmissionProps) => {
         question={gameState.question}
         questionType={gameState.questionType}
       />
-      <AnswerContainer>
+      <AnswerContainer onClick={onAnswerContainerClick}>
         {gameState.sceneAnswers?.map((sceneAnswer) => (
           <Answer
             key={sceneAnswer.id}
@@ -206,7 +226,7 @@ const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
 };
 
 const SubmissionsContainer = styled(PlayersGrid)`
-  padding: ${theme.spacings(20)} 0 ${theme.spacings(5)};
+  padding: ${theme.spacings(5)};
 
   .correct {
     position: absolute;
@@ -220,6 +240,7 @@ const SubmissionsContainer = styled(PlayersGrid)`
 
   ${theme.breakpoints.desktop} {
     padding: 0 ${theme.spacings(5)};
+    animation: ${fadeUpIn} 0.8s cubic-bezier(0.77, 0.13, 0.46, 1.22) forwards;
   }
 `;
 

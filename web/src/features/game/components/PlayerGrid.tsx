@@ -95,6 +95,7 @@ export const NextButton = styled(Button)`
   left: 50%;
   width: 150px;
   margin-left: -75px;
+  z-index: 10;
 
   ${theme.breakpoints.desktop} {
     background-color: ${theme.ui.background};
