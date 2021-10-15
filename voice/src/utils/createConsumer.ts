@@ -1,18 +1,11 @@
-import {
-  ConsumerType,
-  Producer,
-  Router,
-  RtpCapabilities,
-  RtpParameters,
-  Transport,
-} from "mediasoup/lib/types";
+import { types } from "mediasoup";
 import { MyPeer } from "../MyPeer";
 
 export const createConsumer = async (
-  router: Router,
-  producer: Producer,
-  rtpCapabilities: RtpCapabilities,
-  transport: Transport,
+  router: types.Router,
+  producer: types.Producer,
+  rtpCapabilities: types.RtpCapabilities,
+  transport: types.Transport,
   peerId: string,
   peerConsuming: MyPeer
 ): Promise<Consumer> => {
@@ -59,8 +52,8 @@ export interface Consumer {
     producerId: string;
     id: string;
     kind: string;
-    rtpParameters: RtpParameters;
-    type: ConsumerType;
+    rtpParameters: types.RtpParameters;
+    type: types.ConsumerType;
     producerPaused: boolean;
   };
 }

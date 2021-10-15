@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: dev_playhouse_postgres_container
+    image: postgres:latest
+    ports:
+      - 5666:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: playhouse_dev
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ./db:/var/lib/postgresql/data/
+
+  maildev:
+    container_name: dev_playhouse_maildev_container
+    image: djfarrelly/maildev
+    ports:
+      - "1080:80"
+      - "1025:25"
+
+  rabbitmq:
+    container_name: dev_playhouse_rabbitmq_container
+    image: rabbitmq:3.8-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=myuser
+      - RABBITMQ_DEFAULT_PASS=mypassword
+    ports:
+      # AMQP protocol port
+      - "5672:5672"
+      # HTTP management UI
+      - "15672:15672"

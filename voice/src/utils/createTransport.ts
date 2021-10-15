@@ -1,5 +1,5 @@
 import debugModule from "debug";
-import { Router, WebRtcTransport } from "mediasoup/lib/types";
+import { types } from "mediasoup";
 import { VoiceSendDirection } from "src/types";
 import { config } from "../config";
 
@@ -10,13 +10,18 @@ export const transportToOptions = ({
   iceParameters,
   iceCandidates,
   dtlsParameters,
-}: WebRtcTransport) => ({ id, iceParameters, iceCandidates, dtlsParameters });
+}: types.WebRtcTransport) => ({
+  id,
+  iceParameters,
+  iceCandidates,
+  dtlsParameters,
+});
 
 export type TransportOptions = ReturnType<typeof transportToOptions>;
 
 export const createTransport = async (
   direction: VoiceSendDirection,
-  router: Router,
+  router: types.Router,
   peerId: string
 ) => {
   log("create-transport", direction);

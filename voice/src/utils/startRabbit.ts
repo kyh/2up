@@ -1,11 +1,6 @@
 import amqp, { Connection } from "amqplib";
 import * as Sentry from "@sentry/node";
-import {
-  DtlsParameters,
-  MediaKind,
-  RtpCapabilities,
-  RtpParameters,
-} from "mediasoup/lib/types";
+import { types } from "mediasoup";
 import { VoiceSendDirection } from "src/types";
 import { TransportOptions } from "./createTransport";
 import { Consumer } from "./createConsumer";
@@ -19,7 +14,7 @@ export interface HandlerDataMap {
   "@get-recv-tracks": {
     roomId: string;
     peerId: string;
-    rtpCapabilities: RtpCapabilities;
+    rtpCapabilities: types.RtpCapabilities;
   };
   "@send-track": {
     roomId: string;
@@ -27,14 +22,14 @@ export interface HandlerDataMap {
     transportId: string;
     direction: VoiceSendDirection;
     paused: boolean;
-    kind: MediaKind;
-    rtpParameters: RtpParameters;
-    rtpCapabilities: RtpCapabilities;
+    kind: types.MediaKind;
+    rtpParameters: types.RtpParameters;
+    rtpCapabilities: types.RtpCapabilities;
     appData: any;
   };
   "@connect-transport": {
     roomId: string;
-    dtlsParameters: DtlsParameters;
+    dtlsParameters: types.DtlsParameters;
     peerId: string;
     direction: VoiceSendDirection;
   };
@@ -74,7 +69,7 @@ type OutgoingMessageDataMap = {
   "you-joined-as-speaker": {
     roomId: string;
     peerId: string;
-    routerRtpCapabilities: RtpCapabilities;
+    routerRtpCapabilities: types.RtpCapabilities;
     recvTransportOptions: TransportOptions;
     sendTransportOptions: TransportOptions;
   };
@@ -104,7 +99,7 @@ type OutgoingMessageDataMap = {
   "you-joined-as-peer": {
     roomId: string;
     peerId: string;
-    routerRtpCapabilities: RtpCapabilities;
+    routerRtpCapabilities: types.RtpCapabilities;
     recvTransportOptions: TransportOptions;
   };
 } & {
