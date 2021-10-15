@@ -1,8 +1,8 @@
-import { Consumer, Producer, Transport } from "mediasoup/lib/types";
+import { types } from "mediasoup";
 
 export type MyPeer = {
-  sendTransport: Transport | null;
-  recvTransport: Transport | null;
-  producer: Producer | null;
-  consumers: Consumer[];
+  sendTransport: types.Transport | null;
+  recvTransport: types.Transport | null;
+  producer: types.Producer | null;
+  consumers: types.Consumer[];
 };

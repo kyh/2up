@@ -1,8 +1,4 @@
-import {
-  RtpCodecCapability,
-  TransportListenIp,
-  WorkerLogTag,
-} from "mediasoup/lib/types";
+import { types } from "mediasoup";
 
 export const config = {
   // http server ip, port, and peer timeout constant
@@ -28,7 +24,7 @@ export const config = {
         // 'score',
         // 'simulcast',
         // 'svc'
-      ] as WorkerLogTag[],
+      ] as types.WorkerLogTag[],
     },
     router: {
       mediaCodecs: [
@@ -38,7 +34,7 @@ export const config = {
           clockRate: 48000,
           channels: 2,
         },
-      ] as RtpCodecCapability[],
+      ] as types.RtpCodecCapability[],
     },
 
     // rtp listenIps are the most important thing, below. you'll need
@@ -52,7 +48,7 @@ export const config = {
         },
         // { ip: "192.168.42.68", announcedIp: null },
         // { ip: '10.10.23.101', announcedIp: null },
-      ] as TransportListenIp[],
+      ] as types.TransportListenIp[],
       initialAvailableOutgoingBitrate: 800000,
     },
   },

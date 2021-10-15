@@ -1,6 +1,6 @@
 import "dotenv/config";
 import debugModule from "debug";
-import { Router, Worker } from "mediasoup/lib/types";
+import { types } from "mediasoup";
 import * as Sentry from "@sentry/node";
 import { MyRooms } from "./MyRoomState";
 import { closePeer } from "./utils/closePeer";
@@ -25,8 +25,8 @@ export async function main() {
   // start mediasoup
   console.log("starting mediasoup");
   let workers: {
-    worker: Worker;
-    router: Router;
+    worker: types.Worker;
+    router: types.Router;
   }[];
   try {
     workers = await startMediasoup();

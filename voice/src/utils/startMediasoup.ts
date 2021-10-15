@@ -1,12 +1,12 @@
 import * as mediasoup from "mediasoup";
-import { Router, Worker } from "mediasoup/lib/types";
+import { types } from "mediasoup";
 import os from "os";
 import { config } from "../config";
 
 export async function startMediasoup() {
   const workers: Array<{
-    worker: Worker;
-    router: Router;
+    worker: types.Worker;
+    router: types.Router;
   }> = [];
   for (let i = 0; i < Object.keys(os.cpus()).length; i++) {
     let worker = await mediasoup.createWorker({

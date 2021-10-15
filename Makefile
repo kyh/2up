@@ -24,11 +24,20 @@ migrate:
 migrate-gen:
 	cd server && mix ecto.gen.migration $(NAME)
 
-phx:
+start-server:
 	source .env && cd server && iex -S mix phx.server
 
-react:
-	npm run dev
+start-web:
+	npm run dev:web
+
+start-voice:
+	npm run dev:voice
+
+start-docker:
+	docker-compose up -d
+
+stop-docker:
+	docker-compose down
 
 test:
 	cd server && mix test
