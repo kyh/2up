@@ -15,15 +15,6 @@ install:
 console:
 	source .env && cd server && iex -S mix
 
-reset:
-	cd server && mix ecto.reset
-
-migrate:
-	cd server && mix ecto.migrate
-
-migrate-gen:
-	cd server && mix ecto.gen.migration $(NAME)
-
 start-server:
 	source .env && cd server && iex -S mix phx.server
 
@@ -42,5 +33,14 @@ stop-docker:
 test:
 	cd server && mix test
 
-seeds:
+db-reset:
+	cd server && mix ecto.reset
+
+db-migrate:
+	cd server && mix ecto.migrate
+
+db-migrate-gen:
+	cd server && mix ecto.gen.migration $(NAME)
+
+db-seed:
 	cd server && mix run priv/repo/seeds.exs

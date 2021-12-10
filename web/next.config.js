@@ -15,7 +15,16 @@ module.exports = {
           options: {
             prettier: false,
             svgo: true,
-            svgoConfig: { plugins: [{ removeViewBox: false }] },
+            svgoConfig: {
+              plugins: [
+                {
+                  name: "preset-default",
+                  params: {
+                    overrides: { removeViewBox: false },
+                  },
+                },
+              ],
+            },
             titleProp: true,
           },
         },
