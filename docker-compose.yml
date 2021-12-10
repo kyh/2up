@@ -5,14 +5,12 @@ services:
     container_name: dev_playhouse_postgres_container
     image: postgres:latest
     ports:
-      - 5666:5432
+      - 5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: playhouse_dev
       POSTGRES_HOST_AUTH_METHOD: trust
-    volumes:
-      - ./db:/var/lib/postgresql/data/
 
   maildev:
     container_name: dev_playhouse_maildev_container
