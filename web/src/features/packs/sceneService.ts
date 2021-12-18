@@ -32,7 +32,7 @@ export const useUpdateScene = (scene: SceneFragment) => {
         },
       });
       savingSceneVar(false);
-    } catch (error) {
+    } catch (error: any) {
       alert.show(error.message);
       savingSceneVar(false);
     }
@@ -82,7 +82,7 @@ export const useCreateScene = () => {
       const newScene = data?.sceneCreate?.scene;
       savingSceneVar(false);
       return newScene;
-    } catch (error) {
+    } catch (error: any) {
       alert.show(error.message);
       savingSceneVar(false);
     }
@@ -117,7 +117,7 @@ export const useDeleteScene = () => {
       savingSceneVar(false);
       const deletedScene = data?.sceneDelete?.scene;
       return deletedScene;
-    } catch (error) {
+    } catch (error: any) {
       alert.show(error.message);
       savingSceneVar(false);
     }
@@ -157,7 +157,7 @@ export const useUpdateSceneOrder = () => {
         },
       });
       savingSceneVar(false);
-    } catch (error) {
+    } catch (error: any) {
       alert.show(error.message);
       savingSceneVar(false);
     }

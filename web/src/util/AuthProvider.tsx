@@ -75,7 +75,7 @@ const useAuthProvider = () => {
         if (data && data.userCreate) {
           handleAuth(data.userCreate.token, data.userCreate.user);
         }
-      } catch (error) {
+      } catch (error: any) {
         alert.show(error.message);
       }
     },
@@ -90,7 +90,7 @@ const useAuthProvider = () => {
       if (data && data.sessionCreate) {
         handleAuth(data.sessionCreate.token, data.sessionCreate.user);
       }
-    } catch (error) {
+    } catch (error: any) {
       alert.show(error.message);
     }
   }, []);

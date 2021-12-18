@@ -25,7 +25,7 @@ export const PackNew = () => {
       if (pack) {
         router.push(`/packs/${pack.id}/edit`);
       }
-    } catch (error) {
+    } catch (error: any) {
       alert.show(error.message);
     }
   };

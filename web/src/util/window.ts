@@ -19,7 +19,7 @@ export const localStorage = {
       const value = window.localStorage.getItem(key);
       try {
         return value ? JSON.parse(value) : null;
-      } catch (error) {
+      } catch {
         return value;
       }
     }

@@ -36,7 +36,7 @@ export const Topbar = ({ pack, testPlay }: Props) => {
       });
       savingSceneVar(false);
       setIsOpen(false);
-    } catch (error) {
+    } catch (error: any) {
       savingSceneVar(false);
       alert.show(error.message);
     }
