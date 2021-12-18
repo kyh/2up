@@ -47,7 +47,7 @@ export const CsvImportButton = ({
         },
       });
       await refetch();
-    } catch (error) {
+    } catch (error: any) {
       alert.show(error.message);
     } finally {
       setIsSaving(false);
