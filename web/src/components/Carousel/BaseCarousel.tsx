@@ -26,7 +26,7 @@ interface Props {
 }
 
 export const BaseCarousel = React.forwardRef<BaseCarouselHandle, Props>(
-  (
+  function BaseCarousel(
     {
       autoplayInterval = 0,
       count = 1,
@@ -37,9 +37,10 @@ export const BaseCarousel = React.forwardRef<BaseCarouselHandle, Props>(
       ...props
     },
     ref: React.Ref<BaseCarouselHandle>
-  ) => {
+  ) {
     const sliderRef = React.useRef<HTMLDivElement>(null);
     const index = useMotionValue(0);
+    const autoplay = useAutoplay(index, autoplayInterval);
 
     useOnChange({
       childrenCount: React.Children.count(children),
@@ -47,28 +48,21 @@ export const BaseCarousel = React.forwardRef<BaseCarouselHandle, Props>(
       onChange,
     });
 
-    const autoplay = useAutoplay(index, autoplayInterval);
-
     useImperativeHandle(
       ref,
       () => ({
         slideNext: (): void => {
           autoplay.start();
-
           const roundIndex = Number(index.get().toFixed(4));
-
           animateSpring(index, Math.ceil(roundIndex + 1));
         },
         slidePrev: (): void => {
           autoplay.start();
-
           const roundIndex = Number(index.get().toFixed(4));
-
           animateSpring(index, Math.floor(roundIndex - 1));
         },
         slideTo: (newIndex: number): void => {
           autoplay.start();
-
           animateSpring(index, newIndex);
         },
       }),
