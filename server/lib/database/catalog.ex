@@ -1,6 +1,5 @@
 defmodule Database.Catalog do
   use Database.Context
-  alias Database.Authorization
   NimbleCSV.define(CSVParser, separator: ",", escape: "\"")
 
   def ordered_scene_list(args) do
@@ -90,7 +89,7 @@ defmodule Database.Catalog do
       ) do
     attrs =
       case initial_attrs do
-        %{external_d: external_id} ->
+        %{external_id: _external_id} ->
           initial_attrs
 
         _ ->
@@ -315,7 +314,7 @@ defmodule Database.Catalog do
             }
           end)
 
-        {updated_count, updated_scene_answers} =
+        {_updated_count, updated_scene_answers} =
           scene_answers_insert_or_update(scene_answers_attrs)
 
         updated_scene_answers_ids = Enum.map(updated_scene_answers, & &1.id)
@@ -349,9 +348,7 @@ defmodule Database.Catalog do
     )
   end
 
-  @doc """
-  Delete existing scene answers that do not have a match
-  """
+  # Delete existing scene answers that do not have a match
   defp scene_answers_delete_unmatched(scene_answer_ids, scene_id) do
     scene_answer_list(%{scene_id: scene_id})
     |> Enum.each(fn scene_answer ->
@@ -361,9 +358,7 @@ defmodule Database.Catalog do
     end)
   end
 
-  @doc """
-  Delete existing scenes that do not have a match
-  """
+  # Delete existing scenes that do not have a match
   defp scenes_delete_unmatched(scene_external_ids, pack_id) do
     ordered_scene_list(%{pack_id: pack_id})
     |> Enum.each(fn scene ->

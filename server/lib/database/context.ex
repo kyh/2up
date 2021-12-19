@@ -7,6 +7,8 @@ defmodule Database.Context do
 
       alias Database.Repo
 
+      alias Database.Authorization
+
       alias Database.Accounts.User
 
       alias Database.Catalog.{

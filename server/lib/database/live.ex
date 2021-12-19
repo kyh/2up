@@ -1,6 +1,5 @@
 defmodule Database.Live do
   use Database.Context
-  alias Database.Authorization
 
   def play_create(%Pack{} = pack, attrs) do
     %Play{}
