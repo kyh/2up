@@ -37,6 +37,7 @@ alias Database.{
     name: "States",
     is_random: true,
     description: "Guess the name of state by looking at the map",
+    tags: [],
     length: 10
   })
 
@@ -251,6 +252,7 @@ states_questions = [
     name: "Flags",
     is_random: true,
     description: "Guess the name of the country by looking at its flag",
+    tags: [],
     length: 10
   })
 
@@ -353,6 +355,7 @@ flags_questions = [
     name: "Capitals",
     is_random: true,
     description: "Guess the capital of given country",
+    tags: [],
     length: 10
   })
 
@@ -389,6 +392,7 @@ capitals_questions = [
     name: "Stocks",
     is_random: true,
     description: "Guess the ticker of the company",
+    tags: [],
     length: 10
   })
 
@@ -437,6 +441,7 @@ stocks_questions = [
     name: "Crypto",
     is_random: true,
     description: "Guess the crypto of given icon",
+    tags: [],
     length: 10
   })
 
