@@ -22,9 +22,7 @@ defmodule Web.GameChannel do
     end
   end
 
-  @doc """
-  Presence is tracked and initial game state broadcasted
-  """
+  # Presence is tracked and initial game state broadcasted
   def handle_info({:after_join, game_code, name, is_spectator}, socket) do
     push(socket, "presence_state", Presence.list(socket))
 
@@ -48,9 +46,7 @@ defmodule Web.GameChannel do
     {:noreply, socket}
   end
 
-  @doc """
-  Triggered from lobby once everyone has joined
-  """
+  # Triggered from lobby once everyone has joined
   def handle_in("start", _payload, socket) do
     "game:" <> game_code = socket.topic
 
@@ -66,9 +62,7 @@ defmodule Web.GameChannel do
     end
   end
 
-  @doc """
-  Increments step in game state
-  """
+  # Increments step in game state
   def handle_in("step:next", _payload, socket) do
     "game:" <> game_code = socket.topic
 
@@ -84,9 +78,7 @@ defmodule Web.GameChannel do
     end
   end
 
-  @doc """
-  Increments scene in game state
-  """
+  # Increments scene in game state
   def handle_in("scene:next", _payload, socket) do
     "game:" <> game_code = socket.topic
 
@@ -102,9 +94,7 @@ defmodule Web.GameChannel do
     end
   end
 
-  @doc """
-  Player's guess to the question
-  """
+  # Player's guess to the question
   def handle_in("submit", %{"name" => name, "submission" => submission}, socket) do
     "game:" <> game_code = socket.topic
 
@@ -121,9 +111,7 @@ defmodule Web.GameChannel do
     end
   end
 
-  @doc """
-  Send message to players in a game to join new game
-  """
+  # Send message to players in a game to join new game
   def handle_in("invite", %{"game_code" => game_code, "new_code" => new_code}, socket) do
     case GameServer.game_pid(game_code) do
       pid when is_pid(pid) ->
@@ -139,9 +127,7 @@ defmodule Web.GameChannel do
     end
   end
 
-  @doc """
-  List of actively connected players to determine if everyone is done
-  """
+  # List of actively connected players to determine if everyone is done
   defp player_count(socket) do
     Presence.list(socket)
     |> Map.values()
@@ -149,9 +135,7 @@ defmodule Web.GameChannel do
     |> Enum.count()
   end
 
-  @doc """
-  Update player's score based on game state
-  """
+  # Update player's score based on game state
   defp player_score_update(game_state, socket, name) do
     game_state_player =
       Enum.filter(game_state.players, fn x -> x.name === name end)
@@ -175,16 +159,12 @@ defmodule Web.GameChannel do
     game_state
   end
 
-  @doc """
-  Removes players array from game state since it's returned in presence
-  """
+  # Removes players array from game state since it's returned in presence
   defp game_state_format(game_state) do
     Map.delete(game_state, :players)
   end
 
-  @doc """
-  Formats and broadcasts game state to connected clients
-  """
+  # Formats and broadcasts game state to connected clients
   defp game_state_broadcast(game_state, socket) do
     broadcast!(socket, "game/game_state", game_state |> game_state_format())
   end

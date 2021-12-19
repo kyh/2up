@@ -7,7 +7,7 @@ defmodule Web.GraphQL.Resolvers.AssetLibrary do
     {:ok, %{presigned_url: presigned_url}}
   end
 
-  def list(_, %{path: path}, _) do
+  def list(_, %{path: _path}, _) do
     # ExAws.S3.list_objects("assets.playhouse.gg", path)
     # |> ExAws.request!()
     # |> get_in([:body, :contents])

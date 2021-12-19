@@ -15,7 +15,7 @@ defmodule Web.GraphQL.Resolvers.Catalog do
     Connection.from_list(Catalog.scene_list(args), args)
   end
 
-  def scene_create(%{external_id: external_id} = args, %{context: %{current_user: user}}) do
+  def scene_create(args, %{context: %{current_user: user}}) do
     case Catalog.scene_create(user, args) do
       {:error, changeset} ->
         {
@@ -89,7 +89,7 @@ defmodule Web.GraphQL.Resolvers.Catalog do
 
   def csv_import(args, %{context: %{current_user: user}}) do
     case Catalog.csv_import(user, args) do
-      {:error, changeset} ->
+      {:error, _changeset} ->
         {:error, message: "Csv import failed"}
 
       {:ok, pack} ->
