@@ -1,4 +1,4 @@
-import type { AppProps, NextWebVitalsMetric } from "next/app";
+import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import Router from "next/router";
 import { ReactElement, ReactNode } from "react";
@@ -12,7 +12,6 @@ import { ProgressBar, ReactAlertTemplate } from "components";
 
 import { store } from "util/store";
 import { client } from "util/apollo";
-import { logPageView, logEvent } from "util/analytics";
 
 const progress = new ProgressBar();
 
@@ -26,25 +25,7 @@ type Props = AppProps & {
 
 Router.events.on("routeChangeStart", progress.start);
 Router.events.on("routeChangeError", progress.finish);
-Router.events.on("routeChangeComplete", (url) => {
-  logPageView(url);
-  progress.finish();
-});
-
-export const reportWebVitals = ({
-  id,
-  name,
-  label,
-  value,
-}: NextWebVitalsMetric) => {
-  logEvent({
-    action: name,
-    category: label === "web-vital" ? "Web Vitals" : "Custom metric",
-    value: Math.round(name === "CLS" ? value * 1000 : value),
-    label: id,
-    nonInteraction: true,
-  });
-};
+Router.events.on("routeChangeComplete", progress.finish);
 
 const MyApp = ({ Component, pageProps }: Props) => {
   const getLayout = Component.getLayout || ((page) => page);
