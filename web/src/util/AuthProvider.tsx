@@ -8,7 +8,7 @@ import {
 } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
-import { useAlert } from "react-alert";
+import { useAlert } from "components";
 import { localStorage } from "util/window";
 import { CurrentUserQuery } from "./__generated__/CurrentUserQuery";
 import { UserCreateMutation } from "./__generated__/UserCreateMutation";
