@@ -1,4 +1,4 @@
-export { Alert, ReactAlertTemplate } from "./Alert/Alert";
+export { Alert, AlertProvider, useAlert } from "./Alert/Alert";
 export { Button, ButtonLink, ButtonLinkNative } from "./Button/Button";
 export { Link } from "./Link/Link";
 export { Input } from "./Input/Input";
@@ -18,7 +18,6 @@ export { AreaField } from "./TextField/AreaField";
 export { AnimationSprite, animateSprite } from "./Animations/AnimationSprite";
 export { Confetti } from "./Animations/Confetti";
 export { Counter } from "./Counter/Counter";
-export { Carousel } from "./Carousel/Carousel";
 export { AudioPlayer } from "./Players/AudioPlayer";
 export { VideoPlayer } from "./Players/VideoPlayer";
 export { Code } from "./Code/Code";
