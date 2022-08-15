@@ -10,13 +10,6 @@ export const Page = styled.section<{
 
   ${theme.breakpoints.desktop} {
     ${({ bgImage, bgTop = "0" }) => css`
-      display: grid;
-      grid-template-areas:
-        "header"
-        "content"
-        "footer";
-      grid-template-columns: 1fr;
-      grid-template-rows: 50px 1fr auto;
       overflow-x: hidden;
       overflow-y: auto;
       perspective: 5px;
@@ -47,7 +40,6 @@ export const Content = styled.main`
   max-width: 900px;
   width: 100%;
   margin: 0 auto;
-  grid-area: content;
   padding: ${theme.spacings(5)} ${theme.spacings(3)};
 
   .back-link {
@@ -64,7 +56,6 @@ export const Content = styled.main`
 `;
 
 export const Footer = styled.footer`
-  grid-area: footer;
   display: flex;
   justify-content: center;
   align-items: center;
