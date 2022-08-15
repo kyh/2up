@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "util/mock";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { uuid } from "util/string";
-
-import { PresignedUrlCreateMutation } from "./__generated__/PresignedUrlCreateMutation";
 
 type DragAndDropProps = {
   onFileDrop: (_files: File[]) => void;
@@ -103,8 +101,7 @@ type UploaderProps = {
 
 export const Uploader = ({ pathPrefix, onUploaded }: UploaderProps) => {
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
-  const [presignedUrlCreate] =
-    useMutation<PresignedUrlCreateMutation>(PRESIGNED_URL_CREATE);
+  const [presignedUrlCreate] = useMutation(PRESIGNED_URL_CREATE);
 
   const upload = async (files: File[]) => {
     setFilesToUpload([...files]);
@@ -156,7 +153,7 @@ export const Uploader = ({ pathPrefix, onUploaded }: UploaderProps) => {
   );
 };
 
-const PRESIGNED_URL_CREATE = gql`
+const PRESIGNED_URL_CREATE = `
   mutation PresignedUrlCreateMutation($input: PresignedUrlCreateInput!) {
     presignedUrlCreate(input: $input) {
       presignedUrl

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { theme } from "styles/theme";
 import { TextField, Button, Card } from "components";
-import { useAuth } from "util/AuthProvider";
 
 type FormInputs = {
   username: string;
@@ -15,7 +14,6 @@ type Props = { isLogin?: boolean };
 
 export const Auth = ({ isLogin }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const auth = useAuth();
   const {
     register,
     handleSubmit,
@@ -24,11 +22,11 @@ export const Auth = ({ isLogin }: Props) => {
 
   const onSubmit = async ({ username, email, password }: FormInputs) => {
     setIsLoading(true);
-    if (isLogin && auth.signin) {
-      await auth.signin(username, password);
-    } else if (auth.signup) {
-      await auth.signup(username, email, password);
-    }
+    // if (isLogin && auth.signin) {
+    //   await auth.signin(username, password);
+    // } else if (auth.signup) {
+    //   await auth.signup(username, email, password);
+    // }
     setIsLoading(false);
   };
 

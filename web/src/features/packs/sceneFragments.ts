@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "util/mock";
 
 export const SCENE_FRAGMENT = gql`
   fragment SceneFragment on Scene {

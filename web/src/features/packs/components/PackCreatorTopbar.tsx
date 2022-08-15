@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { gql, useMutation, useReactiveVar } from "@apollo/client";
+import { gql, useMutation, useReactiveVar } from "util/mock";
 import { theme } from "styles/theme";
 import { Link, Button, Icon, Modal, Loader, useAlert } from "components";
 import { NavigationContainer } from "features/packs/components/Navigation";
@@ -8,11 +8,8 @@ import { PackForm, PackFormInputs } from "features/packs/components/PackForm";
 import { savingSceneVar } from "features/packs/packService";
 import { PACK_FRAGMENT } from "features/packs/packFragments";
 
-import { PackUpdateMutation } from "./__generated__/PackUpdateMutation";
-import { PackFragment } from "../__generated__/PackFragment";
-
 type Props = {
-  pack: PackFragment;
+  pack: any;
   testPlay: () => void;
 };
 
@@ -20,7 +17,7 @@ export const Topbar = ({ pack, testPlay }: Props) => {
   const alert = useAlert();
   const saving = useReactiveVar(savingSceneVar);
   const [isOpen, setIsOpen] = useState(false);
-  const [packUpdate] = useMutation<PackUpdateMutation>(PACK_UPDATE);
+  const [packUpdate] = useMutation(PACK_UPDATE);
 
   const onSaveChanges = async (newPack: PackFormInputs) => {
     savingSceneVar(true);

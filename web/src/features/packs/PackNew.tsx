@@ -1,17 +1,14 @@
 import styled from "styled-components";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation } from "util/mock";
 import { useRouter } from "next/router";
 import { useAlert, Card } from "components";
 import { Content } from "features/packs/components/Page";
 import { PackForm, PackFormInputs } from "features/packs/components/PackForm";
 
-import { PackNewPagePackCreateMutation } from "./__generated__/PackNewPagePackCreateMutation";
-
 export const PackNew = () => {
   const alert = useAlert();
   const router = useRouter();
-  const [packCreate, { loading }] =
-    useMutation<PackNewPagePackCreateMutation>(PACK_CREATE);
+  const [packCreate, { loading }] = useMutation(PACK_CREATE);
 
   const createPack = async (newPack: PackFormInputs) => {
     try {

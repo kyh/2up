@@ -1,11 +1,8 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery } from "util/mock";
 import { useRouter } from "next/router";
-import { useAuth } from "util/AuthProvider";
-import { collectConnectionNodes } from "util/collection";
 import { Link, Carousel, ButtonLinkNative } from "components";
 import { Content, Footer } from "./components/Page";
 import { PackSection, Pack, PacksProps } from "./components/Packs";
-import { PackDiscoverPagePacksQuery } from "./__generated__/PackDiscoverPagePacksQuery";
 
 const refToTags: Record<
   string,
@@ -39,11 +36,10 @@ const refToTags: Record<
 export const PackDiscover = () => {
   const router = useRouter();
   const ref = (router.query.ref as string) || "default";
-  const auth = useAuth();
   const { section1, section2, section3, section4 } = refToTags[ref];
-  const { data } = useQuery<PackDiscoverPagePacksQuery>(PACKS_QUERY, {
+  const { data } = useQuery(PACKS_QUERY, {
     variables: {
-      username: auth.user?.username || "",
+      username: "",
       section1: section1.tags,
       section2: section2.tags,
       section3: section3.tags,
@@ -51,19 +47,19 @@ export const PackDiscover = () => {
     },
   });
 
-  const section1Map = collectConnectionNodes(data?.section1);
+  const section1Map = data?.section1;
   const section1Values = Object.values(section1Map);
 
-  const section2Map = collectConnectionNodes(data?.section2);
+  const section2Map = data?.section2;
   const section2Values = Object.values(section2Map);
 
-  const section3Map = collectConnectionNodes(data?.section3);
+  const section3Map = data?.section3;
   const section3Values = Object.values(section3Map);
 
-  const section4Map = collectConnectionNodes(data?.section4);
+  const section4Map = data?.section4;
   const section4Values = Object.values(section4Map);
 
-  const myPacksMap = collectConnectionNodes(data?.my);
+  const myPacksMap = data?.my;
   const myPacks = Object.values(myPacksMap);
 
   return (
@@ -75,7 +71,7 @@ export const PackDiscover = () => {
               <h1>{section1.title}</h1>
             </header>
             <div className="pack-items staggered-pack-items">
-              {section1Values.map((pack) => (
+              {section1Values.map((pack: any) => (
                 <Pack key={pack.id} pack={pack} showPlayButton />
               ))}
             </div>
@@ -95,18 +91,19 @@ export const PackDiscover = () => {
             url={`/packs/category/${section4.tags[0]}`}
             packs={section4Values}
           />
-          <PackCarouselContainer
+          {/* <PackCarouselContainer
             title="My Packs"
             url={`/u/${auth.user?.username}`}
             packs={myPacks}
             showNewPackButton
-          />
+          /> */}
         </PackSection>
       </Content>
       <Footer>
-        {!auth.user && (
+        {/* {!auth.user && (
           <Link to="/auth/request">Want to build your own pack?</Link>
-        )}
+        )} */}
+        <Link to="/auth/request">Want to build your own pack?</Link>
       </Footer>
     </>
   );
