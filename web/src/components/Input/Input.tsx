@@ -33,7 +33,8 @@ const renderRoundedStyles = () => {
 };
 
 export const Input = styled.input<Props>`
-  padding: ${theme.spacings(4)};
+  padding: 0 ${theme.spacings(4)};
+  line-height: 50px;
   color: ${theme.ui.buttonText};
   background-color: ${theme.ui.buttonBackground};
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
