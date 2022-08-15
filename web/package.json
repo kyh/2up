@@ -12,14 +12,7 @@
     "codegen": "apollo client:codegen --target=typescript --localSchemaFile=schema.json",
     "gql": "npm run introspect && npm run codegen",
     "analyze": "ANALYZE=true npm run build",
-    "clean:codegen": "find . -name __generated__ -exec rm -rf {} \\;",
-    "clean:build": "rm -rf build"
-  },
-  "eslintConfig": {
-    "extends": [
-      "next",
-      "next/core-web-vitals"
-    ]
+    "clean:codegen": "find . -name __generated__ -exec rm -rf {} \\;"
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
@@ -38,9 +31,9 @@
     "react-dom": "^18.2.0",
     "react-h5-audio-player": "^3.7.1",
     "react-hook-form": "^7.4.2",
-    "react-modal": "^3.12.1",
-    "react-modal-sheet": "^1.4.0",
-    "react-player": "^2.9.0",
+    "react-modal": "^3.15.1",
+    "react-modal-sheet": "^1.5.2",
+    "react-player": "^2.10.1",
     "react-redux": "^8.0.2",
     "react-tooltip": "^4.2.13",
     "redux-logger": "^3.0.6",
@@ -67,7 +60,6 @@
     "graphql": "^15.7.2",
     "prisma": "^4.2.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.3.5",
-    "webpack-bundle-analyzer": "^4.4.2"
+    "typescript": "^4.3.5"
   }
 }
