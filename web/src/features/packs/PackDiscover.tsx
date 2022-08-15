@@ -191,13 +191,11 @@ const PackCarouselContainer = ({
           <ButtonLinkNative to="/packs/new">Create new Pack</ButtonLinkNative>
         )}
       </header>
-      <div className="pack-items">
-        <Carousel>
-          {packs.map((pack) => (
-            <Pack key={pack.id} pack={pack} className="carousel-item" />
-          ))}
-        </Carousel>
-      </div>
+      <Carousel>
+        {packs.map((pack) => (
+          <Pack key={pack.id} pack={pack} className="carousel-item" />
+        ))}
+      </Carousel>
     </div>
   );
 };

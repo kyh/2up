@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, createContext, ReactNode } from "react";
 import { Presence } from "phoenix";
 import { useRouter } from "next/router";
-import { useAlert } from "react-alert";
+import { useAlert } from "components";
 import { useAppDispatch, useAppSelector } from "util/redux";
 import { useChannel } from "util/channel";
 import { gameActions } from "features/game/gameSlice";

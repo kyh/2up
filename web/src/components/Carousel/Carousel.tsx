@@ -1,94 +1,27 @@
-import {
-  ReactNode,
-  forwardRef,
-  useRef,
-  useImperativeHandle,
-  Children,
-  isValidElement,
-  ReactElement,
-} from "react";
+import { theme } from "styles/theme";
 import styled from "styled-components";
-import { theme, useIsDesktop } from "styles/theme";
-import { BaseCarousel } from "./BaseCarousel";
-import { Button } from "../Button/Button";
-import { Icon } from "../Icon/Icon";
 
-type Props = {
-  children: ReactNode;
-  hideControls?: boolean;
-  count?: number;
-};
+export const Carousel = styled.div`
+  overflow: auto;
+  display: flex;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  gap: ${theme.spacings(5)};
 
-const getValidChildren = (children: ReactNode) => {
-  return Children.toArray(children).filter((child) =>
-    isValidElement(child)
-  ) as ReactElement[];
-};
-
-export const Carousel = forwardRef(function Carousel(
-  { children, count, hideControls }: Props,
-  ref
-) {
-  const desktop = useIsDesktop();
-  const carouselRef = useRef<any>(null);
-
-  const slideNext = () => {
-    if (carouselRef && carouselRef.current) {
-      carouselRef.current.slideNext();
-    }
-  };
-
-  const slidePrev = () => {
-    if (carouselRef && carouselRef.current) {
-      carouselRef.current.slidePrev();
-    }
-  };
-
-  useImperativeHandle(ref, () => ({
-    slideNext,
-    slidePrev,
-  }));
-
-  const childrenLength = getValidChildren(children).length;
-  const defaultCount =
-    count || desktop
-      ? Math.min(childrenLength, 3)
-      : Math.min(childrenLength, 2);
-
-  return (
-    <CarouselContainer>
-      <BaseCarousel count={defaultCount} ref={carouselRef}>
-        {children}
-      </BaseCarousel>
-      {!hideControls && (
-        <>
-          <PaginationButton className="left" variant="fab" onClick={slidePrev}>
-            <Icon icon="leftArrow" />
-          </PaginationButton>
-          <PaginationButton className="right" variant="fab" onClick={slideNext}>
-            <Icon icon="rightArrow" />
-          </PaginationButton>
-        </>
-      )}
-    </CarouselContainer>
-  );
-});
-
-const CarouselContainer = styled.div`
-  position: relative;
-
-  .left {
-    left: ${theme.spacings(-3)};
+  &::-webkit-scrollbar {
+    display: none;
   }
 
-  .right {
-    right: ${theme.spacings(-3)};
+  & > * {
+    width: 20rem;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    flex-shrink: 0;
+    animation: none !important;
   }
-`;
 
-const PaginationButton = styled(Button)`
-  position: absolute;
-  top: 40%;
-  background-color: ${theme.ui.background};
-  border-radius: 100%;
+  & > *:active,
+  & > *:hover {
+    animation: none !important;
+  }
 `;

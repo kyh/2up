@@ -1,4 +1,4 @@
-export { Alert, ReactAlertTemplate } from "./Alert/Alert";
+export { Alert, AlertProvider, useAlert } from "./Alert/Alert";
 export { Button, ButtonLink, ButtonLinkNative } from "./Button/Button";
 export { Link } from "./Link/Link";
 export { Input } from "./Input/Input";

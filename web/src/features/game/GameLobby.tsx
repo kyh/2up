@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { useAlert } from "react-alert";
-import { Link, Button, Modal, AnimationSprite, Icon } from "components";
+import {
+  Link,
+  Button,
+  Modal,
+  AnimationSprite,
+  Icon,
+  useAlert,
+} from "components";
 import { theme } from "styles/theme";
 import { bounceIn } from "styles/animations";
 import { useAppSelector } from "util/redux";

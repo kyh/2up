@@ -1,13 +1,9 @@
 {
   "name": "playhouse",
-  "workspaces": [
-    "web",
-    "voice"
-  ],
   "scripts": {
     "dev": "concurrently --kill-others \"npm run dev:web\" \"npm run dev:voice\"",
-    "dev:web": "npm run dev --workspace=web",
-    "dev:voice": "npm run dev --workspace=voice",
+    "dev:web": "npm run dev -w=web",
+    "dev:voice": "npm run dev -w=voice",
     "postinstall": "husky install"
   },
   "devDependencies": {

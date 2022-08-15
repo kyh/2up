@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client";
-import { useAlert } from "react-alert";
+import { useAlert } from "components";
 import { SCENE_FRAGMENT } from "features/packs/sceneFragments";
 import { savingSceneVar } from "features/packs/packService";
 

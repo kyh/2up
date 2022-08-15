@@ -1,15 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import { motion } from "framer-motion";
-import {
-  useDynamicList,
-  useDynamicListItem,
-  calculateSwapDistance,
-  arrayMove,
-  getDragStateZIndex,
-  DynamicListItemProps,
-  getDragCursor,
-} from "styles/animations";
 import { theme } from "styles/theme";
 import { useHotkeys } from "@react-hook/hotkey";
 import { Button, Icon } from "components";
@@ -17,11 +8,7 @@ import { Instruction } from "features/game/components/Instruction";
 import { Question } from "features/game/components/Question";
 import { Answer } from "features/game/components/Answer";
 import { keybindings } from "features/packs/packService";
-import {
-  useCreateScene,
-  useDeleteScene,
-  useUpdateSceneOrder,
-} from "features/packs/sceneService";
+import { useCreateScene, useDeleteScene } from "features/packs/sceneService";
 import { CsvImportButton } from "features/packs/components/PackCsvImport";
 
 import { SceneFragment } from "../__generated__/SceneFragment";
@@ -43,7 +30,6 @@ export const Sidebar = ({
 }: Props) => {
   const { createScene } = useCreateScene();
   const { deleteScene } = useDeleteScene();
-  const { updateSceneOrder } = useUpdateSceneOrder();
   const [scenes, setScenes] = useState(packScenes);
   const draggingRef = useRef(false);
 
@@ -54,36 +40,6 @@ export const Sidebar = ({
       setScenes(packScenes);
     }
   }, [packScenes]);
-
-  const onPositionUpdate = (startIndex: number, endIndex: number) => {
-    draggingRef.current = true;
-    const newOrder = arrayMove(scenes, startIndex, endIndex);
-    setScenes(newOrder);
-  };
-
-  const onDragEnd = async (startIndex: number, endIndex: number) => {
-    const sceneId = scenes[startIndex].id;
-    let beforeSceneId;
-    let afterSceneId;
-
-    if (endIndex !== 0) {
-      beforeSceneId = scenes[endIndex - 1].id;
-    }
-
-    if (endIndex !== scenes.length - 1) {
-      afterSceneId = scenes[endIndex + 1].id;
-    }
-
-    await updateSceneOrder(sceneId, beforeSceneId, afterSceneId);
-    draggingRef.current = false;
-  };
-
-  const itemProps = useDynamicList({
-    items: scenes,
-    swapDistance: calculateSwapDistance,
-    onPositionUpdate,
-    onDragEnd,
-  });
 
   const onDeleteScene = async (sceneId: string, index: number) => {
     const deletedScene = await deleteScene(sceneId, index);
@@ -122,7 +78,6 @@ export const Sidebar = ({
             <SidebarItem
               key={scene.id}
               index={index}
-              itemProps={itemProps}
               scene={scene}
               isSelected={selectedSceneId === scene.id}
               selectScene={selectScene}
@@ -170,7 +125,6 @@ type SidebarItemProps = {
   selectScene: (sceneId: string) => any;
   onDeleteScene: (sceneId: string, index: number) => any;
   showDelete: boolean;
-  itemProps: DynamicListItemProps;
 };
 
 const SidebarItem = ({
@@ -180,36 +134,9 @@ const SidebarItem = ({
   selectScene,
   onDeleteScene,
   showDelete,
-  itemProps,
 }: SidebarItemProps) => {
-  const [dragState, ref, eventHandlers] = useDynamicListItem<HTMLLIElement>(
-    index,
-    "y",
-    itemProps
-  );
-
-  useEffect(() => {
-    if (ref && ref.current && isSelected) {
-      ref.current.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "nearest",
-      });
-    }
-  }, [isSelected]);
-
   return (
-    <QuestionItemContainer
-      layout
-      initial={false}
-      drag="y"
-      ref={ref}
-      style={{
-        zIndex: getDragStateZIndex(dragState),
-        cursor: getDragCursor(dragState),
-      }}
-      {...eventHandlers}
-    >
+    <QuestionItemContainer>
       <QuestionItem
         isSelected={isSelected}
         onClick={() => selectScene(scene.id)}

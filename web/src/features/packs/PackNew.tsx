@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
-import { useAlert } from "react-alert";
-import { Card } from "components";
+import { useAlert, Card } from "components";
 import { Content } from "features/packs/components/Page";
 import { PackForm, PackFormInputs } from "features/packs/components/PackForm";
 
