@@ -1,10 +1,8 @@
 import styled from "styled-components";
 import { Link } from "components";
 import { theme } from "styles/theme";
-import { useAuth } from "util/AuthProvider";
 
 export const Navigation = () => {
-  const auth = useAuth();
   return (
     <NavigationContainer>
       <div className="left">
@@ -19,13 +17,13 @@ export const Navigation = () => {
         </Link>
       </div>
       <div className="right end">
-        {auth.user?.username ? (
+        {false ? (
           <>
-            <Link to="/">Play</Link>
+            {/* <Link to="/">Play</Link>
             <Link to={`/u/${auth.user?.username}`}>Profile</Link>
             <Link to="/packs" onClick={auth.signout}>
               Logout
-            </Link>
+            </Link> */}
           </>
         ) : (
           <>

@@ -1,10 +1,6 @@
 import styled from "styled-components";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "util/mock";
 import { Modal, Uploader } from "components";
-import { collectConnectionNodes } from "util/collection";
-
-import { PackAssetModalPackQuery } from "./__generated__/PackAssetModalPackQuery";
-import { PackAssetCreateMutation } from "./__generated__/PackAssetCreateMutation";
 import { theme } from "styles/theme";
 
 type AssetModalProps = {
@@ -18,16 +14,12 @@ export const PackAssetModal = ({
   onRequestClose,
   onSelectAsset,
 }: AssetModalProps) => {
-  const { data, refetch } = useQuery<PackAssetModalPackQuery>(
-    PACK_ASSET_QUERY,
-    {
-      variables: {
-        packId: packId,
-      },
-    }
-  );
-  const [packAssetCreate] =
-    useMutation<PackAssetCreateMutation>(PACK_ASSET_CREATE);
+  const { data, refetch } = useQuery(PACK_ASSET_QUERY, {
+    variables: {
+      packId: packId,
+    },
+  });
+  const [packAssetCreate] = useMutation(PACK_ASSET_CREATE);
 
   const onUploaded = async (rawName: string, path: string) => {
     await packAssetCreate({
@@ -38,7 +30,7 @@ export const PackAssetModal = ({
     await refetch();
   };
 
-  const assetsMap = collectConnectionNodes(data?.pack?.assets);
+  const assetsMap = data?.pack?.assets;
 
   return (
     <Modal
@@ -49,7 +41,7 @@ export const PackAssetModal = ({
     >
       <Uploader onUploaded={onUploaded} pathPrefix={`packs/${packId}`} />
       <AssetsContainer>
-        {Object.values(assetsMap).map((asset) => {
+        {Object.values(assetsMap).map((asset: any) => {
           const fullPath = `${process.env.NEXT_PUBLIC_ASSET_URL}/${
             asset.path ?? ""
           }`;

@@ -2,11 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
 import { useRouter } from "next/router";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery } from "util/mock";
 import { useHotkeys } from "@react-hook/hotkey";
 import { theme } from "styles/theme";
 import { visible } from "styles/animations";
-import { collectConnectionNodes } from "util/collection";
 import { Topbar } from "features/packs/components/PackCreatorTopbar";
 import { Sidebar } from "features/packs/components/PackCreatorLeftSidebar";
 import { ScenePreview } from "features/packs/components/ScenePreview";
@@ -25,8 +24,6 @@ import { SCENES_FRAGMENT } from "features/packs/sceneFragments";
 import { useHostGame } from "features/game/gameService";
 import ArrowSvg from "./svgs/arrow.svg";
 
-import { PackCreatorPagePackQuery } from "./__generated__/PackCreatorPagePackQuery";
-
 export const PackCreator = () => {
   const router = useRouter();
   const screenRef = useRef<null | HTMLDivElement>(null);
@@ -34,14 +31,14 @@ export const PackCreator = () => {
   const [selectedSceneId, setSelectedSceneId] = useState("");
   const { hostGame } = useHostGame();
   const packId = router.query.packId as string;
-  const { data, refetch } = useQuery<PackCreatorPagePackQuery>(PACK_QUERY, {
+  const { data, refetch } = useQuery(PACK_QUERY, {
     variables: {
       packId: packId || "",
     },
   });
 
-  const packScenesMap = collectConnectionNodes(data?.pack?.scenes);
-  const packScenes = Object.values(packScenesMap);
+  const packScenesMap = data?.pack?.scenes;
+  const packScenes: any[] = Object.values(packScenesMap);
   const selectedScene = packScenesMap[selectedSceneId];
 
   const selectScene = (selectedSceneId: string) => {
@@ -62,11 +59,11 @@ export const PackCreator = () => {
   const selectScenePosition = (position: 1 | -1) => (e: KeyboardEvent) => {
     const target = e.target as HTMLElement;
     if (target && target.tagName === "TEXTAREA") return;
-    const currentSceneIndex = packScenes.findIndex((scene) => {
+    const currentSceneIndex = packScenes.findIndex((scene: any) => {
       return scene.id === selectedSceneId;
     });
     if (currentSceneIndex !== -1) {
-      const newSelectedScene =
+      const newSelectedScene: any =
         packScenes[
           position === 1 ? currentSceneIndex + 1 : currentSceneIndex - 1
         ];

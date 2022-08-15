@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "util/mock";
 
 export const PACK_FRAGMENT = gql`
   fragment PackFragment on Pack {

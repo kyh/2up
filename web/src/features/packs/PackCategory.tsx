@@ -1,20 +1,17 @@
 import { useRouter } from "next/router";
-import { gql, useQuery } from "@apollo/client";
-import { collectConnectionNodes } from "util/collection";
+import { gql, useQuery } from "util/mock";
 import { Link } from "components";
 import { Content } from "features/packs/components/Page";
 import { PackSection, Pack } from "features/packs/components/Packs";
 
-import { PackCategoryPagePacksQuery } from "./__generated__/PackCategoryPagePacksQuery";
-
 export const PackCategory = () => {
   const router = useRouter();
   const { tagSlug } = router.query;
-  const { data } = useQuery<PackCategoryPagePacksQuery>(PACKS_QUERY, {
+  const { data } = useQuery(PACKS_QUERY, {
     variables: { tags: [tagSlug] },
   });
 
-  const featuredMap = collectConnectionNodes(data?.packs);
+  const featuredMap = data?.packs;
   const featured = Object.values(featuredMap);
 
   return (
@@ -28,7 +25,7 @@ export const PackCategory = () => {
             <h1>{tagSlug} Packs</h1>
           </header>
           <div className="pack-items">
-            {featured.map((pack) => (
+            {featured.map((pack: any) => (
               <Pack key={pack.id} pack={pack} />
             ))}
           </div>
