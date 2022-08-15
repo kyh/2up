@@ -5,6 +5,8 @@ import { Step0 } from "features/game/steps/Step0";
 import { Step1 } from "features/game/steps/Step1";
 import { Step2 } from "features/game/steps/Step2";
 import { Step3 } from "features/game/steps/Step3";
+import { StepProps } from "features/game/gameSlice";
+import { Dispatch } from "@reduxjs/toolkit";
 
 const dummySteps = {
   0: {
@@ -189,7 +191,9 @@ const dummySteps = {
 
 const Game = () => {
   const [gameState, setGameState] = useState<any>(dummySteps[1]);
-  const dispatch = () => {};
+
+  const dispatch: Dispatch = () => ({} as any);
+
   const broadcast = (key: string) => {
     if (key === "submit") {
       setGameState(dummySteps[2]);
@@ -199,7 +203,7 @@ const Game = () => {
   };
   const name = "kai";
 
-  const props = { gameState, broadcast, dispatch, name };
+  const props: StepProps = { gameState, broadcast, dispatch, name };
 
   switch (gameState.step) {
     case 0:
