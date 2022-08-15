@@ -1,17 +1,16 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery } from "util/mock";
 import { theme } from "styles/theme";
 import { Link, Button } from "components";
 import { useHostGame } from "features/game/gameService";
 import { Content } from "features/packs/components/Page";
-import { PackDetailsPagePackQuery } from "./__generated__/PackDetailsPagePackQuery";
 
 export const PackDetails = () => {
   const router = useRouter();
   const packId = router.query.packId as string;
   const { hostGame, loading } = useHostGame();
-  const { data } = useQuery<PackDetailsPagePackQuery>(PACK_QUERY, {
+  const { data } = useQuery(PACK_QUERY, {
     variables: { packId: packId || "" },
   });
 

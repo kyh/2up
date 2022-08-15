@@ -1,6 +1,6 @@
 import { useRef, forwardRef } from "react";
 import styled from "styled-components";
-import { useReactiveVar } from "@apollo/client";
+import { useReactiveVar } from "util/mock";
 import { theme } from "styles/theme";
 import { Button } from "components";
 import { Props as ScenePreviewProps } from "features/packs/components/ScenePreview";

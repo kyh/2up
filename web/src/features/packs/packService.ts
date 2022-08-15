@@ -1,6 +1,5 @@
-import { makeVar } from "@apollo/client";
+import { makeVar } from "util/mock";
 import { Hotkey } from "@react-hook/hotkey";
-import { SceneUpdateMutation_sceneUpdate_scene } from "./__generated__/SceneUpdateMutation";
 
 export enum VisibleQATypeMenu {
   None,
@@ -10,7 +9,7 @@ export enum VisibleQATypeMenu {
 
 export const visibleQATypeMenuVar = makeVar(VisibleQATypeMenu.None);
 export const savingSceneVar = makeVar(false);
-export const packScenesVar = makeVar<any[]>([]);
+export const packScenesVar = makeVar([]);
 
 export const getRandomAnswer = () => {
   const packScenes = packScenesVar();
@@ -23,7 +22,7 @@ export const getRandomAnswer = () => {
 
 export const scenesToCsv = (
   scenes: Pick<
-    SceneUpdateMutation_sceneUpdate_scene,
+    any,
     | "externalId"
     | "instruction"
     | "question"
@@ -34,7 +33,7 @@ export const scenesToCsv = (
 ) => {
   return scenes
     .map((s) => {
-      const sceneAnswers = s.sceneAnswers?.map((a) => {
+      const sceneAnswers = s.sceneAnswers?.map((a: any) => {
         return `${a?.content || ""},${a?.isCorrect ? "TRUE" : ""}`;
       });
       return [

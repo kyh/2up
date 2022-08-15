@@ -1,18 +1,15 @@
 import styled from "styled-components";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery } from "util/mock";
 import { useRouter } from "next/router";
 import { theme } from "styles/theme";
 import { ButtonLinkNative } from "components";
 import { Content } from "features/packs/components/Page";
 import { PackSection, Pack } from "features/packs/components/Packs";
-import { collectConnectionNodes } from "util/collection";
-
-import { ProfilePageUserQuery } from "./__generated__/ProfilePageUserQuery";
 
 export const Profile = () => {
   const router = useRouter();
   const username = router.query.username as string;
-  const { data } = useQuery<ProfilePageUserQuery>(USER_QUERY, {
+  const { data } = useQuery(USER_QUERY, {
     variables: { username: username || "" },
   });
 
@@ -20,7 +17,7 @@ export const Profile = () => {
     return null;
   }
 
-  const packsMap = collectConnectionNodes(data.packs);
+  const packsMap = data.packs;
   const packs = Object.values(packsMap);
   const isMyPage = data?.currentUser?.username === username;
 
@@ -34,7 +31,7 @@ export const Profile = () => {
       </header>
       <PackSection>
         <div className="pack-items">
-          {packs.map((pack) => (
+          {packs.map((pack: any) => (
             <Pack
               key={pack.id}
               pack={pack}

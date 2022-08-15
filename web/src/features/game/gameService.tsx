@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation } from "util/mock";
 import { useAppDispatch } from "util/redux";
 import { gameActions } from "features/game/gameSlice";
-import { GameCreateMutation } from "./__generated__/GameCreateMutation";
 
 const GAME_CREATE = gql`
   mutation GameCreateMutation($input: GameCreateInput!) {
@@ -15,8 +14,7 @@ const GAME_CREATE = gql`
 export const useHostGame = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [gameCreate, { loading }] =
-    useMutation<GameCreateMutation>(GAME_CREATE);
+  const [gameCreate, { loading }] = useMutation(GAME_CREATE);
 
   const hostGame = async (packId: string, testMode = false) => {
     const { data } = await gameCreate({

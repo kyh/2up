@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation } from "util/mock";
 import { useForm } from "react-hook-form";
 import { theme } from "styles/theme";
 import { useAppDispatch, useAppSelector } from "util/redux";
 import { Link, Button, Input, useAlert } from "components";
 import { gameActions } from "features/game/gameSlice";
 import { Form } from "features/home/components/Form";
-import { HomeJoinGamePageGameCheckMutation } from "./__generated__/HomeJoinGamePageGameCheckMutation";
 
 type FormInputs = {
   gameId: string;
@@ -19,8 +18,7 @@ export const HomeJoinGame = () => {
   const dispatch = useAppDispatch();
   const storedGameId = useAppSelector((state) => state.game.gameId);
   const { register, handleSubmit, reset } = useForm<FormInputs>();
-  const [gameCheck, { loading }] =
-    useMutation<HomeJoinGamePageGameCheckMutation>(GAME_CHECK);
+  const [gameCheck, { loading }] = useMutation(GAME_CHECK);
   const queryParams = router.query;
 
   // Joining an existing game:

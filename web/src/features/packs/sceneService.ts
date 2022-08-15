@@ -1,18 +1,11 @@
-import { gql } from "@apollo/client";
-import { useMutation } from "@apollo/client";
+import { gql, useMutation } from "util/mock";
 import { useAlert } from "components";
 import { SCENE_FRAGMENT } from "features/packs/sceneFragments";
 import { savingSceneVar } from "features/packs/packService";
 
-import { SceneUpdateMutation } from "./__generated__/SceneUpdateMutation";
-import { SceneCreateMutation } from "./__generated__/SceneCreateMutation";
-import { SceneDeleteMutation } from "./__generated__/SceneDeleteMutation";
-import { SceneOrderUpdateMutation } from "./__generated__/SceneOrderUpdateMutation";
-import { SceneFragment } from "./__generated__/SceneFragment";
-
-export const useUpdateScene = (scene: SceneFragment) => {
+export const useUpdateScene = (scene: any) => {
   const alert = useAlert();
-  const [sceneUpdate] = useMutation<SceneUpdateMutation>(SCENE_UPDATE);
+  const [sceneUpdate] = useMutation(SCENE_UPDATE);
 
   const updateScene = async (updatedScene = {}) => {
     savingSceneVar(true);
@@ -54,11 +47,11 @@ const SCENE_UPDATE = gql`
 
 export const useCreateScene = () => {
   const alert = useAlert();
-  const [sceneCreate] = useMutation<SceneCreateMutation>(SCENE_CREATE);
+  const [sceneCreate] = useMutation(SCENE_CREATE);
   const createScene = async (
     packId: string,
     order: number,
-    selectedScene?: SceneFragment
+    selectedScene?: any
   ) => {
     const input = {
       packId: packId,
@@ -103,7 +96,7 @@ const SCENE_CREATE = gql`
 
 export const useDeleteScene = () => {
   const alert = useAlert();
-  const [sceneDelete] = useMutation<SceneDeleteMutation>(SCENE_DELETE);
+  const [sceneDelete] = useMutation(SCENE_DELETE);
   const deleteScene = async (sceneId: string, index: number) => {
     try {
       savingSceneVar(true);
@@ -138,8 +131,7 @@ const SCENE_DELETE = gql`
 
 export const useUpdateSceneOrder = () => {
   const alert = useAlert();
-  const [sceneOrderUpdate] =
-    useMutation<SceneOrderUpdateMutation>(SCENE_ORDER_UPDATE);
+  const [sceneOrderUpdate] = useMutation(SCENE_ORDER_UPDATE);
   const updateSceneOrder = async (
     sceneId: string,
     beforeSceneId?: string,

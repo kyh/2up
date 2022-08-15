@@ -1,4 +1,9 @@
 module.exports = {
+  reactStrictMode: true,
+  swcMinify: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   headers: async () => [
     {
       source: "/:all*(svg|jpg|png|woff|woff2|eot|ttf|otf|ico|webp)",
@@ -11,9 +16,6 @@ module.exports = {
       ],
     },
   ],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,

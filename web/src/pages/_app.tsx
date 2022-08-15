@@ -2,15 +2,14 @@ import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import Router from "next/router";
 import { ReactElement, ReactNode } from "react";
-import { ApolloProvider } from "@apollo/client";
+import { SessionProvider } from "next-auth/react";
 import { Provider as ReduxProvider } from "react-redux";
-import { AuthProvider } from "util/AuthProvider";
 import { SocketProvider } from "util/SocketProvider";
+import { trpc } from "util/trpc";
 import { StyleProvider } from "styles/global";
 import { AlertProvider, ProgressBar } from "components";
 
 import { store } from "util/store";
-import { client } from "util/apollo";
 
 const progress = new ProgressBar();
 
@@ -29,20 +28,18 @@ Router.events.on("routeChangeComplete", progress.finish);
 const MyApp = ({ Component, pageProps }: Props) => {
   const getLayout = Component.getLayout || ((page) => page);
   return (
-    <ReduxProvider store={store}>
-      <ApolloProvider client={client}>
+    <SessionProvider session={pageProps.session}>
+      <ReduxProvider store={store}>
         <SocketProvider wsUrl={`${process.env.NEXT_PUBLIC_SOCKET_URL}/socket`}>
           <StyleProvider>
             <AlertProvider>
-              <AuthProvider>
-                {getLayout(<Component {...pageProps} />)}
-              </AuthProvider>
+              {getLayout(<Component {...pageProps} />)}
             </AlertProvider>
           </StyleProvider>
         </SocketProvider>
-      </ApolloProvider>
-    </ReduxProvider>
+      </ReduxProvider>
+    </SessionProvider>
   );
 };
 
-export default MyApp;
+export default trpc.withTRPC(MyApp);

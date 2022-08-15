@@ -1,16 +1,13 @@
 import { useState, ChangeEvent } from "react";
 import styled from "styled-components";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation } from "util/mock";
 import { theme } from "styles/theme";
 import { Modal, Button, AreaField, useAlert } from "components";
 import { scenesToCsv, fileToCsv } from "features/packs/packService";
 
-import { ScenesFragment_scenes_edges_node } from "../__generated__/ScenesFragment";
-import { CsvImportMutation } from "./__generated__/CsvImportMutation";
-
 type CsvImportButtonProps = {
   packId: string;
-  scenes: ScenesFragment_scenes_edges_node[];
+  scenes: any[];
   refetch: () => void;
 };
 
@@ -23,7 +20,7 @@ export const CsvImportButton = ({
   const [isSaving, setIsSaving] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [csv, setCsv] = useState(scenesToCsv(scenes));
-  const [csvImport] = useMutation<CsvImportMutation>(CSV_IMPORT);
+  const [csvImport] = useMutation(CSV_IMPORT);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setCsv(e.target.value);

@@ -4,8 +4,6 @@ import { fadeIn, bounceExpand, bounceContract } from "styles/animations";
 import { Link, Button, ButtonLinkNative, Icon } from "components";
 import { useHostGame } from "features/game/gameService";
 
-import { PackDiscoverPagePacksQuery_my_edges_node } from "../__generated__/PackDiscoverPagePacksQuery";
-
 export const PackSection = styled.section`
   .pack-items {
     display: grid;
@@ -138,7 +136,7 @@ export const PackImage = styled.div<{ src?: string | null }>`
 `;
 
 export type PacksProps = {
-  pack: PackDiscoverPagePacksQuery_my_edges_node;
+  pack: any;
   className?: string;
   containerClassName?: string;
   showPlayButton?: boolean;
