@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import { localStorage } from "util/window";
 
 export type GameState = {
@@ -44,7 +44,7 @@ export type StepProps = {
   name: string;
   gameState: GameState;
   broadcast: (_eventName: string, _payload?: object) => void;
-  dispatch: (_action: object) => void;
+  dispatch: Dispatch;
 };
 
 export const initialState: GameState = {
