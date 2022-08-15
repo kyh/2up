@@ -7,7 +7,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { AuthProvider } from "util/AuthProvider";
 import { SocketProvider } from "util/SocketProvider";
 import { StyleProvider } from "styles/global";
-import { ProgressBar } from "components";
+import { AlertProvider, ProgressBar } from "components";
 
 import { store } from "util/store";
 import { client } from "util/apollo";
@@ -33,9 +33,11 @@ const MyApp = ({ Component, pageProps }: Props) => {
       <ApolloProvider client={client}>
         <SocketProvider wsUrl={`${process.env.NEXT_PUBLIC_SOCKET_URL}/socket`}>
           <StyleProvider>
-            <AuthProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </AuthProvider>
+            <AlertProvider>
+              <AuthProvider>
+                {getLayout(<Component {...pageProps} />)}
+              </AuthProvider>
+            </AlertProvider>
           </StyleProvider>
         </SocketProvider>
       </ApolloProvider>
