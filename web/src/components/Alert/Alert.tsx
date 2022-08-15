@@ -7,6 +7,14 @@ import { visible } from "styles/animations";
 const AlertContainer = styled.ul`
   position: fixed;
   top: ${theme.spacings(3)};
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const AlertTemplate = styled(motion.li)`
@@ -57,7 +65,7 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
     if (params?.duration !== false) {
       setTimeout(() => {
         remove(id);
-      }, params?.duration ?? 10000);
+      }, params?.duration ?? 6000);
     }
 
     return id;
