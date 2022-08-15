@@ -5,18 +5,18 @@ export const Page = styled.section<{
   bgImage?: string;
   bgTop?: string;
 }>`
-  display: grid;
-  background: ${theme.ui.backgroundGrey};
-  grid-template-areas:
-    "header"
-    "content"
-    "footer";
-  grid-template-columns: 1fr;
-  grid-template-rows: 50px 1fr auto;
   min-height: 100vh;
+  background: ${theme.ui.backgroundGrey};
 
   ${theme.breakpoints.desktop} {
     ${({ bgImage, bgTop = "0" }) => css`
+      display: grid;
+      grid-template-areas:
+        "header"
+        "content"
+        "footer";
+      grid-template-columns: 1fr;
+      grid-template-rows: 50px 1fr auto;
       overflow-x: hidden;
       overflow-y: auto;
       perspective: 5px;
