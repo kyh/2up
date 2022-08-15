@@ -2,6 +2,18 @@ const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
+  headers: async () => [
+    {
+      source: "/:all*(svg|jpg|png|woff|woff2|eot|ttf|otf|ico|webp)",
+      locale: false,
+      headers: [
+        {
+          key: "Cache-Control",
+          value: "public, max-age=31536000, stale-while-revalidate",
+        },
+      ],
+    },
+  ],
   eslint: {
     ignoreDuringBuilds: true,
   },
