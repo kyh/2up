@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
+    "@prisma/client": "^4.2.1",
     "@react-hook/debounce": "^4.0.0",
     "@react-hook/hotkey": "^3.1.0",
     "@reduxjs/toolkit": "^1.5.0",
@@ -64,6 +65,7 @@
     "eslint": "^8.22.0",
     "eslint-config-next": "^12.0.7",
     "graphql": "^15.7.2",
+    "prisma": "^4.2.1",
     "rimraf": "^3.0.2",
     "typescript": "^4.3.5",
     "webpack-bundle-analyzer": "^4.4.2"
