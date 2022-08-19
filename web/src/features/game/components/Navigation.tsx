@@ -108,7 +108,6 @@ const NavigationContainer = styled.nav`
   padding: 0 ${theme.spacings(1)};
   align-items: center;
   height: 50px;
-  grid-area: header;
 `;
 
 const SettingsContainer = styled.div<{ single?: boolean; noBorder?: boolean }>`
