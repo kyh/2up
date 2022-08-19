@@ -44,6 +44,7 @@ export const NavigationContainer = styled.nav`
   background: ${theme.ui.background};
   border-bottom: 1px solid ${theme.ui.borderColor};
   height: 50px;
+  grid-area: header;
 
   .left {
     display: flex;
