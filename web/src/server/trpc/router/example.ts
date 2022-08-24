@@ -9,7 +9,7 @@ export const exampleRouter = t.router({
         greeting: `Hello ${input?.text ?? "world"}`,
       };
     }),
-  getAll: t.procedure.query(({ ctx }) => {
-    return ctx.prisma.packs.findMany();
+  getAll: t.procedure.query(() => {
+    return [];
   }),
 });
