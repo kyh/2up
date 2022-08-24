@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model answer_types {
+  id          BigInt   @id @default(autoincrement())
+  slug        String   @db.VarChar(255)
+  inserted_at DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  scenes      scenes[]
+}
+
+model pack_assets {
+  id          BigInt   @id @default(autoincrement())
+  pack_id     BigInt
+  raw_name    String   @db.VarChar(255)
+  path        String   @db.VarChar(255)
+  inserted_at DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  packs       packs    @relation(fields: [pack_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model pack_tags {
+  id          BigInt   @id @default(autoincrement())
+  pack_id     BigInt
+  tag_id      BigInt
+  inserted_at DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  packs       packs    @relation(fields: [pack_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tags        tags     @relation(fields: [tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model packs {
+  id          BigInt        @id @default(autoincrement())
+  name        String        @db.VarChar(255)
+  is_random   Boolean
+  length      Int
+  inserted_at DateTime      @db.Timestamp(0)
+  updated_at  DateTime      @updatedAt
+  user_id     BigInt
+  image_url   String?       @db.VarChar(255)
+  description String?       @db.VarChar(255)
+  users       users         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  pack_assets pack_assets[]
+  pack_tags   pack_tags[]
+  plays       plays[]
+  scenes      scenes[]
+}
+
+model plays {
+  id          BigInt   @id @default(autoincrement())
+  game_state  Json?
+  inserted_at DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  pack_id     BigInt
+  packs       packs    @relation(fields: [pack_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model question_types {
+  id          BigInt   @id @default(autoincrement())
+  slug        String   @db.VarChar(255)
+  inserted_at DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  scenes      scenes[]
+}
+
+model questions {
+  id          BigInt   @id @default(autoincrement())
+  content     String   @db.VarChar(255)
+  inserted_at DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  answer      String   @db.VarChar(255)
+}
+
+model scene_answers {
+  id          BigInt   @id @default(autoincrement())
+  scene_id    BigInt
+  content     String?  @default("") @db.VarChar(255)
+  is_correct  Boolean  @default(false)
+  inserted_at DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  scenes      scenes   @relation(fields: [scene_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model scenes {
+  id                 BigInt          @id @default(autoincrement())
+  question_type_id   BigInt
+  answer_type_id     BigInt
+  question           String
+  instruction        String?         @db.VarChar(255)
+  inserted_at        DateTime        @db.Timestamp(0)
+  updated_at         DateTime        @updatedAt
+  pack_id            BigInt
+  order              Decimal?        @db.Decimal
+  external_id        String?         @db.VarChar(255)
+  answer_description String?
+  answer_types       answer_types    @relation(fields: [answer_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  packs              packs           @relation(fields: [pack_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  question_types     question_types  @relation(fields: [question_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  scene_answers      scene_answers[]
+}
+
+model tags {
+  id          BigInt      @id @default(autoincrement())
+  name        String      @db.VarChar(255)
+  inserted_at DateTime    @db.Timestamp(0)
+  updated_at  DateTime    @updatedAt
+  pack_tags   pack_tags[]
+}
+
+model users {
+  id            BigInt   @id @default(autoincrement())
+  username      String   @db.VarChar(255)
+  email         String   @db.VarChar(255)
+  password_hash String   @db.VarChar(255)
+  inserted_at   DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  packs         packs[]
+
+  @@unique([username, email], map: "users_username_email_index")
+}
