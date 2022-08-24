@@ -1,5 +1,5 @@
-import { gql, useQuery } from "util/mock";
 import { useRouter } from "next/router";
+import { trpc } from "util/trpc";
 import { Link, Carousel, ButtonLinkNative } from "components";
 import { Content, Footer } from "./components/Page";
 import { PackSection, Pack, PacksProps } from "./components/Packs";
@@ -37,30 +37,33 @@ export const PackDiscover = () => {
   const router = useRouter();
   const ref = (router.query.ref as string) || "default";
   const { section1, section2, section3, section4 } = refToTags[ref];
-  const { data } = useQuery(PACKS_QUERY, {
-    variables: {
-      username: "",
-      section1: section1.tags,
-      section2: section2.tags,
-      section3: section3.tags,
-      section4: section4.tags,
-    },
-  });
+  const packs = trpc.proxy.packs.getAll.useQuery();
 
-  const section1Map = data?.section1;
-  const section1Values = Object.values(section1Map);
+  console.log(packs);
+  // const { data } = useQuery(PACKS_QUERY, {
+  //   variables: {
+  //     username: "",
+  //     section1: section1.tags,
+  //     section2: section2.tags,
+  //     section3: section3.tags,
+  //     section4: section4.tags,
+  //   },
+  // });
 
-  const section2Map = data?.section2;
-  const section2Values = Object.values(section2Map);
+  // const section1Map = data?.section1;
+  // const section1Values = Object.values(section1Map);
 
-  const section3Map = data?.section3;
-  const section3Values = Object.values(section3Map);
+  // const section2Map = data?.section2;
+  // const section2Values = Object.values(section2Map);
 
-  const section4Map = data?.section4;
-  const section4Values = Object.values(section4Map);
+  // const section3Map = data?.section3;
+  // const section3Values = Object.values(section3Map);
 
-  const myPacksMap = data?.my;
-  const myPacks = Object.values(myPacksMap);
+  // const section4Map = data?.section4;
+  // const section4Values = Object.values(section4Map);
+
+  // const myPacksMap = data?.my;
+  // const myPacks = Object.values(myPacksMap);
 
   return (
     <>
@@ -71,11 +74,12 @@ export const PackDiscover = () => {
               <h1>{section1.title}</h1>
             </header>
             <div className="pack-items staggered-pack-items">
-              {section1Values.map((pack: any) => (
+              {/* {section1Values.map((pack: any) => (
                 <Pack key={pack.id} pack={pack} showPlayButton />
-              ))}
+              ))} */}
             </div>
           </div>
+          {/*}
           <PackCarouselContainer
             title={section2.title}
             url={`/packs/category/${section2.tags[0]}`}
@@ -90,7 +94,7 @@ export const PackDiscover = () => {
             title={section4.title}
             url={`/packs/category/${section4.tags[0]}`}
             packs={section4Values}
-          />
+          /> */}
           {/* <PackCarouselContainer
             title="My Packs"
             url={`/u/${auth.user?.username}`}
@@ -109,7 +113,7 @@ export const PackDiscover = () => {
   );
 };
 
-const PACKS_QUERY = gql`
+/* const PACKS_QUERY = gql`
   fragment DiscoverPagePackFragment on Pack {
     id
     name
@@ -160,7 +164,7 @@ const PACKS_QUERY = gql`
       }
     }
   }
-`;
+`; */
 
 type PackCarouselContainerProp = {
   title: string;
