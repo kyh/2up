@@ -7,11 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Profile {
+  userId String   @id @unique
+  role   UserRole
+  name   String?
+  email  String?
+  avatar String?
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+enum UserRole {
+  admin
+  user
+}
+
 model Pack {
   id          String  @id @default(cuid())
   name        String
-  isRandom    Boolean
-  gameLength  Int
+  isRandom    Boolean @default(true)
+  gameLength  Int     @default(10)
   imageUrl    String?
   description String?
 
@@ -27,14 +43,16 @@ model Pack {
 }
 
 model Scene {
-  id           String        @id @default(cuid())
-  externalId   String?
-  questionType QuestionType
-  answerType   AnswerType
-  question     String
-  answers      SceneAnswer[]
-  instruction  String?
-  order        Decimal?      @db.Decimal
+  id                  String        @id @default(cuid())
+  externalId          String?
+  questionType        QuestionType
+  question            String
+  questionDescription String?
+  answerType          AnswerType
+  answers             SceneAnswer[]
+  answerDescription   String?
+
+  order Decimal? @db.Decimal
 
   packId String
   pack   Pack   @relation(fields: [packId], references: [id])
@@ -56,9 +74,9 @@ model SceneAnswer {
 }
 
 model PackAsset {
-  id      String @id @default(cuid())
-  rawName String
-  url     String
+  id   String @id @default(cuid())
+  name String
+  url  String
 
   packId String
   pack   Pack   @relation(fields: [packId], references: [id])
@@ -91,7 +109,7 @@ enum AnswerType {
 
 model Game {
   id      String   @id @default(cuid())
-  players String[] // User IDs
+  players Player[]
   state   Json // Game state
 
   packId     String
@@ -100,4 +118,13 @@ model Game {
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
+}
+
+model Player {
+  userId String  @id @unique
+  name   String?
+  avatar String?
+
+  Game   Game?   @relation(fields: [gameId], references: [id])
+  gameId String?
 }

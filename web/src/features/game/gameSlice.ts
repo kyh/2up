@@ -159,7 +159,7 @@ export const AnswerTypeSlugs = {
     display: "Text",
   },
   multiText: {
-    id: "multi_text",
+    id: "multiText",
     display: "Multiple Choice",
   },
   // letterText: {
