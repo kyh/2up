@@ -163,7 +163,7 @@ const dummySteps = {
         isCorrect: true,
       },
     ],
-    answerType: "multi_text",
+    answerType: "multiText",
     submissions: [
       {
         content: "a",

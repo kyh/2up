@@ -2,7 +2,8 @@ import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import Router from "next/router";
 import { ReactElement, ReactNode } from "react";
-import { SessionProvider } from "next-auth/react";
+import { UserProvider } from "@supabase/auth-helpers-react";
+import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Provider as ReduxProvider } from "react-redux";
 import { SocketProvider } from "util/SocketProvider";
 import { trpc } from "util/trpc";
@@ -28,7 +29,7 @@ Router.events.on("routeChangeComplete", progress.finish);
 const MyApp = ({ Component, pageProps }: Props) => {
   const getLayout = Component.getLayout || ((page) => page);
   return (
-    <SessionProvider session={pageProps.session}>
+    <UserProvider supabaseClient={supabaseClient}>
       <ReduxProvider store={store}>
         <SocketProvider wsUrl={`${process.env.NEXT_PUBLIC_SOCKET_URL}/socket`}>
           <StyleProvider>
@@ -38,7 +39,7 @@ const MyApp = ({ Component, pageProps }: Props) => {
           </StyleProvider>
         </SocketProvider>
       </ReduxProvider>
-    </SessionProvider>
+    </UserProvider>
   );
 };
 

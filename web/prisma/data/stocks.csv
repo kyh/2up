@@ -1,0 +1,11 @@
+externalId,questionDescription,questionType,question,answerType,answers,answerDescription
+1,,image,https://s3.amazonaws.com/images.teladoc.com/www/clients/template-hp/tdoc.jpg,text,TDOC,
+2,,image,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Tesla_Motors.svg/1200px-Tesla_Motors.svg.png,text,TSLA,
+3,,image,https://image.roku.com/bWFya2V0aW5n/roku-logo.png,text,ROKU,
+4,,image,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Square%2C_Inc._logo.svg/1024px-Square%2C_Inc._logo.svg.png,text,SQ,
+5,,image,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Shopify_logo_2018.svg/2560px-Shopify_logo_2018.svg.png,text,SHOP,
+6,,image,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Zoom_Communications_Logo.svg/2560px-Zoom_Communications_Logo.svg.png,text,ZM,
+7,,image,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Twilio-logo-red.svg/1024px-Twilio-logo-red.svg.png,text,TWLO,
+8,,image,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Coinbase_Logo_2013.png/1200px-Coinbase_Logo_2013.png,text,COIN,
+9,,image,https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/1280px-Spotify_logo_with_text.svg.png,text,SPOT,
+10,,image,https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Unity_Technologies_logo.svg/1024px-Unity_Technologies_logo.svg.png,text,U,
