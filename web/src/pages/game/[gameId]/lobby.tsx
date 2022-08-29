@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { SEO } from "components";
-import { GameLayout } from "features/game/GameLayout";
-import { GameLobby } from "features/game/GameLobby";
+import { GameLayout } from "lib/game/GameLayout";
+import { GameLobby } from "lib/game/GameLobby";
 
 const GameLobbyPage = () => {
   return (
