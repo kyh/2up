@@ -3,6 +3,7 @@ import { theme } from "styles/theme";
 import { fadeIn, bounceExpand, bounceContract } from "styles/animations";
 import { Link, Button, ButtonLinkNative, Icon } from "components";
 import { useHostGame } from "features/game/gameService";
+import { Pack as PackModel } from "@prisma/client";
 
 export const PackSection = styled.section`
   .pack-items {
@@ -136,7 +137,7 @@ export const PackImage = styled.div<{ src?: string | null }>`
 `;
 
 export type PacksProps = {
-  pack: any;
+  pack: PackModel;
   className?: string;
   containerClassName?: string;
   showPlayButton?: boolean;
