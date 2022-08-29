@@ -4,66 +4,20 @@ import { Link, Carousel, ButtonLinkNative } from "components";
 import { Content, Footer } from "./components/Page";
 import { PackSection, Pack, PacksProps } from "./components/Packs";
 
-const refToTags: Record<
-  string,
-  {
-    section1: { title: string; tags: string[] };
-    section2: { title: string; tags: string[] };
-    section3: { title: string; tags: string[] };
-    section4: { title: string; tags: string[] };
-  }
-> = {
-  producthunt: {
-    section1: { title: "Packs for you", tags: ["product"] },
-    section2: { title: "Featured Packs", tags: ["code"] },
-    section3: { title: "Learn your geography", tags: ["geography"] },
-    section4: { title: "Trending now", tags: ["crypto"] },
-  },
-  devto: {
-    section1: { title: "Packs for you", tags: ["code"] },
-    section2: { title: "Top played", tags: ["crypto"] },
-    section3: { title: "Learn your geography", tags: ["geography"] },
-    section4: { title: "Trending now", tags: ["product"] },
-  },
-  default: {
-    section1: { title: "Featured Packs", tags: ["featured"] },
-    section2: { title: "For the hackers", tags: ["code"] },
-    section3: { title: "Trending now", tags: ["product", "crypto"] },
-    section4: { title: "Learn your geography", tags: ["geography"] },
-  },
-};
-
 export const PackDiscover = () => {
   const router = useRouter();
   const ref = (router.query.ref as string) || "default";
-  const { section1, section2, section3, section4 } = refToTags[ref];
-  const packs = trpc.proxy.packs.getAll.useQuery();
+  const res = trpc.proxy.packs.getDiscover.useQuery({ ref });
 
-  console.log(packs);
-  // const { data } = useQuery(PACKS_QUERY, {
-  //   variables: {
-  //     username: "",
-  //     section1: section1.tags,
-  //     section2: section2.tags,
-  //     section3: section3.tags,
-  //     section4: section4.tags,
-  //   },
-  // });
+  if (!res.data) {
+    return (
+      <Content>
+        <span className="loading">Loading...</span>
+      </Content>
+    );
+  }
 
-  // const section1Map = data?.section1;
-  // const section1Values = Object.values(section1Map);
-
-  // const section2Map = data?.section2;
-  // const section2Values = Object.values(section2Map);
-
-  // const section3Map = data?.section3;
-  // const section3Values = Object.values(section3Map);
-
-  // const section4Map = data?.section4;
-  // const section4Values = Object.values(section4Map);
-
-  // const myPacksMap = data?.my;
-  // const myPacks = Object.values(myPacksMap);
+  const [featured, ...packSections] = res.data;
 
   return (
     <>
@@ -71,30 +25,22 @@ export const PackDiscover = () => {
         <PackSection>
           <div className="pack-section spaced">
             <header className="pack-section-header main-header">
-              <h1>{section1.title}</h1>
+              <h1>{featured.title}</h1>
             </header>
             <div className="pack-items staggered-pack-items">
-              {/* {section1Values.map((pack: any) => (
+              {featured.packs.map((pack) => (
                 <Pack key={pack.id} pack={pack} showPlayButton />
-              ))} */}
+              ))}
             </div>
           </div>
-          {/*}
-          <PackCarouselContainer
-            title={section2.title}
-            url={`/packs/category/${section2.tags[0]}`}
-            packs={section2Values}
-          />
-          <PackCarouselContainer
-            title={section3.title}
-            url={`/packs/category/${section3.tags[0]}`}
-            packs={section3Values}
-          />
-          <PackCarouselContainer
-            title={section4.title}
-            url={`/packs/category/${section4.tags[0]}`}
-            packs={section4Values}
-          /> */}
+          {packSections.map((section) => (
+            <PackCarouselContainer
+              key={section.title}
+              title={section.title}
+              url={`/packs/category/${section.tags[0]}`}
+              packs={section.packs}
+            />
+          ))}
           {/* <PackCarouselContainer
             title="My Packs"
             url={`/u/${auth.user?.username}`}
@@ -112,59 +58,6 @@ export const PackDiscover = () => {
     </>
   );
 };
-
-/* const PACKS_QUERY = gql`
-  fragment DiscoverPagePackFragment on Pack {
-    id
-    name
-    description
-    imageUrl
-  }
-
-  query PackDiscoverPagePacksQuery(
-    $username: String
-    $section1: [String]
-    $section2: [String]
-    $section3: [String]
-    $section4: [String]
-  ) {
-    section1: packs(tags: $section1, first: 5) {
-      edges {
-        node {
-          ...DiscoverPagePackFragment
-        }
-      }
-    }
-    section2: packs(tags: $section2, first: 5) {
-      edges {
-        node {
-          ...DiscoverPagePackFragment
-        }
-      }
-    }
-    section3: packs(tags: $section3, first: 5) {
-      edges {
-        node {
-          ...DiscoverPagePackFragment
-        }
-      }
-    }
-    section4: packs(tags: $section4, first: 5) {
-      edges {
-        node {
-          ...DiscoverPagePackFragment
-        }
-      }
-    }
-    my: packs(first: 10, username: $username) {
-      edges {
-        node {
-          ...DiscoverPagePackFragment
-        }
-      }
-    }
-  }
-`; */
 
 type PackCarouselContainerProp = {
   title: string;

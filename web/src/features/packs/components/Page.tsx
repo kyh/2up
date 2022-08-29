@@ -42,6 +42,11 @@ export const Content = styled.main`
   margin: 0 auto;
   padding: ${theme.spacings(5)} ${theme.spacings(3)};
 
+  .loading {
+    display: block;
+    text-align: center;
+  }
+
   .back-link {
     display: inline-block;
     margin-bottom: ${theme.spacings(1)};
