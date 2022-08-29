@@ -7,7 +7,7 @@ import { PackSection, Pack, PacksProps } from "./components/Packs";
 export const PackDiscover = () => {
   const router = useRouter();
   const ref = (router.query.ref as string) || "default";
-  const res = trpc.proxy.packs.getDiscover.useQuery({ ref });
+  const res = trpc.proxy.pack.getDiscover.useQuery({ ref });
 
   if (!res.data) {
     return (

@@ -10,7 +10,7 @@ export const PackDetails = () => {
   const router = useRouter();
   const packId = router.query.packId as string;
   const { hostGame, loading } = useHostGame();
-  const res = trpc.proxy.packs.getPack.useQuery({ packId });
+  const res = trpc.proxy.pack.getPack.useQuery({ packId });
 
   if (!res.data) {
     return (
