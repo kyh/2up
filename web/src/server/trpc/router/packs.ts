@@ -51,7 +51,14 @@ export const packsRouter = t.router({
         packs: section.tags.flatMap((tag) => tagMap[tag]).filter(Boolean),
       }));
     }),
-  getAll: t.procedure.query(({ ctx }) => {
-    return ctx.prisma.pack.findMany();
-  }),
+  getAll: t.procedure.query(({ ctx }) => ctx.prisma.pack.findMany()),
+  getPack: t.procedure
+    .input(z.object({ packId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.pack.findUnique({
+        where: {
+          id: input.packId,
+        },
+      });
+    }),
 });

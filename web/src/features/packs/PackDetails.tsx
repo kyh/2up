@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { gql, useQuery } from "util/mock";
+import { trpc } from "util/trpc";
 import { theme } from "styles/theme";
 import { Link, Button } from "components";
 import { useHostGame } from "features/game/gameService";
@@ -10,11 +10,17 @@ export const PackDetails = () => {
   const router = useRouter();
   const packId = router.query.packId as string;
   const { hostGame, loading } = useHostGame();
-  const { data } = useQuery(PACK_QUERY, {
-    variables: { packId: packId || "" },
-  });
+  const res = trpc.proxy.packs.getPack.useQuery({ packId });
 
-  const { pack, currentUser } = data || {};
+  if (!res.data) {
+    return (
+      <PackDetailsPageContent>
+        <span className="loading">Loading...</span>
+      </PackDetailsPageContent>
+    );
+  }
+
+  const pack = res.data;
 
   return (
     <PackDetailsPageContent>
@@ -29,32 +35,15 @@ export const PackDetails = () => {
             <Button onClick={() => hostGame(packId)} disabled={loading}>
               Start a game
             </Button>
-            {!!data && pack.user.id === currentUser?.id && (
+            {/* {!!data && pack.user.id === currentUser?.id && (
               <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
-            )}
+            )} */}
           </div>
         </header>
       )}
     </PackDetailsPageContent>
   );
 };
-
-const PACK_QUERY = gql`
-  query PackDetailsPagePackQuery($packId: ID!) {
-    currentUser {
-      id
-    }
-    pack(id: $packId) {
-      id
-      name
-      description
-      imageUrl
-      user {
-        id
-      }
-    }
-  }
-`;
 
 const PackDetailsPageContent = styled(Content)`
   display: block;
