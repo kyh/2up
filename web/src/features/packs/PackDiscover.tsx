@@ -9,13 +9,7 @@ export const PackDiscover = () => {
   const ref = (router.query.ref as string) || "default";
   const res = trpc.proxy.pack.getDiscover.useQuery({ ref });
 
-  if (!res.data) {
-    return (
-      <Content>
-        <span className="loading">Loading...</span>
-      </Content>
-    );
-  }
+  if (!res.data) return null;
 
   const [featured, ...packSections] = res.data;
 
