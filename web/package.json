@@ -33,6 +33,7 @@
     "@trpc/server": "10.0.0-alpha.52",
     "framer-motion": "^7.2.1",
     "lodash": "^4.17.20",
+    "nanoid": "^4.0.0",
     "next": "^12.2.3",
     "phoenix": "^1.5.7",
     "prismjs": "^1.29.0",

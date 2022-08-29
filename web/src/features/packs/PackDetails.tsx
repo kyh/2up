@@ -12,13 +12,7 @@ export const PackDetails = () => {
   const { hostGame, loading } = useHostGame();
   const res = trpc.proxy.pack.getPack.useQuery({ packId });
 
-  if (!res.data) {
-    return (
-      <PackDetailsPageContent>
-        <span className="loading">Loading...</span>
-      </PackDetailsPageContent>
-    );
-  }
+  if (!res.data) return null;
 
   const pack = res.data;
 
