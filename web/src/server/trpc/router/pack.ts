@@ -22,7 +22,7 @@ const discoverMap = {
   ],
 };
 
-export const packsRouter = t.router({
+export const packRouter = t.router({
   getDiscover: t.procedure
     .input(z.object({ ref: z.string().nullish() }).nullish())
     .query(async ({ ctx, input }) => {

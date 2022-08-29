@@ -1,13 +1,15 @@
 // src/server/trpc/context.ts
 import * as trpc from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
-
-import { prisma } from "server/db/client";
+import { supabase } from "util/supabase";
+import { prisma } from "util/prisma";
 
 export const createContext = async (
   opts: trpcNext.CreateNextContextOptions
 ) => {
+  const { user } = await supabase.auth.api.getUserByCookie(opts.req);
   return {
+    user,
     prisma,
   };
 };

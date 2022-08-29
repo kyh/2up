@@ -39,15 +39,15 @@ const isNil = (value: unknown) => {
   return value === null || value === undefined;
 };
 
-const isObject = (obj = {}) => {
+const isObject = (obj: object) => {
   return Object.prototype.toString.call(obj) === "[object Object]";
 };
 
 export const uuid = () => {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    // eslint-disable-next-line no-mixed-operators
-    var r = (Math.random() * 16) | 0,
-      v = c === "x" ? r : (r & 0x3) | 0x8;
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+
     return v.toString(16);
   });
 };
