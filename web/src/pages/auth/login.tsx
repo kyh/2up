@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { SEO } from "components";
-import { AuthLayout } from "features/auth/AuthLayout";
-import { Auth } from "features/auth/Auth";
+import { AuthLayout } from "lib/auth/AuthLayout";
+import { Auth } from "lib/auth/Auth";
 
 const LoginPage = () => {
   return (

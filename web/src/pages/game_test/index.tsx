@@ -1,11 +1,11 @@
 import { ReactNode, useState } from "react";
-import { Navigation } from "features/game/components/Navigation";
-import { GamePage } from "features/game/GameLayout";
-import { Step0 } from "features/game/steps/Step0";
-import { Step1 } from "features/game/steps/Step1";
-import { Step2 } from "features/game/steps/Step2";
-import { Step3 } from "features/game/steps/Step3";
-import { StepProps } from "features/game/gameSlice";
+import { Navigation } from "lib/game/components/Navigation";
+import { GamePage } from "lib/game/GameLayout";
+import { Step0 } from "lib/game/steps/Step0";
+import { Step1 } from "lib/game/steps/Step1";
+import { Step2 } from "lib/game/steps/Step2";
+import { Step3 } from "lib/game/steps/Step3";
+import { StepProps } from "lib/game/gameSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 
 const dummySteps = {

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { SEO } from "components";
-import { PackLayout } from "features/packs/PackLayout";
-import { PackDetails } from "features/packs/PackDetails";
+import { PackLayout } from "lib/packs/PackLayout";
+import { PackDetails } from "lib/packs/PackDetails";
 
 const PackDetailsPage = () => {
   return (
