@@ -31,7 +31,7 @@ const packs = [
     name: "Crypto",
     description: "Guess the crypto of given icon",
     sceneData: "crypto.csv",
-    tags: ["crypto"],
+    tags: ["featured", "crypto"],
   },
   {
     name: "Flags",
@@ -91,6 +91,7 @@ async function main() {
       console.log(`Creating pack "${pack.name}"...`);
 
       const scenes = await processCsv(getDataPath(pack.sceneData));
+
       const data = {
         name: pack.name,
         description: pack.description,
@@ -103,7 +104,14 @@ async function main() {
             },
           })),
         },
+        tags: {
+          connectOrCreate: pack.tags.map((tag) => ({
+            where: { name: tag },
+            create: { name: tag },
+          })),
+        },
       };
+
       await prisma.pack.create({ data });
 
       console.log(`"${pack.name}" pack created`);
