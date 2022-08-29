@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { SEO } from "components";
-import { HomeLayout } from "features/home/HomeLayout";
-import { HomeSetName } from "features/home/HomeSetName";
+import { HomeLayout } from "lib/home/HomeLayout";
+import { HomeSetName } from "lib/home/HomeSetName";
 
 const SetNamePage = () => {
   return (
