@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
-import { useMutation } from "util/mock";
+import { useMutation } from "~/utils/mock";
 import styled from "styled-components";
-import { theme } from "styles/theme";
-import { uuid } from "util/string";
+import { theme } from "~/styles/theme";
+import { uuid } from "~/utils/string";
 
 type DragAndDropProps = {
   onFileDrop: (_files: File[]) => void;

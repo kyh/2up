@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { gql, useQuery } from "util/mock";
+import { gql, useQuery } from "~/utils/mock";
 import { useRouter } from "next/router";
-import { theme } from "styles/theme";
-import { ButtonLinkNative } from "components";
-import { Content } from "lib/packs/components/Page";
-import { PackSection, Pack } from "lib/packs/components/Packs";
+import { theme } from "~/styles/theme";
+import { ButtonLinkNative } from "~/components";
+import { Content } from "~/lib/packs/components/Page";
+import { PackSection, Pack } from "~/lib/packs/components/Packs";
 
 export const Profile = () => {
   const router = useRouter();

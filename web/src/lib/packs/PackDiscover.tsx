@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import { trpc } from "util/trpc";
-import { Link, Carousel, ButtonLinkNative } from "components";
+import { trpc } from "~/utils/trpc";
+import { Link, Carousel, ButtonLinkNative } from "~/components";
 import { Content, Footer } from "./components/Page";
 import { PackSection, Pack, PacksProps } from "./components/Packs";
 

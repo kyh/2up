@@ -1,9 +1,9 @@
 import { useState, ChangeEvent } from "react";
 import styled from "styled-components";
-import { gql, useMutation } from "util/mock";
-import { theme } from "styles/theme";
-import { Modal, Button, AreaField, useAlert } from "components";
-import { scenesToCsv, fileToCsv } from "lib/packs/packService";
+import { gql, useMutation } from "~/utils/mock";
+import { theme } from "~/styles/theme";
+import { Modal, Button, AreaField, useAlert } from "~/components";
+import { scenesToCsv, fileToCsv } from "~/lib/packs/packService";
 
 type CsvImportButtonProps = {
   packId: string;

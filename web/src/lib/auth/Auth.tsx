@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { theme } from "styles/theme";
-import { TextField, Button, Card } from "components";
+import { theme } from "~/styles/theme";
+import { TextField, Button, Card } from "~/components";
 
 type FormInputs = {
   username: string;

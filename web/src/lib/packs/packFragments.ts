@@ -1,4 +1,4 @@
-import { gql } from "util/mock";
+import { gql } from "~/utils/mock";
 
 export const PACK_FRAGMENT = gql`
   fragment PackFragment on Pack {

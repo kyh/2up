@@ -1,15 +1,15 @@
 import { useRef, useState, ChangeEvent, ReactNode } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { theme } from "styles/theme";
-import { VideoPlayer, AudioPlayer, Code, Button, Icon } from "components";
-import { PackAssetModal } from "lib/packs/components/PackAssetModal";
+import { theme } from "~/styles/theme";
+import { VideoPlayer, AudioPlayer, Code, Button, Icon } from "~/components";
+import { PackAssetModal } from "~/lib/packs/components/PackAssetModal";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
   instructionElementAttribute,
-} from "lib/packs/packService";
-import { QuestionTypeSlugs } from "lib/game/gameSlice";
+} from "~/lib/packs/packService";
+import { QuestionTypeSlugs } from "~/lib/game/gameSlice";
 
 type EditableQuestionProps = {
   instruction: string;

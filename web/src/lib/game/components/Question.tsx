@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { theme } from "styles/theme";
-import { QuestionTypeSlugs } from "lib/game/gameSlice";
-import { VideoPlayer, AudioPlayer, Code } from "components";
+import { theme } from "~/styles/theme";
+import { QuestionTypeSlugs } from "~/lib/game/gameSlice";
+import { VideoPlayer, AudioPlayer, Code } from "~/components";
 
 type QuestionProps = {
   question: string;

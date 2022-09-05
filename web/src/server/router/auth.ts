@@ -1,4 +1,4 @@
-import { t, authedProcedure } from "server/trpc";
+import { t, authedProcedure } from "~/server/trpc";
 
 export const authRouter = t.router({
   getCurrentUser: t.procedure.query(({ ctx }) => {

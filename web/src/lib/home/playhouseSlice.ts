@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { localStorage } from "util/window";
-import { createOrGetThemesong } from "styles/sound";
+import { localStorage } from "~/utils/window";
+import { createOrGetThemesong } from "~/styles/sound";
 
 export type UserPayload = {
   name: string;

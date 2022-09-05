@@ -1,8 +1,8 @@
 import { useState, createContext, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styled from "styled-components";
-import { theme } from "styles/theme";
-import { visible } from "styles/animations";
+import { theme } from "~/styles/theme";
+import { visible } from "~/styles/animations";
 
 const AlertContainer = styled.ul`
   position: fixed;

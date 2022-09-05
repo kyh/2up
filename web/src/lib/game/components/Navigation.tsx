@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { theme } from "styles/theme";
-import { useAppDispatch, useAppSelector } from "util/redux";
-import { playhouseActions } from "lib/home/playhouseSlice";
-import { gameActions } from "lib/game/gameSlice";
-import { Icon } from "components/Icon/Icon";
-import { Modal } from "components/Modal/Modal";
-import { Button, ButtonLink } from "components/Button/Button";
+import { theme } from "~/styles/theme";
+import { useAppDispatch, useAppSelector } from "~/utils/redux";
+import { playhouseActions } from "~/lib/home/playhouseSlice";
+import { gameActions } from "~/lib/game/gameSlice";
+import { Icon } from "~/components/Icon/Icon";
+import { Modal } from "~/components/Modal/Modal";
+import { Button, ButtonLink } from "~/components/Button/Button";
 
 export const Navigation = () => {
   const router = useRouter();

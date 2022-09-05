@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { ReactNode } from "react";
 import { useRouter } from "next/router";
-import { theme } from "styles/theme";
-import { GameProvider } from "lib/game/GameProvider";
-import { Navigation } from "lib/game/components/Navigation";
+import { theme } from "~/styles/theme";
+import { GameProvider } from "~/lib/game/GameProvider";
+import { Navigation } from "~/lib/game/components/Navigation";
 
 export const GameLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();

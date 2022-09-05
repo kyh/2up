@@ -1,11 +1,11 @@
 import { useContext, useEffect, useRef, createContext, ReactNode } from "react";
 import { Presence } from "phoenix";
 import { useRouter } from "next/router";
-import { useAlert } from "components";
-import { useAppDispatch, useAppSelector } from "util/redux";
-import { useChannel } from "util/channel";
-import { gameActions } from "lib/game/gameSlice";
-import { localStorage } from "util/window";
+import { useAlert } from "~/components";
+import { useAppDispatch, useAppSelector } from "~/utils/redux";
+import { useChannel } from "~/utils/channel";
+import { gameActions } from "~/lib/game/gameSlice";
+import { localStorage } from "~/utils/window";
 
 export const GameContext = createContext({
   broadcast: (_eventName: string, _payload?: Record<string, any>) => {},

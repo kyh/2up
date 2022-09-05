@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { t } from "server/trpc";
+import { t } from "~/server/trpc";
 
 const discoverMap = {
   producthunt: [

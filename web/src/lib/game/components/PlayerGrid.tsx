@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
-import { theme } from "styles/theme";
-import { jitter } from "styles/animations";
-import { Avatar, Button } from "components";
+import { theme } from "~/styles/theme";
+import { jitter } from "~/styles/animations";
+import { Avatar, Button } from "~/components";
 
 type PlayerProps = {
   playerName: string;

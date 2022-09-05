@@ -1,12 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { gql, useMutation, useReactiveVar } from "util/mock";
-import { theme } from "styles/theme";
-import { Link, Button, Icon, Modal, Loader, useAlert } from "components";
-import { NavigationContainer } from "lib/packs/components/Navigation";
-import { PackForm, PackFormInputs } from "lib/packs/components/PackForm";
-import { savingSceneVar } from "lib/packs/packService";
-import { PACK_FRAGMENT } from "lib/packs/packFragments";
+import { gql, useMutation, useReactiveVar } from "~/utils/mock";
+import { theme } from "~/styles/theme";
+import { Link, Button, Icon, Modal, Loader, useAlert } from "~/components";
+import { NavigationContainer } from "~/lib/packs/components/Navigation";
+import { PackForm, PackFormInputs } from "~/lib/packs/components/PackForm";
+import { savingSceneVar } from "~/lib/packs/packService";
+import { PACK_FRAGMENT } from "~/lib/packs/packFragments";
 
 type Props = {
   pack: any;

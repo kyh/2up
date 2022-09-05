@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { theme } from "styles/theme";
-import { Container } from "lib/game/components/Question";
+import { theme } from "~/styles/theme";
+import { Container } from "~/lib/game/components/Question";
 
 type InstructionProps = {
   instruction: string;

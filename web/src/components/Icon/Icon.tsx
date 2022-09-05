@@ -3,7 +3,7 @@ import styled, {
   StyledComponentProps,
   DefaultTheme,
 } from "styled-components";
-import { theme, colors } from "styles/theme";
+import { theme, colors } from "~/styles/theme";
 
 import setting from "./svgs/setting.svg";
 import close from "./svgs/close.svg";

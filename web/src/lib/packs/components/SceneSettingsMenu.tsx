@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { theme } from "styles/theme";
-import { Button, Icon } from "components";
-import { Props as ScenePreviewProps } from "lib/packs/components/ScenePreview";
+import { theme } from "~/styles/theme";
+import { Button, Icon } from "~/components";
+import { Props as ScenePreviewProps } from "~/lib/packs/components/ScenePreview";
 
 export const SceneSettingsMenu = ({ scene }: ScenePreviewProps) => {
   return (

@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { gql, useMutation } from "util/mock";
+import { gql, useMutation } from "~/utils/mock";
 import { useRouter } from "next/router";
-import { useAlert, Card } from "components";
-import { Content } from "lib/packs/components/Page";
-import { PackForm, PackFormInputs } from "lib/packs/components/PackForm";
+import { useAlert, Card } from "~/components";
+import { Content } from "~/lib/packs/components/Page";
+import { PackForm, PackFormInputs } from "~/lib/packs/components/PackForm";
 
 export const PackNew = () => {
   const alert = useAlert();

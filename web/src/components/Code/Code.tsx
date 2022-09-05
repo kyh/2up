@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
 import styled from "styled-components";
-import { theme } from "styles/theme";
+import { theme } from "~/styles/theme";
 import Prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
 
