@@ -1,18 +1,14 @@
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import Router from "next/router";
-import { ReactElement, ReactNode } from "react";
-import { Provider as ReduxProvider } from "react-redux";
 import { trpc } from "~/utils/trpc";
 import { StyleProvider } from "~/styles/global";
 import { AlertProvider, ProgressBar } from "~/components";
 
-import { store } from "~/utils/store";
-
 const progress = new ProgressBar();
 
 type Page<P = {}> = NextPage<P> & {
-  getLayout?: (page: ReactElement) => ReactNode;
+  getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
 type Props = AppProps & {
@@ -26,11 +22,9 @@ Router.events.on("routeChangeComplete", progress.finish);
 const MyApp = ({ Component, pageProps }: Props) => {
   const getLayout = Component.getLayout || ((page) => page);
   return (
-    <ReduxProvider store={store}>
-      <StyleProvider>
-        <AlertProvider>{getLayout(<Component {...pageProps} />)}</AlertProvider>
-      </StyleProvider>
-    </ReduxProvider>
+    <StyleProvider>
+      <AlertProvider>{getLayout(<Component {...pageProps} />)}</AlertProvider>
+    </StyleProvider>
   );
 };
 

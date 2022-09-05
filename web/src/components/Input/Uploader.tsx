@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
-import { useMutation } from "~/utils/mock";
 import styled from "styled-components";
+import { nanoid } from "nanoid";
+import { useMutation } from "~/utils/mock";
 import { theme } from "~/styles/theme";
-import { uuid } from "~/utils/string";
 
 type DragAndDropProps = {
   onFileDrop: (_files: File[]) => void;
@@ -108,7 +108,7 @@ export const Uploader = ({ pathPrefix, onUploaded }: UploaderProps) => {
 
     for (const file of files) {
       const extension = file.name.split(".").pop();
-      const path = `${pathPrefix}/${uuid()}.${extension}`;
+      const path = `${pathPrefix}/${nanoid()}.${extension}`;
       const { data } = await presignedUrlCreate({
         variables: { input: { path } },
       });
