@@ -21,7 +21,7 @@ import {
 } from "~/lib/packs/packService";
 import { PACK_FRAGMENT } from "~/lib/packs/packFragments";
 import { SCENES_FRAGMENT } from "~/lib/packs/sceneFragments";
-import { useHostGame } from "~/lib/game/gameService";
+import { useHostGame } from "~/lib/game/useGameActions";
 import ArrowSvg from "./svgs/arrow.svg";
 
 export const PackCreator = () => {

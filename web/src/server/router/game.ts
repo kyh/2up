@@ -39,11 +39,11 @@ export const gameRouter = t.router({
         });
       }
 
-      const gameCode = nanoid();
+      const gameId = nanoid();
 
       const game = await ctx.prisma.game.create({
         data: {
-          code: gameCode,
+          id: gameId,
           state: {
             currentScene: 0,
             currentStep: 0,
@@ -56,11 +56,11 @@ export const gameRouter = t.router({
       return game;
     }),
   check: t.procedure
-    .input(z.object({ code: z.string() }))
+    .input(z.object({ gameId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const game = await ctx.prisma.game.findUnique({
         where: {
-          code: input.code,
+          id: input.gameId,
         },
       });
 
@@ -73,23 +73,18 @@ export const gameRouter = t.router({
 
       return game;
     }),
-  join: t.procedure
-    .input(z.object({ code: z.string(), playerName: z.string() }))
-    .mutation(async () => {
-      return {};
-    }),
   start: t.procedure
-    .input(z.object({ code: z.string() }))
+    .input(z.object({ gameId: z.string() }))
     .mutation(async () => {
       return {};
     }),
   nextScene: t.procedure
-    .input(z.object({ code: z.string() }))
+    .input(z.object({ gameId: z.string() }))
     .mutation(async () => {
       return {};
     }),
   submitAnswer: t.procedure
-    .input(z.object({ code: z.string(), submission: z.string() }))
+    .input(z.object({ gameId: z.string(), submission: z.string() }))
     .mutation(async () => {
       return {};
     }),

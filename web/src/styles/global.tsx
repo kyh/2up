@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import styledNormalize from "styled-normalize";
 import { createGlobalStyle } from "styled-components";
 import { theme, lightStyles, darkStyles } from "~/styles/theme";
-import { useAppSelector } from "~/utils/redux";
+import { usePlayhouseStore } from "~/lib/home/playhouseStore";
 
 const GlobalStyle = createGlobalStyle<{ isDarkMode: boolean }>`
   ${styledNormalize}
@@ -115,7 +115,7 @@ const GlobalStyle = createGlobalStyle<{ isDarkMode: boolean }>`
 `;
 
 export const StyleProvider = ({ children }: { children: ReactNode }) => {
-  const isDarkMode = useAppSelector((state) => state.playhouse.isDarkMode);
+  const isDarkMode = usePlayhouseStore((state) => state.isDarkMode);
   return (
     <>
       <GlobalStyle isDarkMode={isDarkMode} />

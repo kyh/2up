@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { theme } from "~/styles/theme";
 import { fadeIn, bounceExpand, bounceContract } from "~/styles/animations";
 import { Link, Button, ButtonLinkNative, Icon } from "~/components";
-import { useHostGame } from "~/lib/game/gameService";
+import { useHostGame } from "~/lib/game/useGameActions";
 import { Pack as PackModel } from "@prisma/client";
 
 export const PackSection = styled.section`
@@ -150,7 +150,7 @@ export const Pack = ({
   showPlayButton = true,
   showEditButton = false,
 }: PacksProps) => {
-  const { hostGame, loading } = useHostGame();
+  const { hostGame, isLoading } = useHostGame();
 
   const play = () => {
     hostGame(pack.id);
@@ -164,14 +164,14 @@ export const Pack = ({
       </Link>
       {showPlayButton && (
         <div className="pack-item-play">
-          <Button variant="fab" onClick={play} disabled={loading}>
+          <Button variant="fab" onClick={play} disabled={isLoading}>
             <Icon icon="play" />
           </Button>
         </div>
       )}
       {showEditButton && (
         <div className="pack-item-edit">
-          <ButtonLinkNative to={`/packs/${pack.id}/edit`}>
+          <ButtonLinkNative href={`/packs/${pack.id}/edit`}>
             Edit Pack
           </ButtonLinkNative>
         </div>

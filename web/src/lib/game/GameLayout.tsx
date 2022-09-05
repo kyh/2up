@@ -1,18 +1,21 @@
-import styled from "styled-components";
 import { ReactNode } from "react";
+import styled from "styled-components";
 import { useRouter } from "next/router";
 import { theme } from "~/styles/theme";
-import { GameProvider } from "~/lib/game/GameProvider";
 import { Navigation } from "~/lib/game/components/Navigation";
+import { useConnectGame } from "~/lib/game/useConnectGame";
 
 export const GameLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-  const { gameId } = router.query;
+  const gameId = router.query.gameId as string;
+
+  useConnectGame(gameId);
+
   return (
-    <GameProvider gameId={gameId as string}>
+    <>
       <Navigation />
       <GamePage>{children}</GamePage>
-    </GameProvider>
+    </>
   );
 };
 
