@@ -6,7 +6,7 @@ export const Navigation = () => {
   return (
     <NavigationContainer>
       <div className="left">
-        <Link to="/packs">
+        <Link href="/packs">
           <img
             className="logo"
             src="/logo/logomark.svg"
@@ -19,17 +19,17 @@ export const Navigation = () => {
       <div className="right end">
         {false ? (
           <>
-            {/* <Link to="/">Play</Link>
-            <Link to={`/u/${auth.user?.username}`}>Profile</Link>
-            <Link to="/packs" onClick={auth.signout}>
+            {/* <Link href="/">Play</Link>
+            <Link href={`/u/${auth.user?.username}`}>Profile</Link>
+            <Link href="/packs" onClick={auth.signout}>
               Logout
             </Link> */}
           </>
         ) : (
           <>
-            <Link to="/">Play</Link>
-            <Link to="/auth/request">Sign Up</Link>
-            <Link to="/auth/login">Login</Link>
+            <Link href="/">Play</Link>
+            <Link href="/auth/request">Sign Up</Link>
+            <Link href="/auth/login">Login</Link>
           </>
         )}
       </div>

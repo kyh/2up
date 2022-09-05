@@ -45,9 +45,9 @@ export const PackDiscover = () => {
       </Content>
       <Footer>
         {/* {!auth.user && (
-          <Link to="/auth/request">Want to build your own pack?</Link>
+          <Link href="/auth/request">Want to build your own pack?</Link>
         )} */}
-        <Link to="/auth/request">Want to build your own pack?</Link>
+        <Link href="/auth/request">Want to build your own pack?</Link>
       </Footer>
     </>
   );
@@ -71,12 +71,12 @@ const PackCarouselContainer = ({
     <div className="pack-section">
       <header className="pack-section-header">
         <h2>
-          <Link className="category-link" to={url}>
+          <Link className="category-link" href={url}>
             {title}
           </Link>
         </h2>
         {showNewPackButton && (
-          <ButtonLinkNative to="/packs/new">Create new Pack</ButtonLinkNative>
+          <ButtonLinkNative href="/packs/new">Create new Pack</ButtonLinkNative>
         )}
       </header>
       <Carousel>

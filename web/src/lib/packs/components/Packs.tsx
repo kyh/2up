@@ -158,7 +158,7 @@ export const Pack = ({
 
   return (
     <div className={`pack-item ${className}`}>
-      <Link className="pack-item-link" to={`/packs/${pack.id}`}>
+      <Link className="pack-item-link" href={`/packs/${pack.id}`}>
         <h2 className="pack-item-title">{pack.name}</h2>
         <p className="pack-item-description">{pack.description}</p>
       </Link>
