@@ -41,7 +41,7 @@ export const Topbar = ({ pack, testPlay }: Props) => {
   return (
     <StyledNavigationContainer>
       <div className="left">
-        <Link to={`/packs/${pack.id}`}>
+        <Link href={`/packs/${pack.id}`}>
           <img
             className="logo"
             src="/logo/logomark.svg"

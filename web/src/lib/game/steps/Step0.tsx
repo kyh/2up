@@ -53,7 +53,7 @@ export const Step0 = ({ gameState, dispatch }: StepProps) => {
                 gameActions.new_game({ gameId: gameState.invitedToGame! })
               );
               dispatch(gameActions.invite({ gameId: undefined }));
-              router.push("/game_name");
+              router.push(`/?code=${gameState.invitedToGame!}&join=true`);
             }}
           >
             Join new game

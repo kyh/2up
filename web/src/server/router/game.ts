@@ -3,7 +3,7 @@ import { t, ServerError } from "~/server/trpc";
 import { z } from "zod";
 import { customAlphabet } from "nanoid";
 
-const nanoid = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5);
+const nanoid = customAlphabet("1234567890", 5);
 
 export const gameRouter = t.router({
   create: t.procedure
@@ -55,23 +55,41 @@ export const gameRouter = t.router({
 
       return game;
     }),
+  check: t.procedure
+    .input(z.object({ code: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const game = await ctx.prisma.game.findUnique({
+        where: {
+          code: input.code,
+        },
+      });
+
+      if (!game) {
+        throw new ServerError({
+          code: "BAD_REQUEST",
+          message: "Invalid game code.",
+        });
+      }
+
+      return game;
+    }),
   join: t.procedure
-    .input(z.object({ gameId: z.string(), playerName: z.string() }))
+    .input(z.object({ code: z.string(), playerName: z.string() }))
     .mutation(async () => {
       return {};
     }),
   start: t.procedure
-    .input(z.object({ gameId: z.string() }))
+    .input(z.object({ code: z.string() }))
     .mutation(async () => {
       return {};
     }),
   nextScene: t.procedure
-    .input(z.object({ gameId: z.string() }))
+    .input(z.object({ code: z.string() }))
     .mutation(async () => {
       return {};
     }),
   submitAnswer: t.procedure
-    .input(z.object({ gameId: z.string(), submission: z.string() }))
+    .input(z.object({ code: z.string(), submission: z.string() }))
     .mutation(async () => {
       return {};
     }),

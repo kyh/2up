@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import Document, {
   Html,
   Head,
@@ -10,28 +9,23 @@ import { ServerStyleSheet } from "styled-components";
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
-    // Render app and page and get the context of the page with collected side effects.
-    const styledComponentsSheet = new ServerStyleSheet();
+    const sheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
 
     try {
       ctx.renderPage = () =>
         originalRenderPage({
           enhanceApp: (App) => (props) =>
-            styledComponentsSheet.collectStyles(<App {...props} />),
+            sheet.collectStyles(<App {...props} />),
         });
+
       const initialProps = await Document.getInitialProps(ctx);
       return {
         ...initialProps,
-        styles: (
-          <Fragment>
-            {initialProps.styles}
-            {styledComponentsSheet.getStyleElement()}
-          </Fragment>
-        ),
+        styles: [initialProps.styles, sheet.getStyleElement()],
       };
     } finally {
-      styledComponentsSheet.seal();
+      sheet.seal();
     }
   }
 

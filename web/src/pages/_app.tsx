@@ -2,8 +2,6 @@ import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import Router from "next/router";
 import { ReactElement, ReactNode } from "react";
-import { UserProvider } from "@supabase/auth-helpers-react";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Provider as ReduxProvider } from "react-redux";
 import { trpc } from "~/utils/trpc";
 import { StyleProvider } from "~/styles/global";
@@ -28,15 +26,11 @@ Router.events.on("routeChangeComplete", progress.finish);
 const MyApp = ({ Component, pageProps }: Props) => {
   const getLayout = Component.getLayout || ((page) => page);
   return (
-    <UserProvider supabaseClient={supabaseClient}>
-      <ReduxProvider store={store}>
-        <StyleProvider>
-          <AlertProvider>
-            {getLayout(<Component {...pageProps} />)}
-          </AlertProvider>
-        </StyleProvider>
-      </ReduxProvider>
-    </UserProvider>
+    <ReduxProvider store={store}>
+      <StyleProvider>
+        <AlertProvider>{getLayout(<Component {...pageProps} />)}</AlertProvider>
+      </StyleProvider>
+    </ReduxProvider>
   );
 };
 
