@@ -2,46 +2,26 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { theme } from "~/styles/theme";
-import { Avatar, Link, Button, Input, useAlert } from "~/components";
-import { useGameStore } from "~/lib/game/gameStore";
+import { Avatar, Link, Button, Input } from "~/components";
+import { usePlayhouseStore } from "~/lib/home/playhouseStore";
+import { useJoinGame } from "~/lib/game/useGameActions";
 import { Form } from "~/lib/home/components/Form";
-import { trpc } from "~/utils/trpc";
 
 type FormInputs = {
   name: string;
 };
 
 export const HomeSetName = () => {
-  const alert = useAlert();
   const router = useRouter();
-  const playerName = useGameStore((state) => state.playerName);
-  const setPlayerName = useGameStore((state) => state.setPlayerName);
-  const mutation = trpc.proxy.game.join.useMutation();
+  const playerName = usePlayhouseStore((state) => state.playerName);
+  const { joinGame } = useJoinGame();
   const { register, watch, handleSubmit } = useForm<FormInputs>();
 
-  const code = router.query.code?.toString() || "0";
+  const gameId = router.query.gameId?.toString() || "0";
   const watchName = watch("name");
 
   const onSubmit = ({ name }: FormInputs) => {
-    setPlayerName(name);
-    mutation.mutate(
-      {
-        code,
-        playerName: name,
-      },
-      {
-        onSuccess: () => {
-          router.push({
-            pathname: `/game/${code}/lobby`,
-            query: router.query,
-          });
-        },
-        onError: () => {
-          alert.show("Error joining game");
-          router.push(`/`);
-        },
-      }
-    );
+    joinGame(gameId, name);
   };
 
   return (
@@ -64,7 +44,7 @@ export const HomeSetName = () => {
         Or{" "}
         <Link
           href={{
-            pathname: `/game/${code}/spectate/lobby`,
+            pathname: `/game/${gameId}/spectate/lobby`,
             query: router.query,
           }}
         >

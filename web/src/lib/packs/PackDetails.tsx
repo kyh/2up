@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import { trpc } from "~/utils/trpc";
 import { theme } from "~/styles/theme";
 import { Link, Button } from "~/components";
-import { useHostGame } from "~/lib/game/gameService";
+import { useHostGame } from "~/lib/game/useGameActions";
 import { Content } from "~/lib/packs/components/Page";
 
 export const PackDetails = () => {
   const router = useRouter();
   const packId = router.query.packId as string;
-  const { hostGame, loading } = useHostGame();
+  const { hostGame, isLoading } = useHostGame();
   const res = trpc.proxy.pack.getPack.useQuery({ packId });
 
   if (!res.data) return null;
@@ -26,7 +26,7 @@ export const PackDetails = () => {
           <h1 className="pack-name">{pack.name}</h1>
           <p className="pack-description">{pack.description}</p>
           <div className="pack-actions">
-            <Button onClick={() => hostGame(packId)} disabled={loading}>
+            <Button onClick={() => hostGame(packId)} disabled={isLoading}>
               Start a game
             </Button>
             {/* {!!data && pack.user.id === currentUser?.id && (
