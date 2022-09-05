@@ -1,10 +1,10 @@
 import { useContext, useEffect, useRef, createContext, ReactNode } from "react";
 import { Presence } from "phoenix";
 import { useRouter } from "next/router";
-import { useAlert } from "~/components";
+import { useAlert } from "components";
 import { useAppDispatch, useAppSelector } from "~/utils/redux";
 import { useChannel } from "~/utils/channel";
-import { gameActions } from "~/lib/game/gameSlice";
+import { gameActions } from "lib/game/gameSlice";
 import { localStorage } from "~/utils/window";
 
 export const GameContext = createContext({

@@ -4,7 +4,7 @@ import styled, {
   StyledComponentProps,
   DefaultTheme,
 } from "styled-components";
-import { useAppSelector } from "~/utils/redux";
+import { usePlayhouseStore } from "~/lib/home/playhouseStore";
 import { theme } from "~/styles/theme";
 import { bounceExpand, bounceContract } from "~/styles/animations";
 import { createOrGetFx } from "~/styles/sound";
@@ -28,7 +28,7 @@ type Props = StyledComponentProps<
 >;
 
 export const Button = ({ onClick = () => {}, ...rest }: Props) => {
-  const isSFXOn = useAppSelector((state) => state.playhouse.isSFXOn);
+  const isSFXOn = usePlayhouseStore((state) => state.isSFXOn);
 
   const onButtonClick = () => {
     const clickSound = createOrGetFx("click");

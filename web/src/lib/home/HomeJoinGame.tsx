@@ -6,7 +6,7 @@ import { Form } from "~/lib/home/components/Form";
 import { HomeSetName, StartNewGameText } from "~/lib/home/HomeSetName";
 
 type FormInputs = {
-  code: string;
+  gameId: string;
 };
 
 export const HomeJoinGame = () => {
@@ -15,17 +15,17 @@ export const HomeJoinGame = () => {
   const mutation = trpc.proxy.game.check.useMutation();
   const { register, handleSubmit, reset } = useForm<FormInputs>();
 
-  const code = router.query.code?.toString() || "";
+  const gameId = router.query.gameId?.toString() || "";
 
   // Joining an existing game:
-  const onSubmit = async ({ code }: FormInputs) => {
+  const onSubmit = async ({ gameId }: FormInputs) => {
     await mutation.mutate(
-      { code },
+      { gameId },
       {
-        onSuccess: ({ code }) => {
+        onSuccess: ({ id }) => {
           router.replace({
             pathname: "/",
-            query: { code, join: true },
+            query: { gameId: id, join: true },
           });
         },
         onError: () => {
@@ -40,10 +40,10 @@ export const HomeJoinGame = () => {
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
-          {...register("code", { required: true })}
+          {...register("gameId", { required: true })}
           type="tel"
           placeholder="Game Code"
-          defaultValue={code}
+          defaultValue={gameId}
         />
         <Button type="submit" disabled={mutation.isLoading}>
           Join existing game
@@ -58,7 +58,7 @@ export const HomeJoinGame = () => {
         onRequestClose={() => {
           router.replace({
             pathname: "/",
-            query: { code },
+            query: { gameId },
           });
         }}
         maxWidth={400}

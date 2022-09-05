@@ -108,11 +108,13 @@ enum AnswerType {
 }
 
 model Game {
-  id         String   @id @default(cuid())
-  code       String   @unique
-  state      Json // Game state
-  gameScenes String[] // Scene IDs
-  isFinished Boolean  @default(false)
+  id         String   @id @unique
+  state      Json // Current game state (see gameStore.ts)
+  gameScenes String[] // Generated pre-existing set of scenes for the game
+  history    Json[] // Game play by play history
+
+  isStarted  Boolean @default(false)
+  isFinished Boolean @default(false)
 
   packId String
   pack   Pack   @relation(fields: [packId], references: [id])
@@ -121,8 +123,6 @@ model Game {
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
-
-  @@unique([code, isFinished])
 }
 
 model Player {

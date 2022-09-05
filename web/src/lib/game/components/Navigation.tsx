@@ -2,25 +2,27 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { theme } from "~/styles/theme";
-import { useAppDispatch, useAppSelector } from "~/utils/redux";
-import { playhouseActions } from "~/lib/home/playhouseSlice";
-import { gameActions } from "~/lib/game/gameSlice";
+import { useAllPlayhouseStore } from "~/lib/home/playhouseStore";
 import { Icon } from "~/components/Icon/Icon";
 import { Modal } from "~/components/Modal/Modal";
 import { Button, ButtonLink } from "~/components/Button/Button";
 
 export const Navigation = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const isMusicOn = useAppSelector((state) => state.playhouse.isMusicOn);
-  const isSFXOn = useAppSelector((state) => state.playhouse.isSFXOn);
-  const isDarkMode = useAppSelector((state) => state.playhouse.isDarkMode);
   const [isOpen, setIsOpen] = useState(false);
+  const {
+    isDarkMode,
+    toggleDarkMode,
+    isMusicOn,
+    toggleMusic,
+    isSFXOn,
+    toggleSFX,
+  } = useAllPlayhouseStore();
+
   const { gameId } = router.query;
 
   const leaveGame = () => {
     router.push("/");
-    dispatch(gameActions.reset({ gameId: undefined }));
     setIsOpen(false);
   };
 
@@ -41,19 +43,13 @@ export const Navigation = () => {
             <SettingsContainer noBorder>
               <SettingItem>
                 <span>Game music</span>
-                <Button
-                  fullWidth
-                  onClick={() => dispatch(playhouseActions.toggle_music())}
-                >
+                <Button fullWidth onClick={toggleMusic}>
                   {isMusicOn ? "ON" : "OFF"}
                 </Button>
               </SettingItem>
               <SettingItem>
                 <span>SFX</span>
-                <Button
-                  fullWidth
-                  onClick={() => dispatch(playhouseActions.toggle_SFX())}
-                >
+                <Button fullWidth onClick={toggleSFX}>
                   {isSFXOn ? "ON" : "OFF"}
                 </Button>
               </SettingItem>
@@ -67,10 +63,7 @@ export const Navigation = () => {
         )}
         <h3>Profile</h3>
         <SettingsContainer single>
-          <Button
-            onClick={() => dispatch(playhouseActions.toggle_dark_mode())}
-            fullWidth
-          >
+          <Button onClick={toggleDarkMode} fullWidth>
             {isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           </Button>
         </SettingsContainer>

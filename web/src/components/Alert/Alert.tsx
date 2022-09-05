@@ -1,6 +1,8 @@
-import { useState, createContext, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styled from "styled-components";
+import create from "zustand";
+import shallow from "zustand/shallow";
+import { nanoid } from "nanoid";
 import { theme } from "~/styles/theme";
 import { visible } from "~/styles/animations";
 
@@ -45,40 +47,43 @@ type AlertType = {
   message: React.ReactNode;
 };
 
-export const AlertContext = createContext<{
-  show: (message: React.ReactNode, params?: AlertOptions) => string | void;
+type AlertStore = {
+  alerts: AlertType[];
+  show: (message: React.ReactNode, params?: AlertOptions) => void;
   remove: (id: string) => void;
-}>({
-  show: () => {},
-  remove: () => {},
-});
-
-export const useAlert = () => {
-  return useContext(AlertContext);
 };
 
-export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
-  const [alerts, setAlerts] = useState<AlertType[]>([]);
+export const useAlertStore = create<AlertStore>()((set, get) => ({
+  alerts: [],
+  show: async (message: React.ReactNode, params?: AlertOptions) => {
+    const id = nanoid();
+    const remove = get().remove;
 
-  const show = (message: React.ReactNode, params?: AlertOptions) => {
-    const id = Math.random().toString();
-    setAlerts((prev) => [...prev, { id, message }]);
+    set((store) => ({ ...store, alerts: [...store.alerts, { id, message }] }));
 
     if (params?.duration !== false) {
       setTimeout(() => {
         remove(id);
       }, params?.duration ?? 6000);
     }
+  },
+  remove: (id: string) => {
+    set((store) => ({
+      ...store,
+      alerts: store.alerts.filter((t) => t.id !== id),
+    }));
+  },
+}));
 
-    return id;
-  };
+export const useAlert = () => {
+  return useAlertStore((state) => state, shallow);
+};
 
-  const remove = (id: string) => {
-    setAlerts((prev) => prev.filter((t) => t.id !== id));
-  };
+export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
+  const { alerts, remove } = useAlert();
 
   return (
-    <AlertContext.Provider value={{ show, remove }}>
+    <>
       <AlertContainer>
         <AnimatePresence initial={false}>
           {alerts.map((t) => (
@@ -96,6 +101,6 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
         </AnimatePresence>
       </AlertContainer>
       {children}
-    </AlertContext.Provider>
+    </>
   );
 };
