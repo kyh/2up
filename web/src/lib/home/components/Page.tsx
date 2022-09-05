@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { theme } from "styles/theme";
+import { theme } from "~/styles/theme";
 
 enum Size {
   large = "large",

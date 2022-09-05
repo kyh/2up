@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
-import { socketMiddleware } from "util/channel";
-import { rootReducer } from "util/rootReducer";
+import { socketMiddleware } from "~/utils/channel";
+import { rootReducer } from "~/utils/rootReducer";
 
 const isDev = process.env.NODE_ENV === "development";
 

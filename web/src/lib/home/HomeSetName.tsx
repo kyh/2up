@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { useAppDispatch, useAppSelector } from "util/redux";
-import { playhouseActions } from "lib/home/playhouseSlice";
-import { Link, Button, Input } from "components";
-import { Form } from "lib/home/components/Form";
-import { StartNewGameText } from "lib/home/HomeJoinGame";
-import { location } from "util/window";
+import { useAppDispatch, useAppSelector } from "~/utils/redux";
+import { playhouseActions } from "~/lib/home/playhouseSlice";
+import { Link, Button, Input } from "~/components";
+import { Form } from "~/lib/home/components/Form";
+import { StartNewGameText } from "~/lib/home/HomeJoinGame";
+import { location } from "~/utils/window";
 
 type FormInputs = {
   name: string;

@@ -2,26 +2,26 @@ import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
 import { useRouter } from "next/router";
-import { gql, useQuery } from "util/mock";
+import { gql, useQuery } from "~/utils/mock";
 import { useHotkeys } from "@react-hook/hotkey";
-import { theme } from "styles/theme";
-import { visible } from "styles/animations";
-import { Topbar } from "lib/packs/components/PackCreatorTopbar";
-import { Sidebar } from "lib/packs/components/PackCreatorLeftSidebar";
-import { ScenePreview } from "lib/packs/components/ScenePreview";
-import { SceneQATypeMenu } from "lib/packs/components/SceneQATypeMenu";
-import { SceneSettingsMenu } from "lib/packs/components/SceneSettingsMenu";
-import { Button, Modal, Icon } from "components";
+import { theme } from "~/styles/theme";
+import { visible } from "~/styles/animations";
+import { Topbar } from "~/lib/packs/components/PackCreatorTopbar";
+import { Sidebar } from "~/lib/packs/components/PackCreatorLeftSidebar";
+import { ScenePreview } from "~/lib/packs/components/ScenePreview";
+import { SceneQATypeMenu } from "~/lib/packs/components/SceneQATypeMenu";
+import { SceneSettingsMenu } from "~/lib/packs/components/SceneSettingsMenu";
+import { Button, Modal, Icon } from "~/components";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
   packScenesVar,
   keybindings,
   instructionElementAttribute,
-} from "lib/packs/packService";
-import { PACK_FRAGMENT } from "lib/packs/packFragments";
-import { SCENES_FRAGMENT } from "lib/packs/sceneFragments";
-import { useHostGame } from "lib/game/gameService";
+} from "~/lib/packs/packService";
+import { PACK_FRAGMENT } from "~/lib/packs/packFragments";
+import { SCENES_FRAGMENT } from "~/lib/packs/sceneFragments";
+import { useHostGame } from "~/lib/game/gameService";
 import ArrowSvg from "./svgs/arrow.svg";
 
 export const PackCreator = () => {

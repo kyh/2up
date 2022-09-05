@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { Button, Modal, Confetti } from "components";
-import { theme } from "styles/theme";
-import { gameActions, StepProps } from "lib/game/gameSlice";
+import { Button, Modal, Confetti } from "~/components";
+import { theme } from "~/styles/theme";
+import { gameActions, StepProps } from "~/lib/game/gameSlice";
 import { PlayerScores } from "./Step3";
 
 export const Step0 = ({ gameState, dispatch }: StepProps) => {

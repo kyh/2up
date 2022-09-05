@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Link } from "components";
-import { theme } from "styles/theme";
+import { Link } from "~/components";
+import { theme } from "~/styles/theme";
 
 export const Navigation = () => {
   return (

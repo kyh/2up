@@ -1,5 +1,5 @@
-import { SEO } from "components";
-import { PackCreator } from "lib/packs/PackCreator";
+import { SEO } from "~/components";
+import { PackCreator } from "~/lib/packs/PackCreator";
 
 const PackCreatorPage = () => {
   return (

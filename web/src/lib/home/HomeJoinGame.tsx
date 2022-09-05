@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { gql, useMutation } from "util/mock";
+import { gql, useMutation } from "~/utils/mock";
 import { useForm } from "react-hook-form";
-import { theme } from "styles/theme";
-import { useAppDispatch, useAppSelector } from "util/redux";
-import { Link, Button, Input, useAlert } from "components";
-import { gameActions } from "lib/game/gameSlice";
-import { Form } from "lib/home/components/Form";
+import { theme } from "~/styles/theme";
+import { useAppDispatch, useAppSelector } from "~/utils/redux";
+import { Link, Button, Input, useAlert } from "~/components";
+import { gameActions } from "~/lib/game/gameSlice";
+import { Form } from "~/lib/home/components/Form";
 
 type FormInputs = {
   gameId: string;

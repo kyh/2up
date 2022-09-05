@@ -1,4 +1,4 @@
-import { t } from "server/trpc";
+import { t } from "~/server/trpc";
 import { authRouter } from "./auth";
 import { packRouter } from "./pack";
 import { gameRouter } from "./game";

@@ -3,8 +3,8 @@ import styled, {
   StyledComponentProps,
   DefaultTheme,
 } from "styled-components";
-import { hashCode } from "util/string";
-import { theme } from "styles/theme";
+import { hashCode } from "~/utils/string";
+import { theme } from "~/styles/theme";
 
 import svg0 from "./svgs/0.svg";
 import svg1 from "./svgs/1.svg";

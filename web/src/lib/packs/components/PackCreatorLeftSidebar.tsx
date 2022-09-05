@@ -1,15 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import { motion } from "framer-motion";
-import { theme } from "styles/theme";
+import { theme } from "~/styles/theme";
 import { useHotkeys } from "@react-hook/hotkey";
-import { Button, Icon } from "components";
-import { Instruction } from "lib/game/components/Instruction";
-import { Question } from "lib/game/components/Question";
-import { Answer } from "lib/game/components/Answer";
-import { keybindings } from "lib/packs/packService";
-import { useCreateScene, useDeleteScene } from "lib/packs/sceneService";
-import { CsvImportButton } from "lib/packs/components/PackCsvImport";
+import { Button, Icon } from "~/components";
+import { Instruction } from "~/lib/game/components/Instruction";
+import { Question } from "~/lib/game/components/Question";
+import { Answer } from "~/lib/game/components/Answer";
+import { keybindings } from "~/lib/packs/packService";
+import { useCreateScene, useDeleteScene } from "~/lib/packs/sceneService";
+import { CsvImportButton } from "~/lib/packs/components/PackCsvImport";
 
 import { SceneFragment } from "../__generated__/SceneFragment";
 

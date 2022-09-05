@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useForm, Controller } from "react-hook-form";
-import { Button, TextField, AreaField, TagInput, Field } from "components";
+import { Button, TextField, AreaField, TagInput, Field } from "~/components";
 
 const defaultPackValues = {
   name: "",

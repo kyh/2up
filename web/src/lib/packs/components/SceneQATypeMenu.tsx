@@ -1,13 +1,16 @@
 import { useRef, forwardRef } from "react";
 import styled from "styled-components";
-import { useReactiveVar } from "util/mock";
-import { theme } from "styles/theme";
-import { Button } from "components";
-import { Props as ScenePreviewProps } from "lib/packs/components/ScenePreview";
-import { AnswerTypeSlugs, QuestionTypeSlugs } from "lib/game/gameSlice";
-import { visibleQATypeMenuVar, VisibleQATypeMenu } from "lib/packs/packService";
-import { useUpdateScene } from "lib/packs/sceneService";
-import { useOnClickOutside } from "util/element";
+import { useReactiveVar } from "~/utils/mock";
+import { theme } from "~/styles/theme";
+import { Button } from "~/components";
+import { Props as ScenePreviewProps } from "~/lib/packs/components/ScenePreview";
+import { AnswerTypeSlugs, QuestionTypeSlugs } from "~/lib/game/gameSlice";
+import {
+  visibleQATypeMenuVar,
+  VisibleQATypeMenu,
+} from "~/lib/packs/packService";
+import { useUpdateScene } from "~/lib/packs/sceneService";
+import { useOnClickOutside } from "~/utils/element";
 
 export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
   const ref = useRef(null);

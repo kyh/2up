@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { gql, useMutation, useQuery } from "util/mock";
-import { Modal, Uploader } from "components";
-import { theme } from "styles/theme";
+import { gql, useMutation, useQuery } from "~/utils/mock";
+import { Modal, Uploader } from "~/components";
+import { theme } from "~/styles/theme";
 
 type AssetModalProps = {
   packId: string;

@@ -1,6 +1,6 @@
 import { ReactNode, forwardRef } from "react";
 import styled from "styled-components";
-import { theme } from "styles/theme";
+import { theme } from "~/styles/theme";
 import { Input } from "../Input/Input";
 
 export const Field = styled.fieldset`

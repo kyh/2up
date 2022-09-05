@@ -5,12 +5,11 @@ import { ReactElement, ReactNode } from "react";
 import { UserProvider } from "@supabase/auth-helpers-react";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Provider as ReduxProvider } from "react-redux";
-import { SocketProvider } from "util/SocketProvider";
-import { trpc } from "util/trpc";
-import { StyleProvider } from "styles/global";
-import { AlertProvider, ProgressBar } from "components";
+import { trpc } from "~/utils/trpc";
+import { StyleProvider } from "~/styles/global";
+import { AlertProvider, ProgressBar } from "~/components";
 
-import { store } from "util/store";
+import { store } from "~/utils/store";
 
 const progress = new ProgressBar();
 
@@ -31,13 +30,11 @@ const MyApp = ({ Component, pageProps }: Props) => {
   return (
     <UserProvider supabaseClient={supabaseClient}>
       <ReduxProvider store={store}>
-        <SocketProvider wsUrl={`${process.env.NEXT_PUBLIC_SOCKET_URL}/socket`}>
-          <StyleProvider>
-            <AlertProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </AlertProvider>
-          </StyleProvider>
-        </SocketProvider>
+        <StyleProvider>
+          <AlertProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </AlertProvider>
+        </StyleProvider>
       </ReduxProvider>
     </UserProvider>
   );
