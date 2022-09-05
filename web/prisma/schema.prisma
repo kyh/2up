@@ -109,7 +109,7 @@ enum AnswerType {
 
 model Game {
   id         String   @id @default(cuid())
-  code       String
+  code       String   @unique
   state      Json // Game state
   gameScenes String[] // Scene IDs
   isFinished Boolean  @default(false)

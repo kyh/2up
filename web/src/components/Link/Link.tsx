@@ -1,16 +1,14 @@
-import { MouseEventHandler, ReactNode } from "react";
-import NextLink from "next/link";
+import { ReactNode } from "react";
+import NextLink, { LinkProps } from "next/link";
 
 type Props = {
-  to: string;
-  children?: ReactNode;
   className?: string;
-  onClick?: MouseEventHandler<HTMLAnchorElement>;
-};
+  children?: ReactNode;
+} & LinkProps;
 
-export const Link = ({ children, to, ...rest }: Props) => {
+export const Link = ({ children, href, ...rest }: Props) => {
   return (
-    <NextLink href={to}>
+    <NextLink href={href}>
       <a {...rest}>{children}</a>
     </NextLink>
   );

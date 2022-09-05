@@ -16,7 +16,7 @@ export const PackCategory = () => {
 
   return (
     <Content>
-      <Link to="/packs" className="back-link">
+      <Link href="/packs" className="back-link">
         &#171; Back to packs
       </Link>
       <PackSection>

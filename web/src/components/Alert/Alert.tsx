@@ -15,6 +15,7 @@ const AlertContainer = styled.ul`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 10;
 `;
 
 const AlertTemplate = styled(motion.li)`
@@ -26,6 +27,7 @@ const AlertTemplate = styled(motion.li)`
   align-items: flex-start;
   animation: ${visible} 0s linear 0.1s forwards;
   visibility: hidden;
+  cursor: pointer;
 `;
 
 export const Alert = styled(AlertTemplate)`

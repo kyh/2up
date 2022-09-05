@@ -18,7 +18,7 @@ export const PackDetails = () => {
 
   return (
     <PackDetailsPageContent>
-      <Link to="/packs" className="back-link">
+      <Link href="/packs" className="back-link">
         &#171; Back to packs
       </Link>
       {pack && (
@@ -30,7 +30,7 @@ export const PackDetails = () => {
               Start a game
             </Button>
             {/* {!!data && pack.user.id === currentUser?.id && (
-              <Link to={`/packs/${packId}/edit`}>Edit Pack</Link>
+              <Link href={`/packs/${packId}/edit`}>Edit Pack</Link>
             )} */}
           </div>
         </header>
