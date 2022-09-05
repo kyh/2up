@@ -3,19 +3,19 @@ import Image from "next/image";
 import styled from "styled-components";
 import sample from "lodash/sample";
 import Sheet from "react-modal-sheet";
-import { theme, useIsDesktop } from "styles/theme";
-import { bounceIn, bounceOut, fadeUpIn, drawIn } from "styles/animations";
-import { StepProps, GameState, SceneAnswer } from "lib/game/gameSlice";
-import { Instruction } from "lib/game/components/Instruction";
-import { Question } from "lib/game/components/Question";
-import { Answer } from "lib/game/components/Answer";
+import { theme, useIsDesktop } from "~/styles/theme";
+import { bounceIn, bounceOut, fadeUpIn, drawIn } from "~/styles/animations";
+import { StepProps, GameState, SceneAnswer } from "~/lib/game/gameSlice";
+import { Instruction } from "~/lib/game/components/Instruction";
+import { Question } from "~/lib/game/components/Question";
+import { Answer } from "~/lib/game/components/Answer";
 import {
   Player,
   PlayersGrid,
   NextButton,
-} from "lib/game/components/PlayerGrid";
-import { AnimationSprite } from "components";
-import { useTimeout } from "styles/animations";
+} from "~/lib/game/components/PlayerGrid";
+import { AnimationSprite } from "~/components";
+import { useTimeout } from "~/styles/animations";
 
 const sprites = {
   correct: ["wineGlassClinking", "checkMark", "bubbleLike"],

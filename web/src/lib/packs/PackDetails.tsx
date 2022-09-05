@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { trpc } from "util/trpc";
-import { theme } from "styles/theme";
-import { Link, Button } from "components";
-import { useHostGame } from "lib/game/gameService";
-import { Content } from "lib/packs/components/Page";
+import { trpc } from "~/utils/trpc";
+import { theme } from "~/styles/theme";
+import { Link, Button } from "~/components";
+import { useHostGame } from "~/lib/game/gameService";
+import { Content } from "~/lib/packs/components/Page";
 
 export const PackDetails = () => {
   const router = useRouter();

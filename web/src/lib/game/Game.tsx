@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useGameChannel } from "lib/game/GameProvider";
-import { useAppDispatch, useAppSelector } from "util/redux";
+import { useGameChannel } from "~/lib/game/GameProvider";
+import { useAppDispatch, useAppSelector } from "~/utils/redux";
 
 import { Step0 } from "./steps/Step0";
 import { Step1 } from "./steps/Step1";

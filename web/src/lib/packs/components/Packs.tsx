@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { theme } from "styles/theme";
-import { fadeIn, bounceExpand, bounceContract } from "styles/animations";
-import { Link, Button, ButtonLinkNative, Icon } from "components";
-import { useHostGame } from "lib/game/gameService";
+import { theme } from "~/styles/theme";
+import { fadeIn, bounceExpand, bounceContract } from "~/styles/animations";
+import { Link, Button, ButtonLinkNative, Icon } from "~/components";
+import { useHostGame } from "~/lib/game/gameService";
 import { Pack as PackModel } from "@prisma/client";
 
 export const PackSection = styled.section`

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import styled, { css } from "styled-components";
-import { theme } from "styles/theme";
-import { PageContainer } from "lib/home/components/Page";
+import { theme } from "~/styles/theme";
+import { PageContainer } from "~/lib/home/components/Page";
 
 export const AuthLayout = ({
   children,

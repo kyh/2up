@@ -1,14 +1,14 @@
 import { ChangeEvent } from "react";
 import styled from "styled-components";
 import produce from "immer";
-import { theme } from "styles/theme";
-import { Input, SingleLetterInput, Checkbox, Button, Icon } from "components";
+import { theme } from "~/styles/theme";
+import { Input, SingleLetterInput, Checkbox, Button, Icon } from "~/components";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
   getRandomAnswer,
-} from "lib/packs/packService";
-import { AnswerTypeSlugs } from "lib/game/gameSlice";
+} from "~/lib/packs/packService";
+import { AnswerTypeSlugs } from "~/lib/game/gameSlice";
 
 import { SceneFragment_sceneAnswers } from "../__generated__/SceneFragment";
 

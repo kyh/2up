@@ -4,10 +4,10 @@ import styled, {
   StyledComponentProps,
   DefaultTheme,
 } from "styled-components";
-import { useAppSelector } from "util/redux";
-import { theme } from "styles/theme";
-import { bounceExpand, bounceContract } from "styles/animations";
-import { createOrGetFx } from "styles/sound";
+import { useAppSelector } from "~/utils/redux";
+import { theme } from "~/styles/theme";
+import { bounceExpand, bounceContract } from "~/styles/animations";
+import { createOrGetFx } from "~/styles/sound";
 import { Link } from "../Link/Link";
 
 enum Variants {

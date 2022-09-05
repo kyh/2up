@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { ReactNode } from "react";
 import styled from "styled-components";
-import { theme } from "styles/theme";
-import { Navigation } from "lib/game/components/Navigation";
-import { PageContainer } from "lib/home/components/Page";
-import { Card } from "components";
+import { theme } from "~/styles/theme";
+import { Navigation } from "~/lib/game/components/Navigation";
+import { PageContainer } from "~/lib/home/components/Page";
+import { Card } from "~/components";
 
 export const HomeLayout = ({ children }: { children: ReactNode }) => {
   return (

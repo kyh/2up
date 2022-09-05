@@ -1,10 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Alert, Timer } from "components";
-import { Submission, StepProps } from "lib/game/gameSlice";
-import { Instruction } from "lib/game/components/Instruction";
-import { Question } from "lib/game/components/Question";
-import { Answer } from "lib/game/components/Answer";
+import { Alert, Timer } from "~/components";
+import { Submission, StepProps } from "~/lib/game/gameSlice";
+import { Instruction } from "~/lib/game/components/Instruction";
+import { Question } from "~/lib/game/components/Question";
+import { Answer } from "~/lib/game/components/Answer";
 
 export const Step1 = ({ gameState, broadcast, name }: StepProps) => {
   const [submitted, setSubmitted] = useState(false);

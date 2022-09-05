@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
-import { SEO } from "components";
-import { PackLayout } from "lib/packs/PackLayout";
-import { PackDiscover } from "lib/packs/PackDiscover";
+import { SEO } from "~/components";
+import { PackLayout } from "~/lib/packs/PackLayout";
+import { PackDiscover } from "~/lib/packs/PackDiscover";
 
 const PackDiscoverPage = () => {
   return (

@@ -1,4 +1,4 @@
-import { gql } from "util/mock";
+import { gql } from "~/utils/mock";
 
 export const SCENE_FRAGMENT = gql`
   fragment SceneFragment on Scene {

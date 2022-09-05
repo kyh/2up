@@ -8,17 +8,17 @@ import {
   AnimationSprite,
   Icon,
   useAlert,
-} from "components";
-import { theme } from "styles/theme";
-import { bounceIn } from "styles/animations";
-import { useAppSelector } from "util/redux";
-import { useGameChannel } from "lib/game/GameProvider";
+} from "~/components";
+import { theme } from "~/styles/theme";
+import { bounceIn } from "~/styles/animations";
+import { useAppSelector } from "~/utils/redux";
+import { useGameChannel } from "~/lib/game/GameProvider";
 import {
   Player,
   PlayersGrid,
   NextButton,
-} from "lib/game/components/PlayerGrid";
-import { location } from "util/window";
+} from "~/lib/game/components/PlayerGrid";
+import { location } from "~/utils/window";
 
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const alert = useAlert();

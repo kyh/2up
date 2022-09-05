@@ -1,4 +1,4 @@
-import { makeVar } from "util/mock";
+import { makeVar } from "~/utils/mock";
 import { Hotkey } from "@react-hook/hotkey";
 
 export enum VisibleQATypeMenu {

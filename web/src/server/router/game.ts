@@ -1,5 +1,5 @@
 import { Scene } from "@prisma/client";
-import { t, ServerError } from "server/trpc";
+import { t, ServerError } from "~/server/trpc";
 import { z } from "zod";
 import { customAlphabet } from "nanoid";
 

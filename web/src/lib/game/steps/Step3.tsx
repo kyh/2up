@@ -1,16 +1,16 @@
 import { useState, ReactNode } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { motion } from "framer-motion";
-import { theme, useIsDesktop } from "styles/theme";
-import { visible } from "styles/animations";
-import { StepProps, GameState } from "lib/game/gameSlice";
+import { theme, useIsDesktop } from "~/styles/theme";
+import { visible } from "~/styles/animations";
+import { StepProps, GameState } from "~/lib/game/gameSlice";
 import {
   PlayersGrid,
   Player,
   NextButton,
-} from "lib/game/components/PlayerGrid";
-import { Counter } from "components";
-import { useTimeout } from "styles/animations";
+} from "~/lib/game/components/PlayerGrid";
+import { Counter } from "~/components";
+import { useTimeout } from "~/styles/animations";
 
 export const Step3 = ({ gameState, broadcast, name }: StepProps) => {
   const [firstPlayer] = gameState.players;

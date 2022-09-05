@@ -1,8 +1,8 @@
 import { useState, SyntheticEvent } from "react";
 import styled from "styled-components";
-import { theme } from "styles/theme";
-import { Input, Button } from "components";
-import { SceneAnswer, Submission, AnswerTypeSlugs } from "lib/game/gameSlice";
+import { theme } from "~/styles/theme";
+import { Input, Button } from "~/components";
+import { SceneAnswer, Submission, AnswerTypeSlugs } from "~/lib/game/gameSlice";
 
 type AnswerProps = {
   sceneAnswer: SceneAnswer;

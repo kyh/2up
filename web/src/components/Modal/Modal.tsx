@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import ReactModal from "react-modal";
-import { theme } from "styles/theme";
-import { Button } from "components/Button/Button";
-import { Icon } from "components/Icon/Icon";
+import { theme } from "~/styles/theme";
+import { Button } from "~/components/Button/Button";
+import { Icon } from "~/components/Icon/Icon";
 
 type Props = {
   open: boolean;

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { trpc } from "util/trpc";
-import { useAppDispatch } from "util/redux";
-import { gameActions } from "lib/game/gameSlice";
+import { trpc } from "~/utils/trpc";
+import { useAppDispatch } from "~/utils/redux";
+import { gameActions } from "~/lib/game/gameSlice";
 
 export const useHostGame = () => {
   const mutation = trpc.proxy.game.create.useMutation();
