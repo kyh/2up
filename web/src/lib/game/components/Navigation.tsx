@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { theme } from "~/styles/theme";
@@ -6,6 +6,7 @@ import { useAllPlayhouseStore } from "~/lib/home/playhouseStore";
 import { Icon } from "~/components/Icon/Icon";
 import { Modal } from "~/components/Modal/Modal";
 import { Button, ButtonLink } from "~/components/Button/Button";
+import { createOrGetThemesong } from "~/styles/sound";
 
 export const Navigation = () => {
   const router = useRouter();
@@ -25,6 +26,14 @@ export const Navigation = () => {
     router.push("/");
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    const themeSong = createOrGetThemesong(isMusicOn);
+    isMusicOn ? themeSong.play() : themeSong.pause();
+    return () => {
+      themeSong.pause();
+    };
+  }, [isMusicOn]);
 
   return (
     <NavigationContainer>

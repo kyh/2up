@@ -21,12 +21,13 @@ export const createOrGetFx = (soundName: keyof typeof soundMap) => {
   return fx[soundName];
 };
 
-export const createOrGetThemesong = () => {
+export const createOrGetThemesong = (autoplay?: boolean) => {
   if (typeof window === "undefined") return;
   if (!fx.theme) {
     fx.theme = new Audio(soundMap.theme);
     fx.theme.addEventListener("canplaythrough", () => {
       fx.theme.loop = true;
+      if (autoplay) fx.theme.play();
     });
   }
   return fx.theme;
