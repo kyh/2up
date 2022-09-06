@@ -15,7 +15,7 @@ import {
 } from "~/lib/game/components/PlayerGrid";
 import { AnimationSprite } from "~/components";
 import { useTimeout } from "~/styles/animations";
-import type { StepProps } from "~/lib/game/steps/types";
+import type { StepProps, GameState, SceneAnswer } from "~/lib/game/steps/types";
 
 const sprites = {
   correct: ["wineGlassClinking", "checkMark", "bubbleLike"],
@@ -94,7 +94,9 @@ const Step2Play = ({ gameState, players, playerName }: StepProps) => {
       {firstPlayer && (
         <NextButton
           disabled={firstPlayer.name !== playerName}
-          onClick={() => broadcast("step:next")}
+          onClick={() => {
+            // broadcast("step:next")
+          }}
           autoFocus
         >
           {firstPlayer.name === playerName
@@ -138,7 +140,7 @@ const AnswerResult = ({
 }: SubmissionProps) => {
   return (
     <>
-      <Instruction instruction={gameState.instruction} />
+      <Instruction instruction={gameState.questionDescription} />
       <Question
         question={gameState.question}
         questionType={gameState.questionType}
@@ -204,8 +206,8 @@ const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
     const isCorrect = compareAnswer(submission.content, sceneAnswer.content);
     return (
       <Player
-        key={submission.name}
-        playerName={submission.name}
+        key={submission.playerId}
+        playerName={submission.playerName}
         playerContent={`: "${submission.content}"`}
       >
         {isCorrect && (

@@ -10,7 +10,7 @@ import {
 } from "~/lib/game/components/PlayerGrid";
 import { Counter } from "~/components";
 import { useTimeout } from "~/styles/animations";
-import type { StepProps } from "~/lib/game/steps/types";
+import type { StepProps, GameState, Players } from "~/lib/game/steps/types";
 
 export const Step3Play = ({ gameState, players, playerName }: StepProps) => {
   const [firstPlayer] = players;
@@ -19,11 +19,17 @@ export const Step3Play = ({ gameState, players, playerName }: StepProps) => {
       <QuestionNumber>
         Question: {gameState.currentScene} / {gameState.totalScenes}
       </QuestionNumber>
-      <PlayerScores gameState={gameState} title="Scoreboard" />
+      <PlayerScores
+        players={players}
+        gameState={gameState}
+        title="Scoreboard"
+      />
       {firstPlayer && (
         <NextButton
           disabled={firstPlayer.name !== playerName}
-          onClick={() => broadcast("scene:next")}
+          onClick={() => {
+            // broadcast("scene:next")
+          }}
           autoFocus
         >
           {firstPlayer.name === playerName
@@ -35,42 +41,43 @@ export const Step3Play = ({ gameState, players, playerName }: StepProps) => {
   );
 };
 
-export const Step3Spectate = ({ gameState }: StepProps) => {
+export const Step3Spectate = ({ gameState, players }: StepProps) => {
   return (
     <>
       <QuestionNumber>
         Question: {gameState.currentScene} / {gameState.totalScenes}
       </QuestionNumber>
-      <PlayerScores gameState={gameState} title="Scoreboard" />
+      <PlayerScores
+        players={players}
+        gameState={gameState}
+        title="Scoreboard"
+      />
     </>
   );
 };
 
-const sortByKey = (
-  players: GameState["players"],
-  key: "score" | "prevScore"
-) => {
+const sortByKey = (players: Players, key: "score" | "prevScore") => {
   return [...players].sort((a, b) => b[key] - a[key]);
 };
 
 export const PlayerScores = ({
   gameState,
+  players,
   title,
 }: {
   gameState: GameState;
+  players: Players;
   title: string;
 }) => {
   const desktop = useIsDesktop();
   const [isOldState, setIsOldState] = useState(true);
-  const [players, setPlayers] = useState(
-    sortByKey(gameState.players, "prevScore")
-  );
+  const [sortedPlayers, setPlayers] = useState(sortByKey(players, "prevScore"));
 
   useTimeout(() => {
     setIsOldState(false);
     if (!desktop) {
       // Sort players by score if they're not on a desktop
-      setPlayers(sortByKey(gameState.players, "score"));
+      setPlayers(sortByKey(players, "score"));
     }
   }, 150);
 
@@ -81,7 +88,7 @@ export const PlayerScores = ({
         <h2 className="title">{title}</h2>
       </TitleContainer>
       <PlayersContainer singleCol>
-        {players.map(({ name, prevScore, score }) => {
+        {sortedPlayers.map(({ name, prevScore, score }) => {
           return (
             <PlayerContainer
               key={name}

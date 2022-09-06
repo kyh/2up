@@ -2,11 +2,16 @@ import { useState, SyntheticEvent } from "react";
 import styled from "styled-components";
 import { theme } from "~/styles/theme";
 import { Input, Button } from "~/components";
-import { SceneAnswer, Submission, AnswerTypeSlugs } from "~/lib/game/gameSlice";
+import { AnswerTypeSlugs } from "~/lib/game/gameUtils";
+import type {
+  AnswerType,
+  SceneAnswer,
+  Submission,
+} from "~/lib/game/steps/types";
 
 type AnswerProps = {
   sceneAnswer: SceneAnswer;
-  answerType: string;
+  answerType: AnswerType;
   submitted: boolean;
   onSubmit: (submission: Pick<Submission, "content">) => void;
   displayMode?: boolean;

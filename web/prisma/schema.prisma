@@ -130,6 +130,11 @@ model Player {
   name   String
   avatar String
 
+  score     Int @default(0)
+  prevScore Int @default(0)
+
+  isSpectator Boolean @default(false)
+
   Game   Game   @relation(fields: [gameId], references: [id])
   gameId String
 }
