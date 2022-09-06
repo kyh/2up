@@ -3,7 +3,7 @@ import { theme } from "~/styles/theme";
 import { Container } from "~/lib/game/components/Question";
 
 type InstructionProps = {
-  instruction: string;
+  instruction?: string | null;
 };
 
 export const Instruction = ({ instruction }: InstructionProps) => {

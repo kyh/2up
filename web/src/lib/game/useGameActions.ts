@@ -49,17 +49,40 @@ export const useJoinGame = () => {
 
 export const useStartGame = () => {
   const mutation = trpc.proxy.game.start.useMutation();
-  const router = useRouter();
-  const alert = useAlert();
 
   const startGame = async (gameId: string) => {
-    await mutation.mutate(
-      { gameId },
-      {
-        onSuccess: () => {},
-      }
-    );
+    await mutation.mutate({ gameId });
   };
 
   return { ...mutation, startGame };
+};
+
+export const useNextScene = () => {
+  const mutation = trpc.proxy.game.nextScene.useMutation();
+
+  const nextScene = async (gameId: string) => {
+    await mutation.mutate({ gameId });
+  };
+
+  return { ...mutation, nextScene };
+};
+
+export const useSubmitAnswer = () => {
+  const mutation = trpc.proxy.game.submitAnswer.useMutation();
+
+  const submitAnswer = async (gameId: string) => {
+    await mutation.mutate({ gameId, submission: "" });
+  };
+
+  return { ...mutation, submitAnswer };
+};
+
+export const useEndGame = () => {
+  const mutation = trpc.proxy.game.end.useMutation();
+
+  const endGame = async (gameId: string) => {
+    await mutation.mutate({ gameId });
+  };
+
+  return { ...mutation, endGame };
 };

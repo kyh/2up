@@ -75,8 +75,24 @@ export const gameRouter = t.router({
     }),
   start: t.procedure
     .input(z.object({ gameId: z.string() }))
-    .mutation(async () => {
-      return {};
+    .mutation(async ({ ctx, input }) => {
+      const game = await ctx.prisma.game.update({
+        where: {
+          id: input.gameId,
+        },
+        data: {
+          isStarted: true,
+        },
+      });
+
+      if (!game) {
+        throw new ServerError({
+          code: "BAD_REQUEST",
+          message: "Invalid game code.",
+        });
+      }
+
+      return game;
     }),
   nextScene: t.procedure
     .input(z.object({ gameId: z.string() }))
@@ -87,5 +103,26 @@ export const gameRouter = t.router({
     .input(z.object({ gameId: z.string(), submission: z.string() }))
     .mutation(async () => {
       return {};
+    }),
+  end: t.procedure
+    .input(z.object({ gameId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const game = await ctx.prisma.game.update({
+        where: {
+          id: input.gameId,
+        },
+        data: {
+          isFinished: true,
+        },
+      });
+
+      if (!game) {
+        throw new ServerError({
+          code: "BAD_REQUEST",
+          message: "Invalid game code.",
+        });
+      }
+
+      return game;
     }),
 });
