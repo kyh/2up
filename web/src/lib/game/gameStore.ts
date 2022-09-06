@@ -55,7 +55,8 @@ export const useGameStore = create<GameStore>()((set) => ({
     answerType: "text",
     sceneAnswers: [],
   },
-  setGameState: (state) => set((store) => ({ ...store, state })),
+  setGameState: (state) =>
+    set((store) => ({ ...store, state: { ...store.state, ...state } })),
   players: [],
   setPlayers: (players) => set((store) => ({ ...store, players })),
   isStarted: false,

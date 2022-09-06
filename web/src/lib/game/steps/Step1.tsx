@@ -4,7 +4,7 @@ import { Alert, Timer } from "~/components";
 import { Instruction } from "~/lib/game/components/Instruction";
 import { Question } from "~/lib/game/components/Question";
 import { Answer } from "~/lib/game/components/Answer";
-import type { StepProps } from "~/lib/game/steps/types";
+import type { StepProps, Submission } from "~/lib/game/steps/types";
 
 const Step1Play = ({ gameState, players }: StepProps) => {
   const [submitted, setSubmitted] = useState(false);
@@ -13,7 +13,9 @@ const Step1Play = ({ gameState, players }: StepProps) => {
   const waiting = players.length - submissions;
 
   const onSubmit = (
-    submission: Pick<Submission, "content"> = { content: "" }
+    submission: Pick<Submission, "content"> = {
+      content: "",
+    }
   ) => {
     if (submitted) return;
     setSubmitted(true);
