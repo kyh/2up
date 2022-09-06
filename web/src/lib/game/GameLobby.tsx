@@ -11,22 +11,23 @@ import {
 } from "~/components";
 import { theme } from "~/styles/theme";
 import { bounceIn } from "~/styles/animations";
-import { useAppSelector } from "~/utils/redux";
-import { useGameChannel } from "~/lib/game/GameProvider";
 import {
   Player,
   PlayersGrid,
   NextButton,
 } from "~/lib/game/components/PlayerGrid";
-import { location } from "~/utils/window";
+import { useGameStore } from "~/lib/game/gameStore";
+import { useStartGame } from "~/lib/game/useGameActions";
 
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const alert = useAlert();
   const router = useRouter();
-  const gameState = useAppSelector((state) => state.game);
+  const { startGame } = useStartGame();
+  const gameStarted = useGameStore((state) => state.isStarted);
+  const players = useGameStore((state) => state.players);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { broadcast } = useGameChannel();
-  const gameLink = `${location.origin}?gameId=${gameState.gameId}`;
+
+  const gameId = router.query.gameId as string;
 
   const onClickStart = () => {
     // Adopt single player mode for now...
@@ -38,11 +39,10 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
     onStart();
   };
 
-  const onStart = () => {
-    broadcast("start", { gameId: gameState.gameId });
-  };
+  const onStart = () => startGame(gameId);
 
   const onShare = () => {
+    const gameLink = `${location.origin}?gameId=${gameId}`;
     if (navigator.share) {
       navigator
         .share({
@@ -57,14 +57,13 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   };
 
   useEffect(() => {
-    if (gameState.scene) {
-      router.push(
-        `/game/${gameState.gameId}${isSpectate ? "/spectate" : ""}${
-          location.search
-        }`
-      );
+    if (gameStarted) {
+      router.push({
+        pathname: `/game/${gameId}${isSpectate ? "/spectate" : ""}`,
+        query: router.query,
+      });
     }
-  }, [gameState.gameId, gameState.scene]);
+  }, [gameStarted]);
 
   return (
     <>
@@ -78,11 +77,11 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
           </div>
           <div>and enter room code:</div>
         </h1>
-        <div className="game-id">{gameState.gameId}</div>
+        <div className="game-id">{gameId}</div>
       </TitleContainer>
       <PlayersContainer>
-        {gameState.players.map((p) => (
-          <Player key={p.name} playerName={p.name}>
+        {players.map((p) => (
+          <Player key={p.userId} playerName={p.name}>
             <Explosion name="bubbleExplosion3" />
           </Player>
         ))}
@@ -107,7 +106,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
                   </span>
                   <span className="block">and enter the room code:</span>
                 </p>
-                <div className="game-id">{gameState.gameId}</div>
+                <div className="game-id">{gameId}</div>
               </TitleContainer>
               <Button fullWidth onClick={onStart}>
                 Start anyways
@@ -116,7 +115,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
           </Modal>
         </>
       ) : (
-        <JoinRoomButton href={`/?code=${gameState.gameId}&join=true`}>
+        <JoinRoomButton href={`/?gameId=${gameId}&join=true`}>
           Or join the room on this device
         </JoinRoomButton>
       )}

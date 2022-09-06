@@ -2,17 +2,19 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { Button, Modal, Confetti } from "~/components";
 import { theme } from "~/styles/theme";
-import { gameActions, StepProps } from "~/lib/game/gameSlice";
 import { PlayerScores } from "./Step3";
+import { useEndGame } from "~/lib/game/useGameActions";
+import type { StepProps } from "~/lib/game/steps/types";
 
-export const Step0 = ({ gameState, dispatch }: StepProps) => {
+const Step0Play = ({ gameState }: StepProps) => {
   const router = useRouter();
-  const { test } = router.query;
+  const { endGame } = useEndGame();
+  const { gameId, redirectTo } = router.query;
 
-  const handleEnd = (gameId?: string) => {
-    dispatch(gameActions.reset({ gameId }));
-    if (test) {
-      router.push(`/packs/${test}/edit`);
+  const handleEnd = async () => {
+    await endGame(gameId as string);
+    if (redirectTo) {
+      router.push(`/packs/${redirectTo}/edit`);
     } else {
       router.push("/packs");
     }
@@ -23,17 +25,14 @@ export const Step0 = ({ gameState, dispatch }: StepProps) => {
       <Confetti />
       <PlayerScores title="Game Finished" gameState={gameState} />
       <Footer>
-        <Button
-          className="play-again"
-          onClick={() => handleEnd(gameState.gameId)}
-          autoFocus
-        >
+        <Button className="play-again" onClick={handleEnd} autoFocus>
           Play Again
         </Button>
-        <button className="link" onClick={() => handleEnd()}>
+        <button className="link" onClick={handleEnd}>
           Leave game
         </button>
       </Footer>
+      {/*
       <Modal
         open={!!gameState.invitedToGame}
         onRequestClose={() =>
@@ -59,7 +58,7 @@ export const Step0 = ({ gameState, dispatch }: StepProps) => {
             Join new game
           </Button>
         </InviteModalFooter>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
@@ -88,4 +87,4 @@ const InviteModalFooter = styled.div`
   margin-top: ${theme.spacings(6)};
 `;
 
-export const Step0Spectate = Step0;
+export const Step0 = Step0Play;

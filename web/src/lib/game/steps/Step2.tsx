@@ -5,7 +5,6 @@ import sample from "lodash/sample";
 import Sheet from "react-modal-sheet";
 import { theme, useIsDesktop } from "~/styles/theme";
 import { bounceIn, bounceOut, fadeUpIn, drawIn } from "~/styles/animations";
-import { StepProps, GameState, SceneAnswer } from "~/lib/game/gameSlice";
 import { Instruction } from "~/lib/game/components/Instruction";
 import { Question } from "~/lib/game/components/Question";
 import { Answer } from "~/lib/game/components/Answer";
@@ -16,6 +15,7 @@ import {
 } from "~/lib/game/components/PlayerGrid";
 import { AnimationSprite } from "~/components";
 import { useTimeout } from "~/styles/animations";
+import type { StepProps } from "~/lib/game/steps/types";
 
 const sprites = {
   correct: ["wineGlassClinking", "checkMark", "bubbleLike"],
@@ -26,19 +26,20 @@ const compareAnswer = (answer: string, answerToCompare: string) => {
   return answer.trim().toLowerCase() === answerToCompare.trim().toLowerCase();
 };
 
-export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
+const Step2Play = ({ gameState, players, playerName }: StepProps) => {
   const desktop = useIsDesktop();
   const [showSubmissions, setShowSubmissions] = useState(false);
   const [animationSpriteName, setAnimationSpriteName] = useState<any>(null);
 
-  const [firstPlayer] = gameState.players;
+  const [firstPlayer] = players;
   const correctAnswer = gameState.sceneAnswers.find(
     (sceneAnswer) => sceneAnswer.isCorrect
   )!;
 
   useTimeout(() => {
     const isCurrentPlayerCorrect = compareAnswer(
-      gameState.submissions.find((s) => s.name === name)?.content || "",
+      gameState.submissions.find((s) => s.playerName === playerName)?.content ||
+        "",
       correctAnswer.content
     );
 
@@ -92,11 +93,11 @@ export const Step2 = ({ gameState, broadcast, name }: StepProps) => {
       )}
       {firstPlayer && (
         <NextButton
-          disabled={firstPlayer.name !== name}
+          disabled={firstPlayer.name !== playerName}
           onClick={() => broadcast("step:next")}
           autoFocus
         >
-          {firstPlayer.name === name
+          {firstPlayer.name === playerName
             ? "Next"
             : `Waiting for ${firstPlayer.name}`}
         </NextButton>
@@ -112,7 +113,7 @@ const StyledSheet = styled(Sheet)`
   }
 `;
 
-export const Step2Spectate = ({ gameState }: StepProps) => {
+const Step2Spectate = ({ gameState }: StepProps) => {
   const correctAnswer = gameState.sceneAnswers?.find(
     (sceneAnswer) => sceneAnswer.isCorrect
   )!;
@@ -260,3 +261,8 @@ const CorrectSprite = styled(AnimationSprite)`
   left: 50%;
   transform: translateX(-50%);
 `;
+
+export const Step2 = (props: StepProps) => {
+  if (props.isSpectate) return <Step2Spectate {...props} />;
+  return <Step2Play {...props} />;
+};

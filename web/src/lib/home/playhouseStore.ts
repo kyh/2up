@@ -1,14 +1,17 @@
 import create from "zustand";
 import shallow from "zustand/shallow";
 import { persist } from "zustand/middleware";
+import { nanoid } from "nanoid";
 
-type PlayhouseStore = {
+export type PlayhouseStore = {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
   isMusicOn: boolean;
   toggleMusic: () => void;
   isSFXOn: boolean;
   toggleSFX: () => void;
+  playerId: string;
+  setPlayerId: (playerId: string) => void;
   playerName: string;
   setPlayerName: (name: string) => void;
 };
@@ -30,6 +33,8 @@ export const usePlayhouseStore = create<PlayhouseStore>()(
         set((state) => ({ ...state, isMusicOn: !state.isMusicOn })),
       isSFXOn: false,
       toggleSFX: () => set((state) => ({ ...state, isSFXOn: !state.isSFXOn })),
+      playerId: nanoid(),
+      setPlayerId: (playerId) => set((state) => ({ ...state, playerId })),
       playerName: "",
       setPlayerName: (playerName) => set((state) => ({ ...state, playerName })),
     }),
