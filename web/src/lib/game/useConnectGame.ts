@@ -4,15 +4,18 @@ import { supabase } from "~/utils/supabase";
 import { useAlert } from "components";
 import { useGameStore, GameState } from "~/lib/game/gameStore";
 import { usePlayhouseStore } from "~/lib/home/playhouseStore";
+import { Player } from "@prisma/client";
 
 export const useConnectGame = (gameId: string) => {
   const router = useRouter();
   const alert = useAlert();
   const setGameState = useGameStore((state) => state.setGameState);
+  const setPlayers = useGameStore((state) => state.setPlayers);
+  const playerId = usePlayhouseStore((state) => state.playerId);
   const playerName = usePlayhouseStore((state) => state.playerName);
 
   useEffect(() => {
-    if (!gameId) return handleError("No game id provided");
+    if (!gameId) return;
 
     const channel = supabase
       .channel(`game:${gameId}`)
@@ -24,34 +27,39 @@ export const useConnectGame = (gameId: string) => {
           table: "Game",
           filter: `id=eq.${gameId}`,
         },
-        (payload: GameState) => setGameState(payload)
+        (payload: GameState) => {
+          console.log(payload);
+          // setGameState(payload)
+        }
       )
       .on("presence", { event: "sync" }, () => {
-        console.log("currently online users", channel.presenceState());
+        const presenceState = channel.presenceState();
+
+        const players = Object.values(presenceState).map(
+          ([p]) =>
+            ({
+              userId: p.userId,
+              name: p.name,
+            } as Player)
+        );
+
+        setPlayers(players);
       })
-      .on("presence", { event: "join" }, (data: any) => {
-        console.log("a new user has joined", data);
-      })
-      .on("presence", { event: "leave" }, (data: any) =>
-        console.log("a user has left", data)
-      )
       .subscribe(async (status: string) => {
         if (status === "SUBSCRIBED") {
-          const status = await channel.track({ playerName });
+          await channel.track({ userId: playerId, name: playerName });
         }
       });
 
-    channel.onError(handleError);
+    channel.onError((reason: string) => {
+      alert.show(`Error connecting to game: ${reason}`);
+      router.push("/");
+    });
 
     return () => {
       channel.unsubscribe();
     };
   }, [gameId]);
-
-  const handleError = (reason: string) => {
-    alert.show(`Error connecting to game: ${reason}`);
-    router.push("/");
-  };
 
   return {};
 };

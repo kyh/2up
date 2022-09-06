@@ -126,10 +126,10 @@ model Game {
 }
 
 model Player {
-  userId String  @id @unique
-  name   String?
-  avatar String?
+  userId String @id
+  name   String
+  avatar String
 
-  Game   Game?   @relation(fields: [gameId], references: [id])
-  gameId String?
+  Game   Game   @relation(fields: [gameId], references: [id])
+  gameId String
 }

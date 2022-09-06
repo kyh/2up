@@ -3,7 +3,6 @@ import styled, { createGlobalStyle } from "styled-components";
 import { motion } from "framer-motion";
 import { theme, useIsDesktop } from "~/styles/theme";
 import { visible } from "~/styles/animations";
-import { StepProps, GameState } from "~/lib/game/gameSlice";
 import {
   PlayersGrid,
   Player,
@@ -11,22 +10,23 @@ import {
 } from "~/lib/game/components/PlayerGrid";
 import { Counter } from "~/components";
 import { useTimeout } from "~/styles/animations";
+import type { StepProps } from "~/lib/game/steps/types";
 
-export const Step3 = ({ gameState, broadcast, name }: StepProps) => {
-  const [firstPlayer] = gameState.players;
+export const Step3Play = ({ gameState, players, playerName }: StepProps) => {
+  const [firstPlayer] = players;
   return (
     <>
       <QuestionNumber>
-        Question: {gameState.scene} / {gameState.totalScenes}
+        Question: {gameState.currentScene} / {gameState.totalScenes}
       </QuestionNumber>
       <PlayerScores gameState={gameState} title="Scoreboard" />
       {firstPlayer && (
         <NextButton
-          disabled={firstPlayer.name !== name}
+          disabled={firstPlayer.name !== playerName}
           onClick={() => broadcast("scene:next")}
           autoFocus
         >
-          {firstPlayer.name === name
+          {firstPlayer.name === playerName
             ? "Next Question"
             : `Waiting for ${firstPlayer.name}`}
         </NextButton>
@@ -39,7 +39,7 @@ export const Step3Spectate = ({ gameState }: StepProps) => {
   return (
     <>
       <QuestionNumber>
-        Question: {gameState.scene} / {gameState.totalScenes}
+        Question: {gameState.currentScene} / {gameState.totalScenes}
       </QuestionNumber>
       <PlayerScores gameState={gameState} title="Scoreboard" />
     </>
@@ -223,3 +223,8 @@ const PlayerScore = styled.h2`
     margin-top: auto;
   }
 `;
+
+export const Step3 = (props: StepProps) => {
+  if (props.isSpectate) return <Step3Spectate {...props} />;
+  return <Step3Play {...props} />;
+};
