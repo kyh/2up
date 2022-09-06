@@ -1,14 +1,10 @@
 import { useEffect } from "react";
-import { useRouter } from "next/router";
 import { supabase } from "~/utils/supabase";
-import { useAlert } from "components";
 import { useGameStore, GameState } from "~/lib/game/gameStore";
 import { usePlayhouseStore } from "~/lib/home/playhouseStore";
 import { Player } from "@prisma/client";
 
 export const useConnectGame = (gameId: string) => {
-  const router = useRouter();
-  const alert = useAlert();
   const setGameState = useGameStore((state) => state.setGameState);
   const setPlayers = useGameStore((state) => state.setPlayers);
   const playerId = usePlayhouseStore((state) => state.playerId);
@@ -17,23 +13,10 @@ export const useConnectGame = (gameId: string) => {
   useEffect(() => {
     if (!gameId) return;
 
-    const channel = supabase
-      .channel(`game:${gameId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "Game",
-          filter: `id=eq.${gameId}`,
-        },
-        (payload: GameState) => {
-          console.log(payload);
-          // setGameState(payload)
-        }
-      )
+    const playerChannel = supabase
+      .channel(`game:${gameId}:players`)
       .on("presence", { event: "sync" }, () => {
-        const presenceState = channel.presenceState();
+        const presenceState = playerChannel.presenceState();
 
         const players = Object.values(presenceState).map(
           ([p]) =>
@@ -47,17 +30,31 @@ export const useConnectGame = (gameId: string) => {
       })
       .subscribe(async (status: string) => {
         if (status === "SUBSCRIBED") {
-          await channel.track({ userId: playerId, name: playerName });
+          await playerChannel.track({ userId: playerId, name: playerName });
         }
       });
 
-    channel.onError((reason: string) => {
-      alert.show(`Error connecting to game: ${reason}`);
-      router.push("/");
-    });
+    const gameChannel = supabase
+      .channel(`public:Game:id=eq.${gameId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "Game",
+        },
+        (payload: GameState) => {
+          console.log("payload", payload);
+          // setGameState(payload)
+        }
+      )
+      .subscribe(async (status: string) => {
+        console.log("status", status);
+      });
 
     return () => {
-      channel.unsubscribe();
+      playerChannel.unsubscribe();
+      gameChannel.unsubscribe();
     };
   }, [gameId]);
 
