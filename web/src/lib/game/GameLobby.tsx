@@ -60,7 +60,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
     if (gameStarted) {
       router.push({
         pathname: `/game/${gameId}${isSpectate ? "/spectate" : ""}`,
-        query: router.query,
+        query: { returnTo: router.query.returnTo },
       });
     }
   }, [gameStarted]);

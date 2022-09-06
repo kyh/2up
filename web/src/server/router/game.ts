@@ -39,14 +39,32 @@ export const gameRouter = t.router({
         });
       }
 
-      const gameId = nanoid();
+      const [firstScene] = scenes;
+      const sceneAnswers = await ctx.prisma.sceneAnswer.findMany({
+        where: {
+          sceneId: firstScene.id,
+        },
+      });
 
       const game = await ctx.prisma.game.create({
         data: {
-          id: gameId,
+          id: nanoid(),
           state: {
             currentScene: 0,
             currentStep: 0,
+            submissions: [],
+            totalScenes: scenes.length,
+            duration: 40,
+            startTime: Date.now(),
+            questionDescription: firstScene.questionDescription,
+            question: firstScene.question,
+            questionType: firstScene.questionType,
+            answerType: firstScene.answerType,
+            sceneAnswers: sceneAnswers.map((sa) => ({
+              id: sa.id,
+              content: sa.content,
+              isCorrect: sa.isCorrect,
+            })),
           },
           gameScenes: scenes.map((s) => s.id),
           packId: input.packId,

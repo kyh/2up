@@ -1,10 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { supabase } from "~/utils/supabase";
+import { useAlert } from "~/components";
 import { useGameStore, GameState } from "~/lib/game/gameStore";
 import { usePlayhouseStore } from "~/lib/home/playhouseStore";
-import type { Player } from "@prisma/client";
+import type { Players } from "~/lib/game/steps/types";
 
 export const useConnectGame = (gameId: string) => {
+  const [initialized, setInitialized] = useState(false);
+  const router = useRouter();
+  const alert = useAlert();
+
   const setGameState = useGameStore((state) => state.setGameState);
   const setGameStarted = useGameStore((state) => state.setIsStarted);
   const setGameFinished = useGameStore((state) => state.setIsFinished);
@@ -15,16 +21,22 @@ export const useConnectGame = (gameId: string) => {
 
   useEffect(() => {
     const initializeGameState = async () => {
-      const { data } = await supabase
-        .from("Game")
-        .select("*")
-        .eq("id", gameId)
-        .single();
+      try {
+        const { data } = await supabase
+          .from("Game")
+          .select("*")
+          .eq("id", gameId)
+          .single();
 
-      console.log("Initialize game state", data);
-      setGameState(data.state);
-      setGameStarted(data.isStarted);
-      setGameFinished(data.isFinished);
+        console.log("Initialize game state", data);
+        setGameState(data.state);
+        setGameStarted(data.isStarted);
+        setGameFinished(data.isFinished);
+
+        setInitialized(true);
+      } catch (error: any) {
+        handleError(error);
+      }
     };
 
     if (gameId) initializeGameState();
@@ -43,14 +55,23 @@ export const useConnectGame = (gameId: string) => {
             ({
               userId: p.userId,
               name: p.name,
-            } as Player)
+              score: p.score,
+              prevScore: p.prevScore,
+              isSpectator: p.isSpectator,
+            } as Players[0])
         );
 
         setPlayers(players);
       })
       .subscribe(async (status: string) => {
         if (status === "SUBSCRIBED") {
-          await playerChannel.track({ userId: playerId, name: playerName });
+          await playerChannel.track({
+            userId: playerId,
+            name: playerName,
+            score: 0,
+            prevScore: 0,
+            isSpectator: false,
+          });
         }
       });
 
@@ -75,11 +96,19 @@ export const useConnectGame = (gameId: string) => {
       )
       .subscribe();
 
+    gameChannel.onError(handleError);
+
     return () => {
       playerChannel.unsubscribe();
       gameChannel.unsubscribe();
     };
   }, [gameId]);
 
-  return {};
+  const handleError = (reason: Error) => {
+    console.error(reason);
+    alert.show(`Error connecting to game: ${reason}`);
+    router.push("/");
+  };
+
+  return initialized;
 };

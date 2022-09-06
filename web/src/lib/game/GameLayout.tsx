@@ -9,7 +9,9 @@ export const GameLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const gameId = router.query.gameId as string;
 
-  useConnectGame(gameId);
+  const initialized = useConnectGame(gameId);
+
+  if (!initialized) return null;
 
   return (
     <>
