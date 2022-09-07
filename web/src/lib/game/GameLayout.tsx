@@ -9,9 +9,9 @@ export const GameLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const gameId = router.query.gameId as string;
 
-  const initialized = useConnectGame(gameId);
+  const { isLoaded } = useConnectGame(gameId);
 
-  if (!initialized) return null;
+  if (!isLoaded) return null;
 
   return (
     <>

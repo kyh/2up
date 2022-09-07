@@ -6,6 +6,13 @@ import { customAlphabet } from "nanoid";
 const nanoid = customAlphabet("1234567890", 5);
 
 export const gameRouter = t.router({
+  get: t.procedure
+    .input(z.object({ gameId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.game.findUnique({
+        where: { id: input.gameId },
+      });
+    }),
   create: t.procedure
     .input(z.object({ packId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -94,23 +101,10 @@ export const gameRouter = t.router({
   start: t.procedure
     .input(z.object({ gameId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const game = await ctx.prisma.game.update({
-        where: {
-          id: input.gameId,
-        },
-        data: {
-          isStarted: true,
-        },
+      return ctx.prisma.game.update({
+        where: { id: input.gameId },
+        data: { isStarted: true },
       });
-
-      if (!game) {
-        throw new ServerError({
-          code: "BAD_REQUEST",
-          message: "Invalid game code.",
-        });
-      }
-
-      return game;
     }),
   nextScene: t.procedure
     .input(z.object({ gameId: z.string() }))
@@ -125,22 +119,9 @@ export const gameRouter = t.router({
   end: t.procedure
     .input(z.object({ gameId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const game = await ctx.prisma.game.update({
-        where: {
-          id: input.gameId,
-        },
-        data: {
-          isFinished: true,
-        },
+      return ctx.prisma.game.update({
+        where: { id: input.gameId },
+        data: { isFinished: true },
       });
-
-      if (!game) {
-        throw new ServerError({
-          code: "BAD_REQUEST",
-          message: "Invalid game code.",
-        });
-      }
-
-      return game;
     }),
 });

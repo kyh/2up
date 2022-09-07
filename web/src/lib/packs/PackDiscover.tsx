@@ -1,15 +1,15 @@
 import { useRouter } from "next/router";
-import { trpc } from "~/utils/trpc";
-import { Link, Carousel, ButtonLinkNative } from "~/components";
+import { Link, Carousel, ButtonLinkNative, Spinner } from "~/components";
 import { Content, Footer } from "./components/Page";
 import { PackSection, Pack, PacksProps } from "./components/Packs";
+import { useGetDiscover } from "./usePackActions";
 
 export const PackDiscover = () => {
   const router = useRouter();
   const ref = (router.query.ref as string) || "default";
-  const res = trpc.proxy.pack.getDiscover.useQuery({ ref });
+  const res = useGetDiscover(ref);
 
-  if (!res.data) return null;
+  if (!res.data) return <Spinner center />;
 
   const [featured, ...packSections] = res.data;
 
