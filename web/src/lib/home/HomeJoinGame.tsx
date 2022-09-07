@@ -1,39 +1,24 @@
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { trpc } from "~/utils/trpc";
-import { Link, Button, Input, useAlert, Modal } from "~/components";
+import { Link, Button, Input, Modal } from "~/components";
 import { Form } from "~/lib/home/components/Form";
 import { HomeSetName, StartNewGameText } from "~/lib/home/HomeSetName";
+import { useCheckGame } from "~/lib/game/useGameActions";
 
 type FormInputs = {
   gameId: string;
 };
 
 export const HomeJoinGame = () => {
-  const alert = useAlert();
   const router = useRouter();
-  const mutation = trpc.proxy.game.check.useMutation();
-  const { register, handleSubmit, reset } = useForm<FormInputs>();
+  const { checkGame, isLoading } = useCheckGame();
+  const { register, handleSubmit } = useForm<FormInputs>();
 
   const gameId = router.query.gameId?.toString() || "";
 
   // Joining an existing game:
   const onSubmit = async ({ gameId }: FormInputs) => {
-    await mutation.mutate(
-      { gameId },
-      {
-        onSuccess: ({ id }) => {
-          router.replace({
-            pathname: "/",
-            query: { gameId: id, join: true },
-          });
-        },
-        onError: () => {
-          alert.show("Game code does not exist");
-          reset();
-        },
-      }
-    );
+    await checkGame(gameId);
   };
 
   return (
@@ -45,7 +30,7 @@ export const HomeJoinGame = () => {
           placeholder="Game Code"
           defaultValue={gameId}
         />
-        <Button type="submit" disabled={mutation.isLoading}>
+        <Button type="submit" disabled={isLoading}>
           Join existing game
         </Button>
       </Form>
