@@ -157,8 +157,8 @@ export const gameRouter = t.router({
       const updatedSubmissions = [...gameState.submissions, submission];
 
       const playerScore = {
-        userId: input.submission.playerId,
-        name: input.submission.playerName,
+        playerId: input.submission.playerId,
+        playerName: input.submission.playerName,
         score: 0,
         prevScore: 0,
       };
@@ -166,7 +166,7 @@ export const gameRouter = t.router({
       const updatedPlayerScores = upsert(
         [...gameState.playerScores],
         playerScore,
-        "userId",
+        "playerId",
         (oldEntry, newEntry) => ({
           ...newEntry,
           prevScore: oldEntry.score,

@@ -10,7 +10,7 @@ import {
 } from "~/lib/game/components/PlayerGrid";
 import { Counter } from "~/components";
 import { useTimeout } from "~/styles/animations";
-import { maxScorePerScene } from "~/lib/game/gameUtils";
+import { maxScorePerScene, sortByKey } from "~/lib/game/gameUtils";
 import type { StepProps } from "~/lib/game/steps/types";
 
 export const Step3Play = ({ gameState, players, playerName }: StepProps) => {
@@ -58,13 +58,6 @@ export const Step3Spectate = ({ gameState }: StepProps) => {
   );
 };
 
-const sortByKey = (
-  playerScores: StepProps["gameState"]["playerScores"],
-  key: "score" | "prevScore"
-) => {
-  return [...playerScores].sort((a, b) => b[key] - a[key]);
-};
-
 type PlayerScoresProps = {
   gameState: StepProps["gameState"];
   playerScores: StepProps["gameState"]["playerScores"];
@@ -97,15 +90,15 @@ export const PlayerScores = ({
         <h2 className="title">{title}</h2>
       </TitleContainer>
       <PlayersContainer singleCol>
-        {sortedPlayers.map(({ name, prevScore, score }) => {
+        {sortedPlayers.map(({ playerId, playerName, prevScore, score }) => {
           return (
             <PlayerContainer
-              key={name}
+              key={playerId}
               desktop={desktop}
               score={isOldState ? prevScore : score}
               totalScenes={gameState.totalScenes}
             >
-              <Player playerName={name} />
+              <Player playerName={playerName} />
               <PlayerScore>
                 {isOldState ? (
                   <span>{prevScore}</span>
@@ -127,17 +120,19 @@ const spring = {
   stiffness: 300,
 };
 
+type PlayerContainerProps = {
+  children: ReactNode;
+  desktop: boolean;
+  score: number;
+  totalScenes: number;
+};
+
 const PlayerContainer = ({
   children,
   desktop,
   score,
   totalScenes,
-}: {
-  children: ReactNode;
-  desktop: boolean;
-  score: number;
-  totalScenes: number;
-}) => {
+}: PlayerContainerProps) => {
   // Animate scores if on mobile
   if (!desktop) {
     return (

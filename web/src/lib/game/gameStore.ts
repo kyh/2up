@@ -26,17 +26,19 @@ export type GameState = {
 
 export type Submission = {
   playerId: Player["userId"];
-  playerName: string;
+  playerName: Player["name"];
   content: string;
   isCorrect?: boolean;
 };
 
-export type LivePlayer = Pick<Player, "userId" | "name">;
-
-export type PlayerScore = Pick<Player, "userId" | "name"> & {
+export type PlayerScore = {
+  playerId: Player["userId"];
+  playerName: Player["name"];
   prevScore: number;
   score: number;
 };
+
+export type LivePlayer = Pick<Player, "userId" | "name">;
 
 export type GameStore = {
   state: GameState;
