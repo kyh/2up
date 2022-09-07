@@ -10,6 +10,7 @@ import {
 } from "~/lib/game/components/PlayerGrid";
 import { Counter } from "~/components";
 import { useTimeout } from "~/styles/animations";
+import { maxScorePerScene } from "~/lib/game/gameUtils";
 import type { StepProps } from "~/lib/game/steps/types";
 
 export const Step3Play = ({
@@ -19,6 +20,9 @@ export const Step3Play = ({
   playerName,
 }: StepProps) => {
   const [firstPlayer] = players;
+
+  const handleNextStep = () => {};
+
   return (
     <>
       <QuestionNumber>
@@ -32,9 +36,7 @@ export const Step3Play = ({
       {firstPlayer && (
         <NextButton
           disabled={firstPlayer.name !== playerName}
-          onClick={() => {
-            // broadcast("scene:next")
-          }}
+          onClick={handleNextStep}
           autoFocus
         >
           {firstPlayer.name === playerName
@@ -158,7 +160,6 @@ const NoScroll = createGlobalStyle`
   }
 `;
 
-const maxScorePerScene = 200;
 const maxScoreHeight = "40vh";
 
 const calculateScorebarHeight = (score: number, totalScenes: number) => {

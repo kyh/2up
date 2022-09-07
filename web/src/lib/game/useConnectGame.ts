@@ -6,11 +6,25 @@ import { useGameStore, GameStore, GameState } from "~/lib/game/gameStore";
 import { usePlayhouseStore } from "~/lib/home/playhouseStore";
 import { useGetGame } from "~/lib/game/useGameActions";
 
+type GameChangePayload = {
+  new: {
+    state: GameState;
+    playerScores: GameStore["playerScores"];
+    isStarted: boolean;
+    isFinished: boolean;
+  };
+};
+
 export const useConnectGame = (gameId: string) => {
   const [connectedPlayersChannel, setConnectedPlayersChannel] = useState(false);
   const [connectedGameChannel, setConnectedGameChannel] = useState(false);
-  const { isSuccess, setGameState, setGameStarted, setGameFinished } =
-    useGetGame(gameId);
+  const {
+    isSuccess,
+    setGameState,
+    setGameStarted,
+    setGameFinished,
+    setPlayerScores,
+  } = useGetGame(gameId);
   const router = useRouter();
   const alert = useAlert();
 
@@ -58,11 +72,10 @@ export const useConnectGame = (gameId: string) => {
           table: "Game",
           filter: `id=eq.${gameId}`,
         },
-        (payload: {
-          new: { state: GameState; isStarted: boolean; isFinished: boolean };
-        }) => {
+        (payload: GameChangePayload) => {
           console.log("New game state:", payload.new);
           setGameState(payload.new.state);
+          setPlayerScores(payload.new.playerScores);
           setGameStarted(payload.new.isStarted);
           setGameFinished(payload.new.isFinished);
         }

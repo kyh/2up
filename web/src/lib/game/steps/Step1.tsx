@@ -19,6 +19,8 @@ const Step1Play = ({
 
   const submissions = gameState.submissions.length;
   const waiting = players.length - submissions - 1;
+  const initialSeconds =
+    (gameState.duration * 1000 - (gameState.startTime - Date.now())) / 1000;
 
   const onSubmit = (
     submission: Pick<StepProps["gameState"]["submissions"][0], "content"> = {
@@ -54,7 +56,7 @@ const Step1Play = ({
       <Timer
         shouldCallTimeout={!submitted}
         onTimeout={onSubmit}
-        initialSeconds={gameState.duration}
+        initialSeconds={initialSeconds}
       />
     </>
   );
