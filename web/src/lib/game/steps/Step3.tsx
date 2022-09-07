@@ -10,9 +10,14 @@ import {
 } from "~/lib/game/components/PlayerGrid";
 import { Counter } from "~/components";
 import { useTimeout } from "~/styles/animations";
-import type { StepProps, GameState, Players } from "~/lib/game/steps/types";
+import type { StepProps } from "~/lib/game/steps/types";
 
-export const Step3Play = ({ gameState, players, playerName }: StepProps) => {
+export const Step3Play = ({
+  gameState,
+  players,
+  playerScores,
+  playerName,
+}: StepProps) => {
   const [firstPlayer] = players;
   return (
     <>
@@ -20,7 +25,7 @@ export const Step3Play = ({ gameState, players, playerName }: StepProps) => {
         Question: {gameState.currentScene} / {gameState.totalScenes}
       </QuestionNumber>
       <PlayerScores
-        players={players}
+        players={playerScores}
         gameState={gameState}
         title="Scoreboard"
       />
@@ -41,14 +46,14 @@ export const Step3Play = ({ gameState, players, playerName }: StepProps) => {
   );
 };
 
-export const Step3Spectate = ({ gameState, players }: StepProps) => {
+export const Step3Spectate = ({ gameState, playerScores }: StepProps) => {
   return (
     <>
       <QuestionNumber>
         Question: {gameState.currentScene} / {gameState.totalScenes}
       </QuestionNumber>
       <PlayerScores
-        players={players}
+        players={playerScores}
         gameState={gameState}
         title="Scoreboard"
       />
@@ -56,7 +61,10 @@ export const Step3Spectate = ({ gameState, players }: StepProps) => {
   );
 };
 
-const sortByKey = (players: Players, key: "score" | "prevScore") => {
+const sortByKey = (
+  players: StepProps["playerScores"],
+  key: "score" | "prevScore"
+) => {
   return [...players].sort((a, b) => b[key] - a[key]);
 };
 
@@ -65,8 +73,8 @@ export const PlayerScores = ({
   players,
   title,
 }: {
-  gameState: GameState;
-  players: Players;
+  gameState: StepProps["gameState"];
+  players: StepProps["playerScores"];
   title: string;
 }) => {
   const desktop = useIsDesktop();

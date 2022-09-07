@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useGameStore } from "~/lib/game/gameStore";
 import { usePlayhouseStore } from "~/lib/home/playhouseStore";
@@ -15,16 +16,29 @@ const stepMap = {
 };
 
 export const Game = ({ isSpectate }: { isSpectate?: boolean }) => {
+  const router = useRouter();
   const gameState = useGameStore((state) => state.state);
   const players = useGameStore((state) => state.players);
+  const playerScores = useGameStore((state) => state.playerScores);
   const playerId = usePlayhouseStore((state) => state.playerId);
   const playerName = usePlayhouseStore((state) => state.playerName);
+
+  const gameId = router.query.gameId as string;
 
   useEffect(() => {
     window.scroll(0, 0);
   }, [gameState.currentStep]);
 
-  const props = { gameState, players, playerId, playerName, isSpectate };
+  const props = {
+    gameId,
+    gameState,
+    players,
+    playerScores,
+    playerId,
+    playerName,
+    isSpectate,
+  };
+
   const Component = stepMap[gameState.currentStep as keyof typeof stepMap];
 
   return <Component {...props} />;

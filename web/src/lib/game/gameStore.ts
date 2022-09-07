@@ -20,7 +20,7 @@ export type GameState = {
   question: Scene["question"];
   questionType: QuestionType;
   answerType: AnswerType;
-  sceneAnswers: SceneAnswer[];
+  sceneAnswers: Omit<SceneAnswer, "sceneId" | "updatedAt" | "createdAt">[];
 };
 
 export type Submission = {
@@ -33,8 +33,12 @@ export type Submission = {
 export type GameStore = {
   state: GameState;
   setGameState: (state: GameState) => void;
-  players: Player[];
-  setPlayers: (players: Player[]) => void;
+  players: Pick<Player, "userId" | "name" | "isSpectator">[];
+  setPlayers: (
+    players: Pick<Player, "userId" | "name" | "isSpectator">[]
+  ) => void;
+  playerScores: Player[];
+  setPlayerScores: (players: Player[]) => void;
   isStarted: boolean;
   setIsStarted: (isStarted: boolean) => void;
   isFinished: boolean;
@@ -59,6 +63,8 @@ export const useGameStore = create<GameStore>()((set) => ({
     set((store) => ({ ...store, state: { ...store.state, ...state } })),
   players: [],
   setPlayers: (players) => set((store) => ({ ...store, players })),
+  playerScores: [],
+  setPlayerScores: (players) => set((store) => ({ ...store, players })),
   isStarted: false,
   setIsStarted: (isStarted) => set((store) => ({ ...store, isStarted })),
   isFinished: false,
