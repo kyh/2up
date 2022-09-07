@@ -83,3 +83,7 @@ export const upsert = <T>(
 
   return array;
 };
+
+export const sortByKey = <T>(array: T[], key: keyof T) => {
+  return [...array].sort((a, b) => Number(b[key]) - Number(a[key]));
+};
