@@ -59,3 +59,5 @@ export const AnswerTypeSlugs = {
   //   display: "Code",
   // },
 };
+
+export const maxScorePerScene = 200;

@@ -59,15 +59,28 @@ export const useCheckGame = () => {
 };
 
 export const useJoinGame = () => {
+  const mutation = trpc.proxy.game.join.useMutation();
+  const playerId = usePlayhouseStore((state) => state.playerId);
   const setPlayerName = usePlayhouseStore((state) => state.setPlayerName);
   const router = useRouter();
 
   const joinGame = async (gameId: string, playerName: string) => {
     setPlayerName(playerName);
-    router.push({
-      pathname: `/game/${gameId}/lobby`,
-      query: { returnTo: router.query.returnTo },
-    });
+    await mutation.mutate(
+      {
+        gameId,
+        playerName,
+        playerId,
+      },
+      {
+        onSuccess: () => {
+          router.push({
+            pathname: `/game/${gameId}/lobby`,
+            query: { returnTo: router.query.returnTo },
+          });
+        },
+      }
+    );
   };
 
   return { joinGame };
@@ -90,16 +103,17 @@ export const useGetGame = (gameId: string) => {
   const setGameState = useGameStore((state) => state.setGameState);
   const setGameStarted = useGameStore((state) => state.setIsStarted);
   const setGameFinished = useGameStore((state) => state.setIsFinished);
+  const setPlayerScores = useGameStore((state) => state.setPlayerScores);
 
   const query = trpc.proxy.game.get.useQuery(
     { gameId },
     {
-      onSuccess(game) {
+      onSuccess: (game) => {
         setGameState(game.state as unknown as GameState);
         setGameStarted(game.isStarted);
         setGameFinished(game.isFinished);
       },
-      onError(error) {
+      onError: (error) => {
         console.error(error);
         alert.show(`Error fetching game data: ${error.message}`);
         router.push("/");
@@ -113,6 +127,7 @@ export const useGetGame = (gameId: string) => {
     setGameState,
     setGameStarted,
     setGameFinished,
+    setPlayerScores,
   };
 };
 

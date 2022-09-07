@@ -1,8 +1,8 @@
-import { Scene } from "@prisma/client";
+import type { Scene, PrismaClient } from "@prisma/client";
 import { t, ServerError } from "~/server/trpc";
 import { z } from "zod";
 import { customAlphabet } from "nanoid";
-import type { PrismaClient } from "@prisma/client";
+import { maxScorePerScene } from "~/lib/game/gameUtils";
 import type { GameState } from "~/lib/game/gameStore";
 
 const nanoid = customAlphabet("1234567890", 5);
@@ -75,7 +75,7 @@ export const gameRouter = t.router({
         currentStep: 1,
         submissions: [],
         totalScenes: scenes.length,
-        duration: 40,
+        duration: 45,
         startTime: Date.now(),
         questionDescription: firstScene.questionDescription,
         question: firstScene.question,
@@ -104,6 +104,17 @@ export const gameRouter = t.router({
     .mutation(async ({ ctx, input }) =>
       findGameOrThrow(ctx.prisma, input.gameId)
     ),
+  join: t.procedure
+    .input(
+      z.object({
+        gameId: z.string(),
+        playerName: z.string(),
+        playerId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // here
+    }),
   start: t.procedure
     .input(z.object({ gameId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -145,6 +156,7 @@ export const gameRouter = t.router({
       };
 
       const updatedSubmissions = [...gameState.submissions, submission];
+      // const uodatedPlayerScores = [...game.players];
       const shouldAdvanceStep = updatedSubmissions.length === input.numPlayers;
 
       return ctx.prisma.game.update({
