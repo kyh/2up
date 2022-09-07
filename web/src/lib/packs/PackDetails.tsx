@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { trpc } from "~/utils/trpc";
 import { theme } from "~/styles/theme";
-import { Link, Button } from "~/components";
+import { Link, Button, Spinner } from "~/components";
 import { useHostGame } from "~/lib/game/useGameActions";
 import { Content } from "~/lib/packs/components/Page";
+import { useGetPack } from "~/lib/packs/usePackActions";
 
 export const PackDetails = () => {
   const router = useRouter();
   const packId = router.query.packId as string;
   const { hostGame, isLoading } = useHostGame();
-  const res = trpc.proxy.pack.getPack.useQuery({ packId });
+  const res = useGetPack(packId);
 
-  if (!res.data) return null;
+  if (!res.data) return <Spinner center />;
 
   const pack = res.data;
 

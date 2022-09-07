@@ -13,6 +13,7 @@ export { Modal } from "./Modal/Modal";
 export { Timer } from "./Timer/Timer";
 export { Loader } from "./Loader/Loader";
 export { ProgressBar } from "./Loader/Progress";
+export { Spinner } from "./Loader/Spinner";
 export { Field, TextField } from "./TextField/TextField";
 export { AreaField } from "./TextField/AreaField";
 export { AnimationSprite, animateSprite } from "./Animations/AnimationSprite";

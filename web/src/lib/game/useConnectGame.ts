@@ -4,43 +4,20 @@ import { supabase } from "~/utils/supabase";
 import { useAlert } from "~/components";
 import { useGameStore, GameState } from "~/lib/game/gameStore";
 import { usePlayhouseStore } from "~/lib/home/playhouseStore";
+import { useGetGame } from "~/lib/game/useGameActions";
 import type { Players } from "~/lib/game/steps/types";
 
 export const useConnectGame = (gameId: string) => {
-  const [initialized, setInitialized] = useState(false);
+  const [connectedPlayersChannel, setConnectedPlayersChannel] = useState(false);
+  const [connectedGameChannel, setConnectedGameChannel] = useState(false);
+  const { isSuccess, setGameState, setGameStarted, setGameFinished } =
+    useGetGame(gameId);
   const router = useRouter();
   const alert = useAlert();
-
-  const setGameState = useGameStore((state) => state.setGameState);
-  const setGameStarted = useGameStore((state) => state.setIsStarted);
-  const setGameFinished = useGameStore((state) => state.setIsFinished);
 
   const setPlayers = useGameStore((state) => state.setPlayers);
   const playerId = usePlayhouseStore((state) => state.playerId);
   const playerName = usePlayhouseStore((state) => state.playerName);
-
-  useEffect(() => {
-    const initializeGameState = async () => {
-      try {
-        const { data } = await supabase
-          .from("Game")
-          .select("*")
-          .eq("id", gameId)
-          .single();
-
-        console.log("Initialize game state", data);
-        setGameState(data.state);
-        setGameStarted(data.isStarted);
-        setGameFinished(data.isFinished);
-
-        setInitialized(true);
-      } catch (error: any) {
-        handleError(error);
-      }
-    };
-
-    if (gameId) initializeGameState();
-  }, [gameId]);
 
   useEffect(() => {
     if (!gameId) return;
@@ -72,6 +49,7 @@ export const useConnectGame = (gameId: string) => {
             prevScore: 0,
             isSpectator: false,
           });
+          setConnectedPlayersChannel(true);
         }
       });
 
@@ -94,7 +72,11 @@ export const useConnectGame = (gameId: string) => {
           setGameFinished(payload.new.isFinished);
         }
       )
-      .subscribe();
+      .subscribe(async (status: string) => {
+        if (status === "SUBSCRIBED") {
+          setConnectedGameChannel(true);
+        }
+      });
 
     gameChannel.onError(handleError);
 
@@ -110,5 +92,7 @@ export const useConnectGame = (gameId: string) => {
     router.push("/");
   };
 
-  return initialized;
+  return {
+    isLoaded: isSuccess && connectedPlayersChannel && connectedGameChannel,
+  };
 };
