@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { trpc } from "~/utils/trpc";
 import { useAlert } from "~/components";
-import { useGameStore, GameState } from "~/lib/game/gameStore";
+import { useGameStore, GameState, Submission } from "~/lib/game/gameStore";
 import { usePlayhouseStore } from "~/lib/home/playhouseStore";
 
 export const useHostGame = () => {
@@ -95,7 +95,6 @@ export const useGetGame = (gameId: string) => {
     { gameId },
     {
       onSuccess(game) {
-        if (!game) return;
         setGameState(game.state as unknown as GameState);
         setGameStarted(game.isStarted);
         setGameFinished(game.isFinished);
@@ -105,6 +104,7 @@ export const useGetGame = (gameId: string) => {
         alert.show(`Error fetching game data: ${error.message}`);
         router.push("/");
       },
+      enabled: !!gameId,
     }
   );
 
@@ -116,21 +116,25 @@ export const useGetGame = (gameId: string) => {
   };
 };
 
-export const useNextScene = () => {
-  const mutation = trpc.proxy.game.nextScene.useMutation();
+export const useNextStep = () => {
+  const mutation = trpc.proxy.game.nextStep.useMutation();
 
-  const nextScene = async (gameId: string) => {
+  const nextStep = async (gameId: string) => {
     await mutation.mutate({ gameId });
   };
 
-  return { ...mutation, nextScene };
+  return { ...mutation, nextStep };
 };
 
 export const useSubmitAnswer = () => {
   const mutation = trpc.proxy.game.submitAnswer.useMutation();
 
-  const submitAnswer = async (gameId: string) => {
-    await mutation.mutate({ gameId, submission: "" });
+  const submitAnswer = async (
+    gameId: string,
+    numPlayers: number,
+    submission: Submission
+  ) => {
+    await mutation.mutate({ gameId, numPlayers, submission });
   };
 
   return { ...mutation, submitAnswer };

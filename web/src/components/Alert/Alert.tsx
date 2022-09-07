@@ -35,6 +35,8 @@ const AlertTemplate = styled(motion.li)`
 export const Alert = styled(AlertTemplate)`
   position: absolute;
   top: ${theme.spacings(3)};
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 type AlertOptions = {

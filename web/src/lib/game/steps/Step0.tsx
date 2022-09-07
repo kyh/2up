@@ -6,7 +6,7 @@ import { PlayerScores } from "./Step3";
 import { useEndGame } from "~/lib/game/useGameActions";
 import type { StepProps } from "~/lib/game/steps/types";
 
-const Step0Play = ({ gameState, players }: StepProps) => {
+const Step0Play = ({ gameState, playerScores }: StepProps) => {
   const router = useRouter();
   const { endGame } = useEndGame();
   const { gameId, redirectTo } = router.query;
@@ -26,7 +26,7 @@ const Step0Play = ({ gameState, players }: StepProps) => {
       <PlayerScores
         title="Game Finished"
         gameState={gameState}
-        players={players}
+        players={playerScores}
       />
       <Footer>
         <Button className="play-again" onClick={handleEnd} autoFocus>

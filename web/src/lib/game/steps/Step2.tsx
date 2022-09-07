@@ -15,19 +15,17 @@ import {
 } from "~/lib/game/components/PlayerGrid";
 import { AnimationSprite } from "~/components";
 import { useTimeout } from "~/styles/animations";
-import type { StepProps, GameState, SceneAnswer } from "~/lib/game/steps/types";
+import { useNextStep } from "~/lib/game/useGameActions";
+import type { StepProps } from "~/lib/game/steps/types";
 
 const sprites = {
   correct: ["wineGlassClinking", "checkMark", "bubbleLike"],
   wrong: ["crossMark", "bubbleCryEmoji"],
 };
 
-const compareAnswer = (answer: string, answerToCompare: string) => {
-  return answer.trim().toLowerCase() === answerToCompare.trim().toLowerCase();
-};
-
-const Step2Play = ({ gameState, players, playerName }: StepProps) => {
+const Step2Play = ({ gameState, players, playerName, playerId }: StepProps) => {
   const desktop = useIsDesktop();
+  // useGameActions()
   const [showSubmissions, setShowSubmissions] = useState(false);
   const [animationSpriteName, setAnimationSpriteName] = useState<any>(null);
 
@@ -37,11 +35,9 @@ const Step2Play = ({ gameState, players, playerName }: StepProps) => {
   )!;
 
   useTimeout(() => {
-    const isCurrentPlayerCorrect = compareAnswer(
-      gameState.submissions.find((s) => s.playerName === playerName)?.content ||
-        "",
-      correctAnswer.content
-    );
+    const isCurrentPlayerCorrect =
+      gameState.submissions.find((s) => s.playerId === playerId)?.isCorrect ||
+      false;
 
     if (isCurrentPlayerCorrect) {
       setAnimationSpriteName(sample(sprites.correct));
@@ -55,6 +51,8 @@ const Step2Play = ({ gameState, players, playerName }: StepProps) => {
       setShowSubmissions(true);
     }
   }, 2000);
+
+  const handleNextStep = () => {};
 
   return (
     <>
@@ -94,9 +92,7 @@ const Step2Play = ({ gameState, players, playerName }: StepProps) => {
       {firstPlayer && (
         <NextButton
           disabled={firstPlayer.name !== playerName}
-          onClick={() => {
-            // broadcast("step:next")
-          }}
+          onClick={handleNextStep}
           autoFocus
         >
           {firstPlayer.name === playerName
@@ -129,8 +125,8 @@ const Step2Spectate = ({ gameState }: StepProps) => {
 };
 
 type SubmissionProps = {
-  gameState: GameState;
-  sceneAnswer: SceneAnswer;
+  gameState: StepProps["gameState"];
+  sceneAnswer: StepProps["gameState"]["sceneAnswers"][0];
   onAnswerContainerClick?: () => void;
 };
 
@@ -201,16 +197,15 @@ const AnswerContainer = styled.div`
   }
 `;
 
-const Submissions = ({ gameState, sceneAnswer }: SubmissionProps) => {
+const Submissions = ({ gameState }: SubmissionProps) => {
   const players = gameState.submissions.map((submission) => {
-    const isCorrect = compareAnswer(submission.content, sceneAnswer.content);
     return (
       <Player
         key={submission.playerId}
         playerName={submission.playerName}
         playerContent={`: "${submission.content}"`}
       >
-        {isCorrect && (
+        {submission.isCorrect && (
           <>
             <div className="correct">
               <Image
