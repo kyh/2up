@@ -19,7 +19,6 @@ export const Game = ({ isSpectate }: { isSpectate?: boolean }) => {
   const router = useRouter();
   const gameState = useGameStore((state) => state.state);
   const players = useGameStore((state) => state.players);
-  const playerScores = useGameStore((state) => state.playerScores);
   const playerId = usePlayhouseStore((state) => state.playerId);
   const playerName = usePlayhouseStore((state) => state.playerName);
 
@@ -33,7 +32,6 @@ export const Game = ({ isSpectate }: { isSpectate?: boolean }) => {
     gameId,
     gameState,
     players,
-    playerScores,
     playerId,
     playerName,
     isSpectate,

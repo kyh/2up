@@ -2,7 +2,7 @@ import type { Scene, PrismaClient } from "@prisma/client";
 import { t, ServerError } from "~/server/trpc";
 import { z } from "zod";
 import { customAlphabet } from "nanoid";
-import { maxScorePerScene } from "~/lib/game/gameUtils";
+import { maxScorePerScene, compareAnswer, upsert } from "~/lib/game/gameUtils";
 import type { GameState } from "~/lib/game/gameStore";
 
 const nanoid = customAlphabet("1234567890", 5);
@@ -22,14 +22,13 @@ const findGameOrThrow = async (prisma: PrismaClient, gameId: string) => {
   return game;
 };
 
-const compareAnswer = (answer: string, answerToCompare: string) => {
-  return answer.trim().toLowerCase() === answerToCompare.trim().toLowerCase();
-};
-
 export const gameRouter = t.router({
   get: t.procedure
     .input(z.object({ gameId: z.string() }))
     .query(({ ctx, input }) => findGameOrThrow(ctx.prisma, input.gameId)),
+  check: t.procedure
+    .input(z.object({ gameId: z.string() }))
+    .mutation(({ ctx, input }) => findGameOrThrow(ctx.prisma, input.gameId)),
   create: t.procedure
     .input(z.object({ packId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -77,6 +76,7 @@ export const gameRouter = t.router({
         totalScenes: scenes.length,
         duration: 45,
         startTime: Date.now(),
+        playerScores: [],
         questionDescription: firstScene.questionDescription,
         question: firstScene.question,
         questionType: firstScene.questionType,
@@ -99,11 +99,6 @@ export const gameRouter = t.router({
 
       return game;
     }),
-  check: t.procedure
-    .input(z.object({ gameId: z.string() }))
-    .mutation(async ({ ctx, input }) =>
-      findGameOrThrow(ctx.prisma, input.gameId)
-    ),
   join: t.procedure
     .input(
       z.object({
@@ -113,7 +108,7 @@ export const gameRouter = t.router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // here
+      // TODO
     }),
   start: t.procedure
     .input(z.object({ gameId: z.string() }))
@@ -125,8 +120,12 @@ export const gameRouter = t.router({
     }),
   nextStep: t.procedure
     .input(z.object({ gameId: z.string() }))
-    .mutation(async () => {
-      return {};
+    .mutation(async ({ ctx, input }) => {
+      // TODO
+      const game = await findGameOrThrow(ctx.prisma, input.gameId);
+      const gameState = game.state as unknown as GameState;
+
+      return game;
     }),
   submitAnswer: t.procedure
     .input(
@@ -147,6 +146,7 @@ export const gameRouter = t.router({
       const correctAnswer = gameState.sceneAnswers.find(
         (sceneAnswer) => sceneAnswer.isCorrect
       )!;
+
       const submission = {
         ...input.submission,
         isCorrect: compareAnswer(
@@ -154,10 +154,27 @@ export const gameRouter = t.router({
           correctAnswer.content
         ),
       };
-
       const updatedSubmissions = [...gameState.submissions, submission];
-      // const uodatedPlayerScores = [...game.players];
-      const shouldAdvanceStep = updatedSubmissions.length === input.numPlayers;
+
+      const playerScore = {
+        userId: input.submission.playerId,
+        name: input.submission.playerName,
+        score: 0,
+        prevScore: 0,
+      };
+
+      const updatedPlayerScores = upsert(
+        [...gameState.playerScores],
+        playerScore,
+        "userId",
+        (oldEntry, newEntry) => ({
+          ...newEntry,
+          prevScore: oldEntry.score,
+          score: oldEntry.score + newEntry.score,
+        })
+      );
+
+      const shouldAdvanceStep = updatedSubmissions.length >= input.numPlayers;
 
       return ctx.prisma.game.update({
         where: { id: input.gameId },
@@ -166,6 +183,7 @@ export const gameRouter = t.router({
             ...gameState,
             currentStep: shouldAdvanceStep ? 2 : 1,
             submissions: updatedSubmissions,
+            playerScores: updatedPlayerScores,
           },
         },
       });

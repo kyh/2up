@@ -15,6 +15,7 @@ export type GameState = {
   totalScenes: number;
   duration: number;
   startTime: number;
+  playerScores: PlayerScore[];
 
   questionDescription: Scene["questionDescription"];
   question: Scene["question"];
@@ -30,15 +31,18 @@ export type Submission = {
   isCorrect?: boolean;
 };
 
+export type LivePlayer = Pick<Player, "userId" | "name">;
+
+export type PlayerScore = Pick<Player, "userId" | "name"> & {
+  prevScore: number;
+  score: number;
+};
+
 export type GameStore = {
   state: GameState;
   setGameState: (state: GameState) => void;
-  players: Pick<Player, "userId" | "name" | "isSpectator">[];
-  setPlayers: (
-    players: Pick<Player, "userId" | "name" | "isSpectator">[]
-  ) => void;
-  playerScores: Player[];
-  setPlayerScores: (players: Player[]) => void;
+  players: LivePlayer[];
+  setPlayers: (players: LivePlayer[]) => void;
   isStarted: boolean;
   setIsStarted: (isStarted: boolean) => void;
   isFinished: boolean;
@@ -53,6 +57,7 @@ export const useGameStore = create<GameStore>()((set) => ({
     totalScenes: 0,
     duration: 0,
     startTime: 0,
+    playerScores: [],
     questionDescription: "",
     question: "",
     questionType: "text",
@@ -63,8 +68,6 @@ export const useGameStore = create<GameStore>()((set) => ({
     set((store) => ({ ...store, state: { ...store.state, ...state } })),
   players: [],
   setPlayers: (players) => set((store) => ({ ...store, players })),
-  playerScores: [],
-  setPlayerScores: (players) => set((store) => ({ ...store, players })),
   isStarted: false,
   setIsStarted: (isStarted) => set((store) => ({ ...store, isStarted })),
   isFinished: false,

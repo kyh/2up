@@ -61,3 +61,25 @@ export const AnswerTypeSlugs = {
 };
 
 export const maxScorePerScene = 200;
+
+export const compareAnswer = (answer: string, answerToCompare: string) => {
+  return answer.trim().toLowerCase() === answerToCompare.trim().toLowerCase();
+};
+
+export const upsert = <T>(
+  array: T[],
+  element: T,
+  key: keyof T,
+  beforeUpdate = (_oldEntry: T, newEntry: T) => newEntry
+) => {
+  const i = array.findIndex((e) => e[key] === element[key]);
+
+  if (i > -1) {
+    const newEntry = beforeUpdate(array[i], element);
+    array[i] = newEntry;
+  } else {
+    array.push(element);
+  }
+
+  return array;
+};
