@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "~/utils/supabase";
 import { useAlert } from "~/components";
-import { useGameStore, GameState } from "~/lib/game/gameStore";
+import { useGameStore, GameStore, GameState } from "~/lib/game/gameStore";
 import { usePlayhouseStore } from "~/lib/home/playhouseStore";
 import { useGetGame } from "~/lib/game/useGameActions";
-import type { Players } from "~/lib/game/steps/types";
 
 export const useConnectGame = (gameId: string) => {
   const [connectedPlayersChannel, setConnectedPlayersChannel] = useState(false);
@@ -32,10 +31,8 @@ export const useConnectGame = (gameId: string) => {
             ({
               userId: p.userId,
               name: p.name,
-              score: p.score,
-              prevScore: p.prevScore,
               isSpectator: p.isSpectator,
-            } as Players[0])
+            } as GameStore["players"][0])
         );
 
         setPlayers(players);
@@ -45,8 +42,6 @@ export const useConnectGame = (gameId: string) => {
           await playerChannel.track({
             userId: playerId,
             name: playerName,
-            score: 0,
-            prevScore: 0,
             isSpectator: false,
           });
           setConnectedPlayersChannel(true);

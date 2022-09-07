@@ -4,33 +4,39 @@ import { Alert, Timer } from "~/components";
 import { Instruction } from "~/lib/game/components/Instruction";
 import { Question } from "~/lib/game/components/Question";
 import { Answer } from "~/lib/game/components/Answer";
-import type { StepProps, Submission } from "~/lib/game/steps/types";
+import { useSubmitAnswer } from "~/lib/game/useGameActions";
+import type { StepProps } from "~/lib/game/steps/types";
 
-const Step1Play = ({ gameState, players }: StepProps) => {
+const Step1Play = ({
+  gameId,
+  gameState,
+  players,
+  playerId,
+  playerName,
+}: StepProps) => {
   const [submitted, setSubmitted] = useState(false);
+  const { submitAnswer } = useSubmitAnswer();
 
   const submissions = gameState.submissions.length;
-  const waiting = players.length - submissions;
+  const waiting = players.length - submissions - 1;
 
   const onSubmit = (
-    submission: Pick<Submission, "content"> = {
+    submission: Pick<StepProps["gameState"]["submissions"][0], "content"> = {
       content: "",
     }
   ) => {
     if (submitted) return;
     setSubmitted(true);
-    // broadcast("submit", {
-    //   name,
-    //   submission: {
-    //     ...submission,
-    //     name,
-    //   },
-    // });
+    submitAnswer(gameId, players.length, {
+      ...submission,
+      playerId,
+      playerName,
+    });
   };
 
   return (
     <>
-      {submitted && <Alert>Waiting for {waiting} players</Alert>}
+      {submitted && !!waiting && <Alert>Waiting for {waiting} players</Alert>}
       <Instruction instruction={gameState.questionDescription} />
       <Question
         question={gameState.question}
