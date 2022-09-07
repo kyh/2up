@@ -130,7 +130,7 @@ model Player {
   name   String
   avatar String?
 
-  score Int @default(0)
+  finalScore Int @default(0)
 
   Game   Game   @relation(fields: [gameId], references: [id])
   gameId String

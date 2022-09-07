@@ -103,7 +103,6 @@ export const useGetGame = (gameId: string) => {
   const setGameState = useGameStore((state) => state.setGameState);
   const setGameStarted = useGameStore((state) => state.setIsStarted);
   const setGameFinished = useGameStore((state) => state.setIsFinished);
-  const setPlayerScores = useGameStore((state) => state.setPlayerScores);
 
   const query = trpc.proxy.game.get.useQuery(
     { gameId },
@@ -127,7 +126,6 @@ export const useGetGame = (gameId: string) => {
     setGameState,
     setGameStarted,
     setGameFinished,
-    setPlayerScores,
   };
 };
 
