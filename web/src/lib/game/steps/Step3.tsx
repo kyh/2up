@@ -13,12 +13,7 @@ import { useTimeout } from "~/styles/animations";
 import { maxScorePerScene } from "~/lib/game/gameUtils";
 import type { StepProps } from "~/lib/game/steps/types";
 
-export const Step3Play = ({
-  gameState,
-  players,
-  playerScores,
-  playerName,
-}: StepProps) => {
+export const Step3Play = ({ gameState, players, playerName }: StepProps) => {
   const [firstPlayer] = players;
 
   const handleNextStep = () => {};
@@ -29,7 +24,7 @@ export const Step3Play = ({
         Question: {gameState.currentScene} / {gameState.totalScenes}
       </QuestionNumber>
       <PlayerScores
-        players={playerScores}
+        playerScores={gameState.playerScores}
         gameState={gameState}
         title="Scoreboard"
       />
@@ -48,14 +43,14 @@ export const Step3Play = ({
   );
 };
 
-export const Step3Spectate = ({ gameState, playerScores }: StepProps) => {
+export const Step3Spectate = ({ gameState }: StepProps) => {
   return (
     <>
       <QuestionNumber>
         Question: {gameState.currentScene} / {gameState.totalScenes}
       </QuestionNumber>
       <PlayerScores
-        players={playerScores}
+        playerScores={gameState.playerScores}
         gameState={gameState}
         title="Scoreboard"
       />
@@ -64,30 +59,34 @@ export const Step3Spectate = ({ gameState, playerScores }: StepProps) => {
 };
 
 const sortByKey = (
-  players: StepProps["playerScores"],
+  playerScores: StepProps["gameState"]["playerScores"],
   key: "score" | "prevScore"
 ) => {
-  return [...players].sort((a, b) => b[key] - a[key]);
+  return [...playerScores].sort((a, b) => b[key] - a[key]);
+};
+
+type PlayerScoresProps = {
+  gameState: StepProps["gameState"];
+  playerScores: StepProps["gameState"]["playerScores"];
+  title: string;
 };
 
 export const PlayerScores = ({
   gameState,
-  players,
+  playerScores,
   title,
-}: {
-  gameState: StepProps["gameState"];
-  players: StepProps["playerScores"];
-  title: string;
-}) => {
+}: PlayerScoresProps) => {
   const desktop = useIsDesktop();
   const [isOldState, setIsOldState] = useState(true);
-  const [sortedPlayers, setPlayers] = useState(sortByKey(players, "prevScore"));
+  const [sortedPlayers, setPlayers] = useState(
+    sortByKey(playerScores, "prevScore")
+  );
 
   useTimeout(() => {
     setIsOldState(false);
     if (!desktop) {
       // Sort players by score if they're not on a desktop
-      setPlayers(sortByKey(players, "score"));
+      setPlayers(sortByKey(playerScores, "score"));
     }
   }, 150);
 

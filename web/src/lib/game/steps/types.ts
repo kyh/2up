@@ -6,7 +6,6 @@ export type StepProps = {
   gameId: string;
   gameState: GameStore["state"];
   players: GameStore["players"];
-  playerScores: GameStore["playerScores"];
   playerId: PlayhouseStore["playerId"];
   playerName: PlayhouseStore["playerName"];
 };
