@@ -23,9 +23,15 @@ const sprites = {
   wrong: ["crossMark", "bubbleCryEmoji"],
 };
 
-const Step2Play = ({ gameState, players, playerName, playerId }: StepProps) => {
+const Step2Play = ({
+  gameId,
+  gameState,
+  players,
+  playerName,
+  playerId,
+}: StepProps) => {
   const desktop = useIsDesktop();
-  // useGameActions()
+  const { nextStep, isLoading } = useNextStep();
   const [showSubmissions, setShowSubmissions] = useState(false);
   const [animationSpriteName, setAnimationSpriteName] = useState<any>(null);
 
@@ -52,7 +58,9 @@ const Step2Play = ({ gameState, players, playerName, playerId }: StepProps) => {
     }
   }, 2000);
 
-  const handleNextStep = () => {};
+  const handleNextStep = async () => {
+    await nextStep(gameId);
+  };
 
   return (
     <>
@@ -91,7 +99,7 @@ const Step2Play = ({ gameState, players, playerName, playerId }: StepProps) => {
       )}
       {firstPlayer && (
         <NextButton
-          disabled={firstPlayer.name !== playerName}
+          disabled={isLoading || firstPlayer.name !== playerName}
           onClick={handleNextStep}
           autoFocus
         >

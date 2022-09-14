@@ -11,12 +11,21 @@ import {
 import { Counter } from "~/components";
 import { useTimeout } from "~/styles/animations";
 import { maxScorePerScene, sortByKey } from "~/lib/game/gameUtils";
+import { useNextScene } from "~/lib/game/useGameActions";
 import type { StepProps } from "~/lib/game/steps/types";
 
-export const Step3Play = ({ gameState, players, playerName }: StepProps) => {
+export const Step3Play = ({
+  gameId,
+  gameState,
+  players,
+  playerName,
+}: StepProps) => {
   const [firstPlayer] = players;
+  const { nextScene, isLoading } = useNextScene();
 
-  const handleNextStep = () => {};
+  const handleNextStep = async () => {
+    await nextScene(gameId);
+  };
 
   return (
     <>
@@ -30,7 +39,7 @@ export const Step3Play = ({ gameState, players, playerName }: StepProps) => {
       />
       {firstPlayer && (
         <NextButton
-          disabled={firstPlayer.name !== playerName}
+          disabled={isLoading || firstPlayer.name !== playerName}
           onClick={handleNextStep}
           autoFocus
         >
