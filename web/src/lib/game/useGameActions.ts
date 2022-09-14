@@ -129,16 +129,6 @@ export const useGetGame = (gameId: string) => {
   };
 };
 
-export const useNextStep = () => {
-  const mutation = trpc.proxy.game.nextStep.useMutation();
-
-  const nextStep = async (gameId: string) => {
-    await mutation.mutate({ gameId });
-  };
-
-  return { ...mutation, nextStep };
-};
-
 export const useSubmitAnswer = () => {
   const mutation = trpc.proxy.game.submitAnswer.useMutation();
 
@@ -151,6 +141,26 @@ export const useSubmitAnswer = () => {
   };
 
   return { ...mutation, submitAnswer };
+};
+
+export const useNextStep = () => {
+  const mutation = trpc.proxy.game.nextStep.useMutation();
+
+  const nextStep = async (gameId: string) => {
+    await mutation.mutate({ gameId });
+  };
+
+  return { ...mutation, nextStep };
+};
+
+export const useNextScene = () => {
+  const mutation = trpc.proxy.game.nextScene.useMutation();
+
+  const nextScene = async (gameId: string) => {
+    await mutation.mutate({ gameId });
+  };
+
+  return { ...mutation, nextScene };
 };
 
 export const useEndGame = () => {
