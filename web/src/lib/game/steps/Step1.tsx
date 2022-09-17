@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import { Alert, Timer } from "~/components";
 import { Instruction } from "~/lib/game/components/Instruction";
@@ -15,12 +15,15 @@ const Step1Play = ({
   playerName,
 }: StepProps) => {
   const [submitted, setSubmitted] = useState(false);
+  const initialSecondsRef = useRef(
+    Math.round(
+      (gameState.duration * 1000 - (gameState.startTime - Date.now())) / 1000
+    )
+  );
   const { submitAnswer } = useSubmitAnswer();
 
   const submissions = gameState.submissions.length;
   const waiting = players.length - submissions - 1;
-  const initialSeconds =
-    (gameState.duration * 1000 - (gameState.startTime - Date.now())) / 1000;
 
   const onSubmit = (
     submission: Pick<StepProps["gameState"]["submissions"][0], "content"> = {
@@ -56,7 +59,7 @@ const Step1Play = ({
       <Timer
         shouldCallTimeout={!submitted}
         onTimeout={onSubmit}
-        initialSeconds={initialSeconds}
+        initialSeconds={initialSecondsRef.current}
       />
     </>
   );

@@ -70,7 +70,7 @@ export const gameRouter = t.router({
       });
 
       const gameState: GameState = {
-        currentStep: 1,
+        currentStep: 0,
         currentScene: 0,
         totalScenes: scenes.length,
         playerScores: [],
@@ -99,17 +99,6 @@ export const gameRouter = t.router({
 
       return game;
     }),
-  join: t.procedure
-    .input(
-      z.object({
-        gameId: z.string(),
-        playerName: z.string(),
-        playerId: z.string(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      // TODO
-    }),
   start: t.procedure
     .input(z.object({ gameId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -122,6 +111,7 @@ export const gameRouter = t.router({
           isStarted: true,
           state: {
             ...gameState,
+            currentStep: 1,
             startTime: Date.now(),
           },
         },
@@ -155,7 +145,7 @@ export const gameRouter = t.router({
       if (!nextSceneId) {
         return ctx.prisma.game.update({
           where: { id: input.gameId },
-          data: { state: { ...gameState, currentStep: 0 } },
+          data: { state: { ...gameState, currentStep: 0 }, isFinished: true },
         });
       }
 
@@ -251,14 +241,6 @@ export const gameRouter = t.router({
             playerScores: updatedPlayerScores,
           },
         },
-      });
-    }),
-  end: t.procedure
-    .input(z.object({ gameId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      return ctx.prisma.game.update({
-        where: { id: input.gameId },
-        data: { isFinished: true },
       });
     }),
 });

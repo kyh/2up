@@ -59,28 +59,15 @@ export const useCheckGame = () => {
 };
 
 export const useJoinGame = () => {
-  const mutation = trpc.proxy.game.join.useMutation();
-  const playerId = usePlayhouseStore((state) => state.playerId);
   const setPlayerName = usePlayhouseStore((state) => state.setPlayerName);
   const router = useRouter();
 
   const joinGame = async (gameId: string, playerName: string) => {
     setPlayerName(playerName);
-    await mutation.mutate(
-      {
-        gameId,
-        playerName,
-        playerId,
-      },
-      {
-        onSuccess: () => {
-          router.push({
-            pathname: `/game/${gameId}/lobby`,
-            query: { returnTo: router.query.returnTo },
-          });
-        },
-      }
-    );
+    router.push({
+      pathname: `/game/${gameId}/lobby`,
+      query: { returnTo: router.query.returnTo },
+    });
   };
 
   return { joinGame };
@@ -88,9 +75,24 @@ export const useJoinGame = () => {
 
 export const useStartGame = () => {
   const mutation = trpc.proxy.game.start.useMutation();
+  const router = useRouter();
+  const alert = useAlert();
 
-  const startGame = async (gameId: string) => {
-    await mutation.mutate({ gameId });
+  const startGame = async (gameId: string, isSpectate: boolean) => {
+    await mutation.mutate(
+      { gameId },
+      {
+        onSuccess: () => {
+          router.push({
+            pathname: `/game/${gameId}${isSpectate ? "/spectate" : ""}`,
+            query: { returnTo: router.query.returnTo },
+          });
+        },
+        onError: () => {
+          alert.show("Game code does not exist");
+        },
+      }
+    );
   };
 
   return { ...mutation, startGame };
@@ -101,16 +103,12 @@ export const useGetGame = (gameId: string) => {
   const alert = useAlert();
 
   const setGameState = useGameStore((state) => state.setGameState);
-  const setGameStarted = useGameStore((state) => state.setIsStarted);
-  const setGameFinished = useGameStore((state) => state.setIsFinished);
 
   const query = trpc.proxy.game.get.useQuery(
     { gameId },
     {
       onSuccess: (game) => {
         setGameState(game.state as unknown as GameState);
-        setGameStarted(game.isStarted);
-        setGameFinished(game.isFinished);
       },
       onError: (error) => {
         console.error(error);
@@ -124,8 +122,6 @@ export const useGetGame = (gameId: string) => {
   return {
     ...query,
     setGameState,
-    setGameStarted,
-    setGameFinished,
   };
 };
 
@@ -161,14 +157,4 @@ export const useNextScene = () => {
   };
 
   return { ...mutation, nextScene };
-};
-
-export const useEndGame = () => {
-  const mutation = trpc.proxy.game.end.useMutation();
-
-  const endGame = async (gameId: string) => {
-    await mutation.mutate({ gameId });
-  };
-
-  return { ...mutation, endGame };
 };

@@ -23,7 +23,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const alert = useAlert();
   const router = useRouter();
   const { startGame } = useStartGame();
-  const gameStarted = useGameStore((state) => state.isStarted);
+  const gameState = useGameStore((state) => state.state);
   const players = useGameStore((state) => state.players);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -39,7 +39,9 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
     onStart();
   };
 
-  const onStart = () => startGame(gameId);
+  const onStart = async () => {
+    await startGame(gameId, !!isSpectate);
+  };
 
   const onShare = () => {
     const gameLink = `${location.origin}?gameId=${gameId}`;
@@ -57,13 +59,13 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   };
 
   useEffect(() => {
-    if (gameStarted) {
+    if (gameState.currentStep !== 0) {
       router.push({
         pathname: `/game/${gameId}${isSpectate ? "/spectate" : ""}`,
         query: { returnTo: router.query.returnTo },
       });
     }
-  }, [gameStarted]);
+  }, [gameState.currentStep]);
 
   return (
     <>

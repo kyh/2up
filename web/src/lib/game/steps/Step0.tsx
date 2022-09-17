@@ -3,16 +3,13 @@ import { useRouter } from "next/router";
 import { Button, Modal, Confetti } from "~/components";
 import { theme } from "~/styles/theme";
 import { PlayerScores } from "./Step3";
-import { useEndGame } from "~/lib/game/useGameActions";
 import type { StepProps } from "~/lib/game/steps/types";
 
 const Step0Play = ({ gameState }: StepProps) => {
   const router = useRouter();
-  const { endGame } = useEndGame();
-  const { gameId, redirectTo } = router.query;
+  const { redirectTo } = router.query;
 
   const handleEnd = async () => {
-    await endGame(gameId as string);
     if (redirectTo) {
       router.push(`/packs/${redirectTo}/edit`);
     } else {
