@@ -45,10 +45,6 @@ export type GameStore = {
   setGameState: (state: GameState) => void;
   players: LivePlayer[];
   setPlayers: (players: LivePlayer[]) => void;
-  isStarted: boolean;
-  setIsStarted: (isStarted: boolean) => void;
-  isFinished: boolean;
-  setIsFinished: (isFinished: boolean) => void;
 };
 
 export const useGameStore = create<GameStore>()((set) => ({
@@ -70,10 +66,6 @@ export const useGameStore = create<GameStore>()((set) => ({
     set((store) => ({ ...store, state: { ...store.state, ...state } })),
   players: [],
   setPlayers: (players) => set((store) => ({ ...store, players })),
-  isStarted: false,
-  setIsStarted: (isStarted) => set((store) => ({ ...store, isStarted })),
-  isFinished: false,
-  setIsFinished: (isFinished) => set((store) => ({ ...store, isFinished })),
 }));
 
 export const useAllGameStore = () => useGameStore((state) => state, shallow);
