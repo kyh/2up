@@ -9,16 +9,13 @@ import { useGetGame } from "~/lib/game/useGameActions";
 type GameChangePayload = {
   new: {
     state: GameState;
-    isStarted: boolean;
-    isFinished: boolean;
   };
 };
 
 export const useConnectGame = (gameId: string) => {
   const [connectedPlayersChannel, setConnectedPlayersChannel] = useState(false);
   const [connectedGameChannel, setConnectedGameChannel] = useState(false);
-  const { isSuccess, setGameState, setGameStarted, setGameFinished } =
-    useGetGame(gameId);
+  const { isSuccess, setGameState } = useGetGame(gameId);
   const router = useRouter();
   const alert = useAlert();
 
@@ -69,8 +66,6 @@ export const useConnectGame = (gameId: string) => {
         (payload: GameChangePayload) => {
           console.log("New game state:", payload.new);
           setGameState(payload.new.state);
-          setGameStarted(payload.new.isStarted);
-          setGameFinished(payload.new.isFinished);
         }
       )
       .subscribe(async (status: string) => {

@@ -81,7 +81,7 @@ export const calculateScore = (
 
   const timeScore = (1 - invlerp(0, duration, difference)) * maxBonusScore;
 
-  return scoreForCorrectAnswer + timeScore;
+  return Math.round(scoreForCorrectAnswer + timeScore);
 };
 
 export const compareAnswer = (answer: string, answerToCompare: string) => {
