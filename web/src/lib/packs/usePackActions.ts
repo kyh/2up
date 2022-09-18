@@ -3,7 +3,7 @@ import { useAlert } from "~/components";
 
 export const useGetPack = (packId: string) => {
   const alert = useAlert();
-  return trpc.proxy.pack.getPack.useQuery(
+  return trpc.pack.getPack.useQuery(
     { packId },
     {
       onError: (err) => {
@@ -15,7 +15,7 @@ export const useGetPack = (packId: string) => {
 
 export const useGetDiscover = (ref: string) => {
   const alert = useAlert();
-  return trpc.proxy.pack.getDiscover.useQuery(
+  return trpc.pack.getDiscover.useQuery(
     { ref },
     {
       onError: (err) => {
