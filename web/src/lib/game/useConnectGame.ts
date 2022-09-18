@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "~/utils/supabase";
 import { useAlert } from "~/components";
 import { useGameStore, GameStore, GameState } from "~/lib/game/gameStore";
@@ -13,6 +14,8 @@ type GameChangePayload = {
 };
 
 export const useConnectGame = (gameId: string) => {
+  const playerChannelRef = useRef<RealtimeChannel | null>(null);
+  const gameChannelRef = useRef<RealtimeChannel | null>(null);
   const [connectedPlayersChannel, setConnectedPlayersChannel] = useState(false);
   const [connectedGameChannel, setConnectedGameChannel] = useState(false);
   const { isSuccess, setGameState } = useGetGame(gameId);
@@ -53,6 +56,8 @@ export const useConnectGame = (gameId: string) => {
         }
       });
 
+    playerChannelRef.current = playerChannel;
+
     const gameChannel = supabase
       .channel(`public:Game:id=eq.${gameId}`)
       .on(
@@ -75,6 +80,7 @@ export const useConnectGame = (gameId: string) => {
       });
 
     gameChannel.onError(handleError);
+    gameChannelRef.current = gameChannel;
 
     return () => {
       playerChannel.unsubscribe();
@@ -90,5 +96,7 @@ export const useConnectGame = (gameId: string) => {
 
   return {
     isLoaded: isSuccess && connectedPlayersChannel && connectedGameChannel,
+    playerChannelRef,
+    gameChannelRef,
   };
 };

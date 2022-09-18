@@ -22,7 +22,7 @@ import { useStartGame } from "~/lib/game/useGameActions";
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const alert = useAlert();
   const router = useRouter();
-  const { startGame } = useStartGame();
+  const { startGame, isIdle } = useStartGame();
   const gameState = useGameStore((state) => state.state);
   const players = useGameStore((state) => state.players);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,7 +40,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   };
 
   const onStart = async () => {
-    await startGame(gameId, !!isSpectate);
+    await startGame(gameId);
   };
 
   const onShare = () => {
@@ -65,7 +65,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
         query: { returnTo: router.query.returnTo },
       });
     }
-  }, [gameState.currentStep]);
+  }, [gameState, gameState.currentStep]);
 
   return (
     <>
@@ -90,7 +90,9 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
       </PlayersContainer>
       {!isSpectate ? (
         <>
-          <NextButton onClick={onClickStart}>Start game</NextButton>
+          <NextButton onClick={onClickStart} disabled={!isIdle}>
+            Start game
+          </NextButton>
           <Modal
             open={isModalOpen}
             title="Are you sure?"
@@ -110,7 +112,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
                 </p>
                 <div className="game-id">{gameId}</div>
               </TitleContainer>
-              <Button fullWidth onClick={onStart}>
+              <Button fullWidth onClick={onStart} disabled={!isIdle}>
                 Start anyways
               </Button>
             </StartModalBody>

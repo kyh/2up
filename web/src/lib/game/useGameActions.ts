@@ -75,24 +75,9 @@ export const useJoinGame = () => {
 
 export const useStartGame = () => {
   const mutation = trpc.proxy.game.start.useMutation();
-  const router = useRouter();
-  const alert = useAlert();
 
-  const startGame = async (gameId: string, isSpectate: boolean) => {
-    await mutation.mutate(
-      { gameId },
-      {
-        onSuccess: () => {
-          router.push({
-            pathname: `/game/${gameId}${isSpectate ? "/spectate" : ""}`,
-            query: { returnTo: router.query.returnTo },
-          });
-        },
-        onError: () => {
-          alert.show("Game code does not exist");
-        },
-      }
-    );
+  const startGame = async (gameId: string) => {
+    await mutation.mutate({ gameId });
   };
 
   return { ...mutation, startGame };
