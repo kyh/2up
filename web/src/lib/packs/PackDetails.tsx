@@ -9,7 +9,7 @@ import { useGetPack } from "~/lib/packs/usePackActions";
 export const PackDetails = () => {
   const router = useRouter();
   const packId = router.query.packId as string;
-  const { hostGame, isLoading } = useHostGame();
+  const { hostGame, isIdle } = useHostGame();
   const res = useGetPack(packId);
 
   if (!res.data) return <Spinner center />;
@@ -26,7 +26,7 @@ export const PackDetails = () => {
           <h1 className="pack-name">{pack.name}</h1>
           <p className="pack-description">{pack.description}</p>
           <div className="pack-actions">
-            <Button onClick={() => hostGame(packId)} disabled={isLoading}>
+            <Button onClick={() => hostGame(packId)} disabled={!isIdle}>
               Start a game
             </Button>
             {/* {!!data && pack.user.id === currentUser?.id && (
