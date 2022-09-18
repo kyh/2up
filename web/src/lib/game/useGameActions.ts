@@ -5,7 +5,7 @@ import { useGameStore, GameState, Submission } from "~/lib/game/gameStore";
 import { usePlayhouseStore } from "~/lib/home/playhouseStore";
 
 export const useHostGame = () => {
-  const mutation = trpc.proxy.game.create.useMutation();
+  const mutation = trpc.game.create.useMutation();
   const router = useRouter();
   const alert = useAlert();
 
@@ -34,7 +34,7 @@ export const useHostGame = () => {
 };
 
 export const useCheckGame = () => {
-  const mutation = trpc.proxy.game.check.useMutation();
+  const mutation = trpc.game.check.useMutation();
   const router = useRouter();
   const alert = useAlert();
 
@@ -74,7 +74,7 @@ export const useJoinGame = () => {
 };
 
 export const useStartGame = () => {
-  const mutation = trpc.proxy.game.start.useMutation();
+  const mutation = trpc.game.start.useMutation();
 
   const startGame = async (gameId: string) => {
     await mutation.mutate({ gameId });
@@ -89,7 +89,7 @@ export const useGetGame = (gameId: string) => {
 
   const setGameState = useGameStore((state) => state.setGameState);
 
-  const query = trpc.proxy.game.get.useQuery(
+  const query = trpc.game.get.useQuery(
     { gameId },
     {
       onSuccess: (game) => {
@@ -111,7 +111,7 @@ export const useGetGame = (gameId: string) => {
 };
 
 export const useSubmitAnswer = () => {
-  const mutation = trpc.proxy.game.submitAnswer.useMutation();
+  const mutation = trpc.game.submitAnswer.useMutation();
 
   const submitAnswer = async (
     gameId: string,
@@ -125,7 +125,7 @@ export const useSubmitAnswer = () => {
 };
 
 export const useNextStep = () => {
-  const mutation = trpc.proxy.game.nextStep.useMutation();
+  const mutation = trpc.game.nextStep.useMutation();
 
   const nextStep = async (gameId: string) => {
     await mutation.mutate({ gameId });
@@ -135,7 +135,7 @@ export const useNextStep = () => {
 };
 
 export const useNextScene = () => {
-  const mutation = trpc.proxy.game.nextScene.useMutation();
+  const mutation = trpc.game.nextScene.useMutation();
 
   const nextScene = async (gameId: string) => {
     await mutation.mutate({ gameId });
