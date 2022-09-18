@@ -11,7 +11,7 @@ type FormInputs = {
 
 export const HomeJoinGame = () => {
   const router = useRouter();
-  const { checkGame, isLoading } = useCheckGame();
+  const { checkGame, isIdle } = useCheckGame();
   const { register, handleSubmit } = useForm<FormInputs>();
 
   const gameId = router.query.gameId?.toString() || "";
@@ -30,7 +30,7 @@ export const HomeJoinGame = () => {
           placeholder="Game Code"
           defaultValue={gameId}
         />
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" disabled={!isIdle}>
           Join existing game
         </Button>
       </Form>
