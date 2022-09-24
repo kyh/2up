@@ -72,7 +72,7 @@ export const packRouter = t.router({
 
       return ctx.prisma.pack.findMany({ where: { userId } });
     }),
-  getPack: t.procedure
+  get: t.procedure
     .input(z.object({ packId: z.string() }))
     .query(async ({ ctx, input }) => {
       return ctx.prisma.pack.findUnique({
@@ -80,5 +80,38 @@ export const packRouter = t.router({
           id: input.packId,
         },
       });
+    }),
+  create: t.procedure
+    .input(
+      z.object({
+        name: z.string(),
+        description: z.string(),
+        tags: z.array(z.string()),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.pack.create({
+        data: {
+          name: input.name,
+          description: input.description,
+          userId: ctx.userId,
+          tags: {
+            connectOrCreate: input.tags.map((tag) => ({
+              where: { name: tag },
+              create: { name: tag },
+            })),
+          },
+        },
+      });
+    }),
+  update: t.procedure
+    .input(z.object({ packId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return;
+    }),
+  delete: t.procedure
+    .input(z.object({ packId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return;
     }),
 });
