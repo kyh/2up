@@ -63,6 +63,19 @@ async function main() {
   console.log("Start seeding...");
   if (!adminUserId) throw new Error("ADMIN_USER_ID env variable is not set");
 
+  // create admin profiles
+  console.log("Creating admin profile...");
+  await prisma.profile.upsert({
+    where: { userId: adminUserId },
+    update: {},
+    create: {
+      userId: adminUserId,
+      username: "admin",
+      email: "im.kaiyu@gmail.com",
+      role: "admin",
+    },
+  });
+
   // create packs
   console.log("Creating packs...");
   for (const pack of packs) {

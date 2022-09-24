@@ -1,37 +1,33 @@
 import styled from "styled-components";
-import { gql, useQuery } from "~/utils/mock";
 import { useRouter } from "next/router";
 import { theme } from "~/styles/theme";
-import { ButtonLinkNative } from "~/components";
+import { ButtonLinkNative, Spinner } from "~/components";
 import { Content } from "~/lib/packs/components/Page";
 import { PackSection, Pack } from "~/lib/packs/components/Packs";
+import { useGetPacks } from "~/lib/packs/usePackActions";
+import { useAuth } from "~/lib/auth/useAuth";
 
 export const Profile = () => {
+  const auth = useAuth();
   const router = useRouter();
   const username = router.query.username as string;
-  const { data } = useQuery(USER_QUERY, {
-    variables: { username: username || "" },
-  });
+  const res = useGetPacks({ username });
 
-  if (!data) {
-    return null;
-  }
+  if (!res.data) return <Spinner center />;
 
-  const packsMap = data.packs;
-  const packs = Object.values(packsMap);
-  const isMyPage = data?.currentUser?.username === username;
+  const isMyPage = username === auth.user?.user_metadata.username;
 
   return (
     <ProfileContent>
       <header className="profile-header">
-        <h1>@{username}'s packs</h1>
+        <h1>@{username}&apos;s packs</h1>
         {isMyPage && (
-          <ButtonLinkNative to="/packs/new">Create new Pack</ButtonLinkNative>
+          <ButtonLinkNative href="/packs/new">Create new Pack</ButtonLinkNative>
         )}
       </header>
       <PackSection>
         <div className="pack-items">
-          {packs.map((pack: any) => (
+          {res.data.map((pack) => (
             <Pack
               key={pack.id}
               pack={pack}
@@ -44,24 +40,6 @@ export const Profile = () => {
     </ProfileContent>
   );
 };
-
-const USER_QUERY = gql`
-  query ProfilePageUserQuery($username: String!) {
-    currentUser {
-      username
-    }
-    packs(first: 100, username: $username) {
-      edges {
-        node {
-          id
-          name
-          imageUrl
-          description
-        }
-      }
-    }
-  }
-`;
 
 const ProfileContent = styled(Content)`
   .profile-header {

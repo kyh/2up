@@ -24,3 +24,12 @@ export const useGetDiscover = (ref: string) => {
     }
   );
 };
+
+export const useGetPacks = (filter: Record<string, unknown>) => {
+  const alert = useAlert();
+  return trpc.pack.getAll.useQuery(filter, {
+    onError: (err) => {
+      alert.show(err.message);
+    },
+  });
+};
