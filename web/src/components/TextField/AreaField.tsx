@@ -45,4 +45,6 @@ export const AreaField = forwardRef<HTMLTextAreaElement, Props>(
 const Textarea = styled(Input)`
   resize: vertical;
   min-height: 150px;
+  line-height: 1.6;
+  padding: ${theme.spacings(3)} ${theme.spacings(4)};
 `;
