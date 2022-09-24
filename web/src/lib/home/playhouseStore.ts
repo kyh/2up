@@ -2,7 +2,6 @@ import create from "zustand";
 import shallow from "zustand/shallow";
 import { persist } from "zustand/middleware";
 import { nanoid } from "nanoid";
-import { createOrGetThemesong } from "~/styles/sound";
 
 export type PlayhouseStore = {
   isDarkMode: boolean;

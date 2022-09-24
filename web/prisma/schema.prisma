@@ -12,6 +12,17 @@ enum UserRole {
   user
 }
 
+model Profile {
+  userId   String   @id @unique
+  email    String   @unique
+  username String   @unique
+  avatar   String?
+  role     UserRole @default(user)
+
+  updatedAt DateTime @default(now()) @updatedAt
+  createdAt DateTime @default(now())
+}
+
 model Pack {
   id          String  @id @default(cuid())
   name        String
