@@ -51,7 +51,27 @@ export const packRouter = t.router({
         packs: section.tags.flatMap((tag) => tagMap[tag]).filter(Boolean),
       }));
     }),
-  getAll: t.procedure.query(({ ctx }) => ctx.prisma.pack.findMany()),
+  getAll: t.procedure
+    .input(
+      z.object({
+        userId: z.string().optional(),
+        username: z.string().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      let userId = input.userId;
+
+      if (input.username) {
+        const profile = await ctx.prisma.profile.findUnique({
+          where: {
+            username: input.username,
+          },
+        });
+        userId = profile?.userId;
+      }
+
+      return ctx.prisma.pack.findMany({ where: { userId } });
+    }),
   getPack: t.procedure
     .input(z.object({ packId: z.string() }))
     .query(async ({ ctx, input }) => {

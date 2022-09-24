@@ -5,8 +5,10 @@ import type {
   User,
   AuthError,
 } from "@supabase/supabase-js";
+import { nanoid } from "nanoid";
 import { supabase } from "~/utils/supabase";
 import { useAlert } from "~/components";
+import { usePlayhouseStore } from "~/lib/home/playhouseStore";
 
 type Context = {
   user: User | null;
@@ -26,18 +28,19 @@ export const AuthProvider = ({ children }: Props) => {
   const alert = useAlert();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const setPlayerName = usePlayhouseStore((state) => state.setPlayerName);
+  const setPlayerId = usePlayhouseStore((state) => state.setPlayerId);
 
   useEffect(() => {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
-      setUser(data.user);
-      setLoading(false);
+      handleUser(data.user);
     };
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
+        handleUser(session?.user);
         setUser(session?.user ?? null);
-        setLoading(false);
       }
     );
 
@@ -47,6 +50,13 @@ export const AuthProvider = ({ children }: Props) => {
       listener.subscription.unsubscribe();
     };
   }, []);
+
+  const handleUser = (user?: User | null) => {
+    setUser(user ?? null);
+    setPlayerId(user?.id ?? nanoid());
+    setPlayerName(user?.user_metadata.username ?? "");
+    setLoading(false);
+  };
 
   const handleError = (error: AuthError) => {
     alert.show(error.message);
