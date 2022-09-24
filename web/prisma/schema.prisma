@@ -7,17 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Profile {
-  userId String   @id @unique
-  role   UserRole
-  name   String?
-  email  String?
-  avatar String?
-
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
-}
-
 enum UserRole {
   admin
   user

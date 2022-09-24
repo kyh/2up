@@ -1,13 +1,16 @@
 import styled from "styled-components";
+import Image from "next/future/image";
 import { Link } from "~/components";
 import { theme } from "~/styles/theme";
+import { useAuth } from "~/lib/auth/useAuth";
 
 export const Navigation = () => {
+  const auth = useAuth();
   return (
     <NavigationContainer>
       <div className="left">
         <Link href="/packs">
-          <img
+          <Image
             className="logo"
             src="/logo/logomark.svg"
             alt="Playhouse"
@@ -16,23 +19,27 @@ export const Navigation = () => {
           />
         </Link>
       </div>
-      <div className="right end">
-        {false ? (
-          <>
-            {/* <Link href="/">Play</Link>
-            <Link href={`/u/${auth.user?.username}`}>Profile</Link>
-            <Link href="/packs" onClick={auth.signout}>
-              Logout
-            </Link> */}
-          </>
-        ) : (
-          <>
-            <Link href="/">Play</Link>
-            <Link href="/auth/request">Sign Up</Link>
-            <Link href="/auth/login">Login</Link>
-          </>
-        )}
-      </div>
+      {!auth.loading && (
+        <div className="right end">
+          {auth.user ? (
+            <>
+              <Link href="/">Play</Link>
+              <Link href={`/u/${auth.user.user_metadata.username}`}>
+                Profile
+              </Link>
+              <button type="button" onClick={auth.signOut}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/">Play</Link>
+              <Link href="/auth/request">Sign Up</Link>
+              <Link href="/auth/login">Login</Link>
+            </>
+          )}
+        </div>
+      )}
     </NavigationContainer>
   );
 };
@@ -63,7 +70,8 @@ export const NavigationContainer = styled.nav`
     &.end {
       justify-content: flex-end;
 
-      > a {
+      > a,
+      button {
         padding: ${theme.spacings(3)};
         &:hover {
           text-decoration: underline;
