@@ -11,7 +11,7 @@ type FormInputs = {
 
 const url = `${process.env.NEXT_PUBLIC_SHEETS_ENDPOINT}?tabId=Sheet1&api_key=${process.env.NEXT_PUBLIC_SHEETS_API_KEY}`;
 
-const signup = (email: string, idea: string) => {
+const requestInvite = (email: string, idea: string) => {
   return fetch(url, {
     headers: {
       "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const Request = () => {
   const onSubmit = async ({ email, idea }: FormInputs) => {
     setIsLoading(true);
     try {
-      await signup(email, idea);
+      await requestInvite(email, idea);
       setIsComplete(true);
     } catch (e) {
       console.error(e);

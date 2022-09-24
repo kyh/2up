@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { theme } from "~/styles/theme";
 import { TextField, Button, Card } from "~/components";
+import { useAuth } from "~/lib/auth/useAuth";
 
 type FormInputs = {
   username: string;
@@ -13,21 +15,27 @@ type FormInputs = {
 type Props = { isLogin?: boolean };
 
 export const Auth = ({ isLogin }: Props) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const auth = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
 
+  useEffect(() => {
+    if (auth.user) {
+      const { redirectTo } = router.query;
+      router.push(redirectTo?.toString() || "/packs");
+    }
+  }, [auth.user, router]);
+
   const onSubmit = async ({ username, email, password }: FormInputs) => {
-    setIsLoading(true);
-    // if (isLogin && auth.signin) {
-    //   await auth.signin(username, password);
-    // } else if (auth.signup) {
-    //   await auth.signup(username, email, password);
-    // }
-    setIsLoading(false);
+    if (isLogin) {
+      auth.signIn({ email, password });
+    } else {
+      auth.signUp({ email, password, options: { data: { username } } });
+    }
   };
 
   return (
@@ -35,25 +43,25 @@ export const Auth = ({ isLogin }: Props) => {
       <h1 className="title">{isLogin ? "Login" : "Sign up"}</h1>
       <Card background>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            id="username"
-            {...register("username", { required: true })}
-            labelText={isLogin ? "Email/Username" : "Username"}
-            placeholder="Lil Jon Snow"
-            error={!!errors.username}
-            errorText="This field is required"
-          />
           {!isLogin && (
             <TextField
-              labelText="Email"
-              id="email"
-              {...register("email", { required: true })}
-              type="email"
-              placeholder="creator@playhouse.gg"
-              error={!!errors.email}
-              errorText="Email is required"
+              id="username"
+              {...register("username", { required: true })}
+              labelText="Username"
+              placeholder="Lil Jon Snow"
+              error={!!errors.username}
+              errorText="This field is required"
             />
           )}
+          <TextField
+            labelText="Email"
+            id="email"
+            {...register("email", { required: true })}
+            type="email"
+            placeholder="creator@playhouse.gg"
+            error={!!errors.email}
+            errorText="Email is required"
+          />
           <TextField
             labelText="Password"
             id="password"
@@ -68,7 +76,7 @@ export const Auth = ({ isLogin }: Props) => {
             className="submit"
             type="submit"
             fullWidth
-            disabled={isLoading}
+            disabled={auth.loading}
           >
             {isLogin ? "Login" : "Sign up"}
           </Button>
