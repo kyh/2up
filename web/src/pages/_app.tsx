@@ -4,6 +4,7 @@ import Router from "next/router";
 import { trpc } from "~/utils/trpc";
 import { StyleProvider } from "~/styles/global";
 import { AlertProvider, ProgressBar } from "~/components";
+import { AuthProvider } from "~/lib/auth/useAuth";
 
 const progress = new ProgressBar();
 
@@ -23,7 +24,9 @@ const MyApp = ({ Component, pageProps }: Props) => {
   const getLayout = Component.getLayout || ((page) => page);
   return (
     <StyleProvider>
-      <AlertProvider>{getLayout(<Component {...pageProps} />)}</AlertProvider>
+      <AlertProvider>
+        <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+      </AlertProvider>
     </StyleProvider>
   );
 };
