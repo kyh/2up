@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { t } from "~/server/trpc";
+import { t, authedProcedure } from "~/server/trpc";
 
 const discoverMap = {
   producthunt: [
@@ -81,7 +81,7 @@ export const packRouter = t.router({
         },
       });
     }),
-  create: t.procedure
+  create: authedProcedure
     .input(
       z.object({
         name: z.string(),
@@ -94,7 +94,7 @@ export const packRouter = t.router({
         data: {
           name: input.name,
           description: input.description,
-          userId: ctx.userId,
+          userId: ctx.user.id,
           tags: {
             connectOrCreate: input.tags.map((tag) => ({
               where: { name: tag },
@@ -104,12 +104,12 @@ export const packRouter = t.router({
         },
       });
     }),
-  update: t.procedure
+  update: authedProcedure
     .input(z.object({ packId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return;
     }),
-  delete: t.procedure
+  delete: authedProcedure
     .input(z.object({ packId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return;
