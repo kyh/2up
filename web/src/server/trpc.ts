@@ -9,9 +9,15 @@ export const t = initTRPC.context<Context>().create({
   },
 });
 
-// export const authedProcedure = t.procedure.use(({ ctx, next }) => {
-//   if (!ctx.user) throw new TRPCError({ code: "UNAUTHORIZED" });
-//   return next({ ctx });
-// });
+export const authedProcedure = t.procedure.use(({ ctx, next }) => {
+  if (!ctx.user) throw new TRPCError({ code: "UNAUTHORIZED" });
+
+  return next({
+    ctx: {
+      ...ctx,
+      user: ctx.user,
+    },
+  });
+});
 
 export const ServerError = TRPCError;

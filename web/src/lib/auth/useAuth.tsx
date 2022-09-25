@@ -2,6 +2,7 @@ import { useContext, createContext, useState, useEffect } from "react";
 import type {
   SignUpWithPasswordCredentials,
   SignInWithPasswordCredentials,
+  Session,
   User,
   AuthError,
 } from "@supabase/supabase-js";
@@ -28,33 +29,36 @@ export const AuthProvider = ({ children }: Props) => {
   const alert = useAlert();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const setAccessToken = usePlayhouseStore((state) => state.setAccessToken);
   const setPlayerName = usePlayhouseStore((state) => state.setPlayerName);
   const setPlayerId = usePlayhouseStore((state) => state.setPlayerId);
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      handleUser(data.user);
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      handleSession(data.session);
     };
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
-        handleUser(session?.user);
+        handleSession(session);
         setUser(session?.user ?? null);
       }
     );
 
-    getUser();
+    getSession();
 
     return () => {
       listener.subscription.unsubscribe();
     };
   }, []);
 
-  const handleUser = (user?: User | null) => {
-    setUser(user ?? null);
+  const handleSession = (session: Session | null) => {
+    const user = session?.user ?? null;
+    setUser(user);
     setPlayerId(user?.id ?? nanoid());
     setPlayerName(user?.user_metadata.username ?? "");
+    setAccessToken(session?.access_token ?? "");
     setLoading(false);
   };
 
