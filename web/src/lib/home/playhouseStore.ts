@@ -14,6 +14,8 @@ export type PlayhouseStore = {
   setPlayerId: (playerId: string) => void;
   playerName: string;
   setPlayerName: (name: string) => void;
+  accessToken: string;
+  setAccessToken: (accessToken: string) => void;
 };
 
 const getDarkModeDefault = () => {
@@ -37,6 +39,9 @@ export const usePlayhouseStore = create<PlayhouseStore>()(
       setPlayerId: (playerId) => set((state) => ({ ...state, playerId })),
       playerName: "",
       setPlayerName: (playerName) => set((state) => ({ ...state, playerName })),
+      accessToken: "",
+      setAccessToken: (accessToken) =>
+        set((state) => ({ ...state, accessToken })),
     }),
     {
       name: "playhouse-storage",

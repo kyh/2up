@@ -2,6 +2,8 @@ import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { NextPageContext } from "next";
 import superjson from "superjson";
+import { usePlayhouseStore } from "~/lib/home/playhouseStore";
+
 // ℹ️ Type-only import:
 // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export
 import type { AppRouter } from "~/server/router";
@@ -67,6 +69,17 @@ export const trpc = createTRPCNext<AppRouter, SSRContext>({
 
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers() {
+            if (typeof window !== "undefined") {
+              const { accessToken } = usePlayhouseStore.getState();
+              return {
+                ...(accessToken
+                  ? { Authorization: `Bearer ${accessToken}` }
+                  : {}),
+              };
+            }
+            return {};
+          },
         }),
       ],
       /**
