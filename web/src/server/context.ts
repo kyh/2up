@@ -1,8 +1,14 @@
 import * as trpc from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
-import { supabase } from "~/utils/supabase";
+import { decode } from "~/utils/jwt";
 import { prisma } from "~/utils/prisma";
 import type { User } from "@supabase/supabase-js";
+
+const secret = process.env.JWT_SECRET;
+
+if (!secret) {
+  throw new Error("JWT_SECRET is not defined");
+}
 
 interface CreateContextOptions {
   user: User | null;
@@ -13,16 +19,8 @@ export const getUser = async (
 ) => {
   const accessToken = req.headers.authorization?.split(" ")[1];
   if (accessToken) {
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser(req.headers.authorization);
-
-    if (error) {
-      console.error("Error getting user", error);
-      return null;
-    }
-
+    // We should authenticate with supabase but it's an extra network call.
+    const user = decode(accessToken, secret);
     return user;
   }
 
@@ -49,7 +47,6 @@ export type Context = trpc.inferAsyncReturnType<typeof createContextInner>;
 export const createContext = async (
   options: trpcNext.CreateNextContextOptions
 ): Promise<Context> => {
-  // for API-response caching see https://trpc.io/docs/caching
   return await createContextInner({
     user: await getUser(options.req),
   });
