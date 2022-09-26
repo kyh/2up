@@ -11,11 +11,9 @@ import { keybindings } from "~/lib/packs/packService";
 import { useCreateScene, useDeleteScene } from "~/lib/packs/sceneService";
 import { CsvImportButton } from "~/lib/packs/components/PackCsvImport";
 
-import { SceneFragment } from "../__generated__/SceneFragment";
-
 type Props = {
   packId: string;
-  packScenes: SceneFragment[];
+  packScenes: any[];
   selectedSceneId?: string;
   selectScene: (scene: any) => void;
   refetch: () => void;
@@ -67,7 +65,9 @@ export const Sidebar = ({
     }
   };
 
-  useHotkeys(window, [[keybindings.addNewScene.hotkey, onCreateScene]]);
+  useHotkeys(typeof window !== "undefined" ? window : null, [
+    [keybindings.addNewScene.hotkey, onCreateScene],
+  ]);
 
   return (
     <>
@@ -120,7 +120,7 @@ const SidebarFooter = styled.footer`
 
 type SidebarItemProps = {
   index: number;
-  scene: SceneFragment;
+  scene: any;
   isSelected: boolean;
   selectScene: (sceneId: string) => any;
   onDeleteScene: (sceneId: string, index: number) => any;
@@ -149,7 +149,7 @@ const SidebarItem = ({
             displayMode
           />
           <div className="answers-container">
-            {scene.sceneAnswers?.map((sceneAnswer) => {
+            {scene.sceneAnswers?.map((sceneAnswer: any) => {
               if (!sceneAnswer) return null;
               return (
                 <Answer

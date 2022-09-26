@@ -1,6 +1,5 @@
 import { ChangeEvent } from "react";
 import styled from "styled-components";
-import produce from "immer";
 import { theme } from "~/styles/theme";
 import { Input, SingleLetterInput, Checkbox, Button, Icon } from "~/components";
 import {
@@ -8,14 +7,12 @@ import {
   visibleQATypeMenuVar,
   getRandomAnswer,
 } from "~/lib/packs/packService";
-import { AnswerTypeSlugs } from "~/lib/game/gameSlice";
-
-import { SceneFragment_sceneAnswers } from "../__generated__/SceneFragment";
+import { AnswerTypeSlugs } from "~/lib/game/gameUtils";
 
 type EditableAnswerProps = {
   sceneId: string;
   answerType: string;
-  sceneAnswers: SceneFragment_sceneAnswers[];
+  sceneAnswers: any[];
   onChange: (scene: any) => void;
 };
 
@@ -32,10 +29,10 @@ export const EditableAnswer = ({
   };
 
   const onChangeSceneAnswer = (updatedSceneAnswer = {}, index: number = 0) => {
+    const updatedSceneAnswers = [...sceneAnswers];
+    updatedSceneAnswers[index] = updatedSceneAnswer;
     onChange({
-      sceneAnswers: produce(sceneAnswers, (draft) => {
-        draft[index] = { ...draft[index], ...updatedSceneAnswer };
-      }),
+      sceneAnswers: updatedSceneAnswers,
     });
   };
 

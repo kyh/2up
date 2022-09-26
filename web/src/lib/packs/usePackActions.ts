@@ -23,10 +23,10 @@ export const useGetPacks = (filter: Record<string, unknown>) => {
   });
 };
 
-export const useGetPack = (packId: string) => {
+export const useGetPack = (packId: string, withScenes = false) => {
   const alert = useAlert();
   return trpc.pack.get.useQuery(
-    { packId },
+    { packId, withScenes },
     {
       onError: (err) => {
         alert.show(err.message);
