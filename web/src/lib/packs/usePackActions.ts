@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { trpc } from "~/utils/trpc";
 import { useAlert } from "~/components";
 
@@ -36,10 +37,15 @@ export const useGetPack = (packId: string) => {
 
 export const useCreatePack = () => {
   const alert = useAlert();
+  const router = useRouter();
   const mutation = trpc.pack.create.useMutation();
 
   const createPack = async (pack: Parameters<typeof mutation.mutate>[0]) => {
     await mutation.mutate(pack, {
+      onSuccess: (pack) => {
+        alert.show("Pack created");
+        router.push(`/packs/${pack.id}/edit`);
+      },
       onError: (err) => {
         alert.show(err.message);
       },

@@ -1,51 +1,25 @@
 import styled from "styled-components";
-import { gql, useMutation } from "~/utils/mock";
-import { useRouter } from "next/router";
-import { useAlert, Card } from "~/components";
+import { Card } from "~/components";
 import { Content } from "~/lib/packs/components/Page";
 import { PackForm, PackFormInputs } from "~/lib/packs/components/PackForm";
+import { useCreatePack } from "~/lib/packs/usePackActions";
 
 export const PackNew = () => {
-  const alert = useAlert();
-  const router = useRouter();
-  const [packCreate, { loading }] = useMutation(PACK_CREATE);
+  const { createPack, isLoading } = useCreatePack();
 
-  const createPack = async (newPack: PackFormInputs) => {
-    try {
-      const response = await packCreate({
-        variables: {
-          input: { ...newPack },
-        },
-      });
-      const pack = response.data?.packCreate?.pack;
-      if (pack) {
-        router.push(`/packs/${pack.id}/edit`);
-      }
-    } catch (error: any) {
-      alert.show(error.message);
-    }
+  const handlePackForm = async (pack: PackFormInputs) => {
+    await createPack(pack);
   };
 
   return (
     <PackNewPageContent>
       <h1 className="title">New Pack</h1>
       <Card background>
-        <PackForm onSubmit={createPack} loading={loading} />
+        <PackForm onSubmit={handlePackForm} loading={isLoading} />
       </Card>
     </PackNewPageContent>
   );
 };
-
-const PACK_CREATE = gql`
-  mutation PackNewPagePackCreateMutation($input: PackCreateInput!) {
-    packCreate(input: $input) {
-      pack {
-        id
-        name
-      }
-    }
-  }
-`;
 
 const PackNewPageContent = styled(Content)`
   display: block;

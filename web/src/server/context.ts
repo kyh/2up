@@ -21,7 +21,10 @@ export const getUser = async (
   if (accessToken) {
     // We should authenticate with supabase but it's an extra network call.
     const user = decode(accessToken, secret);
-    return user;
+    return {
+      ...user,
+      id: user.sub,
+    };
   }
 
   return null;
