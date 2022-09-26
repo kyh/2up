@@ -114,7 +114,6 @@ export const trpc = createTRPCNext<AppRouter, SSRContext>({
     }
 
     // for app caching with SSR see https://trpc.io/docs/caching
-
     return {};
   },
 });
