@@ -4,7 +4,7 @@ import { useReactiveVar } from "~/utils/mock";
 import { theme } from "~/styles/theme";
 import { Button } from "~/components";
 import { Props as ScenePreviewProps } from "~/lib/packs/components/ScenePreview";
-import { AnswerTypeSlugs, QuestionTypeSlugs } from "~/lib/game/gameSlice";
+import { AnswerTypeSlugs, QuestionTypeSlugs } from "~/lib/game/gameUtils";
 import {
   visibleQATypeMenuVar,
   VisibleQATypeMenu,
