@@ -9,7 +9,7 @@ import {
   visibleQATypeMenuVar,
   instructionElementAttribute,
 } from "~/lib/packs/packService";
-import { QuestionTypeSlugs } from "~/lib/game/gameSlice";
+import { QuestionTypeSlugs } from "~/lib/game/gameUtils";
 
 type EditableQuestionProps = {
   instruction: string;

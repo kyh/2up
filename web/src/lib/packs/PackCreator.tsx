@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import ReactTooltip from "react-tooltip";
 import { useRouter } from "next/router";
-import { gql, useQuery } from "~/utils/mock";
 import { useHotkeys } from "@react-hook/hotkey";
 import { theme } from "~/styles/theme";
 import { visible } from "~/styles/animations";
@@ -11,7 +10,7 @@ import { Sidebar } from "~/lib/packs/components/PackCreatorLeftSidebar";
 import { ScenePreview } from "~/lib/packs/components/ScenePreview";
 import { SceneQATypeMenu } from "~/lib/packs/components/SceneQATypeMenu";
 import { SceneSettingsMenu } from "~/lib/packs/components/SceneSettingsMenu";
-import { Button, Modal, Icon } from "~/components";
+import { Button, Modal, Icon, Spinner } from "~/components";
 import {
   VisibleQATypeMenu,
   visibleQATypeMenuVar,
@@ -19,9 +18,8 @@ import {
   keybindings,
   instructionElementAttribute,
 } from "~/lib/packs/packService";
-import { PACK_FRAGMENT } from "~/lib/packs/packFragments";
-import { SCENES_FRAGMENT } from "~/lib/packs/sceneFragments";
 import { useHostGame } from "~/lib/game/useGameActions";
+import { useGetPack } from "~/lib/packs/usePackActions";
 import ArrowSvg from "./svgs/arrow.svg";
 
 export const PackCreator = () => {
@@ -31,15 +29,12 @@ export const PackCreator = () => {
   const [selectedSceneId, setSelectedSceneId] = useState("");
   const { hostGame } = useHostGame();
   const packId = router.query.packId as string;
-  const { data, refetch } = useQuery(PACK_QUERY, {
-    variables: {
-      packId: packId || "",
-    },
-  });
+  const { data: pack, isLoading, refetch } = useGetPack(packId, true);
 
-  const packScenesMap = data?.pack?.scenes;
-  const packScenes: any[] = Object.values(packScenesMap);
-  const selectedScene = packScenesMap[selectedSceneId];
+  const packScenes = pack?.scenes;
+  const selectedScene = packScenes?.find(
+    (scene) => scene.id === selectedSceneId
+  );
 
   const selectScene = (selectedSceneId: string) => {
     visibleQATypeMenuVar(VisibleQATypeMenu.None);
@@ -57,13 +52,14 @@ export const PackCreator = () => {
   };
 
   const selectScenePosition = (position: 1 | -1) => (e: KeyboardEvent) => {
+    if (!packScenes) return;
     const target = e.target as HTMLElement;
     if (target && target.tagName === "TEXTAREA") return;
-    const currentSceneIndex = packScenes.findIndex((scene: any) => {
-      return scene.id === selectedSceneId;
-    });
+    const currentSceneIndex = packScenes.findIndex(
+      (scene) => scene.id === selectedSceneId
+    );
     if (currentSceneIndex !== -1) {
-      const newSelectedScene: any =
+      const newSelectedScene =
         packScenes[
           position === 1 ? currentSceneIndex + 1 : currentSceneIndex - 1
         ];
@@ -100,24 +96,24 @@ export const PackCreator = () => {
   ]);
 
   useEffect(() => {
-    if (packScenes.length !== 0 && !selectedSceneId) {
+    if (packScenes && packScenes.length !== 0 && !selectedSceneId) {
       setSelectedSceneId(packScenes[0].id);
       packScenesVar(packScenes);
     }
-  }, [packScenesMap]);
+  }, [packScenes]);
 
-  if (!data || !data.pack) {
-    return null;
+  if (isLoading || !pack) {
+    return <Spinner center />;
   }
 
   return (
     <Page>
       <ReactTooltip effect="solid" place="bottom" />
-      <Topbar pack={data.pack} testPlay={testPlay} />
+      <Topbar pack={pack} testPlay={testPlay} />
       <SidebarLeft>
         <Sidebar
           packId={packId}
-          packScenes={packScenes}
+          packScenes={packScenes || []}
           selectedSceneId={selectedSceneId}
           selectScene={selectScene}
           refetch={refetch}
@@ -140,8 +136,8 @@ export const PackCreator = () => {
       ) : (
         <EmptyContent>
           <div className="empty-content">
-            <h1>Wow it's a brand new pack!</h1>
-            <p>Here's how it works:</p>
+            <h1>Wow it&apos;s a brand new pack!</h1>
+            <p>Here&apos;s how it works:</p>
             <ul>
               <li>A pack contains many scenes</li>
               <li>A scene has a question and a answer</li>
@@ -181,17 +177,6 @@ export const PackCreator = () => {
     </Page>
   );
 };
-
-const PACK_QUERY = gql`
-  query PackCreatorPagePackQuery($packId: ID!) {
-    pack(id: $packId) {
-      ...PackFragment
-      ...ScenesFragment
-    }
-  }
-  ${PACK_FRAGMENT}
-  ${SCENES_FRAGMENT}
-`;
 
 const Page = styled.section`
   height: 100vh;

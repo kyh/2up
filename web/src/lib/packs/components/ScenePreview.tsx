@@ -1,13 +1,9 @@
 import { EditableQuestion } from "~/lib/packs/components/EditableQuestion";
 import { EditableAnswer } from "~/lib/packs/components/EditableAnswer";
 import { useUpdateScene } from "~/lib/packs/sceneService";
-import {
-  SceneFragment,
-  SceneFragment_sceneAnswers,
-} from "../__generated__/SceneFragment";
 
 export type Props = {
-  scene: SceneFragment;
+  scene: any;
 };
 
 export const ScenePreview = ({ scene }: Props) => {
@@ -24,7 +20,7 @@ export const ScenePreview = ({ scene }: Props) => {
       />
       <EditableAnswer
         sceneId={scene.id}
-        sceneAnswers={scene.sceneAnswers as SceneFragment_sceneAnswers[]}
+        sceneAnswers={scene.sceneAnswers}
         answerType={scene.answerType.slug}
         onChange={updateScene}
       />
