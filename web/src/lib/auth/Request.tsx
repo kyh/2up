@@ -52,7 +52,9 @@ export const Request = () => {
       </p>
       <Card background>
         {isComplete ? (
-          <div>Thanks for your interest! We'll be distributing logins soon</div>
+          <div>
+            Thanks for your interest! We&apos;ll be distributing logins soon
+          </div>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextField

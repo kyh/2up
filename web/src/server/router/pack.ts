@@ -86,6 +86,8 @@ export const packRouter = t.router({
       z.object({
         name: z.string(),
         description: z.string(),
+        isRandom: z.boolean(),
+        length: z.number(),
         tags: z.array(z.string()),
       })
     )
@@ -94,6 +96,7 @@ export const packRouter = t.router({
         data: {
           name: input.name,
           description: input.description,
+          isRandom: input.isRandom,
           userId: ctx.user.id,
           tags: {
             connectOrCreate: input.tags.map((tag) => ({

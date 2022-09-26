@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
 import { SEO } from "~/components";
 import { AuthLayout } from "~/lib/auth/AuthLayout";
-import { Auth } from "~/lib/auth/Auth";
+import { AuthForm } from "~/lib/auth/AuthForm";
 
 const LoginPage = () => {
   return (
     <>
       <SEO title="Login" />
-      <Auth isLogin />
+      <AuthForm isLogin />
     </>
   );
 };

@@ -14,7 +14,7 @@ type FormInputs = {
 
 type Props = { isLogin?: boolean };
 
-export const Auth = ({ isLogin }: Props) => {
+export const AuthForm = ({ isLogin }: Props) => {
   const router = useRouter();
   const auth = useAuth();
   const {
