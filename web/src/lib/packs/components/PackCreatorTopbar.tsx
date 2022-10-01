@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { gql, useMutation } from "~/utils/mock";
 import { theme } from "~/styles/theme";
 import {
   Link,
@@ -14,10 +13,12 @@ import {
 import { NavigationContainer } from "~/lib/packs/components/Navigation";
 import { PackForm, PackFormInputs } from "~/lib/packs/components/PackForm";
 import { usePackStore } from "~/lib/packs/packStore";
-import { PACK_FRAGMENT } from "~/lib/packs/packFragments";
+import { useUpdatePack } from "~/lib/packs/usePackActions";
+import { getErrorMessage } from "~/utils/error";
+import { Pack as PackModel, PackTag as PackTagModel } from "@prisma/client";
 
 type Props = {
-  pack: any;
+  pack: PackModel & { tags: PackTagModel[] };
   testPlay: () => void;
 };
 
@@ -26,24 +27,17 @@ export const Topbar = ({ pack, testPlay }: Props) => {
   const savingScene = usePackStore((state) => state.savingScene);
   const setSavingScene = usePackStore((state) => state.setSavingScene);
   const [isOpen, setIsOpen] = useState(false);
-  const [packUpdate] = useMutation(PACK_UPDATE);
+  const { updatePack } = useUpdatePack();
 
   const onSaveChanges = async (newPack: PackFormInputs) => {
     setSavingScene(true);
     try {
-      await packUpdate({
-        variables: {
-          input: {
-            id: pack.id,
-            ...newPack,
-          },
-        },
-      });
+      await updatePack(pack.id, newPack);
       setSavingScene(false);
       setIsOpen(false);
-    } catch (error: any) {
+    } catch (error) {
       setSavingScene(false);
-      alert.show(error.message);
+      alert.show(getErrorMessage(error));
     }
   };
 
@@ -51,13 +45,16 @@ export const Topbar = ({ pack, testPlay }: Props) => {
     <StyledNavigationContainer>
       <div className="left">
         <Link href={`/packs/${pack.id}`}>
-          <img
-            className="logo"
-            src="/logo/logomark.svg"
-            alt="Playhouse"
-            height="35"
-            width="35"
-          />
+          <picture>
+            <source srcSet="/logo/logomark.svg" />
+            <img
+              className="logo"
+              src="/logo/logomark.svg"
+              alt="Playhouse"
+              height="35"
+              width="35"
+            />
+          </picture>
         </Link>
       </div>
       <div className="right">
@@ -102,26 +99,15 @@ export const Topbar = ({ pack, testPlay }: Props) => {
           defaultValues={{
             name: pack.name,
             description: pack.description || "",
-            length: pack.length || 10,
+            gameLength: pack.gameLength || 10,
             isRandom: !!pack.isRandom,
-            tags: pack.tags || [],
+            tags: pack.tags.map((t) => t.name) || [],
           }}
         />
       </Modal>
     </StyledNavigationContainer>
   );
 };
-
-export const PACK_UPDATE = gql`
-  mutation PackUpdateMutation($input: PackUpdateInput!) {
-    packUpdate(input: $input) {
-      pack {
-        ...PackFragment
-      }
-    }
-  }
-  ${PACK_FRAGMENT}
-`;
 
 const StyledNavigationContainer = styled(NavigationContainer)`
   .right {

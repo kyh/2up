@@ -5,8 +5,10 @@ import { Link, Button, Spinner } from "~/components";
 import { useHostGame } from "~/lib/game/useGameActions";
 import { Content } from "~/lib/packs/components/Page";
 import { useGetPack } from "~/lib/packs/usePackActions";
+import { useAuth } from "~/lib/auth/useAuth";
 
 export const PackDetails = () => {
+  const auth = useAuth();
   const router = useRouter();
   const packId = router.query.packId as string;
   const { hostGame, isIdle } = useHostGame();
@@ -29,9 +31,9 @@ export const PackDetails = () => {
             <Button onClick={() => hostGame(packId)} disabled={!isIdle}>
               Start a game
             </Button>
-            {/* {!!data && pack.user.id === currentUser?.id && (
+            {pack.userId === auth.user?.id && (
               <Link href={`/packs/${packId}/edit`}>Edit Pack</Link>
-            )} */}
+            )}
           </div>
         </header>
       )}

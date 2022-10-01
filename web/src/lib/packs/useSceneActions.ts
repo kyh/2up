@@ -1,14 +1,13 @@
 import { gql, useMutation } from "~/utils/mock";
 import { useAlert } from "~/components";
-import { SCENE_FRAGMENT } from "~/lib/packs/sceneFragments";
-import { savingSceneVar } from "~/lib/packs/packUtils";
+import { getErrorMessage } from "~/utils/error";
 
 export const useUpdateScene = (scene: any) => {
   const alert = useAlert();
   const [sceneUpdate] = useMutation(SCENE_UPDATE);
 
   const updateScene = async (updatedScene = {}) => {
-    savingSceneVar(true);
+    // savingSceneVar(true);
     const newScene = { ...scene, ...updatedScene };
     console.log("Update new Scene:", newScene);
     try {
@@ -16,7 +15,7 @@ export const useUpdateScene = (scene: any) => {
         variables: {
           input: {
             id: newScene.id || "",
-            instruction: newScene.instruction,
+            questionDescription: newScene.questionDescription,
             questionTypeSlug: newScene.questionType.slug,
             question: newScene.question,
             answerTypeSlug: newScene.answerType.slug,
@@ -24,10 +23,10 @@ export const useUpdateScene = (scene: any) => {
           },
         },
       });
-      savingSceneVar(false);
-    } catch (error: any) {
-      alert.show(error.message);
-      savingSceneVar(false);
+      // savingSceneVar(false);
+    } catch (error) {
+      alert.show(getErrorMessage(error));
+      // savingSceneVar(false);
     }
   };
 
@@ -42,7 +41,6 @@ const SCENE_UPDATE = gql`
       }
     }
   }
-  ${SCENE_FRAGMENT}
 `;
 
 export const useCreateScene = () => {
@@ -55,7 +53,9 @@ export const useCreateScene = () => {
   ) => {
     const input = {
       packId: packId,
-      instruction: selectedScene ? selectedScene.instruction : "",
+      questionDescription: selectedScene
+        ? selectedScene.questionDescription
+        : "",
       questionTypeSlug: selectedScene
         ? selectedScene.questionType.slug
         : "text",
@@ -68,16 +68,16 @@ export const useCreateScene = () => {
     };
 
     try {
-      savingSceneVar(true);
+      // savingSceneVar(true);
       const { data } = await sceneCreate({
         variables: { input },
       });
       const newScene = data?.sceneCreate?.scene;
-      savingSceneVar(false);
+      // savingSceneVar(false);
       return newScene;
-    } catch (error: any) {
-      alert.show(error.message);
-      savingSceneVar(false);
+    } catch (error) {
+      alert.show(getErrorMessage(error));
+      // savingSceneVar(false);
     }
   };
 
@@ -99,7 +99,7 @@ export const useDeleteScene = () => {
   const [sceneDelete] = useMutation(SCENE_DELETE);
   const deleteScene = async (sceneId: string, index: number) => {
     try {
-      savingSceneVar(true);
+      // savingSceneVar(true);
       const { data } = await sceneDelete({
         variables: {
           input: {
@@ -107,12 +107,12 @@ export const useDeleteScene = () => {
           },
         },
       });
-      savingSceneVar(false);
+      // savingSceneVar(false);
       const deletedScene = data?.sceneDelete?.scene;
       return deletedScene;
-    } catch (error: any) {
-      alert.show(error.message);
-      savingSceneVar(false);
+    } catch (error) {
+      alert.show(getErrorMessage(error));
+      // savingSceneVar(false);
     }
   };
 
@@ -138,7 +138,7 @@ export const useUpdateSceneOrder = () => {
     afterSceneId?: string
   ) => {
     try {
-      savingSceneVar(true);
+      // savingSceneVar(true);
       await sceneOrderUpdate({
         variables: {
           input: {
@@ -148,10 +148,10 @@ export const useUpdateSceneOrder = () => {
           },
         },
       });
-      savingSceneVar(false);
-    } catch (error: any) {
-      alert.show(error.message);
-      savingSceneVar(false);
+      // savingSceneVar(false);
+    } catch (error) {
+      alert.show(getErrorMessage(error));
+      // savingSceneVar(false);
     }
   };
 
