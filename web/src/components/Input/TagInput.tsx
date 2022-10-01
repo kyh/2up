@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { theme } from "~/styles/theme";
 
 type Props = {
-  defaultTags?: any[];
+  defaultTags?: string[];
   max?: number;
   id?: HTMLInputElement["id"];
   type?: HTMLInputElement["type"];
@@ -20,7 +20,7 @@ export const TagInput = ({
   onTagChange = () => {},
 }: Props) => {
   const [input, setInput] = useState("");
-  const [tags, setTags] = useState(defaultTags.map((t) => t.name));
+  const [tags, setTags] = useState(defaultTags);
   const [isKeyReleased, setIsKeyReleased] = useState(false);
 
   useEffect(() => {

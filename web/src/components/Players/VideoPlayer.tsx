@@ -1,5 +1,7 @@
 import ReactVideoPlayer from "react-player/lazy";
 
-export const VideoPlayer = (rest: any) => {
-  return <ReactVideoPlayer className="video-player" {...rest} />;
+export const VideoPlayer = (
+  props: React.ComponentProps<typeof ReactVideoPlayer>
+) => {
+  return <ReactVideoPlayer className="video-player" {...props} />;
 };

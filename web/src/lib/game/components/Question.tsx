@@ -2,11 +2,11 @@ import styled from "styled-components";
 import { theme } from "~/styles/theme";
 import { QuestionTypeSlugs } from "~/lib/game/gameUtils";
 import { VideoPlayer, AudioPlayer, Code } from "~/components";
-import type { QuestionType } from "~/lib/game/steps/types";
+import type { StepProps } from "~/lib/game/steps/types";
 
 type QuestionProps = {
   question: string;
-  questionType: QuestionType;
+  questionType: StepProps["gameState"]["questionType"];
   displayMode?: boolean;
 };
 
