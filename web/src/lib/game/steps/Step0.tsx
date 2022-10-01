@@ -36,7 +36,7 @@ const Step0Play = ({ gameState }: StepProps) => {
       {/*
       <Modal
         open={!!gameState.invitedToGame}
-        onRequestClose={() =>
+        onClose={() =>
           dispatch(gameActions.invite({ gameId: undefined }))
         }
         maxWidth={300}

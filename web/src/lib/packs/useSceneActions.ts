@@ -1,7 +1,7 @@
 import { gql, useMutation } from "~/utils/mock";
 import { useAlert } from "~/components";
 import { SCENE_FRAGMENT } from "~/lib/packs/sceneFragments";
-import { savingSceneVar } from "~/lib/packs/packService";
+import { savingSceneVar } from "~/lib/packs/packUtils";
 
 export const useUpdateScene = (scene: any) => {
   const alert = useAlert();

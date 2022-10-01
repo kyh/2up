@@ -96,7 +96,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
           <Modal
             open={isModalOpen}
             title="Are you sure?"
-            onRequestClose={() => setIsModalOpen(false)}
+            onClose={() => setIsModalOpen(false)}
             maxWidth={300}
             closeButton
           >

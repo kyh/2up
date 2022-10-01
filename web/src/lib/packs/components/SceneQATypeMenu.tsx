@@ -1,34 +1,31 @@
 import { useRef, forwardRef } from "react";
 import styled from "styled-components";
-import { useReactiveVar } from "~/utils/mock";
 import { theme } from "~/styles/theme";
 import { Button } from "~/components";
 import { Props as ScenePreviewProps } from "~/lib/packs/components/ScenePreview";
 import { AnswerTypeSlugs, QuestionTypeSlugs } from "~/lib/game/gameUtils";
-import {
-  visibleQATypeMenuVar,
-  VisibleQATypeMenu,
-} from "~/lib/packs/packService";
-import { useUpdateScene } from "~/lib/packs/sceneService";
+import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/packStore";
+import { useUpdateScene } from "~/lib/packs/useSceneActions";
 import { useOnClickOutside } from "~/utils/element";
 
 export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
   const ref = useRef(null);
   const { updateScene } = useUpdateScene(scene);
-  const openMenu = useReactiveVar(visibleQATypeMenuVar);
+  const setQATypeMenu = usePackStore((state) => state.setVisibleQATypeMenu);
+  const QATypeMenu = usePackStore((state) => state.visibleQATypeMenu);
 
   const onSelectType = (updatedScene = {}) => {
-    visibleQATypeMenuVar(VisibleQATypeMenu.None);
+    setQATypeMenu(VisibleQATypeMenu.None);
     if (updatedScene) {
       updateScene(updatedScene);
     }
   };
 
   useOnClickOutside(ref, () => {
-    visibleQATypeMenuVar(VisibleQATypeMenu.None);
+    setQATypeMenu(VisibleQATypeMenu.None);
   });
 
-  switch (openMenu) {
+  switch (QATypeMenu) {
     case VisibleQATypeMenu.Question:
       return (
         <QuestionTypeMenu

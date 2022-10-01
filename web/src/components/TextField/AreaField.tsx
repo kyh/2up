@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { theme } from "~/styles/theme";
 import { Input } from "../Input/Input";
 
-export const Field = styled.fieldset`
+const Field = styled.fieldset`
   .error {
     color: ${theme.colors.red};
   }

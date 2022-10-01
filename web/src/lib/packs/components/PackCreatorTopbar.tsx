@@ -1,11 +1,19 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { gql, useMutation, useReactiveVar } from "~/utils/mock";
+import { gql, useMutation } from "~/utils/mock";
 import { theme } from "~/styles/theme";
-import { Link, Button, Icon, Modal, Loader, useAlert } from "~/components";
+import {
+  Link,
+  Button,
+  Icon,
+  Modal,
+  Loader,
+  useAlert,
+  WithTip,
+} from "~/components";
 import { NavigationContainer } from "~/lib/packs/components/Navigation";
 import { PackForm, PackFormInputs } from "~/lib/packs/components/PackForm";
-import { savingSceneVar } from "~/lib/packs/packService";
+import { usePackStore } from "~/lib/packs/packStore";
 import { PACK_FRAGMENT } from "~/lib/packs/packFragments";
 
 type Props = {
@@ -15,12 +23,13 @@ type Props = {
 
 export const Topbar = ({ pack, testPlay }: Props) => {
   const alert = useAlert();
-  const saving = useReactiveVar(savingSceneVar);
+  const savingScene = usePackStore((state) => state.savingScene);
+  const setSavingScene = usePackStore((state) => state.setSavingScene);
   const [isOpen, setIsOpen] = useState(false);
   const [packUpdate] = useMutation(PACK_UPDATE);
 
   const onSaveChanges = async (newPack: PackFormInputs) => {
-    savingSceneVar(true);
+    setSavingScene(true);
     try {
       await packUpdate({
         variables: {
@@ -30,10 +39,10 @@ export const Topbar = ({ pack, testPlay }: Props) => {
           },
         },
       });
-      savingSceneVar(false);
+      setSavingScene(false);
       setIsOpen(false);
     } catch (error: any) {
-      savingSceneVar(false);
+      setSavingScene(false);
       alert.show(error.message);
     }
   };
@@ -53,40 +62,42 @@ export const Topbar = ({ pack, testPlay }: Props) => {
       </div>
       <div className="right">
         <div>
-          <Loader loading={saving} />
+          <Loader loading={savingScene} />
         </div>
-        <button onClick={() => setIsOpen(true)}>
+        <button type="button" onClick={() => setIsOpen(true)}>
           <h4 className="pack-title">{pack?.name}</h4>
         </button>
-        <div>
-          <Button
-            className="pack-ext-button"
-            variant="fab"
-            onClick={() => setIsOpen(true)}
-            data-tip="Edit pack"
-          >
-            <Icon icon="pencil" />
-          </Button>
-          <Button
-            className="pack-ext-button"
-            variant="fab"
-            onClick={testPlay}
-            data-tip="Test play"
-          >
-            <Icon icon="play" />
-          </Button>
+        <div className="right-actions">
+          <WithTip tipContent="Edit pack">
+            <Button
+              className="pack-ext-button"
+              variant="fab"
+              onClick={() => setIsOpen(true)}
+            >
+              <Icon icon="pencil" />
+            </Button>
+          </WithTip>
+          <WithTip tipContent="Test play">
+            <Button
+              className="pack-ext-button"
+              variant="fab"
+              onClick={testPlay}
+            >
+              <Icon icon="play" />
+            </Button>
+          </WithTip>
         </div>
       </div>
       <Modal
         open={isOpen}
         title="Pack Settings"
-        onRequestClose={() => setIsOpen(false)}
+        onClose={() => setIsOpen(false)}
         maxWidth={500}
         closeButton
       >
         <PackForm
           onSubmit={onSaveChanges}
-          loading={saving}
+          loading={savingScene}
           submitText="Save Changes"
           defaultValues={{
             name: pack.name,
@@ -115,6 +126,9 @@ export const PACK_UPDATE = gql`
 const StyledNavigationContainer = styled(NavigationContainer)`
   .right {
     position: relative;
+  }
+  .right-actions {
+    display: flex;
   }
   .loader {
     position: absolute;

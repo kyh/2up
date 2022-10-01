@@ -13,11 +13,3 @@ export const useMutation = (_data: any) => {
 export const gql = (...query: any) => {
   return query;
 };
-
-export const makeVar = (value: any) => {
-  return value;
-};
-
-export const useReactiveVar = (_value: any) => {
-  return {} as any;
-};
