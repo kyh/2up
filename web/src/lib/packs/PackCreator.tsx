@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import ReactTooltip from "react-tooltip";
 import { useRouter } from "next/router";
 import { useHotkeys } from "@react-hook/hotkey";
 import { theme } from "~/styles/theme";
@@ -12,13 +11,15 @@ import { SceneQATypeMenu } from "~/lib/packs/components/SceneQATypeMenu";
 import { SceneSettingsMenu } from "~/lib/packs/components/SceneSettingsMenu";
 import { Button, Modal, Icon, Spinner } from "~/components";
 import {
-  VisibleQATypeMenu,
-  visibleQATypeMenuVar,
-  packScenesVar,
   keybindings,
   instructionElementAttribute,
-} from "~/lib/packs/packService";
+} from "~/lib/packs/packUtils";
 import { useHostGame } from "~/lib/game/useGameActions";
+import {
+  usePackStore,
+  VisibleQATypeMenu,
+  SceneWithAnswers,
+} from "~/lib/packs/packStore";
 import { useGetPack } from "~/lib/packs/usePackActions";
 import ArrowSvg from "./svgs/arrow.svg";
 
@@ -28,8 +29,12 @@ export const PackCreator = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedSceneId, setSelectedSceneId] = useState("");
   const { hostGame } = useHostGame();
+  const setPackScenes = usePackStore((state) => state.setPackScenes);
+  const setVisibleQATypeMenu = usePackStore(
+    (state) => state.setVisibleQATypeMenu
+  );
   const packId = router.query.packId as string;
-  const { data: pack, isLoading, refetch } = useGetPack(packId, true);
+  const { data: pack, isLoading, refetch } = useGetPack(packId, true, true);
 
   const packScenes = pack?.scenes;
   const selectedScene = packScenes?.find(
@@ -37,7 +42,7 @@ export const PackCreator = () => {
   );
 
   const selectScene = (selectedSceneId: string) => {
-    visibleQATypeMenuVar(VisibleQATypeMenu.None);
+    setVisibleQATypeMenu(VisibleQATypeMenu.None);
     setSelectedSceneId(selectedSceneId);
   };
 
@@ -98,7 +103,7 @@ export const PackCreator = () => {
   useEffect(() => {
     if (packScenes && packScenes.length !== 0 && !selectedSceneId) {
       setSelectedSceneId(packScenes[0].id);
-      packScenesVar(packScenes);
+      setPackScenes(packScenes as SceneWithAnswers[]);
     }
   }, [packScenes]);
 
@@ -108,7 +113,6 @@ export const PackCreator = () => {
 
   return (
     <Page>
-      <ReactTooltip effect="solid" place="bottom" />
       <Topbar pack={pack} testPlay={testPlay} />
       <SidebarLeft>
         <Sidebar
@@ -161,7 +165,7 @@ export const PackCreator = () => {
       <Modal
         open={isOpen}
         title="Keyboard shortcuts"
-        onRequestClose={toggleHelpModal}
+        onClose={toggleHelpModal}
         maxWidth={500}
         closeButton
       >

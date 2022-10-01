@@ -40,7 +40,7 @@ export const HomeJoinGame = () => {
       <Modal
         open={router.query.join ? true : false}
         title="What should we call you?"
-        onRequestClose={() => {
+        onClose={() => {
           router.replace({
             pathname: "/",
             query: { gameId },

@@ -2,11 +2,8 @@ import { ChangeEvent } from "react";
 import styled from "styled-components";
 import { theme } from "~/styles/theme";
 import { Input, SingleLetterInput, Checkbox, Button, Icon } from "~/components";
-import {
-  VisibleQATypeMenu,
-  visibleQATypeMenuVar,
-  getRandomAnswer,
-} from "~/lib/packs/packService";
+import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/packStore";
+import { getRandomAnswer } from "~/lib/packs/packUtils";
 import { AnswerTypeSlugs } from "~/lib/game/gameUtils";
 
 type EditableAnswerProps = {
@@ -23,9 +20,12 @@ export const EditableAnswer = ({
   onChange,
 }: EditableAnswerProps) => {
   const [sceneAnswer] = sceneAnswers;
+  const setVisibleQATypeMenu = usePackStore(
+    (state) => state.setVisibleQATypeMenu
+  );
 
   const onFocus = () => {
-    visibleQATypeMenuVar(VisibleQATypeMenu.Answer);
+    setVisibleQATypeMenu(VisibleQATypeMenu.Answer);
   };
 
   const onChangeSceneAnswer = (updatedSceneAnswer = {}, index: number = 0) => {

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { gql, useMutation } from "~/utils/mock";
 import { theme } from "~/styles/theme";
 import { Modal, Button, AreaField, useAlert } from "~/components";
-import { scenesToCsv, fileToCsv } from "~/lib/packs/packService";
+import { scenesToCsv, fileToCsv } from "~/lib/packs/packUtils";
 
 type CsvImportButtonProps = {
   packId: string;
@@ -59,7 +59,7 @@ export const CsvImportButton = ({
       <Modal
         title="Your pack as a CSV"
         open={isOpen}
-        onRequestClose={() => setIsOpen(false)}
+        onClose={() => setIsOpen(false)}
         closeButton
       >
         <CsvImportHeader>

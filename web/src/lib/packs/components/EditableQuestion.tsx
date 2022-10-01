@@ -4,11 +4,8 @@ import styled from "styled-components";
 import { theme } from "~/styles/theme";
 import { VideoPlayer, AudioPlayer, Code, Button, Icon } from "~/components";
 import { PackAssetModal } from "~/lib/packs/components/PackAssetModal";
-import {
-  VisibleQATypeMenu,
-  visibleQATypeMenuVar,
-  instructionElementAttribute,
-} from "~/lib/packs/packService";
+import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/packStore";
+import { instructionElementAttribute } from "~/lib/packs/packUtils";
 import { QuestionTypeSlugs } from "~/lib/game/gameUtils";
 
 type EditableQuestionProps = {
@@ -26,8 +23,12 @@ export const EditableQuestion = ({
   questionType,
   onChange,
 }: EditableQuestionProps) => {
+  const setVisibleQATypeMenu = usePackStore(
+    (state) => state.setVisibleQATypeMenu
+  );
+
   const onFocus = () => {
-    visibleQATypeMenuVar(VisibleQATypeMenu.Question);
+    setVisibleQATypeMenu(VisibleQATypeMenu.Question);
   };
 
   const onBlurInstruction = (e: ChangeEvent<HTMLInputElement>) => {

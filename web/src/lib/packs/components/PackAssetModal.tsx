@@ -33,12 +33,7 @@ export const PackAssetModal = ({
   const assetsMap = data?.pack?.assets;
 
   return (
-    <Modal
-      open
-      title="Asset Library"
-      onRequestClose={onRequestClose}
-      closeButton
-    >
+    <Modal open title="Asset Library" onClose={onRequestClose} closeButton>
       <Uploader onUploaded={onUploaded} pathPrefix={`packs/${packId}`} />
       <AssetsContainer>
         {Object.values(assetsMap).map((asset: any) => {

@@ -73,14 +73,28 @@ export const packRouter = t.router({
       return ctx.prisma.pack.findMany({ where: { userId } });
     }),
   get: t.procedure
-    .input(z.object({ packId: z.string(), withScenes: z.boolean().optional() }))
+    .input(
+      z.object({
+        packId: z.string(),
+        withScenes: z.boolean().optional(),
+        withSceneAnswers: z.boolean().optional(),
+      })
+    )
     .query(async ({ ctx, input }) => {
       return ctx.prisma.pack.findUnique({
         where: {
           id: input.packId,
         },
         include: {
-          scenes: input.withScenes,
+          scenes: input.withScenes
+            ? input.withSceneAnswers
+              ? {
+                  include: {
+                    answers: true,
+                  },
+                }
+              : true
+            : false,
         },
       });
     }),

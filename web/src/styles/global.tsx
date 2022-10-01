@@ -111,6 +111,26 @@ const GlobalStyle = createGlobalStyle<{ isDarkMode: boolean }>`
     outline-offset: 2px;
   }
 
+  .ease-out {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .ease-in	{
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  .ease-in-out {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .duration-100 { transition-duration: 100ms; }
+
+  .opacity-0 { opacity: 0; }
+  .opacity-100 { opacity: 1; }
+
+  .scale-95 { transform: scale(0.95); }
+  .scale-100 { transform: scale(1); }
+
   ${({ isDarkMode }) => (isDarkMode ? darkStyles : lightStyles)}
 `;
 

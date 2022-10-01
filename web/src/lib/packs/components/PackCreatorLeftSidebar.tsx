@@ -7,8 +7,8 @@ import { Button, Icon } from "~/components";
 import { Instruction } from "~/lib/game/components/Instruction";
 import { Question } from "~/lib/game/components/Question";
 import { Answer } from "~/lib/game/components/Answer";
-import { keybindings } from "~/lib/packs/packService";
-import { useCreateScene, useDeleteScene } from "~/lib/packs/sceneService";
+import { keybindings } from "~/lib/packs/packUtils";
+import { useCreateScene, useDeleteScene } from "~/lib/packs/useSceneActions";
 import { CsvImportButton } from "~/lib/packs/components/PackCsvImport";
 
 type Props = {
