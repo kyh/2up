@@ -1,18 +1,8 @@
-import { makeVar } from "~/utils/mock";
 import { Hotkey } from "@react-hook/hotkey";
-
-export enum VisibleQATypeMenu {
-  None,
-  Question,
-  Answer,
-}
-
-export const visibleQATypeMenuVar = makeVar(VisibleQATypeMenu.None);
-export const savingSceneVar = makeVar(false);
-export const packScenesVar = makeVar([]);
+import { usePackStore } from "./packStore";
 
 export const getRandomAnswer = () => {
-  const packScenes = packScenesVar();
+  const packScenes = usePackStore.getState().packScenes;
   const { sceneAnswers } =
     packScenes[Math.floor(Math.random() * packScenes.length)];
   const randomAnswer =

@@ -1,6 +1,6 @@
 import { EditableQuestion } from "~/lib/packs/components/EditableQuestion";
 import { EditableAnswer } from "~/lib/packs/components/EditableAnswer";
-import { useUpdateScene } from "~/lib/packs/sceneService";
+import { useUpdateScene } from "~/lib/packs/useSceneActions";
 
 export type Props = {
   scene: any;

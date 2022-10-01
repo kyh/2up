@@ -43,7 +43,7 @@ export const Navigation = () => {
       <Modal
         open={isOpen}
         title="Settings"
-        onRequestClose={() => setIsOpen(false)}
+        onClose={() => setIsOpen(false)}
         maxWidth={300}
         closeButton
       >

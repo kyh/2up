@@ -20,6 +20,8 @@
     "prisma:deploy": "prisma migrate deploy"
   },
   "dependencies": {
+    "@headlessui-float/react": "^0.9.1",
+    "@headlessui/react": "^1.7.2",
     "@prisma/client": "^4.2.1",
     "@react-hook/debounce": "^4.0.0",
     "@react-hook/hotkey": "^3.1.0",
@@ -39,11 +41,9 @@
     "react-dom": "^18.2.0",
     "react-h5-audio-player": "^3.7.1",
     "react-hook-form": "^7.34.2",
-    "react-modal": "^3.15.1",
     "react-modal-sheet": "^1.5.2",
     "react-player": "^2.10.1",
     "react-query": "^3.39.2",
-    "react-tooltip": "^4.2.13",
     "styled-components": "^5.2.1",
     "styled-normalize": "^8.0.7",
     "superjson": "^1.9.1",
