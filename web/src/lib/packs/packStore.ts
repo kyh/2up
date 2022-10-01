@@ -1,9 +1,12 @@
-import { Scene, SceneAnswer } from "@prisma/client";
+import {
+  Scene as SceneModel,
+  SceneAnswer as SceneAnswerModel,
+} from "@prisma/client";
 import create from "zustand";
 import shallow from "zustand/shallow";
 
-export type SceneWithAnswers = Scene & {
-  sceneAnswers: SceneAnswer[];
+export type SceneWithAnswers = SceneModel & {
+  answers: SceneAnswerModel[];
 };
 
 export enum VisibleQATypeMenu {

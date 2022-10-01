@@ -10,12 +10,13 @@ import { Answer } from "~/lib/game/components/Answer";
 import { keybindings } from "~/lib/packs/packUtils";
 import { useCreateScene, useDeleteScene } from "~/lib/packs/useSceneActions";
 import { CsvImportButton } from "~/lib/packs/components/PackCsvImport";
+import { Scene as SceneModel } from "@prisma/client";
 
 type Props = {
   packId: string;
-  packScenes: any[];
+  packScenes: SceneModel[];
   selectedSceneId?: string;
-  selectScene: (scene: any) => void;
+  selectScene: (sceneId: string) => void;
   refetch: () => void;
 };
 
@@ -142,7 +143,7 @@ const SidebarItem = ({
         onClick={() => selectScene(scene.id)}
       >
         <div className="preview">
-          <Instruction instruction={scene.instruction || ""} />
+          <Instruction instruction={scene.questionDescription || ""} />
           <Question
             question={scene.question}
             questionType={scene.questionType.slug}

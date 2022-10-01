@@ -22,6 +22,15 @@ const discoverMap = {
   ],
 };
 
+const packModel = z.object({
+  id: z.string().optional(),
+  name: z.string(),
+  description: z.string(),
+  isRandom: z.boolean(),
+  gameLength: z.number(),
+  tags: z.array(z.string()),
+});
+
 export const packRouter = t.router({
   getDiscover: t.procedure
     .input(z.object({ ref: z.string().nullish() }).nullish())
@@ -77,7 +86,6 @@ export const packRouter = t.router({
       z.object({
         packId: z.string(),
         withScenes: z.boolean().optional(),
-        withSceneAnswers: z.boolean().optional(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -86,49 +94,52 @@ export const packRouter = t.router({
           id: input.packId,
         },
         include: {
+          tags: true,
           scenes: input.withScenes
-            ? input.withSceneAnswers
-              ? {
-                  include: {
-                    answers: true,
-                  },
-                }
-              : true
+            ? {
+                include: {
+                  answers: true,
+                },
+              }
             : false,
         },
       });
     }),
-  create: authedProcedure
-    .input(
-      z.object({
-        name: z.string(),
-        description: z.string(),
-        isRandom: z.boolean(),
-        length: z.number(),
-        tags: z.array(z.string()),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      return ctx.prisma.pack.create({
-        data: {
-          name: input.name,
-          description: input.description,
-          isRandom: input.isRandom,
-          userId: ctx.user.id,
-          tags: {
-            connectOrCreate: input.tags.map((tag) => ({
-              where: { name: tag },
-              create: { name: tag },
-            })),
-          },
+  create: authedProcedure.input(packModel).mutation(async ({ ctx, input }) => {
+    return ctx.prisma.pack.create({
+      data: {
+        name: input.name,
+        description: input.description,
+        isRandom: input.isRandom,
+        userId: ctx.user.id,
+        tags: {
+          connectOrCreate: input.tags.map((tag) => ({
+            where: { name: tag },
+            create: { name: tag },
+          })),
         },
-      });
-    }),
-  update: authedProcedure
-    .input(z.object({ packId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      return;
-    }),
+      },
+    });
+  }),
+  update: authedProcedure.input(packModel).mutation(async ({ ctx, input }) => {
+    return ctx.prisma.pack.update({
+      where: {
+        id: input.id,
+      },
+      data: {
+        name: input.name,
+        description: input.description,
+        isRandom: input.isRandom,
+        userId: ctx.user.id,
+        tags: {
+          connectOrCreate: input.tags.map((tag) => ({
+            where: { name: tag },
+            create: { name: tag },
+          })),
+        },
+      },
+    });
+  }),
   delete: authedProcedure
     .input(z.object({ packId: z.string() }))
     .mutation(async ({ ctx, input }) => {

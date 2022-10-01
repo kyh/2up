@@ -6,7 +6,7 @@ const defaultPackValues = {
   name: "",
   description: "",
   isRandom: true,
-  length: 10,
+  gameLength: 10,
   tags: [] as string[],
 };
 

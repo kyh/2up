@@ -9,7 +9,7 @@ import { instructionElementAttribute } from "~/lib/packs/packUtils";
 import { QuestionTypeSlugs } from "~/lib/game/gameUtils";
 
 type EditableQuestionProps = {
-  instruction: string;
+  questionDescription: string;
   question: string;
   questionType: string;
   sceneId: string;
@@ -18,7 +18,7 @@ type EditableQuestionProps = {
 
 export const EditableQuestion = ({
   sceneId,
-  instruction,
+  questionDescription,
   question,
   questionType,
   onChange,
@@ -31,8 +31,8 @@ export const EditableQuestion = ({
     setVisibleQATypeMenu(VisibleQATypeMenu.Question);
   };
 
-  const onBlurInstruction = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange({ instruction: e.target.value });
+  const onBlurQuestionDescription = (e: ChangeEvent<HTMLInputElement>) => {
+    onChange({ questionDescription: e.target.value });
   };
 
   const onBlurQuestion = (
@@ -49,9 +49,9 @@ export const EditableQuestion = ({
     <EditableQuestionInstructions
       data-focusable={instructionElementAttribute}
       placeholder="Instruction..."
-      defaultValue={instruction}
+      defaultValue={questionDescription}
       onFocus={onFocus}
-      onBlur={onBlurInstruction}
+      onBlur={onBlurQuestionDescription}
     />
   );
 
@@ -61,7 +61,7 @@ export const EditableQuestion = ({
         <EditableQuestionContainer key={sceneId}>
           {instructionElement}
           <EditableQuestionImage
-            instruction={instruction}
+            instruction={questionDescription}
             question={question}
             onFocus={onFocus}
             onChange={onBlurQuestion}

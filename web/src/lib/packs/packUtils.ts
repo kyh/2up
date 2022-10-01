@@ -1,37 +1,35 @@
 import { Hotkey } from "@react-hook/hotkey";
-import { usePackStore } from "./packStore";
+import { usePackStore, SceneWithAnswers } from "~/lib/packs/packStore";
 
 export const getRandomAnswer = () => {
   const packScenes = usePackStore.getState().packScenes;
-  const { sceneAnswers } =
-    packScenes[Math.floor(Math.random() * packScenes.length)];
-  const randomAnswer =
-    sceneAnswers[Math.floor(Math.random() * sceneAnswers.length)];
+  const { answers } = packScenes[Math.floor(Math.random() * packScenes.length)];
+  const randomAnswer = answers[Math.floor(Math.random() * answers.length)];
   return randomAnswer;
 };
 
 export const scenesToCsv = (
   scenes: Pick<
-    any,
+    SceneWithAnswers,
     | "externalId"
-    | "instruction"
+    | "questionDescription"
     | "question"
     | "questionType"
-    | "sceneAnswers"
+    | "answers"
     | "answerType"
   >[]
 ) => {
   return scenes
     .map((s) => {
-      const sceneAnswers = s.sceneAnswers?.map((a: any) => {
+      const sceneAnswers = s.answers.map((a) => {
         return `${a?.content || ""},${a?.isCorrect ? "TRUE" : ""}`;
       });
       return [
         s.externalId,
-        s.instruction,
-        s.questionType.slug,
+        s.questionDescription,
+        s.questionType,
         s.question,
-        s.answerType.slug,
+        s.answerType,
         ...(sceneAnswers || []),
       ].join();
     })
