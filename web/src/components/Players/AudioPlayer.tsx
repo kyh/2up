@@ -2,8 +2,11 @@ import styled from "styled-components";
 import ReactAudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { Icon } from "../Icon/Icon";
+import React from "react";
 
-export const AudioPlayer = (props: any) => {
+export const AudioPlayer = (
+  props: React.ComponentProps<typeof ReactAudioPlayer>
+) => {
   return (
     <StyledAudioPlayer
       className="audio-player"
