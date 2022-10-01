@@ -4,6 +4,7 @@ import { gql, useMutation } from "~/utils/mock";
 import { theme } from "~/styles/theme";
 import { Modal, Button, AreaField, useAlert } from "~/components";
 import { scenesToCsv, fileToCsv } from "~/lib/packs/packUtils";
+import { getErrorMessage } from "~/utils/error";
 
 type CsvImportButtonProps = {
   packId: string;
@@ -43,8 +44,8 @@ export const CsvImportButton = ({
         },
       });
       await refetch();
-    } catch (error: any) {
-      alert.show(error.message);
+    } catch (error) {
+      alert.show(getErrorMessage(error));
     } finally {
       setIsSaving(false);
       setIsOpen(false);

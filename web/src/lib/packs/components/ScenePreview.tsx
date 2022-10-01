@@ -1,9 +1,10 @@
 import { EditableQuestion } from "~/lib/packs/components/EditableQuestion";
 import { EditableAnswer } from "~/lib/packs/components/EditableAnswer";
 import { useUpdateScene } from "~/lib/packs/useSceneActions";
+import { SceneWithAnswers } from "~/lib/packs/packStore";
 
 export type Props = {
-  scene: any;
+  scene: SceneWithAnswers;
 };
 
 export const ScenePreview = ({ scene }: Props) => {
@@ -13,15 +14,15 @@ export const ScenePreview = ({ scene }: Props) => {
     <>
       <EditableQuestion
         sceneId={scene.id}
-        instruction={scene.instruction || ""}
+        questionDescription={scene.questionDescription || ""}
         question={scene.question || ""}
-        questionType={scene.questionType.slug}
+        questionType={scene.questionType}
         onChange={updateScene}
       />
       <EditableAnswer
         sceneId={scene.id}
-        sceneAnswers={scene.sceneAnswers}
-        answerType={scene.answerType.slug}
+        sceneAnswers={scene.answers}
+        answerType={scene.answerType}
         onChange={updateScene}
       />
     </>

@@ -34,12 +34,12 @@ export const PackCreator = () => {
     (state) => state.setVisibleQATypeMenu
   );
   const packId = router.query.packId as string;
-  const { data: pack, isLoading, refetch } = useGetPack(packId, true, true);
+  const { data: pack, isLoading, refetch } = useGetPack(packId, true);
 
   const packScenes = pack?.scenes;
   const selectedScene = packScenes?.find(
     (scene) => scene.id === selectedSceneId
-  );
+  ) as SceneWithAnswers;
 
   const selectScene = (selectedSceneId: string) => {
     setVisibleQATypeMenu(VisibleQATypeMenu.None);
