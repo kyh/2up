@@ -3,17 +3,15 @@ import styled from "styled-components";
 import { theme } from "~/styles/theme";
 import { Input, Button } from "~/components";
 import { AnswerTypeSlugs } from "~/lib/game/gameUtils";
-import type {
-  AnswerType,
-  SceneAnswer,
-  Submission,
-} from "~/lib/game/steps/types";
+import type { StepProps } from "~/lib/game/steps/types";
 
 type AnswerProps = {
-  sceneAnswer: SceneAnswer;
-  answerType: AnswerType;
+  sceneAnswer: StepProps["gameState"]["sceneAnswers"][0];
+  answerType: StepProps["gameState"]["answerType"];
   submitted: boolean;
-  onSubmit: (submission: Pick<Submission, "content">) => void;
+  onSubmit: (
+    submission: Pick<StepProps["gameState"]["submissions"][0], "content">
+  ) => void;
   displayMode?: boolean;
 };
 
