@@ -26,7 +26,7 @@ export const useGetPacks = (filter: Record<string, unknown>) => {
 export const useGetPack = (packId: string, withScenes = false) => {
   const alert = useAlert();
   return trpc.pack.get.useQuery(
-    { packId, withScenes },
+    { id: packId, withScenes },
     {
       onError: (err) => {
         alert.show(err.message);
@@ -85,7 +85,7 @@ export const useDeletePack = () => {
 
   const deletePack = async (packId: string) => {
     await mutation.mutate(
-      { packId },
+      { id: packId },
       {
         onError: (err) => {
           alert.show(err.message);

@@ -84,14 +84,14 @@ export const packRouter = t.router({
   get: t.procedure
     .input(
       z.object({
-        packId: z.string(),
+        id: z.string(),
         withScenes: z.boolean().optional(),
       })
     )
     .query(async ({ ctx, input }) => {
       return ctx.prisma.pack.findUnique({
         where: {
-          id: input.packId,
+          id: input.id,
         },
         include: {
           tags: true,
@@ -141,7 +141,7 @@ export const packRouter = t.router({
     });
   }),
   delete: authedProcedure
-    .input(z.object({ packId: z.string() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return;
     }),
