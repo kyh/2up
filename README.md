@@ -1,68 +1,52 @@
-# Playhouse
+[![GitHub last commit](https://img.shields.io/github/last-commit/kyh/coinop)](https://github.com/kyh/coinop)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Chat-%237289DA)](https://discord.gg/YtafKzR)
+
+# Coinop
+
+[🚀 Website]() | [App Store]() | [Play Store]()
 
 > A platform for real-time multiplayer trivia games 🎮
 
-## 📁 Directory Layout
+## Get Started
 
 ```
 │── /docs                        # App documentation
 ├── /web                         # Web ReactJS client
 |   └── /src
-│       ├── /pages               # Next.js renderable pages
 │       ├── /components          # Shared React components
-│       ├── /features            # App features and routes
+│       ├── /lib                 # App features
+│       ├── /pages               # Next.js renderable pages
+│       ├── /server              # TRPC api backend
 │       ├── /styles              # Theme and global styling
-│       └── /util                # Utility modules
-│── /voice                       # Voice server
-└── /server                      # Phoenix server
-    └── /lib
-        ├── /database            # Database models
-        ├── /game                # Game server
-        └── /web                 # Channels and graphql routes
+│       └── /utils               # Utility modules
+└── /voice                       # Voice server
 ```
 
-## 🥞 Tech Stack
+### Install dependencies
 
-- **Client**:
-  - The web client is a `Next.js/React` application
-  - The `Game` itself uses websockets but the rest of the pages use `Apollo` with `Graphql`
-- **Server**:
-  - `Elixir/Phoenix` API server
-  - `Node.js` voice chat server
-- **Data Transport**:
-  - RabbitMQ for message passing
-- **Database**:
-  - Postgres
+- [Node.js](https://nodejs.org/en) - LTS version recommended
 
-## ⚙️ Setting up
+### Local Development
 
-Before we start, make sure you these prerequisites installed:
+```sh
+# Rename .env.example to .env and update variables
+mv .env.example web/.env
 
-- [Node.js](https://nodejs.org/en/download/)
-- [Elixir](https://elixir-lang.org/install.html)
-- [RabbitMQ](https://www.rabbitmq.com/)
-- [Postgres](https://www.postgresql.org/download/)
+# Installing dependencies
+npm install
 
-Once installed, copy and paste the `.env.example` to `.env` and update your environment keys
-
-Then run:
-
-```bash
-make setup
-# If you want, you can seed some questions
-make seeds
+# To start the app
+npm run dev
 ```
 
-## 💻 Running the app locally
+This will start the [Next.js](https://nextjs.org) development server. When the above command completes you'll be able to view your website at `http://localhost:3000`
 
-```bash
-# Start the api server
-make phx
+## Stack
 
-# In a separate terminal window
-make react
-```
+This project uses the following libraries and services:
 
-## 📤 Deployment
-
-Any code merged into `main` will autodeploy through [Render](https://render.com/)
+- Framework - [Next.js](https://nextjs.org)
+- Styling - [Styled Components](https://styled-components.com/)
+- Database - [Postgres (Supabase)](https://planetscale.com) + [Prisma](https://www.prisma.io)
+- Payments - [Stripe](https://stripe.com)
+- Hosting - [Vercel](https://vercel.com)

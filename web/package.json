@@ -1,5 +1,5 @@
 {
-  "name": "playhouse-web",
+  "name": "coinop-web",
   "version": "0.1.0",
   "private": true,
   "prisma": {

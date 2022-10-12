@@ -1,13 +1,11 @@
 {
-  "name": "playhouse",
+  "name": "coinop",
   "scripts": {
-    "dev": "concurrently --kill-others \"npm run dev:web\" \"npm run dev:voice\"",
-    "dev:web": "npm run dev -w=web",
-    "dev:voice": "npm run dev -w=voice",
+    "dev:web": "npm run dev --prefix=web",
+    "dev:voice": "npm run dev --prefix=voice",
     "postinstall": "husky install"
   },
   "devDependencies": {
-    "concurrently": "^7.3.0",
     "husky": "^8.0.1",
     "prettier": "^2.5.1",
     "pretty-quick": "^3.1.2"
