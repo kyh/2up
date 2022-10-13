@@ -34,7 +34,7 @@ export default class MyDocument extends Document {
       <Html lang="en" dir="ltr">
         <Head>
           <meta name="referrer" content="origin" />
-          <meta name="application-name" content="Playhouse" />
+          <meta name="application-name" content="CoinOp" />
           <meta name="robots" content="index, follow" />
           <meta property="fb:app_id" content="{FB_ID}" />
 

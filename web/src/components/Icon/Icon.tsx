@@ -69,7 +69,7 @@ export const Icon = ({ icon, color, size, rotate, ...rest }: Props) => {
   if (!IconSvg) return null;
   return (
     <StyledIcon
-      className="playhouse-icon"
+      className="icon"
       iconColor={color}
       iconSize={size}
       rotate={rotate}

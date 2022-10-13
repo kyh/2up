@@ -9,7 +9,7 @@ import type {
 import { nanoid } from "nanoid";
 import { supabase } from "~/utils/supabase";
 import { useAlert } from "~/components";
-import { usePlayhouseStore } from "~/lib/home/playhouseStore";
+import { useHomeStore } from "~/lib/home/homeStore";
 
 type Context = {
   user: User | null;
@@ -29,9 +29,9 @@ export const AuthProvider = ({ children }: Props) => {
   const alert = useAlert();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const setAccessToken = usePlayhouseStore((state) => state.setAccessToken);
-  const setPlayerName = usePlayhouseStore((state) => state.setPlayerName);
-  const setPlayerId = usePlayhouseStore((state) => state.setPlayerId);
+  const setAccessToken = useHomeStore((state) => state.setAccessToken);
+  const setPlayerName = useHomeStore((state) => state.setPlayerName);
+  const setPlayerId = useHomeStore((state) => state.setPlayerId);
 
   useEffect(() => {
     const getSession = async () => {

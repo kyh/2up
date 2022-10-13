@@ -4,7 +4,7 @@ import styled, {
   StyledComponentProps,
   DefaultTheme,
 } from "styled-components";
-import { usePlayhouseStore } from "~/lib/home/playhouseStore";
+import { useHomeStore } from "~/lib/home/homeStore";
 import { theme } from "~/styles/theme";
 import { bounceExpand, bounceContract } from "~/styles/animations";
 import { createOrGetFx } from "~/styles/sound";
@@ -28,7 +28,7 @@ type Props = StyledComponentProps<
 >;
 
 export const Button = ({ onClick = () => {}, ...rest }: Props) => {
-  const isSFXOn = usePlayhouseStore((state) => state.isSFXOn);
+  const isSFXOn = useHomeStore((state) => state.isSFXOn);
 
   const onButtonClick = () => {
     const clickSound = createOrGetFx("click");

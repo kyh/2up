@@ -1,4 +1,4 @@
-# Coinop
+# CoinOp
 
 > Voice Server
 

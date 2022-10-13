@@ -1,11 +1,11 @@
 import type { GameStore } from "~/lib/game/gameStore";
-import type { PlayhouseStore } from "~/lib/home/playhouseStore";
+import type { HomeStore } from "~/lib/home/homeStore";
 
 export type StepProps = {
   isSpectate?: boolean;
   gameId: string;
   gameState: GameStore["state"];
   players: GameStore["players"];
-  playerId: PlayhouseStore["playerId"];
-  playerName: PlayhouseStore["playerName"];
+  playerId: HomeStore["playerId"];
+  playerName: HomeStore["playerName"];
 };

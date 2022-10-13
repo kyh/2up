@@ -5,7 +5,7 @@ const ogImage = `${url}/favicon/featured.png`;
 
 export const SEO = ({
   title = "",
-  siteTitle = "Playhouse",
+  siteTitle = "CoinOp",
   description = "Create your own trivia quiz game and play with friends",
 }) => {
   const finalTitle = title ? `${title} | ${siteTitle}` : siteTitle;

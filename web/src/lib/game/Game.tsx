@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useGameStore } from "~/lib/game/gameStore";
-import { usePlayhouseStore } from "~/lib/home/playhouseStore";
+import { useHomeStore } from "~/lib/home/homeStore";
 
 import { Step0 } from "./steps/Step0";
 import { Step1 } from "./steps/Step1";
@@ -19,8 +19,8 @@ export const Game = ({ isSpectate }: { isSpectate?: boolean }) => {
   const router = useRouter();
   const gameState = useGameStore((state) => state.state);
   const players = useGameStore((state) => state.players);
-  const playerId = usePlayhouseStore((state) => state.playerId);
-  const playerName = usePlayhouseStore((state) => state.playerName);
+  const playerId = useHomeStore((state) => state.playerId);
+  const playerName = useHomeStore((state) => state.playerName);
 
   const gameId = router.query.gameId as string;
 

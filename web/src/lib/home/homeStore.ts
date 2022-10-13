@@ -3,7 +3,7 @@ import shallow from "zustand/shallow";
 import { persist } from "zustand/middleware";
 import { nanoid } from "nanoid";
 
-export type PlayhouseStore = {
+export type HomeStore = {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
   isMusicOn: boolean;
@@ -24,7 +24,7 @@ const getDarkModeDefault = () => {
   return true;
 };
 
-export const usePlayhouseStore = create<PlayhouseStore>()(
+export const useHomeStore = create<HomeStore>()(
   persist(
     (set) => ({
       isDarkMode: getDarkModeDefault(),
@@ -44,10 +44,9 @@ export const usePlayhouseStore = create<PlayhouseStore>()(
         set((state) => ({ ...state, accessToken })),
     }),
     {
-      name: "playhouse-storage",
+      name: "coinop-storage",
     }
   )
 );
 
-export const useAllPlayhouseStore = () =>
-  usePlayhouseStore((state) => state, shallow);
+export const useAllHomeStore = () => useHomeStore((state) => state, shallow);

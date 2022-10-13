@@ -13,7 +13,7 @@ export const Navigation = () => {
           <Image
             className="logo"
             src="/logo/logomark.svg"
-            alt="Playhouse"
+            alt="CoinOp"
             height="35"
             width="35"
           />

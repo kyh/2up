@@ -4,7 +4,7 @@ import type { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "~/utils/supabase";
 import { useAlert } from "~/components";
 import { useGameStore, GameStore, GameState } from "~/lib/game/gameStore";
-import { usePlayhouseStore } from "~/lib/home/playhouseStore";
+import { useHomeStore } from "~/lib/home/homeStore";
 import { useGetGame } from "~/lib/game/useGameActions";
 
 type GameChangePayload = {
@@ -23,8 +23,8 @@ export const useConnectGame = (gameId: string) => {
   const alert = useAlert();
 
   const setPlayers = useGameStore((state) => state.setPlayers);
-  const playerId = usePlayhouseStore((state) => state.playerId);
-  const playerName = usePlayhouseStore((state) => state.playerName);
+  const playerId = useHomeStore((state) => state.playerId);
+  const playerName = useHomeStore((state) => state.playerName);
 
   useEffect(() => {
     if (!gameId) return;
