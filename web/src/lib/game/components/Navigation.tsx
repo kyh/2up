@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { theme } from "~/styles/theme";
-import { useAllPlayhouseStore } from "~/lib/home/playhouseStore";
+import { useAllHomeStore } from "~/lib/home/homeStore";
 import { Icon } from "~/components/Icon/Icon";
 import { Modal } from "~/components/Modal/Modal";
 import { Button, ButtonLink } from "~/components/Button/Button";
@@ -18,7 +18,7 @@ export const Navigation = () => {
     toggleMusic,
     isSFXOn,
     toggleSFX,
-  } = useAllPlayhouseStore();
+  } = useAllHomeStore();
 
   const { gameId } = router.query;
 
@@ -91,7 +91,7 @@ export const Navigation = () => {
           <SettingItem>
             <ButtonLink
               fullWidth
-              href="https://github.com/foundinghq/playhouse"
+              href="https://github.com/kyh/coinop"
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -50,7 +50,7 @@ export const Topbar = ({ pack, testPlay }: Props) => {
             <img
               className="logo"
               src="/logo/logomark.svg"
-              alt="Playhouse"
+              alt="CoinOp"
               height="35"
               width="35"
             />

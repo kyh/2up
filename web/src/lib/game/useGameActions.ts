@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { trpc } from "~/utils/trpc";
 import { useAlert } from "~/components";
 import { useGameStore, GameState, Submission } from "~/lib/game/gameStore";
-import { usePlayhouseStore } from "~/lib/home/playhouseStore";
+import { useHomeStore } from "~/lib/home/homeStore";
 
 export const useHostGame = () => {
   const mutation = trpc.game.create.useMutation();
@@ -59,7 +59,7 @@ export const useCheckGame = () => {
 };
 
 export const useJoinGame = () => {
-  const setPlayerName = usePlayhouseStore((state) => state.setPlayerName);
+  const setPlayerName = useHomeStore((state) => state.setPlayerName);
   const router = useRouter();
 
   const joinGame = async (gameId: string, playerName: string) => {

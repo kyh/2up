@@ -15,7 +15,7 @@ export const HomeLayout = ({ children }: { children: ReactNode }) => {
           <IntroLogoContaier>
             <Image
               src="/logo/logomark.svg"
-              alt="Playhouse"
+              alt="CoinOp"
               width="60"
               height="65"
             />

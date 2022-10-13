@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { theme } from "~/styles/theme";
 import { Avatar, Link, Button, Input } from "~/components";
-import { usePlayhouseStore } from "~/lib/home/playhouseStore";
+import { useHomeStore } from "~/lib/home/homeStore";
 import { useJoinGame } from "~/lib/game/useGameActions";
 import { Form } from "~/lib/home/components/Form";
 
@@ -13,7 +13,7 @@ type FormInputs = {
 
 export const HomeSetName = () => {
   const router = useRouter();
-  const playerName = usePlayhouseStore((state) => state.playerName);
+  const playerName = useHomeStore((state) => state.playerName);
   const { joinGame } = useJoinGame();
   const { register, watch, handleSubmit } = useForm<FormInputs>();
 

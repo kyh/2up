@@ -1,4 +1,4 @@
-# Coinop
+# CoinOp
 
 > Web frontend
 

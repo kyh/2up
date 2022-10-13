@@ -48,7 +48,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
     if (navigator.share) {
       navigator
         .share({
-          title: "Join my Playhouse game",
+          title: "Join my CoinOp game",
           url: gameLink,
         })
         .catch(console.error);
