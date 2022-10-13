@@ -81,7 +81,7 @@ export const Navigation = () => {
           <SettingItem>
             <ButtonLink
               fullWidth
-              href="https://discord.gg/YtafKzR"
+              href="https://discord.gg/Rt8ygmQ4fk"
               target="_blank"
               rel="noopener noreferrer"
             >

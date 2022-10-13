@@ -87,7 +87,7 @@ export const Request = () => {
       <p className="sub">
         You can also find us on{" "}
         <a
-          href="https://discord.gg/YtafKzR"
+          href="https://discord.gg/Rt8ygmQ4fk"
           target="_blank"
           rel="noopener noreferrer"
         >
