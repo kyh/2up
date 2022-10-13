@@ -1,4 +1,4 @@
-# CoinOp
+# Trifles
 
 > Web frontend
 

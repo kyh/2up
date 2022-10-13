@@ -1,11 +1,11 @@
 import Head from "next/head";
 
-const url = "https://playhouse.gg";
+const url = "https://trifles.tv";
 const ogImage = `${url}/favicon/featured.png`;
 
 export const SEO = ({
   title = "",
-  siteTitle = "CoinOp",
+  siteTitle = "Trifles",
   description = "Create your own trivia quiz game and play with friends",
 }) => {
   const finalTitle = title ? `${title} | ${siteTitle}` : siteTitle;

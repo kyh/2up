@@ -10,8 +10,8 @@ import { deleteRoom } from "./utils/deleteRoom";
 import { startMediasoup } from "./utils/startMediasoup";
 import { HandlerMap, startRabbit } from "./utils/startRabbit";
 
-const log = debugModule("coinop:index");
-const errLog = debugModule("coinop:ERROR");
+const log = debugModule("trifles:index");
+const errLog = debugModule("trifles:ERROR");
 
 const rooms: MyRooms = {};
 

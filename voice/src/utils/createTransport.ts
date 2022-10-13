@@ -3,7 +3,7 @@ import { types } from "mediasoup";
 import { VoiceSendDirection } from "src/types";
 import { config } from "../config";
 
-const log = debugModule("coinop:create-transport");
+const log = debugModule("trifles:create-transport");
 
 export const transportToOptions = ({
   id,

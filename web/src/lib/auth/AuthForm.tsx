@@ -58,7 +58,7 @@ export const AuthForm = ({ isLogin }: Props) => {
             id="email"
             {...register("email", { required: true })}
             type="email"
-            placeholder="creator@playhouse.gg"
+            placeholder="creator@trifles.tv"
             error={!!errors.email}
             errorText="Email is required"
           />
