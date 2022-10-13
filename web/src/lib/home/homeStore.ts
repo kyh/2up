@@ -44,7 +44,7 @@ export const useHomeStore = create<HomeStore>()(
         set((state) => ({ ...state, accessToken })),
     }),
     {
-      name: "coinop-storage",
+      name: "trifles-storage",
     }
   )
 );

@@ -1,7 +1,7 @@
-[![GitHub last commit](https://img.shields.io/github/last-commit/kyh/coinop)](https://github.com/kyh/coinop)
+[![GitHub last commit](https://img.shields.io/github/last-commit/kyh/trifles)](https://github.com/kyh/trifles)
 [![Discord](https://img.shields.io/badge/Discord-Join%20Chat-%237289DA)](https://discord.gg/YtafKzR)
 
-# CoinOp
+# Trifles
 
 [🚀 Website]() | [App Store]() | [Play Store]()
 
