@@ -47,6 +47,7 @@ This project uses the following libraries and services:
 
 - Framework - [Next.js](https://nextjs.org)
 - Styling - [Styled Components](https://styled-components.com/)
-- Database - [Postgres (Supabase)](https://planetscale.com) + [Prisma](https://www.prisma.io)
-- Payments - [Stripe](https://stripe.com)
+- API - [TRPC](https://trpc.io/)
+- Database - [Postgres (Supabase)](https://supabase.com) + [Prisma](https://www.prisma.io)
 - Hosting - [Vercel](https://vercel.com)
+- Payments - [Stripe](https://stripe.com)
