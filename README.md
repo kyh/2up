@@ -1,7 +1,7 @@
-[![GitHub last commit](https://img.shields.io/github/last-commit/kyh/trifles)](https://github.com/kyh/trifles)
+[![GitHub last commit](https://img.shields.io/github/last-commit/kyh/truffles)](https://github.com/kyh/truffles)
 [![Discord](https://img.shields.io/badge/Discord-Join%20Chat-%237289DA)](https://discord.gg/Rt8ygmQ4fk)
 
-# Trifles
+# Truffles
 
 [🚀 Website]() | [App Store]() | [Play Store]()
 
