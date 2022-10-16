@@ -1,5 +1,5 @@
 {
-  "name": "trifles",
+  "name": "truffles",
   "scripts": {
     "dev:web": "npm run dev --prefix=web",
     "dev:voice": "npm run dev --prefix=voice",
