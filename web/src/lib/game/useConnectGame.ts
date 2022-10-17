@@ -1,17 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "~/utils/supabase";
-import { useAlert } from "~/components";
 import { useGameStore, GameStore, GameState } from "~/lib/game/gameStore";
 import { useHomeStore } from "~/lib/home/homeStore";
 import { useGetGame } from "~/lib/game/useGameActions";
-
-type GameChangePayload = {
-  new: {
-    state: GameState;
-  };
-};
 
 export const useConnectGame = (gameId: string) => {
   const playerChannelRef = useRef<RealtimeChannel | null>(null);
@@ -19,8 +11,6 @@ export const useConnectGame = (gameId: string) => {
   const [connectedPlayersChannel, setConnectedPlayersChannel] = useState(false);
   const [connectedGameChannel, setConnectedGameChannel] = useState(false);
   const { isSuccess, setGameState } = useGetGame(gameId);
-  const router = useRouter();
-  const alert = useAlert();
 
   const setPlayers = useGameStore((state) => state.setPlayers);
   const playerId = useHomeStore((state) => state.playerId);
@@ -68,9 +58,10 @@ export const useConnectGame = (gameId: string) => {
           table: "Game",
           filter: `id=eq.${gameId}`,
         },
-        (payload: GameChangePayload) => {
+        (payload) => {
+          const newState = payload.new as GameState;
           console.log("New game state:", payload.new);
-          setGameState(payload.new.state);
+          setGameState(newState);
         }
       )
       .subscribe(async (status: string) => {
@@ -79,7 +70,6 @@ export const useConnectGame = (gameId: string) => {
         }
       });
 
-    gameChannel.onError(handleError);
     gameChannelRef.current = gameChannel;
 
     return () => {
@@ -87,12 +77,6 @@ export const useConnectGame = (gameId: string) => {
       gameChannel.unsubscribe();
     };
   }, [gameId]);
-
-  const handleError = (reason: Error) => {
-    console.error(reason);
-    alert.show(`Error connecting to game: ${reason}`);
-    router.push("/");
-  };
 
   return {
     isLoaded: isSuccess && connectedPlayersChannel && connectedGameChannel,
