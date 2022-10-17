@@ -29,7 +29,7 @@ export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
     case VisibleQATypeMenu.Question:
       return (
         <QuestionTypeMenu
-          currentType={scene.questionType.slug}
+          currentType={scene.questionType}
           onSelectType={onSelectType}
           ref={ref}
         />
@@ -37,9 +37,9 @@ export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
     case VisibleQATypeMenu.Answer:
       return (
         <AnswerTypeMenu
-          currentType={scene.answerType.slug}
+          currentType={scene.answerType}
           onSelectType={onSelectType}
-          sceneAnswers={scene.sceneAnswers}
+          sceneAnswers={scene.answers}
           ref={ref}
         />
       );
