@@ -22,25 +22,6 @@
 └── /voice                       # Voice server
 ```
 
-### Install dependencies
-
-- [Node.js](https://nodejs.org/en) - LTS version recommended
-
-### Local Development
-
-```sh
-# Rename .env.example to .env and update variables
-mv .env.example web/.env
-
-# Installing dependencies
-npm install
-
-# To start the app
-npm run dev
-```
-
-This will start the [Next.js](https://nextjs.org) development server. When the above command completes you'll be able to view your website at `http://localhost:3000`
-
 ## Stack
 
 This project uses the following libraries and services:

@@ -1,6 +1,6 @@
 {
-  "name": "Truffles",
-  "short_name": "Truffles",
+  "name": "",
+  "short_name": "",
   "icons": [
     {
       "src": "/favicon/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#1A202C",
-  "background_color": "#1A202C",
+  "theme_color": "#f5eed6",
+  "background_color": "#f5eed6",
   "display": "standalone"
 }
