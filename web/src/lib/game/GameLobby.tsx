@@ -90,7 +90,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
       </PlayersContainer>
       {!isSpectate ? (
         <>
-          <NextButton onClick={onClickStart} disabled={!isLoading}>
+          <NextButton onClick={onClickStart} disabled={isLoading}>
             Start game
           </NextButton>
           <Modal
@@ -112,7 +112,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
                 </p>
                 <div className="game-id">{gameId}</div>
               </TitleContainer>
-              <Button fullWidth onClick={onStart} disabled={!isLoading}>
+              <Button fullWidth onClick={onStart} disabled={isLoading}>
                 Start anyways
               </Button>
             </StartModalBody>

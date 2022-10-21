@@ -39,7 +39,7 @@ export const Step3Play = ({
       />
       {firstPlayer && (
         <NextButton
-          disabled={firstPlayer.name !== playerName || !isLoading}
+          disabled={firstPlayer.name !== playerName || isLoading}
           onClick={handleNextStep}
           autoFocus
         >
