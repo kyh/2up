@@ -14,9 +14,9 @@ const Container = styled.div`
 `;
 
 const SpinnerStyles = styled.div`
-  width: 100px;
+  width: 140px;
   height: 30px;
-  border: 2px ${theme.ui.borderColor} solid;
+  border: 4px ${theme.ui.borderColor} solid;
   border-radius: ${theme.ui.borderWavyRadius};
   background-image: linear-gradient(
     45deg,
@@ -34,7 +34,7 @@ const SpinnerStyles = styled.div`
 
 const SpinnerText = styled.div`
   text-align: center;
-  margin-bottom: ${theme.spacings(1)};
+  margin-bottom: ${theme.spacings(2)};
 `;
 
 type Props = {
