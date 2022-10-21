@@ -1,7 +1,8 @@
-import type { Scene, PrismaClient } from "@prisma/client";
+import type { PrismaClient, Scene, SceneAnswer } from "@prisma/client";
 import { t, ServerError } from "~/server/trpc";
 import { z } from "zod";
 import { customAlphabet } from "nanoid";
+import { sampleSize } from "lodash";
 import { compareAnswer, upsert, calculateScore } from "~/lib/game/gameUtils";
 import type { GameState } from "~/lib/game/gameStore";
 
@@ -22,6 +23,22 @@ const findGameOrThrow = async (prisma: PrismaClient, gameId: string) => {
   return game;
 };
 
+type SceneWithAnswers = Scene & { answers: SceneAnswer[] };
+
+const convertScene = (scene: SceneWithAnswers) => {
+  return {
+    questionDescription: scene.questionDescription,
+    question: scene.question,
+    questionType: scene.questionType,
+    answerType: scene.answerType,
+    sceneAnswers: scene.answers.map((sa) => ({
+      id: sa.id,
+      content: sa.content,
+      isCorrect: sa.isCorrect,
+    })),
+  };
+};
+
 export const gameRouter = t.router({
   get: t.procedure
     .input(z.object({ gameId: z.string() }))
@@ -36,6 +53,13 @@ export const gameRouter = t.router({
         where: {
           id: input.packId,
         },
+        include: {
+          scenes: {
+            include: {
+              answers: true,
+            },
+          },
+        },
       });
 
       if (!pack) {
@@ -45,29 +69,8 @@ export const gameRouter = t.router({
         });
       }
 
-      let scenes: Scene[] = [];
-      if (pack.isRandom) {
-        scenes = await ctx.prisma.$queryRawUnsafe(
-          `SELECT * FROM "Scene" WHERE "packId"='${input.packId}' ORDER BY RANDOM() LIMIT ${pack.gameLength};`
-        );
-      } else {
-        scenes = await ctx.prisma.scene.findMany({
-          where: {
-            packId: input.packId,
-          },
-          orderBy: {
-            order: "asc",
-          },
-          take: pack.gameLength,
-        });
-      }
-
+      const scenes = sampleSize(pack.scenes, pack.gameLength);
       const [firstScene] = scenes;
-      const sceneAnswers = await ctx.prisma.sceneAnswer.findMany({
-        where: {
-          sceneId: firstScene.id,
-        },
-      });
 
       const gameState: GameState = {
         currentStep: 0,
@@ -77,22 +80,14 @@ export const gameRouter = t.router({
         submissions: [],
         duration: 45,
         startTime: Date.now(),
-        questionDescription: firstScene.questionDescription,
-        question: firstScene.question,
-        questionType: firstScene.questionType,
-        answerType: firstScene.answerType,
-        sceneAnswers: sceneAnswers.map((sa) => ({
-          id: sa.id,
-          content: sa.content,
-          isCorrect: sa.isCorrect,
-        })),
+        ...convertScene(firstScene),
       };
 
       const game = await ctx.prisma.game.create({
         data: {
           id: nanoid(),
           state: gameState,
-          gameScenes: scenes.map((s) => s.id),
+          gameScenes: scenes.map(convertScene),
           packId: input.packId,
         },
       });
@@ -140,19 +135,16 @@ export const gameRouter = t.router({
       const gameState = game.state as unknown as GameState;
 
       const nextScene = gameState.currentScene + 1;
-      const nextSceneId = game.gameScenes[nextScene];
+      const scene = game.gameScenes[nextScene] as
+        | ReturnType<typeof convertScene>
+        | undefined;
 
-      if (!nextSceneId) {
+      if (!scene) {
         return ctx.prisma.game.update({
           where: { id: input.gameId },
           data: { state: { ...gameState, currentStep: 0 }, isFinished: true },
         });
       }
-
-      const scene = await ctx.prisma.scene.findUnique({
-        where: { id: nextSceneId },
-        include: { answers: true },
-      });
 
       return ctx.prisma.game.update({
         where: { id: input.gameId },
@@ -164,15 +156,7 @@ export const gameRouter = t.router({
             submissions: [],
             duration: 45,
             startTime: Date.now(),
-            questionDescription: scene?.questionDescription,
-            question: scene?.question,
-            questionType: scene?.questionType,
-            answerType: scene?.answerType,
-            sceneAnswers: scene?.answers.map((sa) => ({
-              id: sa.id,
-              content: sa.content,
-              isCorrect: sa.isCorrect,
-            })),
+            ...scene,
           },
         },
       });
