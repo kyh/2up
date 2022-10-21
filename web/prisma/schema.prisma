@@ -108,9 +108,9 @@ enum AnswerType {
 }
 
 model Game {
-  id         String   @id @unique
+  id         String @id @unique
   state      Json // Current game state (see gameStore.ts)
-  gameScenes String[] // Generated pre-existing set of scenes for the game
+  gameScenes Json[] // Generated pre-existing set of scenes for the game
   history    Json[] // Game play by play history
 
   isStarted  Boolean @default(false)
