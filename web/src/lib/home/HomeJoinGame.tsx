@@ -30,7 +30,7 @@ export const HomeJoinGame = () => {
           placeholder="Game Code"
           defaultValue={gameId}
         />
-        <Button type="submit" disabled={!isLoading}>
+        <Button type="submit" disabled={isLoading}>
           Join existing game
         </Button>
       </Form>
