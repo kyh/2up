@@ -59,8 +59,8 @@ export const useConnectGame = (gameId: string) => {
           filter: `id=eq.${gameId}`,
         },
         (payload) => {
-          const newState = payload.new as GameState;
-          console.log("New game state:", payload.new);
+          const newState = payload.new.state as GameState;
+          console.log("New game state:", newState);
           setGameState(newState);
         }
       )
