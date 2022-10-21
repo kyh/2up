@@ -22,7 +22,7 @@ import { useStartGame } from "~/lib/game/useGameActions";
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const alert = useAlert();
   const router = useRouter();
-  const { startGame, isIdle } = useStartGame();
+  const { startGame, isLoading } = useStartGame();
   const gameState = useGameStore((state) => state.state);
   const players = useGameStore((state) => state.players);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,7 +90,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
       </PlayersContainer>
       {!isSpectate ? (
         <>
-          <NextButton onClick={onClickStart} disabled={!isIdle}>
+          <NextButton onClick={onClickStart} disabled={!isLoading}>
             Start game
           </NextButton>
           <Modal
@@ -112,7 +112,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
                 </p>
                 <div className="game-id">{gameId}</div>
               </TitleContainer>
-              <Button fullWidth onClick={onStart} disabled={!isIdle}>
+              <Button fullWidth onClick={onStart} disabled={!isLoading}>
                 Start anyways
               </Button>
             </StartModalBody>

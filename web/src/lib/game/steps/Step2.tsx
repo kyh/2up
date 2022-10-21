@@ -31,7 +31,7 @@ const Step2Play = ({
   playerId,
 }: StepProps) => {
   const desktop = useIsDesktop();
-  const { nextStep, isIdle } = useNextStep();
+  const { nextStep, isLoading } = useNextStep();
   const [showSubmissions, setShowSubmissions] = useState(false);
   const [animationSpriteName, setAnimationSpriteName] = useState<any>(null);
 
@@ -99,7 +99,7 @@ const Step2Play = ({
       )}
       {firstPlayer && (
         <NextButton
-          disabled={firstPlayer.name !== playerName || !isIdle}
+          disabled={firstPlayer.name !== playerName || !isLoading}
           onClick={handleNextStep}
           autoFocus
         >

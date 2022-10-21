@@ -21,7 +21,7 @@ export const Step3Play = ({
   playerName,
 }: StepProps) => {
   const [firstPlayer] = players;
-  const { nextScene, isIdle } = useNextScene();
+  const { nextScene, isLoading } = useNextScene();
 
   const handleNextStep = async () => {
     await nextScene(gameId);
@@ -39,7 +39,7 @@ export const Step3Play = ({
       />
       {firstPlayer && (
         <NextButton
-          disabled={firstPlayer.name !== playerName || !isIdle}
+          disabled={firstPlayer.name !== playerName || !isLoading}
           onClick={handleNextStep}
           autoFocus
         >
