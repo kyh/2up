@@ -25,6 +25,7 @@ const AlertTemplate = styled(motion.li)`
   background: ${theme.ui.alertBackground};
   padding: ${theme.spacings(3)};
   border-radius: ${theme.ui.borderWavyRadius};
+  max-width: 500px;
   display: flex;
   align-items: flex-start;
   animation: ${visible} 0s linear 0.1s forwards;
