@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Image from "next/future/image";
+import Image from "next/image";
 import { Link } from "~/components";
 import { theme } from "~/styles/theme";
 import { useAuth } from "~/lib/auth/useAuth";
