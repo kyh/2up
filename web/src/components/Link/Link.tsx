@@ -8,8 +8,8 @@ type Props = {
 
 export const Link = ({ children, href, ...rest }: Props) => {
   return (
-    <NextLink href={href}>
-      <a {...rest}>{children}</a>
+    <NextLink href={href} {...rest}>
+      {children}
     </NextLink>
   );
 };

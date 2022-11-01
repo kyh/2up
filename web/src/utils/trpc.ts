@@ -3,9 +3,6 @@ import { createTRPCNext } from "@trpc/next";
 import { NextPageContext } from "next";
 import superjson from "superjson";
 import { useHomeStore } from "~/lib/home/homeStore";
-
-// ℹ️ Type-only import:
-// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export
 import type { AppRouter } from "~/server/router";
 
 function getBaseUrl() {
