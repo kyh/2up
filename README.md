@@ -3,7 +3,7 @@
 
 # Truffles
 
-[🚀 Website]() | [App Store]() | [Play Store]()
+[🚀 Website](https://truffles.tv) | [App Store]() | [Play Store]()
 
 > A platform for real-time multiplayer trivia games 🎮
 

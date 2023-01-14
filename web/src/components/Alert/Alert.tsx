@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import styled from "styled-components";
-import create from "zustand";
-import shallow from "zustand/shallow";
+import { create } from "zustand";
+import { shallow } from "zustand/shallow";
 import { nanoid } from "nanoid";
 import { theme } from "~/styles/theme";
 import { visible } from "~/styles/animations";
