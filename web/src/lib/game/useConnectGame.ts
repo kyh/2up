@@ -24,14 +24,18 @@ export const useConnectGame = (gameId: string) => {
       .on("presence", { event: "sync" }, () => {
         const presenceState = playerChannel.presenceState();
 
-        const players = Object.values(presenceState).map(
-          ([p]) =>
-            ({
-              userId: p.userId,
-              name: p.name,
-              isSpectator: p.isSpectator,
-            } as GameStore["players"][0])
-        );
+        const players = Object.values(presenceState).map(([p]) => {
+          type LivePlayer = GameStore["players"][0] & {
+            isSpectator: boolean;
+          };
+          const player = p as unknown as LivePlayer;
+
+          return {
+            userId: player.userId,
+            name: player.name,
+            isSpectator: player.isSpectator,
+          };
+        });
 
         setPlayers(players);
       })
