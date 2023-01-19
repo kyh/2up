@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",
+    "@expo/webpack-config": "^0.17.2",
     "@my/ui": "*",
     "@types/react-native": "~0.70.6",
     "app": "*",
