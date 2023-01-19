@@ -1,1 +1,0 @@
-{"version":3,"file":"deleteRoom.js","sourceRoot":"","sources":["../../src/utils/deleteRoom.ts"],"names":[],"mappings":";;;AAEO,MAAM,UAAU,GAAG,CAAC,MAAc,EAAE,KAAc,EAAE,EAAE;IAC3D,IAAI,CAAC,CAAC,MAAM,IAAI,KAAK,CAAC,EAAE;QACtB,OAAO;KACR;IAED,OAAO,KAAK,CAAC,MAAM,CAAC,CAAC;AACvB,CAAC,CAAC;AANW,QAAA,UAAU,cAMrB"}
