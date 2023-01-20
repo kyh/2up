@@ -68,14 +68,14 @@ export const trpc = createTRPCNext<AppRouter, SSRContext>({
           url: `${getBaseUrl()}/api/trpc`,
           headers() {
             if (typeof window !== "undefined") {
-              const { accessToken } = useHomeStore.getState();
+              const { accessToken } = useHomeStore.getState()
               return {
                 ...(accessToken
                   ? { Authorization: `Bearer ${accessToken}` }
                   : {}),
-              };
+              }
             }
-            return {};
+            return {}
           },
         }),
       ],
@@ -83,34 +83,34 @@ export const trpc = createTRPCNext<AppRouter, SSRContext>({
        * @link https://react-query.tanstack.com/reference/QueryClient
        */
       // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
-    };
+    }
   },
   /**
    * @link https://trpc.io/docs/ssr
    */
-  ssr: true,
+  ssr: false,
   /**
    * Set headers or status code when doing SSR
    */
-  responseMeta(opts) {
-    const ctx = opts.ctx as SSRContext;
+  // responseMeta(opts) {
+  //   const ctx = opts.ctx as SSRContext;
 
-    if (ctx.status) {
-      // If HTTP status set, propagate that
-      return {
-        status: ctx.status,
-      };
-    }
+  //   if (ctx.status) {
+  //     // If HTTP status set, propagate that
+  //     return {
+  //       status: ctx.status,
+  //     };
+  //   }
 
-    const error = opts.clientErrors[0];
-    if (error) {
-      // Propagate http first error from API calls
-      return {
-        status: error.data?.httpStatus ?? 500,
-      };
-    }
+  //   const error = opts.clientErrors[0];
+  //   if (error) {
+  //     // Propagate http first error from API calls
+  //     return {
+  //       status: error.data?.httpStatus ?? 500,
+  //     };
+  //   }
 
-    // for app caching with SSR see https://trpc.io/docs/caching
-    return {};
-  },
-});
+  //   // for app caching with SSR see https://trpc.io/docs/caching
+  //   return {};
+  // },
+})

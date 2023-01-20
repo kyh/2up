@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
-const { withTamagui } = require('@tamagui/next-plugin')
-const withImages = require('next-images')
+const { withTamagui } = require("@tamagui/next-plugin")
 const withSvgr = require('next-plugin-svgr')
 const { join } = require('path')
 
