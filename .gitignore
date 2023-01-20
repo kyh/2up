@@ -6,6 +6,7 @@ node_modules
 .pnp.js
 .yarn 
 dist
+.tamagui
 
 # testing
 coverage
