@@ -53,10 +53,13 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/styled-components": "^5.1.7",
+    "autoprefixer": "^10.4.13",
     "csv-parse": "^5.3.3",
     "eslint": "^8.31.0",
     "eslint-config-next": "^13.1.2",
+    "postcss": "^8.4.21",
     "prisma": "^4.8.1",
+    "tailwindcss": "^3.2.4",
     "typescript": "^4.9.4"
   }
 }
