@@ -5,6 +5,7 @@ import { trpc } from "~/utils/trpc";
 import { StyleProvider } from "~/styles/global";
 import { AlertProvider, ProgressBar } from "~/components";
 import { AuthProvider } from "~/lib/auth/useAuth";
+import "../styles/globals.css";
 
 const progress = new ProgressBar();
 
