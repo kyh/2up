@@ -30,7 +30,7 @@ module.exports = {
       "desktop": "900px"
     },
     fontFamily:{
-      "sans": ["Chalkboard SE", ...defaultTheme.fontFamily.sans]
+      "sans": ["var(--font-chalkboard-se)", ...defaultTheme.fontFamily.sans]
     },
     borderRadius: {
       "wavy": "30px 2px 30% 3px / 4px 10px 3px 30px"
