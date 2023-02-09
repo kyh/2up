@@ -24,6 +24,7 @@
     "@trpc/client": "^10.9.0",
     "@trpc/next": "^10.9.0",
     "@trpc/server": "^10.9.0",
+    "@tw-classed/react": "^1.4.2",
     "framer-motion": "^8.4.3",
     "lodash": "^4.17.21",
     "nanoid": "^4.0.0",
