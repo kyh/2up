@@ -1,44 +1,20 @@
 import { motion, AnimatePresence } from "framer-motion";
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { create } from "zustand";
 import { shallow } from "zustand/shallow";
 import { nanoid } from "nanoid";
-import { theme } from "~/styles/theme";
-import { visible } from "~/styles/animations";
 
-const AlertContainer = styled.ul`
-  position: fixed;
-  top: ${theme.spacings(3)};
-  left: 0;
-  right: 0;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 10;
-`;
+const AlertContainer = classed.ul("fixed top-3 inset-x-0 flex flex-col justify-center items-center z-10");
 
-const AlertTemplate = styled(motion.li)`
-  color: ${theme.ui.alertText};
-  background: ${theme.ui.alertBackground};
-  padding: ${theme.spacings(3)};
-  border-radius: ${theme.ui.borderWavyRadius};
-  max-width: 500px;
-  display: flex;
-  align-items: flex-start;
-  animation: ${visible} 0s linear 0.1s forwards;
-  visibility: hidden;
-  cursor: pointer;
-`;
+const AlertTemplate = classed(
+  motion.li,
+  "text-white bg-black dark:text-black dark:bg-white",
+  "flex items-center cursor-pointer",
+  "p-3 rounded-wavy max-w-[500px]",
+  "animate-[visible_0s_ease-linear_delay-100_forwards]"
+);
 
-export const Alert = styled(AlertTemplate)`
-  position: absolute;
-  top: ${theme.spacings(3)};
-  left: 50%;
-  transform: translateX(-50%);
-`;
+export const Alert = classed(AlertTemplate, "absolute top-3 left-1/2 -translate-x-1/2");
 
 type AlertOptions = {
   type?: "success" | "error" | "info";
