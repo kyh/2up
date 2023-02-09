@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { classed } from "@tw-classed/react";
 import styled from "styled-components";
 import {
   Link,
@@ -175,11 +176,7 @@ const PlayersContainer = styled(PlayersGrid)`
   }
 `;
 
-const Explosion = styled(AnimationSprite)`
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
+const Explosion = classed(AnimationSprite, "top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2");
 
 const StartModalBody = styled.div`
   p {
