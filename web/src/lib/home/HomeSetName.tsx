@@ -28,9 +28,8 @@ export const HomeSetName = () => {
     <SectionBody>
       <Form className="set-name-form" onSubmit={handleSubmit(onSubmit)}>
         <Avatar
-          className="set-name-avatar"
           name={watchName}
-          expandOnDesktop={false}
+          type={"setName"}
         />
         <Input
           {...register("name", { required: true })}
@@ -62,12 +61,6 @@ const SectionBody = styled.div`
 
   .set-name-form {
     gap: ${theme.spacings(1)};
-  }
-
-  .set-name-avatar {
-    width: 100px;
-    height: 100px;
-    margin-bottom: ${theme.spacings(2)};
   }
 `;
 

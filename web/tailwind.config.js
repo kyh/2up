@@ -201,10 +201,11 @@ module.exports = {
   },
   plugins: [
     require('tailwind-scrollbar'),
-    function({addVariant}){
+    function ({ addVariant }) {
       addVariant("child", "& > *");
       addVariant("child-hover", "& > *:hover");
       addVariant("child-active", "& > *:active");
+      addVariant("svg-path", "& path");
     }
   ],
 };
