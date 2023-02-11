@@ -1,6 +1,4 @@
 import { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
 import Prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
 
@@ -61,15 +59,16 @@ export const Code = ({ content, editable, onFocus, onBlur }: Props) => {
   };
 
   const codeBlock = (
-    <pre>
+    <pre className="min-h-[56px]">
       <code className={`language-${language}`}>{code}</code>
     </pre>
   );
 
   if (editable) {
     return (
-      <EditableCodeContainer>
+      <div className="relative">
         <select
+          className="absolute right-2 top-2 z-[1]"
           value={language}
           onChange={onSelectLanguage}
           onBlur={onCodeBlur}
@@ -225,6 +224,7 @@ export const Code = ({ content, editable, onFocus, onBlur }: Props) => {
           <option value="yaml">YAML</option>
         </select>
         <textarea
+          className="w-full h-full p-[1em] absolute bg-transparent text-transparent caret-black dark:caret-white font-code text-[1em] text-left whitespace-pre leading-normal break-normal resize-none min-h-[56px]"
           onChange={onCodeChange}
           onFocus={onFocus}
           value={code}
@@ -232,44 +232,9 @@ export const Code = ({ content, editable, onFocus, onBlur }: Props) => {
           onKeyDown={onCodeKeyDown}
         />
         {codeBlock}
-      </EditableCodeContainer>
+      </div>
     );
   }
 
   return codeBlock;
 };
-
-const EditableCodeContainer = styled.div`
-  position: relative;
-
-  > textarea {
-    width: 100%;
-    height: 100%;
-    padding: 1em;
-    position: absolute;
-    background-color: hsl(0deg 0% 0% / 0%);
-    color: hsl(0deg 0% 0% / 0%);
-    caret-color: ${theme.ui.text};
-    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-    font-size: 1em;
-    text-align: left;
-    white-space: pre;
-    word-spacing: normal;
-    word-break: normal;
-    word-wrap: normal;
-    line-height: 1.5;
-    resize: none;
-    min-height: 56px;
-  }
-
-  > pre {
-    min-height: 56px;
-  }
-
-  > select {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    z-index: 1;
-  }
-`;
