@@ -2,7 +2,7 @@ import { classed } from "@tw-classed/react";
 
 // Delay and duration can be modified by tw-classes
 export const AnimationSprite = classed.div(
-  "absolute pointer-events-none bg-transparent, bg-no-repeat w-sprite h-sprite",
+  "absolute pointer-events-none bg-transparent bg-no-repeat w-sprite h-sprite",
   {
     variants: {
       name: {
