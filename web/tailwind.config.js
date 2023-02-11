@@ -35,7 +35,8 @@ module.exports = {
         "sprite": "185px"
       },
       fontFamily: {
-        "sans": ["var(--font-chalkboard-se)", ...defaultTheme.fontFamily.sans]
+        "sans": ["var(--font-chalkboard-se)", ...defaultTheme.fontFamily.sans],
+        "code": ["Consolas", "Monaco", "Andale Mono", "Ubuntu Mono", "monospace"]
       },
       borderRadius: {
         "wavy": "30px 2px 30% 3px / 4px 10px 3px 30px"
@@ -198,5 +199,12 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+    function({addVariant}){
+      addVariant("child", "& > *");
+      addVariant("child-hover", "& > *:hover");
+      addVariant("child-active", "& > *:active");
+    }
+  ],
 };
