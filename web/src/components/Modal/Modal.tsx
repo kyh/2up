@@ -34,7 +34,7 @@ export const Modal = ({
           leaveTo="opacity-0"
         >
           {/* backdroop */}
-          <div className="fixed inset-0 bg-[#000] opacity-30" />
+          <div className="fixed inset-0 bg-[#000]/30" />
         </Transition.Child>
 
         {/* panel-fixed-container */}
