@@ -20,7 +20,7 @@ import svg15 from "./svgs/15.svg";
 import svg16 from "./svgs/16.svg";
 
 const StyledIcon = classed.div(
-  "flex justify-center items-end rounded-full overflow-hidden p-2 border-2 border-black dark:border-white",{
+  "flex justify-center items-end rounded-full overflow-hidden p-2 border-2 border-grey-dark dark:border-grey-light",{
     variants:{
       type: {
         default: "w-20 h-20",
