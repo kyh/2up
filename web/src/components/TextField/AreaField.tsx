@@ -1,13 +1,6 @@
 import { ReactNode, ChangeEventHandler, forwardRef } from "react";
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 import { Input } from "../Input/Input";
-
-const Field = styled.fieldset`
-  .error {
-    color: ${theme.colors.red};
-  }
-`;
 
 type Props = {
   id?: HTMLTextAreaElement["id"];
@@ -27,7 +20,7 @@ export const AreaField = forwardRef<HTMLTextAreaElement, Props>(
     ref
   ) {
     return (
-      <Field>
+      <fieldset>
         <label htmlFor={id}>{labelText}</label>
         <Textarea
           id={id}
@@ -36,15 +29,10 @@ export const AreaField = forwardRef<HTMLTextAreaElement, Props>(
           as="textarea"
           {...rest}
         />
-        {error && <div className="error">{errorText}</div>}
-      </Field>
+        {error && <div className="text-red">{errorText}</div>}
+      </fieldset>
     );
   }
 );
 
-const Textarea = styled(Input)`
-  resize: vertical;
-  min-height: 150px;
-  line-height: 1.6;
-  padding: ${theme.spacings(3)} ${theme.spacings(4)};
-`;
+const Textarea = classed(Input, "resize-y min-h-[150px] leading-[1.6rem] py-3 px-4");
