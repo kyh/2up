@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
 import { classed } from "@tw-classed/react";
 import { nanoid } from "nanoid";
 import { useMutation } from "~/utils/mock";
-import { theme } from "~/styles/theme";
 
 type DragAndDropProps = {
   onFileDrop: (_files: File[]) => void;
