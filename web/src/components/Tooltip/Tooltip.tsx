@@ -1,16 +1,11 @@
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 import { Float, FloatProps } from "@headlessui-float/react";
 import { useState } from "react";
 
-export const Tooltip = styled.div`
-  color: ${theme.ui.alertText};
-  background: ${theme.ui.alertBackground};
-  padding: ${theme.spacings(3)};
-  border-radius: ${theme.ui.borderWavyRadius};
-  display: flex;
-  align-items: flex-start;
-`;
+export const Tooltip = classed.div(
+  "flex items-start rounded-wavy p-3",
+  "text-white dark:text-black bg-black dark:bg-white"
+);
 
 type Props = {
   children: React.ReactNode;
