@@ -1,13 +1,5 @@
 import { ReactNode, forwardRef } from "react";
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
 import { Input } from "../Input/Input";
-
-export const Field = styled.fieldset`
-  .error {
-    color: ${theme.colors.red};
-  }
-`;
 
 type Props = {
   id?: HTMLInputElement["id"];
@@ -26,7 +18,7 @@ export const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
   ref
 ) {
   return (
-    <Field>
+    <fieldset>
       <label htmlFor={id}>{labelText}</label>
       <Input
         id={id}
@@ -35,7 +27,7 @@ export const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
         ref={ref}
         {...rest}
       />
-      {error && <div className="error">{errorText}</div>}
-    </Field>
+      {error && <div className="text-red">{errorText}</div>}
+    </fieldset>
   );
 });
