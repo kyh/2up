@@ -97,7 +97,6 @@ export const SingleLetterInput = ({
       return (
         <InputBox
           key={i}
-          className="letter"
           type="text"
           onKeyDown={onKeyDown}
           onChange={onChange}
