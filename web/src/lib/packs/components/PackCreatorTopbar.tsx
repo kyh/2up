@@ -59,7 +59,7 @@ export const Topbar = ({ pack, testPlay }: Props) => {
       </div>
       <div className="right">
         <div>
-          <Loader loading={savingScene} />
+          <Loader className="absolute left-4 top-4 text-grey dark:text-grey-light" loading={savingScene} />
         </div>
         <button type="button" onClick={() => setIsOpen(true)}>
           <h4 className="pack-title">{pack?.name}</h4>
@@ -115,12 +115,6 @@ const StyledNavigationContainer = styled(NavigationContainer)`
   }
   .right-actions {
     display: flex;
-  }
-  .loader {
-    position: absolute;
-    left: ${theme.spacings(4)};
-    top: ${theme.spacings(4)};
-    color: ${theme.ui.textGrey};
   }
   .pack-ext-button {
     margin-right: ${theme.spacings(2)};

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 
 const STATES = {
   default: "default",
@@ -22,16 +22,12 @@ export const Loader = ({ loading = false, ...rest }) => {
   }, [state, loading]);
 
   return (
-    <LoaderContainer className="loader" {...rest}>
+    <LoaderContainer {...rest}>
       {state === STATES.loading && "Saving..."}
       {state === STATES.done && "Saved"}
     </LoaderContainer>
   );
 };
 
-const LoaderContainer = styled.div`
-  .icon,
-  .loading-svg {
-    transition: opacity 0.2s ease;
-  }
-`;
+const LoaderContainer = classed.div("child:transition-opacity child:duration-200 child:ease-[ease]");
+
