@@ -1,7 +1,6 @@
 import { Fragment, ReactNode } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import { classed } from "@tw-classed/react";
 import { Dialog, Transition } from "@headlessui/react";
-import { spacings, theme } from "~/styles/theme";
 import { Button } from "~/components/Button/Button";
 import { Icon } from "~/components/Icon/Icon";
 
@@ -24,9 +23,7 @@ export const Modal = ({
 }: Props) => {
   return (
     <Transition appear show={open} as={Fragment}>
-      <Dialog className="dialog" as="div" onClose={onClose}>
-        <ModalStyle />
-
+      <Dialog className="relative z-10" as="div" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-100"
@@ -36,11 +33,14 @@ export const Modal = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="backdrop" />
+          {/* backdroop */}
+          <div className="fixed inset-0 bg-[#000] opacity-30" />
         </Transition.Child>
 
-        <div className="panel-fixed-container">
-          <div className="panel-container">
+        {/* panel-fixed-container */}
+        <div className="fixed inset-0 overflow-y-auto">
+          {/* panel-container */}
+          <div className="flex min-h-full text-center justify-center p-4">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-100"
@@ -50,7 +50,10 @@ export const Modal = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="panel" style={{ maxWidth }}>
+              <Dialog.Panel
+                className="flex flex-col absolute top-10 left-5 right-5 border-2 border-black dark:border-white max-w-[600px] bg-grey-dark rounded-wavy outline-none mx-auto"
+                style={{ maxWidth }}
+              >
                 {closeButton && (
                   <CloseButton variant="fab" onClick={onClose}>
                     <Icon icon="close" />
@@ -67,80 +70,15 @@ export const Modal = ({
   );
 };
 
-const ModalStyle = createGlobalStyle`
-  .dialog {
-    position: relative;
-    z-index: 10;
-  }
 
-  .panel-container {
-    display: flex;
-    min-height: 100%;
-    align-items: center;
-    justify-content: center;
-    padding: ${spacings(4)};
-  }
+const CloseButton = classed(Button, "absolute -right-5 -top-5 rounded-full bg-white dark:bg-black");
 
-  .panel {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 40px;
-    left: 20px;
-    right: 20px;
-    border: 2px solid ${theme.ui.modalBorder};
-    max-width: 600px;
-    background: ${theme.colors.greyDark};
-    border-radius: ${theme.ui.borderWavyRadius};
-    outline: none;
-    margin: 0 auto;
-  }
+const ModalHeader = classed.header(
+  "flex justify-center items-center text-[1.1rem] text-white p-3",
+  "[text-shadow:-1px_1px_0_#1a1919,_1px_1px_0_#1a1919,_1px_-1px_0_#1a1919,_-1px_-1px_0_#1a1919]"
+);
 
-  .panel-fixed-container,
-  .backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  .panel-fixed-container {
-    overflow-y: auto;
-  }
-
-  .backdrop {
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-`;
-
-const CloseButton = styled(Button)`
-  position: absolute;
-  right: -20px;
-  top: -20px;
-  background-color: ${theme.ui.modalBackground};
-  border-radius: 100%;
-`;
-
-const ModalHeader = styled.header`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.1rem;
-  color: ${theme.colors.white};
-  padding: ${theme.spacings(3)};
-  text-shadow: -1px 1px 0 #1a1919, 1px 1px 0 #1a1919, 1px -1px 0 #1a1919,
-    -1px -1px 0 #1a1919;
-`;
-
-const ModalBody = styled.section`
-  height: 100%;
-  max-height: 550px;
-  background: ${theme.ui.modalBackground};
-  border: 2px solid ${theme.ui.modalBorder};
-  padding: ${theme.spacings(3)};
-  margin: 0 ${theme.spacings(3)} ${theme.spacings(3)};
-  border-radius: ${theme.ui.borderWavyRadius};
-  overflow: auto;
-  -webkit-overflow-scroll: touch;
-`;
+const ModalBody = classed.section(
+  "h-full max-h-[550px] bg-white dark:bg-black border-2 border-black dark:border-white",
+  "p-3 mx-3 mb-3 rounded-wavy overflow-auto"
+);
