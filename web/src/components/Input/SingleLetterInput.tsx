@@ -1,5 +1,5 @@
 import { KeyboardEvent } from "react";
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./Input";
 
@@ -117,13 +117,6 @@ export const SingleLetterInput = ({
   return <InputContainer className={className}>{renderItems()}</InputContainer>;
 };
 
-const InputContainer = styled.div`
-  display: flex;
-`;
+const InputContainer = classed.div("flex");
 
-const InputBox = styled(Input)`
-  padding: 0;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-`;
+const InputBox = classed(Input, "p-0 w-12 h-12 text-center");
