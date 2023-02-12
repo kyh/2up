@@ -1,5 +1,5 @@
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from "react";
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { theme } from "~/styles/theme";
 
 type Props = {
@@ -76,9 +76,12 @@ export const TagInput = ({
   return (
     <InputContainer>
       {tags.map((tag) => (
-        <div className="tag" key={tag}>
+        <div
+          className="flex items-center my-2 mr-3 px-3 pr-1 bg-purple-background dark:bg-purple-dark whitespace-nowrap"
+          key={tag}
+        >
           {tag}
-          <button onClick={() => deleteTag(tag)}>x</button>
+          <button className="flex p-1" onClick={() => deleteTag(tag)}>x</button>
         </div>
       ))}
       <input
@@ -90,46 +93,13 @@ export const TagInput = ({
         onKeyUp={onKeyUp}
         onChange={onChange}
         onBlur={addTag}
+        className="w-full min-w-[50%] p-3 pl-2 text-black dark:text-white bg-transparent border-none focus:outline-none"
       />
     </InputContainer>
   );
 };
 
-const InputContainer = styled.div`
-  display: flex;
-  overflow: scroll;
-  width: 100%;
-  max-width: 100%;
-  padding-left: ${theme.spacings(2)};
-  border: 2px ${theme.ui.borderColor} solid;
-  border-radius: ${theme.ui.borderWavyRadius};
-
-  input {
-    width: 100%;
-    min-width: 50%;
-    padding: ${theme.spacings(3)};
-    padding-left: ${theme.spacings(2)};
-    color: ${theme.ui.text};
-    background: transparent;
-    border: none;
-    &:focus {
-      outline: none;
-    }
-  }
-
-  .tag {
-    display: flex;
-    align-items: center;
-    margin: ${theme.spacings(2)} 0;
-    margin-right: ${theme.spacings(3)};
-    padding: 0 ${theme.spacings(3)};
-    padding-right: ${theme.spacings(1)};
-    background-color: ${theme.ui.backgroundPurple};
-    white-space: nowrap;
-  }
-
-  .tag button {
-    display: flex;
-    padding: ${theme.spacings(1)};
-  }
-`;
+const InputContainer = classed.div(
+  "flex overflow-scroll w-full max-w-full pl-2",
+  "border-2 border-black dark:border-white rounded-wavy"
+);
