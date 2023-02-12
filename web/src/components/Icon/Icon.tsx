@@ -45,45 +45,48 @@ export const iconMap = {
 };
 
 type IconType = keyof typeof iconMap;
-type IconSizeType = "xs" | "sm" | "md" | "lg" | number;
 
-const iconSizeMap = {
-  xs: "w-3 h-3",
-  sm: "w-4 h-4",
-  md: "w-6 h-6",
-  lg: "w-10 h-10",
-};
-const getDimensions = (iconSize: IconSizeType) => {
-  if (typeof iconSize === "number") return `w-[${iconSize}px] h-[${iconSize}px]`;
-  return iconSizeMap[iconSize];
-};
-
-const StyledIcon = classed.div("inline-flex p-1 border-2 border-grey-dark dark:border-grey-light rounded-full");
+const StyledIcon = classed.div(
+    "inline-flex p-1 border-2 border-grey-dark dark:border-grey-light rounded-full",
+    "child:transition-[fill] child:duration-[0.23s] child:ease-[ease]",
+    {
+      variants:{
+        rotate:{
+          default: "child:rotate-0",
+          class: ""
+        },
+        fillColor: {
+          default: "svg-path:fill-black dark:svg-path:fill-white",
+          class: ""
+        },
+        size: {
+          default: "child:w-auto child:h-auto",
+          xs: "child:w-3 child:h-3",
+          sm: "child:w-4 child:h-4",
+          md: "child:w-6 child:h-6",
+          lg: "child:w-10 child:h-10",
+          class: ""
+        }
+      },
+      defaultVariants: {
+        rotate: "default",
+        fillColor: "default",
+        size: "default",
+      }
+    },
+  );
 
 type Props = ComponentProps<typeof StyledIcon> &
 {
   icon: IconType;
-  // The color is expected to be a tailwind color
-  color?: string;
-  size?: IconSizeType;
-  rotate?: string;
 };
 
-export const Icon = deriveClassed<typeof StyledIcon, Props>(({ icon, color, size, rotate, ...rest }, ref) => {
+export const Icon = deriveClassed<typeof StyledIcon, Props>(({ icon, ...rest }, ref) => {
   const IconSvg = iconMap[icon];
   if (!IconSvg) return null;
-
-  const StyledSvg = classed(
-    IconSvg,
-    `rotate-[${rotate || 0}deg]`,
-    `transition-[fill] duration-[0.23s] ease-[ease]`,
-    `${color ? "svg-path:fill-" + color : "svg-path:fill-black dark:svg-path:fill-white"}`,
-    `${size ? getDimensions(size) : "w-auto h-auto"}`
-  );
-
   return (
     <StyledIcon {...rest} ref={ref}>
-      <StyledSvg />
+      <IconSvg />
     </StyledIcon>
   );
 });
