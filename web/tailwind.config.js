@@ -176,6 +176,21 @@ module.exports = {
           "from": { backgroundPosition: "40px 0" }, 
           "to": { backgroundPosition: "0 0" }, 
         },
+        "scale-animation": { 
+          "0%": { transform: "scaleX(1)" }, 
+          "50%": { transform: "scaleX(0.95)" }, 
+          "100%": { transform: "scaleX(1)" }, 
+        },
+        "eye-animation": { 
+          "0%": { transform: "translate(0)" }, 
+          "50%": { transform: "translate(3px, 0)" }, 
+          "100%": { transform: "translate(0)" }, 
+        },
+        "move-animation": { 
+          "from": { transform: "translate(100vw)" }, 
+          "to": { transform: "translate(0vw)" }, 
+        },
+        "dust-animation": { "100%": { backgroundPositionX: "right" } },
       },
       animation: {
         "bubble-explosion-3": "bubble-explosion-3 1s steps(17) 1 forwards",
@@ -188,6 +203,7 @@ module.exports = {
         "bubble-dislike": "bubble-dislike 1.5s steps(49) 1 forwards",
         "bubble-cry-emoji": "bubble-cry-emoji 1.5s steps(49) 1 forwards",
         "bubble-bubble-like": "bubble-like 1.5s steps(49) 1 forwards",
+        "dust": "dust-animation 1s steps(29) infinite forwards",
       },
       backgroundImage: {
         "bubble-explosion-3": "url('/sprites/bubble-explosion-03/spritesheet.png')",
@@ -200,6 +216,7 @@ module.exports = {
         "bubble-dislike": "url('/sprites/bubble-dislike/spritesheet.png')",
         "bubble-cry-emoji": "url('/sprites/bubble-cry-emoji/spritesheet.png')",
         "bubble-like": "url('/sprites/bubble-like/spritesheet.png')",
+        "dust": "url('/sprites/dust.svg')",
         "spinner-gradient-light": "linear-gradient(45deg, #2D3748 25%, transparent 25%, transparent 50%, #2D3748 50%, #2D3748 75%, transparent 75%, transparent)",
         "spinner-gradient-dark": "linear-gradient(45deg, #CBD5E0 25%, transparent 25%, transparent 50%, #CBD5E0 50%, #CBD5E0 75%, transparent 75%, transparent)",
       },
