@@ -32,10 +32,7 @@ export const Timer = ({
   return typeof window !== "undefined"
     ? createPortal(
         <Container>
-          <TimerContainer 
-            style={{ "--initialSeconds": `${initialSeconds}s` } as React.CSSProperties}
-            className="animate-[move-animation_var(--initialSeconds)_linear_infinite] [animation-iteration-count:1]"
-          >
+          <TimerContainer style={{ "--initialSeconds": `${initialSeconds}s` } as React.CSSProperties}>
             <SnailContainer>
               <div>
                 <SnailSvg />
