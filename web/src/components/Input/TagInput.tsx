@@ -1,6 +1,5 @@
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from "react";
 import { classed } from "@tw-classed/react";
-import { theme } from "~/styles/theme";
 
 type Props = {
   defaultTags?: string[];
