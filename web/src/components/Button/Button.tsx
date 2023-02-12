@@ -11,7 +11,7 @@ const StyledButton = classed.button(
   "disabled:brightness-50 disabled:cursor-not-allowed disabled:animate-none",
   "disabled:hover:animate-none", {
   variants: {
-    variants: {
+    variant: {
       default: "p-4",
       fab: "p-1"
     },
@@ -21,7 +21,7 @@ const StyledButton = classed.button(
     }
   },
   defaultVariants: {
-    variants: "default",
+    variant: "default",
     fullWidth: "false"
   }
 });
