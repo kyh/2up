@@ -1,54 +1,24 @@
-import styled, { css } from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 
-enum Variants {
-  default = "default",
-  rounded = "rounded",
+export const Input = classed.input(
+  "leading-[50px] text-black dark:text-white bg-white dark:bg-black",
+  "focus:outline-none",
+  "read-only:brightness-50 read-only:cursor-not-allowed",
+  // Temprory border for both default and rounded variants
+  "border-2 border-black dark:border-white", {
+  variants: {
+    fullWidth: {
+      true: "w-full",
+      false: "w-auto"
+    },
+    variant: {
+      default: "px-4",
+      rounded: "py-4 px-6"
+    }
+  },
+  defaultVariants: {
+    fullWidth: "false",
+    variant: "default"
+  }
 }
-
-type Props = {
-  variant?: keyof typeof Variants;
-  fullWidth?: boolean;
-};
-
-const renderRegularStyles = () => {
-  return css`
-    border-image-slice: 4 4 3 5 fill;
-    border-image-width: 5px;
-    border-image-outset: 0;
-    border-image-repeat: stretch stretch;
-    border-image-source: ${theme.ui.inputBorderUrl};
-  `;
-};
-
-const renderRoundedStyles = () => {
-  return css`
-    padding: ${theme.spacings(4)} ${theme.spacings(6)};
-    border-image-slice: 3 1 3 1 fill;
-    border-image-width: 5px;
-    border-image-outset: 0;
-    border-image-repeat: stretch stretch;
-    border-image-source: ${theme.ui.inputBorderRoundedUrl};
-  `;
-};
-
-export const Input = styled.input<Props>`
-  padding: 0 ${theme.spacings(4)};
-  line-height: 50px;
-  color: ${theme.ui.buttonText};
-  background-color: ${theme.ui.buttonBackground};
-  width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
-  ${({ variant = Variants.default }) =>
-    variant === Variants.default
-      ? renderRegularStyles()
-      : renderRoundedStyles()}
-
-  &:focus {
-    outline: none;
-  }
-
-  &:read-only {
-    filter: brightness(0.5);
-    cursor: not-allowed;
-  }
-`;
+);
