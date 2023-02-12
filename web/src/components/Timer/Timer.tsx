@@ -32,12 +32,9 @@ export const Timer = ({
   return typeof window !== "undefined"
     ? createPortal(
         <Container>
-          {/* Timer container */}
-          <div 
-            style={{
-              animation: `move-animation ${initialSeconds}s linear infinite`,
-              animationIterationCount: 1
-            }}
+          <TimerContainer 
+            style={{ "--initialSeconds": `${initialSeconds}s` } as React.CSSProperties}
+            className="animate-[move-animation_var(--initialSeconds)_linear_infinite] [animation-iteration-count:1]"
           >
             <SnailContainer>
               <div>
@@ -46,12 +43,14 @@ export const Timer = ({
               <Dust />
             </SnailContainer>
             <div>{seconds} seconds remaining</div>
-          </div>
+          </TimerContainer>
         </Container>,
         document.body
       )
     : null;
 };
+
+const TimerContainer = classed.div("animate-[move-animation_var(--initialSeconds)_linear_infinite] [animation-iteration-count:1]")
 
 const Container = classed.div(
   "absolute inset-x-0 bottom-0 overflow-hidden pointer-events-none desktop:bottom-5"
