@@ -1,6 +1,6 @@
 import { classed } from "@tw-classed/react";
 
-const CheckboxContainer = classed.label("relative inline-block p-3 m-0 checkbox path")
+const CheckboxContainer = classed.label("relative inline-block p-3 m-0")
 
 const CheckboxInput = classed.input(
   "peer w-[21px] h-[21px] block appearance-none relative outline-none border-none m-0 p-0",
