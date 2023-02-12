@@ -1,9 +1,4 @@
-import styled, {
-  css,
-  StyledComponentProps,
-  DefaultTheme,
-} from "styled-components";
-import { theme, colors } from "~/styles/theme";
+import { classed, deriveClassed, ComponentProps } from "@tw-classed/react";
 
 import setting from "./svgs/setting.svg";
 import close from "./svgs/close.svg";
@@ -25,18 +20,6 @@ import loop from "./svgs/loop.svg";
 import loopOff from "./svgs/loop-off.svg";
 import volume from "./svgs/volume.svg";
 import volumeMute from "./svgs/volume-mute.svg";
-
-type Props = StyledComponentProps<
-  "div",
-  DefaultTheme,
-  {
-    icon: IconType;
-    color?: keyof typeof colors;
-    size?: IconSizeType;
-    rotate?: string;
-  },
-  never
->;
 
 export const iconMap = {
   setting: setting,
@@ -62,61 +45,44 @@ export const iconMap = {
 };
 
 type IconType = keyof typeof iconMap;
-type IconSizeType = "xs" | "sm" | "md" | "lg" | number;
-
-export const Icon = ({ icon, color, size, rotate, ...rest }: Props) => {
-  const IconSvg = iconMap[icon];
-  if (!IconSvg) return null;
-  return (
-    <StyledIcon
-      className="icon"
-      iconColor={color}
-      iconSize={size}
-      rotate={rotate}
-      {...rest}
-    >
-      <IconSvg />
-    </StyledIcon>
-  );
-};
-
-type StyledProps = {
-  iconColor?: keyof typeof colors;
-  iconSize?: IconSizeType;
-  rotate?: string;
-};
 
 const iconSizeMap = {
-  xs: "12px",
-  sm: "16px",
-  md: "24px",
-  lg: "40px",
+  xs: "w-3 h-3",
+  sm: "w-4 h-4",
+  md: "w-6 h-6",
+  lg: "w-10 h-10",
 };
-
-const getDimensions = (iconSize: IconSizeType) => {
-  if (typeof iconSize === "number") return `${iconSize}px`;
+const getDimensions = (iconSize: keyof typeof iconSizeMap) => {
+  if (typeof iconSize === "number") return `w-[${iconSize}px] h-[${iconSize}px]`;
   return iconSizeMap[iconSize];
 };
 
-const getSvgStyles = (props: StyledProps) => {
-  const { iconSize, iconColor, rotate } = props;
+const StyledIcon = classed.div("inline-flex p-1");
 
-  return css`
-    width: ${iconSize ? getDimensions(iconSize) : "initial"};
-    height: ${iconSize ? getDimensions(iconSize) : "initial"};
-    transform: rotate(${rotate || 0});
-    transition: fill 0.23s ease;
-    path {
-      fill: ${iconColor ? theme.colors[iconColor] : "currentColor"};
-    }
-  `;
+type Props = ComponentProps<typeof StyledIcon> &
+{
+  icon: IconType;
+  // The color is expected to be a tailwind color
+  color?: string;
+  size?: keyof typeof iconSizeMap;
+  rotate?: string;
 };
 
-const StyledIcon = styled.div<StyledProps>`
-  display: inline-flex;
-  padding: ${theme.spacings(1)};
+export const Icon = deriveClassed<typeof StyledIcon, Props>(({ icon, color, size, rotate, ...rest }, ref) => {
+  const IconSvg = iconMap[icon];
+  if (!IconSvg) return null;
 
-  > svg {
-    ${getSvgStyles}
-  }
-`;
+  const StyledSvg = classed(
+    IconSvg,
+    `rotate-[${rotate || 0}deg]`,
+    `transition-[fill] duration-[0.23s] ease-[ease]`,
+    `svg-path:fill-${color || "current"}`,
+    `${size ? getDimensions(size) : "w-auto h-auto"}`
+  );
+
+  return (
+    <StyledIcon {...rest} ref={ref}>
+      <StyledSvg />
+    </StyledIcon>
+  );
+});
