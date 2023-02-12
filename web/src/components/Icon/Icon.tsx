@@ -58,7 +58,7 @@ const getDimensions = (iconSize: IconSizeType) => {
   return iconSizeMap[iconSize];
 };
 
-const StyledIcon = classed.div("inline-flex p-1");
+const StyledIcon = classed.div("inline-flex p-1 border-2 border-grey-dark dark:border-grey-light rounded-full");
 
 type Props = ComponentProps<typeof StyledIcon> &
 {
@@ -77,7 +77,7 @@ export const Icon = deriveClassed<typeof StyledIcon, Props>(({ icon, color, size
     IconSvg,
     `rotate-[${rotate || 0}deg]`,
     `transition-[fill] duration-[0.23s] ease-[ease]`,
-    `svg-path:fill-${color || "current"}`,
+    `${color ? "svg-path:fill-" + color : "svg-path:fill-black dark:svg-path:fill-white"}`,
     `${size ? getDimensions(size) : "w-auto h-auto"}`
   );
 

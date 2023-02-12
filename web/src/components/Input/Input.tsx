@@ -5,7 +5,7 @@ export const Input = classed.input(
   "focus:outline-none",
   "read-only:brightness-50 read-only:cursor-not-allowed",
   // Temprory border for both default and rounded variants
-  "border-2 border-black dark:border-white", {
+  "border-2 border-grey-dark dark:border-grey-light", {
   variants: {
     fullWidth: {
       true: "w-full",
