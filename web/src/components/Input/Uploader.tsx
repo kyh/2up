@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { nanoid } from "nanoid";
 import { useMutation } from "~/utils/mock";
 import { theme } from "~/styles/theme";
@@ -84,15 +84,16 @@ const DragAndDrop = ({ onFileDrop, disabled, children }: DragAndDropProps) => {
   );
 };
 
-const DragAndDropContainer = styled.div<{ dragging: boolean }>`
-  position: relative;
-  border: 2px dotted;
-  border-radius: ${theme.ui.borderWavyRadius};
-  border-color: ${({ dragging }) =>
-    dragging ? theme.colors.purple : theme.ui.borderColor};
-  width: 100%;
-  height: 80px;
-`;
+const DragAndDropContainer = classed.div(
+  "relative border-2 border-dotted rounded-wavy w-full h-4/5", {
+  variants: {
+    dragging: {
+      true: "border-purple",
+      false: "border-grey-dark dark:border-grey-light"
+    }
+  }
+}
+);
 
 type UploaderProps = {
   pathPrefix: string;
@@ -126,7 +127,7 @@ export const Uploader = ({ pathPrefix, onUploaded }: UploaderProps) => {
     <DragAndDrop onFileDrop={upload} disabled={!!filesToUpload.length}>
       <UploaderContainer>
         <input
-          className="uploader-input"
+          className="absolute w-full h-full opacity-0"
           type="file"
           multiple
           accept="audio/*,image/*,video/*"
@@ -138,12 +139,12 @@ export const Uploader = ({ pathPrefix, onUploaded }: UploaderProps) => {
           }}
         />
         {!filesToUpload.length && (
-          <h3 className="uploader-empty-text">
+          <h3 className="m-auto">
             Drag and drop/click to upload assets
           </h3>
         )}
         {filesToUpload.map((file, i) => (
-          <div key={i} className="uploader-file">
+          <div key={i} className="border-1 border-grey-dark dark:border-grey-light h-full mr-2 p-2">
             <div>Uploading...</div>
             <div>{file.name}</div>
           </div>
@@ -161,27 +162,6 @@ const PRESIGNED_URL_CREATE = `
   }
 `;
 
-const UploaderContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  padding: ${theme.spacings(3)};
-
-  .uploader-input {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-  }
-
-  .uploader-empty-text {
-    margin: auto;
-  }
-
-  .uploader-file {
-    border: 1px solid ${theme.ui.borderColor};
-    height: 100%;
-    margin-right: ${theme.spacings(2)};
-    padding: ${theme.spacings(2)};
-  }
-`;
+const UploaderContainer = classed.div(
+  "flex w-full h-full p-3"
+);
