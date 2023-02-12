@@ -45,6 +45,7 @@ export const iconMap = {
 };
 
 type IconType = keyof typeof iconMap;
+type IconSizeType = "xs" | "sm" | "md" | "lg" | number;
 
 const iconSizeMap = {
   xs: "w-3 h-3",
@@ -52,7 +53,7 @@ const iconSizeMap = {
   md: "w-6 h-6",
   lg: "w-10 h-10",
 };
-const getDimensions = (iconSize: keyof typeof iconSizeMap) => {
+const getDimensions = (iconSize: IconSizeType) => {
   if (typeof iconSize === "number") return `w-[${iconSize}px] h-[${iconSize}px]`;
   return iconSizeMap[iconSize];
 };
@@ -64,7 +65,7 @@ type Props = ComponentProps<typeof StyledIcon> &
   icon: IconType;
   // The color is expected to be a tailwind color
   color?: string;
-  size?: keyof typeof iconSizeMap;
+  size?: IconSizeType;
   rotate?: string;
 };
 
