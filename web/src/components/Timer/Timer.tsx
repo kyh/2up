@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import styled, { keyframes } from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 
 type Props = {
   initialSeconds?: number;
@@ -33,7 +32,7 @@ export const Timer = ({
   return typeof window !== "undefined"
     ? createPortal(
         <Container>
-          <TimerContainer initialSeconds={initialSeconds}>
+          <TimerContainer className={`duration-[${initialSeconds}s]`}>
             <SnailContainer>
               <Snail>
                 <SnailSvg />
@@ -48,82 +47,23 @@ export const Timer = ({
     : null;
 };
 
-const scaleAnimation = keyframes`
-  0% { transform: scaleX(1); }
-  50% { transform: scaleX(0.95); }
-  100% { transform: scaleX(1); }
-`;
+const Container = classed.div(
+  "absolute inset-x-0 bottom-0 overflow-hidden pointer-events-none desktop:bottom-5"
+);
 
-const eyeAnimation = keyframes`
-  0% { transform: translate(0); }
-  50% { transform: translate(3px, 0); }
-  100% { transform: translate(0); }
-`;
+const TimerContainer = classed.div(
+  "animate-[move-animation_linear_infinite] [animation-iteration-count:1]"
+);
 
-const moveAnimation = keyframes`
-  from { transform: translate(100vw) }
-  to { transform: translate(0vw) }
-`;
+const SnailContainer = classed.div("flex");
 
-const dustAnimation = keyframes`
-  100% {
-    background-position-x: right;
-  }
-`;
+const Snail = classed.div();
 
-const Container = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow: hidden;
-  pointer-events: none;
+const Dust = classed.div(
+  "w-[197px] h-[66px] bg-dust [background-size:5910px_67px] animate-dust -translate-x-5 translate-y-[10px]",
+);
 
-  ${theme.breakpoints.desktop} {
-    bottom: ${theme.spacings(5)};
-  }
-`;
-
-const TimerContainer = styled.div<{ initialSeconds: number }>`
-  animation: ${moveAnimation} ${({ initialSeconds }) => initialSeconds}s linear
-    infinite;
-  animation-iteration-count: 1;
-`;
-
-const SnailContainer = styled.div`
-  display: flex;
-`;
-
-const Snail = styled.div`
-  .right-eye {
-    animation: ${eyeAnimation} 1s ease infinite;
-    animation-delay: 0.1s;
-  }
-
-  .body {
-    animation: ${scaleAnimation} 1s ease infinite;
-    animation-delay: 0.1s;
-  }
-
-  .shell {
-    animation: ${scaleAnimation} 1s ease infinite;
-  }
-`;
-
-const Dust = styled.div`
-  width: 197px;
-  height: 66px;
-  background-image: url("/sprites/dust.svg");
-  background-size: 5910px 67px;
-  animation-name: ${dustAnimation};
-  animation-duration: 1s;
-  animation-timing-function: steps(29);
-  animation-fill-mode: forwards;
-  animation-iteration-count: infinite;
-  transform: translate(-20px, 10px);
-`;
-
-const TimerText = styled.div``;
+const TimerText = classed.div();
 
 const SnailSvg = () => (
   <svg
@@ -163,7 +103,8 @@ const SnailSvg = () => (
           />
         </g>
       </g>
-      <g className="body">
+      {/* body */}
+      <g className="animate-[scale-animation_1s_ease_infinite] delay-100">
         <g transform="translate(16.943 41.912)">
           <path
             stroke="#7247FF"
@@ -176,7 +117,8 @@ const SnailSvg = () => (
           />
         </g>
       </g>
-      <g className="right-eye">
+      {/* right eye */}
+      <g className="animate-[eye-animation_1s_ease_infinite] delay-100">
         <g transform="translate(6 16.101)">
           <path
             fill="#FFF"
@@ -206,7 +148,8 @@ const SnailSvg = () => (
           />
         </g>
       </g>
-      <g className="shell">
+      {/* shell */}
+      <g className="animate-[scale-animation_1s_ease_infinite]">
         <g strokeLinecap="round" transform="translate(48.357 .18)">
           <path
             stroke="#9A70EA"
