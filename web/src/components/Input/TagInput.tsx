@@ -100,5 +100,5 @@ export const TagInput = ({
 
 const InputContainer = classed.div(
   "flex overflow-scroll w-full max-w-full pl-2",
-  "border-2 border-black dark:border-white rounded-wavy"
+  "border-2 border-grey-dark dark:border-grey-light rounded-wavy"
 );

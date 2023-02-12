@@ -1,7 +1,7 @@
 import { classed } from "@tw-classed/react";
 
 export const Card = classed.div(
-  "flex flex-col p-8 border-2 border-black dark:border-white", {
+  "flex flex-col p-8 border-2 border-grey-dark dark:border-grey-light", {
   variants: {
     background: {
       true: "bg-white dark:bg-inherit",
