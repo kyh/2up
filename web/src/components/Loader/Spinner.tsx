@@ -1,49 +1,18 @@
-import styled, { keyframes } from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 
-const animate = keyframes`
-  from { background-position: 40px 0; }
-  to   { background-position: 0 0; }
-`;
+const Container = classed.div("flex justify-center items-center h-4/5");
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80%;
-`;
+const SpinnerStyles = classed.div(
+  "w-[140px] h-[30px] border-4 border-grey-dark dark:border-grey-light rounded-wavy",
+  "bg-spinner-gradient-light dark:bg-spinner-gradient-dark [background-size:40px_40px]",
+  "animate-[spinner_2s_linear_infinite]"
+);
 
-const SpinnerStyles = styled.div`
-  width: 140px;
-  height: 30px;
-  border: 4px ${theme.ui.borderColor} solid;
-  border-radius: ${theme.ui.borderWavyRadius};
-  background-image: linear-gradient(
-    45deg,
-    ${theme.ui.borderColor} 25%,
-    transparent 25%,
-    transparent 50%,
-    ${theme.ui.borderColor} 50%,
-    ${theme.ui.borderColor} 75%,
-    transparent 75%,
-    transparent
-  );
-  background-size: 40px 40px;
-  animation: ${animate} 2s linear infinite;
-`;
+const SpinnerText = classed.div("text-center mb-2");
 
-const SpinnerText = styled.div`
-  text-align: center;
-  margin-bottom: ${theme.spacings(2)};
-`;
-
-type Props = {
-  center?: boolean;
-};
-
-export const Spinner = (props: Props) => {
+export const Spinner = () => {
   return (
-    <Container {...props}>
+    <Container>
       <div>
         <SpinnerText>Loading...</SpinnerText>
         <SpinnerStyles role="spinner" />

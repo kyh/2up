@@ -12,15 +12,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "purpleDark": "#2a194d",
+        "purple-dark": "#2a194d",
         "purple": "#7247C4",
-        "purpleBackground": "#e1d8f3",
+        "purple-background": "#e1d8f3",
         "white": "#FFFFFF",
         "black": "#1A202C",
-        "greyBackground": "#EDF2F7",
-        "greyLight": "#CBD5E0",
+        "grey-background": "#EDF2F7",
+        "grey-light": "#CBD5E0",
         "grey": "#718096",
-        "greyDark": "#2D3748",
+        "grey-dark": "#2D3748",
         "red": "#f05252",
         "yellow": "#ffca64",
         "green": "#5cb85c",
@@ -172,6 +172,10 @@ module.exports = {
         "bubble-dislike": { "100%": { backgroundPosition: "-17640px 0" } },
         "bubble-cry-emoji": { "100%": { backgroundPosition: "-17640px 0" } },
         "bubble-like": { "100%": { backgroundPosition: "-17640px 0" } },
+        "spinner": { 
+          "from": { backgroundPosition: "40px 0" }, 
+          "to": { backgroundPosition: "0 0" }, 
+        },
       },
       animation: {
         "bubble-explosion-3": "bubble-explosion-3 1s steps(17) 1 forwards",
@@ -196,6 +200,8 @@ module.exports = {
         "bubble-dislike": "url('/sprites/bubble-dislike/spritesheet.png')",
         "bubble-cry-emoji": "url('/sprites/bubble-cry-emoji/spritesheet.png')",
         "bubble-like": "url('/sprites/bubble-like/spritesheet.png')",
+        "spinner-gradient-light": "linear-gradient(45deg, #2D3748 25%, transparent 25%, transparent 50%, #2D3748 50%, #2D3748 75%, transparent 75%, transparent)",
+        "spinner-gradient-dark": "linear-gradient(45deg, #CBD5E0 25%, transparent 25%, transparent 50%, #CBD5E0 50%, #CBD5E0 75%, transparent 75%, transparent)",
       },
     },
   },
