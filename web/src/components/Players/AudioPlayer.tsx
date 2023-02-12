@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import ReactAudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { Icon } from "../Icon/Icon";
@@ -27,7 +27,4 @@ export const AudioPlayer = (
   );
 };
 
-const StyledAudioPlayer = styled(ReactAudioPlayer)`
-  min-width: 320px;
-  box-shadow: none;
-`;
+const StyledAudioPlayer = classed(ReactAudioPlayer, "min-w-[320px] shadow-none");
