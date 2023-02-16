@@ -1,29 +1,24 @@
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 
-enum Size {
-  large = "large",
-  full = "full",
-}
-
-type Props = {
-  size?: keyof typeof Size;
-  justify?: "start" | "center" | "end" | "stretch";
-};
-
-const renderSize = ({ size }: Props) => {
-  if (size === Size.large) return "900px";
-  if (size === Size.full) return "100%";
-  return "600px";
-};
-
-export const PageContainer = styled.section<Props>`
-  display: flex;
-  padding: ${theme.spacings(4)};
-  margin: 0 auto;
-  flex-direction: column;
-  justify-content: ${({ justify }) => (justify ? justify : "center")};
-  align-items: center;
-  height: calc(100vh - 50px);
-  max-width: ${renderSize};
-`;
+export const PageContainer = classed.section(
+  "flex flex-col items-center p-4 mx-auto h-[calc(100vh-50px)]",
+  {
+    variants: {
+      size: {
+        large: "max-w-[900px]",
+        full: "max-w-full",
+        default: "max-w-[600px]"
+      },
+      justify: {
+        start: "justify-start",
+        center: "justify-center",
+        end: "justify-end",
+        stretch: "[justify-content:stretch]",
+      }
+    },
+    defaultVariants: {
+      size: "default",
+      justify: "center"
+    }
+  }
+);
