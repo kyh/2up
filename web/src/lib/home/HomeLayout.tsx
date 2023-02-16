@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { ReactNode } from "react";
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 import { Navigation } from "~/lib/game/components/Navigation";
 import { PageContainer } from "~/lib/home/components/Page";
 import { Card } from "~/components";
@@ -27,16 +26,8 @@ export const HomeLayout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const IntroContainer = styled.section`
-  transform: translateY(-70px);
-`;
+const IntroContainer = classed.section("translate-y-[-70px]");
 
-const IntroLogoContaier = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: ${theme.spacings(3)};
-`;
+const IntroLogoContaier = classed.div("flex justify-center mb-3");
 
-const IntroCard = styled(Card)`
-  height: 260px;
-`;
+const IntroCard = classed(Card , "h-[260px]");

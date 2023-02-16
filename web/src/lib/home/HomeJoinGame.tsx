@@ -25,12 +25,13 @@ export const HomeJoinGame = () => {
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
+          className="mb-1"
           {...register("gameId", { required: true })}
           type="tel"
           placeholder="Game Code"
           defaultValue={gameId}
         />
-        <Button type="submit" disabled={isLoading}>
+        <Button className="mb-2" type="submit" disabled={isLoading}>
           Join existing game
         </Button>
       </Form>

@@ -1,7 +1,6 @@
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { theme } from "~/styles/theme";
 import { Avatar, Link, Button, Input } from "~/components";
 import { useHomeStore } from "~/lib/home/homeStore";
 import { useJoinGame } from "~/lib/game/useGameActions";
@@ -26,22 +25,24 @@ export const HomeSetName = () => {
 
   return (
     <SectionBody>
-      <Form className="set-name-form" onSubmit={handleSubmit(onSubmit)}>
+      <Form className="gap-1" onSubmit={handleSubmit(onSubmit)}>
         <Avatar
           name={watchName}
           type={"setName"}
         />
         <Input
+          className="mb-1"
           {...register("name", { required: true })}
           placeholder="Player Name"
           defaultValue={playerName}
           autoFocus
         />
-        <Button type="submit">Lets go!</Button>
+        <Button className="mb-2" type="submit">Lets go!</Button>
       </Form>
       <StartNewGameText>
         Or{" "}
         <Link
+          className="ml-[5px] underline"
           href={{
             pathname: `/game/${gameId}/spectate/lobby`,
             query: router.query,
@@ -54,23 +55,6 @@ export const HomeSetName = () => {
   );
 };
 
-const SectionBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 300px;
+const SectionBody = classed.div("flex flex-col min-h-[300px]");
 
-  .set-name-form {
-    gap: ${theme.spacings(1)};
-  }
-`;
-
-export const StartNewGameText = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: auto;
-
-  a {
-    margin-left: ${theme.spacings(1.2)};
-    text-decoration: underline;
-  }
-`;
+export const StartNewGameText = classed.div("flex justify-center mt-auto");
