@@ -1,7 +1,6 @@
-import styled from "styled-components";
+import { classed } from "@tw-classed/react"
 import { useRouter } from "next/router";
 import { Button, Modal, Confetti } from "~/components";
-import { theme } from "~/styles/theme";
 import { PlayerScores } from "./Step3";
 import type { StepProps } from "~/lib/game/steps/types";
 
@@ -26,10 +25,10 @@ const Step0Play = ({ gameState }: StepProps) => {
         playerScores={gameState.playerScores}
       />
       <Footer>
-        <Button className="play-again" onClick={handleEnd} autoFocus>
+        <Button className="mb-3" onClick={handleEnd} autoFocus>
           Play Again
         </Button>
-        <button className="link" onClick={handleEnd}>
+        <button className="underline" onClick={handleEnd}>
           Leave game
         </button>
       </Footer>
@@ -44,7 +43,7 @@ const Step0Play = ({ gameState }: StepProps) => {
       >
         <h3>Would you like to join your friends in a new game?</h3>
         <InviteModalFooter>
-          <button className="link" onClick={() => handleEnd()}>
+          <button className="underline" onClick={() => handleEnd()}>
             No thanks
           </button>
           <Button
@@ -64,28 +63,10 @@ const Step0Play = ({ gameState }: StepProps) => {
   );
 };
 
-const Footer = styled.div`
-  position: absolute;
-  bottom: ${theme.spacings(20)};
-  left: 50%;
-  width: 150px;
-  text-align: center;
-  margin-left: -75px;
+const Footer = classed.div(
+  "absolute mb-20 left-1/2 w-[150px] text-center ml-[-75px]"
+);
 
-  > .play-again {
-    margin-bottom: ${theme.spacings(3)};
-  }
-
-  > .link {
-    text-decoration: underline;
-  }
-`;
-
-const InviteModalFooter = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-top: ${theme.spacings(6)};
-`;
+const InviteModalFooter = classed.div("flex justify-around items-center mt-6");
 
 export const Step0 = Step0Play;

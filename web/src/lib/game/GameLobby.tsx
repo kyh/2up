@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { classed } from "@tw-classed/react";
-import styled from "styled-components";
 import {
   Link,
   Button,
@@ -10,8 +9,6 @@ import {
   Icon,
   useAlert,
 } from "~/components";
-import { theme } from "~/styles/theme";
-import { bounceIn } from "~/styles/animations";
 import {
   Player,
   PlayersGrid,
@@ -71,7 +68,9 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   return (
     <>
       <TitleContainer>
-        <h1 className="title">
+
+        {/* Title */}
+        <h1 className="mb-5">
           <div>
             Invite friends to{" "}
             <button type="button" onClick={onShare} className="highlight">
@@ -80,7 +79,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
           </div>
           <div>and enter room code:</div>
         </h1>
-        <div className="game-id">{gameId}</div>
+        <GameId>{gameId}</GameId>
       </TitleContainer>
       <PlayersContainer>
         {players.map((p) => (
@@ -101,22 +100,22 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
             maxWidth={300}
             closeButton
           >
-            <StartModalBody>
+            <div>
               <TitleContainer>
-                <p>This game is only fun with 2 or more players.</p>
-                <p>
+                <StartModalPTag>This game is only fun with 2 or more players.</StartModalPTag>
+                <StartModalPTag>
                   <span className="block">
                     Invite friends to{" "}
-                    <span className="highlight">truffles.tv</span>
+                    <span className="text-purple">truffles.tv</span>
                   </span>
                   <span className="block">and enter the room code:</span>
-                </p>
-                <div className="game-id">{gameId}</div>
+                </StartModalPTag>
+                <div className="text-[2rem] p-5">{gameId}</div>
               </TitleContainer>
               <Button fullWidth onClick={onStart} disabled={isLoading}>
                 Start anyways
               </Button>
-            </StartModalBody>
+            </div>
           </Modal>
         </>
       ) : (
@@ -128,63 +127,21 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   );
 };
 
-const JoinRoomButton = styled(Link)`
-  display: block;
-  text-align: center;
-  text-decoration: underline;
-  margin-top: auto;
-`;
+const JoinRoomButton = classed(Link, "block text-center underline mt-auto");
+const GameId = classed.div(
+  "text-white dark:text-black bg-black dark:bg-white text-[5.5rem]",
+  "flex justify-center items-center pt-5 pb-[30px] px-[30px] leading-none",
+  "rounded-[19px_22px_30%_16px_/_19px_17px_14px_30px] mb-5"
+);
+const TitleContainer = classed.div("pt-[50px]");
 
-const TitleContainer = styled.div`
-  padding-top: 50px;
+const ShareIcon = classed(Icon, "relative left-[-10px]");
 
-  .title {
-    margin: 0 0 ${theme.spacings(5)};
-  }
-
-  .block {
-    display: block;
-  }
-
-  .highlight {
-    color: ${theme.colors.purple};
-  }
-
-  .game-id {
-    color: ${theme.ui.alertText};
-    background: ${theme.ui.alertBackground};
-    font-size: 5.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 30px 30px;
-    line-height: 1;
-    border-radius: 19px 22px 30% 16px / 19px 17px 14px 30px;
-    margin-bottom: ${theme.spacings(5)};
-  }
-`;
-
-const ShareIcon = styled(Icon)`
-  position: relative;
-  left: -10px;
-`;
-
-const PlayersContainer = styled(PlayersGrid)`
-  .avatar {
-    transform: scale(0);
-    animation: ${bounceIn} 1s linear forwards 0.4s;
-  }
-`;
+const PlayersContainer = classed(
+  PlayersGrid,
+  "[&_.avatar]:scale-0 [&_.avatar]:animate-[bounceIn_1s_linear_forwards_0.4s]"
+);
 
 const Explosion = classed(AnimationSprite, "top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2");
 
-const StartModalBody = styled.div`
-  p {
-    margin: 0 0 ${theme.spacings(3)};
-  }
-
-  .game-id {
-    font-size: 2rem;
-    padding: ${theme.spacings(5)};
-  }
-`;
+const StartModalPTag = classed.p("mb-3");

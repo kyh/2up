@@ -1,5 +1,4 @@
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react"
 import { QuestionTypeSlugs } from "~/lib/game/gameUtils";
 import { VideoPlayer, AudioPlayer, Code } from "~/components";
 import type { StepProps } from "~/lib/game/steps/types";
@@ -42,10 +41,7 @@ const QuestionText = ({ question }: QuestionComponentProp) => {
   );
 };
 
-const Text = styled.h1`
-  text-align: center;
-  margin: 0;
-`;
+const Text = classed.h1("text-center m-0");
 
 const QuestionImage = ({ question }: QuestionComponentProp) => {
   return (
@@ -55,15 +51,7 @@ const QuestionImage = ({ question }: QuestionComponentProp) => {
   );
 };
 
-const Image = styled.img`
-  object-fit: contain;
-  max-width: 100vw;
-  height: 240px;
-
-  ${theme.breakpoints.desktop} {
-    max-width: 40vw;
-  }
-`;
+const Image = classed.img("object-contain max-w-[100vw] h-[240px] desktop:max-w-[40vw]");
 
 const QuestionAudio = ({ question, displayMode }: QuestionComponentProp) => {
   return (
@@ -103,14 +91,6 @@ const QuestionCode = ({ question }: QuestionComponentProp) => {
   );
 };
 
-export const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin: 0 0 ${theme.spacings(5)};
-`;
+export const Container = classed.div("flex justify-center items-center w-full mb-5");
 
-const QuestionContainer = styled(Container)`
-  height: 240px;
-`;
+const QuestionContainer = classed(Container, "h-[240px]");
