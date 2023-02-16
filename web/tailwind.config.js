@@ -217,6 +217,8 @@ module.exports = {
         "bubble-cry-emoji": "url('/sprites/bubble-cry-emoji/spritesheet.png')",
         "bubble-like": "url('/sprites/bubble-like/spritesheet.png')",
         "dust": "url('/sprites/dust.svg')",
+        "crown": "url('/illustrations/kitty-crown.svg')",
+        "glasses": "url('/illustrations/kitty-glasses.svg')",
         "spinner-gradient-light": "linear-gradient(45deg, #2D3748 25%, transparent 25%, transparent 50%, #2D3748 50%, #2D3748 75%, transparent 75%, transparent)",
         "spinner-gradient-dark": "linear-gradient(45deg, #CBD5E0 25%, transparent 25%, transparent 50%, #CBD5E0 50%, #CBD5E0 75%, transparent 75%, transparent)",
       },
