@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react"
 import { useAllHomeStore } from "~/lib/home/homeStore";
 import { Icon } from "~/components/Icon/Icon";
 import { Modal } from "~/components/Modal/Modal";
@@ -51,13 +50,13 @@ export const Navigation = () => {
           <>
             <SettingsContainer noBorder>
               <SettingItem>
-                <span>Game music</span>
+                <SettingItemSpan>Game music</SettingItemSpan>
                 <Button fullWidth onClick={toggleMusic}>
                   {isMusicOn ? "ON" : "OFF"}
                 </Button>
               </SettingItem>
               <SettingItem>
-                <span>SFX</span>
+                <SettingItemSpan>SFX</SettingItemSpan>
                 <Button fullWidth onClick={toggleSFX}>
                   {isSFXOn ? "ON" : "OFF"}
                 </Button>
@@ -104,34 +103,26 @@ export const Navigation = () => {
   );
 };
 
-const NavigationContainer = styled.nav`
-  display: flex;
-  justify-content: flex-end;
-  padding: 0 ${theme.spacings(1)};
-  align-items: center;
-  height: 50px;
-`;
+const NavigationContainer = classed.nav("flex justify-end items-center px-1 h-[50px]");
 
-const SettingsContainer = styled.div<{ single?: boolean; noBorder?: boolean }>`
-  display: ${({ single }) => (single ? "block" : "grid")};
-  grid-template-columns: 1fr 1fr;
-  padding-bottom: ${({ noBorder }) => (noBorder ? 0 : theme.spacings(2))};
-  margin-bottom: ${theme.spacings(2)};
-  border-bottom: ${({ noBorder }) =>
-    noBorder ? "none" : `2px solid ${theme.colors.black}`};
-  &:last-child {
-    border-bottom: none;
+const SettingsContainer = classed.div(
+  "mb-2 last:border-none", {
+  variants: {
+    single: {
+      true: "block",
+      false: "grid grid-cols-2"
+    },
+    noBorder: {
+      true: "",
+      false: "pb-2 border-b-2 border-black"
+    }
+  },
+  defaultVariants: {
+    single:"false",
+    noBorder:"false"
   }
-`;
+}
+);
 
-const SettingItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  span {
-    display: block;
-    margin-bottom: ${theme.spacings(1)};
-  }
-`;
+const SettingItem = classed.div("flex flex-col justify-center items-center");
+const SettingItemSpan = classed.span("block mb-1");

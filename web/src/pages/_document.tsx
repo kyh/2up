@@ -69,7 +69,7 @@ export default class MyDocument extends Document {
           />
           <meta name="theme-color" content="#1A202C" />
         </Head>
-        <body className="bg-white text-black dark:bg-black dark:text-white">
+        <body className="bg-white text-black dark:bg-black dark:text-white overflow-hidden">
           <Main />
           <NextScript />
           <script

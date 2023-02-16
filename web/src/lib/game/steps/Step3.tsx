@@ -1,8 +1,7 @@
 import { useState, ReactNode } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import { classed } from "@tw-classed/react"
 import { motion } from "framer-motion";
-import { theme, useIsDesktop } from "~/styles/theme";
-import { visible } from "~/styles/animations";
+import { useIsDesktop } from "~/styles/theme";
 import {
   PlayersGrid,
   Player,
@@ -94,9 +93,8 @@ export const PlayerScores = ({
 
   return (
     <>
-      <NoScroll />
       <TitleContainer>
-        <h2 className="title">{title}</h2>
+        <h2 className="m-0 text-center">{title}</h2>
       </TitleContainer>
       <PlayersContainer singleCol>
         {sortedPlayers.map(({ playerId, playerName, prevScore, score }) => {
@@ -151,17 +149,18 @@ const PlayerContainer = ({
     );
   }
   return (
-    <PC score={score} totalScenes={totalScenes}>
+    <PC
+      style={
+        { 
+          "--scoreBarHeight": `${calculateScorebarHeight(score, totalScenes)}`, 
+          "--maxScoreHeight": `${maxScoreHeight}`, 
+        } as React.CSSProperties
+      }
+    >
       {children}
     </PC>
   );
 };
-
-const NoScroll = createGlobalStyle`
-  ${theme.breakpoints.desktop} {
-    body { overflow: hidden }
-  }
-`;
 
 const maxScoreHeight = "40vh";
 
@@ -172,76 +171,29 @@ const calculateScorebarHeight = (score: number, totalScenes: number) => {
   return `-${maxScoreHeightNum * percentage}vh`;
 };
 
-const QuestionNumber = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  filter: brightness(0.4);
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-`;
+const QuestionNumber = classed.div(
+  "fixed inset-x-0 top-0 brightness-[0.4] h-[50px] flex justify-center items-center pointer-events-none"
+);
 
-const TitleContainer = styled.div`
-  animation: ${visible} 0s linear 0.1s forwards;
-  visibility: hidden;
-  margin-bottom: ${theme.spacings(5)};
-  padding-top: 50px;
-
-  .title {
-    text-align: center;
-    margin: 0;
-  }
-`;
-
-const PlayersContainer = styled(PlayersGrid)`
-  margin: 0 auto ${theme.spacings(5)};
-  max-width: 300px;
-
-  ${theme.breakpoints.desktop} {
-    margin-bottom: 0;
-    max-width: none;
-  }
-`;
-
-const APC = styled(motion.div)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const PC = styled.div<{ score: number; totalScenes: number }>`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column-reverse;
-  transition: transform 1s ease;
-  transform: translateY(
-    ${({ score, totalScenes }) => calculateScorebarHeight(score, totalScenes)}
+const TitleContainer = classed.div(
+    "animate-[visible_0s_linear_0.1s_forwards] hidden mb-5 pt-[50px]"
   );
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -${maxScoreHeight};
-    height: ${maxScoreHeight};
-    width: 100%;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    background-color: ${theme.colors.purple};
-  }
-`;
 
-const PlayerScore = styled.h2`
-  margin: 0;
-  transform: translateY(-10px);
+const PlayersContainer = classed(
+    PlayersGrid,
+    "mx-auto mb-5 max-w-[300px] desktop:mb-0 desktop:max-w-none"
+  );
 
-  ${theme.breakpoints.desktop} {
-    margin-top: auto;
-  }
-`;
+const APC = classed(motion.div, "flex justify-between items-center");
+
+const PC = classed.div(
+  "flex flex-col-reverse justify-between items-center",
+  "after:content-[''] after:absolute after:-bottom-[var(--maxScoreHeight)]",
+  "after:h-[var(--maxScoreHeight)] after:w-full after:rounded-t-lg after:bg-purple",
+  "transition-transform duration-1000 ease-[ease] translate-y-[var(--scoreBarHeight)]",
+);
+
+const PlayerScore = classed.h2("m-0 translate-y-[-10px] desktop:mt-auto");
 
 export const Step3 = (props: StepProps) => {
   if (props.isSpectate) return <Step3Spectate {...props} />;
