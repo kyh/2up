@@ -1,6 +1,4 @@
-import styled from "styled-components";
 import { useRouter } from "next/router";
-import { theme } from "~/styles/theme";
 import { ButtonLinkNative, Spinner } from "~/components";
 import { Content } from "~/lib/packs/components/Page";
 import { PackSection, Pack } from "~/lib/packs/components/Packs";
@@ -13,13 +11,13 @@ export const Profile = () => {
   const username = router.query.username as string;
   const res = useGetPacks({ username });
 
-  if (!res.data) return <Spinner center />;
+  if (!res.data) return <Spinner />;
 
   const isMyPage = username === auth.user?.user_metadata.username;
 
   return (
-    <ProfileContent>
-      <header className="profile-header">
+    <Content>
+      <header className="flex justify-between items-center mb-5">
         <h1>@{username}&apos;s packs</h1>
         {isMyPage && (
           <ButtonLinkNative href="/packs/new">Create new Pack</ButtonLinkNative>
@@ -37,15 +35,6 @@ export const Profile = () => {
           ))}
         </div>
       </PackSection>
-    </ProfileContent>
+    </Content>
   );
 };
-
-const ProfileContent = styled(Content)`
-  .profile-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: ${theme.spacings(5)};
-  }
-`;
