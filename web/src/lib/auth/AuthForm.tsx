@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { useForm } from "react-hook-form";
-import { theme } from "~/styles/theme";
 import { TextField, Button, Card } from "~/components";
 import { useAuth } from "~/lib/auth/useAuth";
 
@@ -40,7 +39,8 @@ export const AuthForm = ({ isLogin }: Props) => {
 
   return (
     <Container>
-      <h1 className="title">{isLogin ? "Login" : "Sign up"}</h1>
+      {/* Title */}
+      <h1 className="text-center">{isLogin ? "Login" : "Sign up"}</h1>
       <Card background>
         <form onSubmit={handleSubmit(onSubmit)}>
           {!isLogin && (
@@ -72,8 +72,9 @@ export const AuthForm = ({ isLogin }: Props) => {
             errorText="Password is required"
             autoComplete="on"
           />
+          {/* Submit */}
           <Button
-            className="submit"
+            className="mt-4"
             type="submit"
             fullWidth
             disabled={auth.loading}
@@ -86,14 +87,4 @@ export const AuthForm = ({ isLogin }: Props) => {
   );
 };
 
-const Container = styled.section`
-  transform: translateY(-70px);
-
-  .title {
-    text-align: center;
-  }
-
-  .submit {
-    margin-top: ${theme.spacings(4)};
-  }
-`;
+const Container = classed.section("translate-y-[-70px]");

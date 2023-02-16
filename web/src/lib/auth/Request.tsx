@@ -1,7 +1,6 @@
 import { useState } from "react";
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { useForm } from "react-hook-form";
-import { theme } from "~/styles/theme";
 import { TextField, Button, Card } from "~/components";
 
 type FormInputs = {
@@ -45,7 +44,8 @@ export const Request = () => {
 
   return (
     <Container>
-      <h1 className="title">🎉 Welcome!</h1>
+      {/* Title */}
+      <h1 className="mb-5 text-center">🎉 Welcome!</h1>
       <p>
         Interested in building your own Packs? Join our Pack Creator beta
         program to build, test, and play your own games.
@@ -74,7 +74,7 @@ export const Request = () => {
               {...register("idea")}
             />
             <Button
-              className="submit"
+              className="mt-4"
               type="submit"
               fullWidth
               disabled={isLoading}
@@ -84,9 +84,10 @@ export const Request = () => {
           </form>
         )}
       </Card>
-      <p className="sub">
+      <p className="mt-2 text-center">
         You can also find us on{" "}
         <a
+          className="underline"
           href="https://discord.gg/Rt8ygmQ4fk"
           target="_blank"
           rel="noopener noreferrer"
@@ -98,26 +99,4 @@ export const Request = () => {
   );
 };
 
-const Container = styled.section`
-  max-width: 500px;
-  margin: 0 auto;
-  transform: translateY(-70px);
-
-  .title {
-    text-align: center;
-    margin-bottom: ${theme.spacings(5)};
-  }
-
-  .submit {
-    margin-top: ${theme.spacings(4)};
-  }
-
-  .sub {
-    margin-top: ${theme.spacings(2)};
-    text-align: center;
-  }
-
-  a {
-    text-decoration: underline;
-  }
-`;
+const Container = classed.section("min-w-[500px] mx-auto translate-y-[-70px]");
