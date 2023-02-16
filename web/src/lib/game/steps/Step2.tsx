@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import styled from "styled-components";
+import { classed } from "@tw-classed/react"
 import sample from "lodash/sample";
 import Sheet from "react-modal-sheet";
 import { theme, useIsDesktop } from "~/styles/theme";
@@ -83,16 +83,16 @@ const Step2Play = ({
             isOpen={showSubmissions}
             onClose={() => setShowSubmissions(false)}
           >
-            <StyledSheet.Container>
-              <StyledSheet.Content>
+            <Sheet.Container>
+              <Sheet.Content>
                 <Submissions
                   gameState={gameState}
                   sceneAnswer={correctAnswer}
                 />
-              </StyledSheet.Content>
-            </StyledSheet.Container>
+              </Sheet.Content>
+            </Sheet.Container>
             <button onClick={() => setShowSubmissions(false)}>
-              <StyledSheet.Backdrop />
+              <Sheet.Backdrop />
             </button>
           </StyledSheet>
         </>
@@ -112,12 +112,9 @@ const Step2Play = ({
   );
 };
 
-const StyledSheet = styled(Sheet)`
-  z-index: 1 !important;
-  .react-modal-sheet-container {
-    background-color: ${theme.ui.background} !important;
-  }
-`;
+// TODO - make sure the standalone Sheet.[something]s don't affect things
+// TODO - make sure the class is being applied correctly
+const StyledSheet = classed(Sheet, "!z-[1] [&_.react-modal-sheet-container]:!bg-white dark:[&_.react-modal-sheet-container]:!bg-black");
 
 const Step2Spectate = ({ gameState }: StepProps) => {
   const correctAnswer = gameState.sceneAnswers?.find(
@@ -165,45 +162,25 @@ const AnswerResult = ({
   );
 };
 
-const AnswerContainer = styled.div`
-  .answer-display {
-    animation: ${bounceOut} 1s;
-    animation-fill-mode: forwards;
+const LocalAnswer=classed(Answer, "");
 
-    &.correct {
-      animation: none;
-      > svg {
-        stroke: ${theme.colors.green};
-        stroke-width: 5px;
-        > path {
-          animation: ${drawIn} 0.6s cubic-bezier(0.7, 0, 0.3, 1) forwards;
-        }
-      }
-    }
-
-    &.answer-text {
-      overflow: visible;
-      text-align: center;
-      background-color: ${theme.ui.backgroundGrey};
-      padding-top: ${theme.spacings(6)};
-      transform: scale(0);
-      animation: ${bounceIn} 1s 0.1s forwards;
-
-      &::before {
-        content: "answer";
-        position: absolute;
-        top: ${theme.spacings(-3)};
-        left: 50%;
-        width: 100px;
-        margin-left: -50px;
-        padding: ${theme.spacings(1)} 0;
-        border-radius: 4px;
-        border: 2px solid ${theme.ui.borderColor};
-        background-color: ${theme.ui.background};
-      }
-    }
-  }
-`;
+const AnswerContainer = classed.div(
+  "[&_.answer-display]:animate-[bounceOut_1s_forwards]",
+  "[&_.answer-display.correct]:animate-none",
+  "[&_.answer-display.correct_>_svg]:stroke-green [&_.answer-display.correct_>_svg]:stroke-[5px]",
+  "[&_.answer-display.correct_>_svg_path]:animate-[drawIn_0.6s_cubic-bezier(0.7,_0,_0.3,_1)_forwards]",
+  "[&_.answer-display.answer-text]:overflow-visible [&_.answer-display.answer-text]:text-center",
+  "[&_.answer-display.answer-text]:bg-grey-background dark:[&_.answer-display.answer-text]:bg-grey-dark",
+  "[&_.answer-display.answer-text]:pt-6 dark:[&_.answer-display.answer-text]:scale-0",
+  "[&_.answer-display.answer-text]:animate-[bounceIn_1s_0.1s_forwards]",
+  "[&_.answer-display.answer-text]:before:content-['answer']",
+  "[&_.answer-display.answer-text]:before:absolute [&_.answer-display.answer-text]:before:-top-3",
+  "[&_.answer-display.answer-text]:before:left-1/2 [&_.answer-display.answer-text]:before:w-[100px]",
+  "[&_.answer-display.answer-text]:before:ml-[-50px] [&_.answer-display.answer-text]:before:py-1",
+  "[&_.answer-display.answer-text]:before:rounded [&_.answer-display.answer-text]:before:border-2",
+  "[&_.answer-display.answer-text]:before:border-grey-dark dark:[&_.answer-display.answer-text]:before:border-grey-light",
+  "[&_.answer-display.answer-text]:before:bg-white dark:[&_.answer-display.answer-text]:before:bg-black",
+);
 
 const Submissions = ({ gameState }: SubmissionProps) => {
   const players = gameState.submissions.map((submission) => {
@@ -233,39 +210,16 @@ const Submissions = ({ gameState }: SubmissionProps) => {
   return <SubmissionsContainer>{players}</SubmissionsContainer>;
 };
 
-const SubmissionsContainer = styled(PlayersGrid)`
-  padding: ${theme.spacings(5)};
+const SubmissionsContainer = classed(
+    PlayersGrid,
+    "p-5 desktop:py-0 desktop:animate-[fadeUpIn_0.8s_cubic-bezier(0.77,_0.1,_0.46,_1.22)_forwards]",
+    "[&_.correct]:absolute [&_.correct]:-top-3 [&_.correct]:left-0",
+    "[&_.name]:text-center"
+  );
 
-  .correct {
-    position: absolute;
-    top: ${theme.spacings(-3)};
-    left: 0;
-  }
+const Stars = classed(AnimationSprite, "top-10 desktop:top-5 left-1/2 scale-50 -translate-x-1/2 -translate-y-1/2");
 
-  .name {
-    text-align: center;
-  }
-
-  ${theme.breakpoints.desktop} {
-    padding: 0 ${theme.spacings(5)};
-    animation: ${fadeUpIn} 0.8s cubic-bezier(0.77, 0.13, 0.46, 1.22) forwards;
-  }
-`;
-
-const Stars = styled(AnimationSprite)`
-  top: 40px;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.5);
-
-  ${theme.breakpoints.desktop} {
-    top: 20px;
-  }
-`;
-
-const CorrectSprite = styled(AnimationSprite)`
-  left: 50%;
-  transform: translateX(-50%);
-`;
+const CorrectSprite = classed(AnimationSprite, "left-1/2 -translate-x-1/2");
 
 export const Step2 = (props: StepProps) => {
   if (props.isSpectate) return <Step2Spectate {...props} />;

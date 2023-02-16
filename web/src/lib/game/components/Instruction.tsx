@@ -1,20 +1,28 @@
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed, deriveClassed, ComponentProps } from "@tw-classed/react"
 import { Container } from "~/lib/game/components/Question";
 
-type InstructionProps = {
+type InstructionProps = ComponentProps<typeof InstructionContainer> & {
   instruction?: string | null;
 };
 
-export const Instruction = ({ instruction }: InstructionProps) => {
-  return (
-    <InstructionContainer className="instruction">
-      {instruction}
-    </InstructionContainer>
-  );
-};
+export const Instruction =
+  deriveClassed<typeof InstructionContainer, InstructionProps>(
+    ({ instruction, ...rest }, ref) => {
+      return (
+        <InstructionContainer {...rest} ref={ref} className="instruction">
+          {instruction}
+        </InstructionContainer>
+      );
+    });
 
-export const InstructionContainer = styled(Container)`
-  height: 50px;
-  color: ${theme.ui.textGrey};
-`;
+export const InstructionContainer = classed(Container, "text-grey dark:text-grey-light", {
+  variants: {
+    height: {
+      default: "h-[50px]",
+      class: ""
+    }
+  },
+  defaultVariants: {
+    height: "default"
+  }
+});
