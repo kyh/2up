@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
-import styled, { css } from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 import { PageContainer } from "~/lib/home/components/Page";
 
 export const AuthLayout = ({
@@ -17,19 +16,17 @@ export const AuthLayout = ({
   );
 };
 
-const Page = styled(PageContainer)<{ bgImage: "crown" | "glasses" }>`
-  align-items: center;
-  height: 100vh;
-  background: ${theme.ui.backgroundGrey};
-  background-repeat: no-repeat;
-  ${({ bgImage }) =>
-    bgImage === "crown"
-      ? css`
-          background-image: url("/illustrations/kitty-crown.svg");
-          background-position: 23% 102%;
-        `
-      : css`
-          background-image: url("/illustrations/kitty-glasses.svg");
-          background-position: 78% 102%;
-        `}
-`;
+const Page = classed(
+    PageContainer,
+    "items-center, h-screen bg-grey-background dark:bg-grey-dark bg-no-repeat", {
+      variants:{
+        bgImage: {
+          crown: "bg-crown bg-[23%_102%]",
+          glasses: "bg-glasses bg-[78%_102%]"
+        }
+      },
+      defaultVariants: {
+        bgImage: "glasses"
+      }
+    }
+  );
