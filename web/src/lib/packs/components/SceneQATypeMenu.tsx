@@ -1,6 +1,5 @@
 import { useRef, forwardRef } from "react";
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 import { Button } from "~/components";
 import { Props as ScenePreviewProps } from "~/lib/packs/components/ScenePreview";
 import { AnswerTypeSlugs, QuestionTypeSlugs } from "~/lib/game/gameUtils";
@@ -69,7 +68,10 @@ const defaultQuestionsMap = {
 const QuestionTypeMenu = forwardRef<HTMLDivElement, Props>(
   function QuestionTypeMenu({ currentType, onSelectType }, ref) {
     return (
-      <QATypeMenuContainer content="Question type:" ref={ref}>
+      <QATypeMenuContainer
+        style={{ "--content": "Question type:" } as React.CSSProperties}
+        ref={ref}
+      >
         {Object.entries(QuestionTypeSlugs).map(([key, value]) => {
           return (
             <Button
@@ -80,9 +82,9 @@ const QuestionTypeMenu = forwardRef<HTMLDivElement, Props>(
                   currentType === value.id
                     ? false
                     : {
-                        questionType: { slug: value.id },
-                        question: defaultQuestionsMap[value.id],
-                      }
+                      questionType: { slug: value.id },
+                      question: defaultQuestionsMap[value.id],
+                    }
                 );
               }}
             >
@@ -109,7 +111,10 @@ const defaultAnswersMap = {
 const AnswerTypeMenu = forwardRef<HTMLDivElement, Props>(
   function AnswerTypeMenu({ currentType, onSelectType, sceneAnswers }, ref) {
     return (
-      <QATypeMenuContainer content="Answer type:" ref={ref}>
+      <QATypeMenuContainer
+        style={{ "--content": "Answer type:" } as React.CSSProperties}
+        ref={ref}
+      >
         {Object.entries(AnswerTypeSlugs).map(([key, value]) => {
           return (
             <Button
@@ -121,12 +126,12 @@ const AnswerTypeMenu = forwardRef<HTMLDivElement, Props>(
                   currentType === value.id
                     ? false
                     : {
-                        answerType: { slug: value.id },
-                        sceneAnswers: [
-                          ...[correct || { content: "", isCorrect: true }],
-                          ...defaultAnswersMap[value.id],
-                        ],
-                      }
+                      answerType: { slug: value.id },
+                      sceneAnswers: [
+                        ...[correct || { content: "", isCorrect: true }],
+                        ...defaultAnswersMap[value.id],
+                      ],
+                    }
                 );
               }}
             >
@@ -139,56 +144,16 @@ const AnswerTypeMenu = forwardRef<HTMLDivElement, Props>(
   }
 );
 
-export const QATypeMenuContainer = styled.div<{ content: string }>`
-  position: absolute;
-  top: -50px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 2px solid;
-  border-radius: 50px;
-  background: ${theme.ui.background};
-  display: flex;
-  width: fit-content;
-
-  > button,
-  > button:hover {
-    border: none;
-    border-right: 2px solid;
-    animation: none;
-    transition: background-color 0.1s ease;
-
-    &:first-child {
-      border-top-left-radius: 30px;
-      border-bottom-left-radius: 30px;
-    }
-
-    &:last-child {
-      border-right: none;
-      border-top-right-radius: 30px;
-      border-bottom-right-radius: 30px;
-    }
-
-    &.selected {
-      background-color: ${theme.ui.buttonSelected};
-    }
-  }
-
-  > button:hover {
-    background-color: ${theme.ui.backgroundGrey};
-  }
-
-  &::after {
-    position: absolute;
-    content: "${({ content }) => content}";
-    display: inline-block;
-    top: ${theme.spacings(-4)};
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    text-align: center;
-    background: ${theme.ui.background};
-    border-radius: ${theme.ui.borderWavyRadius};
-    font-size: 0.9rem;
-    padding: 4px;
-  }
-`;
+export const QATypeMenuContainer = classed.div(
+  "absolute top-[-50px] left-1/2 -translate-x-1/2 border-2 rounded-[50px] flex w-fit",
+  "bg-white dark:bg-black [&_button]:border-none [&_button]:hover:border-none [&_button]:border-r-2 [&_button]:hover:border-r-2",
+  "[&_button]:animate-none [&_button]:hover:animate-none [&_button]:transition-colors [&_button]:hover:transition-colors",
+  "[&_button]:duration-100 [&_button]:hover:duration-100 [&_button]:ease-[ease] [&_button]:hover:ease-[ease]",
+  "[&_button]:first:rounded-l-[30px] [&_button]:hover:first:rounded-l-[30px] [&_button]:last:rounded-r-[30px] [&_button]:hover:last:rounded-r-[30px]",
+  "[&_button]:first:border-r-0 [&_button]:hover:first:border-r-0 [&_button.selected]:bg-purple-dark [&_button.selected]:hover:bg-purple-dark",
+  "dark:[&_button.selected]:bg-purple dark:[&_button.selected]:hover:bg-purple",
+  "[&_button]:hover:bg-grey-background dark:[&_button]:hover:bg-grey-dark",
+  "after:absolute after:inline-black after:-top-4 after:left-1/2 after:-translate-x-1/2 after:w-[120px]",
+  "after:text-center after:rounded-wavy after:p-1 after:text-[0.9rem] after:bg-white dark:after:bg-black",
+  "after:content-[var(--content)]"
+);

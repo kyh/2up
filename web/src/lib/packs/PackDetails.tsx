@@ -1,6 +1,5 @@
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { useRouter } from "next/router";
-import { theme } from "~/styles/theme";
 import { Link, Button, Spinner } from "~/components";
 import { useHostGame } from "~/lib/game/useGameActions";
 import { Content } from "~/lib/packs/components/Page";
@@ -14,7 +13,7 @@ export const PackDetails = () => {
   const { hostGame, isLoading } = useHostGame();
   const res = useGetPack(packId);
 
-  if (!res.data) return <Spinner center />;
+  if (!res.data) return <Spinner />;
 
   const pack = res.data;
 
@@ -24,15 +23,15 @@ export const PackDetails = () => {
         &#171; Back to packs
       </Link>
       {pack && (
-        <header className="pack-header">
+        <header className="text-center m-auto max-w-[600px]">
           <h1 className="pack-name">{pack.name}</h1>
-          <p className="pack-description">{pack.description}</p>
-          <div className="pack-actions">
-            <Button onClick={() => hostGame(packId)} disabled={isLoading}>
+          <p className="mb-5">{pack.description}</p>
+          <div className="flex flex-col items-center">
+            <Button className="mb-2 min-w-[150px]" onClick={() => hostGame(packId)} disabled={isLoading}>
               Start a game
             </Button>
             {pack.userId === auth.user?.id && (
-              <Link href={`/packs/${packId}/edit`}>Edit Pack</Link>
+              <Link className="underline" href={`/packs/${packId}/edit`}>Edit Pack</Link>
             )}
           </div>
         </header>
@@ -41,31 +40,4 @@ export const PackDetails = () => {
   );
 };
 
-const PackDetailsPageContent = styled(Content)`
-  display: block;
-
-  .pack-header {
-    text-align: center;
-    margin: auto;
-    max-width: 600px;
-  }
-
-  .pack-description {
-    margin-bottom: ${theme.spacings(5)};
-  }
-
-  .pack-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    button {
-      margin-bottom: ${theme.spacings(2)};
-      min-width: 150px;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  }
-`;
+const PackDetailsPageContent = classed(Content, "block");

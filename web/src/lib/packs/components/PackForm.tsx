@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { useForm, Controller } from "react-hook-form";
-import { Button, TextField, AreaField, TagInput, Field } from "~/components";
+import { Button, TextField, AreaField, TagInput } from "~/components";
 
 const defaultPackValues = {
   name: "",
@@ -51,7 +51,7 @@ export const PackForm = ({
         error={!!errors.description}
         errorText="A short description is required"
       />
-      <Field>
+      <fieldset>
         <label htmlFor="tags">Tags</label>
         <Controller
           name="tags"
@@ -66,7 +66,7 @@ export const PackForm = ({
             />
           )}
         />
-      </Field>
+      </fieldset>
       <Button className="submit" type="submit" disabled={loading}>
         {submitText}
       </Button>
@@ -74,16 +74,4 @@ export const PackForm = ({
   );
 };
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-
-  input,
-  textarea {
-    width: 100%;
-  }
-
-  button {
-    margin: 0 auto;
-  }
-`;
+const Form = classed.form("flex flex-col [&_input]:w-full [&_textarea]:w-full [&_button]:mx-auto [&_button]:my-0");

@@ -1,9 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { useRouter } from "next/router";
 import { useHotkeys } from "@react-hook/hotkey";
-import { theme } from "~/styles/theme";
-import { visible } from "~/styles/animations";
 import { Topbar } from "~/lib/packs/components/PackCreatorTopbar";
 import { Sidebar } from "~/lib/packs/components/PackCreatorLeftSidebar";
 import { ScenePreview } from "~/lib/packs/components/ScenePreview";
@@ -108,7 +106,7 @@ export const PackCreator = () => {
   }, [packScenes]);
 
   if (isLoading || !pack) {
-    return <Spinner center />;
+    return <Spinner />;
   }
 
   return (
@@ -139,10 +137,11 @@ export const PackCreator = () => {
         </>
       ) : (
         <EmptyContent>
-          <div className="empty-content">
+  {/* empty-content */}
+          <div className="text-center max-w-[600px] m-auto">
             <h1>Wow it&apos;s a brand new pack!</h1>
-            <p>Here&apos;s how it works:</p>
-            <ul>
+            <p className="mb-5">Here&apos;s how it works:</p>
+            <ul className="text-left">
               <li>A pack contains many scenes</li>
               <li>A scene has a question and a answer</li>
               <li>
@@ -156,7 +155,7 @@ export const PackCreator = () => {
               <li>You get the gist of it, add your first scene to begin</li>
             </ul>
           </div>
-          <ArrowSvg className="arrow" />
+          <ArrowSvg className="absolute bottom-[65px] left-[225px] brightness-50 [&_svg]:w-[250px] [&_svg]:h-auto" />
         </EmptyContent>
       )}
       <HelpButton variant="fab" onClick={toggleHelpModal}>
@@ -171,9 +170,9 @@ export const PackCreator = () => {
       >
         <HelpModalContent>
           {Object.values(keybindings).map((binding) => (
-            <div className="keybinding" key={binding.display}>
+            <div className="flex justify-center items-center mb-2" key={binding.display}>
               <div>{binding.description}</div>
-              <code>{binding.display}</code>
+              <code className="py-1 px-2 text-[0.9rem] bg-grey-background dark:bg-grey-dark">{binding.display}</code>
             </div>
           ))}
         </HelpModalContent>
@@ -182,106 +181,38 @@ export const PackCreator = () => {
   );
 };
 
-const Page = styled.section`
-  height: 100vh;
-  display: grid;
-  background: ${theme.ui.backgroundGrey};
+const Page = classed.section(
+  "h-screen grid bg-grey-background dark:bg-grey-dark grid-cols-[215px_1fr_1fr_100px] grid-rows-[50px_1fr_50px]"
+);
+
+const SidebarLeft = classed.section(
+  "grid grid-rows-[max-content_auto_max-content] h-full border-r border-grey-dark dark:border-grey-light",
+  "col-span-1 row-start-2 row-span-2"
+);
+
+const Content = classed.section("p-7 col-start-2 col-span-2 row-start-2");
+
+const EmptyContent = classed(Content,"flex invisible animate-[visible_0s_linear_0.1s_forwards]");
+
+const Screen = classed.section(
+  "flex flex-col items-center bg-white dark:bg-black p-5 w-full overflow-auto rounded-wavy border-2",
+  "border-grey-dark dark:border-grey-light",
+  // screen - top - padding - footer - padding
+  "h-[calc(100vh_-_50px_-_40px_-_50px_-_16px)]"
+);
+
+const SidebarRight = classed.section(
+  "h-full py-7 px-3 col-start-4 col-span-1 row-start-2 row-span-2"
+);
+
+const Footer = classed.footer("relative row-start-3 row-span-1 col-start-2 col-span-2");
+
+const HelpButton = classed(Button,"fixed bottom-3 right-3 p-2");
+
+const HelpModalContent = classed.div("");
+`
   grid-template-areas:
     "header  header  header header"
     "sidebarL content content sidebarR"
     "sidebarL  footer  footer sidebarR";
-  grid-template-columns: 215px 1fr 1fr 100px;
-  grid-template-rows: 50px 1fr 50px;
-`;
-
-const SidebarLeft = styled.section`
-  grid-area: sidebarL;
-  display: grid;
-  grid-template-rows: max-content auto max-content;
-  height: 100%;
-  border-right: 1px solid ${theme.ui.borderColor};
-`;
-
-const Content = styled.section`
-  grid-area: content;
-  padding: ${theme.spacings(7)};
-`;
-
-const EmptyContent = styled(Content)`
-  display: flex;
-  animation: ${visible} 0s linear 0.1s forwards;
-  visibility: hidden;
-
-  .arrow {
-    position: absolute;
-    bottom: 65px;
-    left: 225px;
-    filter: brightness(0.5);
-
-    > svg {
-      width: 250px;
-      height: auto;
-    }
-  }
-
-  .empty-content {
-    text-align: center;
-    max-width: 600px;
-    margin: auto;
-
-    > p {
-      margin-bottom: ${theme.spacings(5)};
-    }
-  }
-
-  ul {
-    text-align: left;
-  }
-`;
-
-const Screen = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: ${theme.ui.background};
-  padding: ${theme.spacings(5)};
-  width: 100%;
-  border: 2px solid ${theme.ui.borderColor};
-  border-radius: ${theme.ui.borderWavyRadius};
-  /* screen - top - padding - footer - padding */
-  height: calc(100vh - 50px - 40px - 50px - 16px);
-  overflow: auto;
-`;
-
-const SidebarRight = styled.section`
-  grid-area: sidebarR;
-  padding: ${theme.spacings(7)} ${theme.spacings(3)};
-  height: 100%;
-`;
-
-const Footer = styled.footer`
-  grid-area: footer;
-  position: relative;
-`;
-
-const HelpButton = styled(Button)`
-  position: fixed;
-  bottom: ${theme.spacings(3)};
-  right: ${theme.spacings(3)};
-  padding: ${theme.spacings(2)};
-`;
-
-const HelpModalContent = styled.div`
-  .keybinding {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: ${theme.spacings(2)};
-
-    > code {
-      background-color: ${theme.ui.backgroundGrey};
-      padding: ${theme.spacings(1)} ${theme.spacings(2)};
-      font-size: 0.9rem;
-    }
-  }
 `;
