@@ -21,11 +21,11 @@ export const Navigation = () => {
       </div>
       {/* right end */}
       {!auth.loading && (
-        <div className="flex justify-end items-center flex-auto px-3 [&_a]:p-3 [&_a]:hover:underline">
+        <div className="flex justify-end items-center flex-auto px-3">
           {auth.user ? (
             <>
-              <Link href="/">Play</Link>
-              <Link href={`/u/${auth.user.user_metadata.username}`}>
+              <Link className="hover:underline p-3" href="/">Play</Link>
+              <Link className="hover:underline p-3" href={`/u/${auth.user.user_metadata.username}`}>
                 Profile
               </Link>
               <button type="button" onClick={auth.signOut} className="p-3 hover:underline">
@@ -34,9 +34,9 @@ export const Navigation = () => {
             </>
           ) : (
             <>
-              <Link href="/">Play</Link>
-              <Link href="/auth/request">Sign Up</Link>
-              <Link href="/auth/login">Login</Link>
+              <Link className="hover:underline p-3" href="/">Play</Link>
+              <Link className="hover:underline p-3" href="/auth/request">Sign Up</Link>
+              <Link className="hover:underline p-3" href="/auth/login">Login</Link>
             </>
           )}
         </div>

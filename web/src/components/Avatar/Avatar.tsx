@@ -24,7 +24,8 @@ const StyledIcon = classed.div(
     variants:{
       type: {
         default: "w-20 h-20",
-        setName: "w-28 h-28 desktop:w-24 desktop:h-24 mb-2"
+        setName: "w-28 h-28 desktop:w-24 desktop:h-24 mb-2",
+        full: "w-full h-full"
       }
     },
     defaultVariants:{

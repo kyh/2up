@@ -202,7 +202,7 @@ module.exports = {
         "bubble-empty": "bubble-empty 1.5s steps(53) 1 forwards",
         "bubble-dislike": "bubble-dislike 1.5s steps(49) 1 forwards",
         "bubble-cry-emoji": "bubble-cry-emoji 1.5s steps(49) 1 forwards",
-        "bubble-bubble-like": "bubble-like 1.5s steps(49) 1 forwards",
+        "bubble-like": "bubble-like 1.5s steps(49) 1 forwards",
         "dust": "dust-animation 1s steps(29) infinite forwards",
       },
       backgroundImage: {
