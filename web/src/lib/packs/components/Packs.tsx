@@ -37,7 +37,7 @@ export const PackImage = classed.div(
   "w-full h-40 bg-[#bcc7ff] bg-cover mx-auto mb-2", {
   variants: {
     src: {
-      "true": "bg-[url(var(--src))]",
+      "true": "bg-[var(--packgBgSource)]",
       "false": "bg-none"
     }
   },
