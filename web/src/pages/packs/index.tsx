@@ -13,7 +13,7 @@ const PackDiscoverPage = () => {
 };
 
 const getLayout = (page: ReactNode) => (
-  <PackLayout bgImage="/illustrations/space.svg" bgTop="100px">
+  <PackLayout bgImage={true} bgTop="100px">
     {page}
   </PackLayout>
 );

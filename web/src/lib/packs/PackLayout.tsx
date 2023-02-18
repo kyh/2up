@@ -8,17 +8,13 @@ export const PackLayout = ({
   bgTop,
 }: {
   children: ReactNode;
-  bgImage?: string;
+  bgImage?: boolean;
   bgTop?: string;
 }) => {
   return (
     <Page
-      bgImage={bgImage!==undefined}
-      style={{
-        "--pageBgImage": `url(${bgImage})`,
-        "--pageBgTop": `${bgTop || "0"}`
-      } as React.CSSProperties
-      }
+      bgImage={bgImage !== undefined}
+      style={{"--pageBgTop": `${bgTop || "0"}`} as React.CSSProperties}
     >
       <Navigation />
       {children}

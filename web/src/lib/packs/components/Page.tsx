@@ -5,7 +5,7 @@ export const Page = classed.section(
   "desktop:overflow-x-hidden desktop:[perspective:5px] desktop:h-screen", {
     variants: {
       bgImage: { 
-        true: "before:content-[''] before:absolute before:inset-x-0 before:top-0 before:h-[120vh] before:bg-[var(--pageBgImage)] before:[transform:translateZ(-1px)] before:translate-y-[var(--pageBgTop)] before:scale-[1.2] before:bg-no-repeat bg-auto bg-[center_top]",
+        true: "before:content-[''] before:-z-50 before:absolute before:inset-x-0 before:top-0 before:h-[120vh] before:bg-[url('/illustrations/space.svg')] before:[transform:translateZ(-1px)] before:translate-y-[var(--pageBgTop)] before:scale-[1.2] before:bg-no-repeat bg-auto bg-[center_top]",
         false: ""
       }
     },

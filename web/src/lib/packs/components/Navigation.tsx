@@ -46,6 +46,6 @@ export const Navigation = () => {
 };
 
 export const NavigationContainer = classed.nav(
-  "flex bg-white dark:bg-black border-b-1 border-grey-dark dark:border-grey-light h-[50px] [grid-area:header]",
+  "flex bg-white dark:bg-black border-b border-grey-dark dark:border-grey-light h-[50px] [grid-area:header]",
   "[&_.pack-title]:m-0"
 );
