@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import styled, { css } from "styled-components";
+import { classed } from "@tw-classed/react";
 import { motion } from "framer-motion";
-import { theme } from "~/styles/theme";
 import { useHotkeys } from "@react-hook/hotkey";
 import { Button, Icon } from "~/components";
 import { Instruction } from "~/lib/game/components/Instruction";
@@ -98,26 +97,11 @@ export const Sidebar = ({
   );
 };
 
-const SidebarHeader = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${theme.spacings(3)};
+const SidebarHeader = classed.header("flex justify-between items-center mb-3 [&_h3]:m-0");
 
-  h3 {
-    margin: 0;
-  }
-`;
+const SidebarContent = classed.ul("overflow-auto pr-3 m-0");
 
-const SidebarContent = styled.ul`
-  overflow: auto;
-  padding: 0 ${theme.spacings(3)} 0 0;
-  margin: 0;
-`;
-
-const SidebarFooter = styled.footer`
-  padding: ${theme.spacings(3)};
-`;
+const SidebarFooter = classed.footer("p-3");
 
 type SidebarItemProps = {
   index: number;
@@ -142,8 +126,8 @@ const SidebarItem = ({
         isSelected={isSelected}
         onClick={() => selectScene(scene.id)}
       >
-        <div className="preview">
-          <Instruction instruction={scene.questionDescription || ""} />
+        <QuestionPreview>
+          <Instruction className="h-auto mb-1" instruction={scene.questionDescription || ""} />
           <Question
             question={scene.question}
             questionType={scene.questionType.slug}
@@ -168,10 +152,11 @@ const SidebarItem = ({
               );
             })}
           </div>
-        </div>
+        </QuestionPreview>
+        {/* delete */}
         {showDelete && (
           <button
-            className="delete"
+            className="hidden hover:block absolute -right-1 -top-1"
             onClick={() => onDeleteScene(scene.id, index)}
           >
             <Icon icon="trash" />
@@ -182,116 +167,35 @@ const SidebarItem = ({
   );
 };
 
-const QuestionItemContainer = styled(motion.li)`
-  padding: ${theme.spacings(1)} 0;
-`;
+const QuestionItemContainer = classed(motion.li, "py-1");
 
-const QuestionItem = styled.div<{ isSelected: boolean }>`
-  position: relative;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  padding: ${theme.spacings(2)};
-  padding-left: ${theme.spacings(6)};
-  transition: background 0.2s ease, box-shadow 0.2s ease;
-  ${({ isSelected }) =>
-    isSelected &&
-    css`
-      background-color: ${theme.ui.backgroundPurple};
-      box-shadow: inset ${theme.spacings(1)} 0 0 0 ${theme.colors.purple};
-    `}
-  &:hover {
-    .delete {
-      display: block;
-    }
-
-    .preview {
-      box-shadow: 0 0 3px 0 ${theme.colors.purple};
-      border-color: ${theme.colors.purple};
+const QuestionItem = classed.div(
+  "relative rounded-r-[5px] p-2 pl-6 transition-[background_0.2s_ease,_box-shadow_0.2s_ease]", {
+    variants:{
+      isSelected:{
+        true:"bg-purple-background dark:bg-purple-dark shadow-[inset_4px_0_0_0] shadow-purple",
+        false:""
+      }
+    },
+    defaultVariants:{
+      isSelected:"false"
     }
   }
+);
 
-  .preview {
-    cursor: pointer;
-    font-size: 0.4rem;
-    background: ${theme.ui.background};
-    padding: ${theme.spacings(2)};
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid ${theme.ui.borderColor};
-    border-radius: ${theme.ui.borderWavyRadius};
-    transition: border-color 0.1s ease, box-shadow 0.1s ease;
-
-    .instruction {
-      height: auto;
-      margin-bottom: ${theme.spacings(1)};
-    }
-
-    .question {
-      height: auto;
-      margin: 0 auto ${theme.spacings(2)};
-
-      > h1 {
-        font-size: 0.7rem;
-      }
-
-      > img {
-        object-fit: contain;
-        max-width: 70px;
-        height: 40px;
-        display: block;
-      }
-    }
-
-    .video-player {
-      width: 70px !important;
-      height: 40px !important;
-    }
-
-    .audio-player {
-      transform: scale(0.5);
-      transform-origin: 75px;
-      margin: -20px 0;
-      min-width: auto;
-
-      .rhap_additional-controls,
-      .rhap_volume-controls {
-        display: none;
-      }
-    }
-
-    .answers-container {
-      display: grid;
-      grid-template-columns: repeat(2, max-content);
-      grid-gap: ${theme.spacings(1)};
-    }
-
-    .answer-display {
-      font-size: 0.4rem;
-      padding: ${theme.spacings(1)} ${theme.spacings(2)};
-      max-width: 70px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      margin: 0;
-      border: 2px solid ${theme.ui.borderColor};
-      border-radius: ${theme.ui.borderWavyRadius};
-
-      &.correct {
-        border-color: ${theme.colors.purple};
-      }
-    }
-
-    > * {
-      pointer-events: none;
-    }
-  }
-
-  .delete {
-    display: none;
-    position: absolute;
-    right: ${theme.spacings(-1)};
-    top: ${theme.spacings(-1)};
-  }
-`;
+const QuestionPreview = classed.div(
+  "cursor-pointer text-[0.4rem] p-2 rounded-wavy hover:shadow-[0_0_3px_0] hover:shadow-purple",
+  "bg-white dark:bg-black flex flex-col justify-center items-center border border-grey-dark dark:border-grey-light",
+  "transition-[border-color_0.1s_ease,_box-shadow_0.1s_ease] child:pointer-events-none",
+  "[&_.question]:h-auto [&_.question]:mx-auto [&_.question]:mb-2 [&_.question_h1]:text-[0.7rem]",
+  "[&_.question_img]:object-contain [&_.question_img]:max-w-[70px] [&_.question_img]:h-10 [&_.question_img]:block",
+  "[&_.video-player]:!w-[70px] [&_.video-player]:!h-[70px]",
+  "[&_.audio-player]:scale-50 [&_.audio-player]:origin-[75px] [&_.audio-player]:-my-5 min-w-[auto]",
+  "[&_.audio-player_.rhap_additional-controls]:hidden [&_.audio-player_.rhap_volume-controls]:hidden",
+  "[&_.answers-container]:grid [&_.answers-container]:grid-cols-2 [&_.answers-container]:gap-1",
+  "[&_.answer-display]:text-[0.4rem] [&_.answer-display]:py-1 [&_.answer-display]:px-2 [&_.answer-display]:max-w-[70px]",
+  "[&_.answer-display]:overflow-hidden [&_.answer-display]:text-ellipsis [&_.answer-display]:whitespace-nowrap",
+  "[&_.answer-display]:m-0 [&_.answer-display]:rounded-wavy [&_.answer-display]:border-2",
+  "[&_.answer-display]:border-grey-dark dark:[&_.answer-display]:border-grey-light",
+  "[&_.answer-display.correct]:border-purple",
+);

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { Card } from "~/components";
 import { Content } from "~/lib/packs/components/Page";
 import { PackForm, PackFormInputs } from "~/lib/packs/components/PackForm";
@@ -21,8 +21,4 @@ export const PackNew = () => {
   );
 };
 
-const PackNewPageContent = styled(Content)`
-  display: block;
-  max-width: 500px;
-  margin: 0 auto;
-`;
+const PackNewPageContent = classed(Content, "block max-w-[500px] my-0 mx-auto");

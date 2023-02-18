@@ -1,6 +1,5 @@
 import { ChangeEvent } from "react";
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 import { Input, SingleLetterInput, Checkbox, Button, Icon } from "~/components";
 import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/packStore";
 import { getRandomAnswer } from "~/lib/packs/packUtils";
@@ -84,9 +83,10 @@ export const EditableAnswer = ({
                     onChangeSceneAnswer({ content: e.target.value }, index)
                   }
                 />
+                {/* Delete */}
                 {sceneAnswers.length > 1 && (
                   <button
-                    className="delete"
+                    className="absolute right-1"
                     onClick={() => onDeleteSceneAnswer(sceneAnswer.id)}
                   >
                     <Icon icon="trash" />
@@ -97,12 +97,14 @@ export const EditableAnswer = ({
           </Grid>
           <AddOptionContainer>
             <Button
+            className='mb-1'
               onClick={onAddSceneAnswer}
               disabled={sceneAnswers.length > 3}
             >
               + Add Option
             </Button>
             <button
+            className='mb-1'
               onClick={onAddRandomSceneAnswer}
               disabled={sceneAnswers.length > 3}
             >
@@ -154,35 +156,11 @@ export const EditableAnswer = ({
   }
 };
 
-const AnswerContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+const AnswerContainer = classed.div("flex flex-col items-center");
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, max-content);
-  grid-column-gap: ${theme.spacings(3)};
-`;
+const Grid = classed.div("grid grid-cols-2 gap-3");
 
-const InputContainer = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: ${theme.spacings(3)};
-  /* Multi */
-  .delete {
-    position: absolute;
-    right: ${theme.spacings(1)};
-  }
-`;
+const InputContainer = classed.div("relative flex justify-center items-center mb-3");
 
-const AddOptionContainer = styled(InputContainer)`
-  flex-direction: column;
 
-  > button {
-    margin-bottom: ${theme.spacings(1)};
-  }
-`;
+const AddOptionContainer = classed(InputContainer, "flex-col");

@@ -12,7 +12,13 @@ export const PackLayout = ({
   bgTop?: string;
 }) => {
   return (
-    <Page bgImage={bgImage} bgTop={bgTop}>
+    <Page
+      style={{
+        "--bgImage": `${bgImage}`,
+        "--bgTop": `${bgTop}`
+      } as React.CSSProperties
+      }
+    >
       <Navigation />
       {children}
     </Page>

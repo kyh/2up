@@ -1,5 +1,4 @@
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 import { Button, Icon } from "~/components";
 import { Props as ScenePreviewProps } from "~/lib/packs/components/ScenePreview";
 
@@ -30,15 +29,6 @@ export const SceneSettingsMenu = ({ scene }: ScenePreviewProps) => {
   );
 };
 
-const SceneSettingsMenuContainer = styled.div`
-  text-align: center;
-
-  .scene-setting {
-    margin-bottom: ${theme.spacings(4)};
-  }
-
-  .scene-setting-button {
-    display: block;
-    margin: 0 auto ${theme.spacings(1)};
-  }
-`;
+const SceneSettingsMenuContainer = classed.div(
+  "text-center [&_.scene-setting]:mb-4 [&_.scene-setting-button]:block [&_.scene-setting-button]:mx-auto [&_.scene-setting-button]:mb-1"
+);

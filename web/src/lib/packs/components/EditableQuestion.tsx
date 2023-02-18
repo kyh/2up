@@ -1,7 +1,6 @@
 import { useRef, useState, ChangeEvent, ReactNode } from "react";
 import { useRouter } from "next/router";
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 import { VideoPlayer, AudioPlayer, Code, Button, Icon } from "~/components";
 import { PackAssetModal } from "~/lib/packs/components/PackAssetModal";
 import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/packStore";
@@ -47,6 +46,7 @@ export const EditableQuestion = ({
 
   const instructionElement = (
     <EditableQuestionInstructions
+      variant="inContainer"
       data-focusable={instructionElementAttribute}
       placeholder="Instruction..."
       defaultValue={questionDescription}
@@ -106,6 +106,7 @@ export const EditableQuestion = ({
         <EditableQuestionContainer key={sceneId}>
           {instructionElement}
           <EditableQuestionText
+            variant="inContainer"
             placeholder="Your question?"
             defaultValue={question}
             onFocus={onFocus}
@@ -116,16 +117,33 @@ export const EditableQuestion = ({
   }
 };
 
-const EditableQuestionInstructions = styled.input`
-  margin: 0 auto ${theme.spacings(2)};
-`;
+const EditableQuestionInstructions = classed.input(
+  "mx-auto mb-2", {
+  variants: {
+    variant: {
+      default: "",
+      inContainer: "block text-center rounded-wavy border-none transition-shadow duration-[0.23s] ease-[ease] focus:outline-none focus:shadow-[0_0_0_3px_rgba(0,_0,_0,_0.3)]"
+    }
+  },
+  defaultVariants: {
+    variant: "default"
+  }
+}
+);
 
-const EditableQuestionText = styled.textarea`
-  margin: 0 auto ${theme.spacings(5)};
-  font-size: 2rem;
-  width: 100%;
-  resize: vertical;
-`;
+const EditableQuestionText = classed.textarea(
+  "mx-auto mb-5 text-[2rem] w-full resize-y", {
+  variants: {
+    variant: {
+      default: "",
+      inContainer: "block text-center rounded-wavy border-none transition-shadow duration-[0.23s] ease-[ease] focus:outline-none focus:shadow-[0_0_0_3px_rgba(0,_0,_0,_0.3)]"
+    }
+  },
+  defaultVariants: {
+    variant: "default"
+  }
+}
+);
 
 type EditableQuestionComponentProps = Pick<
   EditableQuestionProps,
@@ -145,27 +163,13 @@ const EditableQuestionImage = ({
   return (
     <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
       <ImageContainer>
-        <img alt={instruction} src={question} />
+        <img alt={instruction} src={question} className="mx-auto mb-5 object-cover max-w-full max-h-[200px] desktop:max-w-[500px]" />
       </ImageContainer>
     </AssetManager>
   );
 };
 
-const ImageContainer = styled.div`
-  display: flex;
-
-  > img {
-    margin: auto;
-    object-fit: cover;
-    max-width: 100%;
-    max-height: 200px;
-    margin: 0 auto ${theme.spacings(5)};
-
-    ${theme.breakpoints.desktop} {
-      max-width: 500px;
-    }
-  }
-`;
+const ImageContainer = classed.div("flex");
 
 const EditableQuestionAudio = ({
   question,
@@ -212,9 +216,7 @@ const EditableQuestionCode = ({
   );
 };
 
-const Container = styled.div`
-  margin-bottom: ${theme.spacings(5)};
-`;
+const Container = classed.div("mb-5");
 
 const AssetManager = ({
   question,
@@ -232,7 +234,7 @@ const AssetManager = ({
       {children}
       <input
         ref={inputRef}
-        className="url-input"
+        className="absolute left-1/2 top-[10px] -translate-x-1/2"
         type="text"
         placeholder="URL"
         defaultValue={question}
@@ -240,7 +242,7 @@ const AssetManager = ({
         onBlur={onChange}
       />
       <Button
-        className="edit-button"
+        className="rounded-full absolute top-2 right-2 bg-white dark:bg-black"
         variant="fab"
         onClick={() => setIsOpen(true)}
       >
@@ -263,38 +265,6 @@ const AssetManager = ({
   );
 };
 
-const AssetManagerContainer = styled.div`
-  position: relative;
+const AssetManagerContainer = classed.div("relative");
 
-  .url-input {
-    position: absolute;
-    left: 50%;
-    top: 10px;
-    transform: translateX(-50%);
-  }
-
-  .edit-button {
-    background-color: ${theme.ui.background};
-    border-radius: 100%;
-    position: absolute;
-    top: ${theme.spacings(2)};
-    right: ${theme.spacings(2)};
-  }
-`;
-
-const EditableQuestionContainer = styled.div`
-  width: 70%;
-
-  ${EditableQuestionInstructions},
-  ${EditableQuestionText} {
-    display: block;
-    text-align: center;
-    border-radius: ${theme.ui.borderWavyRadius};
-    border: none;
-    transition: box-shadow 0.23s ease;
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);
-    }
-  }
-`;
+const EditableQuestionContainer = classed.div("w-[70%]");

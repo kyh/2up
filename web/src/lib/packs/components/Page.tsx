@@ -1,71 +1,26 @@
-import styled, { css } from "styled-components";
-import { theme } from "~/styles/theme";
+import { classed } from "@tw-classed/react";
 
-export const Page = styled.section<{
-  bgImage?: string;
-  bgTop?: string;
-}>`
-  min-height: 100vh;
-  background: ${theme.ui.backgroundGrey};
-
-  ${theme.breakpoints.desktop} {
-    ${({ bgImage, bgTop = "0" }) => css`
-      overflow-x: hidden;
-      overflow-y: auto;
-      perspective: 5px;
-      height: 100vh;
-
-      ${bgImage &&
-      css`
-        &::before {
-          content: "";
-          position: absolute;
-          left: 0;
-          top: 0;
-          right: 0;
-          height: 120vh;
-          background-image: url(${bgImage});
-          background-repeat: no-repeat;
-          background-size: auto;
-          background-position: center top;
-          transform: translateY(${bgTop}) translateZ(-1px) scale(1.2);
-          pointer-events: none;
-        }
-      `}
-    `}
-  }
-`;
-
-export const Content = styled.main`
-  max-width: 900px;
-  width: 100%;
-  margin: 0 auto;
-  padding: ${theme.spacings(5)} ${theme.spacings(3)};
-
-  .back-link {
-    display: inline-block;
-    margin-bottom: ${theme.spacings(1)};
-    &:hover {
-      text-decoration: underline;
+export const Page = classed.section(
+  "min-h-screen bg-grey-background dark:bg-grey-dark",
+  "desktop:overflow-x-hidden desktop:overflow-y-hidden desktop:[perspective:5px] desktop:h-screen", {
+    variants: {
+      bgImage: { 
+        true: "before:content-[''] before:absolute before:inset-x-0 before:top-0 before:h-[120vh] before:bg-[url(var(--bgImage))] before:[transform:translateZ(-1px)] before:translate-y-[var(--bgTop)] before:scale-[1.2] before:bg-no-repeat bg-auto bg-[center_top] pointer-events-none",
+        false: ""
+      }
+    },
+    defaultVariants:{
+      bgImage: "false"
     }
   }
+);
 
-  ${theme.breakpoints.desktop} {
-    padding: ${theme.spacings(10)} ${theme.spacings(5)};
-  }
-`;
+export const Content = classed.main(
+  "max-w-[900px] w-full mx-auto py-5 px-3 desktop:py-10 desktop:px-5",
+  "[&_.back-link]:inline-block [&_.back-link]:mb-1 [&_.back-link]:hover:underline"
+);
 
-export const Footer = styled.footer`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${theme.spacings(5)} 0 ${theme.spacings(20)};
-  background-image: url("/illustrations/rainbow.svg");
-  background-repeat: no-repeat;
-  background-size: 300px;
-  background-position: center -30px;
-
-  a {
-    text-decoration: underline;
-  }
-`;
+export const Footer = classed.footer(
+  "flex justify-center items-center pt-5 pb-20 bg-no-repeat [background-size:300px] bg-[center_-30px]",
+  "bg-[url('/illustrations/rainbow.svg')] [&_a]:underline"
+);
