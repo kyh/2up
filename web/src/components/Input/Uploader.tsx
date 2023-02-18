@@ -143,7 +143,7 @@ export const Uploader = ({ pathPrefix, onUploaded }: UploaderProps) => {
           </h3>
         )}
         {filesToUpload.map((file, i) => (
-          <div key={i} className="border-1 border-grey-dark dark:border-grey-light h-full mr-2 p-2">
+          <div key={i} className="border border-grey-dark dark:border-grey-light h-full mr-2 p-2">
             <div>Uploading...</div>
             <div>{file.name}</div>
           </div>
