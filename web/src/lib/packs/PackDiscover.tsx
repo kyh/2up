@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { Link, Carousel, ButtonLinkNative, Spinner } from "~/components";
 import { Content, Footer } from "./components/Page";
-import { PackSection, Pack, PacksProps } from "./components/Packs";
+import { PackSection, PackItemsContainer, PackCategoryLink, Pack, PackSectionHeader, PacksProps } from "./components/Packs";
 import { useGetDiscover } from "./usePackActions";
 
 export const PackDiscover = () => {
@@ -16,17 +16,17 @@ export const PackDiscover = () => {
   return (
     <>
       <Content>
-        <PackSection>
-          <div className="pack-section spaced">
-            <header className="pack-section-header main-header">
+        <section>
+          <PackSection variant="spaced">
+            <PackSectionHeader variant="mainHeader">
               <h1 className="text-4xl font-bold">{featured.title}</h1>
-            </header>
-            <div className="pack-items staggered-pack-items">
+            </PackSectionHeader>
+            <PackItemsContainer variant="staggered">
               {featured.packs.map((pack) => (
-                <Pack key={pack.id} pack={pack} showPlayButton />
+                <Pack variant="staggered" key={pack.id} pack={pack} showPlayButton />
               ))}
-            </div>
-          </div>
+            </PackItemsContainer>
+          </PackSection>
           {packSections.map((section) => (
             <PackCarouselContainer
               key={section.title}
@@ -41,7 +41,7 @@ export const PackDiscover = () => {
             packs={myPacks}
             showNewPackButton
           /> */}
-        </PackSection>
+        </section>
       </Content>
       <Footer>
         {/* {!auth.user && (
@@ -68,22 +68,22 @@ const PackCarouselContainer = ({
 }: PackCarouselContainerProp) => {
   if (!packs.length) return null;
   return (
-    <div className="pack-section">
-      <header className="pack-section-header">
-        <h2>
-          <Link className="category-link" href={url}>
+    <PackSection>
+      <PackSectionHeader>
+        <h2 className="m-0 text-2xl font-bold">
+          <PackCategoryLink href={url}>
             {title}
-          </Link>
+          </PackCategoryLink>
         </h2>
         {showNewPackButton && (
           <ButtonLinkNative href="/packs/new">Create new Pack</ButtonLinkNative>
         )}
-      </header>
+      </PackSectionHeader>
       <Carousel>
         {packs.map((pack) => (
           <Pack key={pack.id} pack={pack} className="carousel-item" />
         ))}
       </Carousel>
-    </div>
+    </PackSection>
   );
 };
