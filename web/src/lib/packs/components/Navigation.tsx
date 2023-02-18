@@ -1,7 +1,6 @@
 import { classed } from "@tw-classed/react";
 import Image from "next/image";
 import { Link } from "~/components";
-import { theme } from "~/styles/theme";
 import { useAuth } from "~/lib/auth/useAuth";
 
 export const Navigation = () => {
@@ -50,23 +49,3 @@ export const NavigationContainer = classed.nav(
   "flex bg-white dark:bg-black border-b-1 border-grey-dark dark:border-grey-light h-[50px] [grid-area:header]",
   "[&_.pack-title]:m-0"
 );
-`
-  .right {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex: auto;
-    padding: 0 ${theme.spacings(3)};
-    &.end {
-      justify-content: flex-end;
-
-      > a,
-      button {
-        padding: ${theme.spacings(3)};
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-  }
-`;

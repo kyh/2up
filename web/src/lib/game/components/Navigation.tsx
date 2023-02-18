@@ -36,7 +36,7 @@ export const Navigation = () => {
 
   return (
     <NavigationContainer>
-      <Button variant="fab" onClick={() => setIsOpen(true)}>
+      <Button className="rounded-full" variant="fab" onClick={() => setIsOpen(true)}>
         <Icon icon="setting" />
       </Button>
       <Modal

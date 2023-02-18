@@ -34,7 +34,6 @@ export const PlayersGrid = classed.div(
   "grid gap-3 w-full",
   "desktop:absolute desktop:felx desktop:justify-between desktop:pointer-events-none",
   "desktop:bottom-0 desktop:right-5 desktop:left-5",
-  // FIXME - Refactor component rendering 
   // TODO- make sure these work
   "[&_.player]:desktop:text-center [&_.player]:desktop:self-end [&_.player]:desktop:flex-col-reverse",
   "[&_.player_.name]:desktop:mb-1",

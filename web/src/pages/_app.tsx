@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import Router from "next/router";
 import localFont from "@next/font/local";
 import { trpc } from "~/utils/trpc";
-import { StyleProvider } from "~/styles/global";
 import { AlertProvider, ProgressBar } from "~/components";
 import { AuthProvider } from "~/lib/auth/useAuth";
 import { useHomeStore } from "~/lib/home/homeStore";
@@ -57,17 +56,15 @@ const MyApp = ({ Component, pageProps }: Props) => {
   }, [isDarkMode])
 
   return (
-    <StyleProvider>
-      <AlertProvider>
-        <AuthProvider>
-          {getLayout(
-            <main className={chalkboradSEFont.className}>
-              <Component {...pageProps} />
-            </main>
-          )}
-        </AuthProvider>
-      </AlertProvider>
-    </StyleProvider>
+    <AlertProvider>
+      <AuthProvider>
+        {getLayout(
+          <main className={`${chalkboradSEFont.className} h-full`}>
+            <Component {...pageProps} />
+          </main>
+        )}
+      </AuthProvider>
+    </AlertProvider>
   );
 };
 
