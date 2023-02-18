@@ -45,8 +45,8 @@ export const Request = () => {
   return (
     <Container>
       {/* Title */}
-      <h1 className="mb-5 text-center">🎉 Welcome!</h1>
-      <p>
+      <h1 className="mb-5 text-center text-4xl font-bold">🎉 Welcome!</h1>
+      <p className="mb-5">
         Interested in building your own Packs? Join our Pack Creator beta
         program to build, test, and play your own games.
       </p>
@@ -56,7 +56,7 @@ export const Request = () => {
             Thanks for your interest! We&apos;ll be distributing logins soon
           </div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
             <TextField
               id="email"
               labelText="Email"
@@ -99,4 +99,4 @@ export const Request = () => {
   );
 };
 
-const Container = classed.section("min-w-[500px] mx-auto translate-y-[-70px]");
+const Container = classed.section("desktop:max-w-lg mx-auto translate-y-[-70px]");
