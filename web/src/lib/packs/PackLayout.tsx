@@ -13,9 +13,10 @@ export const PackLayout = ({
 }) => {
   return (
     <Page
+      bgImage={bgImage!==undefined}
       style={{
-        "--bgImage": `${bgImage}`,
-        "--bgTop": `${bgTop}`
+        "--pageBgImage": `url(${bgImage})`,
+        "--pageBgTop": `${bgTop || "0"}`
       } as React.CSSProperties
       }
     >

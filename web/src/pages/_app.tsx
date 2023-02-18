@@ -1,11 +1,13 @@
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";
+import { useEffect } from "react";
 import Router from "next/router";
 import localFont from "@next/font/local";
 import { trpc } from "~/utils/trpc";
 import { StyleProvider } from "~/styles/global";
 import { AlertProvider, ProgressBar } from "~/components";
 import { AuthProvider } from "~/lib/auth/useAuth";
+import { useHomeStore } from "~/lib/home/homeStore";
 import "../styles/globals.css";
 
 const chalkboradSEFont = localFont({
@@ -39,6 +41,21 @@ Router.events.on("routeChangeComplete", progress.finish);
 
 const MyApp = ({ Component, pageProps }: Props) => {
   const getLayout = Component.getLayout || ((page) => page);
+
+  const isDarkMode = useHomeStore((state) => state.isDarkMode)
+
+  useEffect(() => {
+    if (isDarkMode) {
+      globalThis.document.documentElement.classList.add(
+        "dark"
+      );
+    } else {
+      globalThis.document.documentElement.classList.remove(
+        "dark"
+      );
+    }
+  }, [isDarkMode])
+
   return (
     <StyleProvider>
       <AlertProvider>
