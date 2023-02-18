@@ -1,36 +1,53 @@
-import { classed } from "@tw-classed/react";
+import { classed, deriveClassed, ComponentProps } from "@tw-classed/react";
 import { Link, Button, ButtonLinkNative, Icon } from "~/components";
 import { useHostGame } from "~/lib/game/useGameActions";
 import { Pack as PackModel } from "@prisma/client";
 
-<div className="[&_.pack-item_.pack-item-play_button]:bottom-5"></div>
 
-export const PackSection = classed.section(
-  "[&_.pack-items]:grid [&_.pack-items]:grid-cols-[repeat(auto-fit,_minmax(250px,_3fr))] [&_.pack-items]:gap-5",
-  "desktop:[&_.pack-items.staggered-pack-items]:grid-cols-4",
-  "desktop:[&_.pack-items.staggered-pack-items_.pack-item]:first:col-span-2",
-  "desktop:[&_.pack-items.staggered-pack-items_.pack-item]:first:row-span-2",
-  "[&_.pack-section]:mb-5 [&_.pack-section.spaced]:mb-12",
-  "[&_.pack-section-header]:flex [&_.pack-section-header]:justify-between [&_.pack-section-header]:items-center",
-  "[&_.pack-section-header]:capitalize [&_.pack-section-header]:mb-6",
-  "[&_.pack-section-header.main-header]:justify-center [&_.pack-section-header.main-header]:mb-8",
-  "[&_.pack-section-header.mb]:mb-8 [&_.pack-section-header_h1]:m-0 [&_.pack-section-header_h2]:m-0",
-  "[&_.pack-section-header.category-link]:inline-block [&_.pack-section-header.category-link]:after:inline-block",
-  "[&_.pack-section-header.category-link]:after:content-['-'] [&_.pack-section-header.category-link]:after:ml-1",
-  "[&_.pack-section-header.category-link]:after:transition-transform [&_.pack-section-header.category-link]:after:duration-200",
-  "[&_.pack-section-header.category-link]:after:ease-[ease] [&_.pack-section-header.category-link]:hover:after:translate-x-1",
-  "[&_.pack-item]:flex [&_.pack-item]:flex-col [&_.pack-item]:relative [&_.pack-item]:rounded-wavy [&_.pack-item]:min-h-[16rem]",
-  "[&_.pack-item]:animate-[bounce-contract_1s] [&_.pack-item]:bg-white dark:[&_.pack-item]:bg-black [&_.pack-item]:border-2",
-  "[&_.pack-item]:border-grey [&_.pack-item]:hover:animate-[bounce-expand_1s_forwards]",
-  "[&_.pack-item]:hover:border-grey-dark dark:[&_.pack-item]:hover:border-grey-light",
-  "[&_.pack-item_.pack-item-play]:hover:block [&_.pack-item]:active:animate-[bounce-contract_1s]",
-  "[&_.pack-item_.pack-item-link]:block [&_.pack-item_.pack-item-link]:h-full [&_.pack-item_.pack-item-link]:p-5",
-  "[&_.pack-item_.pack-item-title]:mb-3 [&_.pack-item_.pack-item-description]:text-grey dark:[&_.pack-item_.pack-item-description]:text-grey-light",
-  "[&_.pack-item_.pack-item-play]:hidden [&_.pack-item_.pack-item-play]:absolute [&_.pack-item_.pack-item-play]:right-5",
-  "[&_.pack-item_.pack-item-play]:bottom-5 [&_.pack-item_.pack-item-play]:animate-[fade-in_0.3s_ease_forwards]",
-  "[&_.pack-item_.pack-item-play_button]:padding-2 [&_.pack-item_.pack-item-play_button]:rounded-full",
-  "[&_.pack-item_.pack-item-play_button]:bg-white dark:[&_.pack-item_.pack-item-play_button]:bg-black",
-  "[&_.pack-item_.pack-item-edit]:absolute [&_.pack-item_.pack-item-edit]:left-5 [&_.pack-item_.pack-item-edit]:bottom-10",
+export const PackItemsContainer = classed.div(
+  "grid grid-cols-[repeat(auto-fit,_minmax(250px,_3fr))] gap-5", {
+  variants: {
+    variant: {
+      staggered: "desktop:grid-cols-4",
+      default: ""
+    }
+  },
+  defaultVariants: {
+    variant: "default"
+  }
+}
+);
+
+export const PackSection = classed.div({
+  variants: {
+    variant: {
+      spaced: "mb-12",
+      default: "mb-5"
+    }
+  },
+  defaultVariants: {
+    variant: "default"
+  }
+});
+
+export const PackSectionHeader = classed.header(
+  "flex items-center capitalize", {
+  variants: {
+    variant: {
+      mainHeader: "justify-center mb-8",
+      default: "justify-between mb-6"
+    }
+  },
+  defaultVariants: {
+    variant: "default"
+  }
+}
+);
+
+export const PackCategoryLink = classed(
+  Link,
+  "inline-block after:inline-block after:content-['»'] after:ml-1 after:transition-transform after:duration-200",
+  "after:ease-[ease] hover:after:translate-x-1"
 );
 
 export const PackImage = classed.div(
@@ -47,20 +64,41 @@ export const PackImage = classed.div(
 }
 );
 
-export type PacksProps = {
+const PackItem = classed.div(
+  "group flex flex-col relative rounded-wavy min-h-[16rem] animate-[bounce-contract_1s] bg-white dark:bg-black border-2",
+  "border-grey hover:animate-[bounce-expand_1s_forwards] hover:border-grey-dark dark:hover:border-grey-light",
+  "active:animate-[bounce-contract_1s]", {
+  variants: {
+    variant: {
+      staggered: "desktop:first:col-span-2 desktop:first:row-span-2",
+      default: ""
+    }
+  },
+  defaultVariants: {
+    variant: "default"
+  }
+}
+);
+
+const PackItemPlay = classed.div(
+  "hidden group-hover:block absolute right-5 bottom-5 animate-[fade-in_0.3s_ease_forwards]"
+);
+
+const PlayButton = classed(Button, "p-2 rounded-full bg-white dark:bg-black");
+
+export type PacksProps = ComponentProps<typeof PackItem> & {
   pack: PackModel;
-  className?: string;
   containerClassName?: string;
   showPlayButton?: boolean;
   showEditButton?: boolean;
 };
 
-export const Pack = ({
+export const Pack = deriveClassed<typeof PackItem, PacksProps>(({
   pack,
-  className = "",
   showPlayButton = true,
   showEditButton = false,
-}: PacksProps) => {
+  ...rest
+}, ref) => {
   const { hostGame, isLoading } = useHostGame();
 
   const play = () => {
@@ -68,25 +106,25 @@ export const Pack = ({
   };
 
   return (
-    <div className={`pack-item ${className}`}>
-      <Link className="pack-item-link" href={`/packs/${pack.id}`}>
-        <h2 className="pack-item-title">{pack.name}</h2>
-        <p className="pack-item-description">{pack.description}</p>
+    <PackItem {...rest} ref={ref}>
+      <Link className="block h-full p-5" href={`/packs/${pack.id}`}>
+        <h2 className="mb-3 text-2xl font-bold">{pack.name}</h2>
+        <p className="text-grey dark:text-grey-light">{pack.description}</p>
       </Link>
       {showPlayButton && (
-        <div className="pack-item-play">
-          <Button className="rounded-full" variant="fab" onClick={play} disabled={isLoading}>
+        <PackItemPlay>
+          <PlayButton className="rounded-full" variant="fab" onClick={play} disabled={isLoading}>
             <Icon icon="play" />
-          </Button>
-        </div>
+          </PlayButton>
+        </PackItemPlay>
       )}
       {showEditButton && (
-        <div className="pack-item-edit">
+        <div className="absolute left-5 bottom-10">
           <ButtonLinkNative href={`/packs/${pack.id}/edit`}>
             Edit Pack
           </ButtonLinkNative>
         </div>
       )}
-    </div>
+    </PackItem>
   );
-};
+});
