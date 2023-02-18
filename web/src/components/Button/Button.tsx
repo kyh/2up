@@ -12,7 +12,7 @@ const StyledButton = classed.button(
   "disabled:hover:animate-none", {
   variants: {
     variant: {
-      default: "p-4",
+      default: "p-2",
       fab: "p-1"
     },
     fullWidth: {

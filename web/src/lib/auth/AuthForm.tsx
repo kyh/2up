@@ -40,9 +40,9 @@ export const AuthForm = ({ isLogin }: Props) => {
   return (
     <Container>
       {/* Title */}
-      <h1 className="text-center">{isLogin ? "Login" : "Sign up"}</h1>
+      <h1 className="mb-5 text-center text-4xl font-bold">{isLogin ? "Login" : "Sign up"}</h1>
       <Card background>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           {!isLogin && (
             <TextField
               id="username"
@@ -51,6 +51,7 @@ export const AuthForm = ({ isLogin }: Props) => {
               placeholder="Lil Jon Snow"
               error={!!errors.username}
               errorText="This field is required"
+              fullWidth
             />
           )}
           <TextField
@@ -61,6 +62,7 @@ export const AuthForm = ({ isLogin }: Props) => {
             placeholder="creator@truffles.tv"
             error={!!errors.email}
             errorText="Email is required"
+            fullWidth
           />
           <TextField
             labelText="Password"
@@ -71,6 +73,7 @@ export const AuthForm = ({ isLogin }: Props) => {
             error={!!errors.password}
             errorText="Password is required"
             autoComplete="on"
+            fullWidth
           />
           {/* Submit */}
           <Button
@@ -87,4 +90,4 @@ export const AuthForm = ({ isLogin }: Props) => {
   );
 };
 
-const Container = classed.section("translate-y-[-70px]");
+const Container = classed.section("max-w-xs translate-y-[-70px]");
