@@ -9,7 +9,7 @@ export const PackDiscover = () => {
   const ref = (router.query.ref as string) || "default";
   const res = useGetDiscover(ref);
 
-  if (!res.data) return <Spinner center />;
+  if (!res.data) return <Spinner />;
 
   const [featured, ...packSections] = res.data;
 

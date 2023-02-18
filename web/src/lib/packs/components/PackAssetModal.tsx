@@ -1,7 +1,6 @@
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { gql, useMutation, useQuery } from "~/utils/mock";
 import { Modal, Uploader } from "~/components";
-import { theme } from "~/styles/theme";
 
 type AssetModalProps = {
   packId: string;
@@ -41,9 +40,9 @@ export const PackAssetModal = ({
             asset.path ?? ""
           }`;
           return (
-            <AssetButton key={asset.id} onClick={() => onSelectAsset(fullPath)}>
-              <img src={fullPath} alt={asset.rawName} />
-            </AssetButton>
+            <button key={asset.id} onClick={() => onSelectAsset(fullPath)}>
+              <img className="max-w-full" src={fullPath} alt={asset.rawName} />
+            </button>
           );
         })}
       </AssetsContainer>
@@ -77,15 +76,4 @@ const PACK_ASSET_CREATE = gql`
   }
 `;
 
-const AssetsContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-column-gap: ${theme.spacings(3)};
-  margin-top: ${theme.spacings(3)};
-`;
-
-const AssetButton = styled.button`
-  img {
-    max-width: 100%;
-  }
-`;
+const AssetsContainer = classed.div("grid grid-cols-3 gap-3 mt-3");

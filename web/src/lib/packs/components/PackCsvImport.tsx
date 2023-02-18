@@ -1,7 +1,6 @@
 import { useState, ChangeEvent } from "react";
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import { gql, useMutation } from "~/utils/mock";
-import { theme } from "~/styles/theme";
 import { Modal, Button, AreaField, useAlert } from "~/components";
 import { scenesToCsv, fileToCsv } from "~/lib/packs/packUtils";
 import { getErrorMessage } from "~/utils/error";
@@ -54,7 +53,8 @@ export const CsvImportButton = ({
 
   return (
     <CsvImportButtonContainer>
-      <button className="modal-button" onClick={() => setIsOpen(true)}>
+      {/* modal-button */}
+      <button className="text-[0.9rem] underline" onClick={() => setIsOpen(true)}>
         CSV Import
       </button>
       <Modal
@@ -69,13 +69,14 @@ export const CsvImportButton = ({
             href="https://docs.google.com/spreadsheets/d/1OQHLadGoh3hzkZ_J4SfZ1kJ_f7C4YfV7YSGrqZ9wYC4/edit?usp=sharing"
             target="_blank"
             rel="noreferrer"
+            className="underline"
           >
             Example CSV
           </a>
         </CsvImportHeader>
         <CsvImportArea onChange={handleChange} value={csv} />
         <CsvImportFooter>
-          <Button onClick={handleSubmit} disabled={isSaving}>
+          <Button className="ml-auto" onClick={handleSubmit} disabled={isSaving}>
             Update Pack
           </Button>
         </CsvImportFooter>
@@ -95,34 +96,10 @@ const CSV_IMPORT = gql`
   }
 `;
 
-const CsvImportButtonContainer = styled.div`
-  text-align: center;
-  margin-top: ${theme.spacings(1)};
+const CsvImportButtonContainer = classed.div("text-center mt-1");
 
-  > .modal-button {
-    font-size: 0.9rem;
-    text-decoration: underline;
-  }
-`;
+const CsvImportHeader = classed.header("flex justify-between");
 
-const CsvImportHeader = styled.header`
-  display: flex;
-  justify-content: space-between;
+const CsvImportArea = classed(AreaField, "w-full min-h-[300px]");
 
-  a {
-    text-decoration: underline;
-  }
-`;
-
-const CsvImportArea = styled(AreaField)`
-  width: 100%;
-  min-height: 300px;
-`;
-
-const CsvImportFooter = styled.footer`
-  display: flex;
-
-  > button {
-    margin-left: auto;
-  }
-`;
+const CsvImportFooter = classed.footer("flex");

@@ -1,6 +1,4 @@
 import { useState } from "react";
-import styled from "styled-components";
-import { theme } from "~/styles/theme";
 import {
   Link,
   Button,
@@ -42,7 +40,7 @@ export const Topbar = ({ pack, testPlay }: Props) => {
   };
 
   return (
-    <StyledNavigationContainer>
+    <NavigationContainer>
       <div className="left">
         <Link href={`/packs/${pack.id}`}>
           <picture>
@@ -57,17 +55,20 @@ export const Topbar = ({ pack, testPlay }: Props) => {
           </picture>
         </Link>
       </div>
-      <div className="right">
+      {/* right */}
+      <div className="relative">
         <div>
           <Loader className="absolute left-4 top-4 text-grey dark:text-grey-light" loading={savingScene} />
         </div>
         <button type="button" onClick={() => setIsOpen(true)}>
           <h4 className="pack-title">{pack?.name}</h4>
         </button>
-        <div className="right-actions">
+        {/* right-actions */}
+        <div className="flex">
           <WithTip tipContent="Edit pack">
+            {/* pack-ext-button */}
             <Button
-              className="pack-ext-button"
+              className="mr-2"
               variant="fab"
               onClick={() => setIsOpen(true)}
             >
@@ -76,7 +77,6 @@ export const Topbar = ({ pack, testPlay }: Props) => {
           </WithTip>
           <WithTip tipContent="Test play">
             <Button
-              className="pack-ext-button"
               variant="fab"
               onClick={testPlay}
             >
@@ -105,21 +105,6 @@ export const Topbar = ({ pack, testPlay }: Props) => {
           }}
         />
       </Modal>
-    </StyledNavigationContainer>
+    </NavigationContainer>
   );
 };
-
-const StyledNavigationContainer = styled(NavigationContainer)`
-  .right {
-    position: relative;
-  }
-  .right-actions {
-    display: flex;
-  }
-  .pack-ext-button {
-    margin-right: ${theme.spacings(2)};
-  }
-  .pack-ext-button:last-child {
-    margin-right: 0;
-  }
-`;

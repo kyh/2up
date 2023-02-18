@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { classed } from "@tw-classed/react";
 import Image from "next/image";
 import { Link } from "~/components";
 import { theme } from "~/styles/theme";
@@ -8,7 +8,8 @@ export const Navigation = () => {
   const auth = useAuth();
   return (
     <NavigationContainer>
-      <div className="left">
+      {/* Left */}
+      <div className="flex items-center pl-3 desktop:w-[215px]">
         <Link href="/packs">
           <Image
             className="logo"
@@ -19,15 +20,16 @@ export const Navigation = () => {
           />
         </Link>
       </div>
+      {/* right end */}
       {!auth.loading && (
-        <div className="right end">
+        <div className="flex justify-end items-center flex-auto px-3 [&_a]:p-3 [&_a]:hover:underline">
           {auth.user ? (
             <>
               <Link href="/">Play</Link>
               <Link href={`/u/${auth.user.user_metadata.username}`}>
                 Profile
               </Link>
-              <button type="button" onClick={auth.signOut}>
+              <button type="button" onClick={auth.signOut} className="p-3 hover:underline">
                 Logout
               </button>
             </>
@@ -44,23 +46,11 @@ export const Navigation = () => {
   );
 };
 
-export const NavigationContainer = styled.nav`
-  display: flex;
-  background: ${theme.ui.background};
-  border-bottom: 1px solid ${theme.ui.borderColor};
-  height: 50px;
-  grid-area: header;
-
-  .left {
-    display: flex;
-    align-items: center;
-    padding-left: ${theme.spacings(3)};
-
-    ${theme.breakpoints.desktop} {
-      width: 215px;
-    }
-  }
-
+export const NavigationContainer = classed.nav(
+  "flex bg-white dark:bg-black border-b-1 border-grey-dark dark:border-grey-light h-[50px] [grid-area:header]",
+  "[&_.pack-title]:m-0"
+);
+`
   .right {
     display: flex;
     justify-content: space-between;
@@ -78,9 +68,5 @@ export const NavigationContainer = styled.nav`
         }
       }
     }
-  }
-
-  .pack-title {
-    margin: 0;
   }
 `;
