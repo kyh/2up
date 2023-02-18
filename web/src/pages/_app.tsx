@@ -58,11 +58,11 @@ const MyApp = ({ Component, pageProps }: Props) => {
   return (
     <AlertProvider>
       <AuthProvider>
-        {getLayout(
-          <main className={`${chalkboradSEFont.className} h-full`}>
+        <main className={`${chalkboradSEFont.className} h-full`}>
+          {getLayout(
             <Component {...pageProps} />
-          </main>
-        )}
+          )}
+        </main>
       </AuthProvider>
     </AlertProvider>
   );
