@@ -1,14 +1,14 @@
 import { useState, ReactNode } from "react";
 import { classed } from "@tw-classed/react"
 import { motion } from "framer-motion";
-import { useIsDesktop } from "~/styles/theme";
+import { useIsDesktop } from "~/utils/useIsDesktop";
 import {
   PlayersGrid,
   Player,
   NextButton,
 } from "~/lib/game/components/PlayerGrid";
 import { Counter } from "~/components";
-import { useTimeout } from "~/styles/animations";
+import { useTimeout } from "~/utils/useTimeout";
 import { maxScorePerScene, sortByKey } from "~/lib/game/gameUtils";
 import { useNextScene } from "~/lib/game/useGameActions";
 import type { StepProps } from "~/lib/game/steps/types";

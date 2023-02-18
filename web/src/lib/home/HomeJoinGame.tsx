@@ -36,7 +36,7 @@ export const HomeJoinGame = () => {
         </Button>
       </Form>
       <StartNewGameText>
-        Or <Link href="/packs">start your own game</Link>
+        Or <Link className="ml-1 underline" href="/packs">start your own game</Link>
       </StartNewGameText>
       <Modal
         open={router.query.join ? true : false}
