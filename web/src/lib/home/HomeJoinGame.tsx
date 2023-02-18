@@ -22,7 +22,7 @@ export const HomeJoinGame = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-col justify-between h-full">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
           className="mb-1"
@@ -52,6 +52,6 @@ export const HomeJoinGame = () => {
       >
         <HomeSetName />
       </Modal>
-    </>
+    </div>
   );
 };
