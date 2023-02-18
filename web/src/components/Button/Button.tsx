@@ -5,7 +5,7 @@ import { createOrGetFx } from "~/styles/sound";
 import { Link } from "../Link/Link";
 
 const StyledButton = classed.button(
-  "border-2 border-grey-dark dark:border-grey-light border-box",
+  "border-2 border-grey-dark dark:border-grey-light rounded-wavy border-box",
   "animate-[bounce-contract_1s] hover:animate-[bounce-expand_1s_forwards]",
   "active:animate-[bounce-contract_1s]",
   "disabled:brightness-50 disabled:cursor-not-allowed disabled:animate-none",

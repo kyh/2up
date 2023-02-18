@@ -47,7 +47,7 @@ export const iconMap = {
 type IconType = keyof typeof iconMap;
 
 const StyledIcon = classed.div(
-    "inline-flex p-1 border-2 border-grey-dark dark:border-grey-light rounded-full",
+    "inline-flex p-1 rounded-full",
     "child:transition-[fill] child:duration-[0.23s] child:ease-[ease]",
     {
       variants:{
