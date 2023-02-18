@@ -23,7 +23,7 @@ export const PackSection = classed.section(
   "[&_.pack-item]:animate-[bounce-contract_1s] [&_.pack-item]:bg-white dark:[&_.pack-item]:bg-black [&_.pack-item]:border-2",
   "[&_.pack-item]:border-grey [&_.pack-item]:hover:animate-[bounce-expand_1s_forwards]",
   "[&_.pack-item]:hover:border-grey-dark dark:[&_.pack-item]:hover:border-grey-light",
-  "[&_.pack-item.pack-item-play]:hover:block [&_.pack-item]:active:animate-[bounce-contract_1s]",
+  "[&_.pack-item_.pack-item-play]:hover:block [&_.pack-item]:active:animate-[bounce-contract_1s]",
   "[&_.pack-item_.pack-item-link]:block [&_.pack-item_.pack-item-link]:h-full [&_.pack-item_.pack-item-link]:p-5",
   "[&_.pack-item_.pack-item-title]:mb-3 [&_.pack-item_.pack-item-description]:text-grey dark:[&_.pack-item_.pack-item-description]:text-grey-light",
   "[&_.pack-item_.pack-item-play]:hidden [&_.pack-item_.pack-item-play]:absolute [&_.pack-item_.pack-item-play]:right-5",
@@ -75,7 +75,7 @@ export const Pack = ({
       </Link>
       {showPlayButton && (
         <div className="pack-item-play">
-          <Button variant="fab" onClick={play} disabled={isLoading}>
+          <Button className="rounded-full" variant="fab" onClick={play} disabled={isLoading}>
             <Icon icon="play" />
           </Button>
         </div>

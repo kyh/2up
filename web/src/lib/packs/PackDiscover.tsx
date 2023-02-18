@@ -19,7 +19,7 @@ export const PackDiscover = () => {
         <PackSection>
           <div className="pack-section spaced">
             <header className="pack-section-header main-header">
-              <h1>{featured.title}</h1>
+              <h1 className="text-4xl font-bold">{featured.title}</h1>
             </header>
             <div className="pack-items staggered-pack-items">
               {featured.packs.map((pack) => (
