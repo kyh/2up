@@ -37,7 +37,7 @@ export const HomeSetName = () => {
           defaultValue={playerName}
           autoFocus
         />
-        <Button className="mb-2" type="submit">Lets go!</Button>
+        <Button className="mb-2 px-4" type="submit">Lets go!</Button>
       </Form>
       <StartNewGameText>
         Or{" "}
