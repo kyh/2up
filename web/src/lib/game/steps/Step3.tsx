@@ -176,7 +176,7 @@ const QuestionNumber = classed.div(
 );
 
 const TitleContainer = classed.div(
-    "animate-[visible_0s_linear_0.1s_forwards] hidden mb-5 pt-[50px]"
+    "animate-[visible_0s_linear_0.1s_forwards] invisible mb-5 pt-[50px] text-2xl font-bold"
   );
 
 const PlayersContainer = classed(
@@ -193,7 +193,7 @@ const PC = classed.div(
   "transition-transform duration-1000 ease-[ease] translate-y-[var(--scoreBarHeight)]",
 );
 
-const PlayerScore = classed.h2("m-0 translate-y-[-10px] desktop:mt-auto");
+const PlayerScore = classed.h2("m-0 translate-y-[-10px] desktop:mt-auto text-2xl font-bold");
 
 export const Step3 = (props: StepProps) => {
   if (props.isSpectate) return <Step3Spectate {...props} />;

@@ -93,4 +93,4 @@ const QuestionCode = ({ question }: QuestionComponentProp) => {
 
 export const Container = classed.div("flex justify-center items-center w-full mb-5");
 
-const QuestionContainer = classed(Container, "h-[240px]");
+const QuestionContainer = classed(Container, "h-[240px] text-3xl font-bold");

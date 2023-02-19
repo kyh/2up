@@ -57,7 +57,7 @@ const MyApp = ({ Component, pageProps }: Props) => {
 
   useEffect(() => {
     globalThis.document.documentElement.classList.add(chalkboradSEFont.className);
-  }, [])
+  }, []);
 
   return (
     <AlertProvider>
