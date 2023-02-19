@@ -101,6 +101,7 @@ const Step2Play = ({
           disabled={firstPlayer.name !== playerName || isLoading}
           onClick={handleNextStep}
           autoFocus
+          fullWidth
         >
           {firstPlayer.name === playerName
             ? "Next"
