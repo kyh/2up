@@ -24,7 +24,7 @@ export const Answer = (props: AnswerProps) => {
 };
 
 const AnswerDisplay = classed.div(
-  "overflow-hidden relative p-4 border-2 border-grey-dark dark:border-grey-light"
+  "overflow-hidden relative p-4 border-2 border-grey-dark dark:border-grey-light rounded-wavy"
 );
 
 const AnswerDisplaySvg = () => (
@@ -61,8 +61,7 @@ const AnswerText = ({
     // TODO - make sure these are 
     return (
       <AnswerTextDisplay
-        className={`answer-display answer-text ${sceneAnswer.isCorrect ? "correct" : ""
-          }`}
+        className={`answer-display answer-text ${sceneAnswer.isCorrect ? "correct" : ""}`}
       >
         {sceneAnswer.content}
       </AnswerTextDisplay>

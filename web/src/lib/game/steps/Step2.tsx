@@ -164,15 +164,15 @@ const AnswerResult = ({
 const LocalAnswer=classed(Answer, "");
 
 const AnswerContainer = classed.div(
-  "[&_.answer-display]:animate-[bounceOut_1s_forwards]",
+  "[&_.answer-display]:animate-[bounce-out_1s_forwards]",
   "[&_.answer-display.correct]:animate-none",
   "[&_.answer-display.correct_>_svg]:stroke-green [&_.answer-display.correct_>_svg]:stroke-[5px]",
-  "[&_.answer-display.correct_>_svg_path]:animate-[drawIn_0.6s_cubic-bezier(0.7,_0,_0.3,_1)_forwards]",
+  "[&_.answer-display.correct_>_svg_path]:animate-[draw-in_0.6s_cubic-bezier(0.7,_0,_0.3,_1)_forwards]",
   "[&_.answer-display.answer-text]:overflow-visible [&_.answer-display.answer-text]:text-center",
   "[&_.answer-display.answer-text]:bg-grey-background dark:[&_.answer-display.answer-text]:bg-grey-dark",
   "[&_.answer-display.answer-text]:pt-6 dark:[&_.answer-display.answer-text]:scale-0",
-  "[&_.answer-display.answer-text]:animate-[bounceIn_1s_0.1s_forwards]",
-  "[&_.answer-display.answer-text]:before:content-['answer']",
+  "[&_.answer-display.answer-text]:animate-[bounce-in_1s_0.1s_forwards]",
+  "[&_.answer-display.answer-text]:before:content-['answer'] [&_.answer-display.answer-text]:before:rounded-wavy",
   "[&_.answer-display.answer-text]:before:absolute [&_.answer-display.answer-text]:before:-top-3",
   "[&_.answer-display.answer-text]:before:left-1/2 [&_.answer-display.answer-text]:before:w-[100px]",
   "[&_.answer-display.answer-text]:before:ml-[-50px] [&_.answer-display.answer-text]:before:py-1",
@@ -211,7 +211,7 @@ const Submissions = ({ gameState }: SubmissionProps) => {
 
 const SubmissionsContainer = classed(
     PlayersGrid,
-    "p-5 desktop:py-0 desktop:animate-[fadeUpIn_0.8s_cubic-bezier(0.77,_0.1,_0.46,_1.22)_forwards]",
+    "p-5 desktop:py-0 desktop:animate-[fade-up-in_0.8s_cubic-bezier(0.77,_0.1,_0.46,_1.22)_forwards]",
     "[&_.correct]:absolute [&_.correct]:-top-3 [&_.correct]:left-0",
     "[&_.name]:text-center"
   );
