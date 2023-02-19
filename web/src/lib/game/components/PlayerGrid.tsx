@@ -38,17 +38,8 @@ export const PlayersGrid = classed.div(
   "[&_.player_.name]:desktop:mb-1 [&_.player_.avatar]:desktop:overflow-hidden",
   "[&_.player_.avatar_svg]:desktop:max-w-[130px] [&_.player_.avatar_svg]:desktop:max-h-[300px]",
   "[&_.player_.correct]:desktop:top-auto [&_.player_.correct]:desktop:left-auto [&_.player_.correct]:desktop:bottom-[-7px]",
-  "[&_.avatar_>_svg]:animate-[jitter_0.7s_linear_infinite]", {
-  variants:{
-    singleCol:{
-      true:"grid-cols-1",
-      false:"grid-cols-3"
-    },
-  },
-  defaultVariants:{
-    singleCol:"false"
-  }
-});
+  "[&_.avatar_>_svg]:animate-[jitter_0.7s_linear_infinite]"
+  );
 
 export const NextButton = classed(
   Button, "absolute bottom-10 left-1/2 w-[150px] ml-[-75px] z-10 desktop:bg-white desktop:dark:bg-black px-8");
