@@ -213,7 +213,7 @@ const SubmissionsContainer = classed(
     PlayersGrid,
     "p-5 desktop:py-0 desktop:animate-[fade-up-in_0.8s_cubic-bezier(0.77,_0.1,_0.46,_1.22)_forwards]",
     "[&_.correct]:absolute [&_.correct]:-top-3 [&_.correct]:left-0",
-    "[&_.name]:text-center"
+    "[&_.name]:text-center grid-cols-3"
   );
 
 const Stars = classed(AnimationSprite, "top-10 desktop:top-5 left-1/2 scale-50 -translate-x-1/2 -translate-y-1/2");

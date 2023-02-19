@@ -139,7 +139,7 @@ const ShareIcon = classed(Icon, "relative left-[-10px]");
 
 const PlayersContainer = classed(
   PlayersGrid,
-  "[&_.avatar]:scale-0 [&_.avatar]:animate-[bounce-in_1s_linear_forwards_0.4s]"
+  "[&_.avatar]:scale-0 [&_.avatar]:animate-[bounce-in_1s_linear_forwards_0.4s] grid-cols-3"
 );
 
 const Explosion = classed(AnimationSprite, "top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2");

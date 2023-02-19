@@ -96,7 +96,7 @@ export const PlayerScores = ({
       <TitleContainer>
         <h2 className="m-0 text-center">{title}</h2>
       </TitleContainer>
-      <PlayersContainer singleCol>
+      <PlayersContainer>
         {sortedPlayers.map(({ playerId, playerName, prevScore, score }) => {
           return (
             <PlayerContainer
@@ -181,10 +181,10 @@ const TitleContainer = classed.div(
 
 const PlayersContainer = classed(
     PlayersGrid,
-    "mx-auto mb-5 max-w-[300px] desktop:mb-0 desktop:max-w-none"
+    "mx-auto mb-5 max-w-[300px] desktop:mb-0 desktop:max-w-none grid-cols-1"
   );
 
-const APC = classed(motion.div, "flex justify-between items-center");
+const APC = classed(motion.div, "flex justify-between items-center w-full");
 
 const PC = classed.div(
   "flex flex-col-reverse justify-between items-center",
