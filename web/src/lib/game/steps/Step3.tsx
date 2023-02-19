@@ -181,7 +181,7 @@ const TitleContainer = classed.div(
 
 const PlayersContainer = classed(
     PlayersGrid,
-    "mx-auto mb-5 max-w-[300px] desktop:mb-0 desktop:max-w-none grid-cols-1"
+    "mx-auto mb-5 max-w-[300px] desktop:mb-0 desktop:max-w-none desktop:grid-cols-3"
   );
 
 const APC = classed(motion.div, "flex justify-between items-center w-full");
