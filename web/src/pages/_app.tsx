@@ -55,14 +55,14 @@ const MyApp = ({ Component, pageProps }: Props) => {
     }
   }, [isDarkMode])
 
+  useEffect(() => {
+    globalThis.document.documentElement.classList.add(chalkboradSEFont.className);
+  }, [])
+
   return (
     <AlertProvider>
       <AuthProvider>
-        <main className={`${chalkboradSEFont.className} h-full`}>
-          {getLayout(
-            <Component {...pageProps} />
-          )}
-        </main>
+        {getLayout(<Component {...pageProps} />)}
       </AuthProvider>
     </AlertProvider>
   );

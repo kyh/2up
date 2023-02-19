@@ -24,7 +24,7 @@ export const PackDetails = () => {
       </Link>
       {pack && (
         <header className="text-center m-auto max-w-[600px]">
-          <h1 className="pack-name">{pack.name}</h1>
+          <h1 className="text-3xl font-bold mb-3">{pack.name}</h1>
           <p className="mb-5">{pack.description}</p>
           <div className="flex flex-col items-center">
             <Button className="mb-2 min-w-[150px]" onClick={() => hostGame(packId)} disabled={isLoading}>
