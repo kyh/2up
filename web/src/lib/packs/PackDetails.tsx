@@ -19,7 +19,7 @@ export const PackDetails = () => {
 
   return (
     <PackDetailsPageContent>
-      <Link href="/packs" className="back-link">
+      <Link href="/packs" className="inline-block hover:underline">
         &#171; Back to packs
       </Link>
       {pack && (

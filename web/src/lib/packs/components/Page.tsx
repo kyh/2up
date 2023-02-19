@@ -16,8 +16,7 @@ export const Page = classed.section(
 );
 
 export const Content = classed.main(
-  "max-w-[900px] w-full mx-auto py-5 px-3 desktop:py-10 desktop:px-5",
-  "[&_.back-link]:inline-block [&_.back-link]:mb-1 [&_.back-link]:hover:underline"
+  "max-w-[900px] w-full mx-auto py-5 px-3 desktop:py-10 desktop:px-5"
 );
 
 export const Footer = classed.footer(
