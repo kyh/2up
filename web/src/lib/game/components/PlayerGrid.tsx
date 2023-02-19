@@ -16,7 +16,7 @@ export const Player = ({
 }: PlayerProps) => {
   return (
     <PlayerContainer className="player" {...rest}>
-      <Avatar type="full" className="avatar rounded-none border-none" name={playerName} />
+      <Avatar className="avatar p-0 desktop:rounded-none desktop:border-none desktop:h-full desktop:w-full" name={playerName} />
       <PlayerName className="name">
         {playerName}
         {playerContent}
@@ -35,8 +35,7 @@ export const PlayersGrid = classed.div(
   "desktop:absolute desktop:felx desktop:justify-between desktop:pointer-events-none",
   "desktop:bottom-0 desktop:right-5 desktop:left-5",
   "[&_.player]:desktop:text-center [&_.player]:desktop:self-end [&_.player]:desktop:flex-col-reverse",
-  "[&_.player_.name]:desktop:mb-1",
-  "[&_.player_.avatar]:desktop:p-0 [&_.player_.avatar]:desktop:overflow-hidden",
+  "[&_.player_.name]:desktop:mb-1 [&_.player_.avatar]:desktop:overflow-hidden",
   "[&_.player_.avatar_svg]:desktop:max-w-[130px] [&_.player_.avatar_svg]:desktop:max-h-[300px]",
   "[&_.player_.correct]:desktop:top-auto [&_.player_.correct]:desktop:left-auto [&_.player_.correct]:desktop:bottom-[-7px]",
   "[&_.avatar_>_svg]:animate-[jitter_0.7s_linear_infinite]", {
@@ -52,4 +51,4 @@ export const PlayersGrid = classed.div(
 });
 
 export const NextButton = classed(
-  Button, "absolute bottom-10 left-1/2 w-[150px] ml-[-75px] z-10 desktop:bg-white desktop:dark:bg-black");
+  Button, "absolute bottom-10 left-1/2 w-[150px] ml-[-75px] z-10 desktop:bg-white desktop:dark:bg-black px-8");

@@ -70,11 +70,11 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
       <TitleContainer>
 
         {/* Title */}
-        <h1 className="mb-5">
+        <h1 className="text-3xl font-bold mb-5">
           <div>
             Invite friends to{" "}
-            <button type="button" onClick={onShare} className="highlight">
-              truffles.tv <ShareIcon icon="share" size="md" />
+            <button type="button" onClick={onShare} className="text-purple">
+              truffles.tv <ShareIcon fillColor="class" icon="share" size="md" className="svg-path:fill-purple" />
             </button>
           </div>
           <div>and enter room code:</div>
@@ -139,7 +139,7 @@ const ShareIcon = classed(Icon, "relative left-[-10px]");
 
 const PlayersContainer = classed(
   PlayersGrid,
-  "[&_.avatar]:scale-0 [&_.avatar]:animate-[bounceIn_1s_linear_forwards_0.4s]"
+  "[&_.avatar]:scale-0 [&_.avatar]:animate-[bounce-in_1s_linear_forwards_0.4s]"
 );
 
 const Explosion = classed(AnimationSprite, "top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2");
