@@ -74,7 +74,7 @@ export const CsvImportButton = ({
             Example CSV
           </a>
         </CsvImportHeader>
-        <CsvImportArea onChange={handleChange} value={csv} />
+        <CsvImportArea fullWidth onChange={handleChange} value={csv} />
         <CsvImportFooter>
           <Button className="ml-auto" onClick={handleSubmit} disabled={isSaving}>
             Update Pack
@@ -100,6 +100,6 @@ const CsvImportButtonContainer = classed.div("text-center mt-1");
 
 const CsvImportHeader = classed.header("flex justify-between");
 
-const CsvImportArea = classed(AreaField, "w-full min-h-[300px]");
+const CsvImportArea = classed(AreaField, "h-[300px] mt-1 mb-3");
 
 const CsvImportFooter = classed.footer("flex");

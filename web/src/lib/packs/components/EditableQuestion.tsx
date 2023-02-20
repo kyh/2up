@@ -118,11 +118,11 @@ export const EditableQuestion = ({
 };
 
 const EditableQuestionInstructions = classed.input(
-  "mx-auto mb-2", {
+  "mx-auto mb-2 bg-grey-background dark:bg-grey-dark w-full", {
   variants: {
     variant: {
       default: "",
-      inContainer: "block text-center rounded-wavy border-none transition-shadow duration-[0.23s] ease-[ease] focus:outline-none focus:shadow-[0_0_0_3px_rgba(0,_0,_0,_0.3)]"
+      inContainer: "block text-center rounded-wavy border-none transition-shadow duration-[0.23s] ease-[ease] focus:outline-none focus:shadow-[0_0_0_3px_rgba(0,_0,_0,_0.3)] dark:focus:shadow-[0_0_0_3px_rgba(255,_255,_255,_0.3)]"
     }
   },
   defaultVariants: {
@@ -132,11 +132,11 @@ const EditableQuestionInstructions = classed.input(
 );
 
 const EditableQuestionText = classed.textarea(
-  "mx-auto mb-5 text-[2rem] w-full resize-y", {
+  "mx-auto mb-5 text-[2rem] w-full resize-y bg-grey-background dark:bg-grey-dark", {
   variants: {
     variant: {
       default: "",
-      inContainer: "block text-center rounded-wavy border-none transition-shadow duration-[0.23s] ease-[ease] focus:outline-none focus:shadow-[0_0_0_3px_rgba(0,_0,_0,_0.3)]"
+      inContainer: "block text-center rounded-wavy border-none transition-shadow duration-[0.23s] ease-[ease] focus:outline-none focus:shadow-[0_0_0_3px_rgba(0,_0,_0,_0.3)] dark:focus:shadow-[0_0_0_3px_rgba(255,_255,_255,_0.3)]"
     }
   },
   defaultVariants: {
@@ -163,13 +163,13 @@ const EditableQuestionImage = ({
   return (
     <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
       <ImageContainer>
-        <img alt={instruction} src={question} className="mx-auto mb-5 object-cover max-w-full max-h-[200px] desktop:max-w-[500px]" />
+        <img alt={instruction} src={question} className="mx-auto object-cover max-w-full max-h-[200px] desktop:max-w-[500px]" />
       </ImageContainer>
     </AssetManager>
   );
 };
 
-const ImageContainer = classed.div("flex");
+const ImageContainer = classed.div("flex bg-grey-background dark:bg-grey-dark py-1 mb-5");
 
 const EditableQuestionAudio = ({
   question,

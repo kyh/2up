@@ -35,4 +35,4 @@ export const AreaField = forwardRef<HTMLTextAreaElement, Props>(
   }
 );
 
-const Textarea = classed(Input, "resize-y min-h-[150px] leading-[1.6rem] py-3 px-4");
+const Textarea = classed.textarea(Input, "resize-y min-h-[150px] leading-[1.6rem] py-3 px-4");

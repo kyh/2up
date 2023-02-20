@@ -18,7 +18,7 @@ export const Profile = () => {
   return (
     <Content>
       <header className="flex justify-between items-center mb-5">
-        <h1>@{username}&apos;s packs</h1>
+        <h1 className="text-3xl font-bold">@{username}&apos;s packs</h1>
         {isMyPage && (
           <ButtonLinkNative href="/packs/new">Create new Pack</ButtonLinkNative>
         )}

@@ -40,8 +40,9 @@ export const Topbar = ({ pack, testPlay }: Props) => {
   };
 
   return (
-    <NavigationContainer>
-      <div className="left">
+    <NavigationContainer variant="grid">
+      {/* Left */}
+      <div className="col-span-1 pl-3 self-center w-fit">
         <Link href={`/packs/${pack.id}`}>
           <picture>
             <source srcSet="/logo/logomark.svg" />
@@ -56,19 +57,19 @@ export const Topbar = ({ pack, testPlay }: Props) => {
         </Link>
       </div>
       {/* right */}
-      <div className="relative">
+      <div className="col-start-2 col-span-3 flex justify-between items-center w-full relative px-3">
         <div>
           <Loader className="absolute left-4 top-4 text-grey dark:text-grey-light" loading={savingScene} />
         </div>
         <button type="button" onClick={() => setIsOpen(true)}>
-          <h4 className="pack-title">{pack?.name}</h4>
+          <h4 className="m-0 font-bold">{pack?.name}</h4>
         </button>
         {/* right-actions */}
         <div className="flex">
           <WithTip tipContent="Edit pack">
             {/* pack-ext-button */}
             <Button
-              className="mr-2"
+              className="rounded-full !p-0.5"
               variant="fab"
               onClick={() => setIsOpen(true)}
             >
@@ -77,6 +78,7 @@ export const Topbar = ({ pack, testPlay }: Props) => {
           </WithTip>
           <WithTip tipContent="Test play">
             <Button
+              className="rounded-full !p-0.5"
               variant="fab"
               onClick={testPlay}
             >
