@@ -46,6 +46,16 @@ export const Navigation = () => {
 };
 
 export const NavigationContainer = classed.nav(
-  "flex bg-white dark:bg-black border-b border-grey-dark dark:border-grey-light h-[50px] [grid-area:header]",
-  "[&_.pack-title]:m-0"
+  "bg-white dark:bg-black border-b border-grey-dark dark:border-grey-light",
+  "w-full h-[50px] row-span-1 col-span-4", {
+  variants: {
+    variant: {
+      default: "flex justify-between items-center",
+      grid: "grid grid-cols-[215px_1fr_1fr_100px]"
+    }
+  },
+  defaultVariants: {
+    variant: "default"
+  }
+}
 );

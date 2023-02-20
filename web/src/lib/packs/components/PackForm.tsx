@@ -74,4 +74,4 @@ export const PackForm = ({
   );
 };
 
-const Form = classed.form("flex flex-col [&_input]:w-full [&_textarea]:w-full [&_button]:mx-auto [&_button]:my-0");
+const Form = classed.form("flex flex-col [&_input]:w-full [&_textarea]:w-full [&_button]:mx-auto [&_button]:my-0 space-y-3");

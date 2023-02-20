@@ -146,13 +146,13 @@ const AnswerTypeMenu = forwardRef<HTMLDivElement, Props>(
 
 export const QATypeMenuContainer = classed.div(
   "absolute top-[-50px] left-1/2 -translate-x-1/2 border-2 rounded-[50px] flex w-fit",
-  "bg-white dark:bg-black [&_button]:border-none [&_button]:hover:border-none [&_button]:border-r-2 [&_button]:hover:border-r-2",
-  "[&_button]:animate-none [&_button]:hover:animate-none [&_button]:transition-colors [&_button]:hover:transition-colors",
-  "[&_button]:duration-100 [&_button]:hover:duration-100 [&_button]:ease-[ease] [&_button]:hover:ease-[ease]",
-  "[&_button]:first:rounded-l-[30px] [&_button]:hover:first:rounded-l-[30px] [&_button]:last:rounded-r-[30px] [&_button]:hover:last:rounded-r-[30px]",
-  "[&_button]:first:border-r-0 [&_button]:hover:first:border-r-0 [&_button.selected]:bg-purple-dark [&_button.selected]:hover:bg-purple-dark",
-  "dark:[&_button.selected]:bg-purple dark:[&_button.selected]:hover:bg-purple",
-  "[&_button]:hover:bg-grey-background dark:[&_button]:hover:bg-grey-dark",
+  "bg-white dark:bg-black [&_button]:border-none hover:[&_button]:border-none [&_button]:border-r-2 hover:[&_button]:border-r-2",
+  "[&_button]:animate-none hover:[&_button]:animate-none [&_button]:transition-colors hover:[&_button]:transition-colors",
+  "[&_button]:duration-100 hover:[&_button]:duration-100 [&_button]:ease-[ease] hover:[&_button]:ease-[ease]",
+  "[&_button]:first:rounded-l-[30px] hover:[&_button]:first:rounded-l-[30px] [&_button]:last:rounded-r-[30px] hover:[&_button]:last:rounded-r-[30px]",
+  "[&_button]:first:border-r-0 hover:[&_button]:first:border-r-0 [&_button.selected]:bg-purple-dark hover:[&_button.selected]:bg-purple-dark",
+  "dark:[&_button.selected]:bg-purple dark:hover:[&_button.selected]:bg-purple [&_button.selected]:text-white",
+  "hover:[&_button]:bg-grey-background dark:hover:[&_button]:bg-grey-dark",
   "after:absolute after:inline-black after:-top-4 after:left-1/2 after:-translate-x-1/2 after:w-[120px]",
   "after:text-center after:rounded-wavy after:p-1 after:text-[0.9rem] after:bg-white dark:after:bg-black",
   "after:content-[var(--content)]"
