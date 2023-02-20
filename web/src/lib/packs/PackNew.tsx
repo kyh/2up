@@ -13,7 +13,7 @@ export const PackNew = () => {
 
   return (
     <PackNewPageContent>
-      <h1 className="title">New Pack</h1>
+      <h1 className="text-3xl font-bold mb-3">New Pack</h1>
       <Card background>
         <PackForm onSubmit={handlePackForm} loading={isLoading} />
       </Card>
@@ -21,4 +21,4 @@ export const PackNew = () => {
   );
 };
 
-const PackNewPageContent = classed(Content, "block max-w-[500px] my-0 mx-auto");
+const PackNewPageContent = classed(Content, "block max-w-lg my-0 mx-auto");
