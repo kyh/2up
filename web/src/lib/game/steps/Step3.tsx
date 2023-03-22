@@ -1,5 +1,5 @@
 import { useState, ReactNode } from "react";
-import { classed } from "@tw-classed/react"
+import { classed } from "@tw-classed/react";
 import { motion } from "framer-motion";
 import { useIsDesktop } from "~/utils/useIsDesktop";
 import {
@@ -151,9 +151,9 @@ const PlayerContainer = ({
   return (
     <PC
       style={
-        { 
-          "--scoreBarHeight": `${calculateScorebarHeight(score, totalScenes)}`, 
-          "--maxScoreHeight": `${maxScoreHeight}`, 
+        {
+          "--scoreBarHeight": `${calculateScorebarHeight(score, totalScenes)}`,
+          "--maxScoreHeight": `${maxScoreHeight}`,
         } as React.CSSProperties
       }
     >
@@ -176,13 +176,13 @@ const QuestionNumber = classed.div(
 );
 
 const TitleContainer = classed.div(
-    "animate-[visible_0s_linear_0.1s_forwards] invisible mb-5 pt-[50px] text-2xl font-bold"
-  );
+  "animate-[visible_0s_linear_0.1s_forwards] invisible mb-5 pt-[50px] text-2xl font-bold"
+);
 
 const PlayersContainer = classed(
-    PlayersGrid,
-    "mx-auto mb-5 max-w-[300px] desktop:mb-0 desktop:max-w-none desktop:grid-cols-3"
-  );
+  PlayersGrid,
+  "mx-auto mb-5 max-w-[300px] desktop:mb-0 desktop:max-w-none desktop:grid-cols-3"
+);
 
 const APC = classed(motion.div, "flex justify-between items-center w-full");
 
@@ -190,10 +190,12 @@ const PC = classed.div(
   "flex flex-col-reverse justify-between items-center",
   "after:content-[''] after:absolute after:-bottom-[var(--maxScoreHeight)]",
   "after:h-[var(--maxScoreHeight)] after:w-full after:rounded-t-lg after:bg-purple",
-  "transition-transform duration-1000 ease-[ease] translate-y-[var(--scoreBarHeight)]",
+  "transition-transform duration-1000 ease-[ease] translate-y-[var(--scoreBarHeight)]"
 );
 
-const PlayerScore = classed.h2("m-0 translate-y-[-10px] desktop:mt-auto text-2xl font-bold");
+const PlayerScore = classed.h2(
+  "m-0 translate-y-[-10px] desktop:mt-auto text-2xl font-bold"
+);
 
 export const Step3 = (props: StepProps) => {
   if (props.isSpectate) return <Step3Spectate {...props} />;

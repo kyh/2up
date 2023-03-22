@@ -2,7 +2,12 @@ import { useRouter } from "next/router";
 import { gql, useQuery } from "~/utils/mock";
 import { Link } from "~/components";
 import { Content } from "~/lib/packs/components/Page";
-import { PackSection, PackItemsContainer, PackSectionHeader, Pack } from "~/lib/packs/components/Packs";
+import {
+  PackSection,
+  PackItemsContainer,
+  PackSectionHeader,
+  Pack,
+} from "~/lib/packs/components/Packs";
 
 export const PackCategory = () => {
   const router = useRouter();

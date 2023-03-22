@@ -40,7 +40,9 @@ export const AuthForm = ({ isLogin }: Props) => {
   return (
     <Container>
       {/* Title */}
-      <h1 className="mb-5 text-center text-4xl font-bold">{isLogin ? "Login" : "Sign up"}</h1>
+      <h1 className="mb-5 text-center text-4xl font-bold">
+        {isLogin ? "Login" : "Sign up"}
+      </h1>
       <Card background>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           {!isLogin && (

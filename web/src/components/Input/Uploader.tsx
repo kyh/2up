@@ -84,14 +84,15 @@ const DragAndDrop = ({ onFileDrop, disabled, children }: DragAndDropProps) => {
 };
 
 const DragAndDropContainer = classed.div(
-  "relative border-2 border-dotted rounded-wavy w-full h-4/5", {
-  variants: {
-    dragging: {
-      true: "border-purple",
-      false: "border-grey-dark dark:border-grey-light"
-    }
+  "relative border-2 border-dotted rounded-wavy w-full h-4/5",
+  {
+    variants: {
+      dragging: {
+        true: "border-purple",
+        false: "border-grey-dark dark:border-grey-light",
+      },
+    },
   }
-}
 );
 
 type UploaderProps = {
@@ -138,12 +139,13 @@ export const Uploader = ({ pathPrefix, onUploaded }: UploaderProps) => {
           }}
         />
         {!filesToUpload.length && (
-          <h3 className="m-auto">
-            Drag and drop/click to upload assets
-          </h3>
+          <h3 className="m-auto">Drag and drop/click to upload assets</h3>
         )}
         {filesToUpload.map((file, i) => (
-          <div key={i} className="border border-grey-dark dark:border-grey-light h-full mr-2 p-2">
+          <div
+            key={i}
+            className="border border-grey-dark dark:border-grey-light h-full mr-2 p-2"
+          >
             <div>Uploading...</div>
             <div>{file.name}</div>
           </div>
@@ -161,6 +163,4 @@ const PRESIGNED_URL_CREATE = `
   }
 `;
 
-const UploaderContainer = classed.div(
-  "flex w-full h-full p-3"
-);
+const UploaderContainer = classed.div("flex w-full h-full p-3");

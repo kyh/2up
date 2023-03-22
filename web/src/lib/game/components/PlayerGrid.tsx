@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { classed } from "@tw-classed/react"
+import { classed } from "@tw-classed/react";
 import { Avatar, Button } from "~/components";
 
 type PlayerProps = {
@@ -16,7 +16,10 @@ export const Player = ({
 }: PlayerProps) => {
   return (
     <PlayerContainer className="player" {...rest}>
-      <Avatar className="avatar p-0 desktop:rounded-none desktop:border-none desktop:h-full desktop:w-full" name={playerName} />
+      <Avatar
+        className="avatar p-0 desktop:rounded-none desktop:border-none desktop:h-full desktop:w-full"
+        name={playerName}
+      />
       <PlayerName className="name">
         {playerName}
         {playerContent}
@@ -39,7 +42,9 @@ export const PlayersGrid = classed.div(
   "[&_.player_.avatar_svg]:desktop:max-w-[130px] [&_.player_.avatar_svg]:desktop:max-h-[300px]",
   "[&_.player_.correct]:desktop:top-auto [&_.player_.correct]:desktop:left-auto [&_.player_.correct]:desktop:bottom-[-7px]",
   "[&_.avatar_>_svg]:animate-[jitter_0.7s_linear_infinite]"
-  );
+);
 
 export const NextButton = classed(
-  Button, "absolute bottom-10 left-1/2 w-[150px] ml-[-75px] z-10 desktop:bg-white desktop:dark:bg-black px-8");
+  Button,
+  "absolute bottom-10 left-1/2 w-[150px] ml-[-75px] z-10 desktop:bg-white desktop:dark:bg-black px-8"
+);

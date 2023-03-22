@@ -54,7 +54,10 @@ export const CsvImportButton = ({
   return (
     <CsvImportButtonContainer>
       {/* modal-button */}
-      <button className="text-[0.9rem] underline" onClick={() => setIsOpen(true)}>
+      <button
+        className="text-[0.9rem] underline"
+        onClick={() => setIsOpen(true)}
+      >
         CSV Import
       </button>
       <Modal
@@ -76,7 +79,11 @@ export const CsvImportButton = ({
         </CsvImportHeader>
         <CsvImportArea fullWidth onChange={handleChange} value={csv} />
         <CsvImportFooter>
-          <Button className="ml-auto" onClick={handleSubmit} disabled={isSaving}>
+          <Button
+            className="ml-auto"
+            onClick={handleSubmit}
+            disabled={isSaving}
+          >
             Update Pack
           </Button>
         </CsvImportFooter>

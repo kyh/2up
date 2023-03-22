@@ -9,40 +9,43 @@ const StyledButton = classed.button(
   "animate-[bounce-contract_1s] hover:animate-[bounce-expand_1s_forwards]",
   "active:animate-[bounce-contract_1s]",
   "disabled:brightness-50 disabled:cursor-not-allowed disabled:animate-none",
-  "disabled:hover:animate-none", {
-  variants: {
-    variant: {
-      default: "p-2",
-      fab: "p-1"
+  "disabled:hover:animate-none",
+  {
+    variants: {
+      variant: {
+        default: "p-2",
+        fab: "p-1",
+      },
+      fullWidth: {
+        true: "w-full",
+        false: "w-auto",
+      },
     },
-    fullWidth: {
-      true: "w-full",
-      false: "w-auto"
-    }
-  },
-  defaultVariants: {
-    variant: "default",
-    fullWidth: "false"
+    defaultVariants: {
+      variant: "default",
+      fullWidth: "false",
+    },
   }
-});
-
+);
 
 type Props = ComponentProps<typeof StyledButton> & {
   onClick?: () => void;
   children?: ReactNode;
 };
 
-export const Button = deriveClassed<typeof StyledButton, Props>(({ onClick = () => { }, ...rest }: Props) => {
-  const isSFXOn = useHomeStore((state) => state.isSFXOn);
+export const Button = deriveClassed<typeof StyledButton, Props>(
+  ({ onClick = () => {}, ...rest }: Props) => {
+    const isSFXOn = useHomeStore((state) => state.isSFXOn);
 
-  const onButtonClick = () => {
-    const clickSound = createOrGetFx("click");
-    if (clickSound && isSFXOn) clickSound.play();
-    onClick();
-  };
+    const onButtonClick = () => {
+      const clickSound = createOrGetFx("click");
+      if (clickSound && isSFXOn) clickSound.play();
+      onClick();
+    };
 
-  return <StyledButton type="button" onClick={onButtonClick} {...rest} />;
-});
+    return <StyledButton type="button" onClick={onButtonClick} {...rest} />;
+  }
+);
 
 export const ButtonLink = classed.a(StyledButton, "text-center");
 

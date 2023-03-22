@@ -97,7 +97,9 @@ export const Sidebar = ({
   );
 };
 
-const SidebarHeader = classed.header("flex justify-between items-center mb-3 [&_h3]:m-0");
+const SidebarHeader = classed.header(
+  "flex justify-between items-center mb-3 [&_h3]:m-0"
+);
 
 const SidebarContent = classed.ul("overflow-auto pr-3 m-0");
 
@@ -127,7 +129,10 @@ const SidebarItem = ({
         onClick={() => selectScene(scene.id)}
       >
         <QuestionPreview>
-          <Instruction className="h-auto mb-1" instruction={scene.questionDescription || ""} />
+          <Instruction
+            className="h-auto mb-1"
+            instruction={scene.questionDescription || ""}
+          />
           <Question
             question={scene.question}
             questionType={scene.questionType.slug}
@@ -170,16 +175,17 @@ const SidebarItem = ({
 const QuestionItemContainer = classed(motion.li, "py-1");
 
 const QuestionItem = classed.div(
-  "relative rounded-r-[5px] p-2 pl-6 transition-[background_0.2s_ease,_box-shadow_0.2s_ease]", {
-    variants:{
-      isSelected:{
-        true:"bg-purple-background dark:bg-purple-dark shadow-[inset_4px_0_0_0] shadow-purple",
-        false:""
-      }
+  "relative rounded-r-[5px] p-2 pl-6 transition-[background_0.2s_ease,_box-shadow_0.2s_ease]",
+  {
+    variants: {
+      isSelected: {
+        true: "bg-purple-background dark:bg-purple-dark shadow-[inset_4px_0_0_0] shadow-purple",
+        false: "",
+      },
     },
-    defaultVariants:{
-      isSelected:"false"
-    }
+    defaultVariants: {
+      isSelected: "false",
+    },
   }
 );
 
@@ -197,5 +203,5 @@ const QuestionPreview = classed.div(
   "[&_.answer-display]:overflow-hidden [&_.answer-display]:text-ellipsis [&_.answer-display]:whitespace-nowrap",
   "[&_.answer-display]:m-0 [&_.answer-display]:rounded-wavy [&_.answer-display]:border-2",
   "[&_.answer-display]:border-grey-dark dark:[&_.answer-display]:border-grey-light",
-  "[&_.answer-display.correct]:border-purple",
+  "[&_.answer-display.correct]:border-purple"
 );

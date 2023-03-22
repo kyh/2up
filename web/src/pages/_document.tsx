@@ -50,5 +50,5 @@ export default function Document() {
         ></script>
       </body>
     </Html>
-  )
+  );
 }

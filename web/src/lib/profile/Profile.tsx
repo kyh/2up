@@ -1,7 +1,11 @@
 import { useRouter } from "next/router";
 import { ButtonLinkNative, Spinner } from "~/components";
 import { Content } from "~/lib/packs/components/Page";
-import { PackSection, PackItemsContainer, Pack } from "~/lib/packs/components/Packs";
+import {
+  PackSection,
+  PackItemsContainer,
+  Pack,
+} from "~/lib/packs/components/Packs";
 import { useGetPacks } from "~/lib/packs/usePackActions";
 import { useAuth } from "~/lib/auth/useAuth";
 

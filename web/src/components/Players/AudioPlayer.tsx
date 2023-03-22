@@ -19,12 +19,23 @@ export const AudioPlayer = (
         next: <Icon icon="next" />,
         loop: <Icon icon="loop" />,
         loopOff: <Icon icon="loopOff" />,
-        volume: <Icon icon="volume" className="child:w-5 child:h-5" size="class" />,
-        volumeMute: <Icon icon="volumeMute" className="child:w-5 child:h-5" size="class" />,
+        volume: (
+          <Icon icon="volume" className="child:w-5 child:h-5" size="class" />
+        ),
+        volumeMute: (
+          <Icon
+            icon="volumeMute"
+            className="child:w-5 child:h-5"
+            size="class"
+          />
+        ),
       }}
       {...props}
     />
   );
 };
 
-const StyledAudioPlayer = classed(ReactAudioPlayer, "min-w-[320px] shadow-none");
+const StyledAudioPlayer = classed(
+  ReactAudioPlayer,
+  "min-w-[320px] shadow-none"
+);

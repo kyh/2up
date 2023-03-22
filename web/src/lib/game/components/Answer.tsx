@@ -1,5 +1,5 @@
 import { useState, SyntheticEvent } from "react";
-import { classed } from "@tw-classed/react"
+import { classed } from "@tw-classed/react";
 import { Input, Button } from "~/components";
 import { AnswerTypeSlugs } from "~/lib/game/gameUtils";
 import type { StepProps } from "~/lib/game/steps/types";
@@ -58,10 +58,12 @@ const AnswerText = ({
   };
 
   if (displayMode) {
-    // TODO - make sure these are 
+    // TODO - make sure these are
     return (
       <AnswerTextDisplay
-        className={`answer-display answer-text ${sceneAnswer.isCorrect ? "correct" : ""}`}
+        className={`answer-display answer-text ${
+          sceneAnswer.isCorrect ? "correct" : ""
+        }`}
       >
         {sceneAnswer.content}
       </AnswerTextDisplay>
@@ -123,4 +125,7 @@ const AnswerMulti = ({
 
 const AnswerMultiButton = classed(Button, "mb-3");
 
-const AnswerMultiDisplay = classed(AnswerDisplay, "text-center mb-3 border-dashed");
+const AnswerMultiDisplay = classed(
+  AnswerDisplay,
+  "text-center mb-3 border-dashed"
+);

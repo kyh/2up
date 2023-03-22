@@ -16,7 +16,7 @@ export const AnimationSprite = classed.div(
         bubbleDislike: "bg-bubble-dislike animate-bubble-dislike",
         bubbleCryEmoji: "bg-bubble-cry-emoji animate-bubble-cry-emoji",
         bubbleLike: "bg-bubble-like animate-bubble-like",
-      }
-    }
+      },
+    },
   }
 );

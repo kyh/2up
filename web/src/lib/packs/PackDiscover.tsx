@@ -1,7 +1,14 @@
 import { useRouter } from "next/router";
 import { Link, Carousel, ButtonLinkNative, Spinner } from "~/components";
 import { Content, Footer } from "./components/Page";
-import { PackSection, PackItemsContainer, PackCategoryLink, Pack, PackSectionHeader, PacksProps } from "./components/Packs";
+import {
+  PackSection,
+  PackItemsContainer,
+  PackCategoryLink,
+  Pack,
+  PackSectionHeader,
+  PacksProps,
+} from "./components/Packs";
 import { useGetDiscover } from "./usePackActions";
 
 export const PackDiscover = () => {
@@ -23,7 +30,12 @@ export const PackDiscover = () => {
             </PackSectionHeader>
             <PackItemsContainer variant="staggered">
               {featured.packs.map((pack) => (
-                <Pack variant="staggered" key={pack.id} pack={pack} showPlayButton />
+                <Pack
+                  variant="staggered"
+                  key={pack.id}
+                  pack={pack}
+                  showPlayButton
+                />
               ))}
             </PackItemsContainer>
           </PackSection>
@@ -71,9 +83,7 @@ const PackCarouselContainer = ({
     <PackSection>
       <PackSectionHeader>
         <h2 className="m-0 text-2xl font-bold">
-          <PackCategoryLink href={url}>
-            {title}
-          </PackCategoryLink>
+          <PackCategoryLink href={url}>{title}</PackCategoryLink>
         </h2>
         {showNewPackButton && (
           <ButtonLinkNative href="/packs/new">Create new Pack</ButtonLinkNative>

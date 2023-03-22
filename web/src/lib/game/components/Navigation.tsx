@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { classed } from "@tw-classed/react"
+import { classed } from "@tw-classed/react";
 import { useAllHomeStore } from "~/lib/home/homeStore";
 import { Icon } from "~/components/Icon/Icon";
 import { Modal } from "~/components/Modal/Modal";
@@ -36,7 +36,11 @@ export const Navigation = () => {
 
   return (
     <NavigationContainer>
-      <Button className="rounded-full" variant="fab" onClick={() => setIsOpen(true)}>
+      <Button
+        className="rounded-full"
+        variant="fab"
+        onClick={() => setIsOpen(true)}
+      >
         <Icon icon="setting" />
       </Button>
       <Modal
@@ -69,13 +73,13 @@ export const Navigation = () => {
             </SettingsContainer>
           </>
         )}
-        <h3>Profile</h3>
+        <h3 className="mb-2">Profile</h3>
         <SettingsContainer single>
           <Button onClick={toggleDarkMode} fullWidth>
             {isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           </Button>
         </SettingsContainer>
-        <h3>Find us on</h3>
+        <h3 className="mb-2">Find us on</h3>
         <SettingsContainer>
           <SettingItem>
             <ButtonLink
@@ -103,26 +107,27 @@ export const Navigation = () => {
   );
 };
 
-const NavigationContainer = classed.nav("flex justify-end items-center px-1 h-[50px]");
+const NavigationContainer = classed.nav(
+  "flex justify-end items-center px-2 h-[50px]"
+);
 
-const SettingsContainer = classed.div(
-  "mb-2 last:border-none", {
+const SettingsContainer = classed.div("mb-2 last:border-none", {
   variants: {
     single: {
       true: "block",
-      false: "grid grid-cols-2"
+      false: "grid grid-cols-2 gap-1",
     },
     noBorder: {
       true: "",
-      false: "pb-2 border-b-2 border-black"
-    }
+      false: "pb-2 border-b-2 border-black",
+    },
   },
   defaultVariants: {
-    single:"false",
-    noBorder:"false"
-  }
-}
-);
+    single: "false",
+    noBorder: "false",
+  },
+});
 
 const SettingItem = classed.div("flex flex-col justify-center items-center");
+
 const SettingItemSpan = classed.span("block mb-1");

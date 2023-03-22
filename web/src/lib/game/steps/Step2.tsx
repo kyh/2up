@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import { classed } from "@tw-classed/react"
+import { classed } from "@tw-classed/react";
 import sample from "lodash/sample";
 import Sheet from "react-modal-sheet";
 import { useIsDesktop } from "~/utils/useIsDesktop";
@@ -114,7 +114,10 @@ const Step2Play = ({
 
 // TODO - make sure the standalone Sheet.[something]s don't affect things
 // TODO - make sure the class is being applied correctly
-const StyledSheet = classed(Sheet, "!z-[1] [&_.react-modal-sheet-container]:!bg-white dark:[&_.react-modal-sheet-container]:!bg-black");
+const StyledSheet = classed(
+  Sheet,
+  "!z-[1] [&_.react-modal-sheet-container]:!bg-white dark:[&_.react-modal-sheet-container]:!bg-black"
+);
 
 const Step2Spectate = ({ gameState }: StepProps) => {
   const correctAnswer = gameState.sceneAnswers?.find(
@@ -162,7 +165,7 @@ const AnswerResult = ({
   );
 };
 
-const LocalAnswer=classed(Answer, "");
+const LocalAnswer = classed(Answer, "");
 
 const AnswerContainer = classed.div(
   "[&_.answer-display]:animate-[bounce-out_1s_forwards]",
@@ -174,12 +177,12 @@ const AnswerContainer = classed.div(
   "[&_.answer-display.answer-text]:pt-6 dark:[&_.answer-display.answer-text]:scale-0",
   "[&_.answer-display.answer-text]:animate-[bounce-in_1s_0.1s_forwards]",
   "[&_.answer-display.answer-text]:before:content-['answer'] [&_.answer-display.answer-text]:before:rounded-wavy",
-  "[&_.answer-display.answer-text]:before:absolute [&_.answer-display.answer-text]:before:-top-3",
+  "[&_.answer-display.answer-text]:before:absolute [&_.answer-display.answer-text]:before:-top-5",
   "[&_.answer-display.answer-text]:before:left-1/2 [&_.answer-display.answer-text]:before:w-[100px]",
   "[&_.answer-display.answer-text]:before:ml-[-50px] [&_.answer-display.answer-text]:before:py-1",
   "[&_.answer-display.answer-text]:before:rounded [&_.answer-display.answer-text]:before:border-2",
   "[&_.answer-display.answer-text]:before:border-grey-dark dark:[&_.answer-display.answer-text]:before:border-grey-light",
-  "[&_.answer-display.answer-text]:before:bg-white dark:[&_.answer-display.answer-text]:before:bg-black",
+  "[&_.answer-display.answer-text]:before:bg-white dark:[&_.answer-display.answer-text]:before:bg-black"
 );
 
 const Submissions = ({ gameState }: SubmissionProps) => {
@@ -211,13 +214,16 @@ const Submissions = ({ gameState }: SubmissionProps) => {
 };
 
 const SubmissionsContainer = classed(
-    PlayersGrid,
-    "p-5 desktop:py-0 desktop:animate-[fade-up-in_0.8s_cubic-bezier(0.77,_0.1,_0.46,_1.22)_forwards]",
-    "[&_.correct]:absolute [&_.correct]:-top-3 [&_.correct]:left-0",
-    "[&_.name]:text-center grid-cols-3"
-  );
+  PlayersGrid,
+  "p-5 desktop:py-0 desktop:animate-[fade-up-in_0.8s_cubic-bezier(0.77,_0.1,_0.46,_1.22)_forwards]",
+  "[&_.correct]:absolute [&_.correct]:-top-3 [&_.correct]:left-0",
+  "[&_.name]:text-center grid-cols-3"
+);
 
-const Stars = classed(AnimationSprite, "top-10 desktop:top-5 left-1/2 scale-50 -translate-x-1/2 -translate-y-1/2");
+const Stars = classed(
+  AnimationSprite,
+  "top-10 desktop:top-5 left-1/2 scale-50 -translate-x-1/2 -translate-y-1/2"
+);
 
 const CorrectSprite = classed(AnimationSprite, "left-1/2 -translate-x-1/2");
 

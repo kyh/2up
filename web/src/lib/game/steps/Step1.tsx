@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { classed } from "@tw-classed/react"
+import { classed } from "@tw-classed/react";
 import { Alert, Timer } from "~/components";
 import { Instruction } from "~/lib/game/components/Instruction";
 import { Question } from "~/lib/game/components/Question";
@@ -84,7 +84,9 @@ const Step1Spectate = ({ gameState }: StepProps) => {
   );
 };
 
-const SpectateConatiner = classed.div("max-w-[600px] leading-[1.3] translate-y-[-100px] text-center");
+const SpectateConatiner = classed.div(
+  "max-w-[600px] leading-[1.3] translate-y-[-100px] text-center"
+);
 
 export const Step1 = (props: StepProps) => {
   if (props.isSpectate) return <Step1Spectate {...props} />;

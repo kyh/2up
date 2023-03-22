@@ -64,7 +64,7 @@ export const PackCreator = () => {
     if (currentSceneIndex !== -1) {
       const newSelectedScene =
         packScenes[
-        position === 1 ? currentSceneIndex + 1 : currentSceneIndex - 1
+          position === 1 ? currentSceneIndex + 1 : currentSceneIndex - 1
         ];
       if (newSelectedScene) {
         selectScene(newSelectedScene.id);
@@ -139,7 +139,9 @@ export const PackCreator = () => {
         <EmptyContent>
           {/* empty-content */}
           <div className="text-center max-w-[600px] m-auto">
-            <h1 className="text-4xl font-bold mb-3">Wow it&apos;s a brand new pack!</h1>
+            <h1 className="text-4xl font-bold mb-3">
+              Wow it&apos;s a brand new pack!
+            </h1>
             <p className="mb-5">Here&apos;s how it works:</p>
             <ul className="text-left list-disc pl-12">
               <li>A pack contains many scenes</li>
@@ -170,9 +172,14 @@ export const PackCreator = () => {
       >
         <HelpModalContent>
           {Object.values(keybindings).map((binding) => (
-            <div className="flex justify-between items-center mb-2" key={binding.display}>
+            <div
+              className="flex justify-between items-center mb-2"
+              key={binding.display}
+            >
               <div>{binding.description}</div>
-              <code className="py-1 px-2 text-[0.9rem] bg-grey-background dark:bg-grey-dark">{binding.display}</code>
+              <code className="py-1 px-2 text-[0.9rem] bg-grey-background dark:bg-grey-dark">
+                {binding.display}
+              </code>
             </div>
           ))}
         </HelpModalContent>
@@ -192,7 +199,10 @@ const SidebarLeft = classed.section(
 
 const Content = classed.section("p-7 col-start-2 col-span-2 row-start-2");
 
-const EmptyContent = classed(Content, "flex invisible animate-[visible_0s_linear_0.1s_forwards]");
+const EmptyContent = classed(
+  Content,
+  "flex invisible animate-[visible_0s_linear_0.1s_forwards]"
+);
 
 const Screen = classed.section(
   "flex flex-col items-center bg-white dark:bg-black p-5 w-full overflow-auto rounded-wavy border-2",
@@ -205,7 +215,9 @@ const SidebarRight = classed.section(
   "h-full py-7 px-3 col-start-4 col-span-1 row-start-2 row-span-2"
 );
 
-const Footer = classed.footer("relative row-start-3 row-span-1 col-start-2 col-span-2");
+const Footer = classed.footer(
+  "relative row-start-3 row-span-1 col-start-2 col-span-2"
+);
 
 const HelpButton = classed(Button, "fixed bottom-3 right-3 p-2 rounded-full");
 

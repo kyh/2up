@@ -59,7 +59,10 @@ export const Topbar = ({ pack, testPlay }: Props) => {
       {/* right */}
       <div className="col-start-2 col-span-3 flex justify-between items-center w-full relative px-3">
         <div>
-          <Loader className="absolute left-4 top-4 text-grey dark:text-grey-light" loading={savingScene} />
+          <Loader
+            className="absolute left-4 top-4 text-grey dark:text-grey-light"
+            loading={savingScene}
+          />
         </div>
         <button type="button" onClick={() => setIsOpen(true)}>
           <h4 className="m-0 font-bold">{pack?.name}</h4>

@@ -20,17 +20,18 @@ import svg15 from "./svgs/15.svg";
 import svg16 from "./svgs/16.svg";
 
 const StyledIcon = classed.div(
-  "flex justify-center items-end rounded-full overflow-hidden p-2 border-2 border-grey-dark dark:border-grey-light",{
-    variants:{
+  "flex justify-center items-end rounded-full overflow-hidden p-2 border-2 border-grey-dark dark:border-grey-light",
+  {
+    variants: {
       type: {
-        default: "w-20 h-20",
+        default: "w-14 h-14",
         setName: "w-28 h-28 desktop:w-24 desktop:h-24 mb-2",
-        full: "w-full h-full"
-      }
+        full: "w-full h-full",
+      },
     },
-    defaultVariants:{
-      type: "default"
-    }
+    defaultVariants: {
+      type: "default",
+    },
   }
 );
 

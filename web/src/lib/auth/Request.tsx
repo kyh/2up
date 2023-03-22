@@ -99,4 +99,6 @@ export const Request = () => {
   );
 };
 
-const Container = classed.section("desktop:max-w-lg mx-auto translate-y-[-70px]");
+const Container = classed.section(
+  "desktop:max-w-lg mx-auto translate-y-[-70px]"
+);

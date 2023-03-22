@@ -53,7 +53,7 @@ export const packRouter = t.router({
         if (!acc[packTag.name]) acc[packTag.name] = [];
         acc[packTag.name].push(...packTag.packs);
         return acc;
-      }, {} as { [key: string]: typeof tagsWithPacks[0]["packs"] });
+      }, {} as { [key: string]: (typeof tagsWithPacks)[0]["packs"] });
 
       return sections.map((section) => ({
         ...section,

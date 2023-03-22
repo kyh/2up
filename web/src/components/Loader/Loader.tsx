@@ -29,5 +29,6 @@ export const Loader = ({ loading = false, ...rest }) => {
   );
 };
 
-const LoaderContainer = classed.div("child:transition-opacity child:duration-200 child:ease-[ease]");
-
+const LoaderContainer = classed.div(
+  "child:transition-opacity child:duration-200 child:ease-[ease]"
+);
