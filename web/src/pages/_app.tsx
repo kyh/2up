@@ -21,7 +21,7 @@ const chalkboradSEFont = localFont({
   style: "normal",
   weight: "normal",
   display: "fallback",
-  variable: "--font-chalkboard-se"
+  variable: "--font-chalkboard-se",
 });
 
 const progress = new ProgressBar();
@@ -41,29 +41,25 @@ Router.events.on("routeChangeComplete", progress.finish);
 const MyApp = ({ Component, pageProps }: Props) => {
   const getLayout = Component.getLayout || ((page) => page);
 
-  const isDarkMode = useHomeStore((state) => state.isDarkMode)
+  const isDarkMode = useHomeStore((state) => state.isDarkMode);
 
   useEffect(() => {
     if (isDarkMode) {
-      globalThis.document.documentElement.classList.add(
-        "dark"
-      );
+      globalThis.document.documentElement.classList.add("dark");
     } else {
-      globalThis.document.documentElement.classList.remove(
-        "dark"
-      );
+      globalThis.document.documentElement.classList.remove("dark");
     }
-  }, [isDarkMode])
+  }, [isDarkMode]);
 
   useEffect(() => {
-    globalThis.document.documentElement.classList.add(chalkboradSEFont.className);
+    globalThis.document.documentElement.classList.add(
+      chalkboradSEFont.className
+    );
   }, []);
 
   return (
     <AlertProvider>
-      <AuthProvider>
-        {getLayout(<Component {...pageProps} />)}
-      </AuthProvider>
+      <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
     </AlertProvider>
   );
 };

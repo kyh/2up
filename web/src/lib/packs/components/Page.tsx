@@ -2,16 +2,17 @@ import { classed } from "@tw-classed/react";
 
 export const Page = classed.section(
   "min-h-screen bg-grey-background dark:bg-grey-dark",
-  "desktop:overflow-x-hidden desktop:[perspective:5px] desktop:h-screen", {
+  "desktop:overflow-x-hidden desktop:[perspective:5px] desktop:h-screen",
+  {
     variants: {
-      bgImage: { 
+      bgImage: {
         true: "before:content-[''] before:-z-50 before:absolute before:inset-x-0 before:top-0 before:h-[120vh] before:bg-space before:translate-y-[var(--pageBgTop)] before:bg-no-repeat before:bg-auto before:bg-[center_top]",
-        false: ""
-      }
+        false: "",
+      },
     },
-    defaultVariants:{
-      bgImage: "false"
-    }
+    defaultVariants: {
+      bgImage: "false",
+    },
   }
 );
 

@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react"
+import { classed } from "@tw-classed/react";
 import { useRouter } from "next/router";
 import { Button, Modal, Confetti } from "~/components";
 import { PlayerScores } from "./Step3";

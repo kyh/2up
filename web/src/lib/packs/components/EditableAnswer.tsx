@@ -97,14 +97,14 @@ export const EditableAnswer = ({
           </Grid>
           <AddOptionContainer>
             <Button
-            className='mb-1'
+              className="mb-1"
               onClick={onAddSceneAnswer}
               disabled={sceneAnswers.length > 3}
             >
               + Add Option
             </Button>
             <button
-            className='mb-1'
+              className="mb-1"
               onClick={onAddRandomSceneAnswer}
               disabled={sceneAnswers.length > 3}
             >
@@ -160,7 +160,8 @@ const AnswerContainer = classed.div("flex flex-col items-center");
 
 const Grid = classed.div("grid grid-cols-2 gap-3");
 
-const InputContainer = classed.div("relative flex justify-center items-center mb-3");
-
+const InputContainer = classed.div(
+  "relative flex justify-center items-center mb-3"
+);
 
 const AddOptionContainer = classed(InputContainer, "flex-col");

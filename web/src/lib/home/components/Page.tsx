@@ -7,11 +7,11 @@ export const PageContainer = classed.section(
       size: {
         large: "max-w-[900px]",
         full: "max-w-full",
-        default: "max-w-[600px]"
+        default: "max-w-[600px]",
       },
     },
     defaultVariants: {
       size: "default",
-    }
+    },
   }
 );

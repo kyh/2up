@@ -26,10 +26,7 @@ export const HomeSetName = () => {
   return (
     <SectionBody>
       <Form className="gap-1" onSubmit={handleSubmit(onSubmit)}>
-        <Avatar
-          name={watchName}
-          type={"setName"}
-        />
+        <Avatar name={watchName} type={"setName"} />
         <Input
           className="mb-1"
           {...register("name", { required: true })}
@@ -37,7 +34,9 @@ export const HomeSetName = () => {
           defaultValue={playerName}
           autoFocus
         />
-        <Button className="mb-2 px-4" type="submit">Lets go!</Button>
+        <Button className="mb-2 px-4" type="submit">
+          Lets go!
+        </Button>
       </Form>
       <StartNewGameText>
         Or{" "}

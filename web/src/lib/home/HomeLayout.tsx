@@ -30,4 +30,4 @@ const IntroContainer = classed.section("translate-y-[-70px]");
 
 const IntroLogoContaier = classed.div("flex justify-center mb-3");
 
-const IntroCard = classed(Card , "h-[260px]");
+const IntroCard = classed(Card, "h-[260px]");

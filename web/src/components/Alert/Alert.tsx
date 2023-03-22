@@ -4,7 +4,9 @@ import { create } from "zustand";
 import { shallow } from "zustand/shallow";
 import { nanoid } from "nanoid";
 
-const AlertContainer = classed.ul("fixed top-3 inset-x-0 flex flex-col justify-center items-center z-10");
+const AlertContainer = classed.ul(
+  "fixed top-3 inset-x-0 flex flex-col justify-center items-center z-10"
+);
 
 const AlertTemplate = classed(
   motion.li,
@@ -14,7 +16,10 @@ const AlertTemplate = classed(
   "animate-[visible_0s_ease-linear_delay-100_forwards]"
 );
 
-export const Alert = classed(AlertTemplate, "absolute top-3 left-1/2 -translate-x-1/2");
+export const Alert = classed(
+  AlertTemplate,
+  "absolute top-3 left-1/2 -translate-x-1/2"
+);
 
 type AlertOptions = {
   type?: "success" | "error" | "info";

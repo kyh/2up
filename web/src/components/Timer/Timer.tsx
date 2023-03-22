@@ -32,7 +32,13 @@ export const Timer = ({
   return typeof window !== "undefined"
     ? createPortal(
         <Container>
-          <TimerContainer style={{ "--initialSeconds": `${initialSeconds}s` } as React.CSSProperties}>
+          <TimerContainer
+            style={
+              {
+                "--initialSeconds": `${initialSeconds}s`,
+              } as React.CSSProperties
+            }
+          >
             <SnailContainer>
               <div>
                 <SnailSvg />
@@ -47,7 +53,9 @@ export const Timer = ({
     : null;
 };
 
-const TimerContainer = classed.div("animate-[move-animation_var(--initialSeconds)_linear_infinite] [animation-iteration-count:1]")
+const TimerContainer = classed.div(
+  "animate-[move-animation_var(--initialSeconds)_linear_infinite] [animation-iteration-count:1]"
+);
 
 const Container = classed.div(
   "absolute inset-x-0 bottom-0 overflow-hidden pointer-events-none desktop:bottom-5"
@@ -56,7 +64,7 @@ const Container = classed.div(
 const SnailContainer = classed.div("flex");
 
 const Dust = classed.div(
-  "w-[197px] h-[66px] bg-dust [background-size:5910px_67px] animate-dust -translate-x-5 translate-y-[10px]",
+  "w-[197px] h-[66px] bg-dust [background-size:5910px_67px] animate-dust -translate-x-5 translate-y-[10px]"
 );
 
 const SnailSvg = () => (

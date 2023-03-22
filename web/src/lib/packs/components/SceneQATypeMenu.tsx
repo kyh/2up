@@ -82,9 +82,9 @@ const QuestionTypeMenu = forwardRef<HTMLDivElement, Props>(
                   currentType === value.id
                     ? false
                     : {
-                      questionType: { slug: value.id },
-                      question: defaultQuestionsMap[value.id],
-                    }
+                        questionType: { slug: value.id },
+                        question: defaultQuestionsMap[value.id],
+                      }
                 );
               }}
             >
@@ -126,12 +126,12 @@ const AnswerTypeMenu = forwardRef<HTMLDivElement, Props>(
                   currentType === value.id
                     ? false
                     : {
-                      answerType: { slug: value.id },
-                      sceneAnswers: [
-                        ...[correct || { content: "", isCorrect: true }],
-                        ...defaultAnswersMap[value.id],
-                      ],
-                    }
+                        answerType: { slug: value.id },
+                        sceneAnswers: [
+                          ...[correct || { content: "", isCorrect: true }],
+                          ...defaultAnswersMap[value.id],
+                        ],
+                      }
                 );
               }}
             >

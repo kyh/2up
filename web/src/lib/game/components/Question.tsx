@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react"
+import { classed } from "@tw-classed/react";
 import { QuestionTypeSlugs } from "~/lib/game/gameUtils";
 import { VideoPlayer, AudioPlayer, Code } from "~/components";
 import type { StepProps } from "~/lib/game/steps/types";
@@ -51,7 +51,9 @@ const QuestionImage = ({ question }: QuestionComponentProp) => {
   );
 };
 
-const Image = classed.img("object-contain max-w-[100vw] h-[240px] desktop:max-w-[40vw]");
+const Image = classed.img(
+  "object-contain max-w-[100vw] h-[240px] desktop:max-w-[40vw]"
+);
 
 const QuestionAudio = ({ question, displayMode }: QuestionComponentProp) => {
   return (
@@ -91,6 +93,8 @@ const QuestionCode = ({ question }: QuestionComponentProp) => {
   );
 };
 
-export const Container = classed.div("flex justify-center items-center w-full mb-5");
+export const Container = classed.div(
+  "flex justify-center items-center w-full mb-5"
+);
 
 const QuestionContainer = classed(Container, "h-[240px] text-3xl font-bold");

@@ -70,8 +70,10 @@ export const Modal = ({
   );
 };
 
-
-const CloseButton = classed(Button, "absolute -right-5 -top-5 rounded-full bg-white dark:bg-black");
+const CloseButton = classed(
+  Button,
+  "absolute -right-5 -top-5 rounded-full bg-white dark:bg-black"
+);
 
 const ModalHeader = classed.header(
   "flex justify-center items-center text-[1.1rem] text-white p-3",

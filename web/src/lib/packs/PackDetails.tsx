@@ -27,11 +27,17 @@ export const PackDetails = () => {
           <h1 className="text-3xl font-bold mb-3">{pack.name}</h1>
           <p className="mb-5">{pack.description}</p>
           <div className="flex flex-col items-center">
-            <Button className="mb-2 min-w-[150px]" onClick={() => hostGame(packId)} disabled={isLoading}>
+            <Button
+              className="mb-2 min-w-[150px]"
+              onClick={() => hostGame(packId)}
+              disabled={isLoading}
+            >
               Start a game
             </Button>
             {pack.userId === auth.user?.id && (
-              <Link className="underline" href={`/packs/${packId}/edit`}>Edit Pack</Link>
+              <Link className="underline" href={`/packs/${packId}/edit`}>
+                Edit Pack
+              </Link>
             )}
           </div>
         </header>

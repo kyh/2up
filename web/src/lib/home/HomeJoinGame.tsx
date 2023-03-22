@@ -25,7 +25,7 @@ export const HomeJoinGame = () => {
     <div className="flex flex-col justify-between h-full">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
-          className="mb-1"
+          className="mb-3"
           {...register("gameId", { required: true })}
           type="tel"
           placeholder="Game Code"
@@ -36,7 +36,10 @@ export const HomeJoinGame = () => {
         </Button>
       </Form>
       <StartNewGameText>
-        Or <Link className="ml-1 underline" href="/packs">start your own game</Link>
+        Or{" "}
+        <Link className="ml-1 underline" href="/packs">
+          start your own game
+        </Link>
       </StartNewGameText>
       <Modal
         open={router.query.join ? true : false}

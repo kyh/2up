@@ -80,7 +80,9 @@ export const TagInput = ({
           key={tag}
         >
           {tag}
-          <button className="flex p-1" onClick={() => deleteTag(tag)}>x</button>
+          <button className="flex p-1" onClick={() => deleteTag(tag)}>
+            x
+          </button>
         </div>
       ))}
       <input
