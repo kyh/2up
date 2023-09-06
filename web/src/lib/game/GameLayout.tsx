@@ -1,5 +1,5 @@
 import { ReactNode, useEffect } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { useRouter } from "next/router";
 import { Navigation } from "~/lib/game/components/Navigation";
 import { useConnectGame } from "~/lib/game/useConnectGame";

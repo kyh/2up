@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { gql, useMutation } from "~/utils/mock";
 import { Modal, Button, AreaField, useAlert } from "~/components";
 import { scenesToCsv, fileToCsv } from "~/lib/packs/packUtils";

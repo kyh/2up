@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { nanoid } from "nanoid";
 import { useMutation } from "~/utils/mock";
 

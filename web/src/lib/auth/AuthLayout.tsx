@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { PageContainer } from "~/lib/home/components/Page";
 
 export const AuthLayout = ({

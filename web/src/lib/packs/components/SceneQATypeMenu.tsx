@@ -1,5 +1,5 @@
 import { useRef, forwardRef } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { Button } from "~/components";
 import { Props as ScenePreviewProps } from "~/lib/packs/components/ScenePreview";
 import { AnswerTypeSlugs, QuestionTypeSlugs } from "~/lib/game/gameUtils";

@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { create } from "zustand";
 import { shallow } from "zustand/shallow";
 import { nanoid } from "nanoid";

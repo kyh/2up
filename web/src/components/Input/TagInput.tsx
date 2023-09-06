@@ -1,5 +1,5 @@
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 
 type Props = {
   defaultTags?: string[];

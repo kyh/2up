@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ReactNode } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { Navigation } from "~/lib/game/components/Navigation";
 import { PageContainer } from "~/lib/home/components/Page";
 import { Card } from "~/components";

@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { Card } from "~/components";
 import { Content } from "~/lib/packs/components/Page";
 import { PackForm, PackFormInputs } from "~/lib/packs/components/PackForm";

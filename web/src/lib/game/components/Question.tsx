@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { QuestionTypeSlugs } from "~/lib/game/gameUtils";
 import { VideoPlayer, AudioPlayer, Code } from "~/components";
 import type { StepProps } from "~/lib/game/steps/types";

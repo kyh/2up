@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { Float, FloatProps } from "@headlessui-float/react";
 import { useState } from "react";
 

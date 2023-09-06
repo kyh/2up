@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 
 type Props = {
   initialSeconds?: number;

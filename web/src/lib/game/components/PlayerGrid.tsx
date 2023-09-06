@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { Avatar, Button } from "~/components";
 
 type PlayerProps = {
@@ -46,5 +46,5 @@ export const PlayersGrid = classed.div(
 
 export const NextButton = classed(
   Button,
-  "absolute bottom-10 left-1/2 w-[150px] ml-[-75px] z-10 desktop:bg-white desktop:dark:bg-black px-8"
+  "absolute bottom-10 left-1/2 w-[200px] ml-[-75px] z-10 desktop:bg-white desktop:dark:bg-black px-8"
 );

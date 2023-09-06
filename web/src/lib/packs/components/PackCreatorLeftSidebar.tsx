@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { motion } from "framer-motion";
 import { useHotkeys } from "@react-hook/hotkey";
 import { Button, Icon } from "~/components";

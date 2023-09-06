@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 
 const Container = classed.div("flex justify-center items-center h-4/5");
 

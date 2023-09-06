@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 
 export const Input = classed.input(
   "leading-[50px] text-black dark:text-white bg-white dark:bg-black",

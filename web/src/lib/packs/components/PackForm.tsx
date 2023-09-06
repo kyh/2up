@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { useForm, Controller } from "react-hook-form";
 import { Button, TextField, AreaField, TagInput } from "~/components";
 

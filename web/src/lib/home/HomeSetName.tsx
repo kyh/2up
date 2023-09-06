@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Avatar, Link, Button, Input } from "~/components";

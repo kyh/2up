@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { useForm } from "react-hook-form";
 import { TextField, Button, Card } from "~/components";
 import { useAuth } from "~/lib/auth/useAuth";
