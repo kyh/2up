@@ -77,7 +77,7 @@ export const CsvImportButton = ({
             Example CSV
           </a>
         </CsvImportHeader>
-        <CsvImportArea fullWidth onChange={handleChange} value={csv} />
+        <CsvImportArea onChange={handleChange} value={csv} />
         <CsvImportFooter>
           <Button
             className="ml-auto"

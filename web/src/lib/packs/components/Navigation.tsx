@@ -35,7 +35,7 @@ export const Navigation = () => {
               </Link>
               <button
                 type="button"
-                onClick={auth.signOut}
+                onClick={() => auth.signOut()}
                 className="p-3 hover:underline"
               >
                 Logout
