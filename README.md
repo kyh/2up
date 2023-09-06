@@ -10,16 +10,15 @@
 ## Get Started
 
 ```
-│── /docs                        # App documentation
-├── /web                         # Web ReactJS client
-|   └── /src
+├── /apps                        # Web ReactJS client
+|   └── /web/src
 │       ├── /components          # Shared React components
 │       ├── /lib                 # App features
 │       ├── /pages               # Next.js renderable pages
 │       ├── /server              # TRPC api backend
 │       ├── /styles              # Theme and global styling
 │       └── /utils               # Utility modules
-└── /voice                       # Voice server
+└── /server                      # [IN PROGRESS] Voice server
 ```
 
 ## Stack
@@ -27,8 +26,7 @@
 This project uses the following libraries and services:
 
 - Framework - [Next.js](https://nextjs.org)
-- Styling - [Styled Components](https://styled-components.com/)
+- Styling - [Tailwind](https://tailwindcss.com)
 - API - [TRPC](https://trpc.io/)
 - Database - [Postgres (Supabase)](https://supabase.com) + [Prisma](https://www.prisma.io)
 - Hosting - [Vercel](https://vercel.com)
-- Payments - [Stripe](https://stripe.com)
