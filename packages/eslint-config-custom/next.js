@@ -39,6 +39,6 @@ module.exports = {
   rules: {
     "import/no-default-export": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/consistent-type-definitions": "type",
+    "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
   },
 };
