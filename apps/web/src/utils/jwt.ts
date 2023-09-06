@@ -99,7 +99,7 @@ export const encode = (
   }
 
   // create segments, all segments should be base64 string
-  const segments = [];
+  const segments: string[] = [];
   segments.push(base64urlEncode(JSON.stringify(header)));
   segments.push(base64urlEncode(JSON.stringify(payload)));
   segments.push(sign(segments.join("."), key, signingMethod, signingType));

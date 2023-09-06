@@ -50,7 +50,7 @@ export type Context = trpc.inferAsyncReturnType<typeof createContextInner>;
 export const createContext = async (
   options: trpcNext.CreateNextContextOptions
 ): Promise<Context> => {
-  return await createContextInner({
+  return createContextInner({
     user: await getUser(options.req),
   });
 };
