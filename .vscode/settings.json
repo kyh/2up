@@ -1,5 +1,0 @@
-{
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsdk": "./web/node_modules/typescript/lib",
-  "editor.formatOnSave": true
-}

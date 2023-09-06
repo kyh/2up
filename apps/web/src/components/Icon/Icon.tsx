@@ -1,5 +1,3 @@
-import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
-
 import setting from "./svgs/setting.svg";
 import close from "./svgs/close.svg";
 import pencil from "./svgs/pencil.svg";
@@ -20,6 +18,7 @@ import loop from "./svgs/loop.svg";
 import loopOff from "./svgs/loop-off.svg";
 import volume from "./svgs/volume.svg";
 import volumeMute from "./svgs/volume-mute.svg";
+import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
 
 export const iconMap = {
   setting: setting,

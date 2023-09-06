@@ -1,8 +1,7 @@
 {
-  "name": "truffles-web",
-  "version": "0.1.0",
+  "name": "web",
+  "version": "1.0.0",
   "private": true,
-  "sideEffects": false,
   "prisma": {
     "seed": "npx ts-node -T prisma/seed.ts"
   },
@@ -46,6 +45,9 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^13.4.19",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
     "@next/bundle-analyzer": "^13.4.19",
     "@svgr/webpack": "^8.1.0",
     "@types/lodash": "^4.14.198",

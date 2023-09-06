@@ -1,13 +1,17 @@
 {
-  "name": "truffles",
+  "private": true,
   "scripts": {
-    "dev:web": "npm run dev --prefix=web",
-    "dev:voice": "npm run dev --prefix=voice",
-    "postinstall": "husky install"
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "husky": "^8.0.3",
-    "prettier": "^2.8.8",
-    "pretty-quick": "^3.1.3"
-  }
+    "eslint": "^8.48.0",
+    "prettier": "^3.0.3",
+    "tsconfig": "workspace:*",
+    "turbo": "latest"
+  },
+  "packageManager": "pnpm@8.6.10",
+  "name": "truffles"
 }
