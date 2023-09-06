@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { useRouter } from "next/router";
 import { useHotkeys } from "@react-hook/hotkey";
 import { Topbar } from "~/lib/packs/components/PackCreatorTopbar";

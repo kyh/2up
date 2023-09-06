@@ -1,4 +1,4 @@
-import { classed, deriveClassed, ComponentProps } from "@tw-classed/react";
+import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
 import { Link, Button, ButtonLinkNative, Icon } from "~/components";
 import { useHostGame } from "~/lib/game/useGameActions";
 import { Pack as PackModel } from "@prisma/client";

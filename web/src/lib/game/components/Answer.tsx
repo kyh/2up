@@ -1,5 +1,5 @@
 import { useState, SyntheticEvent } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { Input, Button } from "~/components";
 import { AnswerTypeSlugs } from "~/lib/game/gameUtils";
 import type { StepProps } from "~/lib/game/steps/types";

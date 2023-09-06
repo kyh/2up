@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { Alert, Timer } from "~/components";
 import { Instruction } from "~/lib/game/components/Instruction";
 import { Question } from "~/lib/game/components/Question";

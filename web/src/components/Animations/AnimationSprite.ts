@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 
 // Delay and duration can be modified by tw-classes
 export const AnimationSprite = classed.div(

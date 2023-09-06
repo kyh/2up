@@ -1,6 +1,6 @@
 import { useRef, useState, ChangeEvent, ReactNode } from "react";
 import { useRouter } from "next/router";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { VideoPlayer, AudioPlayer, Code, Button, Icon } from "~/components";
 import { PackAssetModal } from "~/lib/packs/components/PackAssetModal";
 import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/packStore";

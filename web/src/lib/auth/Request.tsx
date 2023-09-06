@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { useForm } from "react-hook-form";
 import { TextField, Button, Card } from "~/components";
 

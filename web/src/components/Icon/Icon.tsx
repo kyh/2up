@@ -1,4 +1,4 @@
-import { classed, deriveClassed, ComponentProps } from "@tw-classed/react";
+import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
 
 import setting from "./svgs/setting.svg";
 import close from "./svgs/close.svg";

@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 
 export const Page = classed.section(
   "min-h-screen bg-grey-background dark:bg-grey-dark",

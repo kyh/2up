@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import ReactAudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { Icon } from "../Icon/Icon";

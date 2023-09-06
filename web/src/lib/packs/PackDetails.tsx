@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { useRouter } from "next/router";
 import { Link, Button, Spinner } from "~/components";
 import { useHostGame } from "~/lib/game/useGameActions";

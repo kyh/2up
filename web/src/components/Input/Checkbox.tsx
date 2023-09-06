@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 
 const CheckboxContainer = classed.label("relative inline-block p-3 m-0");
 

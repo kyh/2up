@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { gql, useMutation, useQuery } from "~/utils/mock";
 import { Modal, Uploader } from "~/components";
 

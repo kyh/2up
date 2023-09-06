@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { Input, SingleLetterInput, Checkbox, Button, Icon } from "~/components";
 import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/packStore";
 import { getRandomAnswer } from "~/lib/packs/packUtils";

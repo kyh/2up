@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 
 const STATES = {
   default: "default",

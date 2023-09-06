@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 
 export const Carousel = classed.div(
   "overflow-auto flex snap-mandatory snap-x scrollbar-none gap-5",

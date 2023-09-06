@@ -1,4 +1,4 @@
-import { classed, deriveClassed, ComponentProps } from "@tw-classed/react";
+import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
 import { hashCode } from "~/utils/string";
 
 import svg0 from "./svgs/0.svg";

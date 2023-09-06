@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import Image from "next/image";
 import { Link } from "~/components";
 import { useAuth } from "~/lib/auth/useAuth";

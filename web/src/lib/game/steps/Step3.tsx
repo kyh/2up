@@ -1,5 +1,5 @@
 import { useState, ReactNode } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { motion } from "framer-motion";
 import { useIsDesktop } from "~/utils/useIsDesktop";
 import {

@@ -1,5 +1,5 @@
 import { Fragment, ReactNode } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { Dialog, Transition } from "@headlessui/react";
 import { Button } from "~/components/Button/Button";
 import { Icon } from "~/components/Icon/Icon";

@@ -1,5 +1,5 @@
 import { KeyboardEvent } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./Input";
 

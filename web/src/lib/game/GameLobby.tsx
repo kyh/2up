@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import {
   Link,
   Button,

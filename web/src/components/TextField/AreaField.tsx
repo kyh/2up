@@ -1,5 +1,5 @@
 import { ReactNode, ChangeEventHandler, forwardRef } from "react";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { Input } from "../Input/Input";
 
 type Props = {

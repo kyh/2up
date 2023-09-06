@@ -1,4 +1,4 @@
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import { Button, Icon } from "~/components";
 import { Props as ScenePreviewProps } from "~/lib/packs/components/ScenePreview";
 

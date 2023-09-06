@@ -1,4 +1,4 @@
-import { classed, deriveClassed, ComponentProps } from "@tw-classed/react";
+import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
 import { Container } from "~/lib/game/components/Question";
 
 type InstructionProps = ComponentProps<typeof InstructionContainer> & {

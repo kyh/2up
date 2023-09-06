@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import { classed } from "@tw-classed/react";
+import { classed } from "~/utils/classed";
 import sample from "lodash/sample";
 import Sheet from "react-modal-sheet";
 import { useIsDesktop } from "~/utils/useIsDesktop";
@@ -169,7 +169,6 @@ const LocalAnswer = classed(Answer, "");
 
 const AnswerContainer = classed.div(
   "[&_.answer-display]:animate-[bounce-out_1s_forwards]",
-  "[&_.answer-display.correct]:animate-none",
   "[&_.answer-display.correct_>_svg]:stroke-green [&_.answer-display.correct_>_svg]:stroke-[5px]",
   "[&_.answer-display.correct_>_svg_path]:animate-[draw-in_0.6s_cubic-bezier(0.7,_0,_0.3,_1)_forwards]",
   "[&_.answer-display.answer-text]:overflow-visible [&_.answer-display.answer-text]:text-center",
