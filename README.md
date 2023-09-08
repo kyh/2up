@@ -11,14 +11,14 @@
 
 ```
 ├── /apps                        # Web ReactJS client
-|   └── /web/src
-│       ├── /components          # Shared React components
-│       ├── /lib                 # App features
-│       ├── /pages               # Next.js renderable pages
-│       ├── /server              # TRPC api backend
-│       ├── /styles              # Theme and global styling
-│       └── /utils               # Utility modules
-└── /server                      # [IN PROGRESS] Voice server
+|   ├── /web/src
+│   │   ├── /components          # Shared React components
+│   │   ├── /lib                 # App features
+│   │   ├── /pages               # Next.js renderable pages
+│   │   ├── /server              # TRPC api backend
+│   │   ├── /styles              # Theme and global styling
+│   │   └── /utils               # Utility modules
+│   └── /voice                   # [IN PROGRESS] Voice server
 ```
 
 ## Stack
