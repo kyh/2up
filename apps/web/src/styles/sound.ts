@@ -1,14 +1,12 @@
 import UIfx from "uifx";
 
-const publicUrl = process.env.NEXT_PUBLIC_APP_URL;
-
 const soundMap = {
-  click: `${publicUrl}/sounds/click.mp3`,
-  doorbell: `${publicUrl}/sounds/doorbell.mp3`,
-  pop: `${publicUrl}/sounds/pop.mp3`,
-  slap: `${publicUrl}/sounds/slap.mp3`,
-  bike: `${publicUrl}/sounds/bike.mp3`,
-  theme: `${publicUrl}/sounds/theme.mp3`,
+  click: `/sounds/click.mp3`,
+  doorbell: `/sounds/doorbell.mp3`,
+  pop: `/sounds/pop.mp3`,
+  slap: `/sounds/slap.mp3`,
+  bike: `/sounds/bike.mp3`,
+  theme: `/sounds/theme.mp3`,
 };
 
 const fx: Record<string, any> = {};
