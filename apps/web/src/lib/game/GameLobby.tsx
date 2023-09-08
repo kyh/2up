@@ -46,7 +46,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
     if (navigator.share) {
       navigator
         .share({
-          title: "Join my Truffles game",
+          title: "Join my 2up game",
           url: gameLink,
         })
         .catch(console.error);
@@ -73,7 +73,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
           <div>
             Invite friends to{" "}
             <button type="button" onClick={onShare} className="text-purple">
-              truffles.tv{" "}
+              2uphq.com{" "}
               <ShareIcon
                 fillColor="class"
                 icon="share"
@@ -113,7 +113,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
                 <StartModalPTag>
                   <span className="block">
                     Invite friends to{" "}
-                    <span className="text-purple">truffles.tv</span>
+                    <span className="text-purple">2uphq.com</span>
                   </span>
                   <span className="block">and enter the room code:</span>
                 </StartModalPTag>

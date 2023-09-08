@@ -60,7 +60,7 @@ export const Request = () => {
             <TextField
               id="email"
               labelText="Email"
-              placeholder="beta-tester@truffles.tv"
+              placeholder="beta-tester@2uphq.com"
               error={!!errors.email}
               errorText="This field is required"
               fullWidth

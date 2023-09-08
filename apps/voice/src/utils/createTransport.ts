@@ -3,7 +3,7 @@ import { types } from "mediasoup";
 import { VoiceSendDirection } from "src/types";
 import { config } from "../config";
 
-const log = debugModule("truffles:create-transport");
+const log = debugModule("2up:create-transport");
 
 export const transportToOptions = ({
   id,

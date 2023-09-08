@@ -12,12 +12,7 @@ export const HomeLayout = ({ children }: { children: ReactNode }) => {
       <PageContainer>
         <IntroContainer>
           <IntroLogoContaier>
-            <Image
-              src="/logo/logomark.svg"
-              alt="Truffles"
-              width="60"
-              height="65"
-            />
+            <Image src="/logo/logomark.svg" alt="2up" width="60" height="65" />
           </IntroLogoContaier>
           <IntroCard>{children}</IntroCard>
         </IntroContainer>

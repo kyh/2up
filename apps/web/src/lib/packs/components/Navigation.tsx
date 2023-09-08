@@ -13,7 +13,7 @@ export const Navigation = () => {
           <Image
             className="logo"
             src="/logo/logomark.svg"
-            alt="Truffles"
+            alt="2up"
             height="35"
             width="35"
           />

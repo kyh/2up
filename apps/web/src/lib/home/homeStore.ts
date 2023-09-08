@@ -44,7 +44,7 @@ export const useHomeStore = create<HomeStore>()(
         set((state) => ({ ...state, accessToken })),
     }),
     {
-      name: "truffles-storage",
+      name: "2up-storage",
     }
   )
 );

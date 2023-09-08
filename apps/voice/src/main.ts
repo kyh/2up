@@ -10,8 +10,8 @@ import { deleteRoom } from "./utils/deleteRoom";
 import { startMediasoup } from "./utils/startMediasoup";
 import { HandlerMap, startRabbit } from "./utils/startRabbit";
 
-const log = debugModule("truffles:index");
-const errLog = debugModule("truffles:ERROR");
+const log = debugModule("2up:index");
+const errLog = debugModule("2up:ERROR");
 
 const rooms: MyRooms = {};
 

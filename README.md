@@ -1,9 +1,9 @@
-[![GitHub last commit](https://img.shields.io/github/last-commit/kyh/truffles)](https://github.com/kyh/truffles)
+[![GitHub last commit](https://img.shields.io/github/last-commit/kyh/2up)](https://github.com/kyh/2up)
 [![Discord](https://img.shields.io/badge/Discord-Join%20Chat-%237289DA)](https://discord.gg/Rt8ygmQ4fk)
 
-# Truffles
+# 2up
 
-[🚀 Website](https://truffles.tv) | [App Store]() | [Play Store]()
+[🚀 Website](https://2uphq.com) | [App Store]() | [Play Store]()
 
 > A platform for real-time multiplayer trivia games 🎮
 

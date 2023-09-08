@@ -5,7 +5,7 @@ export default function Document() {
     <Html lang="en" dir="ltr">
       <Head>
         <meta name="referrer" content="origin" />
-        <meta name="application-name" content="Truffles" />
+        <meta name="application-name" content="2UP" />
         <meta name="robots" content="index, follow" />
         <meta property="fb:app_id" content="{FB_ID}" />
 

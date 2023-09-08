@@ -94,7 +94,7 @@ export const Navigation = () => {
           <SettingItem>
             <ButtonLink
               fullWidth
-              href="https://github.com/kyh/truffles"
+              href="https://github.com/kyh/2up"
               target="_blank"
               rel="noopener noreferrer"
             >
