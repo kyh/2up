@@ -105,9 +105,6 @@ type PropsV2 = {
 
 export const AvatarV2 = deriveClassed<typeof StyledAvatarV2, PropsV2>(
   ({ children, ...rest }, ref) => {
-    // const backgroundColor = variantClasses[variant];
-    // const sizeClass = sizeVariants[size];
-
     return (
       <StyledAvatarV2 {...rest} ref={ref}>
         {children}
