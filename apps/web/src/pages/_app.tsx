@@ -26,6 +26,36 @@ const chalkboradSEFont = localFont({
   variable: "--font-chalkboard-se",
 });
 
+const dogicaPixelFont = localFont({
+  src: [
+    {
+      path: "../assets/fonts/Dogica_Pixel.woff",
+    },
+    {
+      path: "../assets/fonts/Dogica_Pixel.woff2",
+    },
+  ],
+  style: "normal",
+  weight: "normal",
+  display: "fallback",
+  variable: "--font-dogica-pixel-se",
+});
+
+const droidPixelFont = localFont({
+  src: [
+    {
+      path: "../assets/fonts/DroidSans.woff",
+    },
+    {
+      path: "../assets/fonts/DroidSans.woff2",
+    },
+  ],
+  style: "normal",
+  weight: "normal",
+  display: "fallback",
+  variable: "--font-droid",
+});
+
 const progress = new ProgressBar();
 
 type Page<P = {}> = NextPage<P> & {
@@ -45,7 +75,8 @@ const MyApp = ({ Component, pageProps }: Props) => {
 
   useEffect(() => {
     globalThis.document.documentElement.classList.add(
-      chalkboradSEFont.className
+      dogicaPixelFont.variable,
+      droidPixelFont.variable
     );
   }, []);
 

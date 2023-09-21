@@ -26,13 +26,36 @@ const config: Config = {
         "purple-background": "#e1d8f3",
         white: "#FFFFFF",
         black: "#1A202C",
+        "dark-black": "#000000",
         "grey-background": "#EDF2F7",
         "grey-light": "#CBD5E0",
-        grey: "#718096",
-        "grey-dark": "#2D3748",
-        red: "#f05252",
+        grey: "#2B2B2B",
+        "grey-dark": "#121212",
+        "grey-300": "#4C4C4C",
+        red: "#E44923",
+        "red-dark": "#8B2A13",
         yellow: "#ffca64",
-        green: "#5cb85c",
+        green: "#47A639",
+        "green-dark": "#47A639",
+        "accent-green-dark": "#2B6423",
+        accent: {
+          yellow: {
+            regular: "#E7C61E",
+            toned: "#DABA1A",
+          },
+          red: {
+            regular: "#E44923",
+          },
+          green: {
+            dark: "#2B6423",
+            light: "#47A639",
+          },
+          gray: {
+            dark: "#121212",
+            regular: "#2B2B2B",
+          },
+          blue: { regular: "#78C2F1" },
+        },
       },
       screens: {
         desktop: "900px",
@@ -44,7 +67,8 @@ const config: Config = {
         sprite: "185px",
       },
       fontFamily: {
-        sans: ["var(--font-chalkboard-se)", ...defaultTheme.fontFamily.sans],
+        sans: ["var(--font-dogica-pixel-se)", ...defaultTheme.fontFamily.sans],
+        droid: ["var(--font-droid)"],
         code: ["Consolas", "Monaco", "Andale Mono", "Ubuntu Mono", "monospace"],
       },
       borderRadius: {
@@ -518,6 +542,7 @@ const config: Config = {
         },
         "dust-animation": { "100%": { backgroundPositionX: "right" } },
       },
+
       animation: {
         "bubble-explosion-3": "bubble-explosion-3 1s steps(17) 1 forwards",
         "blinking-stars-2": "blinking-stars-2 1.2s steps(29) infinite forwards",
@@ -544,6 +569,7 @@ const config: Config = {
         "bubble-dislike": "url('/sprites/bubble-dislike/spritesheet.png')",
         "bubble-cry-emoji": "url('/sprites/bubble-cry-emoji/spritesheet.png')",
         "bubble-like": "url('/sprites/bubble-like/spritesheet.png')",
+        container: "url('/sprites/bg.png')",
         dust: "url('/sprites/dust.svg')",
         crown: "url('/illustrations/kitty-crown.svg')",
         glasses: "url('/illustrations/kitty-glasses.svg')",
@@ -552,6 +578,25 @@ const config: Config = {
           "linear-gradient(45deg, #2D3748 25%, transparent 25%, transparent 50%, #2D3748 50%, #2D3748 75%, transparent 75%, transparent)",
         "spinner-gradient-dark":
           "linear-gradient(45deg, #CBD5E0 25%, transparent 25%, transparent 50%, #CBD5E0 50%, #CBD5E0 75%, transparent 75%, transparent)",
+      },
+      boxShadow: {
+        alert: `12px 0 red,
+        -12px 0 red,
+        0 -12px red,
+        0 12px red,
+        24px 0 white,
+        -24px 0 white,
+        0 -24px white,
+        0 24px white,
+        0 0 0 12.5px white,
+        36px 0 black,
+        /* -36px 0 black, */
+        0 36px black,
+        /* 0 -36px black, */
+        /*0 -12px 0 12px black, */
+        0 12px 0 12px black,
+        12px 0 0 12px black,
+        -12px 0 0 12px black;`,
       },
     },
   },

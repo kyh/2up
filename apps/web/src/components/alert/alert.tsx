@@ -3,6 +3,7 @@ import { classed } from "~/utils/classed";
 import { create } from "zustand";
 import { shallow } from "zustand/shallow";
 import { nanoid } from "nanoid";
+import React from "react";
 
 const AlertContainer = classed.ul(
   "fixed top-3 inset-x-0 flex flex-col justify-center items-center z-10",
@@ -88,6 +89,59 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
         </AnimatePresence>
       </AlertContainer>
       {children}
+    </>
+  );
+};
+
+type PropsV2 = {
+  children?: React.ReactNode;
+  className?: string;
+  id?: string;
+  variant?: "error" | "warning" | "information" | "success"; // Represents the color of the alert
+  show?: boolean;
+  dissmiss?: boolean;
+  handleClose?: () => void;
+};
+
+const variantClasses = {
+  error: "bg-accent-red-regular",
+  warning: "bg-accent-yellow-regular",
+  information: "bg-accent-gray-regular",
+  success: "bg-accent-green-light",
+};
+const borderClasses = {
+  borderRadious: "",
+  borderColor: "",
+  borderStyle: "",
+  color: "",
+  padding: "",
+  display: "",
+  justifyContent: "between",
+  alignItems: "center",
+};
+
+export const AlertV2 = ({
+  children,
+  id = "",
+  variant = "warning",
+  show,
+  handleClose,
+}: PropsV2) => {
+  const backgroundColor = variantClasses[variant];
+
+  return (
+    <>
+      {show ? (
+        <div
+          className={`shadow-alert ${backgroundColor} text-white p-2 flex justify-between items-center`}
+          id={id}
+        >
+          <span> {children}</span>
+          <button onClick={handleClose}>
+            <span>x</span>
+          </button>
+        </div>
+      ) : null}
     </>
   );
 };
