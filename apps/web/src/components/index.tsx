@@ -24,4 +24,6 @@ export * from "./Players/VideoPlayer";
 export * from "./SEO/SEO";
 export * from "./TextField/TextField";
 export * from "./Timer/Timer";
+export * from "./Tile/Tile";
 export * from "./Tooltip/Tooltip";
+export * from "./SideBar/SideBar";

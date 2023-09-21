@@ -18,7 +18,7 @@ importers:
         specifier: workspace:*
         version: link:packages/tsconfig
       turbo:
-        specifier: latest
+        specifier: ^1.10.3
         version: 1.10.13
 
   apps/voice: {}
