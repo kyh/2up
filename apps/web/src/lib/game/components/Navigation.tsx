@@ -6,24 +6,24 @@ import { Icon } from "~/components/Icon/Icon";
 import { Modal } from "~/components/Modal/Modal";
 import { Button, ButtonLink } from "~/components/Button/Button";
 import { createOrGetThemesong } from "~/styles/sound";
+import { useTheme } from "~/components/providers/theme-provider";
 
 export const Navigation = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    isDarkMode,
-    toggleDarkMode,
-    isMusicOn,
-    toggleMusic,
-    isSFXOn,
-    toggleSFX,
-  } = useAllHomeStore();
+  const { theme, setTheme } = useTheme();
+  const { isMusicOn, toggleMusic, isSFXOn, toggleSFX } = useAllHomeStore();
 
   const { gameId } = router.query;
+  const isDarkMode = theme === "dark";
 
   const leaveGame = () => {
     router.push("/");
     setIsOpen(false);
+  };
+
+  const toggleTheme = () => {
+    setTheme(isDarkMode ? "light" : "dark");
   };
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export const Navigation = () => {
         )}
         <h3 className="mb-2">Profile</h3>
         <SettingsContainer single>
-          <Button onClick={toggleDarkMode} fullWidth>
+          <Button onClick={toggleTheme} fullWidth>
             {isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           </Button>
         </SettingsContainer>

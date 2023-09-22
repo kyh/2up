@@ -4,8 +4,6 @@ import { persist } from "zustand/middleware";
 import { nanoid } from "nanoid";
 
 export type HomeStore = {
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
   isMusicOn: boolean;
   toggleMusic: () => void;
   isSFXOn: boolean;
@@ -18,18 +16,9 @@ export type HomeStore = {
   setAccessToken: (accessToken: string) => void;
 };
 
-const getDarkModeDefault = () => {
-  if (typeof window !== "undefined" && window.matchMedia)
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  return true;
-};
-
 export const useHomeStore = create<HomeStore>()(
   persist(
     (set) => ({
-      isDarkMode: getDarkModeDefault(),
-      toggleDarkMode: () =>
-        set((state) => ({ ...state, isDarkMode: !state.isDarkMode })),
       isMusicOn: false,
       toggleMusic: () =>
         set((state) => ({ ...state, isMusicOn: !state.isMusicOn })),

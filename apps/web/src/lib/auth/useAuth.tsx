@@ -7,16 +7,16 @@ import type {
   AuthError,
 } from "@supabase/supabase-js";
 import { nanoid } from "nanoid";
-import { supabase } from "~/utils/supabase";
+import { useSupabase } from "~/components/providers/supabase-provider";
 import { useAlert } from "~/components";
 import { useHomeStore } from "~/lib/home/homeStore";
 
 type Context = {
   user: User | null;
   loading: boolean;
-  signIn: typeof supabase.auth.signInWithPassword;
-  signUp: typeof supabase.auth.signUp;
-  signOut: typeof supabase.auth.signOut;
+  signIn: any;
+  signUp: any;
+  signOut: any;
 };
 
 const AuthContext = createContext<Context | null>(null);
@@ -26,6 +26,7 @@ type Props = {
 };
 
 export const AuthProvider = ({ children }: Props) => {
+  const { supabase } = useSupabase();
   const alert = useAlert();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);

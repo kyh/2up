@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import type { RealtimeChannel } from "@supabase/supabase-js";
-import { supabase } from "~/utils/supabase";
+import { useSupabase } from "~/components/providers/supabase-provider";
 import { useGameStore, GameStore, GameState } from "~/lib/game/gameStore";
 import { useHomeStore } from "~/lib/home/homeStore";
 import { useGetGame } from "~/lib/game/useGameActions";
 
 export const useConnectGame = (gameId: string) => {
+  const { supabase } = useSupabase();
   const playerChannelRef = useRef<RealtimeChannel | null>(null);
   const gameChannelRef = useRef<RealtimeChannel | null>(null);
   const [connectedPlayersChannel, setConnectedPlayersChannel] = useState(false);
