@@ -6,9 +6,10 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
+import { type Database } from "~/utils/types";
 
 type SupabaseContext = {
-  supabase: SupabaseClient;
+  supabase: SupabaseClient<Database>;
 };
 
 const Context = createContext<SupabaseContext | undefined>(undefined);
@@ -21,7 +22,12 @@ export function SupabaseProvider({
   refreshOnAuthChange?: boolean;
 }) {
   const router = useRouter();
-  const [supabase] = useState(() => createClientComponentClient());
+  const [supabase] = useState(() =>
+    createClientComponentClient({
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    })
+  );
 
   useEffect(() => {
     const {
