@@ -34,30 +34,3 @@ export const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
   );
 });
 
-export const TextFieldV2 = forwardRef<HTMLInputElement, Props>(
-  function TextField(
-    {
-      id,
-      labelText,
-      className,
-      type = "text",
-      placeholder,
-      error,
-      errorText,
-      ...rest
-    },
-    ref
-  ) {
-    return (
-      <fieldset>
-        <input
-          placeholder={placeholder}
-          type={type}
-          className={`${className} bg-grey-300 p-2 rounded-md w-64 h-8`}
-          id={id}
-        ></input>
-        {error && <div className="text-red">{errorText}</div>}
-      </fieldset>
-    );
-  }
-);

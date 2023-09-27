@@ -20,6 +20,12 @@ const config: Config = {
   darkMode: ["class"],
   theme: {
     extend: {
+      // container: {
+      //   backgroundImage: "url('/assets/images/bg.png')",
+      //   "& ::before": {
+      //     background: "red",
+      //   },
+      // },
       colors: {
         "purple-dark": "#2a194d",
         purple: "#7247C4",
@@ -39,22 +45,36 @@ const config: Config = {
         "green-dark": "#47A639",
         "accent-green-dark": "#2B6423",
         accent: {
+          black: "#000000",
+          white: "#FFFFFF",
           yellow: {
+            dark: "#837012",
             regular: "#E7C61E",
             toned: "#DABA1A",
           },
           red: {
             regular: "#E44923",
+            dark: "#8B2A13",
           },
           green: {
             dark: "#2B6423",
             light: "#47A639",
           },
+          beige: {
+            derk: "#C27D52",
+            regular: "#FFA871",
+          },
+          grey: {
+            grey1: "#121212",
+            grey2: "#2A2A2A",
+            grey3: "#4C4C4C",
+            grey4: "#808080",
+          },
           gray: {
             dark: "#121212",
             regular: "#2B2B2B",
           },
-          blue: { regular: "#78C2F1" },
+          blue: { regular: "#78C2F1", dark: "#4A748E" },
         },
       },
       screens: {

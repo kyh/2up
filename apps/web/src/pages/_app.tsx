@@ -23,22 +23,22 @@ const chalkboradSEFont = localFont({
   style: "normal",
   weight: "normal",
   display: "fallback",
-  variable: "--font-chalkboard-se",
+  variable: "--font-default-se",
 });
 
-const dogicaPixelFont = localFont({
+const carbonBoldFont = localFont({
   src: [
     {
-      path: "../assets/fonts/Dogica_Pixel.woff",
+      path: "../assets/fonts/Carbon-Bold.woff",
     },
     {
-      path: "../assets/fonts/Dogica_Pixel.woff2",
+      path: "../assets/fonts/Carbon-Bold.woff2",
     },
   ],
   style: "normal",
   weight: "normal",
   display: "fallback",
-  variable: "--font-dogica-pixel-se",
+  variable: "--font-default-se",
 });
 
 const droidPixelFont = localFont({
@@ -75,7 +75,9 @@ const MyApp = ({ Component, pageProps }: Props) => {
 
   useEffect(() => {
     globalThis.document.documentElement.classList.add(
-      dogicaPixelFont.variable,
+      process.env.NODE_ENV === "production"
+        ? carbonBoldFont.variable
+        : chalkboradSEFont.variable,
       droidPixelFont.variable
     );
   }, []);

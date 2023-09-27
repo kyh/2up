@@ -1,7 +1,4 @@
-import React from "react";
 
-export const Illustrations = () => {
-  return (
     <svg
       width="224"
       height="185"
@@ -677,5 +674,4 @@ export const Illustrations = () => {
         </clipPath>
       </defs>
     </svg>
-  );
-};
+

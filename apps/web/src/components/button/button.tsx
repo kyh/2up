@@ -57,7 +57,7 @@ type PropsV2 = {
 };
 
 const StyledButtonV2 = classed.button(
-  "rounded-md border-2  text-white mb-[28px]",
+  "rounded-md border-2  text-white mb-7",
 
   {
     variants: {
@@ -67,8 +67,8 @@ const StyledButtonV2 = classed.button(
         link: "bg-transparent",
       },
       size: {
-        small: "w-[150px] h-[27px]",
-        medium: "w-[180px] h-[38px]",
+        small: "w-36 h-7",
+        medium: "w-44 h-9",
       },
     },
     compoundVariants: [
