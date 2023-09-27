@@ -1,28 +1,7 @@
 import { classed, deriveClassed } from "~/utils/classed";
 
-type PropsV2 = {
-  onClick?: () => void;
-  children?: React.ReactNode;
-  background?:
-    | "accent-black"
-    | "accent-white"
-    | "grey1"
-    | "grey2"
-    | "grey3"
-    | "grey4"
-    | "accent-yellow-dark"
-    | "accent-yellow-regular"
-    | "accent-blue-dark"
-    | "accent-blue-regular"
-    | "accent-green-dark"
-    | "accent-green-regular"
-    | "red-dark"
-    | "red-regular"
-    | "accent-beige-dark"
-    | "accent-beige-regular";
-};
-const StyledCardV2 = classed.div(
-  "border-2 mx-2 rounded-md shadow-m px-[25px] py-[35px] mb-[20px] ${area}",
+export const CardV2 = classed.div(
+  "border-2 mx-2 rounded-md shadow-m",
 
   {
     variants: {
@@ -50,8 +29,8 @@ const StyledCardV2 = classed.div(
     },
   }
 );
-export const CardV2 = deriveClassed<typeof StyledCardV2, PropsV2>(
-  ({ children }) => {
-    return <StyledCardV2>{children}</StyledCardV2>;
-  }
-);
+// export const CardV2 = deriveClassed<typeof StyledCardV2, PropsV2>(
+//   ({ children, ...rest }) => {
+//     return <StyledCardV2 {...rest}>{children}</StyledCardV2>;
+//   }
+// );
