@@ -1,6 +1,22 @@
+import localFont from "next/font/local";
 import { SupabaseProvider } from "~/components/providers/supabase-provider";
 import { ThemeProvider } from "~/components/providers/theme-provider";
 import "../styles/globals.css";
+
+const chalkboradSEFont = localFont({
+  src: [
+    {
+      path: "../assets/fonts/ChalkboardSE-Regular.woff2",
+    },
+    {
+      path: "../assets/fonts/ChalkboardSE-Regular.woff",
+    },
+  ],
+  style: "normal",
+  weight: "normal",
+  display: "fallback",
+  variable: "--font-chalkboard-se",
+});
 
 export default function RootLayout({
   children,
@@ -46,7 +62,9 @@ export default function RootLayout({
         />
         <meta name="theme-color" content="#1A202C" />
       </head>
-      <body className="bg-white text-black dark:bg-black dark:text-white">
+      <body
+        className={`bg-white text-black dark:bg-black dark:text-white ${chalkboradSEFont.className}`}
+      >
         <ThemeProvider>
           <SupabaseProvider>{children}</SupabaseProvider>
         </ThemeProvider>

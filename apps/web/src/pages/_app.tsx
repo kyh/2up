@@ -2,7 +2,7 @@ import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import { useEffect } from "react";
 import Router from "next/router";
-import localFont from "@next/font/local";
+import localFont from "next/font/local";
 import { trpc } from "~/utils/trpc";
 import { AlertProvider, ProgressBar } from "~/components";
 import { AuthProvider } from "~/lib/auth/useAuth";

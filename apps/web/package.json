@@ -15,7 +15,6 @@
   "dependencies": {
     "@headlessui-float/react": "^0.11.3",
     "@headlessui/react": "^1.7.17",
-    "@next/font": "^13.5.3",
     "@prisma/client": "^5.3.1",
     "@react-hook/debounce": "^4.0.0",
     "@react-hook/hotkey": "^3.1.0",

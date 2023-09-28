@@ -19,5 +19,9 @@ export default async function Layout({ children }: LayoutProps) {
     return redirect(`/`);
   }
 
-  return <PageContainer>{children}</PageContainer>;
+  return (
+    <section className="dark:bg-grey-dark min-h-screen">
+      <PageContainer>{children}</PageContainer>
+    </section>
+  );
 }
