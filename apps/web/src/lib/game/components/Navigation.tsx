@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { classed } from "~/utils/classed";
-import { useAllHomeStore } from "~/lib/home/homeStore";
-import { Icon } from "~/components/Icon/Icon";
-import { Modal } from "~/components/Modal/Modal";
-import { Button, ButtonLink } from "~/components/Button/Button";
+import { useAllHomeStore } from "~/lib/home/home-store";
+import { Button, ButtonLink, Modal, Icon } from "~/components";
 import { createOrGetThemesong } from "~/styles/sound";
 import { useTheme } from "~/components/providers/theme-provider";
 

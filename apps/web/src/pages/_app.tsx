@@ -5,7 +5,7 @@ import Router from "next/router";
 import localFont from "next/font/local";
 import { trpc } from "~/utils/trpc";
 import { AlertProvider, ProgressBar } from "~/components";
-import { AuthProvider } from "~/lib/auth/useAuth";
+import { AuthProvider } from "~/lib/auth/use-auth";
 import { SupabaseProvider } from "~/components/providers/supabase-provider";
 import { ThemeProvider } from "~/components/providers/theme-provider";
 
@@ -14,10 +14,10 @@ import "../styles/globals.css";
 const chalkboradSEFont = localFont({
   src: [
     {
-      path: "../assets/fonts/ChalkboardSE-Regular.woff2",
+      path: "../assets/fonts/chalkboard-se-regular.woff2",
     },
     {
-      path: "../assets/fonts/ChalkboardSE-Regular.woff",
+      path: "../assets/fonts/chalkboard-se-regular.woff",
     },
   ],
   style: "normal",

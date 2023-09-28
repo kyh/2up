@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { ReactNode } from "react";
 import { classed } from "~/utils/classed";
-import { Navigation } from "~/lib/game/components/Navigation";
-import { PageContainer } from "~/lib/home/components/Page";
+import { Navigation } from "~/lib/game/components/navigation";
+import { PageContainer } from "~/lib/home/components/page";
 import { Card } from "~/components";
 
 export const HomeLayout = ({ children }: { children: ReactNode }) => {

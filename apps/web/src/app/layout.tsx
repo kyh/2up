@@ -6,10 +6,10 @@ import "../styles/globals.css";
 const chalkboradSEFont = localFont({
   src: [
     {
-      path: "../assets/fonts/ChalkboardSE-Regular.woff2",
+      path: "../assets/fonts/chalkboard-se-regular.woff2",
     },
     {
-      path: "../assets/fonts/ChalkboardSE-Regular.woff",
+      path: "../assets/fonts/chalkboard-se-regular.woff",
     },
   ],
   style: "normal",

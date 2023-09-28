@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useGameStore } from "~/lib/game/gameStore";
-import { useHomeStore } from "~/lib/home/homeStore";
+import { useGameStore } from "~/lib/game/game-store";
+import { useHomeStore } from "~/lib/home/home-store";
 
-import { Step0 } from "./steps/Step0";
-import { Step1 } from "./steps/Step1";
-import { Step2 } from "./steps/Step2";
-import { Step3 } from "./steps/Step3";
+import { Step0 } from "./steps/step0";
+import { Step1 } from "./steps/step1";
+import { Step2 } from "./steps/step2";
+import { Step3 } from "./steps/step3";
 
 const stepMap = {
   0: Step0,

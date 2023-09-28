@@ -3,18 +3,18 @@ import Image from "next/image";
 import { classed } from "~/utils/classed";
 import sample from "lodash/sample";
 import Sheet from "react-modal-sheet";
-import { useIsDesktop } from "~/utils/useIsDesktop";
-import { Instruction } from "~/lib/game/components/Instruction";
-import { Question } from "~/lib/game/components/Question";
-import { Answer } from "~/lib/game/components/Answer";
+import { useIsDesktop } from "~/utils/use-is-desktop";
+import { Instruction } from "~/lib/game/components/instruction";
+import { Question } from "~/lib/game/components/question";
+import { Answer } from "~/lib/game/components/answer";
 import {
   Player,
   PlayersGrid,
   NextButton,
-} from "~/lib/game/components/PlayerGrid";
+} from "~/lib/game/components/player-grid";
 import { AnimationSprite } from "~/components";
-import { useTimeout } from "~/utils/useTimeout";
-import { useNextStep } from "~/lib/game/useGameActions";
+import { useTimeout } from "~/utils/use-timeout";
+import { useNextStep } from "~/lib/game/use-game-actions";
 import type { StepProps } from "~/lib/game/steps/types";
 
 const sprites = {

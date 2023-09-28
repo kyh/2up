@@ -1,5 +1,5 @@
 import { classed } from "~/utils/classed";
-import { QuestionTypeSlugs } from "~/lib/game/gameUtils";
+import { QuestionTypeSlugs } from "~/lib/game/game-utils";
 import { VideoPlayer, AudioPlayer, Code } from "~/components";
 import type { StepProps } from "~/lib/game/steps/types";
 

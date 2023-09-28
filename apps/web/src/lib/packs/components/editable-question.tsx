@@ -2,10 +2,10 @@ import { useRef, useState, ChangeEvent, ReactNode } from "react";
 import { useRouter } from "next/router";
 import { classed } from "~/utils/classed";
 import { VideoPlayer, AudioPlayer, Code, Button, Icon } from "~/components";
-import { PackAssetModal } from "~/lib/packs/components/PackAssetModal";
-import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/packStore";
-import { instructionElementAttribute } from "~/lib/packs/packUtils";
-import { QuestionTypeSlugs } from "~/lib/game/gameUtils";
+import { PackAssetModal } from "~/lib/packs/components/pack-asset-modal";
+import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/pack-store";
+import { instructionElementAttribute } from "~/lib/packs/pack-utils";
+import { QuestionTypeSlugs } from "~/lib/game/game-utils";
 
 type EditableQuestionProps = {
   questionDescription: string;

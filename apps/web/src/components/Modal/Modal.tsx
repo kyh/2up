@@ -1,8 +1,8 @@
 import { Fragment, ReactNode } from "react";
 import { classed } from "~/utils/classed";
 import { Dialog, Transition } from "@headlessui/react";
-import { Button } from "~/components/Button/Button";
-import { Icon } from "~/components/Icon/Icon";
+import { Button } from "~/components/button/button";
+import { Icon } from "~/components/icon/icon";
 
 type Props = {
   open: boolean;

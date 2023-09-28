@@ -1,7 +1,7 @@
 import { classed } from "~/utils/classed";
 import Image from "next/image";
 import { Link } from "~/components";
-import { useAuth } from "~/lib/auth/useAuth";
+import { useAuth } from "~/lib/auth/use-auth";
 
 export const Navigation = () => {
   const auth = useAuth();

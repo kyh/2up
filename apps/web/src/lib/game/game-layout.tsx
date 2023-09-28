@@ -1,8 +1,8 @@
 import { ReactNode, useEffect } from "react";
 import { classed } from "~/utils/classed";
 import { useRouter } from "next/router";
-import { Navigation } from "~/lib/game/components/Navigation";
-import { useConnectGame } from "~/lib/game/useConnectGame";
+import { Navigation } from "~/lib/game/components/navigation";
+import { useConnectGame } from "~/lib/game/use-connect-game";
 
 export const GameLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();

@@ -13,9 +13,9 @@ import {
   Player,
   PlayersGrid,
   NextButton,
-} from "~/lib/game/components/PlayerGrid";
-import { useGameStore } from "~/lib/game/gameStore";
-import { useStartGame } from "~/lib/game/useGameActions";
+} from "~/lib/game/components/player-grid";
+import { useGameStore } from "~/lib/game/game-store";
+import { useStartGame } from "~/lib/game/use-game-actions";
 
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const alert = useAlert();

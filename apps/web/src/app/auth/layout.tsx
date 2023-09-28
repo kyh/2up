@@ -1,6 +1,6 @@
 import { getSupabaseServerClient } from "~/utils/supabase";
 import { redirect } from "next/navigation";
-import { PageContainer } from "~/lib/home/components/Page";
+import { PageContainer } from "~/lib/home/components/page";
 
 export const dynamic = "force-dynamic";
 

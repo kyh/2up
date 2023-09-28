@@ -1,6 +1,6 @@
 import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
 import { Link, Button, ButtonLinkNative, Icon } from "~/components";
-import { useHostGame } from "~/lib/game/useGameActions";
+import { useHostGame } from "~/lib/game/use-game-actions";
 import { Pack as PackModel } from "@prisma/client";
 
 export const PackItemsContainer = classed.div(

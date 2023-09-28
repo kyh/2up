@@ -1,5 +1,5 @@
 import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
-import { Container } from "~/lib/game/components/Question";
+import { Container } from "~/lib/game/components/question";
 
 type InstructionProps = ComponentProps<typeof InstructionContainer> & {
   instruction?: string | null;

@@ -1,6 +1,6 @@
 import { ReactNode, ChangeEventHandler, forwardRef } from "react";
 import { classed } from "~/utils/classed";
-import { Input } from "../Input/Input";
+import { Input } from "../input/input";
 
 type Props = {
   id?: HTMLTextAreaElement["id"];

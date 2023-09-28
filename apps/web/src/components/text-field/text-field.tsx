@@ -1,5 +1,5 @@
 import { ReactNode, forwardRef } from "react";
-import { Input } from "../Input/Input";
+import { Input } from "../input/input";
 
 type Props = {
   id?: HTMLInputElement["id"];

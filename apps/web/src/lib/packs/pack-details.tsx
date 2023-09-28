@@ -1,10 +1,10 @@
 import { classed } from "~/utils/classed";
 import { useRouter } from "next/router";
 import { Link, Button, Spinner } from "~/components";
-import { useHostGame } from "~/lib/game/useGameActions";
-import { Content } from "~/lib/packs/components/Page";
-import { useGetPack } from "~/lib/packs/usePackActions";
-import { useAuth } from "~/lib/auth/useAuth";
+import { useHostGame } from "~/lib/game/use-game-actions";
+import { Content } from "~/lib/packs/components/page";
+import { useGetPack } from "~/lib/packs/use-pack-actions";
+import { useAuth } from "~/lib/auth/use-auth";
 
 export const PackDetails = () => {
   const auth = useAuth();

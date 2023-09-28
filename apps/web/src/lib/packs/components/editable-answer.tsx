@@ -1,9 +1,9 @@
 import { ChangeEvent } from "react";
 import { classed } from "~/utils/classed";
 import { Input, SingleLetterInput, Checkbox, Button, Icon } from "~/components";
-import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/packStore";
-import { getRandomAnswer } from "~/lib/packs/packUtils";
-import { AnswerTypeSlugs } from "~/lib/game/gameUtils";
+import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/pack-store";
+import { getRandomAnswer } from "~/lib/packs/pack-utils";
+import { AnswerTypeSlugs } from "~/lib/game/game-utils";
 
 type EditableAnswerProps = {
   sceneId: string;

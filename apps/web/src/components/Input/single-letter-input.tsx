@@ -1,7 +1,7 @@
 import { KeyboardEvent } from "react";
 import { classed } from "~/utils/classed";
 import { useEffect, useRef, useState } from "react";
-import { Input } from "./Input";
+import { Input } from "./input";
 
 type Props = {
   value?: string;

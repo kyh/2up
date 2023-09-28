@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import { classed } from "~/utils/classed";
 import { Alert, Timer } from "~/components";
-import { Instruction } from "~/lib/game/components/Instruction";
-import { Question } from "~/lib/game/components/Question";
-import { Answer } from "~/lib/game/components/Answer";
-import { useSubmitAnswer } from "~/lib/game/useGameActions";
+import { Instruction } from "~/lib/game/components/instruction";
+import { Question } from "~/lib/game/components/question";
+import { Answer } from "~/lib/game/components/answer";
+import { useSubmitAnswer } from "~/lib/game/use-game-actions";
 import type { StepProps } from "~/lib/game/steps/types";
 
 const Step1Play = ({

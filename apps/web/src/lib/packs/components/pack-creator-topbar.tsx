@@ -8,10 +8,10 @@ import {
   useAlert,
   WithTip,
 } from "~/components";
-import { NavigationContainer } from "~/lib/packs/components/Navigation";
-import { PackForm, PackFormInputs } from "~/lib/packs/components/PackForm";
-import { usePackStore } from "~/lib/packs/packStore";
-import { useUpdatePack } from "~/lib/packs/usePackActions";
+import { NavigationContainer } from "~/lib/packs/components/navigation";
+import { PackForm, PackFormInputs } from "~/lib/packs/components/pack-form";
+import { usePackStore } from "~/lib/packs/pack-store";
+import { useUpdatePack } from "~/lib/packs/use-pack-actions";
 import { getErrorMessage } from "~/utils/error";
 import { Pack as PackModel, PackTag as PackTagModel } from "@prisma/client";
 

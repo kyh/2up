@@ -2,23 +2,23 @@ import { useEffect, useState, useRef } from "react";
 import { classed } from "~/utils/classed";
 import { useRouter } from "next/router";
 import { useHotkeys } from "@react-hook/hotkey";
-import { Topbar } from "~/lib/packs/components/PackCreatorTopbar";
-import { Sidebar } from "~/lib/packs/components/PackCreatorLeftSidebar";
-import { ScenePreview } from "~/lib/packs/components/ScenePreview";
-import { SceneQATypeMenu } from "~/lib/packs/components/SceneQATypeMenu";
-import { SceneSettingsMenu } from "~/lib/packs/components/SceneSettingsMenu";
+import { Topbar } from "~/lib/packs/components/pack-creator-topbar";
+import { Sidebar } from "~/lib/packs/components/pack-creator-left-sidebar";
+import { ScenePreview } from "~/lib/packs/components/scene-preview";
+import { SceneQATypeMenu } from "~/lib/packs/components/scene-qa-type-menu";
+import { SceneSettingsMenu } from "~/lib/packs/components/scene-settings-menu";
 import { Button, Modal, Icon, Spinner } from "~/components";
 import {
   keybindings,
   instructionElementAttribute,
-} from "~/lib/packs/packUtils";
-import { useHostGame } from "~/lib/game/useGameActions";
+} from "~/lib/packs/pack-utils";
+import { useHostGame } from "~/lib/game/use-game-actions";
 import {
   usePackStore,
   VisibleQATypeMenu,
   SceneWithAnswers,
-} from "~/lib/packs/packStore";
-import { useGetPack } from "~/lib/packs/usePackActions";
+} from "~/lib/packs/pack-store";
+import { useGetPack } from "~/lib/packs/use-pack-actions";
 import ArrowSvg from "./svgs/arrow.svg";
 
 export const PackCreator = () => {

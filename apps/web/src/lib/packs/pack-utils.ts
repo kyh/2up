@@ -1,5 +1,5 @@
 import { Hotkey } from "@react-hook/hotkey";
-import { usePackStore, SceneWithAnswers } from "~/lib/packs/packStore";
+import { usePackStore, SceneWithAnswers } from "~/lib/packs/pack-store";
 
 export const getRandomAnswer = () => {
   const packScenes = usePackStore.getState().packScenes;

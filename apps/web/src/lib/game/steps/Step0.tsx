@@ -1,7 +1,7 @@
 import { classed } from "~/utils/classed";
 import { useRouter } from "next/router";
 import { Button, Modal, Confetti } from "~/components";
-import { PlayerScores } from "./Step3";
+import { PlayerScores } from "./step3";
 import type { StepProps } from "~/lib/game/steps/types";
 
 const Step0Play = ({ gameState }: StepProps) => {

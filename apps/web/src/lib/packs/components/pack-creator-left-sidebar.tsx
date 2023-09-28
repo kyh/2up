@@ -3,12 +3,12 @@ import { classed } from "~/utils/classed";
 import { motion } from "framer-motion";
 import { useHotkeys } from "@react-hook/hotkey";
 import { Button, Icon } from "~/components";
-import { Instruction } from "~/lib/game/components/Instruction";
-import { Question } from "~/lib/game/components/Question";
-import { Answer } from "~/lib/game/components/Answer";
-import { keybindings } from "~/lib/packs/packUtils";
-import { useCreateScene, useDeleteScene } from "~/lib/packs/useSceneActions";
-import { CsvImportButton } from "~/lib/packs/components/PackCsvImport";
+import { Instruction } from "~/lib/game/components/instruction";
+import { Question } from "~/lib/game/components/question";
+import { Answer } from "~/lib/game/components/answer";
+import { keybindings } from "~/lib/packs/pack-utils";
+import { useCreateScene, useDeleteScene } from "~/lib/packs/use-scene-actions";
+import { CsvImportButton } from "~/lib/packs/components/pack-csv-import";
 import { Scene as SceneModel } from "@prisma/client";
 
 type Props = {

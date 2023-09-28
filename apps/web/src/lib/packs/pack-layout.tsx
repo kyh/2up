@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { Navigation } from "./components/Navigation";
-import { Page } from "./components/Page";
+import { Navigation } from "./components/navigation";
+import { Page } from "./components/page";
 
 export const PackLayout = ({
   children,

@@ -2,7 +2,7 @@ import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { NextPageContext } from "next";
 import superjson from "superjson";
-import { useHomeStore } from "~/lib/home/homeStore";
+import { useHomeStore } from "~/lib/home/home-store";
 import type { AppRouter } from "~/server/router";
 
 function getBaseUrl() {

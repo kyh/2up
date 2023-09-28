@@ -1,7 +1,7 @@
 import { classed } from "~/utils/classed";
 import ReactAudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import { Icon } from "../Icon/Icon";
+import { Icon } from "../icon/icon";
 import React from "react";
 
 export const AudioPlayer = (

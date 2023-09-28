@@ -1,8 +1,8 @@
 import { classed } from "~/utils/classed";
 import { Card } from "~/components";
-import { Content } from "~/lib/packs/components/Page";
-import { PackForm, PackFormInputs } from "~/lib/packs/components/PackForm";
-import { useCreatePack } from "~/lib/packs/usePackActions";
+import { Content } from "~/lib/packs/components/page";
+import { PackForm, PackFormInputs } from "~/lib/packs/components/pack-form";
+import { useCreatePack } from "~/lib/packs/use-pack-actions";
 
 export const PackNew = () => {
   const { createPack, isLoading } = useCreatePack();

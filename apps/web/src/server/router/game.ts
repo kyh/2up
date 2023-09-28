@@ -3,8 +3,8 @@ import { t, ServerError } from "~/server/trpc";
 import { z } from "zod";
 import { customAlphabet } from "nanoid";
 import { sampleSize } from "lodash";
-import { compareAnswer, upsert, calculateScore } from "~/lib/game/gameUtils";
-import type { GameState } from "~/lib/game/gameStore";
+import { compareAnswer, upsert, calculateScore } from "~/lib/game/game-utils";
+import type { GameState } from "~/lib/game/game-store";
 
 const nanoid = customAlphabet("1234567890", 5);
 

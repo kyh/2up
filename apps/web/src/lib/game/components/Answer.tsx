@@ -1,7 +1,7 @@
 import { useState, SyntheticEvent } from "react";
 import { classed } from "~/utils/classed";
 import { Input, Button } from "~/components";
-import { AnswerTypeSlugs } from "~/lib/game/gameUtils";
+import { AnswerTypeSlugs } from "~/lib/game/game-utils";
 import type { StepProps } from "~/lib/game/steps/types";
 
 type AnswerProps = {

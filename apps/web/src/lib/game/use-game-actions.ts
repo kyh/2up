@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { trpc } from "~/utils/trpc";
 import { useAlert } from "~/components";
-import { useGameStore, GameState, Submission } from "~/lib/game/gameStore";
-import { useHomeStore } from "~/lib/home/homeStore";
+import { useGameStore, GameState, Submission } from "~/lib/game/game-store";
+import { useHomeStore } from "~/lib/home/home-store";
 
 export const useHostGame = () => {
   const mutation = trpc.game.create.useMutation();

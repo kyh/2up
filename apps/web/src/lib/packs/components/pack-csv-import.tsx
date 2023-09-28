@@ -2,7 +2,7 @@ import { useState, ChangeEvent } from "react";
 import { classed } from "~/utils/classed";
 import { gql, useMutation } from "~/utils/mock";
 import { Modal, Button, AreaField, useAlert } from "~/components";
-import { scenesToCsv, fileToCsv } from "~/lib/packs/packUtils";
+import { scenesToCsv, fileToCsv } from "~/lib/packs/pack-utils";
 import { getErrorMessage } from "~/utils/error";
 
 type CsvImportButtonProps = {

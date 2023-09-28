@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { Link, Carousel, ButtonLinkNative, Spinner } from "~/components";
-import { Content, Footer } from "./components/Page";
+import { Content, Footer } from "./components/page";
 import {
   PackSection,
   PackItemsContainer,
@@ -8,8 +8,8 @@ import {
   Pack,
   PackSectionHeader,
   PacksProps,
-} from "./components/Packs";
-import { useGetDiscover } from "./usePackActions";
+} from "./components/packs";
+import { useGetDiscover } from "./use-pack-actions";
 
 export const PackDiscover = () => {
   const router = useRouter();

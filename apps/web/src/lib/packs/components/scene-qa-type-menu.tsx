@@ -1,10 +1,10 @@
 import { useRef, forwardRef } from "react";
 import { classed } from "~/utils/classed";
 import { Button } from "~/components";
-import { Props as ScenePreviewProps } from "~/lib/packs/components/ScenePreview";
-import { AnswerTypeSlugs, QuestionTypeSlugs } from "~/lib/game/gameUtils";
-import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/packStore";
-import { useUpdateScene } from "~/lib/packs/useSceneActions";
+import { Props as ScenePreviewProps } from "~/lib/packs/components/scene-preview";
+import { AnswerTypeSlugs, QuestionTypeSlugs } from "~/lib/game/game-utils";
+import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/pack-store";
+import { useUpdateScene } from "~/lib/packs/use-scene-actions";
 import { useOnClickOutside } from "~/utils/element";
 
 export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {

@@ -1,6 +1,6 @@
 import { classed } from "~/utils/classed";
 import { Button, Icon } from "~/components";
-import { Props as ScenePreviewProps } from "~/lib/packs/components/ScenePreview";
+import { Props as ScenePreviewProps } from "~/lib/packs/components/scene-preview";
 
 export const SceneSettingsMenu = ({ scene }: ScenePreviewProps) => {
   return (

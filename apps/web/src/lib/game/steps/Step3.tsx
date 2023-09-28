@@ -1,16 +1,16 @@
 import { useState, ReactNode } from "react";
 import { classed } from "~/utils/classed";
 import { motion } from "framer-motion";
-import { useIsDesktop } from "~/utils/useIsDesktop";
+import { useIsDesktop } from "~/utils/use-is-desktop";
 import {
   PlayersGrid,
   Player,
   NextButton,
-} from "~/lib/game/components/PlayerGrid";
+} from "~/lib/game/components/player-grid";
 import { Counter } from "~/components";
-import { useTimeout } from "~/utils/useTimeout";
-import { maxScorePerScene, sortByKey } from "~/lib/game/gameUtils";
-import { useNextScene } from "~/lib/game/useGameActions";
+import { useTimeout } from "~/utils/use-timeout";
+import { maxScorePerScene, sortByKey } from "~/lib/game/game-utils";
+import { useNextScene } from "~/lib/game/use-game-actions";
 import type { StepProps } from "~/lib/game/steps/types";
 
 export const Step3Play = ({

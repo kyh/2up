@@ -9,7 +9,7 @@ import type {
 import { nanoid } from "nanoid";
 import { useSupabase } from "~/components/providers/supabase-provider";
 import { useAlert } from "~/components";
-import { useHomeStore } from "~/lib/home/homeStore";
+import { useHomeStore } from "~/lib/home/home-store";
 
 type Context = {
   user: User | null;

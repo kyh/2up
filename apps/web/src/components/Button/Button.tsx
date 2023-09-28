@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
-import { useHomeStore } from "~/lib/home/homeStore";
+import { useHomeStore } from "~/lib/home/home-store";
 import { createOrGetFx } from "~/styles/sound";
-import { Link } from "../Link/Link";
+import { Link } from "../link/link";
 
 const StyledButton = classed.button(
   "border-2 border-grey-dark dark:border-grey-light",

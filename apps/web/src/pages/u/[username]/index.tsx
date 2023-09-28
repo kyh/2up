@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { SEO } from "~/components";
-import { PackLayout } from "~/lib/packs/PackLayout";
-import { Profile } from "~/lib/profile/Profile";
+import { PackLayout } from "~/lib/packs/pack-layout";
+import { Profile } from "~/lib/profile/profile";
 
 const ProfilePage = () => {
   return (
