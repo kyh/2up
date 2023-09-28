@@ -1,8 +1,6 @@
-import { ReactNode } from "react";
 import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
 import { useHomeStore } from "~/lib/home/home-store";
 import { createOrGetFx } from "~/styles/sound";
-import { Link } from "../Link/Link";
 
 type PropsV2 = {
   onClick?: () => void;
@@ -11,7 +9,7 @@ type PropsV2 = {
   size?: "small" | "medium";
 };
 
-const StyledButtonV2 = classed.button(
+const StyledButton = classed.button(
   "rounded-md border-2  text-white mb-7 inline-block relative text-center",
 
   {
@@ -44,10 +42,10 @@ const StyledButtonV2 = classed.button(
       variant: "primary",
       size: "small",
     },
-  }
+  },
 );
 
-export const ButtonV2 = deriveClassed<typeof StyledButtonV2, PropsV2>(
+export const Button = deriveClassed<typeof StyledButton, PropsV2>(
   ({ onClick = () => {}, ...rest }: PropsV2) => {
     const isSFXOn = useHomeStore((state) => state.isSFXOn);
 
@@ -57,6 +55,6 @@ export const ButtonV2 = deriveClassed<typeof StyledButtonV2, PropsV2>(
       onClick();
     };
 
-    return <StyledButtonV2 type="button" onClick={onButtonClick} {...rest} />;
-  }
+    return <StyledButton type="button" onClick={onButtonClick} {...rest} />;
+  },
 );

@@ -1,6 +1,6 @@
-import { classed, deriveClassed } from "~/utils/classed";
+import { classed } from "~/utils/classed";
 
-export const CardV2 = classed.div(
+export const Card = classed.div(
   "border-2 mx-2 rounded-md shadow-m",
 
   {
@@ -27,10 +27,5 @@ export const CardV2 = classed.div(
     defaultVariants: {
       background: "grey2",
     },
-  }
+  },
 );
-// export const CardV2 = deriveClassed<typeof StyledCardV2, PropsV2>(
-//   ({ children, ...rest }) => {
-//     return <StyledCardV2 {...rest}>{children}</StyledCardV2>;
-//   }
-// );

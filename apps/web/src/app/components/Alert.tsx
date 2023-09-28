@@ -4,11 +4,11 @@ import { create } from "zustand";
 import { shallow } from "zustand/shallow";
 import { nanoid } from "nanoid";
 
-const AlertContainerV2 = classed.ul(
-  "fixed top-3 inset-x-0 flex flex-col justify-center items-center z-50"
+const AlertContainer = classed.ul(
+  "fixed top-3 inset-x-0 flex flex-col justify-center items-center z-50",
 );
 
-const AlertTemplateV2 = classed(
+const AlertTemplate = classed(
   motion.li,
   "text-white",
   "flex items-center cursor-pointer",
@@ -23,12 +23,12 @@ const AlertTemplateV2 = classed(
         info: "bg-accent-blue-regular",
       },
     },
-  }
+  },
 );
 
 export const Alert = classed(
-  AlertTemplateV2,
-  "absolute top-3 left-1/2 -translate-x-1/2"
+  AlertTemplate,
+  "absolute top-3 left-1/2 -translate-x-1/2",
 );
 
 type AlertOptions = {
@@ -60,7 +60,7 @@ export const useAlertStore = create<AlertStore>()((set, get) => ({
         () => {
           remove(id);
         },
-        params?.duration ?? 6000
+        params?.duration ?? 6000,
       );
     }
   },
@@ -72,23 +72,19 @@ export const useAlertStore = create<AlertStore>()((set, get) => ({
   },
 }));
 
-export const useAlertV2 = () => {
+export const useAlerts = () => {
   return useAlertStore((state) => state, shallow);
 };
 
-export const AlertProviderV2 = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const { alerts, remove } = useAlertV2();
+export const AlertsProvider = ({ children }: { children: React.ReactNode }) => {
+  const { alerts, remove } = useAlerts();
 
   return (
     <>
-      <AlertContainerV2>
+      <AlertContainer>
         <AnimatePresence initial={false}>
           {alerts.map((t) => (
-            <AlertTemplateV2
+            <AlertTemplate
               onClick={() => remove(t.id)}
               key={t.id}
               layout
@@ -102,10 +98,10 @@ export const AlertProviderV2 = ({
               }}
             >
               {t.message}
-            </AlertTemplateV2>
+            </AlertTemplate>
           ))}
         </AnimatePresence>
-      </AlertContainerV2>
+      </AlertContainer>
       {children}
     </>
   );

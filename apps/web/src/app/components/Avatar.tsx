@@ -1,12 +1,12 @@
 import { classed, deriveClassed } from "~/utils/classed";
 
-export const AvatarV2 = classed.div(
+export const Avatar = classed.div(
   "text-white p-2 flex flex-between rounded-[50%] items-center justify-center z-50",
   {
     variants: {
       size: {
-        small: "w-[40px] h-[40px]",
-        large: "w-[56px] h-[56px]",
+        small: "w-10 h-10",
+        large: "w-14 h-14",
       },
       variant: {
         error: "bg-accent-red-regular",
@@ -20,5 +20,5 @@ export const AvatarV2 = classed.div(
       size: "large",
       variant: "info",
     },
-  }
+  },
 );
