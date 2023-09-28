@@ -29,6 +29,7 @@
     "nanoid": "^4.0.2",
     "next": "^13.5.3",
     "next-themes": "^0.2.1",
+    "partysocket": "0.0.8",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-canvas-confetti": "^1.4.0",

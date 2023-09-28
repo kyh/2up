@@ -1,0 +1,13 @@
+{
+  "name": "partykit",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "partykit dev",
+    "deploy": "partykit deploy"
+  },
+  "devDependencies": {
+    "partykit": "0.0.24",
+    "typescript": "^5.2.2"
+  }
+}

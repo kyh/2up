@@ -26,7 +26,7 @@ export default function InviteEmail({
   return (
     <Html>
       <Head />
-      <Preview>{`Invite to Inteligir`}</Preview>
+      <Preview>{`Invite to 2up`}</Preview>
       <Section style={main}>
         <Container style={container}>
           <Section style={{ marginTop: "32px" }}>
@@ -34,15 +34,15 @@ export default function InviteEmail({
               src={`${baseUrl}/images/logo.png`}
               width="128"
               height="24"
-              alt="Inteligir"
+              alt="2up"
               style={logo}
             />
           </Section>
-          <Text style={h1}>Join Inteligir</Text>
+          <Text style={h1}>Join 2up</Text>
           <Text style={text}>Hello {toName},</Text>
           <Text style={text}>
-            You have been invited to join Inteligir. Click the button below to
-            join the team.
+            You have been invited to join 2up. Click the button below to join
+            the team.
           </Text>
           <Section style={{ textAlign: "center" }}>
             <Button pX={20} pY={12} style={btn} href={inviteUrl}>
