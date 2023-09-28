@@ -20,12 +20,6 @@ const config: Config = {
   darkMode: ["class"],
   theme: {
     extend: {
-      // container: {
-      //   backgroundImage: "url('/assets/images/bg.png')",
-      //   "& ::before": {
-      //     background: "red",
-      //   },
-      // },
       colors: {
         "purple-dark": "#2a194d",
         purple: "#7247C4",
