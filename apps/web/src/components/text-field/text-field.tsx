@@ -11,13 +11,11 @@ type Props = {
   error?: boolean;
   errorText?: ReactNode;
   fullWidth?: boolean;
-  defaultValue?: string;
-  className?: string;
 };
 
 export const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
   { id, labelText, type = "text", placeholder, error, errorText, ...rest },
-  ref
+  ref,
 ) {
   return (
     <fieldset>
@@ -33,4 +31,3 @@ export const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
     </fieldset>
   );
 });
-

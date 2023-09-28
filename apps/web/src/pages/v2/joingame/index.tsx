@@ -4,7 +4,7 @@ import { Form, useForm } from "react-hook-form";
 import { ButtonV2, TextFieldV2, SideBar } from "~/components";
 
 import { useCheckGame } from "~/lib/game/useGameActions";
-import { Header } from "~/components/Header/Header";
+import { Header } from "~/app/components/Header";
 import Image from "next/image";
 import { Illustrations } from "~/assets/icons/Illustrations";
 

@@ -4,7 +4,6 @@ import { create } from "zustand";
 import { shallow } from "zustand/shallow";
 import { nanoid } from "nanoid";
 
-
 const AlertContainer = classed.ul(
   "fixed top-3 inset-x-0 flex flex-col justify-center items-center z-10",
 );

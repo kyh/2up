@@ -31,7 +31,7 @@ const StyledIcon = classed.div(
     defaultVariants: {
       type: "default",
     },
-  }
+  },
 );
 
 type Props = ComponentProps<typeof StyledIcon> & {
@@ -67,11 +67,8 @@ export const Avatar = deriveClassed<typeof StyledIcon, Props>(
     if (!Svg) return null;
     return (
       <StyledIcon {...rest} ref={ref}>
-        <Svg className="w-full h-4/5 desktop:h-full svg-path:fill-black dark:svg-path:fill-white" />
+        <Svg className="h-4/5 w-full svg-path:fill-black dark:svg-path:fill-white desktop:h-full" />
       </StyledIcon>
     );
-  }
+  },
 );
-
-
-

@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 
 export const Header = () => {
   const router = useRouter();
-  console.log("router.pathname", router.pathname);
+
   return (
-    <div className="flex justify-between pt-4 h-16 px-12">
+    <div className="flex h-16 justify-between px-12 pt-4">
       <div>
         <img
           alt="2up"
