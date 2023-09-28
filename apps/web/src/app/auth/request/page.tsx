@@ -1,26 +1,17 @@
+"use client";
+
 import { useState } from "react";
-import { classed } from "~/utils/classed";
 import { useForm } from "react-hook-form";
 import { TextField, Button, Card } from "~/components";
+import { useSupabase } from "~/components/providers/supabase-provider";
 
 type FormInputs = {
   email: string;
   idea: string;
 };
 
-const url = `${process.env.NEXT_PUBLIC_SHEETS_ENDPOINT}?tabId=Sheet1&api_key=${process.env.NEXT_PUBLIC_SHEETS_API_KEY}`;
-
-const requestInvite = (email: string, idea: string) => {
-  return fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify([[email, idea]]),
-  });
-};
-
-export const Request = () => {
+export default function RequestPage() {
+  const { supabase } = useSupabase();
   const [isComplete, setIsComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,7 +24,7 @@ export const Request = () => {
   const onSubmit = async ({ email, idea }: FormInputs) => {
     setIsLoading(true);
     try {
-      await requestInvite(email, idea);
+      await supabase.from("Waitlist").insert({ data: { email, idea } });
       setIsComplete(true);
     } catch (e) {
       console.error(e);
@@ -43,8 +34,7 @@ export const Request = () => {
   };
 
   return (
-    <Container>
-      {/* Title */}
+    <section className="desktop:max-w-lg mx-auto translate-y-[-70px]">
       <h1 className="mb-5 text-center text-4xl font-bold">🎉 Welcome!</h1>
       <p className="mb-5">
         Interested in building your own Packs? Join our Pack Creator beta
@@ -95,10 +85,6 @@ export const Request = () => {
           Discord
         </a>
       </p>
-    </Container>
+    </section>
   );
-};
-
-const Container = classed.section(
-  "desktop:max-w-lg mx-auto translate-y-[-70px]"
-);
+}

@@ -1,6 +1,6 @@
-import { AuthLayout } from "~/lib/auth/AuthLayout";
 import { getSupabaseServerClient } from "~/utils/supabase";
 import { redirect } from "next/navigation";
+import { PageContainer } from "~/lib/home/components/Page";
 
 export const dynamic = "force-dynamic";
 
@@ -19,5 +19,9 @@ export default async function Layout({ children }: LayoutProps) {
     return redirect(`/`);
   }
 
-  return <AuthLayout bgImage="crown">{children}</AuthLayout>;
+  return (
+    <section className="dark:bg-grey-dark min-h-screen">
+      <PageContainer>{children}</PageContainer>
+    </section>
+  );
 }

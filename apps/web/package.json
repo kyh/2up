@@ -6,7 +6,7 @@
     "seed": "npx ts-node -T prisma/seed.ts"
   },
   "scripts": {
-    "postinstall": "npx prisma generate",
+    "postinstall": "prisma generate",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -15,7 +15,6 @@
   "dependencies": {
     "@headlessui-float/react": "^0.11.4",
     "@headlessui/react": "^1.7.17",
-    "@next/font": "^13.5.3",
     "@prisma/client": "^5.3.1",
     "@react-hook/debounce": "^4.0.0",
     "@react-hook/hotkey": "^3.1.0",

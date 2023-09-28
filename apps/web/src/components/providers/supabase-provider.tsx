@@ -6,9 +6,10 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
+import { type Database } from "~/utils/types";
 
 type SupabaseContext = {
-  supabase: SupabaseClient;
+  supabase: SupabaseClient<Database>;
 };
 
 const Context = createContext<SupabaseContext | undefined>(undefined);

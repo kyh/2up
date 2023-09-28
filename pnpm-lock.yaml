@@ -31,9 +31,6 @@ importers:
       '@headlessui/react':
         specifier: ^1.7.17
         version: 1.7.17(react-dom@18.2.0)(react@18.2.0)
-      '@next/font':
-        specifier: ^13.5.3
-        version: 13.5.3
       '@prisma/client':
         specifier: ^5.3.1
         version: 5.3.1(prisma@5.3.1)
@@ -1681,10 +1678,6 @@ packages:
     dependencies:
       glob: 7.1.7
     dev: true
-
-  /@next/font@13.5.3:
-    resolution: {integrity: sha512-RniL8BuXLCtBU1chuJ/TPVT2vCA6+EdlOUEhCpMdSeInZ5/nuOShkHgLZ0QnFVbcozwK3shO5ZdqKBI5G3eMNg==}
-    dev: false
 
   /@next/swc-darwin-arm64@13.5.3:
     resolution: {integrity: sha512-6hiYNJxJmyYvvKGrVThzo4nTcqvqUTA/JvKim7Auaj33NexDqSNwN5YrrQu+QhZJCIpv2tULSHt+lf+rUflLSw==}
