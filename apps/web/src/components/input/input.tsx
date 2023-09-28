@@ -1,7 +1,7 @@
 import { classed } from "~/utils/classed";
 
 export const Input = classed.input(
-  "leading-[50px] text-black dark:text-white bg-white dark:bg-black",
+  "leading-8 text-black dark:text-white bg-white dark:bg-black",
   "focus:outline-none",
   "read-only:brightness-50 read-only:cursor-not-allowed",
   // Temprory border for both default and rounded variants
@@ -21,5 +21,5 @@ export const Input = classed.input(
       fullWidth: "false",
       variant: "default",
     },
-  }
+  },
 );

@@ -1,15 +1,23 @@
-/** @type {import('tailwindcss').Config} */
+import type { Config } from "tailwindcss";
 
-const defaultTheme = require("tailwindcss/defaultTheme");
+import defaultTheme from "tailwindcss/defaultTheme";
+import plugin from "tailwindcss/plugin";
 
-module.exports = {
+const customPlugin = plugin(function ({ addVariant }) {
+  addVariant("child", "& > *");
+  addVariant("child-hover", "& > *:hover");
+  addVariant("child-active", "& > *:active");
+  addVariant("svg-path", "& path");
+});
+
+const config: Config = {
   content: [
     "./src/app/**/*.{ts,tsx}",
     "./src/pages/**/*.{ts,tsx}",
     "./src/lib/**/*.{ts,tsx}",
     "./src/components/**/*.{ts,tsx}",
   ],
-  darkMode: "class",
+  darkMode: ["class"],
   theme: {
     extend: {
       colors: {
@@ -548,12 +556,13 @@ module.exports = {
     },
   },
   plugins: [
+    customPlugin,
     require("tailwind-scrollbar"),
-    function ({ addVariant }) {
-      addVariant("child", "& > *");
-      addVariant("child-hover", "& > *:hover");
-      addVariant("child-active", "& > *:active");
-      addVariant("svg-path", "& path");
-    },
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/aspect-ratio"),
   ],
 };
+
+export default config;
