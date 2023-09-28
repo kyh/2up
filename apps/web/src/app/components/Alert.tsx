@@ -1,3 +1,4 @@
+"use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { classed } from "~/utils/classed";
 import { create } from "zustand";

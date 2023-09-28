@@ -1,9 +1,10 @@
+"use client";
 import React from "react";
-import { ButtonV2 } from "~/components";
-import { useRouter } from "next/router";
+import { Button } from "./Button";
+import { usePathname } from "next/navigation";
 
 export const Header = () => {
-  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <div className="flex h-16 justify-between px-12 pt-4">
@@ -18,21 +19,22 @@ export const Header = () => {
           src="/logo/logomark.svg"
         ></img>
       </div>
-      {router.pathname !== "/v2/lobby" && (
+      {/** TODO(monfernape): find better solution and use const */}
+      {pathname !== "/v2/lobby" && (
         <div className="flex  gap-4">
           <div>
-            <ButtonV2
+            <Button
               className="text-3 border-spacing-0 font-mono"
               variant="link"
               size="small"
             >
               Login
-            </ButtonV2>
+            </Button>
           </div>
           <div>
-            <ButtonV2 className="text-3 font-mono" variant="link" size="small">
+            <Button className="text-3 font-mono" variant="link" size="small">
               Create Account
-            </ButtonV2>
+            </Button>
           </div>
         </div>
       )}
