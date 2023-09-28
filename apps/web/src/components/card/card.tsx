@@ -12,5 +12,5 @@ export const Card = classed.div(
     defaultVariants: {
       background: "false",
     },
-  }
+  },
 );

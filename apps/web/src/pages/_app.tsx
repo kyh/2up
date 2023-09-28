@@ -23,7 +23,22 @@ const chalkboradSEFont = localFont({
   style: "normal",
   weight: "normal",
   display: "fallback",
-  variable: "--font-chalkboard-se",
+  variable: "--font-default-se",
+});
+
+const droidPixelFont = localFont({
+  src: [
+    {
+      path: "../assets/fonts/DroidSans.woff",
+    },
+    {
+      path: "../assets/fonts/DroidSans.woff2",
+    },
+  ],
+  style: "normal",
+  weight: "normal",
+  display: "fallback",
+  variable: "--font-droid",
 });
 
 const progress = new ProgressBar();
@@ -45,7 +60,8 @@ const MyApp = ({ Component, pageProps }: Props) => {
 
   useEffect(() => {
     globalThis.document.documentElement.classList.add(
-      chalkboradSEFont.className
+      chalkboradSEFont.variable,
+      droidPixelFont.variable,
     );
   }, []);
 

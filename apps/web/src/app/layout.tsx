@@ -3,19 +3,19 @@ import { SupabaseProvider } from "~/components/providers/supabase-provider";
 import { ThemeProvider } from "~/components/providers/theme-provider";
 import "../styles/globals.css";
 
-const chalkboradSEFont = localFont({
+const carbonBoldFont = localFont({
   src: [
     {
-      path: "../assets/fonts/chalkboard-se-regular.woff2",
+      path: "../assets/fonts/Carbon-Bold.woff",
     },
     {
-      path: "../assets/fonts/chalkboard-se-regular.woff",
+      path: "../assets/fonts/Carbon-Bold.woff2",
     },
   ],
   style: "normal",
   weight: "normal",
   display: "fallback",
-  variable: "--font-chalkboard-se",
+  variable: "--font-default-se",
 });
 
 export default function RootLayout({
@@ -63,7 +63,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#1A202C" />
       </head>
       <body
-        className={`bg-white text-black dark:bg-black dark:text-white ${chalkboradSEFont.className}`}
+        className={`bg-white text-black dark:bg-black dark:text-white ${carbonBoldFont.className}`}
       >
         <ThemeProvider>
           <SupabaseProvider>{children}</SupabaseProvider>

@@ -23,7 +23,7 @@ const StyledButton = classed.button(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 type Props = ComponentProps<typeof StyledButton> & {
@@ -42,7 +42,7 @@ export const Button = deriveClassed<typeof StyledButton, Props>(
     };
 
     return <StyledButton type="button" onClick={onButtonClick} {...rest} />;
-  }
+  },
 );
 
 export const ButtonLink = classed.a(StyledButton, "text-center");
