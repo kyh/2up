@@ -1,15 +1,15 @@
 {
-  "extends": "tsconfig/nextjs.json",
+  "extends": "configs/tsconfig/nextjs.json",
   "compilerOptions": {
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
       "~/*": [
-        "./*"
+        "src/*"
       ]
     },
     "strictNullChecks": true

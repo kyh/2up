@@ -4,8 +4,7 @@ const project = resolve(process.cwd(), "tsconfig.json");
 
 /*
  * This is a custom ESLint configuration for use with
- * internal (bundled by their consumer) libraries
- * that utilize React.
+ * Next.js apps.
  *
  * This config extends the Vercel Engineering Style Guide.
  * For more information, see https://github.com/vercel/style-guide
@@ -14,14 +13,18 @@ const project = resolve(process.cwd(), "tsconfig.json");
 
 module.exports = {
   extends: [
-    "@vercel/style-guide/eslint/browser",
+    "@vercel/style-guide/eslint/node",
     "@vercel/style-guide/eslint/typescript",
+    "@vercel/style-guide/eslint/browser",
     "@vercel/style-guide/eslint/react",
+    "@vercel/style-guide/eslint/next",
+    "eslint-config-turbo",
   ].map(require.resolve),
   parserOptions: {
     project,
   },
   globals: {
+    React: true,
     JSX: true,
   },
   settings: {
@@ -29,11 +32,14 @@ module.exports = {
       typescript: {
         project,
       },
+      node: {
+        extensions: [".mjs", ".js", ".jsx", ".ts", ".tsx"],
+      },
     },
   },
-  ignorePatterns: ["node_modules/", "dist/", ".eslintrc.js"],
-
+  ignorePatterns: ["node_modules/", "dist/"],
+  // add rules configurations here
   rules: {
-    // add specific rules configurations here
+    "import/no-default-export": "off",
   },
 };

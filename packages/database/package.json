@@ -1,0 +1,9 @@
+{
+  "name": "database",
+  "license": "MIT",
+  "version": "0.0.0",
+  "private": true,
+  "devDependencies": {
+    "supabase": "^1.99.5"
+  }
+}
