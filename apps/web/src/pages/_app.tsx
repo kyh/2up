@@ -26,21 +26,6 @@ const chalkboradSEFont = localFont({
   variable: "--font-default-se",
 });
 
-const carbonBoldFont = localFont({
-  src: [
-    {
-      path: "../assets/fonts/Carbon-Bold.woff",
-    },
-    {
-      path: "../assets/fonts/Carbon-Bold.woff2",
-    },
-  ],
-  style: "normal",
-  weight: "normal",
-  display: "fallback",
-  variable: "--font-default-se",
-});
-
 const droidPixelFont = localFont({
   src: [
     {
@@ -75,10 +60,8 @@ const MyApp = ({ Component, pageProps }: Props) => {
 
   useEffect(() => {
     globalThis.document.documentElement.classList.add(
-      process.env.NODE_ENV === "production"
-        ? carbonBoldFont.variable
-        : chalkboradSEFont.variable,
-      droidPixelFont.variable
+      chalkboradSEFont.variable,
+      droidPixelFont.variable,
     );
   }, []);
 
