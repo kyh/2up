@@ -1,3 +1,4 @@
+"use client";
 import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
 import { useHomeStore } from "~/lib/home/home-store";
 import { createOrGetFx } from "~/styles/sound";
