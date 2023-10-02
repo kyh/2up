@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { SEO } from "~/components";
-import { PackLayout } from "~/lib/packs/PackLayout";
-import { PackNew } from "~/lib/packs/PackNew";
+import { PackLayout } from "~/lib/packs/pack-layout";
+import { PackNew } from "~/lib/packs/pack-new";
 
 const PackNewPage = () => {
   return (

@@ -135,3 +135,16 @@ model Player {
   Game   Game   @relation(fields: [gameId], references: [id])
   gameId String
 }
+
+enum WaitlistType {
+  account
+}
+
+model Waitlist {
+  id   String       @id @default(cuid())
+  type WaitlistType @default(account)
+  data Json
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}

@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 
-import { Header } from "~/components/Header/Header";
+import { Header } from "~/app/components/Header";
 
 export const HomeLayoutV2 = ({ children }: { children: ReactNode }) => {
   return (

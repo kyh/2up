@@ -1,0 +1,4 @@
+{
+  "name": "partykit",
+  "main": "src/server.ts"
+}

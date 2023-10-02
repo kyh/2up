@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { SEO } from "~/components";
-import { PackLayout } from "~/lib/packs/PackLayout";
-import { PackCategory } from "~/lib/packs/PackCategory";
+import { PackLayout } from "~/lib/packs/pack-layout";
+import { PackCategory } from "~/lib/packs/pack-category";
 
 const PackCategoryPage = () => {
   return (
