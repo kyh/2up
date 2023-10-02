@@ -29,9 +29,7 @@ export const JoinGame = () => {
         <div className="after:content[''] relative flex w-full items-center justify-center bg-dark-black bg-container before:absolute before:bottom-0 before:left-0 before:right-0 before:top-0 before:z-10 before:bg-dark-black before:opacity-[0.95]">
           {" "}
           <div className="relative z-50 flex flex-col items-center space-y-4">
-            {/** TODO(monfernape): add illustrations */}
-            {/* <Illustrations /> */}
-
+            <img src="/illustrations/illustrations.svg"></img>
             <TextField
               // {...register("gameId", { required: true })}
               type={"text"}

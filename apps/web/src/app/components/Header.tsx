@@ -3,8 +3,19 @@ import React from "react";
 import { Button } from "./Button";
 import { usePathname } from "next/navigation";
 
+const showHeaderActions = (pathname: string) => {
+  const lobby = "/v2/lobby";
+  const getready = "/v2/lobby/getready";
+
+  if (pathname !== lobby && pathname !== getready) {
+    return true;
+  }
+  return false;
+};
+
 export const Header = () => {
   const pathname = usePathname();
+  const renderActions = showHeaderActions(pathname as string);
 
   return (
     <div className="flex h-16 justify-between px-12 pt-4">
@@ -19,8 +30,8 @@ export const Header = () => {
           src="/logo/logomark.svg"
         ></img>
       </div>
-      {/** TODO(monfernape): find better solution and use const */}
-      {pathname !== "/v2/lobby" && (
+
+      {renderActions && (
         <div className="flex  gap-4">
           <div>
             <Button
