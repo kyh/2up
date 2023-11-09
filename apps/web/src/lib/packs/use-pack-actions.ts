@@ -4,6 +4,7 @@ import { useAlert } from "@/components";
 
 export const useGetDiscover = (ref: string) => {
   const alert = useAlert();
+
   return api.pack.getDiscover.useQuery(
     { ref },
     {

@@ -1,3 +1,5 @@
+"use client";
+
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { classed } from "@/lib/utils/classed";

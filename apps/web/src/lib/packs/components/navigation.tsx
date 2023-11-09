@@ -1,10 +1,9 @@
 import { classed } from "@/lib/utils/classed";
 import Image from "next/image";
 import { Link } from "@/components";
-import { useAuth } from "@/lib/auth/use-auth";
 
 export const Navigation = () => {
-  const auth = useAuth();
+  const auth = { loading: false, user: null };
   return (
     <NavigationContainer>
       {/* Left */}
@@ -24,7 +23,7 @@ export const Navigation = () => {
         <div className="flex flex-auto items-center justify-end px-3">
           {auth.user ? (
             <>
-              <Link className="p-3 hover:underline" href="/">
+              {/* <Link className="p-3 hover:underline" href="/">
                 Play
               </Link>
               <Link
@@ -39,7 +38,7 @@ export const Navigation = () => {
                 className="p-3 hover:underline"
               >
                 Logout
-              </button>
+              </button> */}
             </>
           ) : (
             <>

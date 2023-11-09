@@ -1,21 +1,16 @@
 import { classed } from "@/lib/utils/classed";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Link, Button, Spinner } from "@/components";
 import { useHostGame } from "@/lib/game/use-game-actions";
 import { Content } from "@/lib/packs/components/page";
 import { useGetPack } from "@/lib/packs/use-pack-actions";
-import { useAuth } from "@/lib/auth/use-auth";
 
 export const PackDetails = () => {
-  const auth = useAuth();
-  const router = useRouter();
-  const packId = router.query.packId as string;
+  const packId = useParams().packId.toString();
   const { hostGame, isLoading } = useHostGame();
-  const res = useGetPack(packId);
+  const { data: pack } = useGetPack(packId);
 
-  if (!res.data) return <Spinner />;
-
-  const pack = res.data;
+  if (!pack) return <Spinner />;
 
   return (
     <PackDetailsPageContent>
@@ -34,11 +29,11 @@ export const PackDetails = () => {
             >
               Start a game
             </Button>
-            {pack.userId === auth.user?.id && (
+            {/* {pack.userId === auth.user?.id && (
               <Link className="underline" href={`/packs/${packId}/edit`}>
                 Edit Pack
               </Link>
-            )}
+            )} */}
           </div>
         </header>
       )}

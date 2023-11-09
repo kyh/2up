@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { ButtonLinkNative, Spinner } from "@/components";
 import { Content } from "@/lib/packs/components/page";
 import {
@@ -7,17 +7,14 @@ import {
   Pack,
 } from "@/lib/packs/components/packs";
 import { useGetPacks } from "@/lib/packs/use-pack-actions";
-import { useAuth } from "@/lib/auth/use-auth";
 
 export const Profile = () => {
-  const auth = useAuth();
-  const router = useRouter();
-  const username = router.query.username as string;
+  const { username } = useParams();
   const res = useGetPacks({ username });
 
   if (!res.data) return <Spinner />;
 
-  const isMyPage = username === auth.user?.user_metadata.username;
+  const isMyPage = false;
 
   return (
     <Content>
