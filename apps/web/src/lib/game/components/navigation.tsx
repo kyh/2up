@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { classed } from "@/lib/utils/classed";
 import { useAllHomeStore } from "@/lib/home/home-store";
 import { Button, ButtonLink, Modal, Icon } from "@/components";
@@ -11,10 +11,10 @@ import { useTheme } from "@/components/providers/theme-provider";
 export const Navigation = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const { gameId } = useParams();
   const { theme, setTheme } = useTheme();
   const { isMusicOn, toggleMusic, isSFXOn, toggleSFX } = useAllHomeStore();
 
-  const { gameId } = router.query;
   const isDarkMode = theme === "dark";
 
   const leaveGame = () => {
@@ -41,7 +41,7 @@ export const Navigation = () => {
         variant="fab"
         onClick={() => setIsOpen(true)}
       >
-        <Icon icon="setting" />
+        {/* <Icon icon="setting" /> */}
       </Button>
       <Modal
         open={isOpen}

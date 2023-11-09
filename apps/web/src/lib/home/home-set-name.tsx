@@ -1,6 +1,6 @@
 import { classed } from "@/lib/utils/classed";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Avatar, Link, Button, Input } from "@/components";
 import { useHomeStore } from "@/lib/home/home-store";
 import { useJoinGame } from "@/lib/game/use-game-actions";
@@ -11,12 +11,12 @@ type FormInputs = {
 };
 
 export const HomeSetName = () => {
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const playerName = useHomeStore((state) => state.playerName);
   const { joinGame } = useJoinGame();
   const { register, watch, handleSubmit } = useForm<FormInputs>();
 
-  const gameId = router.query.gameId?.toString() || "0";
+  const gameId = searchParams.get("gameId") || "0";
   const watchName = watch("name");
 
   const onSubmit = ({ name }: FormInputs) => {
@@ -26,7 +26,7 @@ export const HomeSetName = () => {
   return (
     <SectionBody>
       <Form className="gap-1" onSubmit={handleSubmit(onSubmit)}>
-        <Avatar name={watchName} type={"setName"} />
+        <Avatar name={watchName} type="setName" />
         <Input
           className="mb-1"
           {...register("name", { required: true })}
@@ -44,7 +44,6 @@ export const HomeSetName = () => {
           className="ml-[5px] underline"
           href={{
             pathname: `/game/${gameId}/spectate/lobby`,
-            query: router.query,
           }}
         >
           spectate this game

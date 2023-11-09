@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Navigation } from "@/lib/game/components/navigation";
 import { PageContainer } from "@/lib/home/components/page";
-import { Card } from "@/components";
+import { Card } from "@/components/card/card";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
