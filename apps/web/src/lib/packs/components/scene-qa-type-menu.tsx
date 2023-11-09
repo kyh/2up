@@ -1,11 +1,11 @@
 import { useRef, forwardRef } from "react";
-import { classed } from "~/utils/classed";
-import { Button } from "~/components";
-import { Props as ScenePreviewProps } from "~/lib/packs/components/scene-preview";
-import { AnswerTypeSlugs, QuestionTypeSlugs } from "~/lib/game/game-utils";
-import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/pack-store";
-import { useUpdateScene } from "~/lib/packs/use-scene-actions";
-import { useOnClickOutside } from "~/utils/element";
+import { classed } from "@/lib/utils/classed";
+import { Button } from "@/components";
+import { Props as ScenePreviewProps } from "@/lib/packs/components/scene-preview";
+import { AnswerTypeSlugs, QuestionTypeSlugs } from "@/lib/game/game-utils";
+import { usePackStore, VisibleQATypeMenu } from "@/lib/packs/pack-store";
+import { useUpdateScene } from "@/lib/packs/use-scene-actions";
+import { useOnClickOutside } from "@/lib/utils/element";
 
 export const SceneQATypeMenu = ({ scene }: ScenePreviewProps) => {
   const ref = useRef(null);
@@ -84,7 +84,7 @@ const QuestionTypeMenu = forwardRef<HTMLDivElement, Props>(
                     : {
                         questionType: { slug: value.id },
                         question: defaultQuestionsMap[value.id],
-                      }
+                      },
                 );
               }}
             >
@@ -94,7 +94,7 @@ const QuestionTypeMenu = forwardRef<HTMLDivElement, Props>(
         })}
       </QATypeMenuContainer>
     );
-  }
+  },
 );
 
 // Maps answer type to the default set of answers
@@ -131,7 +131,7 @@ const AnswerTypeMenu = forwardRef<HTMLDivElement, Props>(
                           ...[correct || { content: "", isCorrect: true }],
                           ...defaultAnswersMap[value.id],
                         ],
-                      }
+                      },
                 );
               }}
             >
@@ -141,7 +141,7 @@ const AnswerTypeMenu = forwardRef<HTMLDivElement, Props>(
         })}
       </QATypeMenuContainer>
     );
-  }
+  },
 );
 
 export const QATypeMenuContainer = classed.div(
@@ -155,5 +155,5 @@ export const QATypeMenuContainer = classed.div(
   "hover:[&_button]:bg-grey-background dark:hover:[&_button]:bg-grey-dark",
   "after:absolute after:inline-black after:-top-4 after:left-1/2 after:-translate-x-1/2 after:w-[120px]",
   "after:text-center after:rounded-wavy after:p-1 after:text-[0.9rem] after:bg-white dark:after:bg-black",
-  "after:content-[var(--content)]"
+  "after:content-[var(--content)]",
 );

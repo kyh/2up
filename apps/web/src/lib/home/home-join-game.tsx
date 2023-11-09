@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { Link, Button, Input, Modal } from "~/components";
-import { Form } from "~/lib/home/components/form";
-import { HomeSetName, StartNewGameText } from "~/lib/home/home-set-name";
-import { useCheckGame } from "~/lib/game/use-game-actions";
+import { Link, Button, Input, Modal } from "@/components";
+import { Form } from "@/lib/home/components/form";
+import { HomeSetName, StartNewGameText } from "@/lib/home/home-set-name";
+import { useCheckGame } from "@/lib/game/use-game-actions";
 
 type FormInputs = {
   gameId: string;

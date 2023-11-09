@@ -1,11 +1,11 @@
-import { useRef, useState, ChangeEvent, ReactNode } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { classed } from "~/utils/classed";
-import { VideoPlayer, AudioPlayer, Code, Button, Icon } from "~/components";
-import { PackAssetModal } from "~/lib/packs/components/pack-asset-modal";
-import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/pack-store";
-import { instructionElementAttribute } from "~/lib/packs/pack-utils";
-import { QuestionTypeSlugs } from "~/lib/game/game-utils";
+import { classed } from "@/lib/utils/classed";
+import { VideoPlayer, AudioPlayer, Code, Button, Icon } from "@/components";
+import { PackAssetModal } from "@/lib/packs/components/pack-asset-modal";
+import { usePackStore, VisibleQATypeMenu } from "@/lib/packs/pack-store";
+import { instructionElementAttribute } from "@/lib/packs/pack-utils";
+import { QuestionTypeSlugs } from "@/lib/game/game-utils";
 
 type EditableQuestionProps = {
   questionDescription: string;
@@ -23,19 +23,21 @@ export const EditableQuestion = ({
   onChange,
 }: EditableQuestionProps) => {
   const setVisibleQATypeMenu = usePackStore(
-    (state) => state.setVisibleQATypeMenu
+    (state) => state.setVisibleQATypeMenu,
   );
 
   const onFocus = () => {
     setVisibleQATypeMenu(VisibleQATypeMenu.Question);
   };
 
-  const onBlurQuestionDescription = (e: ChangeEvent<HTMLInputElement>) => {
+  const onBlurQuestionDescription = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     onChange({ questionDescription: e.target.value });
   };
 
   const onBlurQuestion = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string,
   ) => {
     if (typeof e === "string") {
       onChange({ question: e });
@@ -46,12 +48,12 @@ export const EditableQuestion = ({
 
   const instructionElement = (
     <EditableQuestionInstructions
-      variant="inContainer"
       data-focusable={instructionElementAttribute}
-      placeholder="Instruction..."
       defaultValue={questionDescription}
-      onFocus={onFocus}
       onBlur={onBlurQuestionDescription}
+      onFocus={onFocus}
+      placeholder="Instruction..."
+      variant="inContainer"
     />
   );
 
@@ -62,9 +64,9 @@ export const EditableQuestion = ({
           {instructionElement}
           <EditableQuestionImage
             instruction={questionDescription}
-            question={question}
-            onFocus={onFocus}
             onChange={onBlurQuestion}
+            onFocus={onFocus}
+            question={question}
           />
         </EditableQuestionContainer>
       );
@@ -73,9 +75,9 @@ export const EditableQuestion = ({
         <EditableQuestionContainer key={sceneId}>
           {instructionElement}
           <EditableQuestionAudio
-            question={question}
-            onFocus={onFocus}
             onChange={onBlurQuestion}
+            onFocus={onFocus}
+            question={question}
           />
         </EditableQuestionContainer>
       );
@@ -84,9 +86,9 @@ export const EditableQuestion = ({
         <EditableQuestionContainer key={sceneId}>
           {instructionElement}
           <EditableQuestionVideo
-            question={question}
-            onFocus={onFocus}
             onChange={onBlurQuestion}
+            onFocus={onFocus}
+            question={question}
           />
         </EditableQuestionContainer>
       );
@@ -95,9 +97,9 @@ export const EditableQuestion = ({
         <EditableQuestionContainer key={sceneId}>
           {instructionElement}
           <EditableQuestionCode
-            question={question}
-            onFocus={onFocus}
             onChange={onBlurQuestion}
+            onFocus={onFocus}
+            question={question}
           />
         </EditableQuestionContainer>
       );
@@ -106,11 +108,11 @@ export const EditableQuestion = ({
         <EditableQuestionContainer key={sceneId}>
           {instructionElement}
           <EditableQuestionText
-            variant="inContainer"
-            placeholder="Your question?"
             defaultValue={question}
-            onFocus={onFocus}
             onBlur={onBlurQuestion}
+            onFocus={onFocus}
+            placeholder="Your question?"
+            variant="inContainer"
           />
         </EditableQuestionContainer>
       );
@@ -130,7 +132,7 @@ const EditableQuestionInstructions = classed.input(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 const EditableQuestionText = classed.textarea(
@@ -146,7 +148,7 @@ const EditableQuestionText = classed.textarea(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 type EditableQuestionComponentProps = Pick<
@@ -154,8 +156,8 @@ type EditableQuestionComponentProps = Pick<
   "question"
 > & {
   onFocus: () => void;
-  onChange: (e: ChangeEvent<HTMLInputElement> | string) => void;
-  children?: ReactNode;
+  onChange: (e: React.ChangeEvent<HTMLInputElement> | string) => void;
+  children?: React.ReactNode;
 };
 
 const EditableQuestionImage = ({
@@ -165,12 +167,12 @@ const EditableQuestionImage = ({
   onChange,
 }: EditableQuestionComponentProps & { instruction: string }) => {
   return (
-    <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
+    <AssetManager onChange={onChange} onFocus={onFocus} question={question}>
       <ImageContainer>
         <img
           alt={instruction}
+          className="mx-auto max-h-[200px] max-w-full object-cover desktop:max-w-[500px]"
           src={question}
-          className="mx-auto object-cover max-w-full max-h-[200px] desktop:max-w-[500px]"
         />
       </ImageContainer>
     </AssetManager>
@@ -178,7 +180,7 @@ const EditableQuestionImage = ({
 };
 
 const ImageContainer = classed.div(
-  "flex bg-grey-background dark:bg-grey-dark py-1 mb-5"
+  "flex bg-grey-background dark:bg-grey-dark py-1 mb-5",
 );
 
 const EditableQuestionAudio = ({
@@ -187,7 +189,7 @@ const EditableQuestionAudio = ({
   onChange,
 }: EditableQuestionComponentProps) => {
   return (
-    <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
+    <AssetManager onChange={onChange} onFocus={onFocus} question={question}>
       <Container>
         <AudioPlayer src={question} style={{ margin: "auto" }} />
       </Container>
@@ -201,13 +203,13 @@ const EditableQuestionVideo = ({
   onChange,
 }: EditableQuestionComponentProps) => {
   return (
-    <AssetManager question={question} onFocus={onFocus} onChange={onChange}>
+    <AssetManager onChange={onChange} onFocus={onFocus} question={question}>
       <Container>
         <VideoPlayer
-          url={question}
-          width={530}
           height={300}
           style={{ margin: "auto" }}
+          url={question}
+          width={530}
         />
       </Container>
     </AssetManager>
@@ -221,7 +223,7 @@ const EditableQuestionCode = ({
 }: EditableQuestionComponentProps) => {
   return (
     <Container>
-      <Code content={question} onFocus={onFocus} onBlur={onChange} editable />
+      <Code content={question} editable onBlur={onChange} onFocus={onFocus} />
     </Container>
   );
 };
@@ -243,25 +245,28 @@ const AssetManager = ({
     <AssetManagerContainer>
       {children}
       <input
-        ref={inputRef}
         className="absolute left-1/2 top-[10px] -translate-x-1/2"
-        type="text"
-        placeholder="URL"
         defaultValue={question}
-        onFocus={onFocus}
         onBlur={onChange}
+        onFocus={onFocus}
+        placeholder="URL"
+        ref={inputRef}
+        type="text"
       />
       <Button
-        className="rounded-full absolute top-2 right-2 bg-white dark:bg-black"
+        className="absolute right-2 top-2 rounded-full bg-white dark:bg-black"
+        onClick={() => {
+          setIsOpen(true);
+        }}
         variant="fab"
-        onClick={() => setIsOpen(true)}
       >
         <Icon icon="pencil" />
       </Button>
-      {isOpen && (
+      {isOpen ? (
         <PackAssetModal
-          packId={packId}
-          onRequestClose={() => setIsOpen(false)}
+          onRequestClose={() => {
+            setIsOpen(false);
+          }}
           onSelectAsset={(path) => {
             onChange(path);
             setIsOpen(false);
@@ -269,8 +274,9 @@ const AssetManager = ({
               inputRef.current.value = path;
             }
           }}
+          packId={packId}
         />
-      )}
+      ) : null}
     </AssetManagerContainer>
   );
 };

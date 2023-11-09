@@ -1,5 +1,5 @@
 import { KeyboardEvent } from "react";
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./input";
 
@@ -86,7 +86,7 @@ export const SingleLetterInput = ({
       let updatedCharacters = characters.characterArray.map(
         (_character, number) => {
           return inputElements.current["input" + number].value;
-        }
+        },
       );
       return { characterArray: updatedCharacters };
     });

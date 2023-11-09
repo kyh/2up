@@ -1,6 +1,6 @@
-import { classed } from "~/utils/classed";
-import { gql, useMutation, useQuery } from "~/utils/mock";
-import { Modal, Uploader } from "~/components";
+import { classed } from "@/lib/utils/classed";
+import { gql, useMutation, useQuery } from "@/lib/utils/mock";
+import { Modal, Uploader } from "@/components";
 
 type AssetModalProps = {
   packId: string;

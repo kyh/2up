@@ -1,10 +1,10 @@
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { Avatar, Link, Button, Input } from "~/components";
-import { useHomeStore } from "~/lib/home/home-store";
-import { useJoinGame } from "~/lib/game/use-game-actions";
-import { Form } from "~/lib/home/components/form";
+import { Avatar, Link, Button, Input } from "@/components";
+import { useHomeStore } from "@/lib/home/home-store";
+import { useJoinGame } from "@/lib/game/use-game-actions";
+import { Form } from "@/lib/home/components/form";
 
 type FormInputs = {
   name: string;

@@ -1,15 +1,15 @@
-import { ReactNode, ChangeEventHandler, forwardRef } from "react";
-import { classed } from "~/utils/classed";
+import { React.ReactNode, ChangeEventHandler, forwardRef } from "react";
+import { classed } from "@/lib/utils/classed";
 import { Input } from "../input/input";
 
 type Props = {
   id?: HTMLTextAreaElement["id"];
   type?: HTMLTextAreaElement["type"];
   placeholder?: HTMLTextAreaElement["placeholder"];
-  labelText?: ReactNode;
-  children?: ReactNode;
+  labelText?: React.ReactNode;
+  children?: React.ReactNode;
   error?: boolean;
-  errorText?: ReactNode;
+  errorText?: React.ReactNode;
   onChange?: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   value?: string;
 };

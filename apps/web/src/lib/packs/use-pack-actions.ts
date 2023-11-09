@@ -1,22 +1,22 @@
 import { useRouter } from "next/router";
-import { trpc } from "~/utils/trpc";
-import { useAlert } from "~/components";
+import { api } from "@/lib/trpc/react";
+import { useAlert } from "@/components";
 
 export const useGetDiscover = (ref: string) => {
   const alert = useAlert();
-  return trpc.pack.getDiscover.useQuery(
+  return api.pack.getDiscover.useQuery(
     { ref },
     {
       onError: (err) => {
         alert.show(err.message);
       },
-    }
+    },
   );
 };
 
 export const useGetPacks = (filter: Record<string, unknown>) => {
   const alert = useAlert();
-  return trpc.pack.getAll.useQuery(filter, {
+  return api.pack.getAll.useQuery(filter, {
     onError: (err) => {
       alert.show(err.message);
     },
@@ -25,20 +25,20 @@ export const useGetPacks = (filter: Record<string, unknown>) => {
 
 export const useGetPack = (packId: string, withScenes = false) => {
   const alert = useAlert();
-  return trpc.pack.get.useQuery(
+  return api.pack.get.useQuery(
     { id: packId, withScenes },
     {
       onError: (err) => {
         alert.show(err.message);
       },
-    }
+    },
   );
 };
 
 export const useCreatePack = () => {
   const alert = useAlert();
   const router = useRouter();
-  const mutation = trpc.pack.create.useMutation();
+  const mutation = api.pack.create.useMutation();
 
   const createPack = async (pack: Parameters<typeof mutation.mutate>[0]) => {
     await mutation.mutate(pack, {
@@ -57,11 +57,11 @@ export const useCreatePack = () => {
 
 export const useUpdatePack = () => {
   const alert = useAlert();
-  const mutation = trpc.pack.update.useMutation();
+  const mutation = api.pack.update.useMutation();
 
   const updatePack = async (
     packId: string,
-    pack: Parameters<typeof mutation.mutate>[0]
+    pack: Parameters<typeof mutation.mutate>[0],
   ) => {
     await mutation.mutate(
       {
@@ -72,7 +72,7 @@ export const useUpdatePack = () => {
         onError: (err) => {
           alert.show(err.message);
         },
-      }
+      },
     );
   };
 
@@ -81,7 +81,7 @@ export const useUpdatePack = () => {
 
 export const useDeletePack = () => {
   const alert = useAlert();
-  const mutation = trpc.pack.delete.useMutation();
+  const mutation = api.pack.delete.useMutation();
 
   const deletePack = async (packId: string) => {
     await mutation.mutate(
@@ -90,7 +90,7 @@ export const useDeletePack = () => {
         onError: (err) => {
           alert.show(err.message);
         },
-      }
+      },
     );
   };
 

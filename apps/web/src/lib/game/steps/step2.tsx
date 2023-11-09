@@ -1,21 +1,21 @@
 import { useState } from "react";
 import Image from "next/image";
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 import sample from "lodash/sample";
 import Sheet from "react-modal-sheet";
-import { useIsDesktop } from "~/utils/use-is-desktop";
-import { Instruction } from "~/lib/game/components/instruction";
-import { Question } from "~/lib/game/components/question";
-import { Answer } from "~/lib/game/components/answer";
+import { useIsDesktop } from "@/lib/utils/use-is-desktop";
+import { Instruction } from "@/lib/game/components/instruction";
+import { Question } from "@/lib/game/components/question";
+import { Answer } from "@/lib/game/components/answer";
 import {
   Player,
   PlayersGrid,
   NextButton,
-} from "~/lib/game/components/player-grid";
-import { AnimationSprite } from "~/components";
-import { useTimeout } from "~/utils/use-timeout";
-import { useNextStep } from "~/lib/game/use-game-actions";
-import type { StepProps } from "~/lib/game/steps/types";
+} from "@/lib/game/components/player-grid";
+import { AnimationSprite } from "@/components";
+import { useTimeout } from "@/lib/utils/use-timeout";
+import { useNextStep } from "@/lib/game/use-game-actions";
+import type { StepProps } from "@/lib/game/steps/types";
 
 const sprites = {
   correct: ["wineGlassClinking", "checkMark", "bubbleLike"],
@@ -36,7 +36,7 @@ const Step2Play = ({
 
   const [firstPlayer] = players;
   const correctAnswer = gameState.sceneAnswers.find(
-    (sceneAnswer) => sceneAnswer.isCorrect
+    (sceneAnswer) => sceneAnswer.isCorrect,
   )!;
 
   useTimeout(() => {
@@ -116,12 +116,12 @@ const Step2Play = ({
 // TODO - make sure the class is being applied correctly
 const StyledSheet = classed(
   Sheet,
-  "!z-[1] [&_.react-modal-sheet-container]:!bg-white dark:[&_.react-modal-sheet-container]:!bg-black"
+  "!z-[1] [&_.react-modal-sheet-container]:!bg-white dark:[&_.react-modal-sheet-container]:!bg-black",
 );
 
 const Step2Spectate = ({ gameState }: StepProps) => {
   const correctAnswer = gameState.sceneAnswers?.find(
-    (sceneAnswer) => sceneAnswer.isCorrect
+    (sceneAnswer) => sceneAnswer.isCorrect,
   )!;
 
   return (
@@ -181,7 +181,7 @@ const AnswerContainer = classed.div(
   "[&_.answer-display.answer-text]:before:ml-[-50px] [&_.answer-display.answer-text]:before:py-1",
   "[&_.answer-display.answer-text]:before:rounded [&_.answer-display.answer-text]:before:border-2",
   "[&_.answer-display.answer-text]:before:border-grey-dark dark:[&_.answer-display.answer-text]:before:border-grey-light",
-  "[&_.answer-display.answer-text]:before:bg-white dark:[&_.answer-display.answer-text]:before:bg-black"
+  "[&_.answer-display.answer-text]:before:bg-white dark:[&_.answer-display.answer-text]:before:bg-black",
 );
 
 const Submissions = ({ gameState }: SubmissionProps) => {
@@ -216,12 +216,12 @@ const SubmissionsContainer = classed(
   PlayersGrid,
   "p-5 desktop:py-0 desktop:animate-[fade-up-in_0.8s_cubic-bezier(0.77,_0.1,_0.46,_1.22)_forwards]",
   "[&_.correct]:absolute [&_.correct]:-top-3 [&_.correct]:left-0",
-  "[&_.name]:text-center grid-cols-3"
+  "[&_.name]:text-center grid-cols-3",
 );
 
 const Stars = classed(
   AnimationSprite,
-  "top-10 desktop:top-5 left-1/2 scale-50 -translate-x-1/2 -translate-y-1/2"
+  "top-10 desktop:top-5 left-1/2 scale-50 -translate-x-1/2 -translate-y-1/2",
 );
 
 const CorrectSprite = classed(AnimationSprite, "left-1/2 -translate-x-1/2");

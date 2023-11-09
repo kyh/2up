@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 
 const STATES = {
   default: "default",
@@ -30,5 +30,5 @@ export const Loader = ({ loading = false, ...rest }) => {
 };
 
 const LoaderContainer = classed.div(
-  "child:transition-opacity child:duration-200 child:ease-[ease]"
+  "child:transition-opacity child:duration-200 child:ease-[ease]",
 );

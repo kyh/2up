@@ -1,15 +1,15 @@
 import { useState, SyntheticEvent } from "react";
-import { classed } from "~/utils/classed";
-import { Input, Button } from "~/components";
-import { AnswerTypeSlugs } from "~/lib/game/game-utils";
-import type { StepProps } from "~/lib/game/steps/types";
+import { classed } from "@/lib/utils/classed";
+import { Input, Button } from "@/components";
+import { AnswerTypeSlugs } from "@/lib/game/game-utils";
+import type { StepProps } from "@/lib/game/steps/types";
 
 type AnswerProps = {
   sceneAnswer: StepProps["gameState"]["sceneAnswers"][0];
   answerType: StepProps["gameState"]["answerType"];
   submitted: boolean;
   onSubmit: (
-    submission: Pick<StepProps["gameState"]["submissions"][0], "content">
+    submission: Pick<StepProps["gameState"]["submissions"][0], "content">,
   ) => void;
   displayMode?: boolean;
 };
@@ -24,12 +24,12 @@ export const Answer = (props: AnswerProps) => {
 };
 
 const AnswerDisplay = classed.div(
-  "overflow-hidden relative p-4 border-2 border-grey-dark dark:border-grey-light rounded-wavy"
+  "overflow-hidden relative p-4 border-2 border-grey-dark dark:border-grey-light rounded-wavy",
 );
 
 const AnswerDisplaySvg = () => (
   <svg
-    className="absolute top-0 left-0 w-full h-full content-[''] z-[-1] pointer-events-none fill-none"
+    className="pointer-events-none absolute left-0 top-0 z-[-1] h-full w-full fill-none content-['']"
     width="100%"
     height="9"
     viewBox="0 0 101 9"
@@ -127,5 +127,5 @@ const AnswerMultiButton = classed(Button, "mb-3");
 
 const AnswerMultiDisplay = classed(
   AnswerDisplay,
-  "text-center mb-3 border-dashed"
+  "text-center mb-3 border-dashed",
 );

@@ -1,4 +1,4 @@
-import { ReactNode, forwardRef } from "react";
+import { React.ReactNode, forwardRef } from "react";
 import { Input } from "../input/input";
 
 type Props = {
@@ -6,10 +6,10 @@ type Props = {
   type?: HTMLInputElement["type"];
   placeholder?: HTMLInputElement["placeholder"];
   autoComplete?: HTMLInputElement["autocomplete"];
-  labelText?: ReactNode;
-  children?: ReactNode;
+  labelText?: React.ReactNode;
+  children?: React.ReactNode;
   error?: boolean;
-  errorText?: ReactNode;
+  errorText?: React.ReactNode;
   fullWidth?: boolean;
 };
 

@@ -1,6 +1,6 @@
-import { gql, useMutation } from "~/utils/mock";
-import { useAlert } from "~/components";
-import { getErrorMessage } from "~/utils/error";
+import { gql, useMutation } from "@/lib/utils/mock";
+import { useAlert } from "@/components";
+import { getErrorMessage } from "@/lib/utils/error";
 
 export const useUpdateScene = (scene: any) => {
   const alert = useAlert();
@@ -49,7 +49,7 @@ export const useCreateScene = () => {
   const createScene = async (
     packId: string,
     order: number,
-    selectedScene?: any
+    selectedScene?: any,
   ) => {
     const input = {
       packId: packId,
@@ -135,7 +135,7 @@ export const useUpdateSceneOrder = () => {
   const updateSceneOrder = async (
     sceneId: string,
     beforeSceneId?: string,
-    afterSceneId?: string
+    afterSceneId?: string,
   ) => {
     try {
       // savingSceneVar(true);

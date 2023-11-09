@@ -3,7 +3,18 @@
   "license": "MIT",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+    "seed": "npx ts-node -T prisma/seed.ts"
+  },
   "devDependencies": {
-    "supabase": "^1.99.5"
+    "csv-parse": "^5.5.2",
+    "prisma": "^5.5.2",
+    "supabase": "^1.110.1"
+  },
+  "dependencies": {
+    "@prisma/client": "5.5.2"
   }
 }

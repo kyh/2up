@@ -1,12 +1,12 @@
-import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
-import { classed } from "~/utils/classed";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { nanoid } from "nanoid";
-import { useMutation } from "~/utils/mock";
+import { classed } from "@/lib/utils/classed";
+import { useMutation } from "@/lib/utils/mock";
 
 type DragAndDropProps = {
   onFileDrop: (_files: File[]) => void;
   disabled: boolean;
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 const DragAndDrop = ({ onFileDrop, disabled, children }: DragAndDropProps) => {
@@ -77,7 +77,7 @@ const DragAndDrop = ({ onFileDrop, disabled, children }: DragAndDropProps) => {
   }, [disabled]);
 
   return (
-    <DragAndDropContainer ref={dropRef} dragging={!disabled && dragging}>
+    <DragAndDropContainer dragging={!disabled && dragging} ref={dropRef}>
       {children}
     </DragAndDropContainer>
   );
@@ -92,7 +92,7 @@ const DragAndDropContainer = classed.div(
         false: "border-grey-dark dark:border-grey-light",
       },
     },
-  }
+  },
 );
 
 type UploaderProps = {
@@ -124,27 +124,27 @@ export const Uploader = ({ pathPrefix, onUploaded }: UploaderProps) => {
   };
 
   return (
-    <DragAndDrop onFileDrop={upload} disabled={!!filesToUpload.length}>
+    <DragAndDrop disabled={Boolean(filesToUpload.length)} onFileDrop={upload}>
       <UploaderContainer>
         <input
-          className="absolute w-full h-full opacity-0"
-          type="file"
-          multiple
           accept="audio/*,image/*,video/*"
-          disabled={!!filesToUpload.length}
+          className="absolute h-full w-full opacity-0"
+          disabled={Boolean(filesToUpload.length)}
+          multiple
           onChange={(e) => {
             if (e.target.files) {
               upload(Array.from(e.target.files));
             }
           }}
+          type="file"
         />
         {!filesToUpload.length && (
           <h3 className="m-auto">Drag and drop/click to upload assets</h3>
         )}
         {filesToUpload.map((file, i) => (
           <div
+            className="mr-2 h-full border border-grey-dark p-2 dark:border-grey-light"
             key={i}
-            className="border border-grey-dark dark:border-grey-light h-full mr-2 p-2"
           >
             <div>Uploading...</div>
             <div>{file.name}</div>

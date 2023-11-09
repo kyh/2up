@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
-import { trpc } from "~/utils/trpc";
-import { useAlert } from "~/components";
-import { useGameStore, GameState, Submission } from "~/lib/game/game-store";
-import { useHomeStore } from "~/lib/home/home-store";
+import { api } from "@/lib/trpc/react";
+import { useAlert } from "@/components";
+import { useGameStore } from "@/lib/game/game-store";
+import type { GameState, Submission } from "@/lib/game/game-store";
+import { useHomeStore } from "@/lib/home/home-store";
 
 export const useHostGame = () => {
-  const mutation = trpc.game.create.useMutation();
+  const mutation = api.game.create.useMutation();
   const router = useRouter();
   const alert = useAlert();
 
@@ -26,7 +27,7 @@ export const useHostGame = () => {
         onError: (error) => {
           alert.show(`Error creating game: ${error.message}`);
         },
-      }
+      },
     );
   };
 
@@ -34,7 +35,7 @@ export const useHostGame = () => {
 };
 
 export const useCheckGame = () => {
-  const mutation = trpc.game.check.useMutation();
+  const mutation = api.game.check.useMutation();
   const router = useRouter();
   const alert = useAlert();
 
@@ -51,7 +52,7 @@ export const useCheckGame = () => {
         onError: () => {
           alert.show("Game code does not exist");
         },
-      }
+      },
     );
   };
 
@@ -74,7 +75,7 @@ export const useJoinGame = () => {
 };
 
 export const useStartGame = () => {
-  const mutation = trpc.game.start.useMutation();
+  const mutation = api.game.start.useMutation();
 
   const startGame = async (gameId: string) => {
     await mutation.mutate({ gameId });
@@ -89,7 +90,7 @@ export const useGetGame = (gameId: string) => {
 
   const setGameState = useGameStore((state) => state.setGameState);
 
-  const query = trpc.game.get.useQuery(
+  const query = api.game.get.useQuery(
     { gameId },
     {
       onSuccess: (game) => {
@@ -100,8 +101,8 @@ export const useGetGame = (gameId: string) => {
         alert.show(`Error fetching game data: ${error.message}`);
         router.push("/");
       },
-      enabled: !!gameId,
-    }
+      enabled: Boolean(gameId),
+    },
   );
 
   return {
@@ -111,12 +112,12 @@ export const useGetGame = (gameId: string) => {
 };
 
 export const useSubmitAnswer = () => {
-  const mutation = trpc.game.submitAnswer.useMutation();
+  const mutation = api.game.submitAnswer.useMutation();
 
   const submitAnswer = async (
     gameId: string,
     numPlayers: number,
-    submission: Submission
+    submission: Submission,
   ) => {
     await mutation.mutate({ gameId, numPlayers, submission });
   };
@@ -125,7 +126,7 @@ export const useSubmitAnswer = () => {
 };
 
 export const useNextStep = () => {
-  const mutation = trpc.game.nextStep.useMutation();
+  const mutation = api.game.nextStep.useMutation();
 
   const nextStep = async (gameId: string) => {
     await mutation.mutate({ gameId });
@@ -135,7 +136,7 @@ export const useNextStep = () => {
 };
 
 export const useNextScene = () => {
-  const mutation = trpc.game.nextScene.useMutation();
+  const mutation = api.game.nextScene.useMutation();
 
   const nextScene = async (gameId: string) => {
     await mutation.mutate({ gameId });

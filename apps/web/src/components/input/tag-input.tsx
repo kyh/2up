@@ -1,5 +1,5 @@
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from "react";
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 
 type Props = {
   defaultTags?: string[];
@@ -76,7 +76,7 @@ export const TagInput = ({
     <InputContainer>
       {tags.map((tag) => (
         <div
-          className="flex items-center my-2 mr-3 px-3 pr-1 bg-purple-background dark:bg-purple-dark whitespace-nowrap"
+          className="my-2 mr-3 flex items-center whitespace-nowrap bg-purple-background px-3 pr-1 dark:bg-purple-dark"
           key={tag}
         >
           {tag}
@@ -94,7 +94,7 @@ export const TagInput = ({
         onKeyUp={onKeyUp}
         onChange={onChange}
         onBlur={addTag}
-        className="w-full min-w-[50%] p-3 pl-2 text-black dark:text-white bg-transparent border-none focus:outline-none"
+        className="w-full min-w-[50%] border-none bg-transparent p-3 pl-2 text-black focus:outline-none dark:text-white"
       />
     </InputContainer>
   );
@@ -102,5 +102,5 @@ export const TagInput = ({
 
 const InputContainer = classed.div(
   "flex overflow-scroll w-full max-w-full pl-2",
-  "border-2 border-grey-dark dark:border-grey-light rounded-wavy"
+  "border-2 border-grey-dark dark:border-grey-light rounded-wavy",
 );

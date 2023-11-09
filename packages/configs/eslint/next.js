@@ -20,6 +20,7 @@ module.exports = {
     "@vercel/style-guide/eslint/next",
     "eslint-config-turbo",
   ].map(require.resolve),
+  plugins: ["prefer-arrow-functions"],
   parserOptions: {
     project,
   },
@@ -40,6 +41,36 @@ module.exports = {
   ignorePatterns: ["node_modules/", "dist/"],
   // add rules configurations here
   rules: {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-named-as-default": "off",
     "import/no-default-export": "off",
+    "no-console": "off",
+    "no-undef": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "turbo/no-undeclared-env-vars": "off",
+    "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
+    "react/function-component-definition": [
+      "warn",
+      {
+        namedComponents: "arrow-function",
+        unnamedComponents: "arrow-function",
+      },
+    ],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        checksVoidReturn: false,
+      },
+    ],
+    "prefer-arrow-functions/prefer-arrow-functions": [
+      "warn",
+      {
+        classPropertiesAllowed: false,
+        disallowPrototype: false,
+        returnStyle: "unchanged",
+        singleReturnOnly: false,
+      },
+    ],
   },
 };

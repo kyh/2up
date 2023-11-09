@@ -1,9 +1,9 @@
 import { ChangeEvent } from "react";
-import { classed } from "~/utils/classed";
-import { Input, SingleLetterInput, Checkbox, Button, Icon } from "~/components";
-import { usePackStore, VisibleQATypeMenu } from "~/lib/packs/pack-store";
-import { getRandomAnswer } from "~/lib/packs/pack-utils";
-import { AnswerTypeSlugs } from "~/lib/game/game-utils";
+import { classed } from "@/lib/utils/classed";
+import { Input, SingleLetterInput, Checkbox, Button, Icon } from "@/components";
+import { usePackStore, VisibleQATypeMenu } from "@/lib/packs/pack-store";
+import { getRandomAnswer } from "@/lib/packs/pack-utils";
+import { AnswerTypeSlugs } from "@/lib/game/game-utils";
 
 type EditableAnswerProps = {
   sceneId: string;
@@ -20,7 +20,7 @@ export const EditableAnswer = ({
 }: EditableAnswerProps) => {
   const [sceneAnswer] = sceneAnswers;
   const setVisibleQATypeMenu = usePackStore(
-    (state) => state.setVisibleQATypeMenu
+    (state) => state.setVisibleQATypeMenu,
   );
 
   const onFocus = () => {
@@ -161,7 +161,7 @@ const AnswerContainer = classed.div("flex flex-col items-center");
 const Grid = classed.div("grid grid-cols-2 gap-3");
 
 const InputContainer = classed.div(
-  "relative flex justify-center items-center mb-3"
+  "relative flex justify-center items-center mb-3",
 );
 
 const AddOptionContainer = classed(InputContainer, "flex-col");

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useGameStore } from "~/lib/game/game-store";
-import { useHomeStore } from "~/lib/home/home-store";
+import { useGameStore } from "@/lib/game/game-store";
+import { useHomeStore } from "@/lib/home/home-store";
 
 import { Step0 } from "./steps/step0";
 import { Step1 } from "./steps/step1";

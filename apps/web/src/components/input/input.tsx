@@ -1,4 +1,4 @@
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 
 export const Input = classed.input(
   "leading-8 text-black dark:text-white bg-white dark:bg-black",

@@ -18,7 +18,7 @@ import loop from "./svgs/loop.svg";
 import loopOff from "./svgs/loop-off.svg";
 import volume from "./svgs/volume.svg";
 import volumeMute from "./svgs/volume-mute.svg";
-import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
+import { classed, deriveClassed, ComponentProps } from "@/lib/utils/classed";
 
 export const iconMap = {
   setting: setting,
@@ -72,7 +72,7 @@ const StyledIcon = classed.div(
       fillColor: "default",
       size: "default",
     },
-  }
+  },
 );
 
 type Props = ComponentProps<typeof StyledIcon> & {
@@ -88,5 +88,5 @@ export const Icon = deriveClassed<typeof StyledIcon, Props>(
         <IconSvg />
       </StyledIcon>
     );
-  }
+  },
 );

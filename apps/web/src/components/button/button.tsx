@@ -1,7 +1,6 @@
-import { ReactNode } from "react";
-import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
-import { useHomeStore } from "~/lib/home/home-store";
-import { createOrGetFx } from "~/styles/sound";
+import { classed, deriveClassed, ComponentProps } from "@/lib/utils/classed";
+import { useHomeStore } from "@/lib/home/home-store";
+import { createOrGetFx } from "@/styles/sound";
 import { Link } from "../link/link";
 
 const StyledButton = classed.button(
@@ -23,12 +22,12 @@ const StyledButton = classed.button(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 type Props = ComponentProps<typeof StyledButton> & {
   onClick?: () => void;
-  children?: ReactNode;
+  children?: React.ReactNode;
 };
 
 export const Button = deriveClassed<typeof StyledButton, Props>(
@@ -42,7 +41,7 @@ export const Button = deriveClassed<typeof StyledButton, Props>(
     };
 
     return <StyledButton type="button" onClick={onButtonClick} {...rest} />;
-  }
+  },
 );
 
 export const ButtonLink = classed.a(StyledButton, "text-center");

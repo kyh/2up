@@ -1,5 +1,5 @@
-import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
-import { Container } from "~/lib/game/components/question";
+import { classed, deriveClassed, ComponentProps } from "@/lib/utils/classed";
+import { Container } from "@/lib/game/components/question";
 
 type InstructionProps = ComponentProps<typeof InstructionContainer> & {
   instruction?: string | null;
@@ -29,5 +29,5 @@ export const InstructionContainer = classed(
     defaultVariants: {
       height: "default",
     },
-  }
+  },
 );

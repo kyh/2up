@@ -1,6 +1,6 @@
-import { classed } from "~/utils/classed";
-import { Button, Icon } from "~/components";
-import { Props as ScenePreviewProps } from "~/lib/packs/components/scene-preview";
+import { classed } from "@/lib/utils/classed";
+import { Button, Icon } from "@/components";
+import { Props as ScenePreviewProps } from "@/lib/packs/components/scene-preview";
 
 export const SceneSettingsMenu = ({ scene }: ScenePreviewProps) => {
   return (
@@ -30,5 +30,5 @@ export const SceneSettingsMenu = ({ scene }: ScenePreviewProps) => {
 };
 
 const SceneSettingsMenuContainer = classed.div(
-  "text-center [&_.scene-setting]:mb-4 [&_.scene-setting-button]:block [&_.scene-setting-button]:mx-auto [&_.scene-setting-button]:mb-1"
+  "text-center [&_.scene-setting]:mb-4 [&_.scene-setting-button]:block [&_.scene-setting-button]:mx-auto [&_.scene-setting-button]:mb-1",
 );

@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { TextField, Button, Card } from "~/components";
-import { useSupabase } from "~/components/providers/supabase-provider";
+import { TextField, Button, Card } from "@/components";
+import { useSupabase } from "@/components/providers/supabase-provider";
 
 type FormInputs = {
   email: string;

@@ -62,10 +62,13 @@ export const useGameStore = create<GameStore>()((set) => ({
     answerType: "text",
     sceneAnswers: [],
   },
-  setGameState: (state) =>
-    set((store) => ({ ...store, state: { ...store.state, ...state } })),
+  setGameState: (state) => {
+    set((store) => ({ ...store, state: { ...store.state, ...state } }));
+  },
   players: [],
-  setPlayers: (players) => set((store) => ({ ...store, players })),
+  setPlayers: (players) => {
+    set((store) => ({ ...store, players }));
+  },
 }));
 
 export const useAllGameStore = () => useGameStore((state) => state, shallow);

@@ -1,14 +1,14 @@
 import { useEffect, useState, useRef } from "react";
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 import { motion } from "framer-motion";
 import { useHotkeys } from "@react-hook/hotkey";
-import { Button, Icon } from "~/components";
-import { Instruction } from "~/lib/game/components/instruction";
-import { Question } from "~/lib/game/components/question";
-import { Answer } from "~/lib/game/components/answer";
-import { keybindings } from "~/lib/packs/pack-utils";
-import { useCreateScene, useDeleteScene } from "~/lib/packs/use-scene-actions";
-import { CsvImportButton } from "~/lib/packs/components/pack-csv-import";
+import { Button, Icon } from "@/components";
+import { Instruction } from "@/lib/game/components/instruction";
+import { Question } from "@/lib/game/components/question";
+import { Answer } from "@/lib/game/components/answer";
+import { keybindings } from "@/lib/packs/pack-utils";
+import { useCreateScene, useDeleteScene } from "@/lib/packs/use-scene-actions";
+import { CsvImportButton } from "@/lib/packs/components/pack-csv-import";
 import { Scene as SceneModel } from "@prisma/client";
 
 type Props = {
@@ -98,7 +98,7 @@ export const Sidebar = ({
 };
 
 const SidebarHeader = classed.header(
-  "flex justify-between items-center mb-3 [&_h3]:m-0"
+  "flex justify-between items-center mb-3 [&_h3]:m-0",
 );
 
 const SidebarContent = classed.ul("overflow-auto pr-3 m-0");
@@ -130,7 +130,7 @@ const SidebarItem = ({
       >
         <QuestionPreview>
           <Instruction
-            className="h-auto mb-1"
+            className="mb-1 h-auto"
             instruction={scene.questionDescription || ""}
           />
           <Question
@@ -161,7 +161,7 @@ const SidebarItem = ({
         {/* delete */}
         {showDelete && (
           <button
-            className="hidden hover:block absolute -right-1 -top-1"
+            className="absolute -right-1 -top-1 hidden hover:block"
             onClick={() => onDeleteScene(scene.id, index)}
           >
             <Icon icon="trash" />
@@ -186,7 +186,7 @@ const QuestionItem = classed.div(
     defaultVariants: {
       isSelected: "false",
     },
-  }
+  },
 );
 
 const QuestionPreview = classed.div(
@@ -203,5 +203,5 @@ const QuestionPreview = classed.div(
   "[&_.answer-display]:overflow-hidden [&_.answer-display]:text-ellipsis [&_.answer-display]:whitespace-nowrap",
   "[&_.answer-display]:m-0 [&_.answer-display]:rounded-wavy [&_.answer-display]:border-2",
   "[&_.answer-display]:border-grey-dark dark:[&_.answer-display]:border-grey-light",
-  "[&_.answer-display.correct]:border-purple"
+  "[&_.answer-display.correct]:border-purple",
 );

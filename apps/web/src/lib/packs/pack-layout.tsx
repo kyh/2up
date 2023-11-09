@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { Navigation } from "./components/navigation";
 import { Page } from "./components/page";
 
@@ -7,7 +6,7 @@ export const PackLayout = ({
   bgImage,
   bgTop,
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
   bgImage?: boolean;
   bgTop?: string;
 }) => {

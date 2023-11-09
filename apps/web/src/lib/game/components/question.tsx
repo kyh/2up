@@ -1,7 +1,7 @@
-import { classed } from "~/utils/classed";
-import { QuestionTypeSlugs } from "~/lib/game/game-utils";
-import { VideoPlayer, AudioPlayer, Code } from "~/components";
-import type { StepProps } from "~/lib/game/steps/types";
+import { classed } from "@/lib/utils/classed";
+import { QuestionTypeSlugs } from "@/lib/game/game-utils";
+import { VideoPlayer, AudioPlayer, Code } from "@/components";
+import type { StepProps } from "@/lib/game/steps/types";
 
 type QuestionProps = {
   question: string;
@@ -52,7 +52,7 @@ const QuestionImage = ({ question }: QuestionComponentProp) => {
 };
 
 const Image = classed.img(
-  "object-contain max-w-[100vw] h-[240px] desktop:max-w-[40vw]"
+  "object-contain max-w-[100vw] h-[240px] desktop:max-w-[40vw]",
 );
 
 const QuestionAudio = ({ question, displayMode }: QuestionComponentProp) => {
@@ -94,7 +94,7 @@ const QuestionCode = ({ question }: QuestionComponentProp) => {
 };
 
 export const Container = classed.div(
-  "flex justify-center items-center w-full mb-5"
+  "flex justify-center items-center w-full mb-5",
 );
 
 const QuestionContainer = classed(Container, "h-[240px] text-3xl font-bold");

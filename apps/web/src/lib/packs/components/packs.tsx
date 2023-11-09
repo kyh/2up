@@ -1,6 +1,6 @@
-import { classed, deriveClassed, ComponentProps } from "~/utils/classed";
-import { Link, Button, ButtonLinkNative, Icon } from "~/components";
-import { useHostGame } from "~/lib/game/use-game-actions";
+import { classed, deriveClassed, ComponentProps } from "@/lib/utils/classed";
+import { Link, Button, ButtonLinkNative, Icon } from "@/components";
+import { useHostGame } from "@/lib/game/use-game-actions";
 import { Pack as PackModel } from "@prisma/client";
 
 export const PackItemsContainer = classed.div(
@@ -15,7 +15,7 @@ export const PackItemsContainer = classed.div(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 export const PackSection = classed.div({
@@ -42,13 +42,13 @@ export const PackSectionHeader = classed.header(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 export const PackCategoryLink = classed(
   Link,
   "inline-block after:inline-block after:content-['»'] after:ml-1 after:transition-transform after:duration-200",
-  "after:ease-[ease] hover:after:translate-x-1"
+  "after:ease-[ease] hover:after:translate-x-1",
 );
 
 export const PackImage = classed.div(
@@ -63,7 +63,7 @@ export const PackImage = classed.div(
     defaultVariants: {
       src: "false",
     },
-  }
+  },
 );
 
 const PackItem = classed.div(
@@ -80,11 +80,11 @@ const PackItem = classed.div(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 const PackItemPlay = classed.div(
-  "hidden group-hover:block absolute right-5 bottom-5 animate-[fade-in_0.3s_ease_forwards]"
+  "hidden group-hover:block absolute right-5 bottom-5 animate-[fade-in_0.3s_ease_forwards]",
 );
 
 const PlayButton = classed(Button, "p-2 rounded-full bg-white dark:bg-black");
@@ -123,7 +123,7 @@ export const Pack = deriveClassed<typeof PackItem, PacksProps>(
           </PackItemPlay>
         )}
         {showEditButton && (
-          <div className="absolute left-5 bottom-10">
+          <div className="absolute bottom-10 left-5">
             <ButtonLinkNative href={`/packs/${pack.id}/edit`}>
               Edit Pack
             </ButtonLinkNative>
@@ -131,5 +131,5 @@ export const Pack = deriveClassed<typeof PackItem, PacksProps>(
         )}
       </PackItem>
     );
-  }
+  },
 );

@@ -5,13 +5,11 @@ import {
   useTheme as useNextTheme,
 } from "next-themes";
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  return (
-    <NextThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      {children}
-    </NextThemeProvider>
-  );
-}
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => (
+  <NextThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    {children}
+  </NextThemeProvider>
+);
 
 export const useTheme = () => {
   return useNextTheme();

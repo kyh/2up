@@ -1,11 +1,11 @@
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 
 const CheckboxContainer = classed.label("relative inline-block p-3 m-0");
 
 const CheckboxInput = classed.input(
   "peer w-[21px] h-[21px] block appearance-none relative outline-none border-none m-0 p-0",
   "transition-shadow duration-300 cursor-pointer rounded",
-  "shadow-[inset_0_0_0_2px] shadow-black dark:shadow-white active:shadow-purple"
+  "shadow-[inset_0_0_0_2px] shadow-black dark:shadow-white active:shadow-purple",
 );
 
 const CheckboxSvg = classed.svg(
@@ -13,7 +13,7 @@ const CheckboxSvg = classed.svg(
   "stroke-2 [stroke-linecap:round] [stroke-linejoin:round] stroke-purple",
   "[stroke-dasharray:86.12] [stroke-dashoffset:86.12]",
   "[transition:stroke-dasharray_0.6s_,_stroke-dashoffset_0.6s]",
-  "peer-checked:delay-[0.4s] peer-checked:[stroke-dasharray:16.1_86.12] peer-checked:[stroke-dashoffset:102.22]"
+  "peer-checked:delay-[0.4s] peer-checked:[stroke-dasharray:16.1_86.12] peer-checked:[stroke-dashoffset:102.22]",
 );
 
 export const Checkbox = ({ ...rest }) => {

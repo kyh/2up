@@ -7,9 +7,9 @@ import type {
   AuthError,
 } from "@supabase/supabase-js";
 import { nanoid } from "nanoid";
-import { useSupabase } from "~/components/providers/supabase-provider";
-import { useAlert } from "~/components";
-import { useHomeStore } from "~/lib/home/home-store";
+import { useSupabase } from "@/components/providers/supabase-provider";
+import { useAlert } from "@/components";
+import { useHomeStore } from "@/lib/home/home-store";
 
 type Context = {
   user: User | null;
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: Props) => {
       async (_event, session) => {
         handleSession(session);
         setUser(session?.user ?? null);
-      }
+      },
     );
 
     getSession();
@@ -107,4 +107,4 @@ export const AuthProvider = ({ children }: Props) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext) as Context;
+export const useAuth = () => useContext(AuthContext)!;

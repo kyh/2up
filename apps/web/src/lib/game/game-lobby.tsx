@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 import {
   Link,
   Button,
@@ -8,14 +8,14 @@ import {
   AnimationSprite,
   Icon,
   useAlert,
-} from "~/components";
+} from "@/components";
 import {
   Player,
   PlayersGrid,
   NextButton,
-} from "~/lib/game/components/player-grid";
-import { useGameStore } from "~/lib/game/game-store";
-import { useStartGame } from "~/lib/game/use-game-actions";
+} from "@/lib/game/components/player-grid";
+import { useGameStore } from "@/lib/game/game-store";
+import { useStartGame } from "@/lib/game/use-game-actions";
 
 export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
   const alert = useAlert();
@@ -69,7 +69,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
     <>
       <TitleContainer>
         {/* Title */}
-        <h1 className="text-3xl font-bold mb-5">
+        <h1 className="mb-5 text-3xl font-bold">
           <div>
             Invite friends to{" "}
             <button type="button" onClick={onShare} className="text-purple">
@@ -117,7 +117,7 @@ export const GameLobby = ({ isSpectate }: { isSpectate?: boolean }) => {
                   </span>
                   <span className="block">and enter the room code:</span>
                 </StartModalPTag>
-                <div className="text-[2rem] p-5">{gameId}</div>
+                <div className="p-5 text-[2rem]">{gameId}</div>
               </TitleContainer>
               <Button fullWidth onClick={onStart} disabled={isLoading}>
                 Start anyways
@@ -138,7 +138,7 @@ const JoinRoomButton = classed(Link, "block text-center underline mt-auto");
 const GameId = classed.div(
   "text-white dark:text-black bg-black dark:bg-white text-[5.5rem]",
   "flex justify-center items-center pt-5 pb-[30px] px-[30px] leading-none",
-  "rounded-[19px_22px_30%_16px_/_19px_17px_14px_30px] mb-5"
+  "rounded-[19px_22px_30%_16px_/_19px_17px_14px_30px] mb-5",
 );
 const TitleContainer = classed.div("pt-[50px]");
 
@@ -146,12 +146,12 @@ const ShareIcon = classed(Icon, "relative left-[-10px]");
 
 const PlayersContainer = classed(
   PlayersGrid,
-  "[&_.avatar]:scale-0 [&_.avatar]:animate-[bounce-in_1s_linear_forwards_0.4s] grid-cols-3"
+  "[&_.avatar]:scale-0 [&_.avatar]:animate-[bounce-in_1s_linear_forwards_0.4s] grid-cols-3",
 );
 
 const Explosion = classed(
   AnimationSprite,
-  "top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
+  "top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2",
 );
 
 const StartModalPTag = classed.p("mb-3");

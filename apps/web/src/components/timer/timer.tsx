@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 
 type Props = {
   initialSeconds?: number;
@@ -48,23 +48,23 @@ export const Timer = ({
             <div>{seconds} seconds remaining</div>
           </TimerContainer>
         </Container>,
-        document.body
+        document.body,
       )
     : null;
 };
 
 const TimerContainer = classed.div(
-  "animate-[move-animation_var(--initialSeconds)_linear_infinite] [animation-iteration-count:1]"
+  "animate-[move-animation_var(--initialSeconds)_linear_infinite] [animation-iteration-count:1]",
 );
 
 const Container = classed.div(
-  "absolute inset-x-0 bottom-0 overflow-hidden pointer-events-none desktop:bottom-5"
+  "absolute inset-x-0 bottom-0 overflow-hidden pointer-events-none desktop:bottom-5",
 );
 
 const SnailContainer = classed.div("flex");
 
 const Dust = classed.div(
-  "w-[197px] h-[66px] bg-dust [background-size:5910px_67px] animate-dust -translate-x-5 translate-y-[10px]"
+  "w-[197px] h-[66px] bg-dust [background-size:5910px_67px] animate-dust -translate-x-5 translate-y-[10px]",
 );
 
 const SnailSvg = () => (

@@ -1,6 +1,6 @@
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 import { useForm, Controller } from "react-hook-form";
-import { Button, TextField, AreaField, TagInput } from "~/components";
+import { Button, TextField, AreaField, TagInput } from "@/components";
 
 const defaultPackValues = {
   name: "",
@@ -75,5 +75,5 @@ export const PackForm = ({
 };
 
 const Form = classed.form(
-  "flex flex-col [&_input]:w-full [&_textarea]:w-full [&_button]:mx-auto [&_button]:my-0 space-y-3"
+  "flex flex-col [&_input]:w-full [&_textarea]:w-full [&_button]:mx-auto [&_button]:my-0 space-y-3",
 );

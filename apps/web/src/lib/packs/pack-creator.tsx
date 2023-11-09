@@ -1,24 +1,24 @@
 import { useEffect, useState, useRef } from "react";
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 import { useRouter } from "next/router";
 import { useHotkeys } from "@react-hook/hotkey";
-import { Topbar } from "~/lib/packs/components/pack-creator-topbar";
-import { Sidebar } from "~/lib/packs/components/pack-creator-left-sidebar";
-import { ScenePreview } from "~/lib/packs/components/scene-preview";
-import { SceneQATypeMenu } from "~/lib/packs/components/scene-qa-type-menu";
-import { SceneSettingsMenu } from "~/lib/packs/components/scene-settings-menu";
-import { Button, Modal, Icon, Spinner } from "~/components";
+import { Topbar } from "@/lib/packs/components/pack-creator-topbar";
+import { Sidebar } from "@/lib/packs/components/pack-creator-left-sidebar";
+import { ScenePreview } from "@/lib/packs/components/scene-preview";
+import { SceneQATypeMenu } from "@/lib/packs/components/scene-qa-type-menu";
+import { SceneSettingsMenu } from "@/lib/packs/components/scene-settings-menu";
+import { Button, Modal, Icon, Spinner } from "@/components";
 import {
   keybindings,
   instructionElementAttribute,
-} from "~/lib/packs/pack-utils";
-import { useHostGame } from "~/lib/game/use-game-actions";
+} from "@/lib/packs/pack-utils";
+import { useHostGame } from "@/lib/game/use-game-actions";
 import {
   usePackStore,
   VisibleQATypeMenu,
   SceneWithAnswers,
-} from "~/lib/packs/pack-store";
-import { useGetPack } from "~/lib/packs/use-pack-actions";
+} from "@/lib/packs/pack-store";
+import { useGetPack } from "@/lib/packs/use-pack-actions";
 import ArrowSvg from "./svgs/arrow.svg";
 
 export const PackCreator = () => {
@@ -29,14 +29,14 @@ export const PackCreator = () => {
   const { hostGame } = useHostGame();
   const setPackScenes = usePackStore((state) => state.setPackScenes);
   const setVisibleQATypeMenu = usePackStore(
-    (state) => state.setVisibleQATypeMenu
+    (state) => state.setVisibleQATypeMenu,
   );
   const packId = router.query.packId as string;
   const { data: pack, isLoading, refetch } = useGetPack(packId, true);
 
   const packScenes = pack?.scenes;
   const selectedScene = packScenes?.find(
-    (scene) => scene.id === selectedSceneId
+    (scene) => scene.id === selectedSceneId,
   ) as SceneWithAnswers;
 
   const selectScene = (selectedSceneId: string) => {
@@ -59,7 +59,7 @@ export const PackCreator = () => {
     const target = e.target as HTMLElement;
     if (target && target.tagName === "TEXTAREA") return;
     const currentSceneIndex = packScenes.findIndex(
-      (scene) => scene.id === selectedSceneId
+      (scene) => scene.id === selectedSceneId,
     );
     if (currentSceneIndex !== -1) {
       const newSelectedScene =
@@ -81,7 +81,7 @@ export const PackCreator = () => {
     }
     if (screenRef && screenRef.current) {
       const element = screenRef.current.querySelector(
-        query
+        query,
       ) as HTMLInputElement;
       element.focus();
     }
@@ -138,12 +138,12 @@ export const PackCreator = () => {
       ) : (
         <EmptyContent>
           {/* empty-content */}
-          <div className="text-center max-w-[600px] m-auto">
-            <h1 className="text-4xl font-bold mb-3">
+          <div className="m-auto max-w-[600px] text-center">
+            <h1 className="mb-3 text-4xl font-bold">
               Wow it&apos;s a brand new pack!
             </h1>
             <p className="mb-5">Here&apos;s how it works:</p>
-            <ul className="text-left list-disc pl-12">
+            <ul className="list-disc pl-12 text-left">
               <li>A pack contains many scenes</li>
               <li>A scene has a question and a answer</li>
               <li>
@@ -157,7 +157,7 @@ export const PackCreator = () => {
               <li>You get the gist of it, add your first scene to begin</li>
             </ul>
           </div>
-          <ArrowSvg className="absolute bottom-[65px] left-[225px] brightness-50 [&_svg]:w-[250px] [&_svg]:h-auto" />
+          <ArrowSvg className="absolute bottom-[65px] left-[225px] brightness-50 [&_svg]:h-auto [&_svg]:w-[250px]" />
         </EmptyContent>
       )}
       <HelpButton variant="fab" onClick={toggleHelpModal}>
@@ -173,11 +173,11 @@ export const PackCreator = () => {
         <HelpModalContent>
           {Object.values(keybindings).map((binding) => (
             <div
-              className="flex justify-between items-center mb-2"
+              className="mb-2 flex items-center justify-between"
               key={binding.display}
             >
               <div>{binding.description}</div>
-              <code className="py-1 px-2 text-[0.9rem] bg-grey-background dark:bg-grey-dark">
+              <code className="bg-grey-background px-2 py-1 text-[0.9rem] dark:bg-grey-dark">
                 {binding.display}
               </code>
             </div>
@@ -189,34 +189,34 @@ export const PackCreator = () => {
 };
 
 const Page = classed.section(
-  "h-screen grid bg-grey-background dark:bg-grey-dark grid-cols-[215px_1fr_1fr_100px] grid-rows-[50px_1fr_50px]"
+  "h-screen grid bg-grey-background dark:bg-grey-dark grid-cols-[215px_1fr_1fr_100px] grid-rows-[50px_1fr_50px]",
 );
 
 const SidebarLeft = classed.section(
   "grid grid-rows-[max-content_auto_max-content] h-full border-r border-grey-dark dark:border-grey-light",
-  "col-span-1 row-start-2 row-span-2"
+  "col-span-1 row-start-2 row-span-2",
 );
 
 const Content = classed.section("p-7 col-start-2 col-span-2 row-start-2");
 
 const EmptyContent = classed(
   Content,
-  "flex invisible animate-[visible_0s_linear_0.1s_forwards]"
+  "flex invisible animate-[visible_0s_linear_0.1s_forwards]",
 );
 
 const Screen = classed.section(
   "flex flex-col items-center bg-white dark:bg-black p-5 w-full overflow-auto rounded-wavy border-2",
   "border-grey-dark dark:border-grey-light",
   // screen - top - padding - footer - padding
-  "h-[calc(100vh_-_50px_-_40px_-_50px_-_16px)]"
+  "h-[calc(100vh_-_50px_-_40px_-_50px_-_16px)]",
 );
 
 const SidebarRight = classed.section(
-  "h-full py-7 px-3 col-start-4 col-span-1 row-start-2 row-span-2"
+  "h-full py-7 px-3 col-start-4 col-span-1 row-start-2 row-span-2",
 );
 
 const Footer = classed.footer(
-  "relative row-start-3 row-span-1 col-start-2 col-span-2"
+  "relative row-start-3 row-span-1 col-start-2 col-span-2",
 );
 
 const HelpButton = classed(Button, "fixed bottom-3 right-3 p-2 rounded-full");

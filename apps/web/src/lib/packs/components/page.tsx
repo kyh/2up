@@ -1,4 +1,4 @@
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 
 export const Page = classed.section(
   "min-h-screen bg-grey-background dark:bg-grey-dark",
@@ -13,14 +13,14 @@ export const Page = classed.section(
     defaultVariants: {
       bgImage: "false",
     },
-  }
+  },
 );
 
 export const Content = classed.main(
-  "max-w-[900px] w-full mx-auto py-5 px-3 desktop:py-10 desktop:px-5"
+  "max-w-[900px] w-full mx-auto py-5 px-3 desktop:py-10 desktop:px-5",
 );
 
 export const Footer = classed.footer(
   "flex justify-center items-center pt-5 pb-20 bg-no-repeat [background-size:300px] bg-[center_-30px]",
-  "bg-[url('/illustrations/rainbow.svg')] [&_a]:underline"
+  "bg-[url('/illustrations/rainbow.svg')] [&_a]:underline",
 );

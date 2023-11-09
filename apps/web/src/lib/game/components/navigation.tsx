@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { classed } from "~/utils/classed";
-import { useAllHomeStore } from "~/lib/home/home-store";
-import { Button, ButtonLink, Modal, Icon } from "~/components";
-import { createOrGetThemesong } from "~/styles/sound";
-import { useTheme } from "~/components/providers/theme-provider";
+import { classed } from "@/lib/utils/classed";
+import { useAllHomeStore } from "@/lib/home/home-store";
+import { Button, ButtonLink, Modal, Icon } from "@/components";
+import { createOrGetThemesong } from "@/styles/sound";
+import { useTheme } from "@/components/providers/theme-provider";
 
 export const Navigation = () => {
   const router = useRouter();
@@ -106,7 +106,7 @@ export const Navigation = () => {
 };
 
 const NavigationContainer = classed.nav(
-  "flex justify-end items-center px-2 h-[50px]"
+  "flex justify-end items-center px-2 h-[50px]",
 );
 
 const SettingsContainer = classed.div("mb-2 last:border-none", {

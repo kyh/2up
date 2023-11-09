@@ -1,4 +1,4 @@
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 
 // Delay and duration can be modified by tw-classes
 export const AnimationSprite = classed.div(
@@ -18,5 +18,5 @@ export const AnimationSprite = classed.div(
         bubbleLike: "bg-bubble-like animate-bubble-like",
       },
     },
-  }
+  },
 );

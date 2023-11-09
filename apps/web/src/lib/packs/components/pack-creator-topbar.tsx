@@ -7,12 +7,12 @@ import {
   Loader,
   useAlert,
   WithTip,
-} from "~/components";
-import { NavigationContainer } from "~/lib/packs/components/navigation";
-import { PackForm, PackFormInputs } from "~/lib/packs/components/pack-form";
-import { usePackStore } from "~/lib/packs/pack-store";
-import { useUpdatePack } from "~/lib/packs/use-pack-actions";
-import { getErrorMessage } from "~/utils/error";
+} from "@/components";
+import { NavigationContainer } from "@/lib/packs/components/navigation";
+import { PackForm, PackFormInputs } from "@/lib/packs/components/pack-form";
+import { usePackStore } from "@/lib/packs/pack-store";
+import { useUpdatePack } from "@/lib/packs/use-pack-actions";
+import { getErrorMessage } from "@/lib/utils/error";
 import { Pack as PackModel, PackTag as PackTagModel } from "@prisma/client";
 
 type Props = {
@@ -42,7 +42,7 @@ export const Topbar = ({ pack, testPlay }: Props) => {
   return (
     <NavigationContainer variant="grid">
       {/* Left */}
-      <div className="col-span-1 pl-3 self-center w-fit">
+      <div className="col-span-1 w-fit self-center pl-3">
         <Link href={`/packs/${pack.id}`}>
           <picture>
             <source srcSet="/logo/logomark.svg" />
@@ -57,7 +57,7 @@ export const Topbar = ({ pack, testPlay }: Props) => {
         </Link>
       </div>
       {/* right */}
-      <div className="col-start-2 col-span-3 flex justify-between items-center w-full relative px-3">
+      <div className="relative col-span-3 col-start-2 flex w-full items-center justify-between px-3">
         <div>
           <Loader
             className="absolute left-4 top-4 text-grey dark:text-grey-light"

@@ -1,8 +1,8 @@
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 import { useRouter } from "next/router";
-import { Button, Confetti } from "~/components";
+import { Button, Confetti } from "@/components";
 import { PlayerScores } from "./step3";
-import type { StepProps } from "~/lib/game/steps/types";
+import type { StepProps } from "@/lib/game/steps/types";
 
 const Step0Play = ({ gameState }: StepProps) => {
   const router = useRouter();

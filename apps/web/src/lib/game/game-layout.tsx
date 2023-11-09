@@ -1,10 +1,10 @@
-import { ReactNode, useEffect } from "react";
-import { classed } from "~/utils/classed";
+import { React.ReactNode, useEffect } from "react";
+import { classed } from "@/lib/utils/classed";
 import { useRouter } from "next/router";
-import { Navigation } from "~/lib/game/components/navigation";
-import { useConnectGame } from "~/lib/game/use-connect-game";
+import { Navigation } from "@/lib/game/components/navigation";
+import { useConnectGame } from "@/lib/game/use-connect-game";
 
-export const GameLayout = ({ children }: { children: ReactNode }) => {
+export const GameLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const gameId = router.query.gameId as string;
 

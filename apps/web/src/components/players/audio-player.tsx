@@ -1,11 +1,11 @@
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 import ReactAudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { Icon } from "../icon/icon";
 import React from "react";
 
 export const AudioPlayer = (
-  props: React.ComponentProps<typeof ReactAudioPlayer>
+  props: React.ComponentProps<typeof ReactAudioPlayer>,
 ) => {
   return (
     <StyledAudioPlayer
@@ -20,12 +20,12 @@ export const AudioPlayer = (
         loop: <Icon icon="loop" />,
         loopOff: <Icon icon="loopOff" />,
         volume: (
-          <Icon icon="volume" className="child:w-5 child:h-5" size="class" />
+          <Icon icon="volume" className="child:h-5 child:w-5" size="class" />
         ),
         volumeMute: (
           <Icon
             icon="volumeMute"
-            className="child:w-5 child:h-5"
+            className="child:h-5 child:w-5"
             size="class"
           />
         ),
@@ -37,5 +37,5 @@ export const AudioPlayer = (
 
 const StyledAudioPlayer = classed(
   ReactAudioPlayer,
-  "min-w-[320px] shadow-none"
+  "min-w-[320px] shadow-none",
 );

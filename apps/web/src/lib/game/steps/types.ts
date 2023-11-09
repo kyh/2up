@@ -1,5 +1,5 @@
-import type { GameStore } from "~/lib/game/game-store";
-import type { HomeStore } from "~/lib/home/home-store";
+import type { GameStore } from "@/lib/game/game-store";
+import type { HomeStore } from "@/lib/home/home-store";
 
 export type StepProps = {
   isSpectate?: boolean;

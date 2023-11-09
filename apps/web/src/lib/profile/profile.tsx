@@ -1,13 +1,13 @@
 import { useRouter } from "next/router";
-import { ButtonLinkNative, Spinner } from "~/components";
-import { Content } from "~/lib/packs/components/page";
+import { ButtonLinkNative, Spinner } from "@/components";
+import { Content } from "@/lib/packs/components/page";
 import {
   PackSection,
   PackItemsContainer,
   Pack,
-} from "~/lib/packs/components/packs";
-import { useGetPacks } from "~/lib/packs/use-pack-actions";
-import { useAuth } from "~/lib/auth/use-auth";
+} from "@/lib/packs/components/packs";
+import { useGetPacks } from "@/lib/packs/use-pack-actions";
+import { useAuth } from "@/lib/auth/use-auth";
 
 export const Profile = () => {
   const auth = useAuth();

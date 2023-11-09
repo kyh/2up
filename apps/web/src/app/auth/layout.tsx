@@ -1,6 +1,6 @@
-import { getSupabaseServerClient } from "~/utils/supabase";
 import { redirect } from "next/navigation";
-import { PageContainer } from "~/lib/home/components/page";
+import { getSupabaseServerClient } from "@/lib/utils/supabase";
+import { PageContainer } from "@/lib/home/components/page";
 
 export const dynamic = "force-dynamic";
 
@@ -8,7 +8,7 @@ type LayoutProps = {
   children: React.ReactNode;
 };
 
-export default async function Layout({ children }: LayoutProps) {
+export default async ({ children }: LayoutProps) => {
   const supabase = getSupabaseServerClient();
 
   const {
@@ -20,8 +20,8 @@ export default async function Layout({ children }: LayoutProps) {
   }
 
   return (
-    <section className="dark:bg-grey-dark min-h-screen">
+    <section className="min-h-screen dark:bg-grey-dark">
       <PageContainer>{children}</PageContainer>
     </section>
   );
-}
+};

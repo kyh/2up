@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
-import NextLink, { LinkProps } from "next/link";
+import type { LinkProps } from "next/link";
+import NextLink from "next/link";
 
 type Props = {
   className?: string;
-  children?: ReactNode;
+  children?: React.ReactNode;
 } & LinkProps;
 
 export const Link = ({ children, href, ...rest }: Props) => {

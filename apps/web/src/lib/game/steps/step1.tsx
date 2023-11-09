@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
-import { classed } from "~/utils/classed";
-import { Alert, Timer } from "~/components";
-import { Instruction } from "~/lib/game/components/instruction";
-import { Question } from "~/lib/game/components/question";
-import { Answer } from "~/lib/game/components/answer";
-import { useSubmitAnswer } from "~/lib/game/use-game-actions";
-import type { StepProps } from "~/lib/game/steps/types";
+import { classed } from "@/lib/utils/classed";
+import { Alert, Timer } from "@/components";
+import { Instruction } from "@/lib/game/components/instruction";
+import { Question } from "@/lib/game/components/question";
+import { Answer } from "@/lib/game/components/answer";
+import { useSubmitAnswer } from "@/lib/game/use-game-actions";
+import type { StepProps } from "@/lib/game/steps/types";
 
 const Step1Play = ({
   gameId,
@@ -17,8 +17,8 @@ const Step1Play = ({
   const [submitted, setSubmitted] = useState(false);
   const initialSecondsRef = useRef(
     Math.round(
-      (gameState.duration * 1000 - (gameState.startTime - Date.now())) / 1000
-    )
+      (gameState.duration * 1000 - (gameState.startTime - Date.now())) / 1000,
+    ),
   );
   const { submitAnswer } = useSubmitAnswer();
 
@@ -28,7 +28,7 @@ const Step1Play = ({
   const onSubmit = (
     submission: Pick<StepProps["gameState"]["submissions"][0], "content"> = {
       content: "",
-    }
+    },
   ) => {
     if (submitted) return;
     setSubmitted(true);
@@ -85,7 +85,7 @@ const Step1Spectate = ({ gameState }: StepProps) => {
 };
 
 const SpectateConatiner = classed.div(
-  "max-w-[600px] leading-[1.3] translate-y-[-100px] text-center"
+  "max-w-[600px] leading-[1.3] translate-y-[-100px] text-center",
 );
 
 export const Step1 = (props: StepProps) => {

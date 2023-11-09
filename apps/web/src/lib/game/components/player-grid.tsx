@@ -1,11 +1,10 @@
-import { ReactNode } from "react";
-import { classed } from "~/utils/classed";
-import { Avatar, Button } from "~/components";
+import { classed } from "@/lib/utils/classed";
+import { Avatar, Button } from "@/components";
 
 type PlayerProps = {
   playerName: string;
-  playerContent?: ReactNode;
-  children?: ReactNode;
+  playerContent?: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export const Player = ({
@@ -17,7 +16,7 @@ export const Player = ({
   return (
     <PlayerContainer className="player" {...rest}>
       <Avatar
-        className="avatar p-0 desktop:rounded-none desktop:border-none desktop:h-full desktop:w-full"
+        className="avatar p-0 desktop:h-full desktop:w-full desktop:rounded-none desktop:border-none"
         name={playerName}
       />
       <PlayerName className="name">
@@ -41,10 +40,10 @@ export const PlayersGrid = classed.div(
   "[&_.player_.name]:desktop:mb-1 [&_.player_.avatar]:desktop:overflow-hidden",
   "[&_.player_.avatar_svg]:desktop:max-w-[130px] [&_.player_.avatar_svg]:desktop:max-h-[300px]",
   "[&_.player_.correct]:desktop:top-auto [&_.player_.correct]:desktop:left-auto [&_.player_.correct]:desktop:bottom-[-7px]",
-  "[&_.avatar_>_svg]:animate-[jitter_0.7s_linear_infinite]"
+  "[&_.avatar_>_svg]:animate-[jitter_0.7s_linear_infinite]",
 );
 
 export const NextButton = classed(
   Button,
-  "absolute bottom-10 left-1/2 w-[200px] ml-[-75px] z-10 desktop:bg-white desktop:dark:bg-black px-8"
+  "absolute bottom-10 left-1/2 w-[200px] ml-[-75px] z-10 desktop:bg-white desktop:dark:bg-black px-8",
 );

@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { classed } from "~/utils/classed";
 import { create } from "zustand";
 import { shallow } from "zustand/shallow";
 import { nanoid } from "nanoid";
+import { classed } from "@/lib/utils/classed";
 
 const AlertContainer = classed.ul(
   "fixed top-3 inset-x-0 flex flex-col justify-center items-center z-10",
@@ -75,12 +75,14 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
         <AnimatePresence initial={false}>
           {alerts.map((t) => (
             <AlertTemplate
-              onClick={() => remove(t.id)}
-              key={t.id}
-              layout
-              initial={{ opacity: 0, y: -30, scale: 0.3 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+              initial={{ opacity: 0, y: -30, scale: 0.3 }}
+              key={t.id}
+              layout
+              onClick={() => {
+                remove(t.id);
+              }}
             >
               {t.message}
             </AlertTemplate>

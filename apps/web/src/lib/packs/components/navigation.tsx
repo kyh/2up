@@ -1,7 +1,7 @@
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 import Image from "next/image";
-import { Link } from "~/components";
-import { useAuth } from "~/lib/auth/use-auth";
+import { Link } from "@/components";
+import { useAuth } from "@/lib/auth/use-auth";
 
 export const Navigation = () => {
   const auth = useAuth();
@@ -21,14 +21,14 @@ export const Navigation = () => {
       </div>
       {/* right end */}
       {!auth.loading && (
-        <div className="flex justify-end items-center flex-auto px-3">
+        <div className="flex flex-auto items-center justify-end px-3">
           {auth.user ? (
             <>
-              <Link className="hover:underline p-3" href="/">
+              <Link className="p-3 hover:underline" href="/">
                 Play
               </Link>
               <Link
-                className="hover:underline p-3"
+                className="p-3 hover:underline"
                 href={`/u/${auth.user.user_metadata.username}`}
               >
                 Profile
@@ -43,13 +43,13 @@ export const Navigation = () => {
             </>
           ) : (
             <>
-              <Link className="hover:underline p-3" href="/">
+              <Link className="p-3 hover:underline" href="/">
                 Play
               </Link>
-              <Link className="hover:underline p-3" href="/auth/request">
+              <Link className="p-3 hover:underline" href="/auth/request">
                 Sign Up
               </Link>
-              <Link className="hover:underline p-3" href="/auth/login">
+              <Link className="p-3 hover:underline" href="/auth/login">
                 Login
               </Link>
             </>
@@ -73,5 +73,5 @@ export const NavigationContainer = classed.nav(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );

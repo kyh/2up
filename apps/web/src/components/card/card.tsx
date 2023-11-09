@@ -1,4 +1,4 @@
-import { classed } from "~/utils/classed";
+import { classed } from "@/lib/utils/classed";
 
 export const Card = classed.div(
   "flex flex-col p-8 border-2 border-grey-dark dark:border-grey-light rounded-wavy",
@@ -12,5 +12,5 @@ export const Card = classed.div(
     defaultVariants: {
       background: "false",
     },
-  }
+  },
 );

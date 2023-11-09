@@ -1,10 +1,11 @@
-import { classed } from "~/utils/classed";
-import { Float, FloatProps } from "@headlessui-float/react";
+import type { FloatProps } from "@headlessui-float/react";
+import { Float } from "@headlessui-float/react";
 import { useState } from "react";
+import { classed } from "@/lib/utils/classed";
 
 export const Tooltip = classed.div(
   "flex items-start rounded-wavy p-3",
-  "text-white dark:text-black bg-black dark:bg-white"
+  "text-white dark:text-black bg-black dark:bg-white",
 );
 
 type Props = {
@@ -17,22 +18,26 @@ export const WithTip = ({ children, tipContent, ...props }: Props) => {
 
   return (
     <Float
-      offset={8}
-      flip
-      shift={6}
-      portal
       enter="ease-out duration-100"
       enterFrom="opacity-0"
       enterTo="opacity-100"
+      flip
       leave="ease-in duration-100"
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
+      offset={8}
+      portal
+      shift={6}
       show={show}
       {...props}
     >
       <div
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
+        onMouseEnter={() => {
+          setShow(true);
+        }}
+        onMouseLeave={() => {
+          setShow(false);
+        }}
       >
         {children}
       </div>
