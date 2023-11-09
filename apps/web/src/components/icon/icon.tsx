@@ -1,46 +1,46 @@
-import setting from "./svgs/setting.svg";
-import close from "./svgs/close.svg";
-import pencil from "./svgs/pencil.svg";
-import play from "./svgs/play.svg";
-import trash from "./svgs/trash.svg";
-import list from "./svgs/list.svg";
-import share from "./svgs/share.svg";
-import leftArrow from "./svgs/left-arrow.svg";
-import rightArrow from "./svgs/right-arrow.svg";
-import time from "./svgs/time.svg";
-import question from "./svgs/question.svg";
-import pause from "./svgs/pause.svg";
-import rewind from "./svgs/rewind.svg";
-import forward from "./svgs/forward.svg";
-import previous from "./svgs/previous.svg";
-import next from "./svgs/next.svg";
-import loop from "./svgs/loop.svg";
-import loopOff from "./svgs/loop-off.svg";
-import volume from "./svgs/volume.svg";
-import volumeMute from "./svgs/volume-mute.svg";
+// import setting from "./svgs/setting.svg";
+// import close from "./svgs/close.svg";
+// import pencil from "./svgs/pencil.svg";
+// import play from "./svgs/play.svg";
+// import trash from "./svgs/trash.svg";
+// import list from "./svgs/list.svg";
+// import share from "./svgs/share.svg";
+// import leftArrow from "./svgs/left-arrow.svg";
+// import rightArrow from "./svgs/right-arrow.svg";
+// import time from "./svgs/time.svg";
+// import question from "./svgs/question.svg";
+// import pause from "./svgs/pause.svg";
+// import rewind from "./svgs/rewind.svg";
+// import forward from "./svgs/forward.svg";
+// import previous from "./svgs/previous.svg";
+// import next from "./svgs/next.svg";
+// import loop from "./svgs/loop.svg";
+// import loopOff from "./svgs/loop-off.svg";
+// import volume from "./svgs/volume.svg";
+// import volumeMute from "./svgs/volume-mute.svg";
 import { classed, deriveClassed, ComponentProps } from "@/lib/utils/classed";
 
 export const iconMap = {
-  setting: setting,
-  close: close,
-  pencil: pencil,
-  play: play,
-  trash: trash,
-  list: list,
-  share: share,
-  leftArrow: leftArrow,
-  rightArrow: rightArrow,
-  time: time,
-  question: question,
-  pause: pause,
-  rewind: rewind,
-  forward: forward,
-  previous: previous,
-  next: next,
-  loop: loop,
-  loopOff: loopOff,
-  volume: volume,
-  volumeMute: volumeMute,
+  // setting: setting,
+  // close: close,
+  // pencil: pencil,
+  // play: play,
+  // trash: trash,
+  // list: list,
+  // share: share,
+  // leftArrow: leftArrow,
+  // rightArrow: rightArrow,
+  // time: time,
+  // question: question,
+  // pause: pause,
+  // rewind: rewind,
+  // forward: forward,
+  // previous: previous,
+  // next: next,
+  // loop: loop,
+  // loopOff: loopOff,
+  // volume: volume,
+  // volumeMute: volumeMute,
 };
 
 type IconType = keyof typeof iconMap;
@@ -85,7 +85,7 @@ export const Icon = deriveClassed<typeof StyledIcon, Props>(
     if (!IconSvg) return null;
     return (
       <StyledIcon {...rest} ref={ref}>
-        <IconSvg />
+        <img />
       </StyledIcon>
     );
   },

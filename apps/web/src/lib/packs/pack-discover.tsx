@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Link, Carousel, ButtonLinkNative, Spinner } from "@/components";
 import { Content, Footer } from "./components/page";
 import {

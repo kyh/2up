@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from "react";
 import { classed } from "@/lib/utils/classed";
 

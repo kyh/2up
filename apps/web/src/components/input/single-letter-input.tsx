@@ -1,3 +1,5 @@
+"use client";
+
 import { KeyboardEvent } from "react";
 import { classed } from "@/lib/utils/classed";
 import { useEffect, useRef, useState } from "react";

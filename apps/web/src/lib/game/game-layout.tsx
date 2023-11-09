@@ -1,18 +1,10 @@
-import { React.ReactNode, useEffect } from "react";
-import { classed } from "@/lib/utils/classed";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Navigation } from "@/lib/game/components/navigation";
 import { useConnectGame } from "@/lib/game/use-connect-game";
 
 export const GameLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const gameId = router.query.gameId as string;
-
-  useEffect(() => {
-    globalThis.document.documentElement.classList.add("overflow-hidden");
-    return () =>
-      globalThis.document.documentElement.classList.remove("overflow-hidden");
-  }, []);
 
   const { isLoaded } = useConnectGame(gameId);
 
@@ -21,11 +13,9 @@ export const GameLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Navigation />
-      <GamePage>{children}</GamePage>
+      <section className="mx-auto mt-[-50px] h-screen max-w-[600px] px-4">
+        {children}
+      </section>
     </>
   );
 };
-
-export const GamePage = classed.section(
-  "px-4 mx-auto h-screen mt-[-50px] max-w-[600px]"
-);

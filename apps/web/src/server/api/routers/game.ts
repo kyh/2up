@@ -44,9 +44,11 @@ export const gameRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({ gameId: z.string() }))
     .query(({ ctx, input }) => findGameOrThrow(ctx.db, input.gameId)),
+
   check: publicProcedure
     .input(z.object({ gameId: z.string() }))
     .mutation(({ ctx, input }) => findGameOrThrow(ctx.db, input.gameId)),
+
   create: publicProcedure
     .input(z.object({ packId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -95,6 +97,7 @@ export const gameRouter = createTRPCRouter({
 
       return game;
     }),
+
   start: publicProcedure
     .input(z.object({ gameId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -113,6 +116,7 @@ export const gameRouter = createTRPCRouter({
         },
       });
     }),
+
   nextStep: publicProcedure
     .input(z.object({ gameId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -129,6 +133,7 @@ export const gameRouter = createTRPCRouter({
         },
       });
     }),
+
   nextScene: publicProcedure
     .input(z.object({ gameId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -162,6 +167,7 @@ export const gameRouter = createTRPCRouter({
         },
       });
     }),
+
   submitAnswer: publicProcedure
     .input(
       z.object({

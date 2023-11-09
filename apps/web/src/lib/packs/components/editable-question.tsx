@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { classed } from "@/lib/utils/classed";
 import { VideoPlayer, AudioPlayer, Code, Button, Icon } from "@/components";
 import { PackAssetModal } from "@/lib/packs/components/pack-asset-modal";

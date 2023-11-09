@@ -1,3 +1,5 @@
+"use client";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { create } from "zustand";
 import { shallow } from "zustand/shallow";

@@ -1,6 +1,6 @@
 import { classed } from "@/lib/utils/classed";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Avatar, Link, Button, Input } from "@/components";
 import { useHomeStore } from "@/lib/home/home-store";
 import { useJoinGame } from "@/lib/game/use-game-actions";

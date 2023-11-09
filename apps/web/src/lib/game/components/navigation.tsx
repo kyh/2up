@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { classed } from "@/lib/utils/classed";
 import { useAllHomeStore } from "@/lib/home/home-store";
 import { Button, ButtonLink, Modal, Icon } from "@/components";

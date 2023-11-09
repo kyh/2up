@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { ButtonLinkNative, Spinner } from "@/components";
 import { Content } from "@/lib/packs/components/page";
 import {
@@ -21,7 +21,7 @@ export const Profile = () => {
 
   return (
     <Content>
-      <header className="flex justify-between items-center mb-5">
+      <header className="mb-5 flex items-center justify-between">
         <h1 className="text-3xl font-bold">@{username}&apos;s packs</h1>
         {isMyPage && (
           <ButtonLinkNative href="/packs/new">Create new Pack</ButtonLinkNative>

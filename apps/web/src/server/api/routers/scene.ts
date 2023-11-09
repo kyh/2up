@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, authedProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { AnswerType, QuestionType } from "@prisma/client";
 
 const sceneModel = z.object({
@@ -19,45 +19,51 @@ const sceneModel = z.object({
 });
 
 export const sceneRouter = createTRPCRouter({
-  create: authedProcedure.input(sceneModel).mutation(async ({ ctx, input }) => {
-    return ctx.db.scene.create({
-      data: {
-        questionDescription: input.questionDescription,
-        questionType: input.questionType as QuestionType,
-        question: input.question,
-        answerType: input.answerType as AnswerType,
-        answers: {
-          create: input.answers,
-        },
-        pack: {
-          connect: {
-            id: input.packId,
+  create: protectedProcedure
+    .input(sceneModel)
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.scene.create({
+        data: {
+          questionDescription: input.questionDescription,
+          questionType: input.questionType as QuestionType,
+          question: input.question,
+          answerType: input.answerType as AnswerType,
+          answers: {
+            create: input.answers,
+          },
+          pack: {
+            connect: {
+              id: input.packId,
+            },
           },
         },
-      },
-    });
-  }),
-  update: authedProcedure.input(sceneModel).mutation(async ({ ctx, input }) => {
-    return ctx.db.scene.update({
-      where: {
-        id: input.id,
-      },
-      data: {
-        questionDescription: input.questionDescription,
-        questionType: input.questionType as QuestionType,
-        question: input.question,
-        answerType: input.answerType as AnswerType,
-        answers: {
-          upsert: input.answers.map((answer) => ({
-            where: { id: answer.id },
-            create: answer,
-            update: answer,
-          })),
+      });
+    }),
+
+  update: protectedProcedure
+    .input(sceneModel)
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.scene.update({
+        where: {
+          id: input.id,
         },
-      },
-    });
-  }),
-  delete: authedProcedure
+        data: {
+          questionDescription: input.questionDescription,
+          questionType: input.questionType as QuestionType,
+          question: input.question,
+          answerType: input.answerType as AnswerType,
+          answers: {
+            upsert: input.answers.map((answer) => ({
+              where: { id: answer.id },
+              create: answer,
+              update: answer,
+            })),
+          },
+        },
+      });
+    }),
+
+  delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return;

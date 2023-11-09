@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useGameStore } from "@/lib/game/game-store";
 import { useHomeStore } from "@/lib/home/home-store";

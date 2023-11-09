@@ -1,5 +1,5 @@
 import { classed } from "@/lib/utils/classed";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Button, Confetti } from "@/components";
 import { PlayerScores } from "./step3";
 import type { StepProps } from "@/lib/game/steps/types";

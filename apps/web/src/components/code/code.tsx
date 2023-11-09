@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
 import Prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
@@ -224,7 +226,7 @@ export const Code = ({ content, editable, onFocus, onBlur }: Props) => {
           <option value="yaml">YAML</option>
         </select>
         <textarea
-          className="w-full h-full p-[1em] absolute bg-transparent text-transparent caret-black dark:caret-white font-code text-[1em] text-left whitespace-pre leading-normal break-normal resize-none min-h-[56px]"
+          className="absolute h-full min-h-[56px] w-full resize-none whitespace-pre break-normal bg-transparent p-[1em] text-left font-code text-[1em] leading-normal text-transparent caret-black dark:caret-white"
           onChange={onCodeChange}
           onFocus={onFocus}
           value={code}

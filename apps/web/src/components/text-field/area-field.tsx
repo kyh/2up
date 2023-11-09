@@ -1,4 +1,4 @@
-import { React.ReactNode, ChangeEventHandler, forwardRef } from "react";
+import { forwardRef } from "react";
 import { classed } from "@/lib/utils/classed";
 import { Input } from "../input/input";
 
@@ -10,14 +10,14 @@ type Props = {
   children?: React.ReactNode;
   error?: boolean;
   errorText?: React.ReactNode;
-  onChange?: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  onChange?: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   value?: string;
 };
 
 export const AreaField = forwardRef<HTMLTextAreaElement, Props>(
   function AreaField(
     { id, labelText, placeholder, error, errorText, ...rest },
-    ref
+    ref,
   ) {
     return (
       <fieldset>
@@ -32,10 +32,10 @@ export const AreaField = forwardRef<HTMLTextAreaElement, Props>(
         {error && <div className="text-red">{errorText}</div>}
       </fieldset>
     );
-  }
+  },
 );
 
 const Textarea = classed.textarea(
   Input,
-  "resize-y min-h-[150px] leading-[1.6rem] py-3 px-4"
+  "resize-y min-h-[150px] leading-[1.6rem] py-3 px-4",
 );

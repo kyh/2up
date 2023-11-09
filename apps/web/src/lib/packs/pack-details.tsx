@@ -1,5 +1,5 @@
 import { classed } from "@/lib/utils/classed";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Link, Button, Spinner } from "@/components";
 import { useHostGame } from "@/lib/game/use-game-actions";
 import { Content } from "@/lib/packs/components/page";

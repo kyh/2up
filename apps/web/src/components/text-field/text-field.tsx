@@ -1,4 +1,4 @@
-import { React.ReactNode, forwardRef } from "react";
+import { forwardRef } from "react";
 import { Input } from "../input/input";
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
 
 export const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
   { id, labelText, type = "text", placeholder, error, errorText, ...rest },
-  ref
+  ref,
 ) {
   return (
     <fieldset>

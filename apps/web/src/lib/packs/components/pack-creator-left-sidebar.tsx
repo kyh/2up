@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState, useRef } from "react";
 import { classed } from "@/lib/utils/classed";
 import { motion } from "framer-motion";

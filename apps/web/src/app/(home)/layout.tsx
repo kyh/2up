@@ -3,7 +3,7 @@ import { Navigation } from "@/lib/game/components/navigation";
 import { PageContainer } from "@/lib/home/components/page";
 import { Card } from "@/components";
 
-const HomeLayout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Navigation />
@@ -19,4 +19,4 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default HomeLayout;
+export default Layout;

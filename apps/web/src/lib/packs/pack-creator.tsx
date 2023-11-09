@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { classed } from "@/lib/utils/classed";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useHotkeys } from "@react-hook/hotkey";
 import { Topbar } from "@/lib/packs/components/pack-creator-topbar";
 import { Sidebar } from "@/lib/packs/components/pack-creator-left-sidebar";

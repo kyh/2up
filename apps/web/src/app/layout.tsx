@@ -1,7 +1,6 @@
 import localFont from "next/font/local";
-import { headers } from "next/headers";
+import { cookies } from "next/headers";
 import { TRPCReactProvider } from "@/lib/trpc/react";
-import { SupabaseProvider } from "@/components/providers/supabase-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 
 import "../styles/globals.css";
@@ -61,9 +60,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
       className={`bg-white text-black dark:bg-black dark:text-white ${chalkboradSEFont.className}`}
     >
       <ThemeProvider>
-        <SupabaseProvider>
-          <TRPCReactProvider headers={headers()}>{children}</TRPCReactProvider>
-        </SupabaseProvider>
+        <TRPCReactProvider cookies={cookies().toString()}>
+          {children}
+        </TRPCReactProvider>
       </ThemeProvider>
       <script
         data-cf-beacon='{"token": "de66e4012fd9462a94e1ad0fbc4ace00"}'

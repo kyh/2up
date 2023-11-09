@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { api } from "@/lib/trpc/react";
 import { useAlert } from "@/components";
 

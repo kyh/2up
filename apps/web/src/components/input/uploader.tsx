@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useRef, useEffect, useCallback } from "react";
 import { nanoid } from "nanoid";
 import { classed } from "@/lib/utils/classed";

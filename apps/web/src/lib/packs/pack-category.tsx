@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { gql, useQuery } from "@/lib/utils/mock";
 import { Link } from "@/components";
 import { Content } from "@/lib/packs/components/page";

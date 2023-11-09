@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Link, Button, Input, Modal } from "@/components";
 import { Form } from "@/lib/home/components/form";
@@ -10,11 +10,12 @@ type FormInputs = {
 };
 
 export const HomeJoinGame = () => {
+  const searchParams = useSearchParams();
   const router = useRouter();
   const { checkGame, isLoading } = useCheckGame();
   const { register, handleSubmit } = useForm<FormInputs>();
 
-  const gameId = router.query.gameId?.toString() || "";
+  const gameId = searchParams.get("gameId") || "";
 
   // Joining an existing game:
   const onSubmit = async ({ gameId }: FormInputs) => {
@@ -22,7 +23,7 @@ export const HomeJoinGame = () => {
   };
 
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex h-full flex-col justify-between">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
           className="mb-3"
@@ -42,13 +43,10 @@ export const HomeJoinGame = () => {
         </Link>
       </StartNewGameText>
       <Modal
-        open={router.query.join ? true : false}
+        open={searchParams.get("join") ? true : false}
         title="What should we call you?"
         onClose={() => {
-          router.replace({
-            pathname: "/",
-            query: { gameId },
-          });
+          router.replace(`/?gameId=${gameId}`);
         }}
         maxWidth={400}
         closeButton

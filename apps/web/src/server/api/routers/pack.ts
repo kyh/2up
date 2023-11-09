@@ -2,7 +2,7 @@ import { z } from "zod";
 import {
   createTRPCRouter,
   publicProcedure,
-  authedProcedure,
+  protectedProcedure,
 } from "@/server/api/trpc";
 
 const discoverMap = {
@@ -67,6 +67,7 @@ export const packRouter = createTRPCRouter({
         packs: section.tags.flatMap((tag) => tagMap[tag]).filter(Boolean),
       }));
     }),
+
   getAll: publicProcedure
     .input(
       z.object({
@@ -88,6 +89,7 @@ export const packRouter = createTRPCRouter({
 
       return ctx.db.pack.findMany({ where: { userId } });
     }),
+
   get: publicProcedure
     .input(
       z.object({
@@ -112,42 +114,49 @@ export const packRouter = createTRPCRouter({
         },
       });
     }),
-  create: authedProcedure.input(packModel).mutation(async ({ ctx, input }) => {
-    return ctx.db.pack.create({
-      data: {
-        name: input.name,
-        description: input.description,
-        isRandom: input.isRandom,
-        userId: ctx.user.id,
-        tags: {
-          connectOrCreate: input.tags.map((tag) => ({
-            where: { name: tag },
-            create: { name: tag },
-          })),
+
+  create: protectedProcedure
+    .input(packModel)
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.pack.create({
+        data: {
+          name: input.name,
+          description: input.description,
+          isRandom: input.isRandom,
+          userId: ctx.session.user.id,
+          tags: {
+            connectOrCreate: input.tags.map((tag) => ({
+              where: { name: tag },
+              create: { name: tag },
+            })),
+          },
         },
-      },
-    });
-  }),
-  update: authedProcedure.input(packModel).mutation(async ({ ctx, input }) => {
-    return ctx.db.pack.update({
-      where: {
-        id: input.id,
-      },
-      data: {
-        name: input.name,
-        description: input.description,
-        isRandom: input.isRandom,
-        userId: ctx.user.id,
-        tags: {
-          connectOrCreate: input.tags.map((tag) => ({
-            where: { name: tag },
-            create: { name: tag },
-          })),
+      });
+    }),
+
+  update: protectedProcedure
+    .input(packModel)
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.pack.update({
+        where: {
+          id: input.id,
         },
-      },
-    });
-  }),
-  delete: authedProcedure
+        data: {
+          name: input.name,
+          description: input.description,
+          isRandom: input.isRandom,
+          userId: ctx.session.user.id,
+          tags: {
+            connectOrCreate: input.tags.map((tag) => ({
+              where: { name: tag },
+              create: { name: tag },
+            })),
+          },
+        },
+      });
+    }),
+
+  delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return;

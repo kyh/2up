@@ -1,3 +1,5 @@
+"use client";
+
 import type { FloatProps } from "@headlessui-float/react";
 import { Float } from "@headlessui-float/react";
 import { useState } from "react";
