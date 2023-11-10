@@ -1,0 +1,57 @@
+{
+  "name": "@2up/nextjs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "pnpm with-env next build",
+    "clean": "git clean -xdf .next .turbo node_modules",
+    "dev": "pnpm with-env next dev",
+    "lint": "dotenv -v SKIP_ENV_VALIDATION=1 next lint",
+    "format": "prettier --check \"**/*.{js,cjs,mjs,ts,tsx,md,json}\"",
+    "start": "pnpm with-env next start",
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@2up/api": "workspace:*",
+    "@2up/auth": "workspace:*",
+    "@2up/db": "workspace:*",
+    "@2up/game": "workspace:*",
+    "@t3-oss/env-nextjs": "^0.7.1",
+    "@tanstack/react-query": "^5.8.1",
+    "@tanstack/react-query-devtools": "^5.8.1",
+    "@tanstack/react-query-next-experimental": "5.8.1",
+    "@trpc/client": "next",
+    "@trpc/next": "next",
+    "@trpc/react-query": "next",
+    "@trpc/server": "next",
+    "next": "^14.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "superjson": "^2.2.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@2up/eslint-config": "workspace:*",
+    "@2up/prettier-config": "workspace:*",
+    "@2up/tailwind-config": "workspace:*",
+    "@2up/tsconfig": "workspace:*",
+    "@types/node": "^18.18.9",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "dotenv-cli": "^7.3.0",
+    "eslint": "^8.53.0",
+    "prettier": "^3.0.3",
+    "tailwindcss": "3.3.5",
+    "typescript": "^5.2.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@2up/eslint-config/base",
+      "@2up/eslint-config/nextjs",
+      "@2up/eslint-config/react"
+    ]
+  },
+  "prettier": "@2up/prettier-config"
+}

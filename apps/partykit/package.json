@@ -4,10 +4,30 @@
   "private": true,
   "scripts": {
     "dev": "partykit dev",
-    "deploy": "partykit deploy"
+    "deploy": "partykit deploy",
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "eslint .",
+    "format": "prettier --check \"**/*.{mjs,ts,md,json}\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@2up/game": "workspace:*"
   },
   "devDependencies": {
     "partykit": "^0.0.34",
+    "@2up/eslint-config": "workspace:*",
+    "@2up/prettier-config": "workspace:*",
+    "@2up/tailwind-config": "workspace:*",
+    "@2up/tsconfig": "workspace:*",
+    "eslint": "^8.53.0",
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2"
-  }
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@2up/eslint-config/base"
+    ]
+  },
+  "prettier": "@2up/prettier-config"
 }

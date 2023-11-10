@@ -7,20 +7,6 @@
 
 > A platform for real-time multiplayer trivia games 🎮
 
-## Get Started
-
-```
-├── /apps                        # Web ReactJS client
-|   ├── /web/src
-│   │   ├── /components          # Shared React components
-│   │   ├── /lib                 # App features
-│   │   ├── /pages               # Next.js renderable pages
-│   │   ├── /server              # TRPC api backend
-│   │   ├── /styles              # Theme and global styling
-│   │   └── /utils               # Utility modules
-│   └── /voice                   # [IN PROGRESS] Voice server
-```
-
 ## Stack
 
 This project uses the following libraries and services:
