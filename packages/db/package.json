@@ -6,27 +6,30 @@
   "types": "./src/index.ts",
   "license": "MIT",
   "scripts": {
+    "postinstall": "prisma generate",
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint .",
     "format": "prettier --check \"**/*.{mjs,ts,md,json}\"",
-    "push": "drizzle-kit push:pg",
-    "studio": "drizzle-kit studio",
-    "typecheck": "tsc --noEmit"
+    "push": "pnpm with-env prisma db push",
+    "studio": "pnpm with-env prisma studio",
+    "seed": "pnpm with-env ts-node -T prisma/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@vercel/postgres": "^0.5.1",
-    "drizzle-orm": "^0.29.0",
+    "@prisma/client": "^5.6.0",
     "nanoid": "^5.0.3"
   },
   "devDependencies": {
     "@2up/eslint-config": "workspace:*",
     "@2up/prettier-config": "workspace:*",
     "@2up/tsconfig": "workspace:*",
+    "csv-parse": "^5.5.2",
     "dotenv-cli": "^7.3.0",
-    "drizzle-kit": "^0.20.1",
     "eslint": "^8.53.0",
-    "prettier": "^3.0.3",
-    "pg": "^8.11.3",
+    "prettier": "^3.1.0",
+    "prisma": "^5.6.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "eslintConfig": {

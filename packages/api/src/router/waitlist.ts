@@ -1,12 +1,10 @@
 import { z } from "zod";
 
-import { eq, schema } from "@2up/db";
-
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const waitlistRouter = createTRPCRouter({
   all: publicProcedure.query(({ ctx }) => {
-    return ctx.db.query.waitlist.findMany();
+    return ctx.db.waitlist.findMany();
   }),
 
   joinAccountWaitlist: publicProcedure
@@ -16,12 +14,14 @@ export const waitlistRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.db.insert(schema.waitlist).values({
-        data: { email: input.email },
+      return ctx.db.waitlist.create({
+        data: { data: { email: input.email } },
       });
     }),
 
   delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
-    return ctx.db.delete(schema.waitlist).where(eq(schema.waitlist.id, input));
+    return ctx.db.waitlist.delete({
+      where: { id: input },
+    });
   }),
 });

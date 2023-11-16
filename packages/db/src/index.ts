@@ -1,11 +1,19 @@
-import { sql } from "@vercel/postgres";
-import { drizzle } from "drizzle-orm/vercel-postgres";
+import { PrismaClient } from "@prisma/client";
 
-import * as schema from "./schema";
 import * as uuid from "./uuid";
 
-export * from "drizzle-orm";
+const NODE_ENV = process.env.NODE_ENV ?? "development";
 
-export { schema, uuid };
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
 
-export const db = drizzle(sql, { schema });
+export const db =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+  });
+
+if (NODE_ENV !== "production") globalForPrisma.prisma = db;
+
+export { uuid };

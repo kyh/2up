@@ -14,13 +14,13 @@
     "@2up/game": "workspace:*"
   },
   "devDependencies": {
-    "partykit": "^0.0.34",
     "@2up/eslint-config": "workspace:*",
     "@2up/prettier-config": "workspace:*",
     "@2up/tailwind-config": "workspace:*",
     "@2up/tsconfig": "workspace:*",
     "eslint": "^8.53.0",
-    "prettier": "^3.0.3",
+    "partykit": "^0.0.35",
+    "prettier": "^3.1.0",
     "typescript": "^5.2.2"
   },
   "eslintConfig": {

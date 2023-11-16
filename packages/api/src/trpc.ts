@@ -23,9 +23,9 @@ import { db } from "@2up/db";
  * processing a request
  *
  */
-interface CreateContextOptions {
+type CreateContextOptions = {
   session: Session | null;
-}
+};
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use
@@ -70,16 +70,13 @@ export const createTRPCContext = async (opts: {
  */
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
-  errorFormatter({ shape, error }) {
-    return {
-      ...shape,
-      data: {
-        ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
-      },
-    };
-  },
+  errorFormatter: ({ shape, error }) => ({
+    ...shape,
+    data: {
+      ...shape.data,
+      zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
+    },
+  }),
 });
 
 /**

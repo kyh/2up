@@ -7,10 +7,6 @@ const alphaNumeric = alphabet + numbers;
 const nanoidUuid = customAlphabet(alphaNumeric, 8);
 const nanoidGameCode = customAlphabet(numbers, 4);
 
-export function generateUuid() {
-  return nanoidUuid();
-}
+export const generateUuid = () => nanoidUuid();
 
-export function generateGameCode() {
-  return nanoidGameCode();
-}
+export const generateGameCode = () => nanoidGameCode();

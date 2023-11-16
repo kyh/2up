@@ -1,0 +1,188 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? // @db.Text
+  access_token      String? // @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? // @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  username      String    @unique
+  role          UserRole  @default(user)
+  accounts      Account[]
+  sessions      Session[]
+
+  updatedAt DateTime @default(now()) @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum UserRole {
+  admin
+  user
+}
+
+model Pack {
+  id          String  @id @default(cuid())
+  name        String
+  isRandom    Boolean @default(true)
+  gameLength  Int     @default(10)
+  imageUrl    String?
+  description String?
+
+  userId String
+
+  assets      PackAsset[]
+  tags        PackTag[]
+  scenes      Scene[]
+  gamesPlayed Game[]
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model Scene {
+  id                  String        @id @default(cuid())
+  externalId          String?
+  questionType        QuestionType
+  question            String
+  questionDescription String?
+  answerType          AnswerType
+  answers             SceneAnswer[]
+  answerDescription   String?
+
+  order Decimal? @db.Decimal
+
+  packId String
+  pack   Pack   @relation(fields: [packId], references: [id])
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model SceneAnswer {
+  id        String  @id @default(cuid())
+  content   String
+  isCorrect Boolean @default(false)
+
+  sceneId String
+  scene   Scene  @relation(fields: [sceneId], references: [id])
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model PackAsset {
+  id   String @id @default(cuid())
+  name String
+  url  String
+
+  packId String
+  pack   Pack   @relation(fields: [packId], references: [id])
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model PackTag {
+  id    String @id @default(cuid())
+  name  String @unique
+  packs Pack[]
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+enum QuestionType {
+  text
+  image
+  video
+  audio
+  code
+}
+
+enum AnswerType {
+  text
+  multiText
+}
+
+model Game {
+  id         String @id @unique
+  state      Json // Current game state (see gameStore.ts)
+  gameScenes Json[] // Generated pre-existing set of scenes for the game
+  history    Json[] // Game play by play history
+
+  isStarted  Boolean @default(false)
+  isFinished Boolean @default(false)
+
+  packId String
+  pack   Pack   @relation(fields: [packId], references: [id])
+
+  players Player[]
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model Player {
+  userId String  @id
+  name   String
+  avatar String?
+
+  finalScore Int @default(0)
+
+  Game   Game   @relation(fields: [gameId], references: [id])
+  gameId String
+}
+
+enum WaitlistType {
+  account
+}
+
+model Waitlist {
+  id   String       @id @default(cuid())
+  type WaitlistType @default(account)
+  data Json
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}

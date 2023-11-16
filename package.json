@@ -12,8 +12,9 @@
     "postinstall": "pnpm lint:ws",
     "db:push": "pnpm -F db push",
     "db:studio": "pnpm -F db studio",
+    "db:seed": "pnpm -F db seed",
     "dev": "turbo dev --parallel",
-    "dev-web": "turbo dev --filter=@2up/nextjs",
+    "dev:web": "turbo dev --filter=@2up/nextjs",
     "format": "turbo format --continue -- --cache --cache-location='node_modules/.cache/.prettiercache'",
     "format:fix": "turbo format --continue -- --write --cache --cache-location='node_modules/.cache/.prettiercache'",
     "lint": "turbo lint --continue -- --cache --cache-location 'node_modules/.cache/.eslintcache'",
@@ -24,7 +25,7 @@
   "devDependencies": {
     "@2up/prettier-config": "workspace:*",
     "@turbo/gen": "^1.10.16",
-    "prettier": "^3.0.3",
+    "prettier": "^3.1.0",
     "turbo": "^1.10.16",
     "typescript": "^5.2.2"
   },
