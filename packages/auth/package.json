@@ -15,7 +15,8 @@
   "dependencies": {
     "@2up/db": "workspace:*",
     "@auth/prisma-adapter": "^1.0.6",
-    "next-auth": "5.0.0-beta.3"
+    "@auth/core": "^0.18.1",
+    "next-auth": "^5.0.0-beta.3"
   },
   "devDependencies": {
     "@2up/eslint-config": "workspace:*",

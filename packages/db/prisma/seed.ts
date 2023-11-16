@@ -74,7 +74,7 @@ const main = async () => {
     create: {
       id: adminUserId,
       username: "admin",
-      email: "im.kaiyu@gmail.com",
+      email: "kai@kyh.io",
       role: "admin",
     },
   });

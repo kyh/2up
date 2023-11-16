@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_URL")
+  url      = env("POSTGRES_PRISMA_URL")
 }
 
 model Account {
@@ -39,7 +39,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  username      String    @unique
+  username      String?   @unique
   role          UserRole  @default(user)
   accounts      Account[]
   sessions      Session[]

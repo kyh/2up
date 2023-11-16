@@ -27,7 +27,8 @@
     "@turbo/gen": "^1.10.16",
     "prettier": "^3.1.0",
     "turbo": "^1.10.16",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "tsx": "^4.1.2"
   },
   "pnpm": {
     "overrides": {

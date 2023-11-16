@@ -12,7 +12,7 @@
     "format": "prettier --check \"**/*.{mjs,ts,md,json}\"",
     "push": "pnpm with-env prisma db push",
     "studio": "pnpm with-env prisma studio",
-    "seed": "pnpm with-env ts-node -T prisma/seed.ts",
+    "seed": "pnpm with-env tsx prisma/seed.ts",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
@@ -29,7 +29,6 @@
     "eslint": "^8.53.0",
     "prettier": "^3.1.0",
     "prisma": "^5.6.0",
-    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "eslintConfig": {

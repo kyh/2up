@@ -23,7 +23,12 @@ export const {
   signOut,
 } = NextAuth({
   adapter: PrismaAdapter(db),
-  providers: [Discord],
+  providers: [
+    Discord({
+      clientId: process.env.DISCORD_CLIENT_ID,
+      clientSecret: process.env.DISCORD_CLIENT_SECRET,
+    }),
+  ],
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
