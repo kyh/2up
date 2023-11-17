@@ -1,8 +1,8 @@
 import { createReadStream } from "fs";
 import { resolve } from "path";
 import { finished } from "stream/promises";
-import type { AnswerType, QuestionType } from "@prisma/client";
-import { PrismaClient } from "@prisma/client";
+import type { AnswerType, QuestionType } from "@prisma/client/edge";
+import { PrismaClient } from "@prisma/client/edge";
 import { parse } from "csv-parse";
 
 import { generateUuid } from "../src/uuid";

@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { AuthShowcase } from "@/components/auth-showcase";
 import { JoinWaitlistForm, WaitlistList } from "@/components/waitlist";
 
-// export const runtime = "edge";
+export const runtime = "edge";
 
 const HomePage = () => {
   return (
