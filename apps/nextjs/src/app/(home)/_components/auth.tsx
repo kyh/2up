@@ -11,7 +11,7 @@ export const AuthShowcase = async () => {
           await signIn("discord");
         }}
       >
-        <button className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20">
+        <button className="rounded-full bg-white/10 px-5 py-2 text-sm no-underline">
           Sign in with Discord
         </button>
       </form>
@@ -30,7 +30,7 @@ export const AuthShowcase = async () => {
           await signOut();
         }}
       >
-        <button className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20">
+        <button className="rounded-full bg-white/10 px-5 py-2 text-sm no-underline">
           Sign out
         </button>
       </form>

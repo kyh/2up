@@ -5,7 +5,8 @@ import "@/styles/globals.css";
 
 import { headers } from "next/headers";
 
-import { TRPCReactProvider } from "./providers";
+import { ThemeProvider } from "@/components/theme-provider";
+import { TRPCReactProvider } from "@/components/trpc-provider";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -38,9 +39,11 @@ export const metadata: Metadata = {
 const Layout = (props: { children: React.ReactNode }) => (
   <html lang="en">
     <body className={["font-sans", fontSans.variable].join(" ")}>
-      <TRPCReactProvider headers={headers()}>
-        {props.children}
-      </TRPCReactProvider>
+      <ThemeProvider>
+        <TRPCReactProvider headers={headers()}>
+          {props.children}
+        </TRPCReactProvider>
+      </ThemeProvider>
     </body>
   </html>
 );

@@ -82,14 +82,16 @@ model Pack {
 }
 
 model Scene {
-  id                  String        @id @default(cuid())
-  externalId          String?
+  id         String  @id @default(cuid())
+  externalId String?
+
   questionType        QuestionType
   question            String
   questionDescription String?
-  answerType          AnswerType
-  answers             SceneAnswer[]
-  answerDescription   String?
+
+  answerType        AnswerType
+  answers           SceneAnswer[]
+  answerDescription String?
 
   order Decimal? @db.Decimal
 
@@ -147,13 +149,13 @@ enum AnswerType {
 }
 
 model Game {
-  id         String @id @unique
-  state      Json // Current game state (see gameStore.ts)
-  gameScenes Json[] // Generated pre-existing set of scenes for the game
-  history    Json[] // Game play by play history
+  id   String @id @default(cuid())
+  code String
 
-  isStarted  Boolean @default(false)
-  isFinished Boolean @default(false)
+  scenes  Json[] // Generated pre-existing set of scenes for the game
+  history Json[] // Game state play by play history
+
+  isActive Boolean @default(false)
 
   packId String
   pack   Pack   @relation(fields: [packId], references: [id])
@@ -162,12 +164,12 @@ model Game {
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
+
+  @@unique([code, isActive])
 }
 
 model Player {
-  userId String  @id
-  name   String
-  avatar String?
+  userId String @id
 
   finalScore Int @default(0)
 

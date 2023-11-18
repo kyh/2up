@@ -20,15 +20,13 @@
     "@tanstack/react-query": "^5.8.4",
     "@tanstack/react-query-devtools": "^5.8.4",
     "@tanstack/react-query-next-experimental": "5.8.1",
-    "@trpc/client": "next",
-    "@trpc/next": "next",
-    "@trpc/react-query": "next",
-    "@trpc/server": "next",
     "next": "^14.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "superjson": "^2.2.1",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "next-themes": "^0.2.1",
+    "partysocket": "^0.0.14"
   },
   "devDependencies": {
     "@2up/eslint-config": "workspace:*",
