@@ -40,11 +40,8 @@ yarn-error.log*
 .env
 .env*.local
 
-# vercel
+# other
 .vercel
-
-# typescript
 *.tsbuildinfo
-
-# turbo
 .turbo
+.partykit

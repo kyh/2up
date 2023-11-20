@@ -14,7 +14,7 @@ const Page = ({
   }
 
   return (
-    <main>
+    <main className="mx-auto max-w-lg py-8">
       <Game code={code} />
     </main>
   );

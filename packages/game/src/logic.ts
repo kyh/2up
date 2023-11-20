@@ -1,128 +1,105 @@
 import type {
   AnswerType,
-  Player,
   QuestionType,
   Scene,
   SceneAnswer,
 } from "@prisma/client";
 
+export type GameView =
+  | "lobby"
+  | "question"
+  | "results"
+  | "scoreboard"
+  | "leaderboard";
+
 export type GameState = {
-  currentStep: number;
-  currentScene: number;
-  submissions: Submission[];
-  totalScenes: number;
+  scenes: Scene[];
+  players: LivePlayer[];
+
+  // Scene state
+  currentView: GameView;
+  currentSceneIndex: number;
+
   duration: number;
   startTime: number;
-  playerScores: PlayerScore[];
 
-  questionDescription: Scene["questionDescription"];
-  question: Scene["question"];
   questionType: QuestionType;
+  question: Scene["question"];
+  questionDescription: Scene["questionDescription"];
+
   answerType: AnswerType;
-  sceneAnswers: Omit<SceneAnswer, "sceneId" | "updatedAt" | "createdAt">[];
+  answers: Omit<SceneAnswer, "sceneId" | "updatedAt" | "createdAt">[];
+  answerDescription: Scene["answerDescription"];
+
+  playerSubmissions: PlayerSubmission[];
 };
 
-export type Submission = {
-  playerId: Player["userId"];
-  playerName: Player["name"];
-  content: string;
-  isCorrect?: boolean;
+export type PlayerSubmission = {
+  player: LivePlayer;
+  submission: {
+    content: string;
+    isCorrect: boolean;
+  };
 };
 
-export type PlayerScore = {
-  playerId: Player["userId"];
-  playerName: Player["name"];
+export type LivePlayer = {
+  id: string;
+  name: string;
   prevScore: number;
   score: number;
 };
 
-export type LivePlayer = Pick<Player, "userId" | "name">;
+export type PlayerAction = {
+  type: "start" | "submit" | "next";
+  payload?: unknown;
+};
 
-// util for easy adding logs
-// const addLog = (message: string, logs: GameState["log"]): GameState["log"] => {
-//   return [{ dt: new Date().getTime(), message: message }, ...logs].slice(
-//     0,
-//     MAX_LOG_SIZE,
-//   );
-// };
+export type ServerAction = PlayerAction & {
+  player: LivePlayer;
+};
 
-// // If there is anything you want to track for a specific user, change this interface
-// export type User = {
-//   id: string;
-// };
+export const createGame = (): GameState => {
+  return {
+    scenes: [],
+    players: [],
 
-// // Every game has a list of users and log of actions
-// type BaseGameState = {
-//   users: User[];
-//   log: {
-//     dt: number;
-//     message: string;
-//   }[];
-// };
+    currentView: "lobby",
+    currentSceneIndex: 0,
 
-// export type Action = DefaultAction | GameAction;
+    duration: 45,
+    startTime: Date.now(),
 
-// export type ServerAction = WithUser<DefaultAction> | WithUser<GameAction>;
+    questionType: "text",
+    question: "",
+    questionDescription: "",
 
-// // The maximum log size, change as needed
-// const MAX_LOG_SIZE = 4;
+    answerType: "text",
+    answers: [],
+    answerDescription: "",
 
-// type WithUser<T> = T & { user: User };
+    playerSubmissions: [],
+  };
+};
 
-// export type DefaultAction = { type: "userEntered" } | { type: "userExit" };
+export const updateGame = (
+  action: ServerAction,
+  state: GameState,
+): GameState => {
+  return state;
+};
 
-// export type GameState = BaseGameState & {
-//   target: number;
-// };
+export const addPlayer = (
+  player: Pick<LivePlayer, "id" | "name">,
+  state: GameState,
+): GameState => {
+  state.players = [...state.players, { ...player, score: 0, prevScore: 0 }];
+  return state;
+};
 
-// // This is how a fresh new game starts out, it's a function so you can make it dynamic!
-// // In the case of the guesser game we start out with a random target
-// export const initialGame = () => ({
-//   users: [],
-//   target: Math.floor(Math.random() * 100),
-//   log: addLog("Game Created!", []),
-// });
-
-// // Here are all the actions we can dispatch for a user
-// type GameAction = { type: "guess"; guess: number };
-
-// export const gameUpdater = (
-//   action: ServerAction,
-//   state: GameState,
-// ): GameState => {
-//   switch (action.type) {
-//     case "userEntered":
-//       return {
-//         ...state,
-//         users: [...state.users, action.user],
-//         log: addLog(`user ${action.user.id} joined 🎉`, state.log),
-//       };
-
-//     case "userExit":
-//       return {
-//         ...state,
-//         users: state.users.filter((user) => user.id !== action.user.id),
-//         log: addLog(`user ${action.user.id} left 😢`, state.log),
-//       };
-
-//     case "guess":
-//       if (action.guess === state.target) {
-//         return {
-//           ...state,
-//           target: Math.floor(Math.random() * 100),
-//           log: addLog(
-//             `user ${action.user.id} guessed ${action.guess} and won! 👑`,
-//             state.log,
-//           ),
-//         };
-//       } else {
-//         return {
-//           ...state,
-//           log: addLog(
-//             `user ${action.user.id} guessed ${action.guess}`,
-//             state.log,
-//           ),
-//         };
-//       }
-//   }
-// };
+export const removePlayer = (
+  playerId: LivePlayer["id"],
+  state: GameState,
+): GameState => {
+  state.players = state.players.filter((player) => player.id !== playerId);
+  return state;
+};

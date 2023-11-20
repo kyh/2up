@@ -1,30 +1,58 @@
 import type * as Party from "partykit/server";
 
+import type {
+  GameState,
+  LivePlayer,
+  PlayerAction,
+  ServerAction,
+} from "@2up/game";
+import { addPlayer, createGame, removePlayer, updateGame } from "@2up/game";
+
 export default class Server implements Party.Server {
-  constructor(readonly party: Party.Party) {}
+  private gameState: GameState;
 
-  onConnect(conn: Party.Connection, ctx: Party.ConnectionContext) {
-    // A websocket just connected!
-    console.log(
-      `Connected:
-  id: ${conn.id}
-  room: ${this.party.id}
-  url: ${new URL(ctx.request.url).pathname}`
-    );
+  constructor(readonly party: Party.Party) {
+    console.log("Room created:", party.id);
 
-    // let's send a message to the connection
-    conn.send("hello from server");
+    this.gameState = createGame();
+    // party.storage.put;
   }
 
-  onMessage(message: string, sender: Party.Connection) {
-    // let's log the message
-    console.log(`connection ${sender.id} sent message: ${message}`);
-    // as well as broadcast it to all the other connections in the room...
-    this.party.broadcast(
-      `${sender.id}: ${message}`,
-      // ...except for the connection it came from
-      [sender.id]
-    );
+  onConnect(
+    connection: Party.Connection,
+    { request }: Party.ConnectionContext,
+  ) {
+    const searchParams = new URL(request.url).searchParams;
+    const player = {
+      id: connection.id,
+      name: searchParams.get("name") ?? "Anonymous",
+    };
+
+    connection.setState({ ...connection.state, player });
+
+    this.gameState = addPlayer(player, this.gameState);
+    this.party.broadcast(JSON.stringify(this.gameState));
+  }
+
+  onClose(connection: Party.Connection) {
+    this.gameState = removePlayer(connection.id, this.gameState);
+    this.party.broadcast(JSON.stringify(this.gameState));
+  }
+
+  onMessage(message: string, sender: Party.Connection<{ player: LivePlayer }>) {
+    const player = sender.state?.player;
+
+    if (!player) return;
+
+    const action: ServerAction = {
+      ...(JSON.parse(message) as PlayerAction),
+      player,
+    };
+
+    console.log(`Received action ${action.type} from user ${sender.id}`);
+
+    this.gameState = updateGame(action, this.gameState);
+    this.party.broadcast(JSON.stringify(this.gameState));
   }
 }
 

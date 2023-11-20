@@ -170,6 +170,7 @@ model Game {
 
 model Player {
   userId String @id
+  name   String
 
   finalScore Int @default(0)
 

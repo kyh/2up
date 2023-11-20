@@ -114,6 +114,9 @@ importers:
 
   apps/partykit:
     dependencies:
+      '@2up/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@2up/game':
         specifier: workspace:*
         version: link:../../packages/game
