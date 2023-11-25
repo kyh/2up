@@ -8,12 +8,18 @@ import type { GameState, PlayerAction } from "@2up/game";
 export const Game = ({ code }: { code: string }) => {
   const { gameState, dispatch } = useGameRoom(code);
 
+  if (!gameState) {
+    return <div>Loading...</div>;
+  }
+
+  const currentScene = gameState.scenes[gameState.currentSceneIndex];
+
   switch (gameState?.currentView) {
     case "lobby":
       return (
         <div className="space-y-5">
           <h1>Lobby</h1>
-          <pre>{JSON.stringify(gameState, null, 2)}</pre>
+          <pre>{JSON.stringify(gameState.players, null, 2)}</pre>
           <button onClick={() => dispatch({ type: "start" })}>Start</button>
         </div>
       );
@@ -21,15 +27,24 @@ export const Game = ({ code }: { code: string }) => {
       return (
         <div className="space-y-5">
           <h1>Question</h1>
-          <pre>{JSON.stringify(gameState, null, 2)}</pre>
-          <button onClick={() => dispatch({ type: "submit" })}>Submit</button>
+          <pre>{currentScene?.question}</pre>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target as HTMLFormElement);
+              dispatch({ type: "submit", payload: formData.get("answer") });
+            }}
+          >
+            <input id="answer" name="answer" type="text" />
+            <button type="submit">Submit</button>
+          </form>
         </div>
       );
     case "results":
       return (
         <div className="space-y-5">
           <h1>Results</h1>
-          <pre>{JSON.stringify(gameState, null, 2)}</pre>
+          <pre>{JSON.stringify(gameState.playerSubmissions, null, 2)}</pre>
           <button onClick={() => dispatch({ type: "next" })}>Next</button>
         </div>
       );
@@ -37,7 +52,8 @@ export const Game = ({ code }: { code: string }) => {
       return (
         <div className="space-y-5">
           <h1>Scoreboard</h1>
-          <pre>{JSON.stringify(gameState, null, 2)}</pre>
+          <pre>{JSON.stringify(gameState.players, null, 2)}</pre>
+          <button onClick={() => dispatch({ type: "next" })}>Next</button>
         </div>
       );
   }

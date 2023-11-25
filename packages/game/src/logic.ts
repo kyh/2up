@@ -1,4 +1,10 @@
-import type { Scene } from "@prisma/client";
+import type { Scene, SceneAnswer } from "@prisma/client";
+
+import { calculateScore, compareAnswer } from "./utils";
+
+type SceneWithAnswers = Scene & {
+  sceneAnswers: SceneAnswer[];
+};
 
 export type GameView =
   | "lobby"
@@ -8,7 +14,7 @@ export type GameView =
   | "leaderboard";
 
 export type GameState = {
-  scenes: Scene[];
+  scenes: SceneWithAnswers[];
   players: LivePlayer[];
 
   // Scene state
@@ -45,7 +51,7 @@ export type ServerAction = PlayerAction & {
   player: LivePlayer;
 };
 
-export const createGame = (scenes?: Scene[]): GameState => {
+export const createGame = (scenes?: SceneWithAnswers[]): GameState => {
   return {
     scenes: scenes ?? [],
     players: [],
@@ -64,6 +70,80 @@ export const updateGame = (
   action: ServerAction,
   state: GameState,
 ): GameState => {
+  switch (action.type) {
+    case "start":
+      state.currentView = "question";
+      state.startTime = Date.now();
+      break;
+
+    case "submit":
+      // Update player submission
+      state.playerSubmissions = [
+        ...state.playerSubmissions,
+        {
+          player: action.player,
+          submission: action.payload as PlayerSubmission["submission"],
+        },
+      ];
+
+      // Update player score
+      state.players = state.players.map((player) => {
+        if (player.id !== action.player.id) return player;
+
+        const currentScene = state.scenes[state.currentSceneIndex]!;
+        const correctAnswer = currentScene.sceneAnswers.find(
+          (answer) => answer.isCorrect,
+        )!;
+
+        const isCorrect = compareAnswer(
+          action.payload as string,
+          correctAnswer.content,
+        );
+
+        const newScore = calculateScore(
+          isCorrect,
+          state.startTime,
+          Date.now(),
+          state.duration,
+        );
+
+        return {
+          ...player,
+          prevScore: player.score,
+          score: newScore,
+        };
+      });
+
+      if (
+        state.playerSubmissions.length === state.players.length &&
+        state.currentView === "question"
+      ) {
+        state.currentView = "results";
+      }
+
+      break;
+
+    case "next":
+      if (state.currentView === "results") {
+        state.currentView = "scoreboard";
+        break;
+      }
+
+      if (
+        state.currentView === "scoreboard" &&
+        state.currentSceneIndex === state.scenes.length - 1
+      ) {
+        state.currentView = "leaderboard";
+        break;
+      }
+
+      state.currentSceneIndex += 1;
+      state.currentView = "question";
+      state.startTime = Date.now();
+      state.playerSubmissions = [];
+      break;
+  }
+
   return state;
 };
 
