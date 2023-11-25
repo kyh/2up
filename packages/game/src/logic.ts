@@ -2,7 +2,7 @@ import type { Scene, SceneAnswer } from "@prisma/client";
 
 import { calculateScore, compareAnswer } from "./utils";
 
-type SceneWithAnswers = Scene & {
+export type SceneWithAnswers = Scene & {
   sceneAnswers: SceneAnswer[];
 };
 

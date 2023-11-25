@@ -1,4 +1,3 @@
-import type { Scene } from "@prisma/client";
 import { PrismaClient } from "@prisma/client/edge";
 import type * as Party from "partykit/server";
 
@@ -6,6 +5,7 @@ import type {
   GameState,
   LivePlayer,
   PlayerAction,
+  SceneWithAnswers,
   ServerAction,
 } from "@2up/game";
 import { addPlayer, createGame, removePlayer, updateGame } from "@2up/game";
@@ -23,16 +23,14 @@ export default class Server implements Party.Server {
   }
 
   async onStart() {
-    const game = await this.db.game.findUniqueOrThrow({
+    const game = await this.db.game.findFirstOrThrow({
       where: {
-        code_isActive: {
-          code: this.party.id,
-          isActive: true,
-        },
+        code: this.party.id,
+        isActive: true,
       },
     });
 
-    const scenes = game.scenes as unknown as Scene[];
+    const scenes = game.scenes as unknown as SceneWithAnswers[];
 
     this.gameState = createGame(scenes ?? []);
   }
