@@ -1,4 +1,8 @@
 {
   "name": "2up",
-  "main": "src/server.ts"
+  "compatibilityDate": "2023-11-25",
+  "main": "src/server.ts",
+  "parties": {
+    "game": "src/game.ts"
+  }
 }

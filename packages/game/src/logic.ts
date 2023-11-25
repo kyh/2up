@@ -1,9 +1,4 @@
-import type {
-  AnswerType,
-  QuestionType,
-  Scene,
-  SceneAnswer,
-} from "@prisma/client";
+import type { Scene } from "@prisma/client";
 
 export type GameView =
   | "lobby"
@@ -22,14 +17,6 @@ export type GameState = {
 
   duration: number;
   startTime: number;
-
-  questionType: QuestionType;
-  question: Scene["question"];
-  questionDescription: Scene["questionDescription"];
-
-  answerType: AnswerType;
-  answers: Omit<SceneAnswer, "sceneId" | "updatedAt" | "createdAt">[];
-  answerDescription: Scene["answerDescription"];
 
   playerSubmissions: PlayerSubmission[];
 };
@@ -58,9 +45,9 @@ export type ServerAction = PlayerAction & {
   player: LivePlayer;
 };
 
-export const createGame = (): GameState => {
+export const createGame = (scenes?: Scene[]): GameState => {
   return {
-    scenes: [],
+    scenes: scenes ?? [],
     players: [],
 
     currentView: "lobby",
@@ -68,14 +55,6 @@ export const createGame = (): GameState => {
 
     duration: 45,
     startTime: Date.now(),
-
-    questionType: "text",
-    question: "",
-    questionDescription: "",
-
-    answerType: "text",
-    answers: [],
-    answerDescription: "",
 
     playerSubmissions: [],
   };

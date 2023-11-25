@@ -14,6 +14,9 @@ importers:
       '@turbo/gen':
         specifier: ^1.10.16
         version: 1.10.16(@types/node@18.18.13)(typescript@5.3.2)
+      dotenv-cli:
+        specifier: ^7.3.0
+        version: 7.3.0
       prettier:
         specifier: ^3.1.0
         version: 3.1.0
@@ -105,9 +108,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.17
         version: 18.2.17
-      dotenv-cli:
-        specifier: ^7.3.0
-        version: 7.3.0
       eslint:
         specifier: ^8.54.0
         version: 8.54.0

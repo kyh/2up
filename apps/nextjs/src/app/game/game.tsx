@@ -50,6 +50,7 @@ export const useGameRoom = (code: string) => {
 
   const socket = usePartySocket({
     host: process.env.NEXT_PUBLIC_PARTYKIT_SERVER_URL ?? "127.0.0.1:1999",
+    party: "game",
     room: code,
     query: {
       name: "kai",
