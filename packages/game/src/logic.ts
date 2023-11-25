@@ -110,7 +110,7 @@ export const updateGame = (
         return {
           ...player,
           prevScore: player.score,
-          score: newScore,
+          score: player.score + newScore,
         };
       });
 
