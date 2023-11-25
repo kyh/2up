@@ -66,87 +66,6 @@ export const createGame = (scenes?: SceneWithAnswers[]): GameState => {
   };
 };
 
-export const updateGame = (
-  action: ServerAction,
-  state: GameState,
-): GameState => {
-  switch (action.type) {
-    case "start":
-      state.currentView = "question";
-      state.startTime = Date.now();
-      break;
-
-    case "submit":
-      // Update player submission
-      state.playerSubmissions = [
-        ...state.playerSubmissions,
-        {
-          player: action.player,
-          submission: action.payload as PlayerSubmission["submission"],
-        },
-      ];
-
-      // Update player score
-      state.players = state.players.map((player) => {
-        if (player.id !== action.player.id) return player;
-
-        const currentScene = state.scenes[state.currentSceneIndex]!;
-        const correctAnswer = currentScene.sceneAnswers.find(
-          (answer) => answer.isCorrect,
-        )!;
-
-        const isCorrect = compareAnswer(
-          action.payload as string,
-          correctAnswer.content,
-        );
-
-        const newScore = calculateScore(
-          isCorrect,
-          state.startTime,
-          Date.now(),
-          state.duration,
-        );
-
-        return {
-          ...player,
-          prevScore: player.score,
-          score: player.score + newScore,
-        };
-      });
-
-      if (
-        state.playerSubmissions.length === state.players.length &&
-        state.currentView === "question"
-      ) {
-        state.currentView = "results";
-      }
-
-      break;
-
-    case "next":
-      if (state.currentView === "results") {
-        state.currentView = "scoreboard";
-        break;
-      }
-
-      if (
-        state.currentView === "scoreboard" &&
-        state.currentSceneIndex === state.scenes.length - 1
-      ) {
-        state.currentView = "leaderboard";
-        break;
-      }
-
-      state.currentSceneIndex += 1;
-      state.currentView = "question";
-      state.startTime = Date.now();
-      state.playerSubmissions = [];
-      break;
-  }
-
-  return state;
-};
-
 export const addPlayer = (
   player: Pick<LivePlayer, "id" | "name">,
   state: GameState,
@@ -161,4 +80,84 @@ export const removePlayer = (
 ): GameState => {
   state.players = state.players.filter((player) => player.id !== playerId);
   return state;
+};
+
+export const updateGame = (
+  action: ServerAction,
+  state: GameState,
+): GameState => {
+  gameActions[action.type](action, state);
+
+  return state;
+};
+
+const gameActions = {
+  start: (_action: ServerAction, state: GameState) => {
+    state.currentView = "question";
+    state.startTime = Date.now();
+  },
+
+  submit: (action: ServerAction, state: GameState) => {
+    const currentScene = state.scenes[state.currentSceneIndex]!;
+    const correctAnswer = currentScene.sceneAnswers.find(
+      (answer) => answer.isCorrect,
+    )!;
+
+    // Update player scores and submissions
+    state.players.forEach((player, index) => {
+      if (player.id !== action.player.id) return;
+
+      const currentPlayer = state.players[index]!;
+
+      const isCorrect = compareAnswer(
+        action.payload as string,
+        correctAnswer.content,
+      );
+
+      const newScore = calculateScore(
+        isCorrect,
+        state.startTime,
+        Date.now(),
+        state.duration,
+      );
+
+      currentPlayer.prevScore = currentPlayer.score;
+      currentPlayer.score += newScore;
+
+      state.playerSubmissions.push({
+        player: action.player,
+        submission: {
+          content: action.payload as string,
+          isCorrect,
+        },
+      });
+    });
+
+    if (
+      state.playerSubmissions.length === state.players.length &&
+      state.currentView === "question"
+    ) {
+      state.currentView = "results";
+    }
+  },
+
+  next: (_action: ServerAction, state: GameState) => {
+    if (state.currentView === "results") {
+      state.currentView = "scoreboard";
+      return;
+    }
+
+    if (
+      state.currentView === "scoreboard" &&
+      state.currentSceneIndex === state.scenes.length - 1
+    ) {
+      state.currentView = "leaderboard";
+      return;
+    }
+
+    state.currentSceneIndex += 1;
+    state.currentView = "question";
+    state.startTime = Date.now();
+    state.playerSubmissions = [];
+  },
 };
