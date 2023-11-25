@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@2up/tsconfig": "workspace:*",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.2"
   },
   "prettier": "@2up/prettier-config"
 }

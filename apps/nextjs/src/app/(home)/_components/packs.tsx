@@ -2,9 +2,8 @@
 
 import { useRouter } from "next/navigation";
 
-import type { RouterOutputs } from "@2up/api";
-
-import { useApi } from "@/components/trpc-provider";
+import type { RouterOutputs } from "@/lib/trpc/react";
+import { api } from "@/lib/trpc/react";
 
 type PackSection = RouterOutputs["pack"]["getDiscover"][number];
 type Pack = PackSection["packs"][number];
@@ -32,7 +31,6 @@ export const Discover = ({
 
 const PackRow = ({ pack }: { pack: Pack }) => {
   const router = useRouter();
-  const api = useApi();
   const { mutateAsync, isPending } = api.game.create.useMutation();
 
   const onCreateGame = async () => {

@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-import { api } from "@/lib/api";
-import type { RouterOutputs } from "@/lib/api";
+import { api } from "@/lib/trpc/react";
+import type { RouterOutputs } from "@/lib/trpc/react";
 
 export const JoinWaitlistForm = () => {
   const utils = api.useUtils();
