@@ -42,8 +42,10 @@ model User {
   image         String?
   username      String?   @unique
   role          UserRole  @default(user)
-  accounts      Account[]
-  sessions      Session[]
+
+  accounts Account[]
+  sessions Session[]
+  players  Player[]
 
   updatedAt DateTime @default(now()) @updatedAt
   createdAt DateTime @default(now())
@@ -164,15 +166,14 @@ model Game {
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
-
-  @@unique([code, isActive])
 }
 
 model Player {
-  userId String @id
-  name   String
+  name       String
+  finalScore Int    @default(0)
 
-  finalScore Int @default(0)
+  userId String @id
+  user   User   @relation(fields: [userId], references: [id])
 
   Game   Game   @relation(fields: [gameId], references: [id])
   gameId String
