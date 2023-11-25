@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import usePartySocket from "partysocket/react";
 
 import type { GameState, PlayerAction } from "@2up/game";
@@ -56,9 +57,15 @@ export const Game = ({ code }: { code: string }) => {
           <button onClick={() => dispatch({ type: "next" })}>Next</button>
         </div>
       );
+    case "leaderboard":
+      return (
+        <div className="space-y-5">
+          <h1>Leaderboard</h1>
+          <pre>{JSON.stringify(gameState.players, null, 2)}</pre>
+          <Link href="/">End Game</Link>
+        </div>
+      );
   }
-
-  return null;
 };
 
 export const useGameRoom = (code: string) => {
