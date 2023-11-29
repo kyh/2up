@@ -2,8 +2,8 @@
   "name": "@acme/auth",
   "version": "0.1.0",
   "private": true,
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
@@ -15,7 +15,6 @@
     "@acme/db": "workspace:*",
     "@auth/core": "^0.18.4",
     "@auth/drizzle-adapter": "^0.3.9",
-    "@t3-oss/env-nextjs": "^0.7.1",
     "next": "^14.0.3",
     "next-auth": "^5.0.0-beta.3",
     "react": "^18.2.0",
