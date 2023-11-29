@@ -13,6 +13,8 @@
     "db:push": "pnpm -F db push",
     "db:studio": "pnpm -F db studio",
     "dev": "turbo dev --parallel",
+    "dev:nextjs": "turbo dev --filter=nextjs",
+    "dev:expo": "turbo dev --filter=expo",
     "format": "turbo format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
     "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
     "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
@@ -21,16 +23,11 @@
     "typecheck": "turbo typecheck"
   },
   "devDependencies": {
-    "@acme/prettier-config": "workspace:^0.1.0",
+    "@acme/prettier-config": "workspace:*",
     "@turbo/gen": "^1.10.16",
     "prettier": "^3.1.0",
     "turbo": "^1.10.16",
-    "typescript": "^5.2.2"
-  },
-  "pnpm": {
-    "overrides": {
-      "@auth/core": "0.18.0"
-    }
+    "typescript": "^5.3.2"
   },
   "prettier": "@acme/prettier-config"
 }

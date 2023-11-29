@@ -7,6 +7,13 @@ const config = {
   ],
   rules: {
     "react/prop-types": "off",
+    "react/function-component-definition": [
+      "warn",
+      {
+        namedComponents: "arrow-function",
+        unnamedComponents: "arrow-function",
+      },
+    ],
   },
   globals: {
     React: "writable",

@@ -4,46 +4,44 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Stack } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 
-import { api } from "~/utils/api";
-import type { RouterOutputs } from "~/utils/api";
+import { api } from "~/trpc/react";
+import type { RouterOutputs } from "~/trpc/react";
 
-function PostCard(props: {
+const PostCard = (props: {
   post: RouterOutputs["post"]["all"][number];
   onDelete: () => void;
-}) {
-  return (
-    <View className="flex flex-row rounded-lg bg-white/10 p-4">
-      <View className="flex-grow">
-        <Link
-          asChild
-          href={{
-            pathname: "/post/[id]",
-            params: { id: props.post.id },
-          }}
-        >
-          <Pressable>
-            <Text className="text-xl font-semibold text-pink-400">
-              {props.post.title}
-            </Text>
-            <Text className="mt-2 text-white">{props.post.content}</Text>
-          </Pressable>
-        </Link>
-      </View>
-      <Pressable onPress={props.onDelete}>
-        <Text className="font-bold uppercase text-pink-400">Delete</Text>
-      </Pressable>
+}) => (
+  <View className="flex flex-row rounded-lg bg-white/10 p-4">
+    <View className="flex-grow">
+      <Link
+        asChild
+        href={{
+          pathname: "/post/[id]",
+          params: { id: props.post.id },
+        }}
+      >
+        <Pressable>
+          <Text className="text-xl font-semibold text-pink-400">
+            {props.post.title}
+          </Text>
+          <Text className="mt-2 text-white">{props.post.content}</Text>
+        </Pressable>
+      </Link>
     </View>
-  );
-}
+    <Pressable onPress={props.onDelete}>
+      <Text className="font-bold uppercase text-pink-400">Delete</Text>
+    </Pressable>
+  </View>
+);
 
-function CreatePost() {
+const CreatePost = () => {
   const utils = api.useUtils();
 
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
 
   const { mutate, error } = api.post.create.useMutation({
-    async onSuccess() {
+    onSuccess: async () => {
       setTitle("");
       setContent("");
       await utils.post.all.invalidate();
@@ -94,7 +92,7 @@ function CreatePost() {
       )}
     </View>
   );
-}
+};
 
 const Index = () => {
   const utils = api.useUtils();

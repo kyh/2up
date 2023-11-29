@@ -34,14 +34,14 @@ const getHeaders = cache(async () => {
   return headers();
 });
 
-export default function Layout(props: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <body className={["font-sans", fontSans.variable].join(" ")}>
-        <TRPCReactProvider headersPromise={getHeaders()}>
-          {props.children}
-        </TRPCReactProvider>
-      </body>
-    </html>
-  );
-}
+const Layout = (props: { children: React.ReactNode }) => (
+  <html lang="en">
+    <body className={["font-sans", fontSans.variable].join(" ")}>
+      <TRPCReactProvider headersPromise={getHeaders()}>
+        {props.children}
+      </TRPCReactProvider>
+    </body>
+  </html>
+);
+
+export default Layout;
