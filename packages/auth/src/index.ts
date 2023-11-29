@@ -15,7 +15,7 @@ declare module "next-auth" {
     user: {
       id: string;
     } & DefaultSession["user"];
-  }
+  };
 }
 
 export const {
