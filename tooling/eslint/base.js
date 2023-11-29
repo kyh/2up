@@ -15,7 +15,7 @@ const config = {
   parserOptions: {
     project: true,
   },
-  plugins: ["@typescript-eslint", "import"],
+  plugins: ["@typescript-eslint", "import", "prefer-arrow-functions"],
   rules: {
     "turbo/no-undeclared-env-vars": "off",
     "@typescript-eslint/no-unused-vars": [
@@ -26,11 +26,23 @@ const config = {
       "warn",
       { prefer: "type-imports", fixStyle: "separate-type-imports" },
     ],
-    "@typescript-eslint/no-misused-promises": [
-      2,
-      { checksVoidReturn: { attributes: false } },
-    ],
     "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+    "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        checksVoidReturn: false,
+      },
+    ],
+    "prefer-arrow-functions/prefer-arrow-functions": [
+      "warn",
+      {
+        classPropertiesAllowed: false,
+        disallowPrototype: false,
+        returnStyle: "unchanged",
+        singleReturnOnly: false,
+      },
+    ],
   },
   ignorePatterns: [
     "**/.eslintrc.cjs",

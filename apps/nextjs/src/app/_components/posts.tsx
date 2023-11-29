@@ -5,14 +5,14 @@ import { useState } from "react";
 import { api } from "~/trpc/react";
 import type { RouterOutputs } from "~/trpc/react";
 
-export function CreatePostForm() {
+export const CreatePostForm = () => {
   const utils = api.useUtils();
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const { mutateAsync: createPost, error } = api.post.create.useMutation({
-    async onSuccess() {
+    onSuccess: async () => {
       setTitle("");
       setContent("");
       await utils.post.all.invalidate();
@@ -68,9 +68,9 @@ export function CreatePostForm() {
       )}
     </form>
   );
-}
+};
 
-export function PostList() {
+export const PostList = () => {
   const [posts] = api.post.all.useSuspenseQuery();
 
   if (posts.length === 0) {
@@ -94,11 +94,11 @@ export function PostList() {
       })}
     </div>
   );
-}
+};
 
-export function PostCard(props: {
+export const PostCard = (props: {
   post: RouterOutputs["post"]["all"][number];
-}) {
+}) => {
   const utils = api.useUtils();
   const deletePost = api.post.delete.useMutation();
 
@@ -121,9 +121,9 @@ export function PostCard(props: {
       </div>
     </div>
   );
-}
+};
 
-export function PostCardSkeleton(props: { pulse?: boolean }) {
+export const PostCardSkeleton = (props: { pulse?: boolean }) => {
   const { pulse = true } = props;
   return (
     <div className="flex flex-row rounded-lg bg-white/10 p-4 transition-all hover:scale-[101%]">
@@ -145,4 +145,4 @@ export function PostCardSkeleton(props: { pulse?: boolean }) {
       </div>
     </div>
   );
-}
+};

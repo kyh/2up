@@ -10,7 +10,7 @@ import {
 
 export const runtime = "edge";
 
-export default async function HomePage() {
+const Page = async () => {
   const posts = await api.post.all.query();
   console.log("RSC Posts:", posts);
 
@@ -39,4 +39,6 @@ export default async function HomePage() {
       </div>
     </main>
   );
-}
+};
+
+export default Page;

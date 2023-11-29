@@ -14,8 +14,8 @@
     "prettier-plugin-tailwindcss": "^0.5.7"
   },
   "devDependencies": {
-    "@acme/tsconfig": "workspace:^0.1.0",
-    "typescript": "^5.2.2"
+    "@acme/tsconfig": "workspace:*",
+    "typescript": "^5.3.2"
   },
   "prettier": "@acme/prettier-config"
 }

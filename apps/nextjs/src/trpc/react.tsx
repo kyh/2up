@@ -12,10 +12,10 @@ export type * from "@acme/api";
 
 export const api = createTRPCReact<AppRouter>();
 
-export function TRPCReactProvider(props: {
+export const TRPCReactProvider = (props: {
   children: React.ReactNode;
   headersPromise: Promise<Headers>;
-}) {
+}) => {
   const [queryClient] = useState(() => new QueryClient());
   const ssrHeaders = use(props.headersPromise);
 
@@ -30,7 +30,7 @@ export function TRPCReactProvider(props: {
         }),
         unstable_httpBatchStreamLink({
           url: getBaseUrl() + "/api/trpc",
-          headers() {
+          headers: () => {
             const headers = new Map(ssrHeaders);
             headers.set("x-trpc-source", "nextjs-react");
             return Object.fromEntries(headers);
@@ -47,10 +47,10 @@ export function TRPCReactProvider(props: {
       </api.Provider>
     </QueryClientProvider>
   );
-}
+};
 
-function getBaseUrl() {
+const getBaseUrl = () => {
   if (typeof window !== "undefined") return window.location.origin;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`;
-}
+};
