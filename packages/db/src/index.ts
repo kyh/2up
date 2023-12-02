@@ -1,15 +1,19 @@
-import { Client } from "@planetscale/database";
-import { drizzle } from "drizzle-orm/planetscale-serverless";
+import { PrismaClient } from "@prisma/client/edge";
 
-import * as schema from "./schema";
+import * as uuid from "./uuid";
 
-export { schema };
+const NODE_ENV = process.env.NODE_ENV ?? "development";
 
-export * from "drizzle-orm";
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
 
-export const db = drizzle(
-  new Client({
-    url: process.env.DATABASE_URL,
-  }).connection(),
-  { schema },
-);
+export const db =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+  });
+
+if (NODE_ENV !== "production") globalForPrisma.prisma = db;
+
+export { uuid };
