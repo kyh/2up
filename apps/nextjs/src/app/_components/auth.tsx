@@ -1,6 +1,6 @@
 import { auth, signIn, signOut } from "@acme/auth";
 
-export const AuthShowcase = async () => {
+export const Auth = async () => {
   const session = await auth();
 
   if (!session) {

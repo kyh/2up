@@ -33,11 +33,17 @@ export const postRouter = createTRPCRouter({
       });
     }),
 
-  delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
-    return ctx.db.post.delete({
-      where: {
-        id: input,
-      },
-    });
-  }),
+  delete: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.post.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 });

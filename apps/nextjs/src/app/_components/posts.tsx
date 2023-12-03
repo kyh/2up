@@ -1,41 +1,27 @@
-"use client";
+import { revalidatePath } from "next/cache";
 
-import { useRouter } from "next/navigation";
-
-import { api } from "~/trpc/react";
 import type { RouterOutputs } from "~/trpc/react";
+import { api } from "~/trpc/server";
 
 export const CreatePostForm = () => {
-  const router = useRouter();
-  const createPost = api.post.create.useMutation();
+  const createPost = async (formData: FormData) => {
+    "use server";
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const formData = new FormData(form);
     const title = formData.get("title")?.toString() ?? "";
     const content = formData.get("content")?.toString() ?? "";
 
-    await createPost.mutateAsync({ title, content });
-
-    form.reset();
-    router.refresh();
+    await api.post.create.mutate({ title, content });
+    revalidatePath("/");
   };
 
   return (
     <form
       className="mt-5 flex flex-col gap-4 rounded border p-5"
-      onSubmit={onSubmit}
+      action={createPost}
     >
       <input name="title" placeholder="Title" />
       <input name="content" placeholder="Content" />
-      <button
-        type="submit"
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
-        disabled={createPost.isPending}
-      >
-        {createPost.isPending ? "Submitting..." : "Submit"}
-      </button>
+      <button type="submit">Submit</button>
     </form>
   );
 };
@@ -57,12 +43,10 @@ export const PostList = ({ posts }: { posts: Post[] }) => {
 };
 
 export const PostCard = (props: { post: Post }) => {
-  const router = useRouter();
-  const deletePost = api.post.delete.useMutation();
-
   const onDelete = async () => {
-    await deletePost.mutateAsync(props.post.id);
-    router.refresh();
+    "use server";
+    await api.post.delete.mutate({ id: props.post.id });
+    revalidatePath("/");
   };
 
   return (
@@ -71,11 +55,9 @@ export const PostCard = (props: { post: Post }) => {
         <h2 className="text-2xl">{props.post.title}</h2>
         <p className="mt-2">{props.post.content}</p>
       </div>
-      <div>
-        <button className="text-sm" onClick={onDelete}>
-          Delete
-        </button>
-      </div>
+      <form action={onDelete}>
+        <button className="text-sm">Delete</button>
+      </form>
     </div>
   );
 };
