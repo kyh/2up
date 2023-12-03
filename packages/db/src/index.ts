@@ -1,7 +1,5 @@
 import { PrismaClient } from "@prisma/client/edge";
 
-import * as uuid from "./uuid";
-
 const NODE_ENV = process.env.NODE_ENV ?? "development";
 
 const globalForPrisma = globalThis as unknown as {
@@ -15,5 +13,3 @@ export const db =
   });
 
 if (NODE_ENV !== "production") globalForPrisma.prisma = db;
-
-export { uuid };
