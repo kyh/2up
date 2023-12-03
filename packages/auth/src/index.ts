@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import Discord from "@auth/core/providers/discord";
 import type { DefaultSession } from "@auth/core/types";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 
-import { db } from "@acme/db";
+import { adapter } from "./adapter";
 
 export type { Session } from "next-auth";
 
@@ -22,7 +20,7 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
-  adapter: PrismaAdapter(db),
+  adapter,
   providers: [
     Discord({
       clientId: process.env.DISCORD_CLIENT_ID,
