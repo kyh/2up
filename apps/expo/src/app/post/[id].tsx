@@ -6,7 +6,7 @@ import { api } from "~/trpc/react";
 const Post = () => {
   const { id } = useGlobalSearchParams();
   if (!id || typeof id !== "string") throw new Error("unreachable");
-  const { data } = api.post.byId.useQuery({ id: parseInt(id) });
+  const { data } = api.post.byId.useQuery({ id });
 
   if (!data) return null;
 

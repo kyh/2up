@@ -10,7 +10,7 @@
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint .",
     "format": "prettier --check \"**/*.{mjs,ts,md,json}\"",
-    "push": "pnpm with-env prisma db push --force-reset",
+    "push": "pnpm with-env prisma db push",
     "studio": "pnpm with-env prisma studio",
     "seed": "pnpm with-env tsx prisma/seed.ts",
     "typecheck": "tsc --noEmit",

@@ -63,14 +63,11 @@ enum UserRole {
   user
 }
 
-enum WaitlistType {
-  account
-}
-
-model Waitlist {
+model Post {
   id   String       @id @default(cuid())
-  type WaitlistType @default(account)
-  data Json
+  
+  title String
+  content String
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())

@@ -21,15 +21,13 @@ const PostCard = (props: {
         }}
       >
         <Pressable>
-          <Text className="text-xl font-semibold text-pink-400">
-            {props.post.title}
-          </Text>
-          <Text className="mt-2 text-white">{props.post.content}</Text>
+          <Text className="text-xl">{props.post.title}</Text>
+          <Text className="mt-2">{props.post.content}</Text>
         </Pressable>
       </Link>
     </View>
     <Pressable onPress={props.onDelete}>
-      <Text className="font-bold uppercase text-pink-400">Delete</Text>
+      <Text>Delete</Text>
     </Pressable>
   </View>
 );
@@ -51,7 +49,7 @@ const CreatePost = () => {
   return (
     <View className="mt-4">
       <TextInput
-        className="mb-2 rounded bg-white/10 p-2 text-white"
+        className="mb-2 rounded bg-white/10 p-2"
         placeholderTextColor="rgba(255, 255, 255, 0.5)"
         value={title}
         onChangeText={setTitle}
@@ -63,7 +61,7 @@ const CreatePost = () => {
         </Text>
       )}
       <TextInput
-        className="mb-2 rounded bg-white/10 p-2 text-white"
+        className="mb-2 rounded bg-white/10 p-2"
         placeholderTextColor="rgba(255, 255, 255, 0.5)"
         value={content}
         onChangeText={setContent}
@@ -83,7 +81,7 @@ const CreatePost = () => {
           });
         }}
       >
-        <Text className="font-semibold text-white">Publish post</Text>
+        <Text className="font-semibold">Publish post</Text>
       </Pressable>
       {error?.data?.code === "UNAUTHORIZED" && (
         <Text className="mt-2 text-red-500">
@@ -108,20 +106,17 @@ const Index = () => {
       {/* Changes page title visible on the header */}
       <Stack.Screen options={{ title: "Home Page" }} />
       <View className="h-full w-full p-4">
-        <Text className="pb-2 text-center text-5xl font-bold text-white">
-          Create <Text className="text-pink-400">T3</Text> Turbo
+        <Text className="pb-2 text-center text-5xl font-bold">
+          Create <Text className="">T3</Text> Turbo
         </Text>
 
         <Button
           onPress={() => void utils.post.all.invalidate()}
           title="Refresh posts"
-          color={"#f472b6"}
         />
 
         <View className="py-2">
-          <Text className="font-semibold italic text-white">
-            Press on a post
-          </Text>
+          <Text className="font-semibold italic">Press on a post</Text>
         </View>
 
         <FlashList
