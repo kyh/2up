@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cache } from "react";
+import type { RedirectError } from "next/dist/client/components/redirect";
 import { headers } from "next/headers";
 import { createTRPCClient, loggerLink, TRPCClientError } from "@trpc/client";
 import { callProcedure } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
 import type { TRPCErrorResponse } from "@trpc/server/rpc";
 import SuperJSON from "superjson";
+import { z } from "zod";
 
 import { appRouter, createTRPCContext } from "@acme/api";
 import { auth } from "@acme/auth";
@@ -64,16 +67,67 @@ export const api = createTRPCClient<typeof appRouter>({
   ],
 });
 
+export type ServerActionResponse<T> = {
+  data?: T;
+  error?: string;
+};
+
 /**
  * Thin wrapper to create server actions that correctly serializes trpc responses.
  */
 export const createServerAction = <P, R>(action: (_: P) => Promise<R>) => {
-  return async (input: P) => {
+  return async (input: P): Promise<ServerActionResponse<R>> => {
     try {
       const res = await action(input);
-      return { error: false, data: res };
-    } catch (error) {
-      return { error: true };
+      return { data: res };
+    } catch (e: unknown) {
+      // next/navigation functions work by throwing an error that will be
+      // processed internally by Next.js. So, in this case we need to rethrow it.
+      if (isNextRedirectError(e) || isNextNotFoundError(e)) {
+        throw e;
+      }
+
+      if (e instanceof TRPCClientError) {
+        return { error: e.message };
+      }
+
+      if (e instanceof Error) {
+        return { error: e.message };
+      }
+
+      return { error: "Something went wrong while executing the operation" };
     }
   };
 };
+
+const REDIRECT_ERROR_CODE = "NEXT_REDIRECT";
+const NOT_FOUND_ERROR_CODE = "NEXT_NOT_FOUND";
+
+type NotFoundError = Error & { digest: typeof NOT_FOUND_ERROR_CODE };
+
+const isNextRedirectError = <U extends string>(
+  error: any,
+): error is RedirectError<U> => {
+  if (!z.object({ digest: z.string() }).safeParse(error).success) {
+    return false;
+  }
+
+  const [errorCode, type, destination, permanent] =
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    (error.digest as string).split(";", 4);
+
+  if (!errorCode || !type || !destination || !permanent) {
+    return false;
+  }
+
+  return (
+    errorCode === REDIRECT_ERROR_CODE &&
+    (type === "replace" || type === "push") &&
+    typeof destination === "string" &&
+    (permanent === "true" || permanent === "false")
+  );
+};
+
+const isNextNotFoundError = (error: any): error is NotFoundError =>
+  z.object({ digest: z.literal(NOT_FOUND_ERROR_CODE) }).safeParse(error)
+    .success;

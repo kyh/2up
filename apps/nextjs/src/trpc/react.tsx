@@ -1,12 +1,14 @@
 "use client";
 
-import { use, useEffect, useRef, useState, useTransition } from "react";
+import { use, useCallback, useState, useTransition } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 
 import type { AppRouter } from "@acme/api";
+
+import type { ServerActionResponse } from "./server";
 
 export type * from "@acme/api";
 
@@ -59,37 +61,68 @@ const getBaseUrl = () => {
  * Custom hook to execute a server actions with client-side effects.
  */
 export const useServerAction = <P, R>(
-  action: (_: P) => Promise<R>,
-  onFinished?: (_: R | undefined) => void,
+  action: (_: P) => Promise<ServerActionResponse<R>>,
+  {
+    onExecute,
+    onSuccess,
+    onError,
+    onSettled,
+  }: {
+    onExecute?: (_: P) => void;
+    onSuccess?: (_: R) => void;
+    onError?: (_: string) => void;
+    onSettled?: () => void;
+  },
 ): {
-  execute: (_: P) => Promise<R | undefined>;
-  result?: R;
-  pending: boolean;
+  execute: (_: P) => void;
+  data?: R;
+  error?: string;
+  isError: boolean;
+  isIdle: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  reset: () => void;
 } => {
-  const [pending, startTransition] = useTransition();
-  const [result, setResult] = useState<R>();
-  const [finished, setFinished] = useState(false);
-  const resolver = useRef<(value?: R | PromiseLike<R>) => void>();
+  const [isLoading, startTransition] = useTransition();
+  const [error, setError] = useState<string>();
+  const [data, setData] = useState<R>();
 
-  useEffect(() => {
-    if (!finished) return;
+  const execute = useCallback(
+    (args: P) => {
+      if (onExecute) onExecute(args);
 
-    if (onFinished) onFinished(result);
-    resolver.current?.(result);
-  }, [result, finished, onFinished]);
+      startTransition(() => {
+        return action(args).then(({ data, error }) => {
+          if (error) {
+            setError(error);
+            onError?.(error);
+          }
 
-  const execute = async (args: P): Promise<R | undefined> => {
-    startTransition(() => {
-      void action(args).then((data) => {
-        setResult(data);
-        setFinished(true);
+          if (data) {
+            setData(data);
+            onSuccess?.(data);
+          }
+
+          onSettled?.();
+        });
       });
-    });
+    },
+    [action, onExecute, onError, onSuccess, onSettled],
+  );
 
-    return new Promise((resolve) => {
-      resolver.current = resolve;
-    });
+  const reset = useCallback(() => {
+    setData(undefined);
+    setError(undefined);
+  }, []);
+
+  return {
+    execute,
+    data,
+    error,
+    isError: !!error,
+    isIdle: !isLoading,
+    isLoading,
+    isSuccess: !!data,
+    reset,
   };
-
-  return { execute, result, pending };
 };
