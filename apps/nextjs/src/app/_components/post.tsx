@@ -1,12 +1,12 @@
 "use client";
 
 import type { RouterOutputs } from "@/trpc/react";
-import { useAction } from "next-safe-action/hook";
+import { useServerAction } from "@/trpc/react";
 
 import { createPost, deletePost } from "./post-actions";
 
 export const PostCreateForm = () => {
-  const { execute, status } = useAction(createPost, {
+  const { execute, isLoading } = useServerAction(createPost, {
     onError: (err) => {
       console.error(err);
       alert("error creating post");
@@ -22,8 +22,6 @@ export const PostCreateForm = () => {
     execute({ title, content });
   };
 
-  const pending = status === "executing";
-
   return (
     <form
       className="mt-5 flex flex-col gap-4 rounded border p-5"
@@ -31,8 +29,8 @@ export const PostCreateForm = () => {
     >
       <input name="title" placeholder="Title" />
       <input name="content" placeholder="Content" />
-      <button type="submit" disabled={pending}>
-        {pending ? "Creating..." : "Submit"}
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? "Creating..." : "Submit"}
       </button>
     </form>
   );
@@ -61,7 +59,7 @@ export const PostList = ({ posts }: { posts: Post[] }) => {
 };
 
 export const PostDeleteForm = ({ postId }: { postId: string }) => {
-  const { execute, status } = useAction(deletePost, {
+  const { execute, isLoading } = useServerAction(deletePost, {
     onError: (err) => {
       console.error(err);
       alert("error deleting post");
@@ -72,16 +70,14 @@ export const PostDeleteForm = ({ postId }: { postId: string }) => {
     execute({ id: postId });
   };
 
-  const pending = status === "executing";
-
   return (
     <button
       type="button"
       className="text-sm"
-      disabled={pending}
+      disabled={isLoading}
       onClick={onClick}
     >
-      {pending ? "Deleting..." : "Delete"}
+      {isLoading ? "Deleting..." : "Delete"}
     </button>
   );
 };

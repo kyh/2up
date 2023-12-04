@@ -13,7 +13,7 @@ importers:
         version: link:tooling/prettier
       '@turbo/gen':
         specifier: ^1.10.16
-        version: 1.10.16(@types/node@20.10.3)(typescript@5.3.2)
+        version: 1.10.16(@types/node@18.19.2)(typescript@5.3.2)
       prettier:
         specifier: ^3.1.0
         version: 3.1.0
@@ -202,9 +202,6 @@ importers:
       next:
         specifier: ^14.0.3
         version: 14.0.3(react-dom@18.2.0)(react@18.2.0)
-      next-safe-action:
-        specifier: ^5.2.0
-        version: 5.2.0(next@14.0.3)(react@18.2.0)(zod@3.22.4)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -3880,7 +3877,7 @@ packages:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
     dev: true
 
-  /@turbo/gen@1.10.16(@types/node@20.10.3)(typescript@5.3.2):
+  /@turbo/gen@1.10.16(@types/node@18.19.2)(typescript@5.3.2):
     resolution: {integrity: sha512-PzyluADjVuy5OcIi+/aRcD70OElQpRVRDdfZ9fH8G5Fv75lQcNrjd1bBGKmhjSw+g+eTEkXMGnY7s6gsCYjYTQ==}
     hasBin: true
     dependencies:
@@ -3892,7 +3889,7 @@ packages:
       minimatch: 9.0.3
       node-plop: 0.26.3
       proxy-agent: 6.3.1
-      ts-node: 10.9.1(@types/node@20.10.3)(typescript@5.3.2)
+      ts-node: 10.9.1(@types/node@18.19.2)(typescript@5.3.2)
       update-check: 1.5.4
       validate-npm-package-name: 5.0.0
     transitivePeerDependencies:
@@ -9035,19 +9032,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /next-safe-action@5.2.0(next@14.0.3)(react@18.2.0)(zod@3.22.4):
-    resolution: {integrity: sha512-u6fzFLHffpW5PqBcp5eHi62abc4uozRj+8iQofMImCZJ9+Ht2N8w9123UPvU6Zlkit+KCidO6yi4HlLnzTyrHA==}
-    engines: {node: '>=16'}
-    peerDependencies:
-      next: '>= 14.0.0'
-      react: '>= 18.2.0'
-      zod: '>= 3.0.0'
-    dependencies:
-      next: 14.0.3(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
-      zod: 3.22.4
-    dev: false
-
   /next@14.0.3(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-AbYdRNfImBr3XGtvnwOxq8ekVCwbFTv/UJoLwmaX89nk9i051AEY4/HAWzU0YpaTDw8IofUpmuIlvzWF13jxIw==}
     engines: {node: '>=18.17.0'}
@@ -11504,7 +11488,7 @@ packages:
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
-  /ts-node@10.9.1(@types/node@20.10.3)(typescript@5.3.2):
+  /ts-node@10.9.1(@types/node@18.19.2)(typescript@5.3.2):
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -11523,7 +11507,7 @@ packages:
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.10.3
+      '@types/node': 18.19.2
       acorn: 8.11.2
       acorn-walk: 8.3.0
       arg: 4.1.3
