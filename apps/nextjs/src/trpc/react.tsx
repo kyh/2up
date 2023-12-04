@@ -1,6 +1,12 @@
 "use client";
 
-import { use, useCallback, useState, useTransition } from "react";
+import {
+  use,
+  useCallback,
+  useOptimistic,
+  useState,
+  useTransition,
+} from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
@@ -63,11 +69,15 @@ const getBaseUrl = () => {
 export const useServerAction = <P, R>(
   action: (_: P) => Promise<ServerActionResponse<R>>,
   {
+    initialData,
+    reducer = (s) => s,
     onExecute,
     onSuccess,
     onError,
     onSettled,
   }: {
+    initialData?: R;
+    reducer?: (state: R, input: P) => R;
     onExecute?: (_: P) => void;
     onSuccess?: (_: R) => void;
     onError?: (_: string) => void;
@@ -86,28 +96,42 @@ export const useServerAction = <P, R>(
   const [isLoading, startTransition] = useTransition();
   const [error, setError] = useState<string>();
   const [data, setData] = useState<R>();
+  const [optimisticData, setOptimisticState] = useOptimistic(
+    initialData as R,
+    reducer,
+  );
 
   const execute = useCallback(
     (args: P) => {
-      if (onExecute) onExecute(args);
+      onExecute?.(args);
+      return startTransition(async () => {
+        initialData && setOptimisticState(args);
+        return action(args)
+          .then(({ data, error }) => {
+            if (error) {
+              setError(error);
+              onError?.(error);
+            }
 
-      startTransition(() => {
-        return action(args).then(({ data, error }) => {
-          if (error) {
-            setError(error);
-            onError?.(error);
-          }
-
-          if (data) {
-            setData(data);
-            onSuccess?.(data);
-          }
-
-          onSettled?.();
-        });
+            if (data) {
+              setData(data);
+              onSuccess?.(data);
+            }
+          })
+          .finally(() => {
+            onSettled?.();
+          });
       });
     },
-    [action, onExecute, onError, onSuccess, onSettled],
+    [
+      action,
+      onExecute,
+      onError,
+      onSuccess,
+      onSettled,
+      initialData,
+      setOptimisticState,
+    ],
   );
 
   const reset = useCallback(() => {
@@ -117,7 +141,7 @@ export const useServerAction = <P, R>(
 
   return {
     execute,
-    data,
+    data: optimisticData ?? data,
     error,
     isError: !!error,
     isIdle: !isLoading,
