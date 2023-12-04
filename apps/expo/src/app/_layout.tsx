@@ -1,8 +1,7 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-
-import { TRPCProvider } from "~/trpc/react";
+import { TRPCProvider } from "@/trpc/react";
 
 import "../styles.css";
 

@@ -1,6 +1,7 @@
-import { api } from "~/trpc/server";
-import { Auth } from "./_components/auth";
-import { CreatePostForm, PostList } from "./_components/posts";
+import { Auth } from "@/app/_components/auth";
+import { api } from "@/trpc/server";
+
+import { PostCreateForm, PostList } from "./_components/post";
 
 export const runtime = "edge";
 
@@ -13,7 +14,7 @@ const Page = async () => {
         <h1 className="text-xl">T3 Template</h1>
         <Auth />
       </nav>
-      <CreatePostForm />
+      <PostCreateForm />
       <PostList posts={posts} />
     </main>
   );

@@ -2,10 +2,9 @@ import React from "react";
 import { Button, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Stack } from "expo-router";
+import { api } from "@/trpc/react";
+import type { RouterOutputs } from "@/trpc/react";
 import { FlashList } from "@shopify/flash-list";
-
-import { api } from "~/trpc/react";
-import type { RouterOutputs } from "~/trpc/react";
 
 const PostCard = (props: {
   post: RouterOutputs["post"]["all"][number];
