@@ -1,17 +1,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { api } from "@/trpc/server";
+import { action } from "@/lib/safe-action";
+import { api, schema } from "@/trpc/server";
 
-export const createPost = async (formData: FormData) => {
-  const title = formData.get("title")?.toString() ?? "";
-  const content = formData.get("content")?.toString() ?? "";
-
-  await api.post.create.mutate({ title, content });
+export const createPost = action(schema.post.postCreateInput, async (input) => {
+  await api.post.create.mutate(input);
   revalidatePath("/");
-};
+});
 
-export const deletePost = async (postId: string) => {
-  await api.post.delete.mutate({ id: postId });
+export const deletePost = action(schema.post.postDeleteInput, async (input) => {
+  await api.post.delete.mutate(input);
   revalidatePath("/");
-};
+});
