@@ -6,27 +6,35 @@ An opinionated [t3 stack](https://create.t3.gg/) starter template.
 
 In additional to the default t3 features, this template includes:
 
-- React Server Components
-- Next.js Server Actions
-- Prisma ORM instead of Drizzle
-- Custom Auth.js adapter
-- User Profile
-- Route CRUD generator
-- Payments
-- Multi Tenancy (on branch)
-  - Admin Panel
+- [x] ~React Server Components~
+- [x] ~Next.js Server Actions~
+- [ ] User Profile
+- [ ] Payments (with Lemon Squeezy)
+- [ ] Multi Tenancy
+  - [ ] Admin Dashboard
+- [ ] CLI generators
+  - [ ] CRUD generator
+  - [ ] UI generator
 
 ## FAQ
 
-### Why use TRPC instead of Server Actions by default?
+### Why use TRPC instead of just Server Actions?
 
-TODO
+TODO: But tldr is that having a framework agnostic data layer lets us share logic between multiple clients (web, mobile, etc).
 
 ### Why pick Prisma over Drizzle?
 
 TODO
 
 ### Why write a custom Auth.js adapter?
+
+TODO
+
+### Why write a custom `createServerAction` and `useServerAction` functions?
+
+TODO
+
+### Why use Lemon Squeezy instead of just Stripe?
 
 TODO
 
