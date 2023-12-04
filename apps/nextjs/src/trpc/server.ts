@@ -11,6 +11,8 @@ import { auth } from "@acme/auth";
 
 export type * from "@acme/api";
 
+export * from "@acme/api/schema";
+
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
  * handling a tRPC call from a React Server Component.
@@ -61,3 +63,17 @@ export const api = createTRPCClient<typeof appRouter>({
         }),
   ],
 });
+
+/**
+ * Thin wrapper to create server actions that correctly serializes trpc responses.
+ */
+export const createServerAction = <P, R>(action: (_: P) => Promise<R>) => {
+  return async (input: P) => {
+    try {
+      const res = await action(input);
+      return { error: false, data: res };
+    } catch (error) {
+      return { error: true };
+    }
+  };
+};

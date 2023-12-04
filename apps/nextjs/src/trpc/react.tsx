@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useEffect, useRef, useState, useTransition } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
@@ -53,4 +53,43 @@ const getBaseUrl = () => {
   if (typeof window !== "undefined") return window.location.origin;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`;
+};
+
+/**
+ * Custom hook to execute a server actions with client-side effects.
+ */
+export const useServerAction = <P, R>(
+  action: (_: P) => Promise<R>,
+  onFinished?: (_: R | undefined) => void,
+): {
+  execute: (_: P) => Promise<R | undefined>;
+  result?: R;
+  pending: boolean;
+} => {
+  const [pending, startTransition] = useTransition();
+  const [result, setResult] = useState<R>();
+  const [finished, setFinished] = useState(false);
+  const resolver = useRef<(value?: R | PromiseLike<R>) => void>();
+
+  useEffect(() => {
+    if (!finished) return;
+
+    if (onFinished) onFinished(result);
+    resolver.current?.(result);
+  }, [result, finished, onFinished]);
+
+  const execute = async (args: P): Promise<R | undefined> => {
+    startTransition(() => {
+      void action(args).then((data) => {
+        setResult(data);
+        setFinished(true);
+      });
+    });
+
+    return new Promise((resolve) => {
+      resolver.current = resolve;
+    });
+  };
+
+  return { execute, result, pending };
 };

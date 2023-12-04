@@ -1,29 +1,40 @@
 "use client";
 
 import type { RouterOutputs } from "@/trpc/react";
-import { useFormStatus } from "react-dom";
+import { useAction } from "next-safe-action/hook";
 
 import { createPost, deletePost } from "./post-actions";
 
 export const PostCreateForm = () => {
+  const { execute, status } = useAction(createPost, {
+    onError: (err) => {
+      console.error(err);
+      alert("error creating post");
+    },
+  });
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const title = formData.get("title")?.toString() ?? "";
+    const content = formData.get("content")?.toString() ?? "";
+
+    execute({ title, content });
+  };
+
+  const pending = status === "executing";
+
   return (
     <form
       className="mt-5 flex flex-col gap-4 rounded border p-5"
-      action={createPost}
+      onSubmit={onSubmit}
     >
       <input name="title" placeholder="Title" />
       <input name="content" placeholder="Content" />
-      <PostCreateButton />
+      <button type="submit" disabled={pending}>
+        {pending ? "Creating..." : "Submit"}
+      </button>
     </form>
-  );
-};
-
-const PostCreateButton = () => {
-  const { pending } = useFormStatus();
-  return (
-    <button type="submit" disabled={pending}>
-      {pending ? "Creating..." : "Submit"}
-    </button>
   );
 };
 
@@ -50,20 +61,26 @@ export const PostList = ({ posts }: { posts: Post[] }) => {
 };
 
 export const PostDeleteForm = ({ postId }: { postId: string }) => {
-  const deleteAction = deletePost.bind(null, postId);
+  const { execute, status } = useAction(deletePost, {
+    onError: (err) => {
+      console.error(err);
+      alert("error deleting post");
+    },
+  });
+
+  const onClick = () => {
+    execute({ id: postId });
+  };
+
+  const pending = status === "executing";
 
   return (
-    <form action={deleteAction}>
-      <PostDeleteButton />
-    </form>
-  );
-};
-
-const PostDeleteButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <button type="submit" className="text-sm" disabled={pending}>
+    <button
+      type="button"
+      className="text-sm"
+      disabled={pending}
+      onClick={onClick}
+    >
       {pending ? "Deleting..." : "Delete"}
     </button>
   );

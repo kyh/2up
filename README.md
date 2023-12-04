@@ -7,11 +7,12 @@ An opinionated [t3 stack](https://create.t3.gg/) starter template.
 In additional to the default t3 features, this template includes:
 
 - React Server Components
-- Custom Auth.js adapter
+- Next.js Server Actions
 - Prisma ORM instead of Drizzle
+- Custom Auth.js adapter
 - User Profile
-- Next.js Server Actions (on branch)
-- Payments using Stripe (on branch)
+- Route CRUD generator
+- Payments
 - Multi Tenancy (on branch)
   - Admin Panel
 
