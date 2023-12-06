@@ -1,20 +1,19 @@
 import { SafeAreaView, Text, View } from "react-native";
-import { Stack, useGlobalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
+
 import { api } from "@/trpc/react";
 
 const Post = () => {
   const { id } = useGlobalSearchParams();
   if (!id || typeof id !== "string") throw new Error("unreachable");
-  const { data } = api.post.byId.useQuery({ id });
+  const { data } = api.todo.byId.useQuery({ id });
 
   if (!data) return null;
 
   return (
-    <SafeAreaView className="bg-[#1F104A]">
-      <Stack.Screen options={{ title: data.title }} />
+    <SafeAreaView>
       <View className="h-full w-full p-4">
-        <Text className="py-2 text-3xl font-bold text-white">{data.title}</Text>
-        <Text className="py-4 text-white">{data.content}</Text>
+        <Text className="py-4">{data.content}</Text>
       </View>
     </SafeAreaView>
   );
