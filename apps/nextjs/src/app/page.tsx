@@ -1,12 +1,12 @@
 import { Auth } from "@/app/_components/auth";
+import type { RouterOutputs } from "@/trpc/server";
 import { api } from "@/trpc/server";
-
-import { PostCreateForm, PostList } from "./_components/post";
+import { TodoCreateForm, TodoDeleteButton } from "./_components/todo";
 
 export const runtime = "edge";
 
 const Page = async () => {
-  const posts = await api.post.all.query();
+  const todos = await api.todo.all.query();
 
   return (
     <main className="container mx-auto max-w-4xl p-10">
@@ -14,9 +14,28 @@ const Page = async () => {
         <h1 className="text-xl">T3 Template</h1>
         <Auth />
       </nav>
-      <PostCreateForm />
-      <PostList posts={posts} />
+      <TodoCreateForm />
+      <TodoList todos={todos} />
     </main>
+  );
+};
+
+const TodoList = ({ todos }: { todos: RouterOutputs["todo"]["all"] }) => {
+  if (todos.length === 0) {
+    return <p className="mt-5 text-center">No todos yet</p>;
+  }
+
+  return (
+    <div className="mt-5 flex w-full flex-col gap-4">
+      {todos.map((todo) => (
+        <div key={todo.id} className="flex rounded border p-5">
+          <div className="flex-grow">
+            <p className="mt-2">{todo.content}</p>
+          </div>
+          <TodoDeleteButton todoId={todo.id} />
+        </div>
+      ))}
+    </div>
   );
 };
 
