@@ -4,8 +4,7 @@
   "private": true,
   "license": "MIT",
   "exports": {
-    ".": "./src/index.ts",
-    "./schema": "./src/schema.ts"
+    ".": "./src/index.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",

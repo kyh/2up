@@ -8,8 +8,9 @@ In additional to the default t3 features, this template includes:
 
 - [x] ~React Server Components~
 - [x] ~Next.js Server Actions~
+- [ ] CRUD Todo
 - [ ] User Profile
-- [ ] Payments (with Lemon Squeezy)
+- [ ] Payments
 - [ ] Multi Tenancy
   - [ ] Admin Dashboard
 - [ ] CLI generators
@@ -20,7 +21,7 @@ In additional to the default t3 features, this template includes:
 
 ### Why use TRPC instead of just Server Actions?
 
-TODO: But tldr is that having a framework agnostic data layer lets us share logic between multiple clients (web, mobile, etc).
+TODO: tldr is that having a framework agnostic data layer lets us share logic between multiple clients (web, mobile, etc).
 
 ### Why pick Prisma over Drizzle?
 
@@ -31,10 +32,6 @@ TODO
 TODO
 
 ### Why write a custom `createServerAction` and `useServerAction` functions?
-
-TODO
-
-### Why use Lemon Squeezy instead of just Stripe?
 
 TODO
 

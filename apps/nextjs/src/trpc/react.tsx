@@ -65,6 +65,15 @@ const getBaseUrl = () => {
 
 /**
  * Custom hook to execute a server actions with client-side effects.
+ * 
+
+const { execute, isLoading } = useServerAction(createTodo, {
+  onError: (err) => {
+    console.error(err);
+    alert("error creating post");
+  },
+});
+
  */
 export const useServerAction = <P, R>(
   action: (_: P) => Promise<ServerActionResponse<R>>,

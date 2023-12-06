@@ -23,7 +23,7 @@ export const Auth = async () => {
         await signOut();
       }}
     >
-      <button>Sign out ({session.user?.name})</button>
+      {session.user?.name} <button>(Sign out)</button>
     </form>
   );
 };
