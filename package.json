@@ -1,5 +1,5 @@
 {
-  "name": "create-t3-turbo",
+  "name": "t3-template",
   "private": true,
   "engines": {
     "node": ">=18.18.2"
@@ -25,10 +25,10 @@
   },
   "devDependencies": {
     "@acme/prettier-config": "workspace:*",
-    "@turbo/gen": "^1.10.16",
+    "@turbo/gen": "^1.11.1",
     "prettier": "^3.1.0",
-    "turbo": "^1.10.16",
-    "typescript": "^5.3.2"
+    "turbo": "^1.11.1",
+    "typescript": "^5.3.3"
   },
   "prettier": "@acme/prettier-config"
 }

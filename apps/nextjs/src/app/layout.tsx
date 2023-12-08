@@ -5,6 +5,8 @@ import "@/styles/globals.css";
 
 import { cache } from "react";
 import { headers } from "next/headers";
+import { Toaster } from "sonner";
+
 import { TRPCReactProvider } from "@/trpc/react";
 
 const fontSans = Inter({
@@ -13,13 +15,13 @@ const fontSans = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Create T3 Turbo",
+  title: "T3 Template",
   description: "Simple monorepo with shared backend for web & mobile apps",
   openGraph: {
-    title: "Create T3 Turbo",
+    title: "T3 Template",
     description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://create-t3-turbo.vercel.app",
-    siteName: "Create T3 Turbo",
+    url: "https://github.com/kyh/t3-template",
+    siteName: "T3 Template",
   },
   twitter: {
     card: "summary_large_image",
@@ -39,6 +41,7 @@ const Layout = (props: { children: React.ReactNode }) => (
       <TRPCReactProvider headersPromise={getHeaders()}>
         {props.children}
       </TRPCReactProvider>
+      <Toaster />
     </body>
   </html>
 );
