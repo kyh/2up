@@ -15,14 +15,23 @@ export const TodoList = ({
   });
 
   const addTodo = api.todo.create.useMutation({
+    onError: (err) => {
+      alert(err.message);
+    },
     onSettled: () => todos.refetch(),
   });
 
   const toggleTodo = api.todo.update.useMutation({
+    onError: (err) => {
+      alert(err.message);
+    },
     onSettled: () => todos.refetch(),
   });
 
   const deleteTodo = api.todo.delete.useMutation({
+    onError: (err) => {
+      alert(err.message);
+    },
     onSettled: () => todos.refetch(),
   });
 

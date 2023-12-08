@@ -2,7 +2,7 @@ import { Auth } from "@/app/_components/auth";
 import { api } from "@/trpc/server";
 import { TodoList } from "./_components/todo";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 const Page = async () => {
   const todos = await api.todo.all.query();
