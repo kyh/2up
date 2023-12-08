@@ -8,7 +8,8 @@ In additional to the default t3 features, this template includes:
 
 - [x] ~React Server Components~
 - [x] ~Next.js Server Actions~
-- [ ] CRUD Todo
+- [x] ~CRUD Todo~
+- [x] ~Local Db~
 - [ ] User Profile
 - [ ] Payments
 - [ ] Multi Tenancy
