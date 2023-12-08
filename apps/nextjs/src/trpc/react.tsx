@@ -17,6 +17,7 @@ import type { AppRouter } from "@acme/api";
 import type { ServerActionResponse } from "./server";
 
 export type * from "@acme/api";
+export type { TRPCError } from "@trpc/server";
 
 export const api = createTRPCReact<AppRouter>();
 

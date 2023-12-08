@@ -1,5 +1,5 @@
 import type { Adapter, AdapterAccount } from "@auth/core/adapters";
-import type { Prisma } from "@prisma/client/edge";
+import type { Prisma } from "@prisma/client";
 
 import { db } from "@acme/db";
 
