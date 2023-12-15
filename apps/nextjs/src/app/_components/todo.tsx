@@ -2,8 +2,10 @@
 
 import { toast } from "sonner";
 
+import type { RouterOutputs } from "@acme/api";
+
 import { clx } from "@/lib/clx";
-import type { RouterOutputs, TRPCError } from "@/trpc/react";
+import type { TRPCError } from "@/trpc/react";
 import { api } from "@/trpc/react";
 
 type Todo = RouterOutputs["todo"]["all"][number];

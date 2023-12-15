@@ -14,11 +14,13 @@ const config = {
     new URL("../../tooling/tailwind/index.ts", import.meta.url),
   ),
   importOrder: [
+    "<TYPES>",
     "^(react/(.*)$)|^(react$)|^(react-native(.*)$)",
     "^(next/(.*)$)|^(next$)",
     "^(expo(.*)$)|^(expo$)",
     "<THIRD_PARTY_MODULES>",
     "",
+    "<TYPES>^@acme",
     "^@acme/(.*)$",
     "",
     "^@/",
