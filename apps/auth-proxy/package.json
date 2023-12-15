@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@auth/core": "^0.18.4"
+    "@auth/core": "^0.18.6"
   },
   "devDependencies": {
     "@acme/eslint-config": "workspace:*",
@@ -20,7 +20,7 @@
     "@acme/tsconfig": "workspace:*",
     "eslint": "^8.55.0",
     "nitropack": "^2.8.1",
-    "prettier": "^3.1.0",
+    "prettier": "^3.1.1",
     "typescript": "^5.3.3"
   },
   "eslintConfig": {
