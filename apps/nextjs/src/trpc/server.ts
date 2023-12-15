@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { cache } from "react";
 import type { RedirectError } from "next/dist/client/components/redirect";
+import { cache } from "react";
 import { headers } from "next/headers";
 import { createTRPCClient, loggerLink, TRPCClientError } from "@trpc/client";
 import { callProcedure } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
-import type { TRPCErrorResponse } from "@trpc/server/rpc";
 import SuperJSON from "superjson";
 import { z } from "zod";
 
 import { appRouter, createTRPCContext } from "@acme/api";
 import { auth } from "@acme/auth";
+
+import type { TRPCErrorResponse } from "@trpc/server/rpc";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when

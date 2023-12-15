@@ -1,7 +1,7 @@
 import Discord from "@auth/core/providers/discord";
-import type { DefaultSession } from "@auth/core/types";
 import NextAuth from "next-auth";
 
+import type { DefaultSession } from "@auth/core/types";
 import { adapter } from "./adapter";
 
 export type { Session } from "next-auth";

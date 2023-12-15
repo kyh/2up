@@ -1,7 +1,7 @@
+import { db } from "@acme/db";
+
 import type { Adapter, AdapterAccount } from "@auth/core/adapters";
 import type { Prisma } from "@prisma/client";
-
-import { db } from "@acme/db";
 
 export const adapter: Adapter = {
   createUser: (data) => {
