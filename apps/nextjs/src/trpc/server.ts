@@ -12,8 +12,6 @@ import { z } from "zod";
 import { appRouter, createTRPCContext } from "@acme/api";
 import { auth } from "@acme/auth";
 
-export type * from "@acme/api";
-
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
  * handling a tRPC call from a React Server Component.

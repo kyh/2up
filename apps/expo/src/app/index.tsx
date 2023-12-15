@@ -4,8 +4,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Stack } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 
+import type { RouterOutputs } from "@acme/api";
+
 import { api } from "@/trpc/react";
-import type { RouterOutputs } from "@/trpc/react";
 
 const TodoCard = (props: {
   todo: RouterOutputs["todo"]["all"][number];

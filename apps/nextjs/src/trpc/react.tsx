@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  use,
-  useCallback,
-  useOptimistic,
-  useState,
-  useTransition,
-} from "react";
+import { useCallback, useOptimistic, useState, useTransition } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
@@ -16,7 +10,6 @@ import type { AppRouter } from "@acme/api";
 
 import type { ServerActionResponse } from "./server";
 
-export type * from "@acme/api";
 export type { TRPCError } from "@trpc/server";
 
 export const api = createTRPCReact<AppRouter>();
@@ -26,8 +19,6 @@ export const TRPCReactProvider = (props: {
   headersPromise: Promise<Headers>;
 }) => {
   const [queryClient] = useState(() => new QueryClient());
-  const ssrHeaders = use(props.headersPromise);
-
   const [trpcClient] = useState(() =>
     api.createClient({
       transformer: SuperJSON,
@@ -39,8 +30,8 @@ export const TRPCReactProvider = (props: {
         }),
         unstable_httpBatchStreamLink({
           url: getBaseUrl() + "/api/trpc",
-          headers: () => {
-            const headers = new Map(ssrHeaders);
+          headers: async () => {
+            const headers = new Map(await props.headersPromise);
             headers.set("x-trpc-source", "nextjs-react");
             return Object.fromEntries(headers);
           },
