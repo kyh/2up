@@ -15,7 +15,12 @@ const fontSans = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "T3 Template",
+  metadataBase: new URL(
+    process.env.VERCEL_ENV === "production"
+      ? "https://turbo.t3.gg"
+      : "http://localhost:3000",
+  ),
+  title: "Create T3 Turbo",
   description: "Simple monorepo with shared backend for web & mobile apps",
   openGraph: {
     title: "T3 Template",
@@ -30,7 +35,7 @@ export const metadata: Metadata = {
   },
 };
 
-const getHeaders = cache(async () => headers());
+const getHeaders = cache(() => Promise.resolve(headers()));
 
 const Layout = (props: { children: React.ReactNode }) => (
   <html lang="en">
