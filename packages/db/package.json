@@ -2,6 +2,7 @@
   "name": "@acme/db",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "license": "MIT",
   "exports": {
     ".": "./src/index.ts"
@@ -26,7 +27,7 @@
     "@acme/prettier-config": "workspace:*",
     "@acme/tsconfig": "workspace:*",
     "dotenv-cli": "^7.3.0",
-    "eslint": "^8.55.0",
+    "eslint": "^8.56.0",
     "prettier": "^3.1.1",
     "prisma": "^5.7.0",
     "typescript": "^5.3.3"
