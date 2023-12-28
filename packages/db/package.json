@@ -23,9 +23,9 @@
     "@prisma/extension-accelerate": "^0.6.2"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:*",
-    "@acme/prettier-config": "workspace:*",
-    "@acme/tsconfig": "workspace:*",
+    "@kyh/eslint-config": "*",
+    "@kyh/prettier-config": "*",
+    "@kyh/tsconfig": "*",
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.56.0",
     "prettier": "^3.1.1",
@@ -35,8 +35,8 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@acme/eslint-config/base"
+      "@kyh/eslint-config/base"
     ]
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@kyh/prettier-config"
 }

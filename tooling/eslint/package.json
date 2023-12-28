@@ -1,8 +1,9 @@
 {
-  "name": "@acme/eslint-config",
+  "name": "@kyh/eslint-config",
   "version": "0.1.0",
-  "private": true,
-  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "./base.js",
     "./nextjs.js",
@@ -27,8 +28,8 @@
     "eslint-plugin-react-hooks": "^4.6.0"
   },
   "devDependencies": {
-    "@acme/prettier-config": "workspace:*",
-    "@acme/tsconfig": "workspace:*",
+    "@kyh/prettier-config": "*",
+    "@kyh/tsconfig": "*",
     "@types/eslint": "^8.56.0",
     "eslint": "^8.56.0",
     "typescript": "^5.3.3"
@@ -39,5 +40,5 @@
       "./base.js"
     ]
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@kyh/prettier-config"
 }
