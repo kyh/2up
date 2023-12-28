@@ -1,7 +1,9 @@
 {
-  "name": "@acme/tsconfig",
-  "private": true,
+  "name": "@kyh/tsconfig",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "base.json"
   ]
