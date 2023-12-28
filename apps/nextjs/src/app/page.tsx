@@ -10,7 +10,7 @@ const Page = async () => {
   return (
     <main className="container mx-auto max-w-4xl p-10">
       <nav className="flex items-center justify-between">
-        <h1 className="text-xl">T3 Template</h1>
+        <h1 className="text-xl">App Template</h1>
         <Auth />
       </nav>
       <TodoList initialTodos={todos} />

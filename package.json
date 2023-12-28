@@ -1,5 +1,5 @@
 {
-  "name": "t3-template",
+  "name": "template",
   "private": true,
   "engines": {
     "node": ">=20.10"

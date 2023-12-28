@@ -1,4 +1,4 @@
-# t3-template
+# template
 
 An opinionated [t3 stack](https://create.t3.gg/) starter template.
 
@@ -22,17 +22,13 @@ In additional to the default t3 features, this template includes:
 
 ### Why use TRPC instead of just Server Actions?
 
-TODO: tldr is that having a framework agnostic data layer lets us share logic between multiple clients (web, mobile, etc).
+Having a framework agnostic data layer lets us share logic between multiple clients (web, mobile, etc).
 
 ### Why pick Prisma over Drizzle?
 
-TODO
+Cross database support and a more mature ORM.
 
 ### Why write a custom Auth.js adapter?
-
-TODO
-
-### Why write a custom `createServerAction` and `useServerAction` functions?
 
 TODO
 

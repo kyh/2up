@@ -17,16 +17,16 @@ const fontSans = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.VERCEL_ENV === "production"
-      ? "https://turbo.t3.gg"
+      ? "https://kyh.io"
       : "http://localhost:3000",
   ),
-  title: "Create T3 Turbo",
+  title: "Template",
   description: "Simple monorepo with shared backend for web & mobile apps",
   openGraph: {
-    title: "T3 Template",
+    title: "Template",
     description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://github.com/kyh/t3-template",
-    siteName: "T3 Template",
+    url: "https://github.com/kyh/template",
+    siteName: "Template",
   },
   twitter: {
     card: "summary_large_image",
