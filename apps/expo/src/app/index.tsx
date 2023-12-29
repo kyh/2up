@@ -34,7 +34,6 @@ const TodoCard = (props: {
 
 const CreateTodo = () => {
   const utils = api.useUtils();
-
   const [content, setContent] = useState("");
 
   const { mutate, error } = api.todo.create.useMutation({
@@ -77,7 +76,7 @@ const CreateTodo = () => {
   );
 };
 
-const Index = () => {
+export default function Index() {
   const utils = api.useUtils();
 
   const todoQuery = api.todo.all.useQuery();
@@ -120,6 +119,4 @@ const Index = () => {
       </View>
     </SafeAreaView>
   );
-};
-
-export default Index;
+}

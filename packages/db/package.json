@@ -10,13 +10,11 @@
   "scripts": {
     "postinstall": "prisma generate",
     "clean": "rm -rf .turbo node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint .",
-    "format": "prettier --check \"**/*.{mjs,ts,md,json}\"",
-    "push": "pnpm with-env prisma db push",
-    "studio": "pnpm with-env prisma studio",
-    "seed": "pnpm with-env tsx prisma/seed.ts",
-    "typecheck": "tsc --noEmit",
-    "with-env": "dotenv -e ../../.env --"
+    "push": "drizzle-kit push:mysql",
+    "studio": "drizzle-kit studio",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
