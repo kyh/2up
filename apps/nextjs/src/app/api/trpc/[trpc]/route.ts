@@ -1,10 +1,11 @@
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { appRouter, createTRPCContext } from "@acme/api";
+import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import type { NextRequest } from "next/server";
+import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-export const runtime = "edge";
+import { appRouter, createTRPCContext } from "@acme/api";
+
+// export const runtime = "edge";
 
 /**
  * Configure basic CORS headers
@@ -41,7 +42,7 @@ const handler = async (req: NextRequest) => {
   });
 
   setCorsHeaders(response);
-  
+
   return response;
 };
 
