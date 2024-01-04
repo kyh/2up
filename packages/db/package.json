@@ -12,9 +12,12 @@
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint .",
-    "push": "prisma db push",
-    "studio": "prisma studio",
-    "typecheck": "tsc --noEmit"
+    "start": "supabase start",
+    "push": "pnpm with-env prisma db push",
+    "studio": "pnpm with-env prisma studio",
+    "seed": "pnpm with-env tsx prisma/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
@@ -28,7 +31,7 @@
     "eslint": "^8.56.0",
     "prettier": "^3.1.1",
     "prisma": "^5.7.1",
-    "supabase": "1.127.4",
+    "supabase": "^1.127.4",
     "typescript": "^5.3.3"
   },
   "eslintConfig": {

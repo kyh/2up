@@ -307,7 +307,7 @@ importers:
         specifier: ^5.7.1
         version: 5.7.1
       supabase:
-        specifier: 1.127.4
+        specifier: ^1.127.4
         version: 1.127.4
       typescript:
         specifier: ^5.3.3
