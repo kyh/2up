@@ -8,11 +8,13 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && supabase gen types typescript --local > src/supabase-types.ts",
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint .",
     "start": "supabase start",
+    "stop": "supabase stop",
+    "reset": "supabase db reset",
     "push": "pnpm with-env prisma db push",
     "studio": "pnpm with-env prisma studio",
     "seed": "pnpm with-env tsx prisma/seed.ts",
@@ -21,7 +23,8 @@
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
-    "@prisma/extension-accelerate": "^0.6.2"
+    "@prisma/extension-accelerate": "^0.6.2",
+    "@supabase/supabase-js": "^2.39.2"
   },
   "devDependencies": {
     "@kyh/eslint-config": "*",

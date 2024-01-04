@@ -284,6 +284,9 @@ importers:
       '@prisma/extension-accelerate':
         specifier: ^0.6.2
         version: 0.6.2(@prisma/client@5.7.1)
+      '@supabase/supabase-js':
+        specifier: ^2.39.2
+        version: 2.39.2
     devDependencies:
       '@kyh/eslint-config':
         specifier: '*'

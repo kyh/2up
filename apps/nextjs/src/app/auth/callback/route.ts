@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 
-export async function GET(request: NextRequest) {
+export const GET = async (request: NextRequest) => {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
 
@@ -14,4 +14,4 @@ export async function GET(request: NextRequest) {
 
   // URL to redirect to after sign in process completes
   return NextResponse.redirect(url.origin);
-}
+};

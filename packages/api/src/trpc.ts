@@ -9,8 +9,8 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import type { SupabaseClient } from "@supabase/supabase-js";
 
+import type { SupabaseClient } from "@acme/db";
 import { db } from "@acme/db";
 
 /**
@@ -96,6 +96,7 @@ export const publicProcedure = t.procedure;
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+  console.log("here???", ctx.user);
   if (!ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
