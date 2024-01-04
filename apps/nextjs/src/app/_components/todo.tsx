@@ -1,11 +1,10 @@
 "use client";
 
-import { toast } from "sonner";
-
 import type { RouterOutputs } from "@acme/api";
 
 import type { TRPCError } from "@/trpc/react";
-import { clx } from "@/lib/clx";
+import { cn } from "@acme/ui";
+import { toast } from "@acme/ui/toast";
 import { api } from "@/trpc/react";
 
 type Todo = RouterOutputs["todo"]["all"][number];
@@ -110,7 +109,7 @@ export const TodoList = ({ initialTodos }: TodoListProps) => {
             />
             <label
               htmlFor={`check-${todo.id}`}
-              className={clx(
+              className={cn(
                 "flex-1 cursor-pointer",
                 !!todo.completed && "line-through",
               )}
