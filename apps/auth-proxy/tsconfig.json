@@ -1,4 +1,0 @@
-{
-  "extends": "@kyh/tsconfig/base.json",
-  "include": ["routes"]
-}

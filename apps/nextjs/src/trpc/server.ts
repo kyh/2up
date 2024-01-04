@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { RedirectError } from "next/dist/client/components/redirect";
 import { cache } from "react";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { createTRPCClient, loggerLink, TRPCClientError } from "@trpc/client";
 import { callProcedure } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
@@ -9,7 +10,6 @@ import SuperJSON from "superjson";
 import { z } from "zod";
 
 import { appRouter, createTRPCContext } from "@acme/api";
-import { auth } from "@acme/auth";
 
 import type { TRPCErrorResponse } from "@trpc/server/rpc";
 
@@ -19,11 +19,13 @@ import type { TRPCErrorResponse } from "@trpc/server/rpc";
  */
 const createContext = cache(async () => {
   const heads = new Headers(headers());
+  const supabase = createServerComponentClient({ cookies });
+
   heads.set("x-trpc-source", "rsc");
 
   return createTRPCContext({
-    session: await auth(),
     headers: heads,
+    supabase,
   });
 });
 
