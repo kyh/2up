@@ -1,11 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Github } from "lucide-react";
 
 import { signInWithGithub, signInWithPassword, signUp } from "../actions";
 
-export default function LoginPage() {
+const Page = () => {
   const router = useRouter();
 
   return (
@@ -60,10 +59,11 @@ export default function LoginPage() {
           className="flex items-center gap-1 rounded-lg bg-white/10 px-10 py-2 font-semibold text-zinc-200 no-underline transition hover:bg-white/20"
           onClick={() => signInWithGithub()}
         >
-          <Github size={20} />
           Continue with Github
         </button>
       </div>
     </main>
   );
-}
+};
+
+export default Page;
