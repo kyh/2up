@@ -1,29 +1,35 @@
-import { auth, signIn, signOut } from "@acme/auth";
+import { cookies } from "next/headers";
+import Link from "next/link";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
-export const Auth = async () => {
-  const session = await auth();
+import { signOut } from "../auth/actions";
 
-  if (!session) {
+export const AuthShowcase = async () => {
+  const supabase = createServerComponentClient({ cookies });
+  const user = await supabase.auth.getUser();
+
+  if (!user.data.user) {
     return (
-      <form
-        action={async () => {
-          "use server";
-          await signIn("discord");
-        }}
+      <Link
+        className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
+        href="/auth/login"
       >
-        <button>Sign in with Discord</button>
-      </form>
+        Sign in
+      </Link>
     );
   }
 
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signOut();
-      }}
-    >
-      {session.user?.name} <button>(Sign out)</button>
-    </form>
+    <div className="flex flex-col items-center justify-center gap-4">
+      <p className="text-center text-2xl text-white">
+        {user.data.user && <span>Logged in as {user.data.user.email}</span>}
+      </p>
+
+      <form action={signOut}>
+        <button className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20">
+          Sign out
+        </button>
+      </form>
+    </div>
   );
 };

@@ -9,9 +9,8 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-import type { Session } from "@acme/auth";
-import { auth } from "@acme/auth";
 import { db } from "@acme/db";
 
 /**
@@ -28,15 +27,23 @@ import { db } from "@acme/db";
  */
 export const createTRPCContext = async (opts: {
   headers: Headers;
-  session: Session | null;
+  supabase: SupabaseClient;
 }) => {
-  const session = opts.session ?? (await auth());
+  const supabase = opts.supabase;
+
+  // React Native will pass their token through headers,
+  // browsers will have the session cookie set
+  const token = opts.headers.get("authorization");
+
+  const user = token
+    ? await supabase.auth.getUser(token)
+    : await supabase.auth.getUser();
+
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
 
-  console.log(">>> tRPC Request from", source, "by", session?.user);
-
+  console.log(">>> tRPC Request from", source, "by", user?.data.user?.email);
   return {
-    session,
+    user: user.data,
     db,
   };
 };
@@ -89,13 +96,14 @@ export const publicProcedure = t.procedure;
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.session?.user) {
+  if (!ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
+
   return next({
     ctx: {
-      // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      // infers the `user` as non-nullable
+      user: ctx.user,
     },
   });
 });

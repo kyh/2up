@@ -13,8 +13,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@acme/auth": "workspace:*",
     "@acme/db": "workspace:*",
+    "@supabase/supabase-js": "^2.39.2",
     "@trpc/client": "next",
     "@trpc/server": "next",
     "superjson": "^2.2.1",
