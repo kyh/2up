@@ -5,7 +5,7 @@ import { api } from "@/trpc/server";
 // export const runtime = "edge";
 
 const Page = async () => {
-  const todos = await api.todo.all.query();
+  const todos = await api.todo.all();
 
   return (
     <main className="container mx-auto max-w-4xl p-10">
