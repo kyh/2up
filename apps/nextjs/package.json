@@ -16,6 +16,7 @@
   "dependencies": {
     "@acme/api": "workspace:*",
     "@acme/db": "workspace:*",
+    "@acme/ui": "workspace:*",
     "@supabase/auth-helpers-nextjs": "^0.8.7",
     "@supabase/supabase-js": "^2.39.2",
     "@tanstack/react-query": "^5.15.0",
@@ -30,16 +31,14 @@
     "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sonner": "^1.3.1",
     "superjson": "^2.2.1",
-    "tailwind-merge": "^2.2.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@kyh/eslint-config": "*",
     "@kyh/prettier-config": "*",
-    "@acme/tailwind-config": "workspace:*",
     "@kyh/tsconfig": "*",
+    "@acme/tailwind-config": "workspace:*",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
