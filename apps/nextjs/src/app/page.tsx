@@ -1,6 +1,6 @@
-import { Auth } from "@/app/_components/auth";
+import { UserNav } from "@/components/nav";
+import { TodoList } from "@/components/todo";
 import { api } from "@/trpc/server";
-import { TodoList } from "./_components/todo";
 
 // export const runtime = "edge";
 
@@ -11,7 +11,7 @@ const Page = async () => {
     <main className="container mx-auto max-w-4xl p-10">
       <nav className="flex items-center justify-between">
         <h1 className="text-xl">App Template</h1>
-        <Auth />
+        <UserNav />
       </nav>
       <TodoList initialTodos={todos} />
     </main>

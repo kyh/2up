@@ -21,25 +21,23 @@ import {
 import { cn } from ".";
 import { Label } from "./label";
 
-function useForm<TSchema extends ZodType>(
-  props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
+const useForm = <TSchema extends ZodType>(props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
     schema: TSchema;
-  },
-) {
+  }) => {
   const form = __useForm<TSchema["_input"]>({
     ...props,
     resolver: zodResolver(props.schema, undefined),
   });
 
   return form;
-}
+};
 
 const Form = FormProvider;
 
-interface FormFieldContextValue<
+type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> {
+> = {
   name: TName;
 }
 
@@ -83,7 +81,7 @@ const useFormField = () => {
   };
 };
 
-interface FormItemContextValue {
+type FormItemContextValue = {
   id: string;
 }
 
