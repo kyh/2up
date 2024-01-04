@@ -19,7 +19,7 @@ export const UserNav = async () => {
 
   if (!session) {
     return (
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 text-sm">
         <Link href="/auth/signup">Sign Up</Link>
         <Link href="/auth/login">Log In</Link>
       </div>
@@ -66,19 +66,19 @@ export const UserNav = async () => {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <form
-            action={async () => {
-              "use server";
-              await signOut();
-            }}
-          >
+        <form
+          action={async () => {
+            "use server";
+            await signOut();
+          }}
+        >
+          <DropdownMenuItem className="w-full" asChild>
             <button>
               Log out
               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </button>
-          </form>
-        </DropdownMenuItem>
+          </DropdownMenuItem>
+        </form>
       </DropdownMenuContent>
     </DropdownMenu>
   );
