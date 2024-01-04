@@ -12,9 +12,11 @@
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint .",
-    "push": "prisma db push",
-    "studio": "prisma studio",
-    "typecheck": "tsc --noEmit"
+    "push": "pnpm with-env prisma db push",
+    "studio": "pnpm with-env prisma studio",
+    "seed": "pnpm with-env tsx prisma/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
