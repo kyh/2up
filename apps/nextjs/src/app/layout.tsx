@@ -1,18 +1,15 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-
-import "@/styles/globals.css";
-
+import type { Metadata, Viewport } from "next";
 import { cache } from "react";
 import { headers } from "next/headers";
-import { Toaster } from "sonner";
+import { Inter } from "next/font/google";
+
+import { cn } from "@acme/ui";
+import { ThemeProvider, ThemeToggle } from "@acme/ui/theme";
+import { Toaster } from "@acme/ui/toast";
 
 import { TRPCReactProvider } from "@/trpc/react";
 
-const fontSans = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+import "@/app/globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -35,17 +32,41 @@ export const metadata: Metadata = {
   },
 };
 
-const getHeaders = cache(() => Promise.resolve(headers()));
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
 
-const Layout = (props: { children: React.ReactNode }) => (
-  <html lang="en">
-    <body className={["font-sans", fontSans.variable].join(" ")}>
-      <TRPCReactProvider headersPromise={getHeaders()}>
-        {props.children}
-      </TRPCReactProvider>
-      <Toaster />
-    </body>
-  </html>
-);
+const fontSans = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
-export default Layout;
+const getHeaders = cache(async () => headers());
+
+const RootLayout = (props: { children: React.ReactNode }) => {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans text-foreground antialiased",
+          fontSans.variable,
+        )}
+      >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <TRPCReactProvider headersPromise={getHeaders()}>
+            {props.children}
+          </TRPCReactProvider>
+          <div className="absolute bottom-4 right-4">
+            <ThemeToggle />
+          </div>
+          <Toaster />
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+
+export default RootLayout;
