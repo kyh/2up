@@ -18,8 +18,9 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
             </label>
             <Input
               id="email"
-              placeholder="name@example.com"
               type="email"
+              name="email"
+              placeholder="name@example.com"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
@@ -31,8 +32,9 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
             </label>
             <Input
               id="password"
-              placeholder="******"
               type="password"
+              name="password"
+              placeholder="******"
               autoCapitalize="none"
               autoCorrect="off"
             />
