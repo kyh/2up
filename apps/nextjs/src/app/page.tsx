@@ -8,11 +8,18 @@ const Page = async () => {
   const todos = await api.todo.all();
 
   return (
-    <main className="container mx-auto max-w-4xl p-10">
-      <nav className="flex items-center justify-between">
-        <h1 className="text-xl">App Template</h1>
-        <UserNav />
-      </nav>
+    <main className="flex h-full flex-1 flex-col space-y-8 p-8">
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">App Template</h2>
+          <p className="text-muted-foreground">
+            Here&apos;s an example list of your tasks for this month!
+          </p>
+        </div>
+        <div className="flex items-center space-x-2">
+          <UserNav />
+        </div>
+      </div>
       <TodoList initialTodos={todos} />
     </main>
   );
