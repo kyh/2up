@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 
 import { cn } from "@acme/ui";
-import { ThemeProvider, ThemeToggle } from "@acme/ui/theme";
+import { ThemeProvider } from "@acme/ui/theme";
 import { Toaster } from "@acme/ui/toast";
 
 import { TRPCReactProvider } from "@/trpc/react";
@@ -51,7 +51,7 @@ const RootLayout = (props: { children: React.ReactNode }) => {
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans text-foreground antialiased",
+          "bg-background font-sans text-foreground antialiased",
           fontSans.variable,
         )}
       >
