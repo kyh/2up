@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { cache } from "react";
-import { headers } from "next/headers";
 import { Inter } from "next/font/google";
+import { headers } from "next/headers";
 
 import { cn } from "@acme/ui";
 import { ThemeProvider, ThemeToggle } from "@acme/ui/theme";
@@ -59,14 +59,11 @@ const RootLayout = (props: { children: React.ReactNode }) => {
           <TRPCReactProvider headersPromise={getHeaders()}>
             {props.children}
           </TRPCReactProvider>
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
           <Toaster />
         </ThemeProvider>
       </body>
     </html>
   );
-}
+};
 
 export default RootLayout;

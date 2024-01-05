@@ -1,10 +1,21 @@
 "use client";
 
 import type { RouterOutputs } from "@acme/api";
+import { cn } from "@acme/ui";
+import { Button } from "@acme/ui/button";
+import { Checkbox } from "@acme/ui/checkbox";
+import { Input } from "@acme/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@acme/ui/table";
+import { toast } from "@acme/ui/toast";
 
 import type { TRPCError } from "@/trpc/react";
-import { cn } from "@acme/ui";
-import { toast } from "@acme/ui/toast";
 import { api } from "@/trpc/react";
 
 type Todo = RouterOutputs["todo"]["all"][number];
@@ -80,51 +91,56 @@ export const TodoList = ({ initialTodos }: TodoListProps) => {
   };
 
   return (
-    <section className="mx-auto max-w-lg px-4 py-8">
-      <form className="relative flex items-center text-sm" onSubmit={onAddTodo}>
-        <input
-          id="content"
-          name="content"
-          className="block w-full rounded-md p-3 shadow-sm ring-1 ring-inset ring-gray-300"
-          placeholder="Go for a run"
-        />
-        <div className="absolute inset-y-0 right-0 flex py-2 pr-2">
-          <button
-            type="submit"
-            className="rounded bg-gray-600 px-3 py-1 text-sm text-white shadow-sm transition hover:bg-gray-500"
-          >
-            Add Todo
-          </button>
-        </div>
+    <div className="space-y-4">
+      <form className="flex gap-4" onSubmit={onAddTodo}>
+        <Input id="content" name="content" placeholder="Go for a run" />
+        <Button type="submit">Add Todo</Button>
       </form>
-      <ul className="my-3 divide-y divide-gray-100">
-        {vm.todos?.data?.map((todo) => (
-          <li key={todo.id} className="flex items-center gap-2 py-4">
-            <input
-              className="h-4 w-4 cursor-pointer rounded border-gray-300 text-gray-600"
-              id={`check-${todo.id}`}
-              type="checkbox"
-              checked={!!todo.completed}
-              onChange={() => onToggleTodo(todo)}
-            />
-            <label
-              htmlFor={`check-${todo.id}`}
-              className={cn(
-                "flex-1 cursor-pointer",
-                !!todo.completed && "line-through",
-              )}
-            >
-              {todo.content}
-            </label>
-            <button
-              className="rounded-full bg-white px-2.5 py-1 text-xs text-red-900 shadow-sm ring-1 ring-inset ring-red-300 hover:bg-red-50"
-              onClick={() => onDeleteTodo(todo)}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
-    </section>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[50px]" />
+              <TableHead>Content</TableHead>
+              <TableHead className="w-[50px] text-right" />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {vm.todos?.data?.map((todo) => (
+              <TableRow key={todo.id}>
+                <TableCell>
+                  <Checkbox
+                    id={`check-${todo.id}`}
+                    checked={!!todo.completed}
+                    onCheckedChange={() => onToggleTodo(todo)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <label
+                    htmlFor={`check-${todo.id}`}
+                    className={cn(
+                      "flex-1 cursor-pointer",
+                      !!todo.completed && "line-through",
+                    )}
+                  >
+                    {todo.content}
+                  </label>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    className="text-destructive"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onDeleteTodo(todo)}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
   );
 };
