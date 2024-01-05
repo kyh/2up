@@ -21,9 +21,9 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@kyh/eslint-config": "^0.1.0",
-    "@kyh/prettier-config": "^0.1.0",
-    "@kyh/tsconfig": "^0.1.0",
+    "@kyh/eslint-config": "*",
+    "@kyh/prettier-config": "*",
+    "@kyh/tsconfig": "*",
     "eslint": "^8.56.0",
     "prettier": "^3.1.1",
     "typescript": "^5.3.3"
