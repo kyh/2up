@@ -8,7 +8,7 @@ import { Button } from "@acme/ui/button";
 import { Input } from "@acme/ui/input";
 import { Label } from "@acme/ui/label";
 
-import { signInWithGithub, signInWithPassword, signUp } from "./actions";
+import { signInWithDiscord, signInWithPassword, signUp } from "./actions";
 
 type AuthFormProps = {
   type: "signup" | "signin";
@@ -45,11 +45,12 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
               placeholder="******"
               type="password"
               autoCapitalize="none"
+              autoComplete="current-password"
               autoCorrect="off"
               disabled={isLoading}
             />
           </div>
-          {type === "signup" && (
+          {type === "signin" && (
             <Button
               disabled={isLoading}
               formAction={async (formData) => {
@@ -97,7 +98,7 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
         variant="outline"
         type="button"
         disabled={isLoading}
-        onClick={() => signInWithGithub()}
+        onClick={() => signInWithDiscord()}
       >
         Discord
       </Button>
