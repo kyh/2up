@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { cache } from "react";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
-
 import { cn } from "@acme/ui";
 import { ThemeProvider } from "@acme/ui/theme";
 import { Toaster } from "@acme/ui/toast";

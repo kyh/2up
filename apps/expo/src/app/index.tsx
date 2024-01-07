@@ -5,7 +5,6 @@ import { Link, Stack } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 
 import type { RouterOutputs } from "@acme/api";
-
 import { api } from "@/trpc/react";
 
 const TodoCard = (props: {
