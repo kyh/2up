@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 import { auth, signOut } from "@acme/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@acme/ui/avatar";
 import { Button } from "@acme/ui/button";
