@@ -25,7 +25,7 @@
     "typecheck": "turbo typecheck"
   },
   "devDependencies": {
-    "@kyh/prettier-config": "^0.1.0",
+    "@kyh/prettier-config": "latest",
     "@turbo/gen": "^1.11.3",
     "dotenv-cli": "^7.3.0",
     "prettier": "^3.1.1",
