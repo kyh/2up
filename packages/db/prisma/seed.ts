@@ -4,6 +4,8 @@ import { finished } from "stream/promises";
 import type { AnswerType, QuestionType } from "@prisma/client/edge";
 import { PrismaClient } from "@prisma/client/edge";
 import { parse } from "csv-parse";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 import { generateUuid } from "../src/uuid";
 
@@ -125,7 +127,7 @@ const main = async () => {
 };
 
 const getDataPath = (file: string) => {
-  return resolve(__dirname, `./data/${file}`);
+  return resolve(dirname(fileURLToPath(import.meta.url)), `./data/${file}`);
 };
 
 type SceneRecord = {

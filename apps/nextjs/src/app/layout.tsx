@@ -1,50 +1,69 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-
-import "./globals.css";
-
+import type { Metadata, Viewport } from "next";
 import { cache } from "react";
+import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 
-import { ThemeProvider } from "@/components/theme-provider";
-import { TRPCReactProvider } from "@/lib/trpc/react";
+import { cn } from "@2up/ui";
+import { ThemeProvider } from "@2up/ui/theme";
+import { Toaster } from "@2up/ui/toast";
+
+import { TRPCReactProvider } from "@/trpc/react";
+
+import "@/app/globals.css";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.VERCEL_ENV === "production"
+      ? "https://kyh.io"
+      : "http://localhost:3000",
+  ),
+  title: "Template",
+  description: "Simple monorepo with shared backend for web & mobile apps",
+  openGraph: {
+    title: "Template",
+    description: "Simple monorepo with shared backend for web & mobile apps",
+    url: "https://github.com/kyh/template",
+    siteName: "Template",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@kyh",
+    creator: "@kyh",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
 
 const fontSans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
 
-export const metadata: Metadata = {
-  title: "2UP",
-  description: "Simple monorepo with shared backend for web & mobile apps",
-  openGraph: {
-    title: "2UP",
-    description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://2uphq.com",
-    siteName: "2UP",
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@kaiyuhsu",
-    creator: "@kaiyuhsu",
-  },
+const getHeaders = cache(async () => headers());
+
+const RootLayout = (props: { children: React.ReactNode }) => {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          "bg-background font-sans text-foreground antialiased",
+          fontSans.variable,
+        )}
+      >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <TRPCReactProvider headersPromise={getHeaders()}>
+            {props.children}
+          </TRPCReactProvider>
+          <Toaster />
+        </ThemeProvider>
+      </body>
+    </html>
+  );
 };
 
-// Lazy load headers
-const getHeaders = cache(async () => {
-  return headers();
-});
-
-const Layout = (props: { children: React.ReactNode }) => (
-  <html lang="en">
-    <body className={["font-sans", fontSans.variable].join(" ")}>
-      <ThemeProvider>
-        <TRPCReactProvider headersPromise={getHeaders()}>
-          {props.children}
-        </TRPCReactProvider>
-      </ThemeProvider>
-    </body>
-  </html>
-);
-
-export default Layout;
+export default RootLayout;

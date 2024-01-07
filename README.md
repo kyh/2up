@@ -1,18 +1,37 @@
-[![GitHub last commit](https://img.shields.io/github/last-commit/kyh/2up)](https://github.com/kyh/2up)
-[![Discord](https://img.shields.io/badge/Discord-Join%20Chat-%237289DA)](https://discord.gg/Rt8ygmQ4fk)
+# template
 
-# 2up
+An opinionated [t3 stack](https://create.t3.gg/) starter template.
 
-[🚀 Website](https://2uphq.com) | [App Store]() | [Play Store]()
+## Features
 
-> A platform for real-time multiplayer trivia games 🎮
+In additional to the default t3 features, this template includes:
 
-## Stack
+- [x] ~React Server Components~
+- [x] ~Next.js Server Actions~
+- [x] ~CRUD Todo~
+- [x] ~Local Db~
+- [ ] User Profile
+- [ ] Payments
+- [ ] Multi Tenancy
+  - [ ] Admin Dashboard
+- [ ] CLI generators
+  - [ ] CRUD generator
+  - [ ] UI generator
 
-This project uses the following libraries and services:
+## FAQ
 
-- Framework - [Next.js](https://nextjs.org)
-- Styling - [Tailwind](https://tailwindcss.com)
-- API - [TRPC](https://trpc.io/)
-- Database - [Postgres (Supabase)](https://supabase.com) + [Prisma](https://www.prisma.io)
-- Hosting - [Vercel](https://vercel.com)
+### Why use TRPC instead of just Server Actions?
+
+Having a framework agnostic data layer lets us share logic between multiple clients (web, mobile, etc).
+
+### Why pick Prisma over Drizzle?
+
+Cross database support and a more mature ORM.
+
+### Why write a custom Auth.js adapter?
+
+TODO
+
+## References
+
+The stack originates from and is updated with [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo).

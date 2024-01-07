@@ -1,5 +1,5 @@
 {
-  "extends": "@2up/tsconfig/base.json",
+  "extends": "@kyh/tsconfig/base.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

@@ -1,6 +1,6 @@
 {
   "name": "@2up/partykit",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "pnpm with-env partykit dev",
@@ -16,20 +16,20 @@
     "@2up/game": "workspace:*"
   },
   "devDependencies": {
-    "@2up/eslint-config": "workspace:*",
-    "@2up/prettier-config": "workspace:*",
     "@2up/tailwind-config": "workspace:*",
-    "@2up/tsconfig": "workspace:*",
-    "eslint": "^8.54.0",
-    "partykit": "^0.0.39",
-    "prettier": "^3.1.0",
-    "typescript": "^5.3.2"
+    "@kyh/eslint-config": "^0.1.0",
+    "@kyh/prettier-config": "^0.1.0",
+    "@kyh/tsconfig": "^0.1.0",
+    "eslint": "^8.56.0",
+    "partykit": "^0.0.66",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
   },
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@2up/eslint-config/base"
+      "@kyh/eslint-config/base"
     ]
   },
-  "prettier": "@2up/prettier-config"
+  "prettier": "@kyh/prettier-config"
 }

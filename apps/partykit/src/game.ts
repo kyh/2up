@@ -18,7 +18,7 @@ export default class Server implements Party.Server {
     console.log("Room created:", party.id);
     this.gameState = createGame();
     this.db = new PrismaClient({
-      datasourceUrl: this.party.env.PRISMA_ACCELERATE_DATABASE_URL as string,
+      datasourceUrl: this.party.env.DATABASE_URL as string,
     });
   }
 

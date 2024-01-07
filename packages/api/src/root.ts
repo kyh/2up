@@ -1,7 +1,7 @@
-import { gameRouter } from "./router/game";
-import { packRouter } from "./router/pack";
-import { sceneRouter } from "./router/scene";
-import { waitlistRouter } from "./router/waitlist";
+import { gameRouter } from "./routers/game";
+import { packRouter } from "./routers/pack";
+import { sceneRouter } from "./routers/scene";
+import { waitlistRouter } from "./routers/waitlist";
 import { createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({

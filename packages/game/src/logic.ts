@@ -1,4 +1,4 @@
-import type { Scene, SceneAnswer } from "@prisma/client";
+import type { Scene, SceneAnswer } from "@prisma/client/edge";
 
 import { calculateScore, compareAnswer } from "./utils";
 

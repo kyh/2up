@@ -1,19 +1,35 @@
 import { PrismaClient } from "@prisma/client/edge";
+import * as supabase from "@supabase/supabase-js";
 
+import type { Database as SupabaseDatabase } from "./supabase-types";
+import type { SupabaseClient as DefaultSupabaseClient } from "@supabase/supabase-js";
 import * as uuid from "./uuid";
 
 const NODE_ENV = process.env.NODE_ENV ?? "development";
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+const prismaClientSingleton = () => {
+  return new PrismaClient({
+    log: NODE_ENV === "development" ? ["query", "warn", "error"] : ["error"],
+  });
 };
 
-export const db =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-  });
+type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClientSingleton | undefined;
+};
+
+const db = globalForPrisma.prisma ?? prismaClientSingleton();
 
 if (NODE_ENV !== "production") globalForPrisma.prisma = db;
 
-export { uuid };
+type SupabaseClient = DefaultSupabaseClient<SupabaseDatabase>;
+
+export {
+  type SupabaseClient,
+  type SupabaseDatabase,
+  type PrismaClientSingleton,
+  supabase,
+  db,
+  uuid
+};

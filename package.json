@@ -2,35 +2,36 @@
   "name": "2up",
   "private": true,
   "engines": {
-    "node": ">=18.18.2"
+    "node": ">=20.10"
   },
-  "packageManager": "pnpm@8.10.2",
+  "packageManager": "pnpm@8.14.0",
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo clean",
-    "postinstall": "pnpm lint:ws",
+    "db:start": "pnpm -F db start",
     "db:push": "pnpm -F db push",
     "db:studio": "pnpm -F db studio",
-    "db:seed": "pnpm -F db seed",
     "dev": "turbo dev --parallel",
-    "dev:nextjs": "turbo dev --filter=@2up/nextjs",
-    "dev:partykit": "turbo dev --filter=@2up/partykit",
-    "format": "turbo format --continue -- --cache --cache-location='node_modules/.cache/.prettiercache'",
-    "format:fix": "turbo format --continue -- --write --cache --cache-location='node_modules/.cache/.prettiercache'",
-    "lint": "turbo lint --continue -- --cache --cache-location 'node_modules/.cache/.eslintcache'",
-    "lint:fix": "turbo lint --continue -- --fix --cache --cache-location 'node_modules/.cache/.eslintcache'",
+    "dev:nextjs": "turbo dev --filter=nextjs",
+    "dev:partykit": "turbo dev --filter=partykit",
+    "format": "turbo format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
+    "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
+    "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
+    "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:ws": "pnpm dlx sherif@latest",
+    "publish-packages": "changeset version && changeset publish",
+    "postinstall": "pnpm lint:ws",
     "typecheck": "turbo typecheck"
   },
   "devDependencies": {
-    "@2up/prettier-config": "workspace:*",
-    "@turbo/gen": "^1.10.16",
+    "@kyh/prettier-config": "^0.1.0",
+    "@turbo/gen": "^1.11.3",
     "dotenv-cli": "^7.3.0",
-    "prettier": "^3.1.0",
-    "tsx": "^4.5.0",
-    "turbo": "^1.10.16",
-    "typescript": "^5.3.2"
+    "prettier": "^3.1.1",
+    "turbo": "^1.11.3",
+    "typescript": "^5.3.3",
+    "tsx": "^4.7.0"
   },
-  "prettier": "@2up/prettier-config"
+  "prettier": "@kyh/prettier-config"
 }

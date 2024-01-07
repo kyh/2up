@@ -13,6 +13,8 @@ export const Game = ({ code }: { code: string }) => {
     return <div>Loading...</div>;
   }
 
+  console.log("gameState", gameState)
+
   const currentScene = gameState.scenes[gameState.currentSceneIndex];
 
   switch (gameState?.currentView) {

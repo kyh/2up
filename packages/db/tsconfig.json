@@ -1,8 +1,8 @@
 {
-  "extends": "@2up/tsconfig/base.json",
+  "extends": "@kyh/tsconfig/base.json",
   "compilerOptions": {
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
   },
-  "include": ["."],
+  "include": ["src", "prisma"],
   "exclude": ["node_modules"]
 }
