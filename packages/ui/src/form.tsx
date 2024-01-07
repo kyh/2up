@@ -1,6 +1,5 @@
 "use client";
 
-import type * as LabelPrimitive from "@radix-ui/react-label";
 import type {
   ControllerProps,
   FieldPath,
@@ -18,12 +17,15 @@ import {
   useFormContext,
 } from "react-hook-form";
 
+import type * as LabelPrimitive from "@radix-ui/react-label";
 import { cn } from ".";
 import { Label } from "./label";
 
-const useForm = <TSchema extends ZodType>(props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
+const useForm = <TSchema extends ZodType>(
+  props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
     schema: TSchema;
-  }) => {
+  },
+) => {
   const form = __useForm<TSchema["_input"]>({
     ...props,
     resolver: zodResolver(props.schema, undefined),
@@ -39,7 +41,7 @@ type FormFieldContextValue<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   name: TName;
-}
+};
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
   {} as FormFieldContextValue,
@@ -83,7 +85,7 @@ const useFormField = () => {
 
 type FormItemContextValue = {
   id: string;
-}
+};
 
 const FormItemContext = React.createContext<FormItemContextValue>(
   {} as FormItemContextValue,

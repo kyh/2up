@@ -1,6 +1,5 @@
 "use client";
 
-import type { RouterOutputs } from "@acme/api";
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 import { Checkbox } from "@acme/ui/checkbox";
@@ -16,6 +15,7 @@ import {
 import { toast } from "@acme/ui/toast";
 
 import type { TRPCError } from "@/trpc/react";
+import type { RouterOutputs } from "@acme/api";
 import { api } from "@/trpc/react";
 
 type Todo = RouterOutputs["todo"]["all"][number];

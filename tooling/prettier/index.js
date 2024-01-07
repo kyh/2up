@@ -11,7 +11,7 @@ const config = {
     "prettier-plugin-tailwindcss",
   ],
   tailwindConfig: fileURLToPath(
-    new URL("../../packages/tailwind/src/index.ts", import.meta.url),
+    new URL("../../../packages/tailwind/src/index.ts", import.meta.url),
   ),
   tailwindFunctions: ["cn", "cva"],
   importOrder: [
@@ -20,9 +20,6 @@ const config = {
     "^(next/(.*)$)|^(next$)",
     "^(expo(.*)$)|^(expo$)",
     "<THIRD_PARTY_MODULES>",
-    "",
-    "<TYPES>^@acme",
-    "^@acme/(.*)$",
     "",
     "<TYPES>^[.|..|@]",
     "^@/",
