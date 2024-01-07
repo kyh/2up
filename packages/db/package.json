@@ -24,9 +24,9 @@
     "@prisma/extension-accelerate": "^0.6.2"
   },
   "devDependencies": {
-    "@kyh/eslint-config": "^0.1.0",
-    "@kyh/prettier-config": "^0.1.0",
-    "@kyh/tsconfig": "^0.1.0",
+    "@kyh/eslint-config": "latest",
+    "@kyh/prettier-config": "latest",
+    "@kyh/tsconfig": "latest",
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.56.0",
     "prettier": "^3.1.1",

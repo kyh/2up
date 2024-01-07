@@ -41,9 +41,9 @@
   },
   "devDependencies": {
     "@acme/tailwind-config": "workspace:*",
-    "@kyh/eslint-config": "^0.1.0",
-    "@kyh/prettier-config": "^0.1.0",
-    "@kyh/tsconfig": "^0.1.0",
+    "@kyh/eslint-config": "latest",
+    "@kyh/prettier-config": "latest",
+    "@kyh/tsconfig": "latest",
     "eslint": "^8.56.0",
     "prettier": "^3.1.1",
     "tailwindcss": "^3.4.1",
