@@ -1,12 +1,11 @@
 import { createReadStream } from "fs";
-import { resolve } from "path";
+import { dirname, resolve } from "path";
 import { finished } from "stream/promises";
-import type { AnswerType, QuestionType } from "@prisma/client/edge";
+import { fileURLToPath } from "url";
 import { PrismaClient } from "@prisma/client/edge";
 import { parse } from "csv-parse";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 
+import type { AnswerType, QuestionType } from "@prisma/client/edge";
 import { generateUuid } from "../src/uuid";
 
 const adminUserId = process.env.ADMIN_USER_ID ?? generateUuid();
