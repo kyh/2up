@@ -17,7 +17,7 @@
     "reset": "supabase db reset",
     "push": "pnpm with-env prisma db push",
     "studio": "pnpm with-env prisma studio",
-    "seed": "pnpm with-env tsx prisma/seed.ts",
+    "seed": "pnpm with-env prisma db execute --file ./prisma/supabase.sql --schema ./prisma/schema.prisma && tsx prisma/seed.ts",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },

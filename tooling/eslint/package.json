@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@next/eslint-plugin-next": "^14.0.4",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "@typescript-eslint/parser": "^6.18.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-turbo": "^1.11.3",
     "eslint-plugin-import": "^2.29.1",
@@ -28,9 +28,9 @@
     "eslint-plugin-react-hooks": "^4.6.0"
   },
   "devDependencies": {
-    "@kyh/prettier-config": "*",
-    "@kyh/tsconfig": "*",
-    "@types/eslint": "^8.56.0",
+    "@kyh/prettier-config": "latest",
+    "@kyh/tsconfig": "latest",
+    "@types/eslint": "^8.56.1",
     "eslint": "^8.56.0",
     "prettier": "^3.1.1",
     "typescript": "^5.3.3"

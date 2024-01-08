@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@acme/db": "workspace:*",
+    "@acme/db": "workspace:latest",
     "@supabase/supabase-js": "^2.39.2",
     "@trpc/client": "next",
     "@trpc/server": "next",
