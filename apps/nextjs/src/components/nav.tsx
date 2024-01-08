@@ -1,7 +1,5 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@2up/ui/avatar";
 import { Button } from "@2up/ui/button";
 import {
@@ -14,6 +12,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@2up/ui/dropdown-menu";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import { signOut } from "@/app/auth/actions";
 
