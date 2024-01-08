@@ -13,20 +13,16 @@ export const Discover = ({
 }: {
   packsBySection: PackSection[];
 }) => {
-  return (
-    <>
-      {packsBySection.map((packSection) => (
-        <section key={packSection.title} className="space-y-1">
-          <h2 className="text-2xl">{packSection.title}</h2>
-          <div className="space-y-1">
-            {packSection.packs.map((pack) => (
-              <PackRow key={pack.id} pack={pack} />
-            ))}
-          </div>
-        </section>
-      ))}
-    </>
-  );
+  return packsBySection.map((packSection) => (
+    <section key={packSection.title} className="space-y-1">
+      <h2 className="text-2xl">{packSection.title}</h2>
+      <div className="space-y-1">
+        {packSection.packs.map((pack) => (
+          <PackRow key={pack.id} pack={pack} />
+        ))}
+      </div>
+    </section>
+  ));
 };
 
 const PackRow = ({ pack }: { pack: Pack }) => {
