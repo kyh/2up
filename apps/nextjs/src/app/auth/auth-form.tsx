@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 import { Input } from "@acme/ui/input";
 import { Label } from "@acme/ui/label";
+import { toast } from "@acme/ui/toast";
 
 import { signInWithDiscord, signInWithPassword, signUp } from "./actions";
 
@@ -18,9 +18,30 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const submitAuthForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    try {
+      if (type === "signup") {
+        await signUp(email, password);
+      } else if (type === "signin") {
+        await signInWithPassword(email, password);
+      }
+      router.push("/");
+    } catch (error) {
+      toast.error((error as Error).message);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form>
+      <form onSubmit={submitAuthForm}>
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
@@ -52,38 +73,9 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
               disabled={isLoading}
             />
           </div>
-          {type === "signin" && (
-            <Button
-              disabled={isLoading}
-              formAction={async (formData) => {
-                setIsLoading(true);
-
-                const email = formData.get("email") as string;
-                const password = formData.get("password") as string;
-                const res = await signInWithPassword(email, password);
-
-                router.push("/");
-              }}
-            >
-              Login
-            </Button>
-          )}
-          {type === "signup" && (
-            <Button
-              disabled={isLoading}
-              formAction={async (formData) => {
-                setIsLoading(true);
-
-                const email = formData.get("email") as string;
-                const password = formData.get("password") as string;
-                const res = await signUp(email, password);
-
-                router.push("/");
-              }}
-            >
-              Sign Up
-            </Button>
-          )}
+          <Button loading={isLoading}>
+            {type === "signin" ? "Login" : "Sign Up"}
+          </Button>
         </div>
       </form>
       <div className="relative">
