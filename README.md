@@ -1,22 +1,22 @@
-# template
+# Boilerplate
 
-An opinionated [t3 stack](https://create.t3.gg/) starter template.
+An opinionated [t3](https://create.t3.gg/) + [supabase](https://supabase.com/) starter template.
 
 ## Features
 
-In additional to the default t3 features, this template includes:
+This template includes everything you need to build your own SaaS application:
 
 - [x] ~React Server Components~
-- [x] ~Next.js Server Actions~
 - [x] ~CRUD Todo~
 - [x] ~Local Db~
 - [ ] User Profile
-- [ ] Payments
 - [ ] Multi Tenancy
-  - [ ] Admin Dashboard
+- [ ] Billing
+- [ ] Notifications
+- [ ] Admin Dashboard
+- [ ] Native Mobile App
+- [ ] Native Desktop App
 - [ ] CLI generators
-  - [ ] CRUD generator
-  - [ ] UI generator
 
 ## FAQ
 
@@ -28,10 +28,6 @@ Having a framework agnostic data layer lets us share logic between multiple clie
 
 Cross database support and a more mature ORM.
 
-### Why write a custom Auth.js adapter?
-
-TODO
-
 ## References
 
-The stack originates from and is updated with [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo).
+The stack originates from and is kept updated with [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo).

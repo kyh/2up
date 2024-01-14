@@ -75,7 +75,7 @@ const CreateTodo = () => {
   );
 };
 
-export default function Index() {
+const Index = () => {
   const utils = api.useUtils();
 
   const todoQuery = api.todo.all.useQuery();
@@ -90,7 +90,7 @@ export default function Index() {
       <Stack.Screen options={{ title: "Home Page" }} />
       <View className="h-full w-full p-4">
         <Text className="pb-2 text-center text-5xl font-bold">
-          App Template
+          Boilerplate.
         </Text>
 
         <Button
@@ -118,4 +118,6 @@ export default function Index() {
       </View>
     </SafeAreaView>
   );
-}
+};
+
+export default Index;
