@@ -1,5 +1,5 @@
 {
-  "name": "template",
+  "name": "boilerplate",
   "private": true,
   "engines": {
     "node": ">=20.10"

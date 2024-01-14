@@ -28,7 +28,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
     <main className="flex h-full flex-1 flex-col space-y-8 p-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">App Template</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Boilerplate.</h2>
           <p className="text-muted-foreground">
             Here&apos;s an example list of your tasks for this month!
           </p>
