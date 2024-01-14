@@ -10,21 +10,68 @@ datasource db {
 }
 
 model User {
-  id                     String    @id @default(cuid())
-  name                   String?
-  username               String?   @unique
-  email                  String    @unique
-  emailVerified          DateTime?
-  image                  String?
-  stripeCustomerId       String?   @unique
-  stripeSubscriptionId   String?   @unique
-  stripePriceId          String?
-  stripeCurrentPeriodEnd DateTime?
+  id            String    @id @default(cuid())
+  email         String    @unique
+  hasOnboarded  Boolean   @default(false)
+  name          String?
+  username      String?   @unique
+  emailVerified DateTime?
+  image         String?
 
+  teams TeamMember[]
   todos Todo[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Team {
+  id   String  @id @default(cuid())
+  slug String  @unique
+  name String?
+
+  members TeamMember[]
+  invites TeamMemberInvite[]
+  todos   Todo[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([slug])
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+model TeamMember {
+  role Role
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@id([userId, teamId])
+  @@index([teamId])
+  @@index([userId])
+}
+
+model TeamMemberInvite {
+  id    String @id @default(cuid())
+  code  String @unique
+  email String
+  role  Role
+
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([teamId, email])
+  @@index([teamId])
 }
 
 model Todo {
@@ -33,8 +80,20 @@ model Todo {
   content   String
   completed Boolean @default(false)
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  teamId String?
+  team   Team?   @relation(fields: [teamId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Waitlist {
+  id String @id @default(cuid())
+
+  email String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

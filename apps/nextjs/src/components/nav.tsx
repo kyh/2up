@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@acme/ui/dropdown-menu";
 
-import { signOut } from "@/app/auth/actions";
+import { signOut } from "@/app/(auth)/actions";
 
 export const UserNav = async () => {
   const supabase = createServerComponentClient({ cookies });
