@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { AuthForm } from "@/app/auth/auth-form";
+import { AuthForm } from "@/app/(auth)/auth-form";
 
 // export const runtime = "edge";
 

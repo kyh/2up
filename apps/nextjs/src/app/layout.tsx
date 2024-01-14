@@ -45,7 +45,7 @@ const fontSans = Inter({
 
 const getHeaders = cache(async () => headers());
 
-const RootLayout = (props: { children: React.ReactNode }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -56,7 +56,7 @@ const RootLayout = (props: { children: React.ReactNode }) => {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TRPCReactProvider headersPromise={getHeaders()}>
-            {props.children}
+            {children}
           </TRPCReactProvider>
           <Toaster />
         </ThemeProvider>
@@ -65,4 +65,4 @@ const RootLayout = (props: { children: React.ReactNode }) => {
   );
 };
 
-export default RootLayout;
+export default Layout;
