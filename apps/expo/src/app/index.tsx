@@ -89,9 +89,7 @@ const Index = () => {
       {/* Changes page title visible on the header */}
       <Stack.Screen options={{ title: "Home Page" }} />
       <View className="h-full w-full p-4">
-        <Text className="pb-2 text-center text-5xl font-bold">
-          Boilerplate.
-        </Text>
+        <Text className="pb-2 text-center text-5xl font-bold">Init.</Text>
 
         <Button
           onPress={() => void utils.todo.all.invalidate()}

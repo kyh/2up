@@ -1,4 +1,4 @@
-# Boilerplate
+# Init
 
 An opinionated [t3](https://create.t3.gg/) + [supabase](https://supabase.com/) starter template.
 
@@ -12,7 +12,8 @@ This template includes everything you need to build your own SaaS application:
 - [ ] User Profile
 - [ ] Multi Tenancy
 - [ ] Billing
-- [ ] Notifications
+- [ ] Feedback System
+- [ ] Notifications System
 - [ ] Admin Dashboard
 - [ ] Native Mobile App
 - [ ] Native Desktop App
@@ -23,6 +24,10 @@ This template includes everything you need to build your own SaaS application:
 ### Why use TRPC instead of just Server Actions?
 
 Having a framework agnostic data layer lets us share logic between multiple clients (web, mobile, etc).
+
+### Why even have a data layer if you could query from client with Supabase?
+
+TODO
 
 ### Why pick Prisma over Drizzle?
 

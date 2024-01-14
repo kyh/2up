@@ -64,17 +64,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled ?? loading}
         {...props}
       >
-        <span
-          className={cn(
-            "absolute inset-0 grid place-items-center opacity-0 transition",
-            loading && "opacity-1",
-          )}
-        >
-          <Spinner />
-        </span>
-        <span className={cn("transition", loading && "opacity-0")}>
-          {children}
-        </span>
+        <div>
+          <div
+            className={cn(
+              "pointer-events-none absolute inset-0 grid place-items-center opacity-0 transition",
+              loading && "opacity-1",
+            )}
+          >
+            <Spinner />
+          </div>
+          <div className={cn("transition", loading && "opacity-0")}>
+            {children}
+          </div>
+        </div>
       </Comp>
     );
   },

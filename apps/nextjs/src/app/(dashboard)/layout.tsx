@@ -17,10 +17,10 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
     cookies,
   });
 
-  const { data } = await supabase.auth.getSession();
+  const { data } = await supabase.auth.getUser();
 
   // Redirect to login page if the user is not authenticated
-  if (!data.session) {
+  if (!data.user) {
     return redirect(createRedirectUrl("/auth/login", pathname ?? "/"));
   }
 
@@ -28,7 +28,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
     <main className="flex h-full flex-1 flex-col space-y-8 p-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Boilerplate.</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Init</h2>
           <p className="text-muted-foreground">
             Here&apos;s an example list of your tasks for this month!
           </p>

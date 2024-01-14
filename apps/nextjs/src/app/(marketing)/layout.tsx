@@ -1,17 +1,27 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import Link from "next/link";
+import { cn } from "@acme/ui";
+import { buttonVariants } from "@acme/ui/button";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
-import { UserNav } from "@/components/nav";
+import type { User } from "@supabase/auth-helpers-nextjs";
 
 export const metadata: Metadata = {
-  title: "Boilerplate.",
+  title: "Init",
   description: "Unauthenticated pages",
 };
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
+  const supabase = createServerComponentClient({
+    cookies,
+  });
+
+  const { data } = await supabase.auth.getUser();
+
   return (
     <>
-      <Header />
+      <Header user={data.user} />
       <main>{children}</main>
       <Footer />
     </>
@@ -20,12 +30,12 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
 export default Layout;
 
-const Header = () => (
+const Header = ({ user }: { user: User | null }) => (
   <div className="mx-auto w-full justify-center bg-black">
     <div className="border-t-none border-gray mx-auto flex w-full max-w-7xl items-center justify-between border px-8 py-4 md:p-8">
       <div className="flex items-center justify-between text-white">
         <Link href="/" className="font-display inline-flex items-center">
-          <span>Boilerplate.</span>
+          <span>Init.</span>
         </Link>
       </div>
       <nav className="ml-auto flex items-center text-sm">
@@ -36,14 +46,38 @@ const Header = () => (
           Documentation
         </Link>
         <Link
-          href="https://github.com/kyh/boilerplate"
+          href="https://github.com/kyh/init"
           className="px-4 py-2 text-zinc-500 transition hover:text-white"
         >
           Github
         </Link>
-        <div className="px-4">
-          <UserNav />
-        </div>
+        {user ? (
+          <Link
+            href="/"
+            className={cn(
+              buttonVariants({
+                variant: "secondary",
+                size: "sm",
+              }),
+              "ml-4 rounded-full px-5",
+            )}
+          >
+            Dashboard
+          </Link>
+        ) : (
+          <Link
+            className={cn(
+              buttonVariants({
+                variant: "secondary",
+                size: "sm",
+              }),
+              "ml-4 rounded-full px-5",
+            )}
+            href="/auth/login"
+          >
+            Login
+          </Link>
+        )}
       </nav>
     </div>
   </div>
@@ -53,7 +87,7 @@ const Footer = () => (
   <footer>
     <div className="border-gray mx-auto max-w-7xl border-x border-b p-8 lg:border-b-0">
       <div>
-        <span className="text-zinc-500">Boilerplate.</span>
+        <span className="text-zinc-500">Init.</span>
       </div>
       <div className="mt-28 grid grid-cols-1 lg:grid-cols-2">
         <p className="mt-4 text-2xl font-light text-white">
@@ -101,7 +135,7 @@ const Footer = () => (
                 className="text-sm text-zinc-500 transition hover:text-white"
                 href="/legal/terms"
               >
-                Terms and Conditions
+                Legal
               </Link>
             </li>
             <li>
