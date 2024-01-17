@@ -31,9 +31,9 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 export default Layout;
 
 const Header = ({ user }: { user: User | null }) => (
-  <div className="mx-auto w-full justify-center bg-black">
-    <div className="border-t-none border-gray mx-auto flex w-full max-w-7xl items-center justify-between border px-8 py-4 md:p-8">
-      <div className="flex items-center justify-between text-white">
+  <div className="mx-auto w-full justify-center">
+    <div className="border-t-none mx-auto flex w-full max-w-7xl items-center justify-between border border-border px-8 py-4 md:p-8">
+      <div className="flex items-center justify-between text-secondary-foreground">
         <Link href="/" className="font-display inline-flex items-center">
           <span>Init.</span>
         </Link>
@@ -41,13 +41,13 @@ const Header = ({ user }: { user: User | null }) => (
       <nav className="ml-auto flex items-center text-sm">
         <Link
           href="/docs"
-          className="px-4 py-2 text-zinc-500 transition hover:text-white"
+          className="px-4 py-2 text-muted-foreground transition hover:text-secondary-foreground"
         >
           Documentation
         </Link>
         <Link
           href="https://github.com/kyh/init"
-          className="px-4 py-2 text-zinc-500 transition hover:text-white"
+          className="px-4 py-2 text-muted-foreground transition hover:text-secondary-foreground"
         >
           Github
         </Link>
@@ -85,12 +85,12 @@ const Header = ({ user }: { user: User | null }) => (
 
 const Footer = () => (
   <footer>
-    <div className="border-gray mx-auto max-w-7xl border-x border-b p-8 lg:border-b-0">
+    <div className="mx-auto max-w-7xl border-x border-b border-border p-8 lg:border-b-0">
       <div>
-        <span className="text-zinc-500">Init.</span>
+        <span className="text-muted-foreground">Init.</span>
       </div>
       <div className="mt-28 grid grid-cols-1 lg:grid-cols-2">
-        <p className="mt-4 text-2xl font-light text-white">
+        <p className="mt-4 text-2xl font-light text-secondary-foreground">
           <span className="block">If you have a project idea in mind,</span>
           <span className="block"> let's join forces and collaborate.</span>
         </p>
@@ -98,7 +98,7 @@ const Footer = () => (
           <ul>
             <li>
               <Link
-                className="text-sm text-zinc-500 transition hover:text-white"
+                className="text-sm text-muted-foreground transition hover:text-secondary-foreground"
                 href="https://lexingtonthemes.com/documentation/quick-start/"
               >
                 Github
@@ -106,7 +106,7 @@ const Footer = () => (
             </li>
             <li>
               <Link
-                className="text-sm text-zinc-500 transition hover:text-white"
+                className="text-sm text-muted-foreground transition hover:text-secondary-foreground"
                 href="https://kyh.io"
               >
                 Discord
@@ -114,7 +114,7 @@ const Footer = () => (
             </li>
             <li>
               <Link
-                className="text-sm text-zinc-500 transition hover:text-white"
+                className="text-sm text-muted-foreground transition hover:text-secondary-foreground"
                 href="https://twitter.com/kaiyuhsu"
               >
                 X
@@ -124,7 +124,7 @@ const Footer = () => (
           <ul>
             <li>
               <Link
-                className="text-sm text-zinc-500 transition hover:text-white"
+                className="text-sm text-muted-foreground transition hover:text-secondary-foreground"
                 href="/docs"
               >
                 Documentation
@@ -132,7 +132,7 @@ const Footer = () => (
             </li>
             <li>
               <Link
-                className="text-sm text-zinc-500 transition hover:text-white"
+                className="text-sm text-muted-foreground transition hover:text-secondary-foreground"
                 href="/legal/terms"
               >
                 Legal
@@ -140,7 +140,7 @@ const Footer = () => (
             </li>
             <li>
               <Link
-                className="text-sm text-zinc-500 transition hover:text-white"
+                className="text-sm text-muted-foreground transition hover:text-secondary-foreground"
                 href="/legal/privacy"
               >
                 Privacy Policy

@@ -25,9 +25,14 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
+enum Role {
+  ADMIN
+  MEMBER
+}
+
 model Team {
   id   String  @id @default(cuid())
-  slug String  @unique
+  slug String? @unique
   name String?
 
   members TeamMember[]
@@ -40,13 +45,8 @@ model Team {
   @@index([slug])
 }
 
-enum Role {
-  ADMIN
-  MEMBER
-}
-
 model TeamMember {
-  role Role
+  role Role @default(ADMIN)
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
