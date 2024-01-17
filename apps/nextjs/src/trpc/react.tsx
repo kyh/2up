@@ -12,10 +12,7 @@ export type { TRPCError } from "@trpc/server";
 
 export const api = createTRPCReact<AppRouter>();
 
-export const TRPCReactProvider = (props: {
-  children: React.ReactNode;
-  headersPromise: Promise<Headers>;
-}) => {
+export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
   const [queryClient] = useState(() => new QueryClient());
 
   const [trpcClient] = useState(() =>
@@ -30,7 +27,7 @@ export const TRPCReactProvider = (props: {
         unstable_httpBatchStreamLink({
           url: getBaseUrl() + "/api/trpc",
           headers: async () => {
-            const headers = new Headers(await props.headersPromise);
+            const headers = new Headers();
             headers.set("x-trpc-source", "nextjs-react");
             return headers;
           },

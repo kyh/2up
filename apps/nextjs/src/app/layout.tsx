@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { cache } from "react";
 import { Inter } from "next/font/google";
-import { headers } from "next/headers";
 import { cn } from "@acme/ui";
 import { ThemeProvider } from "@acme/ui/theme";
 import { Toaster } from "@acme/ui/toast";
@@ -43,8 +41,6 @@ const fontSans = Inter({
   variable: "--font-sans",
 });
 
-const getHeaders = cache(async () => headers());
-
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -55,9 +51,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider headersPromise={getHeaders()}>
-            {children}
-          </TRPCReactProvider>
+          <TRPCReactProvider>{children}</TRPCReactProvider>
           <Toaster />
         </ThemeProvider>
       </body>
