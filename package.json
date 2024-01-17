@@ -21,14 +21,11 @@
     "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:ws": "pnpm dlx sherif@latest",
-    "changeset": "changeset",
-    "publish-packages": "changeset version && changeset publish",
     "postinstall": "pnpm lint:ws",
     "typecheck": "turbo typecheck"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.1",
-    "@kyh/prettier-config": "latest",
+    "@kyh/prettier-config": "^0.1.4",
     "@turbo/gen": "^1.11.3",
     "dotenv-cli": "^7.3.0",
     "prettier": "^3.2.3",
