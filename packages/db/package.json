@@ -22,7 +22,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@prisma/client": "^5.8.0",
+    "@prisma/client": "^5.8.1",
     "@prisma/extension-accelerate": "^0.6.2",
     "@supabase/supabase-js": "^2.39.3"
   },
@@ -32,9 +32,9 @@
     "@kyh/tsconfig": "latest",
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.56.0",
-    "prettier": "^3.2.1",
-    "prisma": "^5.8.0",
-    "supabase": "^1.131.4",
+    "prettier": "^3.2.3",
+    "prisma": "^5.8.1",
+    "supabase": "^1.131.5",
     "typescript": "^5.3.3"
   },
   "eslintConfig": {
