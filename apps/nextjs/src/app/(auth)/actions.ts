@@ -34,12 +34,12 @@ export const signInWithPassword = async (email: string, password: string) => {
   return data.user;
 };
 
-export const signInWithDiscord = async () => {
+export const signInWithGithub = async () => {
   const origin = headers().get("origin");
   const supabase = createServerActionClient({ cookies });
 
   const res = await supabase.auth.signInWithOAuth({
-    provider: "discord",
+    provider: "github",
     options: { redirectTo: `${origin}/auth/callback` },
   });
 

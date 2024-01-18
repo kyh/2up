@@ -12,8 +12,8 @@ create or replace function public.handle_new_user()
 returns trigger as $$
 begin
   -- Insert new user into User table
-  insert into "public"."User" ("id", email)
-  values (new.id, new.email);
+  insert into "public"."User" ("id")
+  values (new.id);
 
   return new;
 end;

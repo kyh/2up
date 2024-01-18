@@ -6,7 +6,7 @@ import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 
-import type { AppRouter } from "@acme/api";
+import type { AppRouter } from "@init/api";
 import { getBaseUrl } from "@/lib/url";
 
 export type { TRPCError } from "@trpc/server";
@@ -28,9 +28,9 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
         unstable_httpBatchStreamLink({
           url: `${getBaseUrl()}/api/trpc`,
           headers: async () => {
-            const headers = new Headers();
-            headers.set("x-trpc-source", "nextjs-react");
-            return headers;
+            const head = new Headers();
+            head.set("x-trpc-source", "nextjs-react");
+            return head;
           },
         }),
       ],

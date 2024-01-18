@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { cn } from "@acme/ui";
+import { cn } from "@init/ui";
 
 type MeteorsProps = {
   top?: number;
@@ -19,7 +19,7 @@ export const Meteors = ({ top = -5, number = 20 }: MeteorsProps) => {
       animationDuration: Math.floor(Math.random() * 8 + 2) + "s",
     }));
     setMeteorStyles(styles);
-  }, [number]);
+  }, [top, number]);
 
   return (
     <>

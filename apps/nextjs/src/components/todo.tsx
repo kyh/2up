@@ -1,9 +1,9 @@
 "use client";
 
-import { cn } from "@acme/ui";
-import { Button } from "@acme/ui/button";
-import { Checkbox } from "@acme/ui/checkbox";
-import { Input } from "@acme/ui/input";
+import { cn } from "@init/ui";
+import { Button } from "@init/ui/button";
+import { Checkbox } from "@init/ui/checkbox";
+import { Input } from "@init/ui/input";
 import {
   Table,
   TableBody,
@@ -11,11 +11,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@acme/ui/table";
-import { toast } from "@acme/ui/toast";
+} from "@init/ui/table";
+import { toast } from "@init/ui/toast";
 
 import type { TRPCError } from "@/trpc/react";
-import type { RouterOutputs } from "@acme/api";
+import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 
 type Todo = RouterOutputs["todo"]["all"][0];

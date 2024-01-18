@@ -1,5 +1,5 @@
 {
-  "name": "@acme/api",
+  "name": "@init/api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@acme/db": "workspace:latest",
+    "@init/db": "workspace:latest",
     "@supabase/supabase-js": "^2.39.3",
     "@trpc/client": "next",
     "@trpc/server": "next",
