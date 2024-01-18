@@ -1,8 +1,7 @@
 export const getBaseUrl = () => {
-  if (process.env.NODE_ENV === "development")
-    return `http://localhost:${process.env.PORT ?? 3000}`;
-
-  return process.env.NEXT_PUBLIC_HOST ?? process.env.VERCEL_URL;
+  if (typeof window !== "undefined") return window.location.origin;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return `http://localhost:${process.env.PORT ?? 3000}`;
 };
 
 export const createRedirectUrl = (redirectTo: string, current: string) => {

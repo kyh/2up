@@ -34,26 +34,26 @@ const Header = ({ user }: { user: User | null }) => (
   <div className="mx-auto w-full justify-center">
     <div className="border-t-none mx-auto flex w-full max-w-7xl items-center justify-between border border-border px-8 py-4 md:p-8">
       <div className="flex items-center justify-between text-secondary-foreground">
-        <Link href="/" className="font-display inline-flex items-center">
-          <span>Init.</span>
+        <Link className="font-display inline-flex items-center" href="/">
+          Init.
         </Link>
       </div>
       <nav className="ml-auto flex items-center text-sm">
         <Link
-          href="/docs"
           className="px-4 py-2 text-muted-foreground transition hover:text-secondary-foreground"
+          href="/docs"
         >
           Documentation
         </Link>
         <Link
-          href="https://github.com/kyh/init"
           className="px-4 py-2 text-muted-foreground transition hover:text-secondary-foreground"
+          href="https://github.com/kyh/init"
+          target="_blank"
         >
           Github
         </Link>
         {user ? (
           <Link
-            href="/"
             className={cn(
               buttonVariants({
                 variant: "secondary",
@@ -61,6 +61,7 @@ const Header = ({ user }: { user: User | null }) => (
               }),
               "ml-4 rounded-full px-5",
             )}
+            href={`/${user.id}`}
           >
             Dashboard
           </Link>
@@ -86,9 +87,7 @@ const Header = ({ user }: { user: User | null }) => (
 const Footer = () => (
   <footer>
     <div className="mx-auto max-w-7xl border-x border-b border-border p-8 lg:border-b-0">
-      <div>
-        <span className="text-muted-foreground">Init.</span>
-      </div>
+      <div className="text-muted-foreground">Init.</div>
       <div className="mt-28 grid grid-cols-1 lg:grid-cols-2">
         <p className="mt-4 text-2xl font-light text-secondary-foreground">
           <span className="block">If you have a project idea in mind,</span>
@@ -99,7 +98,8 @@ const Footer = () => (
             <li>
               <Link
                 className="text-sm text-muted-foreground transition hover:text-secondary-foreground"
-                href="https://lexingtonthemes.com/documentation/quick-start/"
+                href="https://github.com/kyh/init"
+                target="_blank"
               >
                 Github
               </Link>
@@ -107,7 +107,8 @@ const Footer = () => (
             <li>
               <Link
                 className="text-sm text-muted-foreground transition hover:text-secondary-foreground"
-                href="https://kyh.io"
+                href="https://discord.gg/x2xDwExFFv"
+                target="_blank"
               >
                 Discord
               </Link>
@@ -116,6 +117,7 @@ const Footer = () => (
               <Link
                 className="text-sm text-muted-foreground transition hover:text-secondary-foreground"
                 href="https://twitter.com/kaiyuhsu"
+                target="_blank"
               >
                 X
               </Link>

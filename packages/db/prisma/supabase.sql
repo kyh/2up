@@ -15,14 +15,6 @@ begin
   insert into "public"."User" ("id", email)
   values (new.id, new.email);
 
-  -- Insert new team into Team table
-  insert into "public"."Team" ("id")
-  values (new.id);
-
-  -- Insert team member into TeamMember table
-  INSERT INTO "public"."TeamMember" ("userId", "teamId")
-  VALUES (new.id, new.id);
-
   return new;
 end;
 $$ language plpgsql security definer;

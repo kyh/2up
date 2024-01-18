@@ -1,10 +1,13 @@
 // export const runtime = "edge";
 
+import { Meteors } from "@/components/meteor";
+import { WaitlistForm } from "./waitlist-form";
+
 const Page = async () => {
   return (
     <>
       <section>
-        <div className="mx-auto max-w-7xl border-x border-b border-border p-8 lg:py-32">
+        <div className="relative mx-auto max-w-7xl border-x border-b border-border p-8 lg:py-32">
           <div className="max-w-2xl">
             <span className="font-light text-muted-foreground">
               Productised Web Development Studio
@@ -13,6 +16,13 @@ const Page = async () => {
               Maximize your online presence with a unique and engaging one-page
               website that delivers outstanding results.
             </h1>
+            <WaitlistForm />
+          </div>
+          <div
+            className="pointer-events-none absolute inset-0 h-full w-full overflow-hidden"
+            style={{ transform: `rotateY(180deg)` }}
+          >
+            <Meteors number={15} />
           </div>
         </div>
       </section>

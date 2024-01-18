@@ -12,9 +12,8 @@ datasource db {
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
-  hasOnboarded  Boolean   @default(false)
+  onboarded     Boolean   @default(false)
   name          String?
-  username      String?   @unique
   emailVerified DateTime?
   image         String?
 
@@ -32,7 +31,7 @@ enum Role {
 
 model Team {
   id   String  @id @default(cuid())
-  slug String? @unique
+  slug String  @unique
   name String?
 
   members TeamMember[]
@@ -46,7 +45,7 @@ model Team {
 }
 
 model TeamMember {
-  role Role @default(ADMIN)
+  role Role
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
