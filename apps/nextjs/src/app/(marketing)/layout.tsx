@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { cn } from "@acme/ui";
-import { buttonVariants } from "@acme/ui/button";
+import { cn } from "@init/ui";
+import { buttonVariants } from "@init/ui/button";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import type { User } from "@supabase/auth-helpers-nextjs";
@@ -90,8 +90,7 @@ const Footer = () => (
       <div className="text-muted-foreground">Init.</div>
       <div className="mt-28 grid grid-cols-1 lg:grid-cols-2">
         <p className="mt-4 text-2xl font-light text-secondary-foreground">
-          <span className="block">If you have a project idea in mind,</span>
-          <span className="block"> let's join forces and collaborate.</span>
+          Open Source and free to use, forever.
         </p>
         <div className="mt-4 grid gap-2 md:grid-cols-2">
           <ul>
@@ -135,17 +134,10 @@ const Footer = () => (
             <li>
               <Link
                 className="text-sm text-muted-foreground transition hover:text-secondary-foreground"
-                href="/legal/terms"
+                href="https://github.com/kyh/init/blob/main/LICENSE"
+                target="_blank"
               >
-                Legal
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-sm text-muted-foreground transition hover:text-secondary-foreground"
-                href="/legal/privacy"
-              >
-                Privacy Policy
+                Licensing
               </Link>
             </li>
           </ul>

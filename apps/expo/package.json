@@ -1,5 +1,5 @@
 {
-  "name": "@acme/expo",
+  "name": "@init/expo",
   "version": "0.1.0",
   "private": true,
   "main": "expo-router/entry",
@@ -37,8 +37,8 @@
     "superjson": "^2.2.1"
   },
   "devDependencies": {
-    "@acme/api": "workspace:latest",
-    "@acme/tailwind-config": "workspace:latest",
+    "@init/api": "workspace:latest",
+    "@init/tailwind-config": "workspace:latest",
     "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.8",
     "@babel/runtime": "^7.23.8",

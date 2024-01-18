@@ -93,12 +93,6 @@ importers:
         specifier: ^2.2.1
         version: 2.2.1
     devDependencies:
-      '@acme/api':
-        specifier: workspace:latest
-        version: link:../../packages/api
-      '@acme/tailwind-config':
-        specifier: workspace:latest
-        version: link:../../packages/tailwind
       '@babel/core':
         specifier: ^7.23.7
         version: 7.23.7
@@ -111,6 +105,12 @@ importers:
       '@expo/config-plugins':
         specifier: ^7.2.5
         version: 7.2.5
+      '@init/api':
+        specifier: workspace:latest
+        version: link:../../packages/api
+      '@init/tailwind-config':
+        specifier: workspace:latest
+        version: link:../../packages/tailwind
       '@kyh/eslint-config':
         specifier: ^0.1.4
         version: 0.1.4(eslint@8.56.0)(typescript@5.3.3)
@@ -141,13 +141,13 @@ importers:
 
   apps/nextjs:
     dependencies:
-      '@acme/api':
+      '@init/api':
         specifier: workspace:latest
         version: link:../../packages/api
-      '@acme/db':
+      '@init/db':
         specifier: workspace:latest
         version: link:../../packages/db
-      '@acme/ui':
+      '@init/ui':
         specifier: workspace:latest
         version: link:../../packages/ui
       '@supabase/auth-helpers-nextjs':
@@ -196,7 +196,7 @@ importers:
         specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
-      '@acme/tailwind-config':
+      '@init/tailwind-config':
         specifier: workspace:latest
         version: link:../../packages/tailwind
       '@kyh/eslint-config':
@@ -235,7 +235,7 @@ importers:
 
   packages/api:
     dependencies:
-      '@acme/db':
+      '@init/db':
         specifier: workspace:latest
         version: link:../db
       '@supabase/supabase-js':
@@ -389,7 +389,7 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.1)
     devDependencies:
-      '@acme/tailwind-config':
+      '@init/tailwind-config':
         specifier: workspace:latest
         version: link:../tailwind
       '@kyh/eslint-config':

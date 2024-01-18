@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@acme/ui/button";
-import { toast } from "@acme/ui/toast";
+import { Button } from "@init/ui/button";
+import { toast } from "@init/ui/toast";
 
 import type { TRPCError } from "@/trpc/react";
 import { api } from "@/trpc/react";

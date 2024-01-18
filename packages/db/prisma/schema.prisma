@@ -10,12 +10,7 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  onboarded     Boolean   @default(false)
-  name          String?
-  emailVerified DateTime?
-  image         String?
+  id String @id @default(cuid())
 
   teams TeamMember[]
   todos Todo[]

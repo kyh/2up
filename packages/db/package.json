@@ -1,5 +1,5 @@
 {
-  "name": "@acme/db",
+  "name": "@init/db",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "start": "supabase start",
     "stop": "supabase stop",
-    "reset": "supabase db reset",
+    "reset": "supabase db reset --linked && pnpm push && pnpm seed",
+    "generate": "supabase gen types typescript --linked --schema public > src/supabase-types.ts",
     "push": "pnpm with-env prisma db push",
     "studio": "pnpm with-env prisma studio",
     "seed": "pnpm with-env prisma db execute --file ./prisma/supabase.sql --schema ./prisma/schema.prisma && tsx prisma/seed.ts",
