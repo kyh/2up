@@ -7,6 +7,7 @@ import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 
 import type { AppRouter } from "@acme/api";
+import { getBaseUrl } from "@/lib/url";
 
 export type { TRPCError } from "@trpc/server";
 
@@ -25,7 +26,7 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
             (op.direction === "down" && op.result instanceof Error),
         }),
         unstable_httpBatchStreamLink({
-          url: getBaseUrl() + "/api/trpc",
+          url: `${getBaseUrl()}/api/trpc`,
           headers: async () => {
             const headers = new Headers();
             headers.set("x-trpc-source", "nextjs-react");
@@ -43,10 +44,4 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
       </api.Provider>
     </QueryClientProvider>
   );
-};
-
-const getBaseUrl = () => {
-  if (typeof window !== "undefined") return window.location.origin;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return `http://localhost:${process.env.PORT ?? 3000}`;
 };

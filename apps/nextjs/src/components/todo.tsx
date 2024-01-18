@@ -18,7 +18,7 @@ import type { TRPCError } from "@/trpc/react";
 import type { RouterOutputs } from "@acme/api";
 import { api } from "@/trpc/react";
 
-type Todo = RouterOutputs["todo"]["all"][number];
+type Todo = RouterOutputs["todo"]["all"][0];
 
 type TodoListProps = {
   initialTodos: Todo[];
