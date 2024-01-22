@@ -61,7 +61,7 @@ const Header = ({ user }: { user: User | null }) => (
               }),
               "ml-4 rounded-full px-5",
             )}
-            href={`/${user.id}`}
+            href="/dashboard"
           >
             Dashboard
           </Link>
