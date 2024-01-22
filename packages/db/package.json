@@ -33,7 +33,7 @@
     "@kyh/tsconfig": "^0.1.4",
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.56.0",
-    "prettier": "^3.2.3",
+    "prettier": "^3.2.4",
     "prisma": "^5.8.1",
     "supabase": "^1.131.5",
     "typescript": "^5.3.3"
