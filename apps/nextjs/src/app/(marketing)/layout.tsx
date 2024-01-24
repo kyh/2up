@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { cn } from "@init/ui";
 import { buttonVariants } from "@init/ui/button";
+import { cn } from "@init/ui/utils";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import type { User } from "@supabase/auth-helpers-nextjs";

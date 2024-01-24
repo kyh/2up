@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@init/ui/button";
 import { toast } from "@init/ui/toast";
 
@@ -7,22 +8,29 @@ import type { TRPCError } from "@/trpc/react";
 import { api } from "@/trpc/react";
 
 export const WaitlistForm = () => {
+  const [submitted, setSubmitted] = useState(false);
   const joinWaitlist = api.waitlist.join.useMutation();
 
-  const onJoinWaitlist = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+  const onJoinWaitlist = async (formData: FormData) => {
     const email = formData.get("email")?.toString() ?? "";
-    toast.promise(joinWaitlist.mutateAsync({ email }), {
-      loading: "Submitting...",
-      success: "Waitlist joined!",
-      error: (error: TRPCError) => error.message,
-    });
+    toast.promise(
+      joinWaitlist.mutateAsync(
+        { email },
+        {
+          onSuccess: () => setSubmitted(true),
+        },
+      ),
+      {
+        loading: "Submitting...",
+        success: "Waitlist joined!",
+        error: (error: TRPCError) => error.message,
+      },
+    );
   };
 
   return (
     <form
-      onSubmit={onJoinWaitlist}
+      action={onJoinWaitlist}
       className="mt-10 flex max-w-sm items-center gap-2 rounded-xl border border-white/10 bg-input px-4 py-1.5 shadow-lg"
     >
       <div className="min-w-0 flex-1">
@@ -45,8 +53,9 @@ export const WaitlistForm = () => {
         className="p-0 text-xs"
         variant="ghost"
         loading={joinWaitlist.isPending}
+        disabled={submitted}
       >
-        Join Waitlist
+        {submitted ? "Joined" : "Join Waitlist"}
       </Button>
     </form>
   );

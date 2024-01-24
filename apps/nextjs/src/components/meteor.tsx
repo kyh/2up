@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { cn } from "@init/ui";
+import { cn } from "@init/ui/utils";
 
 type MeteorsProps = {
   top?: number;
@@ -27,7 +27,7 @@ export const Meteors = ({ top = -5, number = 20 }: MeteorsProps) => {
         <span
           key={idx}
           className={cn(
-            "animate-meteor pointer-events-none absolute left-1/2 top-1/2 h-0.5 w-0.5 rotate-[215deg] rounded-[9999px] bg-slate-500 shadow-[0_0_0_1px_#ffffff10]",
+            "pointer-events-none absolute left-1/2 top-1/2 h-0.5 w-0.5 rotate-[215deg] animate-meteor rounded-[9999px] bg-slate-500 shadow-[0_0_0_1px_#ffffff10]",
           )}
           style={style}
         >

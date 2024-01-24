@@ -14,16 +14,17 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import {
+  BackpackIcon,
   BellIcon,
-  HelpCircleIcon,
-  LayoutGridIcon,
-  UsersIcon,
-} from "lucide-react";
+  DashboardIcon,
+  QuestionMarkCircledIcon,
+} from "@radix-ui/react-icons";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import type { User } from "@supabase/auth-helpers-nextjs";
 import { signOut } from "@/app/(auth)/actions";
+import { NavLink } from "@/components/nav-link";
 import { createRedirectUrl } from "@/lib/url";
 
 export const metadata: Metadata = {
@@ -45,41 +46,43 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <section className="flex min-h-dvh">
+    <div className="flex min-h-dvh">
       <Sidebar user={data.user} />
       {children}
-    </section>
+    </div>
   );
 };
 
 export default Layout;
 
 const navLinks = [
-  { href: "/dashboard", label: "Home", icon: <LayoutGridIcon size={20} /> },
-  { href: "/dashboard/teams", label: "Teams", icon: <UsersIcon size={20} /> },
+  { title: "Home", href: "/dashboard", icon: <DashboardIcon width={20} /> },
+  { title: "Teams", href: "/teams", icon: <BackpackIcon width={20} /> },
+  { title: "Activity", href: "/activity", icon: <BellIcon width={20} /> },
   {
-    href: "/dashboard/activity",
-    label: "Activity",
-    icon: <BellIcon size={20} />,
+    title: "Docs",
+    href: "/docs",
+    icon: <QuestionMarkCircledIcon width={20} />,
   },
-  { href: "/docs", label: "Docs", icon: <HelpCircleIcon size={20} /> },
 ];
 
 const Sidebar = ({ user }: { user: User }) => {
   return (
-    <nav className="flex w-[70px] flex-col items-center overflow-y-auto overflow-x-hidden bg-zinc-900 p-3">
-      {navLinks.map(({ href, label, icon }) => (
-        <Link
-          key={href}
-          href={href}
-          className="group flex flex-col items-center py-2 text-xs"
-        >
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary">
-            {icon}
-          </span>
-          <span>{label}</span>
-        </Link>
-      ))}
+    <nav className="flex w-[70px] flex-col items-center overflow-y-auto overflow-x-hidden p-3">
+      <div className="m-auto flex flex-col">
+        {navLinks.map(({ href, title, icon }) => (
+          <NavLink
+            key={href}
+            href={href}
+            className="group flex flex-col items-center py-2 text-xs"
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
+              {icon}
+            </span>
+            <span>{title}</span>
+          </NavLink>
+        ))}
+      </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -95,7 +98,13 @@ const Sidebar = ({ user }: { user: User }) => {
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuContent
+          className="w-56"
+          forceMount
+          alignOffset={8}
+          sideOffset={8}
+          collisionPadding={8}
+        >
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">Kaiyu</p>
@@ -106,17 +115,23 @@ const Sidebar = ({ user }: { user: User }) => {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              Profile
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+            <DropdownMenuItem asChild>
+              <Link href="/profile">
+                Profile
+                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              Billing
-              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+            <DropdownMenuItem asChild>
+              <Link href="/profile/settings">
+                Settings
+                <DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              Settings
-              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+            <DropdownMenuItem asChild>
+              <Link href="/profile/billing">
+                Billing
+                <DropdownMenuShortcut>⇧⌘B</DropdownMenuShortcut>
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
