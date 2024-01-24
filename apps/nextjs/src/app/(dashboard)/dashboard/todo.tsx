@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@init/ui";
 import { Button } from "@init/ui/button";
 import { Checkbox } from "@init/ui/checkbox";
 import { Input } from "@init/ui/input";
@@ -13,6 +12,7 @@ import {
   TableRow,
 } from "@init/ui/table";
 import { toast } from "@init/ui/toast";
+import { cn } from "@init/ui/utils";
 
 import type { TRPCError } from "@/trpc/react";
 import type { RouterOutputs } from "@init/api";
@@ -93,54 +93,66 @@ export const TodoList = ({ initialTodos }: TodoListProps) => {
   return (
     <div className="space-y-4">
       <form className="flex gap-4" onSubmit={onAddTodo}>
-        <Input id="content" name="content" placeholder="Go for a run" />
+        <Input
+          id="content"
+          name="content"
+          placeholder="Go for a run"
+          required
+        />
         <Button type="submit">Add Todo</Button>
       </form>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[50px]" />
-              <TableHead>Content</TableHead>
-              <TableHead className="w-[50px] text-right" />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {vm.todos?.data?.map((todo) => (
-              <TableRow key={todo.id}>
-                <TableCell>
-                  <Checkbox
-                    id={`check-${todo.id}`}
-                    checked={!!todo.completed}
-                    onCheckedChange={() => onToggleTodo(todo)}
-                  />
-                </TableCell>
-                <TableCell>
-                  <label
-                    htmlFor={`check-${todo.id}`}
-                    className={cn(
-                      "flex-1 cursor-pointer",
-                      !!todo.completed && "line-through",
-                    )}
-                  >
-                    {todo.content}
-                  </label>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    className="text-destructive"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onDeleteTodo(todo)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
+      {vm.todos.isLoading && <div>Loading...</div>}
+      {!vm.todos.isLoading && vm.todos?.data?.length ? (
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[50px]" />
+                <TableHead>Content</TableHead>
+                <TableHead className="w-[50px] text-right" />
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+            </TableHeader>
+            <TableBody>
+              {vm.todos.data.map((todo) => (
+                <TableRow key={todo.id}>
+                  <TableCell>
+                    <Checkbox
+                      id={`check-${todo.id}`}
+                      checked={!!todo.completed}
+                      onCheckedChange={() => onToggleTodo(todo)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <label
+                      htmlFor={`check-${todo.id}`}
+                      className={cn(
+                        "flex-1 cursor-pointer",
+                        !!todo.completed && "line-through",
+                      )}
+                    >
+                      {todo.content}
+                    </label>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      className="text-destructive"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onDeleteTodo(todo)}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      ) : (
+        <div className="py-20 text-center text-muted-foreground">
+          Everything is done.
+        </div>
+      )}
     </div>
   );
 };

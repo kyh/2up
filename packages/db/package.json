@@ -35,7 +35,7 @@
     "eslint": "^8.56.0",
     "prettier": "^3.2.4",
     "prisma": "^5.8.1",
-    "supabase": "^1.131.5",
+    "supabase": "^1.136.2",
     "typescript": "^5.3.3"
   },
   "eslintConfig": {
