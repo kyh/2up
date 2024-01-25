@@ -8,7 +8,7 @@ const Page = async () => {
 
   return (
     <main className="flex flex-1 flex-col px-5">
-      <h1 className="my-8 text-xl">Welcome back</h1>
+      <h1 className="py-8 text-xl">Welcome back</h1>
       <TodoList initialTodos={todos} />
     </main>
   );

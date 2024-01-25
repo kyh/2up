@@ -14,10 +14,11 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
+import { Logo } from "@init/ui/logo";
 import {
-  BackpackIcon,
   BellIcon,
   DashboardIcon,
+  MagnifyingGlassIcon,
   QuestionMarkCircledIcon,
 } from "@radix-ui/react-icons";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -56,8 +57,12 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 export default Layout;
 
 const navLinks = [
-  { title: "Home", href: "/dashboard", icon: <DashboardIcon width={20} /> },
-  { title: "Teams", href: "/teams", icon: <BackpackIcon width={20} /> },
+  { title: "CRUD", href: "/dashboard", icon: <DashboardIcon width={20} /> },
+  {
+    title: "Search",
+    href: "?search",
+    icon: <MagnifyingGlassIcon width={20} />,
+  },
   { title: "Activity", href: "/activity", icon: <BellIcon width={20} /> },
   {
     title: "Docs",
@@ -68,13 +73,21 @@ const navLinks = [
 
 const Sidebar = ({ user }: { user: User }) => {
   return (
-    <nav className="flex w-[70px] flex-col items-center overflow-y-auto overflow-x-hidden p-3">
-      <div className="m-auto flex flex-col">
+    <nav className="sticky top-0 flex h-dvh w-[80px] flex-col items-center overflow-y-auto overflow-x-hidden px-4 py-[26px]">
+      <div className="flex flex-col">
+        <Link href="/dashboard" className="flex justify-center pb-2">
+          <Logo
+            width={40}
+            height={40}
+            className="rounded-lg bg-zinc-100 text-secondary"
+          />
+          <span className="sr-only">Init</span>
+        </Link>
         {navLinks.map(({ href, title, icon }) => (
           <NavLink
             key={href}
             href={href}
-            className="group flex flex-col items-center py-2 text-xs"
+            className="group flex flex-col items-center p-2 text-xs"
           >
             <span className="flex h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
               {icon}
@@ -116,15 +129,15 @@ const Sidebar = ({ user }: { user: User }) => {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link href="/profile">
-                Profile
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+              <Link href="/teams">
+                Team
+                <DropdownMenuShortcut>⇧⌘T</DropdownMenuShortcut>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/profile/settings">
-                Settings
-                <DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>
+              <Link href="/profile">
+                Profile
+                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
