@@ -27,20 +27,20 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "class-variance-authority": "^0.7.0",
-    "cmdk": "^0.2.0",
+    "cmdk": "^0.2.1",
     "date-fns": "^3.3.1",
     "next-themes": "^0.2.1",
     "react-day-picker": "^8.10.0",
-    "react-hook-form": "^7.49.3",
-    "sonner": "^1.3.1",
+    "react-hook-form": "^7.50.0",
+    "sonner": "^1.4.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@init/tailwind-config": "workspace:latest",
-    "@kyh/eslint-config": "^0.1.4",
-    "@kyh/prettier-config": "^0.1.4",
-    "@kyh/tsconfig": "^0.1.4",
+    "@kyh/eslint-config": "^0.1.5",
+    "@kyh/prettier-config": "^0.1.5",
+    "@kyh/tsconfig": "^0.1.5",
     "eslint": "^8.56.0",
     "prettier": "^3.2.4",
     "tailwindcss": "^3.4.1",
@@ -48,6 +48,7 @@
     "zod": "^3.22.4"
   },
   "peerDependencies": {
+    "react": "18.2.0",
     "zod": "^3.22.4"
   },
   "eslintConfig": {

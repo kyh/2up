@@ -1,74 +1,89 @@
 import { useState } from "react";
-import { Button, Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Stack } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 
-import type { RouterOutputs } from "@init/api";
+import type { RouterOutputs } from "@/trpc/react";
 import { api } from "@/trpc/react";
 
-const TodoCard = (props: {
-  todo: RouterOutputs["todo"]["all"][number];
+const PostCard = (props: {
+  post: RouterOutputs["todo"]["all"][number];
   onDelete: () => void;
-}) => (
-  <View className="flex flex-row rounded-lg bg-white/10 p-4">
-    <View className="flex-grow">
-      <Link
-        asChild
-        href={{
-          pathname: "/todo/[id]",
-          params: { id: props.todo.id },
-        }}
-      >
-        <Pressable>
-          <Text className="mt-2">{props.todo.content}</Text>
-        </Pressable>
-      </Link>
-    </View>
-    <Pressable onPress={props.onDelete}>
-      <Text>Delete</Text>
-    </Pressable>
-  </View>
-);
+}) => <View className="flex flex-row rounded-lg bg-muted p-4">
+      <View className="flex-grow">
+        <Link
+          asChild
+          href={{
+            pathname: "/post/[id]",
+            params: { id: props.todo.id },
+          }}
+        >
+          <Pressable className="">
+            <Text className=" text-xl font-semibold text-primary">
+              {props.todo.title}
+            </Text>
+            <Text className="mt-2 text-foreground">{props.todo.content}</Text>
+          </Pressable>
+        </Link>
+      </View>
+      <Pressable onPress={props.onDelete}>
+        <Text className="font-bold uppercase text-primary">Delete</Text>
+      </Pressable>
+    </View>;
 
-const CreateTodo = () => {
+const CreatePost = () => {
   const utils = api.useUtils();
+
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const { mutate, error } = api.todo.create.useMutation({
     onSuccess: async () => {
+      setTitle("");
       setContent("");
       await utils.todo.all.invalidate();
     },
   });
 
   return (
-    <View className="mt-4">
+    <View className="mt-4 flex gap-2">
       <TextInput
-        className="mb-2 rounded bg-white/10 p-2"
-        placeholderTextColor="rgba(255, 255, 255, 0.5)"
+        className=" items-center rounded-md border border-input bg-background px-3 text-lg leading-[1.25] text-foreground"
+        value={title}
+        onChangeText={setTitle}
+        placeholder="Title"
+      />
+      {error?.data?.zodError?.fieldErrors.title && (
+        <Text className="mb-2 text-destructive">
+          {error.data.zodError.fieldErrors.title}
+        </Text>
+      )}
+      <TextInput
+        className="items-center rounded-md border border-input bg-background px-3  text-lg leading-[1.25] text-foreground"
         value={content}
         onChangeText={setContent}
         placeholder="Content"
       />
       {error?.data?.zodError?.fieldErrors.content && (
-        <Text className="mb-2 text-red-500">
+        <Text className="mb-2 text-destructive">
           {error.data.zodError.fieldErrors.content}
         </Text>
       )}
       <Pressable
-        className="rounded bg-pink-400 p-2"
+        className="flex items-center rounded bg-primary p-2"
         onPress={() => {
           mutate({
+            title,
             content,
           });
         }}
       >
-        <Text className="font-semibold">Add a TODO</Text>
+        <Text className="text-foreground">Create</Text>
       </Pressable>
       {error?.data?.code === "UNAUTHORIZED" && (
-        <Text className="mt-2 text-red-500">
-          You need to be logged in to create a todo
+        <Text className="mt-2 text-destructive">
+          You need to be logged in to create a post
         </Text>
       )}
     </View>
@@ -78,41 +93,47 @@ const CreateTodo = () => {
 const Index = () => {
   const utils = api.useUtils();
 
-  const todoQuery = api.todo.all.useQuery();
+  const postQuery = api.todo.all.useQuery();
 
-  const deleteTodoMutation = api.todo.delete.useMutation({
-    onSettled: () => utils.todo.all.invalidate(),
+  const deletePostMutation = api.todo.delete.useMutation({
+    onSettled: () => utils.todo.all.invalidate().then(),
   });
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className=" bg-background">
       {/* Changes page title visible on the header */}
       <Stack.Screen options={{ title: "Home Page" }} />
-      <View className="h-full w-full p-4">
-        <Text className="pb-2 text-center text-5xl font-bold">Init.</Text>
+      <View className="h-full w-full bg-background p-4">
+        <Text className="pb-2 text-center text-5xl font-bold text-foreground">
+          Create <Text className="text-primary">T3</Text> Turbo
+        </Text>
 
-        <Button
+        <Pressable
           onPress={() => void utils.todo.all.invalidate()}
-          title="Refresh todos"
-        />
+          className="flex items-center rounded-lg bg-primary p-2"
+        >
+          <Text className="text-foreground"> Refresh posts</Text>
+        </Pressable>
 
         <View className="py-2">
-          <Text className="font-semibold italic">Press on a todo</Text>
+          <Text className="font-semibold italic text-primary">
+            Press on a post
+          </Text>
         </View>
 
         <FlashList
-          data={todoQuery.data}
+          data={postQuery.data}
           estimatedItemSize={20}
           ItemSeparatorComponent={() => <View className="h-2" />}
           renderItem={(p) => (
-            <TodoCard
-              todo={p.item}
-              onDelete={() => deleteTodoMutation.mutate({ id: p.item.id })}
+            <PostCard
+              post={p.item}
+              onDelete={() => deletePostMutation.mutate(p.item.id)}
             />
           )}
         />
 
-        <CreateTodo />
+        <CreatePost />
       </View>
     </SafeAreaView>
   );
