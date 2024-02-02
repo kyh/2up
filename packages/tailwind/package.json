@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    "./*": "./src/*.ts"
   },
   "license": "MIT",
   "scripts": {
@@ -20,9 +20,9 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@kyh/eslint-config": "^0.1.4",
-    "@kyh/prettier-config": "^0.1.4",
-    "@kyh/tsconfig": "^0.1.4",
+    "@kyh/eslint-config": "^0.1.5",
+    "@kyh/prettier-config": "^0.1.5",
+    "@kyh/tsconfig": "^0.1.5",
     "eslint": "^8.56.0",
     "prettier": "^3.2.4",
     "typescript": "^5.3.3"

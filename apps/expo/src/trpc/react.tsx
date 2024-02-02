@@ -11,6 +11,7 @@ import type { AppRouter } from "@init/api";
  * A set of typesafe hooks for consuming your API.
  */
 export const api = createTRPCReact<AppRouter>();
+export { type RouterInputs, type RouterOutputs } from "@init/api";
 
 /**
  * Extend this function when going to production by
@@ -29,6 +30,7 @@ const getBaseUrl = () => {
   const localhost = debuggerHost?.split(":")[0];
 
   if (!localhost) {
+    // return "https://turbo.t3.gg";
     throw new Error(
       "Failed to get localhost. Please point to your production server.",
     );
@@ -40,7 +42,7 @@ const getBaseUrl = () => {
  * A wrapper for your app that provides the TRPC context.
  * Use only in _app.tsx
  */
-export const TRPCProvider = (props: { children: React.ReactNode }) => {
+export function TRPCProvider(props: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     api.createClient({
@@ -48,7 +50,7 @@ export const TRPCProvider = (props: { children: React.ReactNode }) => {
       links: [
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
-          headers: () => {
+          headers() {
             const headers = new Map<string, string>();
             headers.set("x-trpc-source", "expo-react");
             return Object.fromEntries(headers);
@@ -71,4 +73,4 @@ export const TRPCProvider = (props: { children: React.ReactNode }) => {
       </QueryClientProvider>
     </api.Provider>
   );
-};
+}
