@@ -4,16 +4,12 @@ import { NavLink } from "@/components/nav-link";
 
 const navLinks = [
   {
-    title: "Profile",
-    href: "/profile",
-  },
-  {
-    title: "Settings",
-    href: "/profile/settings",
+    title: "Account",
+    href: "/account",
   },
   {
     title: "Billing",
-    href: "/profile/billing",
+    href: "/account/billing",
   },
 ];
 

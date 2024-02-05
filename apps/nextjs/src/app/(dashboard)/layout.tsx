@@ -129,19 +129,13 @@ const Sidebar = ({ user }: { user: User }) => {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link href="/profile">
-                Profile
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+              <Link href="/account">
+                Account
+                <DropdownMenuShortcut>⇧⌘A</DropdownMenuShortcut>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/profile/settings">
-                Settings
-                <DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/profile/billing">
+              <Link href="/account/billing">
                 Billing
                 <DropdownMenuShortcut>⇧⌘B</DropdownMenuShortcut>
               </Link>
