@@ -156,7 +156,9 @@ export const SettingsForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Update settings</Button>
+        <footer className="flex justify-end">
+          <Button type="submit">Update preferences</Button>
+        </footer>
       </form>
     </Form>
   );
