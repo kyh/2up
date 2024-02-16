@@ -18,14 +18,13 @@ import { Logo } from "@init/ui/logo";
 import {
   BellIcon,
   DashboardIcon,
-  MagnifyingGlassIcon,
   QuestionMarkCircledIcon,
 } from "@radix-ui/react-icons";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import type { User } from "@supabase/auth-helpers-nextjs";
 import { signOut } from "@/app/(auth)/actions";
-import { NavLink } from "@/components/nav-link";
+import { NavLink, NavSearchButton } from "@/components/nav";
 import { createRedirectUrl } from "@/lib/url";
 
 export const metadata: Metadata = {
@@ -56,21 +55,6 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
 export default Layout;
 
-const navLinks = [
-  { title: "CRUD", href: "/dashboard", icon: <DashboardIcon width={20} /> },
-  {
-    title: "Search",
-    href: "?search",
-    icon: <MagnifyingGlassIcon width={20} />,
-  },
-  { title: "Activity", href: "/activity", icon: <BellIcon width={20} /> },
-  {
-    title: "Docs",
-    href: "/docs",
-    icon: <QuestionMarkCircledIcon width={20} />,
-  },
-];
-
 const Sidebar = ({ user }: { user: User }) => {
   return (
     <nav className="sticky top-0 flex h-dvh w-[80px] flex-col items-center overflow-y-auto overflow-x-hidden px-4 py-[26px]">
@@ -83,18 +67,34 @@ const Sidebar = ({ user }: { user: User }) => {
           />
           <span className="sr-only">Init</span>
         </Link>
-        {navLinks.map(({ href, title, icon }) => (
-          <NavLink
-            key={href}
-            href={href}
-            className="group flex flex-col items-center p-2 text-xs"
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
-              {icon}
-            </span>
-            <span>{title}</span>
-          </NavLink>
-        ))}
+        <NavLink
+          href="/dashboard"
+          className="group flex flex-col items-center p-2 text-xs"
+        >
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
+            <DashboardIcon width={20} />
+          </span>
+          <span>CRUD</span>
+        </NavLink>
+        <NavSearchButton />
+        <NavLink
+          href="/activity"
+          className="group flex flex-col items-center p-2 text-xs"
+        >
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
+            <BellIcon width={20} />
+          </span>
+          <span>Activity</span>
+        </NavLink>
+        <NavLink
+          href="/docs"
+          className="group flex flex-col items-center p-2 text-xs"
+        >
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
+            <QuestionMarkCircledIcon width={20} />
+          </span>
+          <span>Docs</span>
+        </NavLink>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

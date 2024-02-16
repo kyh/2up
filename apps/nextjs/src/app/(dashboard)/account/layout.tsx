@@ -1,6 +1,6 @@
 // export const runtime = "edge";
 
-import { NavLink } from "@/components/nav-link";
+import { NavLink } from "@/components/nav";
 
 const navLinks = [
   {
