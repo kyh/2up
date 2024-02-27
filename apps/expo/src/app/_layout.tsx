@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 
 import { TRPCProvider } from "@/trpc/react";
 
-import "../styles.css";
+import "./styles.css";
 
 import { useColorScheme } from "nativewind";
 

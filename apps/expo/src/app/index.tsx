@@ -7,30 +7,29 @@ import { FlashList } from "@shopify/flash-list";
 import type { RouterOutputs } from "@/trpc/react";
 import { api } from "@/trpc/react";
 
-const PostCard = (props: {
-  post: RouterOutputs["todo"]["all"][number];
+const TodoCard = (props: {
+  todo: RouterOutputs["todo"]["all"][number];
   onDelete: () => void;
-}) => <View className="flex flex-row rounded-lg bg-muted p-4">
-      <View className="flex-grow">
-        <Link
-          asChild
-          href={{
-            pathname: "/post/[id]",
-            params: { id: props.todo.id },
-          }}
-        >
-          <Pressable className="">
-            <Text className=" text-xl font-semibold text-primary">
-              {props.todo.title}
-            </Text>
-            <Text className="mt-2 text-foreground">{props.todo.content}</Text>
-          </Pressable>
-        </Link>
-      </View>
-      <Pressable onPress={props.onDelete}>
-        <Text className="font-bold uppercase text-primary">Delete</Text>
-      </Pressable>
-    </View>;
+}) => (
+  <View className="flex flex-row rounded-lg bg-muted p-4">
+    <View className="flex-grow">
+      <Link
+        asChild
+        href={{
+          pathname: "/post/[id]",
+          params: { id: props.todo.id },
+        }}
+      >
+        <Pressable className="">
+          <Text className="mt-2 text-foreground">{props.todo.content}</Text>
+        </Pressable>
+      </Link>
+    </View>
+    <Pressable onPress={props.onDelete}>
+      <Text className="font-bold uppercase text-primary">Delete</Text>
+    </Pressable>
+  </View>
+);
 
 const CreatePost = () => {
   const utils = api.useUtils();
@@ -74,7 +73,6 @@ const CreatePost = () => {
         className="flex items-center rounded bg-primary p-2"
         onPress={() => {
           mutate({
-            title,
             content,
           });
         }}
@@ -126,9 +124,9 @@ const Index = () => {
           estimatedItemSize={20}
           ItemSeparatorComponent={() => <View className="h-2" />}
           renderItem={(p) => (
-            <PostCard
-              post={p.item}
-              onDelete={() => deletePostMutation.mutate(p.item.id)}
+            <TodoCard
+              todo={p.item}
+              onDelete={() => deletePostMutation.mutate({ id: p.item.id })}
             />
           )}
         />

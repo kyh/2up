@@ -22,7 +22,9 @@ The goal of this template is to include everything a typical SaaS application mi
 - [ ] Admin Dashboard
 - [ ] Native Mobile App
 - [ ] Native Desktop App
-- [ ] CLI generators
+- [ ] Something something AI
+- [ ] CLI generator
+- [ ] [Taking Submissions](https://github.com/kyh/init/issues/new?assignees=&labels=%E2%9C%A8+enhancement&projects=&template=feature_request.yml&title=feat%3A+)
 
 ## Running Locally
 
