@@ -2,9 +2,6 @@
 
 A comprehensive boilerplate to build, launch, and scale your next project.
 
-> **Warning**
-> This app is a work in progress. I'm building this in public. You can follow the progress on Twitter [@kaiyuhsu](https://twitter.com/kaiyuhsu).
-
 Built off [t3 turbo](https://github.com/t3-oss/create-t3-turbo) + [supabase](https://supabase.com).
 
 ## Features
