@@ -9,7 +9,7 @@ Built off [t3 turbo](https://github.com/t3-oss/create-t3-turbo) + [supabase](htt
 
 ## Features
 
-The goal of this template is to include everything a typical SaaS application would use:
+The goal of this template is to include everything a typical SaaS application might use:
 
 - [x] ~CRUD~
 - [x] ~Authentication~
@@ -23,7 +23,6 @@ The goal of this template is to include everything a typical SaaS application wo
 - [ ] Native Mobile App
 - [ ] Native Desktop App
 - [ ] CLI generators
-- [ ]
 
 ## Running Locally
 
@@ -33,13 +32,13 @@ The goal of this template is to include everything a typical SaaS application wo
 pnpm install
 ```
 
-2. Copy `.env.example` to `.env.local` and update the variables.
+1. Copy `.env.example` to `.env.local` and update the variables.
 
 ```sh
 cp .env.example .env.local
 ```
 
-3. Start the development server:
+1. Start the development server:
 
 ```sh
 pnpm dev
