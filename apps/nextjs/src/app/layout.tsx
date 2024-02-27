@@ -6,26 +6,28 @@ import { cn } from "@init/ui/utils";
 
 import { TRPCReactProvider } from "@/trpc/react";
 
-import "@/app/globals.css";
+import "./styles.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.VERCEL_ENV === "production"
-      ? "https://kyh.io"
+      ? "https://init.kyh.io"
       : "http://localhost:3000",
   ),
   title: "Init",
-  description: "Simple monorepo with shared backend for web & mobile apps",
+  description:
+    "A comprehensive boilerplate to build, launch, and scale your next project",
   openGraph: {
     title: "Init",
-    description: "Simple monorepo with shared backend for web & mobile apps",
+    description:
+      "A comprehensive boilerplate to build, launch, and scale your next project",
     url: "https://github.com/kyh/init",
     siteName: "Init",
   },
   twitter: {
     card: "summary_large_image",
-    site: "@kyh",
-    creator: "@kyh",
+    site: "@kaiyuhsu",
+    creator: "@kaiyuhsu",
   },
 };
 

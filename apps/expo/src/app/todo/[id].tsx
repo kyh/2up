@@ -6,21 +6,18 @@ import { api } from "@/trpc/react";
 const Post = () => {
   const { id } = useGlobalSearchParams();
   if (!id || typeof id !== "string") throw new Error("unreachable");
-  const { data } = api.todo.byId.useQuery({ id: parseInt(id) });
+  const { data } = api.todo.byId.useQuery({ id: id });
 
   if (!data) return null;
 
   return (
     <SafeAreaView className="bg-background">
-      <Stack.Screen options={{ title: data.title }} />
+      <Stack.Screen options={{ title: data.content }} />
       <View className="h-full w-full p-4">
-        <Text className="py-2 text-3xl font-bold text-primary">
-          {data.title}
-        </Text>
         <Text className="py-4 text-foreground">{data.content}</Text>
       </View>
     </SafeAreaView>
   );
-}
+};
 
 export default Post;
