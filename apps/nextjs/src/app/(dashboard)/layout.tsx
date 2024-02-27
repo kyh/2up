@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { getInitials } from "@init/api/lib/user-utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
 import { Button } from "@init/ui/button";
 import {
@@ -56,6 +57,9 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 export default Layout;
 
 const Sidebar = ({ user }: { user: User }) => {
+  const userImage = user.user_metadata.image ?? "";
+  const userName = user.user_metadata.name ?? "unknown";
+
   return (
     <nav className="sticky top-0 flex h-dvh w-[80px] flex-col items-center overflow-y-auto overflow-x-hidden px-4 py-[26px]">
       <div className="flex flex-col">
@@ -63,7 +67,7 @@ const Sidebar = ({ user }: { user: User }) => {
           <Logo
             width={40}
             height={40}
-            className="rounded-lg bg-zinc-100 text-secondary"
+            className="rounded-lg bg-muted text-primary"
           />
           <span className="sr-only">Init</span>
         </Link>
@@ -103,11 +107,8 @@ const Sidebar = ({ user }: { user: User }) => {
             className="relative mt-auto h-8 w-8 rounded-full"
           >
             <Avatar className="h-9 w-9">
-              <AvatarImage
-                src={user.user_metadata.image ?? ""}
-                alt={user.user_metadata.name ?? "unknown"}
-              />
-              <AvatarFallback>KH</AvatarFallback>
+              <AvatarImage src={userImage} alt={userName} />
+              <AvatarFallback>{getInitials(userName)}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -120,7 +121,7 @@ const Sidebar = ({ user }: { user: User }) => {
         >
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">Kaiyu</p>
+              <p className="text-sm font-medium leading-none">{userName}</p>
               <p className="text-xs leading-none text-muted-foreground">
                 {user?.email}
               </p>

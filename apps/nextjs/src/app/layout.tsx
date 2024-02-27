@@ -6,7 +6,7 @@ import { cn } from "@init/ui/utils";
 
 import { TRPCReactProvider } from "@/trpc/react";
 
-import "./styles.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(

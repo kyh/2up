@@ -7,15 +7,3 @@ export const getBaseUrl = () => {
 export const createRedirectUrl = (redirectTo: string, current: string) => {
   return `${getBaseUrl()}${redirectTo}?redirect=${current}`;
 };
-
-export const createTeamInviteUrl = ({
-  code,
-  email,
-}: {
-  code: string;
-  email: string;
-}) => {
-  return `${getBaseUrl()}/auth/join?code=${encodeURIComponent(
-    code,
-  )}&email=${encodeURIComponent(email)}`;
-};
