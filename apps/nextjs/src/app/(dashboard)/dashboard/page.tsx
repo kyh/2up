@@ -1,3 +1,4 @@
+import { PageHeader } from "@/components/header";
 import { api } from "@/trpc/server";
 import { TodoList } from "./todo";
 
@@ -8,7 +9,7 @@ const Page = async () => {
 
   return (
     <main className="flex flex-1 flex-col px-5">
-      <h1 className="py-8 text-xl">Welcome back</h1>
+      <PageHeader>Welcome back</PageHeader>
       <TodoList initialTodos={todos} />
     </main>
   );
