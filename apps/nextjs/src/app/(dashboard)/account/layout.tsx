@@ -1,5 +1,6 @@
 // export const runtime = "edge";
 
+import { PageHeader } from "@/components/header";
 import { NavLink } from "@/components/nav";
 
 const navLinks = [
@@ -16,7 +17,7 @@ const navLinks = [
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <main className="flex flex-1 flex-col px-5">
-      <h1 className="py-8 text-xl">Profile</h1>
+      <PageHeader>Profile</PageHeader>
       <nav className="inline-flex h-9 w-full items-center justify-start rounded-none border-b bg-transparent p-0 text-muted-foreground">
         {navLinks.map((item) => (
           <NavLink
