@@ -1,23 +1,53 @@
 # Init
 
-An opinionated [t3](https://create.t3.gg/) + [supabase](https://supabase.com/) starter template.
+A comprehensive boilerplate to build, launch, and scale your next project.
+
+> **Warning**
+> This app is a work in progress. I'm building this in public. You can follow the progress on Twitter [@kaiyuhsu](https://twitter.com/kaiyuhsu).
+
+Built off [t3 turbo](https://github.com/t3-oss/create-t3-turbo) + [supabase](https://supabase.com).
 
 ## Features
 
-This template includes everything you need to build your own SaaS application:
+The goal of this template is to include everything a typical SaaS application would use:
 
-- [x] ~React Server Components~
-- [x] ~CRUD Todo~
-- [x] ~Local Db~
+- [x] ~CRUD~
+- [x] ~Authentication~
+- [ ] MDX Blog/Documentation Site
 - [ ] User Profile
 - [ ] Multi Tenancy
 - [ ] Billing
-- [ ] Feedback System
+- [ ] Submit Feedback System
 - [ ] Notifications System
 - [ ] Admin Dashboard
 - [ ] Native Mobile App
 - [ ] Native Desktop App
 - [ ] CLI generators
+- [ ]
+
+## Running Locally
+
+1. Install dependencies using pnpm:
+
+```sh
+pnpm install
+```
+
+2. Copy `.env.example` to `.env.local` and update the variables.
+
+```sh
+cp .env.example .env.local
+```
+
+3. Start the development server:
+
+```sh
+pnpm dev
+```
+
+## License
+
+Licensed under the [MIT license](https://github.com/kyh/init/blob/main/LICENSE).
 
 ## FAQ
 
@@ -32,7 +62,3 @@ TODO
 ### Why pick Prisma over Drizzle?
 
 Cross database support and a more mature ORM.
-
-## References
-
-The stack originates from and is kept updated with [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo).

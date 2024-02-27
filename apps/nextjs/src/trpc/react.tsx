@@ -11,10 +11,23 @@ import { getBaseUrl } from "@/lib/url";
 
 export type { TRPCError } from "@trpc/server";
 
+const createQueryClient = () => new QueryClient();
+
+let clientQueryClientSingleton: QueryClient | undefined = undefined;
+const getQueryClient = () => {
+  if (typeof window === "undefined") {
+    // Server: always make a new query client
+    return createQueryClient();
+  } else {
+    // Browser: use singleton pattern to keep the same query client
+    return (clientQueryClientSingleton ??= createQueryClient());
+  }
+};
+
 export const api = createTRPCReact<AppRouter>();
 
-export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
-  const [queryClient] = useState(() => new QueryClient());
+export function TRPCReactProvider(props: { children: React.ReactNode }) {
+  const queryClient = getQueryClient();
 
   const [trpcClient] = useState(() =>
     api.createClient({
@@ -34,7 +47,7 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
           },
         }),
       ],
-    }),
+    })
   );
 
   return (
@@ -44,4 +57,4 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
       </api.Provider>
     </QueryClientProvider>
   );
-};
+}
