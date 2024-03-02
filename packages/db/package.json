@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.10.2",
-    "@prisma/extension-accelerate": "^0.6.3",
+    "@prisma/extension-accelerate": "^1.0.0",
     "@supabase/supabase-js": "^2.39.7"
   },
   "devDependencies": {

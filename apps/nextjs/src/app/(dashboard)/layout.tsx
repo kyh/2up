@@ -17,7 +17,7 @@ import {
 } from "@init/ui/dropdown-menu";
 import { Logo } from "@init/ui/logo";
 import {
-  BellIcon,
+  ChatBubbleIcon,
   DashboardIcon,
   QuestionMarkCircledIcon,
 } from "@radix-ui/react-icons";
@@ -25,7 +25,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import type { User } from "@supabase/auth-helpers-nextjs";
 import { signOut } from "@/app/(auth)/actions";
-import { NavLink, NavSearchButton } from "@/components/nav";
+import { NavLink } from "@/components/nav";
 import { createRedirectUrl } from "@/lib/url";
 
 export const metadata: Metadata = {
@@ -58,14 +58,13 @@ export default Layout;
 
 const navLinks = [
   { id: "crud", href: "/dashboard", label: "CRUD", Icon: DashboardIcon },
-  { id: "search", Component: NavSearchButton },
-  { id: "activity", href: "/activity", label: "Activity", Icon: BellIcon },
+  { id: "chat", href: "/chat", label: "Chat", Icon: ChatBubbleIcon },
   { id: "docs", href: "/docs", label: "Docs", Icon: QuestionMarkCircledIcon },
 ] as const;
 
 const navLinksClassName = "group flex flex-col items-center gap-1 p-2 text-xs";
 const navLinksIconContainerClassName =
-  "h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary";
+  "flex size-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary";
 
 const Sidebar = ({ user }: { user: User }) => {
   const userImage = user.user_metadata.image ?? "";
@@ -82,30 +81,14 @@ const Sidebar = ({ user }: { user: User }) => {
           />
           <span className="sr-only">Init</span>
         </Link>
-        {navLinks.map((link) => {
-          if ("href" in link) {
-            return (
-              <NavLink
-                key={link.id}
-                href={link.href}
-                className={navLinksClassName}
-              >
-                <span className={navLinksIconContainerClassName}>
-                  <link.Icon width={16} height={16} />
-                </span>
-                <span>{link.label}</span>
-              </NavLink>
-            );
-          }
-
-          return (
-            <link.Component
-              key={link.id}
-              className={navLinksClassName}
-              iconContainerClassName={navLinksIconContainerClassName}
-            />
-          );
-        })}
+        {navLinks.map((link) => (
+          <NavLink key={link.id} href={link.href} className={navLinksClassName}>
+            <span className={navLinksIconContainerClassName}>
+              <link.Icon width={16} height={16} />
+            </span>
+            <span>{link.label}</span>
+          </NavLink>
+        ))}
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
