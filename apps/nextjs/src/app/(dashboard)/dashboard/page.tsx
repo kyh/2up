@@ -9,7 +9,7 @@ const Page = async () => {
 
   return (
     <main className="flex flex-1 flex-col px-5">
-      <PageHeader>Welcome back</PageHeader>
+      <PageHeader showSearch>Welcome back</PageHeader>
       <TodoList initialTodos={todos} />
     </main>
   );
