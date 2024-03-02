@@ -56,6 +56,17 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
 export default Layout;
 
+const navLinks = [
+  { id: "crud", href: "/dashboard", label: "CRUD", Icon: DashboardIcon },
+  { id: "search", Component: NavSearchButton },
+  { id: "activity", href: "/activity", label: "Activity", Icon: BellIcon },
+  { id: "docs", href: "/docs", label: "Docs", Icon: QuestionMarkCircledIcon },
+] as const;
+
+const navLinksClassName = "group flex flex-col items-center gap-1 p-2 text-xs";
+const navLinksIconContainerClassName =
+  "h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary";
+
 const Sidebar = ({ user }: { user: User }) => {
   const userImage = user.user_metadata.image ?? "";
   const userName = user.user_metadata.name ?? "unknown";
@@ -71,34 +82,30 @@ const Sidebar = ({ user }: { user: User }) => {
           />
           <span className="sr-only">Init</span>
         </Link>
-        <NavLink
-          href="/dashboard"
-          className="group flex flex-col items-center p-2 text-xs"
-        >
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
-            <DashboardIcon width={20} />
-          </span>
-          <span>CRUD</span>
-        </NavLink>
-        <NavSearchButton />
-        <NavLink
-          href="/activity"
-          className="group flex flex-col items-center p-2 text-xs"
-        >
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
-            <BellIcon width={20} />
-          </span>
-          <span>Activity</span>
-        </NavLink>
-        <NavLink
-          href="/docs"
-          className="group flex flex-col items-center p-2 text-xs"
-        >
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
-            <QuestionMarkCircledIcon width={20} />
-          </span>
-          <span>Docs</span>
-        </NavLink>
+        {navLinks.map((link) => {
+          if ("href" in link) {
+            return (
+              <NavLink
+                key={link.id}
+                href={link.href}
+                className={navLinksClassName}
+              >
+                <span className={navLinksIconContainerClassName}>
+                  <link.Icon width={16} height={16} />
+                </span>
+                <span>{link.label}</span>
+              </NavLink>
+            );
+          }
+
+          return (
+            <link.Component
+              key={link.id}
+              className={navLinksClassName}
+              iconContainerClassName={navLinksIconContainerClassName}
+            />
+          );
+        })}
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

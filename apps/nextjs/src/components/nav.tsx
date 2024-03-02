@@ -56,7 +56,13 @@ export const NavLink = ({
   );
 };
 
-export const NavSearchButton = () => {
+export const NavSearchButton = ({
+  className,
+  iconContainerClassName,
+}: {
+  className?: string;
+  iconContainerClassName?: string;
+}) => {
   const [open, setOpen] = useState(false);
 
   const onClick = () => {
@@ -76,12 +82,9 @@ export const NavSearchButton = () => {
 
   return (
     <>
-      <button
-        className="group flex flex-col items-center p-2 text-xs"
-        onClick={onClick}
-      >
-        <span className="flex h-9 w-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
-          <MagnifyingGlassIcon width={20} />
+      <button className={className} onClick={onClick}>
+        <span className={iconContainerClassName}>
+          <MagnifyingGlassIcon width={16} height={16} />
         </span>
         <span>Search</span>
       </button>
