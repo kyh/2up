@@ -10,7 +10,7 @@ The goal of this template is to include everything a typical SaaS application mi
 
 - [x] ~CRUD~
 - [x] ~Authentication~
-- [ ] MDX Blog/Documentation Site
+- [x] ~MDX Documentation Site~
 - [ ] User Profile
 - [ ] Multi Tenancy
 - [ ] Billing
