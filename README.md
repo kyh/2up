@@ -16,6 +16,7 @@ The goal of this template is to include everything a typical SaaS application mi
 - [ ] Billing
 - [ ] Submit Feedback System
 - [ ] Notifications System
+- [ ] Analytics
 - [ ] Admin Dashboard
 - [ ] Native Mobile App
 - [ ] Native Desktop App
