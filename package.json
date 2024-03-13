@@ -2,7 +2,7 @@
   "name": "init",
   "private": true,
   "engines": {
-    "node": ">=20.11.0"
+    "node": ">=20.11.1"
   },
   "packageManager": "pnpm@8.15.4",
   "scripts": {
