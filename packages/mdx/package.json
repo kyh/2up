@@ -1,10 +1,11 @@
 {
-  "name": "@init/tailwind-config",
-  "version": "0.1.0",
+  "name": "@init/mdx",
   "private": true,
+  "version": "0.1.0",
   "type": "module",
   "exports": {
-    "./*": "./src/*.ts"
+    ".": "./src/index.tsx",
+    "./*": "./src/*"
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
@@ -13,10 +14,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@tailwindcss/typography": "^0.5.10",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1",
-    "tailwindcss-animate": "^1.0.7"
+    "@init/ui": "workspace:latest",
+    "@sindresorhus/slugify": "^2.2.1",
+    "mdast-util-to-string": "^4.0.0",
+    "mdx-annotations": "^0.1.4",
+    "remark": "^15.0.1",
+    "remark-gfm": "^4.0.0",
+    "remark-mdx": "^3.0.1",
+    "remark-toc": "^9.0.0",
+    "shiki": "^0.14.7",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@kyh/eslint-config": "^0.1.6",
@@ -27,7 +34,6 @@
     "typescript": "^5.4.2"
   },
   "eslintConfig": {
-    "root": true,
     "extends": [
       "@kyh/eslint-config/base"
     ]

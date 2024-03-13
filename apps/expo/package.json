@@ -15,13 +15,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@expo/metro-config": "^0.17.5",
+    "@expo/metro-config": "^0.17.6",
     "@shopify/flash-list": "1.6.3",
-    "@tanstack/react-query": "^5.24.1",
+    "@tanstack/react-query": "^5.27.5",
     "@trpc/client": "11.0.0-next-beta.294",
     "@trpc/react-query": "11.0.0-next-beta.294",
     "@trpc/server": "11.0.0-next-beta.294",
-    "expo": "~50.0.8",
+    "expo": "~50.0.11",
     "expo-constants": "~15.4.5",
     "expo-linking": "~6.2.2",
     "expo-router": "~3.4.8",
@@ -30,7 +30,7 @@
     "nativewind": "~4.0.36",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "~0.73.5",
+    "react-native": "~0.73.6",
     "react-native-css-interop": "~0.0.34",
     "react-native-gesture-handler": "~2.14.1",
     "react-native-reanimated": "~3.6.3",
@@ -48,11 +48,11 @@
     "@kyh/prettier-config": "^0.1.6",
     "@kyh/tsconfig": "^0.1.6",
     "@types/babel__core": "^7.20.5",
-    "@types/react": "^18.2.61",
+    "@types/react": "^18.2.65",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.2"
   },
   "eslintConfig": {
     "root": true,

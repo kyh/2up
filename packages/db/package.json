@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "license": "MIT",
   "exports": {
     ".": "./src/index.ts",
     "./*": "./src/*.ts"
@@ -24,20 +23,20 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@prisma/client": "^5.10.2",
+    "@prisma/client": "^5.11.0",
     "@prisma/extension-accelerate": "^1.0.0",
-    "@supabase/supabase-js": "^2.39.7"
+    "@supabase/supabase-js": "^2.39.8"
   },
   "devDependencies": {
     "@kyh/eslint-config": "^0.1.6",
     "@kyh/prettier-config": "^0.1.6",
     "@kyh/tsconfig": "^0.1.6",
-    "dotenv-cli": "^7.3.0",
+    "dotenv-cli": "^7.4.1",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
-    "prisma": "^5.10.2",
-    "supabase": "^1.145.4",
-    "typescript": "^5.3.3"
+    "prisma": "^5.11.0",
+    "supabase": "^1.148.6",
+    "typescript": "^5.4.2"
   },
   "eslintConfig": {
     "root": true,

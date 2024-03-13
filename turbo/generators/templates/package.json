@@ -1,7 +1,7 @@
 {
-  "name": "@init/tailwind-config",
-  "version": "0.1.0",
+  "name": "@init/{{name}}",
   "private": true,
+  "version": "0.1.0",
   "type": "module",
   "exports": {
     "./*": "./src/*.ts"
@@ -12,22 +12,15 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@tailwindcss/typography": "^0.5.10",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1",
-    "tailwindcss-animate": "^1.0.7"
-  },
   "devDependencies": {
     "@kyh/eslint-config": "^0.1.6",
     "@kyh/prettier-config": "^0.1.6",
     "@kyh/tsconfig": "^0.1.6",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.2"
+    "typescript": "^5.3.3"
   },
   "eslintConfig": {
-    "root": true,
     "extends": [
       "@kyh/eslint-config/base"
     ]
