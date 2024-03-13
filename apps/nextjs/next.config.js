@@ -1,6 +1,15 @@
+import { recmaPlugins } from "@init/mdx/plugins/recma.mjs";
+import { rehypePlugins } from "@init/mdx/plugins/rehype.mjs";
+import { remarkPlugins } from "@init/mdx/plugins/remark.mjs";
 import createMDX from "@next/mdx";
 
-const withMDX = createMDX();
+const withMDX = createMDX({
+  options: {
+    remarkPlugins,
+    rehypePlugins,
+    recmaPlugins,
+  },
+});
 
 /** @type {import("next").NextConfig} */
 const config = {

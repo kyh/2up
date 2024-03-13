@@ -10,7 +10,7 @@ interface PackageJson {
 }
 
 export default function generator(plop: PlopTypes.NodePlopAPI): void {
-  plop.setGenerator("init", {
+  plop.setGenerator("package", {
     description: "Generate a new package for the Init Monorepo",
     prompts: [
       {
@@ -38,12 +38,12 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
       {
         type: "add",
         path: "packages/{{ name }}/package.json",
-        templateFile: "templates/package.json.hbs",
+        templateFile: "templates/package.json",
       },
       {
         type: "add",
         path: "packages/{{ name }}/tsconfig.json",
-        templateFile: "templates/tsconfig.json.hbs",
+        templateFile: "templates/tsconfig.json",
       },
       {
         type: "add",

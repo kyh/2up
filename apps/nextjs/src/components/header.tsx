@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@init/ui/button";
 import {
   CommandDialog,
@@ -20,6 +20,7 @@ import {
   PersonIcon,
   QuestionMarkCircledIcon,
 } from "@radix-ui/react-icons";
+import { useHotkeys } from "react-hotkeys-hook";
 
 type PageHeaderProps = {
   children: React.ReactNode;
@@ -45,16 +46,7 @@ const SearchButton = () => {
     setOpen((prev) => !prev);
   };
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((open) => !open);
-      }
-    };
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
+  useHotkeys("cmd+k", onClick);
 
   return (
     <>

@@ -5,9 +5,7 @@ import { NavLink } from "@/components/nav";
 const Layout = ({ children }: { children: React.ReactNode }) => (
   <section className="flex min-h-dvh">
     <Sidebar />
-    <section className="flex-1 px-10 py-16">
-      <main className="prose prose-zinc dark:prose-invert">{children}</main>
-    </section>
+    <section className="flex-1 px-10 py-16">{children}</section>
   </section>
 );
 
@@ -97,7 +95,7 @@ const navLinkEntries = Object.entries(navLinks);
 
 const Sidebar = () => {
   return (
-    <aside className="max-h-dvh w-64 overflow-y-auto border-r border-border">
+    <aside className="sticky top-0 max-h-dvh w-64 overflow-y-auto border-r border-border">
       <div className="p-5">
         <NavLink href="/">
           <Logo className="size-10" />
@@ -107,14 +105,17 @@ const Sidebar = () => {
         <ul className="space-y-4">
           {navLinkEntries.map(([key, group]) => (
             <li key={key}>
-              <h4 className="px-6 py-2 font-semibold">{group.label}</h4>
+              <h4 className="px-6 py-2 font-light text-muted-foreground">
+                {group.label}
+              </h4>
               <ul>
                 {group.children?.map((link) => (
                   <li key={link.id}>
                     <NavLink
                       href={link.href}
-                      className="block px-6 py-2"
-                      activeClassName="bg-muted"
+                      className="block px-6 py-2 transition hover:text-muted-foreground"
+                      activeClassName="bg-muted hover:text-foreground"
+                      exact
                     >
                       {link.label}
                     </NavLink>

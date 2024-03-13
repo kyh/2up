@@ -3,6 +3,7 @@ import typography from "@tailwindcss/typography";
 import animate from "tailwindcss-animate";
 
 import base from "./base";
+import { proseStyles } from "./prose";
 
 export default {
   content: base.content,
@@ -15,6 +16,7 @@ export default {
         "2xl": "1400px",
       },
     },
+    typography: proseStyles,
     extend: {
       borderRadius: {
         lg: "var(--radius)",

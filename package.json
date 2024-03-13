@@ -20,16 +20,17 @@
     "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
     "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "gen:package": "turbo gen package"
   },
   "devDependencies": {
     "@kyh/prettier-config": "^0.1.6",
-    "@turbo/gen": "^1.12.4",
-    "dotenv-cli": "^7.3.0",
+    "@turbo/gen": "^1.12.5",
+    "dotenv-cli": "^7.4.1",
     "prettier": "^3.2.5",
     "tsx": "^4.7.1",
-    "turbo": "^1.12.4",
-    "typescript": "^5.3.3"
+    "turbo": "^1.12.5",
+    "typescript": "^5.4.2"
   },
   "prettier": "@kyh/prettier-config"
 }

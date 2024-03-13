@@ -14,7 +14,10 @@ export const metadata: Metadata = {
       ? "https://init.kyh.io"
       : "http://localhost:3000",
   ),
-  title: "Init",
+  title: {
+    template: "%s - Init",
+    default: "Init",
+  },
   description:
     "A comprehensive boilerplate to build, launch, and scale your next project",
   openGraph: {
