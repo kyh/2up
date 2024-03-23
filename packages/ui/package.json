@@ -28,12 +28,12 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "class-variance-authority": "^0.7.0",
     "cmdk": "^1.0.0",
-    "date-fns": "^3.4.0",
+    "date-fns": "^3.6.0",
     "next-themes": "^0.3.0",
     "react-day-picker": "^8.10.0",
-    "react-hook-form": "^7.51.0",
-    "sonner": "^1.4.3",
-    "tailwind-merge": "^2.2.1",
+    "react-hook-form": "^7.51.1",
+    "sonner": "^1.4.41",
+    "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
@@ -41,11 +41,11 @@
     "@kyh/eslint-config": "^0.1.6",
     "@kyh/prettier-config": "^0.1.6",
     "@kyh/tsconfig": "^0.1.6",
-    "@types/react": "^18.2.67",
+    "@types/react": "^18.2.69",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.4.2",
+    "typescript": "^5.4.3",
     "zod": "^3.22.4"
   },
   "peerDependencies": {
