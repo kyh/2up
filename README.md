@@ -6,8 +6,6 @@ Built off [t3 turbo](https://github.com/t3-oss/create-t3-turbo) + [supabase](htt
 
 ## Features
 
-The goal of this template is to include everything a typical SaaS application might use:
-
 - [x] ~CRUD~
 - [x] ~Authentication~
 - [x] ~MDX Documentation Site~
@@ -16,8 +14,9 @@ The goal of this template is to include everything a typical SaaS application mi
 - [ ] Billing
 - [ ] Submit Feedback System
 - [ ] Notifications System
-- [ ] Analytics
 - [ ] Admin Dashboard
+- [ ] Search
+- [ ] Analytics
 - [ ] Native Mobile App
 - [ ] Native Desktop App
 - [ ] Something something AI
