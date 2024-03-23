@@ -58,7 +58,7 @@ export default Layout;
 
 const navLinks = [
   { id: "crud", href: "/dashboard", label: "CRUD", Icon: DashboardIcon },
-  { id: "chat", href: "/chat", label: "Chat", Icon: ChatBubbleIcon },
+  { id: "ai", href: "/ai", label: "AI", Icon: ChatBubbleIcon },
   { id: "docs", href: "/docs", label: "Docs", Icon: QuestionMarkCircledIcon },
 ] as const;
 

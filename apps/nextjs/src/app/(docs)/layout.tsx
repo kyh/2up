@@ -61,14 +61,19 @@ const navLinks = {
     label: "Scale",
     children: [
       {
-        id: "user-analytics",
-        href: "/docs/user-analytics",
-        label: "User Analytics",
+        id: "growth",
+        href: "/docs/user-growth",
+        label: "Growth Strategies",
       },
       {
-        id: "user-feedback",
+        id: "feedback",
         href: "/docs/user-feedback",
         label: "User Feedback",
+      },
+      {
+        id: "analytics",
+        href: "/docs/user-analytics",
+        label: "User Analytics",
       },
       {
         id: "performance",
@@ -101,11 +106,11 @@ const Sidebar = () => {
           <Logo className="size-10" />
         </NavLink>
       </div>
-      <nav className="text-sm">
+      <nav className="pb-5 text-sm">
         <ul className="space-y-4">
           {navLinkEntries.map(([key, group]) => (
             <li key={key}>
-              <h4 className="px-6 py-2 font-light text-muted-foreground">
+              <h4 className="px-6 py-2 text-xs font-light text-muted-foreground">
                 {group.label}
               </h4>
               <ul>

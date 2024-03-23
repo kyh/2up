@@ -70,7 +70,7 @@ const SearchButton = () => {
             </CommandItem>
             <CommandItem>
               <ChatBubbleIcon className="mr-3 !size-4" />
-              <span>Chat</span>
+              <span>AI</span>
             </CommandItem>
             <CommandItem>
               <QuestionMarkCircledIcon className="mr-3 !size-4" />
