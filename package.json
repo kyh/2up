@@ -4,7 +4,7 @@
   "engines": {
     "node": ">=20.11.1"
   },
-  "packageManager": "pnpm@8.15.4",
+  "packageManager": "pnpm@8.15.5",
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
@@ -25,11 +25,11 @@
   },
   "devDependencies": {
     "@kyh/prettier-config": "^0.1.6",
-    "@turbo/gen": "^1.12.5",
+    "@turbo/gen": "^1.13.0",
     "dotenv-cli": "^7.4.1",
     "prettier": "^3.2.5",
     "tsx": "^4.7.1",
-    "turbo": "^1.12.5",
+    "turbo": "^1.13.0",
     "typescript": "^5.4.2"
   },
   "prettier": "@kyh/prettier-config"
