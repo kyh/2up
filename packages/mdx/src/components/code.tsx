@@ -148,7 +148,7 @@ export const Pre = ({
       <div className="not-prose">
         {props.title && (
           <div className="flex min-h-[calc(theme(spacing.12)+1px)] flex-wrap items-start gap-x-4 border-b border-zinc-700 bg-zinc-800 px-4 dark:border-zinc-800 dark:bg-transparent">
-            <h3 className="mr-auto pt-3 text-xs font-semibold text-white">
+            <h3 className="mr-auto pt-3 text-xs font-light text-white">
               {props.title}
             </h3>
           </div>

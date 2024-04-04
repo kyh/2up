@@ -114,7 +114,7 @@ const Index = () => {
         </Pressable>
 
         <View className="py-2">
-          <Text className="font-semibold italic text-primary">
+          <Text className="font-light italic text-primary">
             Press on a post
           </Text>
         </View>

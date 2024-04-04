@@ -40,10 +40,5 @@
       "cache": false
     }
   },
-  "globalEnv": [
-    "DATABASE_URL",
-    "DIRECT_DATABASE_URL",
-    "NEXT_PUBLIC_SUPABASE_URL",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY"
-  ]
+  "globalEnv": ["POSTGRES_PRISMA_URL", "POSTGRES_URL_NON_POOLING"]
 }
