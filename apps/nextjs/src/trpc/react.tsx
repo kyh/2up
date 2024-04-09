@@ -11,7 +11,16 @@ import { getBaseUrl } from "@/lib/url";
 
 export type { TRPCError } from "@trpc/server";
 
-const createQueryClient = () => new QueryClient();
+const createQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        // With SSR, we usually want to set some default staleTime
+        // above 0 to avoid refetching immediately on the client
+        staleTime: 30 * 1000,
+      },
+    },
+  });
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 const getQueryClient = () => {
