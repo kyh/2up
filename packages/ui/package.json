@@ -4,10 +4,11 @@
   "private": true,
   "type": "module",
   "exports": {
+    ".": "./src/index.ts",
     "./*": "./src/*.tsx"
   },
   "scripts": {
-    "add": "pnpm dlx shadcn-ui add",
+    "ui:add": "pnpm dlx shadcn-ui add && prettier src --write --list-different",
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint .",
@@ -26,6 +27,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-tooltip": "^1.0.7",
     "class-variance-authority": "^0.7.0",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",

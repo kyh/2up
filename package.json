@@ -21,7 +21,8 @@
     "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
     "typecheck": "turbo typecheck",
-    "gen:package": "turbo gen package"
+    "gen:package": "turbo gen package",
+    "ui:add": "pnpm -F ui ui:add"
   },
   "devDependencies": {
     "@kyh/prettier-config": "^0.1.6",
