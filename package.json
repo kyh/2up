@@ -29,9 +29,9 @@
     "@turbo/gen": "^1.13.2",
     "dotenv-cli": "^7.4.1",
     "prettier": "^3.2.5",
-    "tsx": "^4.7.1",
+    "tsx": "^4.7.2",
     "turbo": "^1.13.2",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.5"
   },
   "prettier": "@kyh/prettier-config"
 }
