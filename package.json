@@ -25,7 +25,7 @@
     "ui:add": "pnpm -F ui ui:add"
   },
   "devDependencies": {
-    "@kyh/prettier-config": "^0.1.6",
+    "@kyh/prettier-config": "^0.1.7",
     "@turbo/gen": "^1.13.2",
     "dotenv-cli": "^7.4.1",
     "prettier": "^3.2.5",

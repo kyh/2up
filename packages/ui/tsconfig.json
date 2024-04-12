@@ -1,5 +1,5 @@
 {
-  "extends": "@kyh/tsconfig/base.json",
+  "extends": "@kyh/tsconfig/react.json",
   "compilerOptions": {
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
   },
