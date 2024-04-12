@@ -23,9 +23,9 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@prisma/client": "^5.12.0",
+    "@prisma/client": "^5.12.1",
     "@prisma/extension-accelerate": "^1.0.0",
-    "@supabase/supabase-js": "^2.42.0"
+    "@supabase/supabase-js": "^2.42.1"
   },
   "devDependencies": {
     "@kyh/eslint-config": "^0.1.6",
@@ -33,9 +33,9 @@
     "@kyh/tsconfig": "^0.1.6",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
-    "prisma": "^5.12.0",
+    "prisma": "^5.12.1",
     "supabase": "^1.153.4",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.5"
   },
   "eslintConfig": {
     "root": true,
