@@ -25,7 +25,7 @@
   "dependencies": {
     "@prisma/client": "^5.12.1",
     "@prisma/extension-accelerate": "^1.0.0",
-    "@supabase/supabase-js": "^2.42.2"
+    "@supabase/supabase-js": "^2.42.3"
   },
   "devDependencies": {
     "@kyh/eslint-config": "^0.1.7",
