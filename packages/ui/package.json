@@ -39,9 +39,9 @@
   },
   "devDependencies": {
     "@init/tailwind-config": "workspace:latest",
-    "@kyh/eslint-config": "^0.1.7",
-    "@kyh/prettier-config": "^0.1.7",
-    "@kyh/tsconfig": "^0.1.7",
+    "@kyh/eslint-config": "^0.1.8",
+    "@kyh/prettier-config": "^0.1.8",
+    "@kyh/tsconfig": "^0.1.8",
     "@types/react": "^18.2.78",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
