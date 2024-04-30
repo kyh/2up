@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { buttonVariants } from "@init/ui/button";
@@ -6,11 +5,6 @@ import { cn } from "@init/ui/utils";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import type { User } from "@supabase/auth-helpers-nextjs";
-
-export const metadata: Metadata = {
-  title: "Init",
-  description: "Unauthenticated pages",
-};
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   const supabase = createServerComponentClient({

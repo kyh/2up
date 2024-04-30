@@ -4,34 +4,68 @@ import { ThemeProvider } from "@init/ui/theme";
 import { Toaster } from "@init/ui/toast";
 import { cn } from "@init/ui/utils";
 
+import { siteConfig } from "@/lib/config";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.VERCEL_ENV === "production"
-      ? "https://init.kyh.io"
-      : "http://localhost:3000",
-  ),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    template: "%s - Init",
-    default: "Init",
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    "A comprehensive boilerplate to build, launch, and scale your next project",
+  description: siteConfig.description,
   openGraph: {
-    title: "Init",
-    description:
-      "A comprehensive boilerplate to build, launch, and scale your next project",
-    url: "https://github.com/kyh/init",
-    siteName: "Init",
+    locale: "en-US",
+    type: "website",
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: `${siteConfig.url}/og.jpg`,
+        width: 1920,
+        height: 1080,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@kaiyuhsu",
-    creator: "@kaiyuhsu",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [
+      {
+        url: `${siteConfig.url}/og.jpg`,
+        width: 1920,
+        height: 1080,
+      },
+    ],
+    creator: siteConfig.twitter,
   },
+  icons: [
+    {
+      rel: "apple-touch-icon",
+      sizes: "180x180",
+      url: `${siteConfig.url}/favicon/apple-touch-icon.png`,
+    },
+    {
+      rel: "icon",
+      sizes: "32x32",
+      url: `${siteConfig.url}/favicon/favicon-32x32.png`,
+    },
+    {
+      rel: "icon",
+      sizes: "16x16",
+      url: `${siteConfig.url}/favicon/favicon-16x16.png`,
+    },
+    {
+      rel: "mask-icon",
+      color: "#000000",
+      url: `${siteConfig.url}/favicon/safari-pinned-tab.svg`,
+    },
+  ],
 };
 
 export const viewport: Viewport = {

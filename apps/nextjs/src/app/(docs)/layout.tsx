@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import { Logo } from "@init/ui/logo";
 
 import { NavLink } from "@/components/nav";
+
+export const metadata: Metadata = {
+  title: "Docs",
+};
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
   <section className="flex min-h-dvh">
@@ -114,7 +119,7 @@ const Sidebar = () => {
                 {group.label}
               </h4>
               <ul>
-                {group.children?.map((link) => (
+                {group.children.map((link) => (
                   <li key={link.id}>
                     <NavLink
                       href={link.href}
