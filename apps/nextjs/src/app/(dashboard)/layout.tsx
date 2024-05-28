@@ -57,13 +57,15 @@ export default Layout;
 
 const navLinks = [
   { id: "crud", href: "/dashboard", label: "CRUD", Icon: DashboardIcon },
-  { id: "ai", href: "/ai", label: "AI", Icon: ChatBubbleIcon },
+  { id: "chat", href: "/chat", label: "Chat", Icon: ChatBubbleIcon },
   { id: "docs", href: "/docs", label: "Docs", Icon: QuestionMarkCircledIcon },
 ] as const;
 
-const navLinksClassName = "group flex flex-col items-center gap-1 p-2 text-xs";
-const navLinksIconContainerClassName =
-  "flex size-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary";
+const userDropdownLinks = [
+  { id: "account", href: "/account", label: "Account" },
+  { id: "billing", href: "/account/billing", label: "Billing" },
+  { id: "team", href: "/account/team", label: "Team" },
+] as const;
 
 const Sidebar = ({ user }: { user: User }) => {
   const userImage = user.user_metadata.image ?? "";
@@ -81,8 +83,12 @@ const Sidebar = ({ user }: { user: User }) => {
           <span className="sr-only">Init</span>
         </Link>
         {navLinks.map((link) => (
-          <NavLink key={link.id} href={link.href} className={navLinksClassName}>
-            <span className={navLinksIconContainerClassName}>
+          <NavLink
+            key={link.id}
+            href={link.href}
+            className="group flex flex-col items-center gap-1 p-2 text-xs"
+          >
+            <span className="flex size-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
               <link.Icon width={16} height={16} />
             </span>
             <span>{link.label}</span>
@@ -118,24 +124,11 @@ const Sidebar = ({ user }: { user: User }) => {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem asChild>
-              <Link href="/account">
-                Account
-                <DropdownMenuShortcut>⇧⌘A</DropdownMenuShortcut>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/account/billing">
-                Billing
-                <DropdownMenuShortcut>⇧⌘B</DropdownMenuShortcut>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/teams">
-                Team
-                <DropdownMenuShortcut>⇧⌘T</DropdownMenuShortcut>
-              </Link>
-            </DropdownMenuItem>
+            {userDropdownLinks.map((link) => (
+              <DropdownMenuItem key={link.id} asChild>
+                <Link href={link.href}>{link.label}</Link>
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <form action={signOut}>
