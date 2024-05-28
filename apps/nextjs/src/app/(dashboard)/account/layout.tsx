@@ -12,6 +12,10 @@ const navLinks = [
     title: "Billing",
     href: "/account/billing",
   },
+  {
+    title: "Team",
+    href: "/account/team",
+  },
 ];
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
