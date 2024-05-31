@@ -1,12 +1,11 @@
 export const siteConfig = {
-  name: "Init",
-  shortName: "Init",
-  description:
-    "A comprehensive boilerplate to build, launch, and scale your next project",
+  name: "2up",
+  shortName: "2up",
+  description: "Realtime multiplayer party games 🎮",
   url:
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : "https://init.kyh.io",
+      : "https://2uphq.com",
   twitter: "@kaiyuhsu",
   routes: [""],
 };

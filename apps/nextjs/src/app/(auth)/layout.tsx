@@ -11,7 +11,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
     <div className="relative hidden h-full flex-col bg-muted px-8 py-4 text-white dark:border-r md:py-10 lg:flex">
       <div className="absolute inset-0 bg-zinc-900" />
       <Link className="relative z-20 flex items-center" href="/">
-        Init.
+        2up.
       </Link>
       <div className="relative z-20 mt-auto">
         <blockquote className="space-y-2">
