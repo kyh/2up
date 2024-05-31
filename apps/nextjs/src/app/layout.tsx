@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "@init/ui/theme";
-import { Toaster } from "@init/ui/toast";
-import { cn } from "@init/ui/utils";
+import { ThemeProvider } from "@2up/ui/theme";
+import { Toaster } from "@2up/ui/toast";
+import { cn } from "@2up/ui/utils";
 
 import { siteConfig } from "@/lib/config";
 import { TRPCReactProvider } from "@/trpc/react";

@@ -1,8 +1,7 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@init/ui/button";
-import { Checkbox } from "@init/ui/checkbox";
+import { Button } from "@2up/ui/button";
+import { Checkbox } from "@2up/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -10,9 +9,10 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from "@init/ui/form";
-import { Switch } from "@init/ui/switch";
-import { toast } from "@init/ui/toast";
+} from "@2up/ui/form";
+import { Switch } from "@2up/ui/switch";
+import { toast } from "@2up/ui/toast";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

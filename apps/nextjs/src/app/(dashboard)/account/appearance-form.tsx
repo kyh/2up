@@ -1,7 +1,7 @@
 "use client";
 
-import { RadioGroup, RadioGroupItem } from "@init/ui/radio-group";
-import { useTheme } from "@init/ui/theme";
+import { RadioGroup, RadioGroupItem } from "@2up/ui/radio-group";
+import { useTheme } from "@2up/ui/theme";
 
 export const AppearanceForm = () => {
   const { theme, setTheme } = useTheme();

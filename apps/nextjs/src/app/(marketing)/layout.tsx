@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { buttonVariants } from "@init/ui/button";
-import { cn } from "@init/ui/utils";
+import { buttonVariants } from "@2up/ui/button";
+import { cn } from "@2up/ui/utils";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import type { User } from "@supabase/auth-helpers-nextjs";

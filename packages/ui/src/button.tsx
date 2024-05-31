@@ -1,6 +1,6 @@
 import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
-import { cn } from "@init/ui/utils";
+import { cn } from "@2up/ui/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 

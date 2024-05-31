@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@init/ui/button";
-import { toast } from "@init/ui/toast";
+import { Button } from "@2up/ui/button";
+import { toast } from "@2up/ui/toast";
 
 import type { TRPCError } from "@/trpc/react";
 import { api } from "@/trpc/react";

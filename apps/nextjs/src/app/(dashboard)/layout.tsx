@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getInitials } from "@init/api/lib/user-utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
-import { Button } from "@init/ui/button";
+import { getInitials } from "@2up/api/lib/user-utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@2up/ui/avatar";
+import { Button } from "@2up/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,8 +14,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@init/ui/dropdown-menu";
-import { Logo } from "@init/ui/logo";
+} from "@2up/ui/dropdown-menu";
+import { Logo } from "@2up/ui/logo";
 import {
   ChatBubbleIcon,
   DashboardIcon,

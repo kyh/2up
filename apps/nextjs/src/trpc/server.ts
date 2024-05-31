@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { cookies, headers } from "next/headers";
-import { createCaller, createTRPCContext } from "@init/api";
+import { createCaller, createTRPCContext } from "@2up/api";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 /**

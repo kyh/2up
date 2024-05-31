@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@init/ui/utils";
+import { cn } from "@2up/ui/utils";
 import { CheckIcon } from "@radix-ui/react-icons";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 

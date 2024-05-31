@@ -1,5 +1,5 @@
 {
-  "name": "@init/mdx",
+  "name": "@2up/mdx",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@init/ui": "workspace:latest",
+    "@2up/ui": "workspace:latest",
     "@sindresorhus/slugify": "^2.2.1",
     "mdast-util-to-string": "^4.0.0",
     "mdx-annotations": "^0.1.4",

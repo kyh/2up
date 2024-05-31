@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@init/ui/button";
+import { Button } from "@2up/ui/button";
 import {
   CommandDialog,
   CommandEmpty,
@@ -10,7 +10,7 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@init/ui/command";
+} from "@2up/ui/command";
 import {
   CardStackMinusIcon,
   ChatBubbleIcon,

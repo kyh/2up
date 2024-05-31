@@ -5,13 +5,13 @@ import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import superjson from "superjson";
 
-import type { AppRouter } from "@init/api";
+import type { AppRouter } from "@2up/api";
 
 /**
  * A set of typesafe hooks for consuming your API.
  */
 export const api = createTRPCReact<AppRouter>();
-export { type RouterInputs, type RouterOutputs } from "@init/api";
+export { type RouterInputs, type RouterOutputs } from "@2up/api";
 
 /**
  * Extend this function when going to production by

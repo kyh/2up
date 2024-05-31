@@ -1,7 +1,6 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@init/ui/button";
+import { Button } from "@2up/ui/button";
 import {
   Form,
   FormControl,
@@ -10,9 +9,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@init/ui/form";
-import { Input } from "@init/ui/input";
-import { toast } from "@init/ui/toast";
+} from "@2up/ui/form";
+import { Input } from "@2up/ui/input";
+import { toast } from "@2up/ui/toast";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

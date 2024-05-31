@@ -1,5 +1,5 @@
 {
-  "name": "@init/expo",
+  "name": "@2up/expo",
   "version": "0.1.0",
   "private": true,
   "main": "expo-router/entry",
@@ -42,8 +42,8 @@
     "@babel/core": "^7.24.6",
     "@babel/preset-env": "^7.24.6",
     "@babel/runtime": "^7.24.6",
-    "@init/api": "workspace:^",
-    "@init/tailwind-config": "workspace:latest",
+    "@2up/api": "workspace:^",
+    "@2up/tailwind-config": "workspace:latest",
     "@kyh/eslint-config": "^0.1.8",
     "@kyh/prettier-config": "^0.1.8",
     "@kyh/tsconfig": "^0.1.8",

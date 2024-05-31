@@ -1,5 +1,5 @@
 {
-  "name": "@init/{{name}}",
+  "name": "@2up/{{name}}",
   "private": true,
   "version": "0.1.0",
   "type": "module",

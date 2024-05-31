@@ -1,5 +1,5 @@
 {
-  "name": "@init/tailwind-config",
+  "name": "@2up/tailwind-config",
   "version": "0.1.0",
   "private": true,
   "type": "module",

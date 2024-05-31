@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import baseConfig from "@init/tailwind-config/native";
+import baseConfig from "@2up/tailwind-config/native";
 // @ts-expect-error - no types
 import nativewind from "nativewind/preset";
 

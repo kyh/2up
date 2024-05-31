@@ -1,5 +1,5 @@
 {
-  "name": "@init/ui",
+  "name": "@2up/ui",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -38,7 +38,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@init/tailwind-config": "workspace:latest",
+    "@2up/tailwind-config": "workspace:latest",
     "@kyh/eslint-config": "^0.1.8",
     "@kyh/prettier-config": "^0.1.8",
     "@kyh/tsconfig": "^0.1.8",

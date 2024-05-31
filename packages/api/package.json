@@ -1,5 +1,5 @@
 {
-  "name": "@init/api",
+  "name": "@2up/api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@init/db": "workspace:latest",
+    "@2up/db": "workspace:latest",
     "@trpc/server": "11.0.0-next-beta.294",
     "superjson": "^2.2.1",
     "zod": "^3.23.8"

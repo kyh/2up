@@ -1,5 +1,5 @@
 {
-  "name": "@init/nextjs",
+  "name": "@2up/nextjs",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -14,10 +14,10 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@init/api": "workspace:latest",
-    "@init/db": "workspace:latest",
-    "@init/mdx": "workspace:latest",
-    "@init/ui": "workspace:latest",
+    "@2up/api": "workspace:latest",
+    "@2up/db": "workspace:latest",
+    "@2up/mdx": "workspace:latest",
+    "@2up/ui": "workspace:latest",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
     "@next/mdx": "^14.2.3",
@@ -35,7 +35,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@init/tailwind-config": "workspace:latest",
+    "@2up/tailwind-config": "workspace:latest",
     "@kyh/eslint-config": "^0.1.8",
     "@kyh/prettier-config": "^0.1.8",
     "@kyh/tsconfig": "^0.1.8",

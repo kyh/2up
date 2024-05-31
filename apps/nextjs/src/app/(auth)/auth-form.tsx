@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@init/ui/button";
-import { Input } from "@init/ui/input";
-import { Label } from "@init/ui/label";
-import { toast } from "@init/ui/toast";
-import { cn } from "@init/ui/utils";
+import { Button } from "@2up/ui/button";
+import { Input } from "@2up/ui/input";
+import { Label } from "@2up/ui/label";
+import { toast } from "@2up/ui/toast";
+import { cn } from "@2up/ui/utils";
 
 import { signInWithGithub, signInWithPassword, signUp } from "./actions";
 

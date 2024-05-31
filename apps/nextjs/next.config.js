@@ -1,6 +1,6 @@
-import { recmaPlugins } from "@init/mdx/plugins/recma.mjs";
-import { rehypePlugins } from "@init/mdx/plugins/rehype.mjs";
-import { remarkPlugins } from "@init/mdx/plugins/remark.mjs";
+import { recmaPlugins } from "@2up/mdx/plugins/recma.mjs";
+import { rehypePlugins } from "@2up/mdx/plugins/rehype.mjs";
+import { remarkPlugins } from "@2up/mdx/plugins/remark.mjs";
 import createMDX from "@next/mdx";
 
 const withMDX = createMDX({
@@ -15,7 +15,7 @@ const withMDX = createMDX({
 const config = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   /** Enables hot reloading for local packages without a build step */
-  transpilePackages: ["@init/api", "@init/auth", "@init/db", "@init/ui"],
+  transpilePackages: ["@2up/api", "@2up/auth", "@2up/db", "@2up/ui"],
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Logo } from "@init/ui/logo";
+import { Logo } from "@2up/ui/logo";
 
 import { NavLink } from "@/components/nav";
 
