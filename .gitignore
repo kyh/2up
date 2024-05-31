@@ -49,9 +49,9 @@ yarn-error.log*
 # turbo
 .turbo
 
-# supabase
+# Supabase
 .branches
 .temp
+tooling/prettier/index.js
 
-# partykit
 .partykit

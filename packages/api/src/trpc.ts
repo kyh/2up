@@ -6,12 +6,12 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
+import { db } from "@init/db";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import type { SupabaseClient } from "@2up/db";
-import { db } from "@2up/db";
+import type { SupabaseClient } from "@init/db";
 
 /**
  * 1. CONTEXT
@@ -28,23 +28,29 @@ import { db } from "@2up/db";
 export const createTRPCContext = async (opts: {
   headers: Headers;
   supabase: SupabaseClient;
+  // adminSupabase: SupabaseClient;
 }) => {
-  const supabase = opts.supabase;
-
   // React Native will pass their token through headers,
   // browsers will have the session cookie set
   const token = opts.headers.get("authorization");
 
   const { data } = token
-    ? await supabase.auth.getUser(token)
-    : await supabase.auth.getUser();
+    ? await opts.supabase.auth.getUser(token)
+    : await opts.supabase.auth.getUser();
+
+  // const supabase = data.user?.user_metadata.admin
+  //   ? opts.adminSupabase
+  //   : opts.supabase;
+  const supabase = opts.supabase;
 
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
 
   console.log(">>> tRPC Request from", source, "by", data.user?.email);
 
   return {
+    headers: opts.headers,
     user: data.user,
+    supabase,
     db,
   };
 };
@@ -103,8 +109,25 @@ export const publicProcedure = t.procedure;
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-  console.log("here???", ctx.user);
   if (!ctx.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  return next({
+    ctx: {
+      // infers the `user` as non-nullable
+      user: ctx.user,
+    },
+  });
+});
+
+/**
+ * Admin procedure
+ *
+ * If you want a query or mutation to ONLY be accessible to admins.
+ */
+export const adminProcedure = t.procedure.use(({ ctx, next }) => {
+  if (!ctx.user?.user_metadata.admin) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 

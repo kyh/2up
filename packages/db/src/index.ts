@@ -1,9 +1,8 @@
-import { PrismaClient } from "@prisma/client/edge";
+import { PrismaClient } from "@prisma/client";
 import * as supabase from "@supabase/supabase-js";
 
 import type { Database as SupabaseDatabase } from "./supabase-types";
 import type { SupabaseClient as DefaultSupabaseClient } from "@supabase/supabase-js";
-import * as uuid from "./uuid";
 
 const NODE_ENV = process.env.NODE_ENV ?? "development";
 
@@ -31,5 +30,4 @@ export {
   type PrismaClientSingleton,
   supabase,
   db,
-  uuid
 };

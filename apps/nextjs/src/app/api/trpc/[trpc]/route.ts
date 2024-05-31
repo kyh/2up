@@ -1,11 +1,10 @@
 import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
+import { appRouter, createTRPCContext } from "@init/api";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-import { appRouter, createTRPCContext } from "@2up/api";
-
-export const runtime = "edge";
+// export const runtime = "edge";
 
 /**
  * Configure basic CORS headers

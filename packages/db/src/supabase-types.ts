@@ -9,294 +9,142 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      _PackToPackTag: {
+      Team: {
         Row: {
-          A: string
-          B: string
-        }
-        Insert: {
-          A: string
-          B: string
-        }
-        Update: {
-          A?: string
-          B?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "_PackToPackTag_A_fkey"
-            columns: ["A"]
-            isOneToOne: false
-            referencedRelation: "Pack"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "_PackToPackTag_B_fkey"
-            columns: ["B"]
-            isOneToOne: false
-            referencedRelation: "PackTag"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      Game: {
-        Row: {
-          code: string
           createdAt: string
-          history: Json[] | null
           id: string
-          isActive: boolean
-          packId: string
-          scenes: Json[] | null
+          name: string | null
+          slug: string
           updatedAt: string
         }
         Insert: {
-          code: string
           createdAt?: string
-          history?: Json[] | null
           id: string
-          isActive?: boolean
-          packId: string
-          scenes?: Json[] | null
-          updatedAt: string
-        }
-        Update: {
-          code?: string
-          createdAt?: string
-          history?: Json[] | null
-          id?: string
-          isActive?: boolean
-          packId?: string
-          scenes?: Json[] | null
+          name?: string | null
+          slug: string
           updatedAt?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "Game_packId_fkey"
-            columns: ["packId"]
-            isOneToOne: false
-            referencedRelation: "Pack"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      Pack: {
-        Row: {
-          createdAt: string
-          description: string | null
-          gameLength: number
-          id: string
-          imageUrl: string | null
-          isRandom: boolean
-          name: string
-          updatedAt: string
-          userId: string
-        }
-        Insert: {
-          createdAt?: string
-          description?: string | null
-          gameLength?: number
-          id: string
-          imageUrl?: string | null
-          isRandom?: boolean
-          name: string
-          updatedAt: string
-          userId: string
-        }
-        Update: {
-          createdAt?: string
-          description?: string | null
-          gameLength?: number
-          id?: string
-          imageUrl?: string | null
-          isRandom?: boolean
-          name?: string
-          updatedAt?: string
-          userId?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "Pack_userId_fkey"
-            columns: ["userId"]
-            isOneToOne: false
-            referencedRelation: "User"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      PackAsset: {
-        Row: {
-          createdAt: string
-          id: string
-          name: string
-          packId: string
-          updatedAt: string
-          url: string
-        }
-        Insert: {
-          createdAt?: string
-          id: string
-          name: string
-          packId: string
-          updatedAt: string
-          url: string
-        }
         Update: {
           createdAt?: string
           id?: string
-          name?: string
-          packId?: string
-          updatedAt?: string
-          url?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "PackAsset_packId_fkey"
-            columns: ["packId"]
-            isOneToOne: false
-            referencedRelation: "Pack"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      PackTag: {
-        Row: {
-          createdAt: string
-          id: string
-          name: string
-          updatedAt: string
-        }
-        Insert: {
-          createdAt?: string
-          id: string
-          name: string
-          updatedAt: string
-        }
-        Update: {
-          createdAt?: string
-          id?: string
-          name?: string
+          name?: string | null
+          slug?: string
           updatedAt?: string
         }
         Relationships: []
       }
-      Player: {
+      TeamMember: {
         Row: {
-          finalScore: number
-          gameId: string
-          name: string
+          role: Database["public"]["Enums"]["Role"]
+          teamId: string
           userId: string
         }
         Insert: {
-          finalScore?: number
-          gameId: string
-          name: string
+          role: Database["public"]["Enums"]["Role"]
+          teamId: string
           userId: string
         }
         Update: {
-          finalScore?: number
-          gameId?: string
-          name?: string
+          role?: Database["public"]["Enums"]["Role"]
+          teamId?: string
           userId?: string
         }
         Relationships: [
           {
-            foreignKeyName: "Player_gameId_fkey"
-            columns: ["gameId"]
+            foreignKeyName: "TeamMember_teamId_fkey"
+            columns: ["teamId"]
             isOneToOne: false
-            referencedRelation: "Game"
+            referencedRelation: "Team"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "Player_userId_fkey"
+            foreignKeyName: "TeamMember_userId_fkey"
             columns: ["userId"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "User"
             referencedColumns: ["id"]
           }
         ]
       }
-      Scene: {
+      TeamMemberInvite: {
         Row: {
-          answerDescription: string | null
-          answerType: Database["public"]["Enums"]["AnswerType"]
+          code: string
           createdAt: string
-          externalId: string | null
+          email: string
           id: string
-          order: number | null
-          packId: string
-          question: string
-          questionDescription: string | null
-          questionType: Database["public"]["Enums"]["QuestionType"]
+          role: Database["public"]["Enums"]["Role"]
+          teamId: string
           updatedAt: string
         }
         Insert: {
-          answerDescription?: string | null
-          answerType: Database["public"]["Enums"]["AnswerType"]
+          code: string
           createdAt?: string
-          externalId?: string | null
+          email: string
           id: string
-          order?: number | null
-          packId: string
-          question: string
-          questionDescription?: string | null
-          questionType: Database["public"]["Enums"]["QuestionType"]
-          updatedAt: string
+          role: Database["public"]["Enums"]["Role"]
+          teamId: string
+          updatedAt?: string
         }
         Update: {
-          answerDescription?: string | null
-          answerType?: Database["public"]["Enums"]["AnswerType"]
+          code?: string
           createdAt?: string
-          externalId?: string | null
+          email?: string
           id?: string
-          order?: number | null
-          packId?: string
-          question?: string
-          questionDescription?: string | null
-          questionType?: Database["public"]["Enums"]["QuestionType"]
+          role?: Database["public"]["Enums"]["Role"]
+          teamId?: string
           updatedAt?: string
         }
         Relationships: [
           {
-            foreignKeyName: "Scene_packId_fkey"
-            columns: ["packId"]
+            foreignKeyName: "TeamMemberInvite_teamId_fkey"
+            columns: ["teamId"]
             isOneToOne: false
-            referencedRelation: "Pack"
+            referencedRelation: "Team"
             referencedColumns: ["id"]
           }
         ]
       }
-      SceneAnswer: {
+      Todo: {
         Row: {
+          completed: boolean
           content: string
           createdAt: string
           id: string
-          isCorrect: boolean
-          sceneId: string
+          teamId: string | null
           updatedAt: string
+          userId: string | null
         }
         Insert: {
+          completed?: boolean
           content: string
           createdAt?: string
           id: string
-          isCorrect?: boolean
-          sceneId: string
-          updatedAt: string
+          teamId?: string | null
+          updatedAt?: string
+          userId?: string | null
         }
         Update: {
+          completed?: boolean
           content?: string
           createdAt?: string
           id?: string
-          isCorrect?: boolean
-          sceneId?: string
+          teamId?: string | null
           updatedAt?: string
+          userId?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "SceneAnswer_sceneId_fkey"
-            columns: ["sceneId"]
+            foreignKeyName: "Todo_teamId_fkey"
+            columns: ["teamId"]
             isOneToOne: false
-            referencedRelation: "Scene"
+            referencedRelation: "Team"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Todo_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "User"
             referencedColumns: ["id"]
           }
         ]
@@ -304,71 +152,38 @@ export interface Database {
       User: {
         Row: {
           createdAt: string
-          email: string
-          emailVerified: string | null
           id: string
-          image: string | null
-          name: string | null
-          role: Database["public"]["Enums"]["UserRole"]
-          stripeCurrentPeriodEnd: string | null
-          stripeCustomerId: string | null
-          stripePriceId: string | null
-          stripeSubscriptionId: string | null
           updatedAt: string
-          username: string | null
         }
         Insert: {
           createdAt?: string
-          email: string
-          emailVerified?: string | null
           id: string
-          image?: string | null
-          name?: string | null
-          role?: Database["public"]["Enums"]["UserRole"]
-          stripeCurrentPeriodEnd?: string | null
-          stripeCustomerId?: string | null
-          stripePriceId?: string | null
-          stripeSubscriptionId?: string | null
           updatedAt?: string
-          username?: string | null
         }
         Update: {
           createdAt?: string
-          email?: string
-          emailVerified?: string | null
           id?: string
-          image?: string | null
-          name?: string | null
-          role?: Database["public"]["Enums"]["UserRole"]
-          stripeCurrentPeriodEnd?: string | null
-          stripeCustomerId?: string | null
-          stripePriceId?: string | null
-          stripeSubscriptionId?: string | null
           updatedAt?: string
-          username?: string | null
         }
         Relationships: []
       }
       Waitlist: {
         Row: {
           createdAt: string
-          data: Json
+          email: string
           id: string
-          type: Database["public"]["Enums"]["WaitlistType"]
           updatedAt: string
         }
         Insert: {
           createdAt?: string
-          data: Json
+          email: string
           id: string
-          type?: Database["public"]["Enums"]["WaitlistType"]
-          updatedAt: string
+          updatedAt?: string
         }
         Update: {
           createdAt?: string
-          data?: Json
+          email?: string
           id?: string
-          type?: Database["public"]["Enums"]["WaitlistType"]
           updatedAt?: string
         }
         Relationships: []
@@ -381,10 +196,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      AnswerType: "text" | "multiText"
-      QuestionType: "text" | "image" | "video" | "audio" | "code"
-      UserRole: "admin" | "user"
-      WaitlistType: "account"
+      Role: "ADMIN" | "MEMBER"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -1,14 +1,14 @@
-import { gameRouter } from "./routers/game";
-import { packRouter } from "./routers/pack";
-import { sceneRouter } from "./routers/scene";
+import { teamRouter } from "./routers/team";
+import { todoRouter } from "./routers/todo";
+import { userRouter } from "./routers/user";
 import { waitlistRouter } from "./routers/waitlist";
 import { createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
-  game: gameRouter,
-  pack: packRouter,
-  scene: sceneRouter,
   waitlist: waitlistRouter,
+  user: userRouter,
+  team: teamRouter,
+  todo: todoRouter,
 });
 
 // export type definition of API

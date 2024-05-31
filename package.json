@@ -1,37 +1,37 @@
 {
-  "name": "2up",
+  "name": "init",
   "private": true,
   "engines": {
-    "node": ">=20.10"
+    "node": ">=20.12.2"
   },
-  "packageManager": "pnpm@8.14.0",
+  "packageManager": "pnpm@9.1.1",
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo clean",
     "db:start": "pnpm -F db start",
     "db:push": "pnpm -F db push",
+    "db:seed": "pnpm -F db seed",
     "db:studio": "pnpm -F db studio",
     "dev": "turbo dev --parallel",
     "dev:nextjs": "turbo dev --filter=nextjs",
-    "dev:partykit": "turbo dev --filter=partykit",
+    "dev:expo": "turbo dev --filter=expo",
     "format": "turbo format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
     "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
     "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
-    "lint:ws": "pnpm dlx sherif@latest",
-    "publish-packages": "changeset version && changeset publish",
-    "postinstall": "pnpm lint:ws",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "gen:package": "turbo gen package",
+    "ui:add": "pnpm -F ui ui:add"
   },
   "devDependencies": {
-    "@kyh/prettier-config": "latest",
-    "@turbo/gen": "^1.11.3",
-    "dotenv-cli": "^7.3.0",
-    "prettier": "^3.1.1",
-    "turbo": "^1.11.3",
-    "typescript": "^5.3.3",
-    "tsx": "^4.7.0"
+    "@kyh/prettier-config": "^0.1.8",
+    "@turbo/gen": "^1.13.3",
+    "dotenv-cli": "^7.4.2",
+    "prettier": "^3.2.5",
+    "tsx": "^4.11.0",
+    "turbo": "^1.13.3",
+    "typescript": "^5.4.5"
   },
   "prettier": "@kyh/prettier-config"
 }

@@ -11,8 +11,10 @@ revoke USAGE on schema public from anon, authenticated;
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
-  insert into "public"."User" ("id", email, username)
-  values (new.id, new.email, new.raw_user_meta_data->>'username');
+  -- Insert new user into User table
+  insert into "public"."User" ("id")
+  values (new.id);
+
   return new;
 end;
 $$ language plpgsql security definer;

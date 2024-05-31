@@ -1,0 +1,42 @@
+{
+  "name": "@init/mdx",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./*": "./src/*"
+  },
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@init/ui": "workspace:latest",
+    "@sindresorhus/slugify": "^2.2.1",
+    "mdast-util-to-string": "^4.0.0",
+    "mdx-annotations": "^0.1.4",
+    "remark": "^15.0.1",
+    "remark-gfm": "^4.0.0",
+    "remark-mdx": "^3.0.1",
+    "remark-toc": "^9.0.0",
+    "shiki": "^0.14.7",
+    "unist-util-visit": "^5.0.0"
+  },
+  "devDependencies": {
+    "@kyh/eslint-config": "^0.1.8",
+    "@kyh/prettier-config": "^0.1.8",
+    "@kyh/tsconfig": "^0.1.8",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@kyh/eslint-config/base"
+    ]
+  },
+  "prettier": "@kyh/prettier-config"
+}

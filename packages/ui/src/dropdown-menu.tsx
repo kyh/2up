@@ -1,14 +1,13 @@
 "use client";
 
 import * as React from "react";
+import { cn } from "@init/ui/utils";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import {
   CheckIcon,
   ChevronRightIcon,
   DotFilledIcon,
 } from "@radix-ui/react-icons";
-
-import { cn } from ".";
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
@@ -146,11 +145,7 @@ const DropdownMenuLabel = React.forwardRef<
 >(({ className, inset, ...props }, ref) => (
   <DropdownMenuPrimitive.Label
     ref={ref}
-    className={cn(
-      "px-2 py-1.5 text-sm font-semibold",
-      inset && "pl-8",
-      className,
-    )}
+    className={cn("px-2 py-1.5 text-sm font-light", inset && "pl-8", className)}
     {...props}
   />
 ));

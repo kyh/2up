@@ -1,10 +1,11 @@
 {
-  "name": "@2up/api",
+  "name": "@init/api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
@@ -13,23 +14,18 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@2up/db": "workspace:*",
-    "@2up/game": "workspace:*",
-    "@supabase/supabase-js": "^2.39.2",
-    "@trpc/client": "next",
-    "@trpc/server": "next",
-    "lodash": "^4.17.21",
+    "@init/db": "workspace:latest",
+    "@trpc/server": "11.0.0-next-beta.294",
     "superjson": "^2.2.1",
-    "zod": "^3.22.4"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@kyh/eslint-config": "latest",
-    "@kyh/prettier-config": "latest",
-    "@kyh/tsconfig": "latest",
-    "@types/lodash": "^4.14.202",
-    "eslint": "^8.56.0",
-    "prettier": "^3.1.1",
-    "typescript": "^5.3.3"
+    "@kyh/eslint-config": "^0.1.8",
+    "@kyh/prettier-config": "^0.1.8",
+    "@kyh/tsconfig": "^0.1.8",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
   },
   "eslintConfig": {
     "root": true,

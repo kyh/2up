@@ -1,34 +1,71 @@
 import type { Metadata, Viewport } from "next";
-import { cache } from "react";
 import { Inter } from "next/font/google";
-import { headers } from "next/headers";
-import { cn } from "@2up/ui";
-import { ThemeProvider } from "@2up/ui/theme";
-import { Toaster } from "@2up/ui/toast";
+import { ThemeProvider } from "@init/ui/theme";
+import { Toaster } from "@init/ui/toast";
+import { cn } from "@init/ui/utils";
 
+import { siteConfig } from "@/lib/config";
 import { TRPCReactProvider } from "@/trpc/react";
 
-import "@/app/globals.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.VERCEL_ENV === "production"
-      ? "https://kyh.io"
-      : "http://localhost:3000",
-  ),
-  title: "Template",
-  description: "Simple monorepo with shared backend for web & mobile apps",
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
   openGraph: {
-    title: "Template",
-    description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://github.com/kyh/template",
-    siteName: "Template",
+    locale: "en-US",
+    type: "website",
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: `${siteConfig.url}/og.jpg`,
+        width: 1920,
+        height: 1080,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@kyh",
-    creator: "@kyh",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [
+      {
+        url: `${siteConfig.url}/og.jpg`,
+        width: 1920,
+        height: 1080,
+      },
+    ],
+    creator: siteConfig.twitter,
   },
+  icons: [
+    {
+      rel: "apple-touch-icon",
+      sizes: "180x180",
+      url: `${siteConfig.url}/favicon/apple-touch-icon.png`,
+    },
+    {
+      rel: "icon",
+      sizes: "32x32",
+      url: `${siteConfig.url}/favicon/favicon-32x32.png`,
+    },
+    {
+      rel: "icon",
+      sizes: "16x16",
+      url: `${siteConfig.url}/favicon/favicon-16x16.png`,
+    },
+    {
+      rel: "mask-icon",
+      color: "#000000",
+      url: `${siteConfig.url}/favicon/safari-pinned-tab.svg`,
+    },
+  ],
 };
 
 export const viewport: Viewport = {
@@ -43,9 +80,7 @@ const fontSans = Inter({
   variable: "--font-sans",
 });
 
-const getHeaders = cache(async () => headers());
-
-const RootLayout = (props: { children: React.ReactNode }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -55,9 +90,7 @@ const RootLayout = (props: { children: React.ReactNode }) => {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider headersPromise={getHeaders()}>
-            {props.children}
-          </TRPCReactProvider>
+          <TRPCReactProvider>{children}</TRPCReactProvider>
           <Toaster />
         </ThemeProvider>
       </body>
@@ -65,4 +98,4 @@ const RootLayout = (props: { children: React.ReactNode }) => {
   );
 };
 
-export default RootLayout;
+export default Layout;
