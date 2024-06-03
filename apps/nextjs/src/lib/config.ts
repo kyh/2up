@@ -8,5 +8,4 @@ export const siteConfig = {
       ? "http://localhost:3000"
       : "https://init.kyh.io",
   twitter: "@kaiyuhsu",
-  routes: [""],
 };

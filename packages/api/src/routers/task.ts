@@ -2,30 +2,21 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
-export const todoRouter = createTRPCRouter({
+export const taskRouter = createTRPCRouter({
   all: publicProcedure.query(({ ctx }) => {
-    return ctx.db.todo.findMany();
+    return;
   }),
 
   byId: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.db.todo.findUnique({
-        where: {
-          id: input.id,
-        },
-      });
+      return;
     }),
 
   create: protectedProcedure
     .input(z.object({ content: z.string() }))
     .mutation(({ ctx, input }) => {
-      return ctx.db.todo.create({
-        data: {
-          userId: ctx.user.id,
-          content: input.content,
-        },
-      });
+      return;
     }),
 
   update: protectedProcedure
@@ -37,24 +28,12 @@ export const todoRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.db.todo.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          content: input.content,
-          completed: input.completed,
-        },
-      });
+      return;
     }),
 
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(({ ctx, input }) => {
-      return ctx.db.todo.delete({
-        where: {
-          id: input.id,
-        },
-      });
+      return;
     }),
 });
