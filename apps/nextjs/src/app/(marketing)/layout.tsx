@@ -1,21 +1,11 @@
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { buttonVariants } from "@init/ui/button";
 import { cn } from "@init/ui/utils";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-
-import type { User } from "@supabase/auth-helpers-nextjs";
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
-  const supabase = createServerComponentClient({
-    cookies,
-  });
-
-  const { data } = await supabase.auth.getUser();
-
   return (
     <>
-      <Header user={data.user} />
+      <Header user={null} />
       <main>{children}</main>
       <Footer />
     </>
@@ -24,7 +14,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
 export default Layout;
 
-const Header = ({ user }: { user: User | null }) => (
+const Header = ({ user }: { user: any | null }) => (
   <div className="mx-auto w-full justify-center">
     <div className="border-t-none mx-auto flex w-full max-w-7xl items-center justify-between border border-border px-8 py-4 md:p-8">
       <div className="flex items-center justify-between text-secondary-foreground">
@@ -83,8 +73,8 @@ const Footer = () => (
     <div className="mx-auto max-w-7xl border-x border-b border-border p-8 lg:border-b-0">
       <div className="text-muted-foreground">Init.</div>
       <div className="mt-28 grid grid-cols-1 lg:grid-cols-2">
-        <p className="mt-4 text-2xl font-light text-secondary-foreground">
-          Open Source and free to use, forever.
+        <p className="mt-4 text-xl font-light text-secondary-foreground">
+          Accelerate building modern applications
         </p>
         <div className="mt-4 grid gap-2 md:grid-cols-2">
           <ul>

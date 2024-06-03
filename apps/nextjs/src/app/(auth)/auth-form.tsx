@@ -8,8 +8,6 @@ import { Label } from "@init/ui/label";
 import { toast } from "@init/ui/toast";
 import { cn } from "@init/ui/utils";
 
-import { signInWithGithub, signInWithPassword, signUp } from "./actions";
-
 type AuthFormProps = {
   type: "signup" | "signin";
 } & React.HTMLAttributes<HTMLDivElement>;
@@ -28,9 +26,9 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
 
     try {
       if (type === "signup") {
-        await signUp(email, password);
+        // await signUp(email, password);
       } else if (type === "signin") {
-        await signInWithPassword(email, password);
+        // await signInWithPassword(email, password);
       }
       router.push("/");
     } catch (error) {
@@ -45,7 +43,7 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
         variant="outline"
         type="button"
         disabled={isLoading}
-        onClick={() => signInWithGithub()}
+        // onClick={() => signInWithGithub()}
       >
         Continue with Github
       </Button>

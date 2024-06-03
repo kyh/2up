@@ -6,9 +6,9 @@ Built off [t3 turbo](https://github.com/t3-oss/create-t3-turbo) + [supabase](htt
 
 ## Features
 
-- [x] ~CRUD~
-- [x] ~Authentication~
-- [x] ~MDX Documentation Site~
+- [ ] Authentication
+- [ ] CRUD
+- [ ] CMS
 - [ ] User Profile
 - [ ] Multi Tenancy
 - [ ] Billing
@@ -29,7 +29,6 @@ Built off [t3 turbo](https://github.com/t3-oss/create-t3-turbo) + [supabase](htt
 - Tailwind CSS
 - Supabase
 - TypeScript
-- Prisma
 
 ## Running Locally
 
@@ -43,6 +42,12 @@ pnpm install
 
 ```sh
 cp .env.example .env.local
+```
+
+1. Start your local db:
+
+```sh
+pnpm db:start
 ```
 
 1. Start the development server:

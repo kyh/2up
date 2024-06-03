@@ -1,7 +1,6 @@
 import type { NextRequest } from "next/server";
-import { cookies } from "next/headers";
 import { appRouter, createTRPCContext } from "@init/api";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { getSupabaseRouteHandlerClient } from "@init/db/clients/route-handler.client";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 // export const runtime = "edge";
@@ -28,7 +27,7 @@ export const OPTIONS = () => {
 };
 
 const handler = async (req: NextRequest) => {
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = getSupabaseRouteHandlerClient();
 
   const response = await fetchRequestHandler({
     endpoint: "/api/trpc",

@@ -6,12 +6,12 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
-import { db } from "@init/db";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import type { SupabaseClient } from "@init/db";
+import type { Database } from "@init/db/database.types";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 /**
  * 1. CONTEXT
@@ -27,8 +27,7 @@ import type { SupabaseClient } from "@init/db";
  */
 export const createTRPCContext = async (opts: {
   headers: Headers;
-  supabase: SupabaseClient;
-  // adminSupabase: SupabaseClient;
+  supabase: SupabaseClient<Database>;
 }) => {
   // React Native will pass their token through headers,
   // browsers will have the session cookie set
@@ -38,9 +37,6 @@ export const createTRPCContext = async (opts: {
     ? await opts.supabase.auth.getUser(token)
     : await opts.supabase.auth.getUser();
 
-  // const supabase = data.user?.user_metadata.admin
-  //   ? opts.adminSupabase
-  //   : opts.supabase;
   const supabase = opts.supabase;
 
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
@@ -51,7 +47,6 @@ export const createTRPCContext = async (opts: {
     headers: opts.headers,
     user: data.user,
     supabase,
-    db,
   };
 };
 

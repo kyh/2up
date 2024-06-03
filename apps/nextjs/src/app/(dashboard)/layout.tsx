@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { cookies, headers } from "next/headers";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { getInitials } from "@init/api/lib/user-utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
 import { Button } from "@init/ui/button";
 import {
@@ -21,33 +18,17 @@ import {
   DashboardIcon,
   QuestionMarkCircledIcon,
 } from "@radix-ui/react-icons";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
-import type { User } from "@supabase/auth-helpers-nextjs";
-import { signOut } from "@/app/(auth)/actions";
 import { NavLink } from "@/components/nav";
-import { createRedirectUrl } from "@/lib/url";
 
 export const metadata: Metadata = {
   title: "Dashboard",
 };
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
-  const pathname = headers().get("x-pathname");
-  const supabase = createServerComponentClient({
-    cookies,
-  });
-
-  const { data } = await supabase.auth.getUser();
-
-  // Redirect to login page if the user is not authenticated
-  if (!data.user) {
-    return redirect(createRedirectUrl("/auth/login", pathname ?? "/"));
-  }
-
   return (
     <div className="flex min-h-dvh">
-      <Sidebar user={data.user} />
+      <Sidebar />
       {children}
     </div>
   );
@@ -67,7 +48,7 @@ const userDropdownLinks = [
   { id: "team", href: "/account/team", label: "Team" },
 ] as const;
 
-const Sidebar = ({ user }: { user: User }) => {
+const Sidebar = ({ user }: { user?: any }) => {
   const userImage = user.user_metadata.image ?? "";
   const userName = user.user_metadata.name ?? "unknown";
 
@@ -103,7 +84,7 @@ const Sidebar = ({ user }: { user: User }) => {
           >
             <Avatar className="h-9 w-9">
               <AvatarImage src={userImage} alt={userName} />
-              <AvatarFallback>{getInitials(userName)}</AvatarFallback>
+              <AvatarFallback>KH</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -131,7 +112,7 @@ const Sidebar = ({ user }: { user: User }) => {
             ))}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <form action={signOut}>
+          <form>
             <DropdownMenuItem className="w-full" asChild>
               <button>
                 Log out
