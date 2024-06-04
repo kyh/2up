@@ -58,7 +58,7 @@ const Header = ({ user }: { user: any | null }) => (
               }),
               "ml-4 rounded-full px-5",
             )}
-            href="/auth/login"
+            href="/auth/sign-in"
           >
             Login
           </Link>

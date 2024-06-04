@@ -121,7 +121,7 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
  *
  * If you want a query or mutation to ONLY be accessible to admins.
  */
-export const adminProcedure = t.procedure.use(({ ctx, next }) => {
+export const superAdminProcedure = t.procedure.use(({ ctx, next }) => {
   if (!ctx.user?.user_metadata.admin) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }

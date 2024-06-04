@@ -22,10 +22,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@supabase/gotrue-js": "2.62.2",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.43.4",
-    "@tanstack/react-query": "^5.40.0",
     "next": "^14.2.3",
     "react": "^18.3.1",
     "zod": "^3.23.8"

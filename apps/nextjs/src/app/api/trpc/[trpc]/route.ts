@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { appRouter, createTRPCContext } from "@init/api";
-import { getSupabaseRouteHandlerClient } from "@init/db/clients/route-handler.client";
+import { getSupabaseServerClient } from "@init/db/supabase-server-client";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 // export const runtime = "edge";
@@ -27,7 +27,7 @@ export const OPTIONS = () => {
 };
 
 const handler = async (req: NextRequest) => {
-  const supabase = getSupabaseRouteHandlerClient();
+  const supabase = getSupabaseServerClient();
 
   const response = await fetchRequestHandler({
     endpoint: "/api/trpc",
