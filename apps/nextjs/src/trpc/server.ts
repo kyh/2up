@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { headers } from "next/headers";
 import { createCaller, createTRPCContext } from "@init/api";
-import { getSupabaseServerComponentClient } from "@init/db/clients/server-component.client";
+import { getSupabaseServerClient } from "@init/db/supabase-server-client";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
@@ -9,7 +9,7 @@ import { getSupabaseServerComponentClient } from "@init/db/clients/server-compon
  */
 const createContext = cache(async () => {
   const head = new Headers(headers());
-  const supabase = getSupabaseServerComponentClient();
+  const supabase = getSupabaseServerClient();
 
   head.set("x-trpc-source", "rsc");
 

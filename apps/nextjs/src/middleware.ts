@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse, URLPattern } from "next/server";
 import { createCsrfProtect, CsrfError } from "@edge-csrf/nextjs";
-import { checkRequiresMultiFactorAuthentication } from "@init/db/check-requires-mfa";
-import { createMiddlewareClient } from "@init/db/clients/middleware.client";
+import { checkRequiresMultiFactorAuthentication } from "@init/api/auth/check-requires-mfa";
+import { createMiddlewareClient } from "@init/db/supabase-middleware-client";
 
 const CSRF_SECRET_COOKIE = "csrfSecret";
 const NEXT_ACTION_HEADER = "next-action";
@@ -157,7 +157,7 @@ const getPatterns = () => [
     },
   },
   {
-    pattern: new URLPattern({ pathname: "/home*" }),
+    pattern: new URLPattern({ pathname: "/dashboard*" }),
     handler: async (req: NextRequest, res: NextResponse) => {
       const {
         data: { user },

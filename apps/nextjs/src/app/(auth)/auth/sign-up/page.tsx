@@ -2,9 +2,21 @@ import Link from "next/link";
 
 import { AuthForm } from "@/app/(auth)/auth-form";
 
-// export const runtime = "edge";
+export const generateMetadata = async () => {
+  return {
+    title: "Sign Up",
+  };
+};
 
-const Page = async () => {
+type Props = {
+  searchParams: {
+    invite_token?: string;
+  };
+};
+
+const SignUpPage = ({ searchParams }: Props) => {
+  const inviteToken = searchParams.invite_token;
+
   return (
     <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
       <div className="flex flex-col space-y-2 text-center">
@@ -35,4 +47,4 @@ const Page = async () => {
   );
 };
 
-export default Page;
+export default SignUpPage;
