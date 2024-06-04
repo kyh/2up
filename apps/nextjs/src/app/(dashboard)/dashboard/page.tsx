@@ -5,12 +5,12 @@ import { TodoList } from "./todo";
 // export const runtime = "edge";
 
 const Page = async () => {
-  const todos = await api.todo.all();
+  // const todos = await api.todo.all();
 
   return (
     <main className="flex flex-1 flex-col px-5">
       <PageHeader showSearch>Welcome back</PageHeader>
-      <TodoList initialTodos={todos} />
+      {/* <TodoList initialTodos={todos} /> */}
     </main>
   );
 };

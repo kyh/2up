@@ -17,7 +17,7 @@ export const authRouter = createTRPCRouter({
       });
 
       if (response.error) {
-        throw response.error.message;
+        throw response.error;
       }
 
       const user = response.data.user;
@@ -36,7 +36,7 @@ export const authRouter = createTRPCRouter({
       const response = await ctx.supabase.auth.signInWithPassword(input);
 
       if (response.error) {
-        throw response.error.message;
+        throw response.error;
       }
 
       return response.data;
@@ -47,7 +47,7 @@ export const authRouter = createTRPCRouter({
       const response = await ctx.supabase.auth.signInWithOtp(input);
 
       if (response.error) {
-        throw response.error.message;
+        throw response.error;
       }
 
       return response.data;
@@ -58,25 +58,51 @@ export const authRouter = createTRPCRouter({
       const response = await ctx.supabase.auth.signInWithOAuth(input);
 
       if (response.error) {
-        throw response.error.message;
+        throw response.error;
       }
 
       return response.data;
     }),
   signOut: protectedProcedure.mutation(async ({ ctx }) => {
-    return;
+    const response = await ctx.supabase.auth.signOut();
+
+    if (response.error) {
+      throw response.error;
+    }
+
+    return { success: true };
   }),
   requestPasswordReset: publicProcedure
     .input(requestPasswordResetInput)
-    .mutation(async ({ ctx }) => {
-      return;
+    .mutation(async ({ ctx, input }) => {
+      const response = await ctx.supabase.auth.resetPasswordForEmail(
+        input.email,
+      );
+
+      if (response.error) {
+        throw response.error;
+      }
+
+      return response.data;
     }),
-  updatePassword: publicProcedure
+  updatePassword: protectedProcedure
     .input(updatePasswordInput)
-    .mutation(async ({ ctx }) => {
-      return;
+    .mutation(async ({ ctx, input }) => {
+      const response = await ctx.supabase.auth.updateUser(input);
+
+      if (response.error) {
+        throw response.error;
+      }
+
+      return response.data;
     }),
   mfaFactors: protectedProcedure.query(async ({ ctx }) => {
-    return;
+    const response = await ctx.supabase.auth.mfa.listFactors();
+
+    if (response.error) {
+      throw response.error;
+    }
+
+    return response.data;
   }),
 });

@@ -20,7 +20,7 @@ export const waitlistRouter = createTRPCRouter({
       .insert([{ email: input.email }]);
 
     if (response.error) {
-      throw response.error.message;
+      throw response.error;
     }
 
     return response.data;

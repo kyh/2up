@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signInWithPasswordInput } from "@init/api/auth/auth-schema";
 import { Button } from "@init/ui/button";
 import {
@@ -24,9 +24,20 @@ type AuthFormProps = {
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
-  const signInWithOAuth = api.auth.signInWithOAuth.useMutation();
-  const signInWithPassword = api.auth.signInWithPassword.useMutation();
-  const signUp = api.auth.signUp.useMutation();
+  const router = useRouter();
+  const nextPath = useSearchParams().get("next") ?? "/dashboard";
+
+  const signInWithOAuth = api.auth.signInWithOAuth.useMutation({
+    onError: (error) => toast.error(error.message),
+  });
+  const signInWithPassword = api.auth.signInWithPassword.useMutation({
+    onSuccess: () => router.replace(nextPath),
+    onError: (error) => toast.error(error.message),
+  });
+  const signUp = api.auth.signUp.useMutation({
+    onSuccess: () => router.replace(nextPath),
+    onError: (error) => toast.error(error.message),
+  });
 
   const form = useForm({
     schema: signInWithPasswordInput,
@@ -36,9 +47,7 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
     },
   });
 
-  const handleAuthWithPassword = async (
-    credentials: SignInWithPasswordInput,
-  ) => {
+  const handleAuthWithPassword = (credentials: SignInWithPasswordInput) => {
     if (type === "signup") {
       signUp.mutate(credentials);
     }

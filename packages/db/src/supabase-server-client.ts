@@ -49,14 +49,22 @@ const getCookiesStrategy = () => {
   const cookieStore = cookies();
 
   return {
-    set: (name: string, value: string, options: CookieOptions) => {
-      cookieStore.set({ name, value, ...options });
-    },
     get: (name: string) => {
       return cookieStore.get(name)?.value;
     },
+    set: (name: string, value: string, options: CookieOptions) => {
+      try {
+        cookieStore.set({ name, value, ...options });
+      } catch (error) {
+        // noop
+      }
+    },
     remove: (name: string, options: CookieOptions) => {
-      cookieStore.set({ name, value: "", ...options });
+      try {
+        cookieStore.set({ name, value: "", ...options });
+      } catch (error) {
+        // noop
+      }
     },
   };
 };

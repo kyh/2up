@@ -31,6 +31,5 @@ export type RequestPasswordResetInput = z.infer<
 
 export const updatePasswordInput = z.object({
   password: z.string(),
-  token: z.string(),
 });
 export type UpdatePasswordInput = z.infer<typeof updatePasswordInput>;
