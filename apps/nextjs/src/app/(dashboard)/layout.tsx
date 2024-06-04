@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
 import { Button } from "@init/ui/button";
 import {
@@ -13,22 +14,27 @@ import {
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
 import { Logo } from "@init/ui/logo";
+import { getInitials } from "@init/ui/utils";
 import {
   ChatBubbleIcon,
   DashboardIcon,
   QuestionMarkCircledIcon,
 } from "@radix-ui/react-icons";
 
+import type { RouterOutputs } from "@init/api";
 import { NavLink } from "@/components/nav";
+import { api } from "@/trpc/server";
 
 export const metadata: Metadata = {
   title: "Dashboard",
 };
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
+  const data = await api.account.userWorkspace();
+
   return (
     <div className="flex min-h-dvh">
-      <Sidebar />
+      <Sidebar user={data.user} />
       {children}
     </div>
   );
@@ -48,9 +54,20 @@ const userDropdownLinks = [
   { id: "team", href: "/account/team", label: "Team" },
 ] as const;
 
-const Sidebar = ({ user }: { user?: any }) => {
+const Sidebar = ({
+  user,
+}: {
+  user: RouterOutputs["account"]["userWorkspace"]["user"];
+}) => {
+  const userEmail = user.email ?? "";
   const userImage = user.user_metadata.image ?? "";
-  const userName = user.user_metadata.name ?? "unknown";
+  const userName = user.user_metadata.name ?? userEmail ?? "No name";
+
+  const signOut = async () => {
+    "use server";
+    await api.auth.signOut();
+    return redirect("/");
+  };
 
   return (
     <nav className="sticky top-0 flex h-dvh w-[80px] flex-col items-center overflow-y-auto overflow-x-hidden px-4 py-[26px]">
@@ -84,7 +101,7 @@ const Sidebar = ({ user }: { user?: any }) => {
           >
             <Avatar className="h-9 w-9">
               <AvatarImage src={userImage} alt={userName} />
-              <AvatarFallback>KH</AvatarFallback>
+              <AvatarFallback>{getInitials(userName)}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -99,7 +116,7 @@ const Sidebar = ({ user }: { user?: any }) => {
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">{userName}</p>
               <p className="text-xs leading-none text-muted-foreground">
-                {user.email}
+                {userEmail}
               </p>
             </div>
           </DropdownMenuLabel>
@@ -112,7 +129,7 @@ const Sidebar = ({ user }: { user?: any }) => {
             ))}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <form>
+          <form action={signOut}>
             <DropdownMenuItem className="w-full" asChild>
               <button>
                 Log out

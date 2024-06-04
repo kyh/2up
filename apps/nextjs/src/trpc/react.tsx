@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
+import {
+  httpBatchLink,
+  loggerLink,
+  unstable_httpBatchStreamLink, // currently doesn't support setting cookies for auth
+} from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 
 import type { AppRouter } from "@init/api";
-import { getBaseUrl } from "@/lib/url";
 
 export type { TRPCError } from "@trpc/server";
 
@@ -46,7 +49,7 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
             process.env.NODE_ENV === "development" ||
             (op.direction === "down" && op.result instanceof Error),
         }),
-        unstable_httpBatchStreamLink({
+        httpBatchLink({
           transformer: SuperJSON,
           url: `${getBaseUrl()}/api/trpc`,
           headers: async () => {
@@ -66,4 +69,10 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
       </api.Provider>
     </QueryClientProvider>
   );
+};
+
+const getBaseUrl = () => {
+  if (typeof window !== "undefined") return window.location.origin;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return `http://localhost:${process.env.PORT ?? 3000}`;
 };

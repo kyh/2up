@@ -90,47 +90,44 @@ const isServerAction = (request: NextRequest) => {
   return headers.has(NEXT_ACTION_HEADER);
 };
 
-const adminMiddleware = async (
-  request: NextRequest,
-  response: NextResponse,
-) => {
-  const isAdminPath = request.nextUrl.pathname.startsWith("/admin");
-
-  if (!isAdminPath) {
-    return response;
-  }
-
-  const {
-    data: { user },
-    error,
-  } = await getUser(request, response);
-
-  // If user is not logged in, redirect to sign in page.
-  // This should never happen, but just in case.
-  if (!user || error) {
-    return NextResponse.redirect(
-      new URL("/auth/sign-in", request.nextUrl.origin).href,
-    );
-  }
-
-  const role = user.app_metadata.role;
-
-  // If user is not an admin, redirect to 404 page.
-  if (!role || role !== "super-admin") {
-    return NextResponse.redirect(new URL("/404", request.nextUrl.origin).href);
-  }
-
-  // in all other cases, return the response
-  return response;
-};
-
 /**
  * Define URL patterns and their corresponding handlers.
  */
 const getPatterns = () => [
   {
     pattern: new URLPattern({ pathname: "/admin*" }),
-    handler: adminMiddleware,
+    handler: async (request: NextRequest, response: NextResponse) => {
+      const isAdminPath = request.nextUrl.pathname.startsWith("/admin");
+
+      if (!isAdminPath) {
+        return response;
+      }
+
+      const {
+        data: { user },
+        error,
+      } = await getUser(request, response);
+
+      // If user is not logged in, redirect to sign in page.
+      // This should never happen, but just in case.
+      if (!user || error) {
+        return NextResponse.redirect(
+          new URL("/auth/sign-in", request.nextUrl.origin).href,
+        );
+      }
+
+      const role = user.app_metadata.role;
+
+      // If user is not an admin, redirect to 404 page.
+      if (!role || role !== "super-admin") {
+        return NextResponse.redirect(
+          new URL("/404", request.nextUrl.origin).href,
+        );
+      }
+
+      // in all other cases, return the response
+      return response;
+    },
   },
   {
     pattern: new URLPattern({ pathname: "/auth*" }),
