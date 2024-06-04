@@ -2,10 +2,15 @@ import Link from "next/link";
 import { buttonVariants } from "@init/ui/button";
 import { cn } from "@init/ui/utils";
 
+import type { RouterOutputs } from "@init/api";
+import { api } from "@/trpc/server";
+
 const Layout = async ({ children }: { children: React.ReactNode }) => {
+  const user = await api.account.me();
+
   return (
     <>
-      <Header user={null} />
+      <Header user={user} />
       <main>{children}</main>
       <Footer />
     </>
@@ -14,7 +19,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
 export default Layout;
 
-const Header = ({ user }: { user: any | null }) => (
+const Header = ({ user }: { user: RouterOutputs["account"]["me"] }) => (
   <div className="mx-auto w-full justify-center">
     <div className="border-t-none mx-auto flex w-full max-w-7xl items-center justify-between border border-border px-8 py-4 md:p-8">
       <div className="flex items-center justify-between text-secondary-foreground">

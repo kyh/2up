@@ -1,7 +1,10 @@
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { byIdInput } from "./account-schema";
 
 export const accountRouter = createTRPCRouter({
+  me: publicProcedure.query(async ({ ctx }) => {
+    return ctx.user;
+  }),
   userWorkspace: protectedProcedure.query(async ({ ctx }) => {
     const userAccountsResponse = await ctx.supabase
       .from("user_accounts")
