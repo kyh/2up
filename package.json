@@ -16,8 +16,8 @@
     "db:deploy": "pnpm -F db deploy",
     "db:typegen": "pnpm -F db typegen",
     "dev": "turbo dev --parallel",
-    "dev:nextjs": "turbo dev --filter=nextjs",
-    "dev:expo": "turbo dev --filter=expo",
+    "dev:nextjs": "turbo dev --filter=@init/nextjs",
+    "dev:expo": "turbo dev --filter=@init/expo",
     "format": "turbo format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
     "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
     "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
@@ -28,11 +28,11 @@
   },
   "devDependencies": {
     "@kyh/prettier-config": "^0.1.8",
-    "@turbo/gen": "^1.13.3",
+    "@turbo/gen": "^2.0.1",
     "dotenv-cli": "^7.4.2",
     "prettier": "^3.2.5",
     "tsx": "^4.11.0",
-    "turbo": "^1.13.3",
+    "turbo": "^2.0.1",
     "typescript": "^5.4.5"
   },
   "prettier": "@kyh/prettier-config"
