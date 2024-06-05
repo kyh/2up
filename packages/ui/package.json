@@ -44,7 +44,7 @@
     "@kyh/tsconfig": "^0.1.8",
     "@types/react": "^18.3.3",
     "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
+    "prettier": "^3.3.0",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5",
     "zod": "^3.23.8"

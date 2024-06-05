@@ -7,5 +7,4 @@ export const siteConfig = {
       ? "http://localhost:3000"
       : "https://2uphq.com",
   twitter: "@kaiyuhsu",
-  routes: [""],
 };

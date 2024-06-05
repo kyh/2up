@@ -1,14 +1,14 @@
-import { teamRouter } from "./routers/team";
-import { todoRouter } from "./routers/todo";
-import { userRouter } from "./routers/user";
-import { waitlistRouter } from "./routers/waitlist";
+import { accountRouter } from "./account/account-router";
+import { authRouter } from "./auth/auth-router";
+import { taskRouter } from "./task/task-router";
 import { createTRPCRouter } from "./trpc";
+import { waitlistRouter } from "./waitlist/waitlist-router";
 
 export const appRouter = createTRPCRouter({
+  auth: authRouter,
+  account: accountRouter,
+  task: taskRouter,
   waitlist: waitlistRouter,
-  user: userRouter,
-  team: teamRouter,
-  todo: todoRouter,
 });
 
 // export type definition of API

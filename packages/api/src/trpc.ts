@@ -6,12 +6,12 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
-import { db } from "@2up/db";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import type { SupabaseClient } from "@2up/db";
+import type { Database } from "@2up/db/database.types";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 /**
  * 1. CONTEXT
@@ -27,8 +27,7 @@ import type { SupabaseClient } from "@2up/db";
  */
 export const createTRPCContext = async (opts: {
   headers: Headers;
-  supabase: SupabaseClient;
-  // adminSupabase: SupabaseClient;
+  supabase: SupabaseClient<Database>;
 }) => {
   // React Native will pass their token through headers,
   // browsers will have the session cookie set
@@ -38,9 +37,6 @@ export const createTRPCContext = async (opts: {
     ? await opts.supabase.auth.getUser(token)
     : await opts.supabase.auth.getUser();
 
-  // const supabase = data.user?.user_metadata.admin
-  //   ? opts.adminSupabase
-  //   : opts.supabase;
   const supabase = opts.supabase;
 
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
@@ -51,7 +47,6 @@ export const createTRPCContext = async (opts: {
     headers: opts.headers,
     user: data.user,
     supabase,
-    db,
   };
 };
 
@@ -122,12 +117,14 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
 });
 
 /**
- * Admin procedure
+ * Super Admin procedure
  *
- * If you want a query or mutation to ONLY be accessible to admins.
+ * If you want a query or mutation to ONLY be accessible to super admins.
  */
-export const adminProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.user?.user_metadata.admin) {
+export const superAdminProcedure = t.procedure.use(({ ctx, next }) => {
+  const role = ctx.user?.app_metadata.role;
+
+  if (!role || role !== "super-admin") {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 

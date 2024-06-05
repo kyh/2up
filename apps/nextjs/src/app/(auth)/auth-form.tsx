@@ -1,41 +1,58 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@2up/ui/button";
-import { Input } from "@2up/ui/input";
-import { Label } from "@2up/ui/label";
-import { toast } from "@2up/ui/toast";
-import { cn } from "@2up/ui/utils";
+import { useRouter, useSearchParams } from "next/navigation";
+import { signInWithPasswordInput } from "@init/api/auth/auth-schema";
+import { Button } from "@init/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useForm,
+} from "@init/ui/form";
+import { Input } from "@init/ui/input";
+import { toast } from "@init/ui/toast";
+import { cn } from "@init/ui/utils";
 
-import { signInWithGithub, signInWithPassword, signUp } from "./actions";
+import type { SignInWithPasswordInput } from "@init/api/auth/auth-schema";
+import { api } from "@/trpc/react";
 
 type AuthFormProps = {
-  type: "signup" | "signin";
+  type: "signin" | "signup";
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const nextPath = useSearchParams().get("next") ?? "/dashboard";
 
-  const submitAuthForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const signInWithOAuth = api.auth.signInWithOAuth.useMutation({
+    onError: (error) => toast.error(error.message),
+  });
+  const signInWithPassword = api.auth.signInWithPassword.useMutation({
+    onSuccess: () => router.replace(nextPath),
+    onError: (error) => toast.error(error.message),
+  });
+  const signUp = api.auth.signUp.useMutation({
+    onSuccess: () => router.replace(nextPath),
+    onError: (error) => toast.error(error.message),
+  });
 
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+  const form = useForm({
+    schema: signInWithPasswordInput,
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-    try {
-      if (type === "signup") {
-        await signUp(email, password);
-      } else if (type === "signin") {
-        await signInWithPassword(email, password);
-      }
-      router.push("/");
-    } catch (error) {
-      toast.error((error as Error).message);
-      setIsLoading(false);
+  const handleAuthWithPassword = (credentials: SignInWithPasswordInput) => {
+    if (type === "signup") {
+      signUp.mutate(credentials);
+    }
+    if (type === "signin") {
+      signInWithPassword.mutate(credentials);
     }
   };
 
@@ -44,8 +61,12 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
       <Button
         variant="outline"
         type="button"
-        disabled={isLoading}
-        onClick={() => signInWithGithub()}
+        loading={signInWithOAuth.isPending}
+        onClick={() =>
+          signInWithOAuth.mutate({
+            provider: "github",
+          })
+        }
       >
         Continue with Github
       </Button>
@@ -57,43 +78,72 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
           <span className="bg-background px-2 text-muted-foreground">Or</span>
         </div>
       </div>
-      <form onSubmit={submitAuthForm}>
-        <div className="grid gap-2">
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              name="email"
-              placeholder="name@example.com"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-          </div>
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="password">
-              Password
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              name="password"
-              placeholder="******"
-              autoCapitalize="none"
-              autoComplete="current-password"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-          </div>
-          <Button loading={isLoading}>
+      <Form {...form}>
+        <form
+          className="grid gap-2"
+          onSubmit={form.handleSubmit(handleAuthWithPassword)}
+        >
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="grid gap-1 space-y-0">
+                <FormLabel className="sr-only">Email</FormLabel>
+                <FormControl>
+                  <Input
+                    data-test="email-input"
+                    required
+                    type="email"
+                    placeholder="name@example.com"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    autoCorrect="off"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="grid gap-1 space-y-0">
+                <FormLabel className="sr-only">Password</FormLabel>
+                <FormControl>
+                  <Input
+                    data-test="password-input"
+                    required
+                    type="password"
+                    placeholder="******"
+                    autoCapitalize="none"
+                    autoComplete="current-password"
+                    autoCorrect="off"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button loading={signUp.isPending || signInWithPassword.isPending}>
             {type === "signin" ? "Login" : "Sign Up"}
           </Button>
-        </div>
-      </form>
+        </form>
+      </Form>
     </div>
   );
+};
+
+export const RequestPasswordResetForm = () => {
+  return null;
+};
+
+export const UpdatePasswordForm = () => {
+  return null;
+};
+
+export const MultiFactorAuthForm = () => {
+  return null;
 };

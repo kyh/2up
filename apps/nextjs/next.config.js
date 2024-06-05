@@ -15,7 +15,7 @@ const withMDX = createMDX({
 const config = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   /** Enables hot reloading for local packages without a build step */
-  transpilePackages: ["@2up/api", "@2up/auth", "@2up/db", "@2up/ui"],
+  transpilePackages: ["@2up/api", "@2up/db", "@2up/ui"],
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },

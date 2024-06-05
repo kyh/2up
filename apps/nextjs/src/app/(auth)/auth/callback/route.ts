@@ -1,17 +1,15 @@
 import type { NextRequest } from "next/server";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { redirect } from "next/navigation";
+import { createAuthCallbackService } from "@init/api/auth/auth-callback-service";
+import { getSupabaseServerClient } from "@init/db/supabase-server-client";
 
 export const GET = async (request: NextRequest) => {
-  const url = new URL(request.url);
-  const code = url.searchParams.get("code");
+  const service = createAuthCallbackService(getSupabaseServerClient());
 
-  if (code) {
-    const supabase = createRouteHandlerClient({ cookies });
-    await supabase.auth.exchangeCodeForSession(code);
-  }
+  const { nextPath } = await service.exchangeCodeForSession(request, {
+    joinTeamPath: "/join",
+    redirectPath: "/dashboard",
+  });
 
-  // URL to redirect to after sign in process completes
-  return NextResponse.redirect(url.origin);
+  return redirect(nextPath);
 };
