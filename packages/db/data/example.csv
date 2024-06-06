@@ -1,4 +1,4 @@
-externalId,questionDescription,questionType,question,answerType,answers,answerDescription
+externalId,questionDescription,questionType,question,answerType,answer,answerDescription
 1,click fast,text,what is 파랑,multiText,"- blue (correct)
 - yellow
 - green",

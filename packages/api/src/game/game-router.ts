@@ -1,9 +1,7 @@
-import type { Scene, SceneAnswer } from "@prisma/client/edge";
+import { generateGameCode } from "@2up/db/uuid";
 import { TRPCError } from "@trpc/server";
 import { sampleSize } from "lodash";
 import { z } from "zod";
-
-import { uuid } from "@2up/db";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
@@ -68,7 +66,7 @@ export const gameRouter = createTRPCRouter({
 
       return ctx.db.game.create({
         data: {
-          code: uuid.generateGameCode(),
+          code: generateGameCode(),
           isActive: true,
           scenes: scenes.map(convertScene),
           packId: input.packId,

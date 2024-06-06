@@ -1,4 +1,4 @@
-externalId,questionDescription,questionType,question,answerType,answers,answerDescription
+externalId,questionDescription,questionType,question,answerType,answer,answerDescription
 1,What's the output of,code,[] == ![];,text,TRUE,
 2,What's the output of,code,"!!""false"" === !!""true"";",text,TRUE,
 3,What's the output of,code,NaN === NaN;,text,FALSE,

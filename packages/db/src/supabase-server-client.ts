@@ -1,5 +1,3 @@
-import "server-only";
-
 import { unstable_noStore as noStore } from "next/cache";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";

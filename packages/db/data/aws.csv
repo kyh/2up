@@ -1,4 +1,4 @@
-externalId,questionDescription,questionType,question,answerType,answers
+externalId,questionDescription,questionType,question,answerType,answer
 1,Name the AWS service,text,Query Data in S3 using SQL,multiText,Amazon Athena
 2,Name the AWS service,text,Managed Search Service,multiText,Amazon CloudSearch
 3,Name the AWS service,text,Run and Scale Elasticsearch Clusters,multiText,Amazon Elasticsearch Service

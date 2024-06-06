@@ -1,6 +1,8 @@
-import { PrismaClient } from "@prisma/client/edge";
 import type * as Party from "partykit/server";
+import { addPlayer, createGame, removePlayer, updateGame } from "@2up/game";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
+import type { Database } from "@2up/db/database.types";
 import type {
   GameState,
   LivePlayer,
@@ -8,18 +10,25 @@ import type {
   SceneWithAnswers,
   ServerAction,
 } from "@2up/game";
-import { addPlayer, createGame, removePlayer, updateGame } from "@2up/game";
 
 export default class Server implements Party.Server {
-  private db: PrismaClient;
+  private db: SupabaseClient<Database>;
   private gameState: GameState;
 
   constructor(readonly party: Party.Party) {
     console.log("Room created:", party.id);
     this.gameState = createGame();
-    this.db = new PrismaClient({
-      datasourceUrl: this.party.env.DATABASE_URL as string,
-    });
+    this.db = createClient<Database>(
+      this.party.env.NEXT_PUBLIC_SUPABASE_URL as string,
+      this.party.env.SUPABASE_SERVICE_ROLE_KEY as string,
+      {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+          detectSessionInUrl: false,
+        },
+      },
+    );
   }
 
   async onStart() {

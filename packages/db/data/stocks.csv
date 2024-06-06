@@ -1,4 +1,4 @@
-externalId,questionDescription,questionType,question,answerType,answers,answerDescription
+externalId,questionDescription,questionType,question,answerType,answer,answerDescription
 1,,image,https://s3.amazonaws.com/images.teladoc.com/www/clients/template-hp/tdoc.jpg,text,TDOC,
 2,,image,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Tesla_Motors.svg/1200px-Tesla_Motors.svg.png,text,TSLA,
 3,,image,https://image.roku.com/bWFya2V0aW5n/roku-logo.png,text,ROKU,

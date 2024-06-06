@@ -1,4 +1,4 @@
-externalId,questionDescription,questionType,question,answerType,answers,answerDescription
+externalId,questionDescription,questionType,question,answerType,answer,answerDescription
 1,,image,https://s2.coinmarketcap.com/static/img/coins/64x64/1.png,text,Bitcoin,
 2,,image,https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png,text,Ethereum,
 3,,image,https://s2.coinmarketcap.com/static/img/coins/64x64/825.png,text,Tether,

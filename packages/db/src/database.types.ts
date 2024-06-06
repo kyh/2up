@@ -248,6 +248,63 @@ export type Database = {
         }
         Relationships: []
       }
+      games: {
+        Row: {
+          code: string | null
+          created_at: string | null
+          created_by: string | null
+          game_scenes: Json | null
+          history: Json | null
+          id: string
+          is_finished: boolean
+          is_started: boolean
+          state: Json | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          game_scenes?: Json | null
+          history?: Json | null
+          id?: string
+          is_finished?: boolean
+          is_started?: boolean
+          state?: Json | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          game_scenes?: Json | null
+          history?: Json | null
+          id?: string
+          is_finished?: boolean
+          is_started?: boolean
+          state?: Json | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "games_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "games_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invitations: {
         Row: {
           account_id: string
@@ -484,6 +541,69 @@ export type Database = {
           },
         ]
       }
+      packs: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          game_length: number
+          id: string
+          image: string | null
+          is_public: boolean
+          is_published: boolean
+          is_random: boolean
+          name: string | null
+          tags: string[] | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          game_length?: number
+          id?: string
+          image?: string | null
+          is_public?: boolean
+          is_published?: boolean
+          is_random?: boolean
+          name?: string | null
+          tags?: string[] | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          game_length?: number
+          id?: string
+          image?: string | null
+          is_public?: boolean
+          is_published?: boolean
+          is_random?: boolean
+          name?: string | null
+          tags?: string[] | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "packs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "packs_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       role_permissions: {
         Row: {
           id: number
@@ -524,6 +644,119 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      scene_answers: {
+        Row: {
+          answer: string | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          is_correct: boolean | null
+          scene_id: string | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          answer?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          is_correct?: boolean | null
+          scene_id?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          answer?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          is_correct?: boolean | null
+          scene_id?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scene_answers_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scene_answers_scene_id_fkey"
+            columns: ["scene_id"]
+            isOneToOne: false
+            referencedRelation: "scenes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scene_answers_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scenes: {
+        Row: {
+          answer_type: Database["public"]["Enums"]["answer_type"]
+          created_at: string | null
+          created_by: string | null
+          id: string
+          pack_id: string | null
+          question: string | null
+          question_type: Database["public"]["Enums"]["question_type"]
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          answer_type?: Database["public"]["Enums"]["answer_type"]
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          pack_id?: string | null
+          question?: string | null
+          question_type?: Database["public"]["Enums"]["question_type"]
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          answer_type?: Database["public"]["Enums"]["answer_type"]
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          pack_id?: string | null
+          question?: string | null
+          question_type?: Database["public"]["Enums"]["question_type"]
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scenes_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scenes_pack_id_fkey"
+            columns: ["pack_id"]
+            isOneToOne: false
+            referencedRelation: "packs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scenes_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subscription_items: {
         Row: {
@@ -1050,6 +1283,7 @@ export type Database = {
       }
     }
     Enums: {
+      answer_type: "text" | "multiText"
       app_permissions:
         | "roles.manage"
         | "billing.manage"
@@ -1060,6 +1294,7 @@ export type Database = {
       notification_channel: "in_app" | "email"
       notification_type: "info" | "warning" | "error"
       payment_status: "pending" | "succeeded" | "failed"
+      question_type: "text" | "image" | "video" | "audio" | "code"
       subscription_item_type: "flat" | "per_seat" | "metered"
       subscription_status:
         | "active"

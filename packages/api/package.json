@@ -17,7 +17,8 @@
     "@2up/db": "workspace:latest",
     "@trpc/server": "11.0.0-next-beta.294",
     "superjson": "^2.2.1",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@kyh/eslint-config": "^0.1.8",

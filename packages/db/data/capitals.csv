@@ -1,4 +1,4 @@
-externalId,questionDescription,questionType,question,answerType,answers,answerDescription
+externalId,questionDescription,questionType,question,answerType,answer,answerDescription
 1,What's the capital of,text,China,text,Beijing,
 2,What's the capital of,text,India,text,New Delhi,
 3,What's the capital of,text,United States,text,"Washington, D.C.",

@@ -19,9 +19,12 @@
     "deploy": "supabase link --project-ref $SUPABASE_PROJECT_REF && supabase db push",
     "typegen": "supabase gen types typescript --local > src/database.types.ts",
     "dump": "supabase db dump --local --data-only",
-    "typecheck": "tsc --noEmit"
+    "seed": "pnpm with-env tsx data/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "ts-case-convert": "^2.0.7",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.43.4",
     "next": "^14.2.3",
@@ -33,6 +36,7 @@
     "@kyh/prettier-config": "^0.1.8",
     "@kyh/tsconfig": "^0.1.8",
     "@types/react": "^18.3.3",
+    "csv-parse": "^5.5.6",
     "eslint": "^8.57.0",
     "prettier": "^3.3.1",
     "supabase": "^1.172.2",
