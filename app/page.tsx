@@ -19,9 +19,8 @@ export default function Home() {
   return (
     <div className="mx-auto mb-[10vh] flex w-full max-w-[1000px] flex-col flex-wrap gap-6 overflow-hidden bg-white p-4">
       <div className="m-5 box-border border-black p-10 text-center text-black">
-        <h4>Nostalgic React Components</h4>
+        <h1 className="text-3xl">2up Components</h1>
       </div>
-
       <Texts />
       <Buttons />
       <Radios />

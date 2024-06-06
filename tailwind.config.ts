@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-roboto)"],
+        mono: ["var(--font-carbon)"],
+      },
       colors: {
         normal: {
           DEFAULT: "#fff",

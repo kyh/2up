@@ -8,7 +8,6 @@ export default function Texts() {
       <span className="absolute left-10 top-[-12px] bg-white px-2 text-black">
         Texts
       </span>
-
       <Text type="primary">Primary</Text>
       <Text type="success">Success</Text>
       <Text type="warning">Warning</Text>
