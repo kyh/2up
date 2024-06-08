@@ -12,7 +12,7 @@ create table if not exists
     label task_label default 'bug' not null,
     priority task_priority default 'low' not null,
     updated_at timestamp with time zone,
-    created_at timestamp with time zone,
+    created_at timestamptz not null default now(),
     created_by uuid references auth.users,
     updated_by uuid references auth.users,
     primary key (id)
