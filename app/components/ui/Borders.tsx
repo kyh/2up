@@ -2,11 +2,11 @@ import React from "react";
 import clsx from "clsx";
 
 interface BordersProps {
-  theme: "normal" | "success" | "primary" | "error" | "disabled" | "warning";
-  classes?: string;
+  variant: "normal" | "success" | "primary" | "error" | "disabled" | "warning";
+  className?: string;
 }
 
-const Borders: React.FC<BordersProps> = ({ theme, classes }) => {
+const Borders: React.FC<BordersProps> = ({ variant, className }) => {
   const spanStyles: { [key: string]: string } = {
     normal: "border-normal",
     success: "border-success",
@@ -16,7 +16,7 @@ const Borders: React.FC<BordersProps> = ({ theme, classes }) => {
     warning: "border-warning",
   };
 
-  const spanClasses = spanStyles[theme] || spanStyles.normal;
+  const spanClasses = spanStyles[variant] || spanStyles.normal;
 
   return (
     <>
@@ -24,7 +24,7 @@ const Borders: React.FC<BordersProps> = ({ theme, classes }) => {
         className={clsx(
           spanClasses,
           "pointer-events-none absolute left-0 top-[-4px] h-[calc(100%+8px)] w-full border-y-4 px-3 py-2",
-          classes,
+          className,
         )}
       ></span>
 
@@ -32,7 +32,7 @@ const Borders: React.FC<BordersProps> = ({ theme, classes }) => {
         className={clsx(
           spanClasses,
           "pointer-events-none absolute left-[-4px] top-0 h-full w-[calc(100%+8px)] border-x-4 px-3 py-2",
-          classes,
+          className,
         )}
       ></span>
     </>
