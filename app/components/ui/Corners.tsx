@@ -7,7 +7,7 @@ interface CornerProps {
   xside: "left" | "right";
 }
 
-const Corner: React.FC<CornerProps> = ({ type, yside, xside }) => {
+const Corner = ({ type, yside, xside }: CornerProps) => {
   const innerBG = type === "dark" ? "bg-light" : "bg-dark";
   // const outerBG = type === "dark" ? "bg-dark" : "bg-light";
   const outerBG = type === "dark" ? "" : "";
