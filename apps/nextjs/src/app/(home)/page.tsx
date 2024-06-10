@@ -5,8 +5,7 @@ import { Discover } from "./_components/packs";
 export const runtime = "edge";
 
 const Page = async () => {
-  const packsBySection = await api.pack.getDiscover();
-
+  const packsBySection = await api.pack.discover();
   return (
     <main className="space-y-5">
       <JoinGameForm />

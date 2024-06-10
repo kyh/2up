@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { signInWithPasswordInput } from "@init/api/auth/auth-schema";
-import { Button } from "@init/ui/button";
+import { signInWithPasswordInput } from "@2up/api/auth/auth-schema";
+import { Button } from "@2up/ui/button";
 import {
   Form,
   FormControl,
@@ -11,12 +11,12 @@ import {
   FormLabel,
   FormMessage,
   useForm,
-} from "@init/ui/form";
-import { Input } from "@init/ui/input";
-import { toast } from "@init/ui/toast";
-import { cn } from "@init/ui/utils";
+} from "@2up/ui/form";
+import { Input } from "@2up/ui/input";
+import { toast } from "@2up/ui/toast";
+import { cn } from "@2up/ui/utils";
 
-import type { SignInWithPasswordInput } from "@init/api/auth/auth-schema";
+import type { SignInWithPasswordInput } from "@2up/api/auth/auth-schema";
 import { api } from "@/trpc/react";
 
 type AuthFormProps = {

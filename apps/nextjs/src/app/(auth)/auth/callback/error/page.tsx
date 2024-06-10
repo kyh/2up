@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Button } from "@init/ui/button";
+import { Button } from "@2up/ui/button";
 
 type Params = {
   searchParams: {

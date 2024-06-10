@@ -1,4 +1,4 @@
-import { getSupabaseServerClient } from "@init/db/supabase-server-client";
+import { getSupabaseServerClient } from "@2up/db/supabase-server-client";
 
 import {
   createTRPCRouter,

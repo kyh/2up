@@ -1,9 +1,8 @@
-import type { Scene, SceneAnswer } from "@prisma/client/edge";
-
+import type { Database } from "@2up/db/database.types";
 import { calculateScore, compareAnswer } from "./utils";
 
-export type SceneWithAnswers = Scene & {
-  sceneAnswers: SceneAnswer[];
+type SceneWithAnswers = Database["public"]["Tables"]["scenes"]["Row"] & {
+  sceneAnswers: Database["public"]["Tables"]["scene_answers"]["Row"][];
 };
 
 export type GameView =
@@ -100,7 +99,7 @@ const gameActions = {
   submit: (action: ServerAction, state: GameState) => {
     const currentScene = state.scenes[state.currentSceneIndex]!;
     const correctAnswer = currentScene.sceneAnswers.find(
-      (answer) => answer.isCorrect,
+      (answer: any) => answer.isCorrect,
     )!;
 
     // Update player scores and submissions
@@ -111,7 +110,7 @@ const gameActions = {
 
       const isCorrect = compareAnswer(
         action.payload as string,
-        correctAnswer.content,
+        correctAnswer.answer ?? "",
       );
 
       const newScore = calculateScore(

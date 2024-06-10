@@ -21,6 +21,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.5",
     "@kyh/eslint-config": "^0.1.8",
     "@kyh/prettier-config": "^0.1.8",
     "@kyh/tsconfig": "^0.1.8",
