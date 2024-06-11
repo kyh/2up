@@ -658,7 +658,7 @@ export type Database = {
       tasks: {
         Row: {
           account_id: string;
-          created_at: string | null;
+          created_at: string;
           created_by: string | null;
           id: string;
           label: Database["public"]["Enums"]["task_label"];
@@ -671,7 +671,7 @@ export type Database = {
         };
         Insert: {
           account_id: string;
-          created_at?: string | null;
+          created_at?: string;
           created_by?: string | null;
           id?: string;
           label?: Database["public"]["Enums"]["task_label"];
@@ -684,7 +684,7 @@ export type Database = {
         };
         Update: {
           account_id?: string;
-          created_at?: string | null;
+          created_at?: string;
           created_by?: string | null;
           id?: string;
           label?: Database["public"]["Enums"]["task_label"];

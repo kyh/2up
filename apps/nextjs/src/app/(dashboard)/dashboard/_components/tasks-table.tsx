@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { Database } from "@init/db/database.types";
+import { DataTable } from "@init/ui/data-table/data-table";
+import { DataTableToolbar } from "@init/ui/data-table/data-table-toolbar";
 
-import { DataTable } from "@/components/data-table/data-table";
-import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { useDataTable } from "@/hooks/use-data-table";
 import { getColumns } from "./tasks-table-columns";
 import { TasksTableToolbarActions } from "./tasks-table-toolbar-actions";

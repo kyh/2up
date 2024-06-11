@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { Database } from "@init/db/database.types";
 import { Button } from "@init/ui/button";
 import {
@@ -13,11 +14,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@init/ui/dialog";
-import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons";
+import { TrashIcon } from "@radix-ui/react-icons";
 import { type Row } from "@tanstack/react-table";
 import { toast } from "sonner";
 
-import { deleteTasks } from "../_lib/actions";
+import { api } from "@/trpc/react";
 
 type Task = Database["public"]["Tables"]["tasks"]["Row"];
 
@@ -34,7 +35,17 @@ export function DeleteTasksDialog({
   onSuccess,
   ...props
 }: DeleteTasksDialogProps) {
-  const [isDeletePending, startDeleteTransition] = React.useTransition();
+  const router = useRouter();
+
+  const deleteTask = api.task.delete.useMutation({
+    onSuccess: () => {
+      props.onOpenChange?.(false);
+      toast.success("Tasks deleted");
+      onSuccess?.();
+      router.refresh();
+    },
+    onError: (error) => toast.error(error.message),
+  });
 
   return (
     <Dialog {...props}>
@@ -62,30 +73,13 @@ export function DeleteTasksDialog({
           <Button
             aria-label="Delete selected rows"
             variant="destructive"
+            loading={deleteTask.isPending}
             onClick={() => {
-              startDeleteTransition(async () => {
-                const { error } = await deleteTasks({
-                  ids: tasks.map((task) => task.id),
-                });
-
-                if (error) {
-                  toast.error(error);
-                  return;
-                }
-
-                props.onOpenChange?.(false);
-                toast.success("Tasks deleted");
-                onSuccess?.();
+              deleteTask.mutate({
+                ids: tasks.map((task) => task.id),
               });
             }}
-            disabled={isDeletePending}
           >
-            {isDeletePending && (
-              <ReloadIcon
-                className="mr-2 size-4 animate-spin"
-                aria-hidden="true"
-              />
-            )}
             Delete
           </Button>
         </DialogFooter>
