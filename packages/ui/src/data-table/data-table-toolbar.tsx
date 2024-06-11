@@ -1,10 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@init/ui/button";
-import { Input } from "@init/ui/input";
 import { cn } from "@init/ui/utils";
-import { Cross2Icon } from "@radix-ui/react-icons";
 
 import type { Table } from "@tanstack/react-table";
 import { DataTableViewOptions } from "./data-table-view-options";

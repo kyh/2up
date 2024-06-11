@@ -1,10 +1,18 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
+import {
+  TaskLabels,
+  TaskPriorites,
+  TaskStatuses,
+} from "@init/api/task/task-schema";
+import { formatDate } from "@init/api/task/task-util";
 import { Database } from "@init/db/database.types";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
 import { Checkbox } from "@init/ui/checkbox";
+import { DataTableColumnHeader } from "@init/ui/data-table/data-table-column-header";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,11 +30,8 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { toast } from "sonner";
 
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { TaskLabels, TaskPriorites, TaskStatuses } from "@/lib/constants";
 import { getErrorMessage } from "@/lib/handle-error";
-import { formatDate } from "@/lib/utils";
-import { updateTask } from "../_lib/actions";
+import { api } from "@/trpc/react";
 import { getPriorityIcon, getStatusIcon } from "../_lib/utils";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";
 import { UpdateTaskSheet } from "./update-task-sheet";
@@ -65,7 +70,9 @@ export function getColumns(): ColumnDef<Task>[] {
         <DataTableColumnHeader column={column} title="Title" />
       ),
       cell: ({ row }) => {
-        const label = TaskLabels.find((label) => label === row.original.label);
+        const label = TaskLabels.find(
+          (label: string) => label === row.original.label,
+        );
 
         return (
           <div className="flex space-x-2">
@@ -137,11 +144,22 @@ export function getColumns(): ColumnDef<Task>[] {
     {
       id: "actions",
       cell: function Cell({ row }) {
-        const [isUpdatePending, startUpdateTransition] = React.useTransition();
+        const router = useRouter();
+        const updateTask = api.task.update.useMutation({
+          onSuccess: () => {
+            toast.success("Label updated");
+            router.refresh();
+          },
+          onError: (error) => toast.error(error.message),
+        });
         const [showUpdateTaskSheet, setShowUpdateTaskSheet] =
           React.useState(false);
         const [showDeleteTaskDialog, setShowDeleteTaskDialog] =
           React.useState(false);
+
+        if (updateTask.isPending) {
+          toast.loading("Updating...");
+        }
 
         return (
           <>
@@ -177,18 +195,9 @@ export function getColumns(): ColumnDef<Task>[] {
                     <DropdownMenuRadioGroup
                       value={row.original.label}
                       onValueChange={(value) => {
-                        startUpdateTransition(() => {
-                          toast.promise(
-                            updateTask({
-                              id: row.original.id,
-                              label: value as Task["label"],
-                            }),
-                            {
-                              loading: "Updating...",
-                              success: "Label updated",
-                              error: (err) => getErrorMessage(err),
-                            },
-                          );
+                        updateTask.mutate({
+                          id: row.original.id,
+                          label: value as Task["label"],
                         });
                       }}
                     >
@@ -197,7 +206,7 @@ export function getColumns(): ColumnDef<Task>[] {
                           key={label}
                           value={label}
                           className="capitalize"
-                          disabled={isUpdatePending}
+                          disabled={updateTask.isPending}
                         >
                           {label}
                         </DropdownMenuRadioItem>

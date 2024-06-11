@@ -1,8 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createInput } from "@init/api/task/task-schema";
+import {
+  createInput,
+  TaskLabels,
+  TaskPriorites,
+  TaskStatuses,
+} from "@init/api/task/task-schema";
 import { Button } from "@init/ui/button";
 import {
   Dialog,
@@ -31,35 +37,33 @@ import {
   SelectValue,
 } from "@init/ui/select";
 import { Textarea } from "@init/ui/textarea";
-import { PlusIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { PlusIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import type { CreateInput } from "@init/api/task/task-schema";
-import { TaskLabels, TaskPriorites, TaskStatuses } from "@/lib/constants";
-import { createTask } from "../_lib/actions";
+import { api } from "@/trpc/react";
 
 export function CreateTaskDialog() {
+  const router = useRouter();
   const [open, setOpen] = React.useState(false);
-  const [isCreatePending, startCreateTransition] = React.useTransition();
+
+  const createTask = api.task.create.useMutation({
+    onSuccess: () => {
+      setOpen(false);
+      form.reset();
+      toast.success("Task created");
+      router.refresh();
+    },
+    onError: (error) => toast.error(error.message),
+  });
 
   const form = useForm<CreateInput>({
     resolver: zodResolver(createInput),
   });
 
   function onSubmit(input: CreateInput) {
-    startCreateTransition(async () => {
-      const { error } = await createTask(input);
-
-      if (error) {
-        toast.error(error);
-        return;
-      }
-
-      form.reset();
-      setOpen(false);
-      toast.success("Task created");
-    });
+    createTask.mutate(input);
   }
 
   return (
@@ -204,15 +208,7 @@ export function CreateTaskDialog() {
                   Cancel
                 </Button>
               </DialogClose>
-              <Button disabled={isCreatePending}>
-                {isCreatePending && (
-                  <ReloadIcon
-                    className="mr-2 size-4 animate-spin"
-                    aria-hidden="true"
-                  />
-                )}
-                Create
-              </Button>
+              <Button loading={createTask.isPending}>Create</Button>
             </DialogFooter>
           </form>
         </Form>

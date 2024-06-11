@@ -1,8 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateInput } from "@init/api/task/task-schema";
+import {
+  TaskLabels,
+  TaskPriorites,
+  TaskStatuses,
+  updateInput,
+} from "@init/api/task/task-schema";
 import { Database } from "@init/db/database.types";
 import { Button } from "@init/ui/button";
 import {
@@ -31,13 +37,11 @@ import {
   SheetTitle,
 } from "@init/ui/sheet";
 import { Textarea } from "@init/ui/textarea";
-import { ReloadIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import type { UpdateInput } from "@init/api/task/task-schema";
-import { TaskLabels, TaskPriorites, TaskStatuses } from "@/lib/constants";
-import { updateTask } from "../_lib/actions";
+import { api } from "@/trpc/react";
 
 type Task = Database["public"]["Tables"]["tasks"]["Row"];
 
@@ -47,7 +51,17 @@ interface UpdateTaskSheetProps
 }
 
 export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
-  const [isUpdatePending, startUpdateTransition] = React.useTransition();
+  const router = useRouter();
+
+  const updateTask = api.task.update.useMutation({
+    onSuccess: () => {
+      form.reset();
+      props.onOpenChange?.(false);
+      toast.success("Task updated");
+      router.refresh();
+    },
+    onError: (error) => toast.error(error.message),
+  });
 
   const form = useForm<Omit<UpdateInput, "id">>({
     resolver: zodResolver(updateInput.omit({ id: true })),
@@ -60,20 +74,9 @@ export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
   });
 
   function onSubmit(input: Omit<UpdateInput, "id">) {
-    startUpdateTransition(async () => {
-      const { error } = await updateTask({
-        id: task.id,
-        ...input,
-      });
-
-      if (error) {
-        toast.error(error);
-        return;
-      }
-
-      form.reset();
-      props.onOpenChange?.(false);
-      toast.success("Task updated");
+    updateTask.mutate({
+      id: task.id,
+      ...input,
     });
   }
 
@@ -213,15 +216,7 @@ export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
                   Cancel
                 </Button>
               </SheetClose>
-              <Button disabled={isUpdatePending}>
-                {isUpdatePending && (
-                  <ReloadIcon
-                    className="mr-2 size-4 animate-spin"
-                    aria-hidden="true"
-                  />
-                )}
-                Save
-              </Button>
+              <Button loading={updateTask.isPending}>Save</Button>
             </SheetFooter>
           </form>
         </Form>
