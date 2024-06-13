@@ -1,6 +1,6 @@
 import React from "react";
 
-import Teaxtarea from "./ui/NosTeaxtarea.jsx";
+import NostalgicTextarea from "./ui/NosTextarea";
 
 export default function NosTextarea() {
   return (
@@ -9,7 +9,15 @@ export default function NosTextarea() {
         Textarea
       </span>
 
-      <Teaxtarea theme="normal" id="txt" name="name" label="Textarea" />
+      <NostalgicTextarea
+        theme="normal"
+        id="txt"
+        name="name"
+        label="Textarea"
+        spanVariant="normal"
+        inputVariant="normal"
+        containerVariant="dark"
+      />
     </div>
   );
 }
