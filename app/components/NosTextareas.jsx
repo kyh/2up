@@ -14,9 +14,7 @@ export default function NosTextarea() {
         id="txt"
         name="name"
         label="Textarea"
-        spanVariant="normal"
-        inputVariant="normal"
-        containerVariant="dark"
+        variant="dark"
       />
     </div>
   );
