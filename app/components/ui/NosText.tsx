@@ -4,12 +4,12 @@ import { cva, VariantProps } from "class-variance-authority";
 interface TextProps
   extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof textStyles> {
-  type?: "success" | "primary" | "error" | "disabled" | "warning";
+  variant?: "success" | "primary" | "error" | "disabled" | "warning";
 }
 
 const textStyles = cva("text-base", {
   variants: {
-    type: {
+    variant: {
       success: "text-success",
       primary: "text-primary",
       error: "text-error",
@@ -18,19 +18,19 @@ const textStyles = cva("text-base", {
     },
   },
   defaultVariants: {
-    type: "primary",
+    variant: "primary",
   },
 });
 
 const Text: React.FC<TextProps> = ({
-  type = "primary",
+  variant = "primary",
   children,
   ...props
 }) => {
   return (
-    <div {...props} className={textStyles({ type })}>
+    <Slot {...props} className={textStyles({ variant })}>
       {children}
-    </div>
+    </Slot>
   );
 };
 
