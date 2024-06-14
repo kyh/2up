@@ -8,11 +8,15 @@ export default function Texts() {
       <span className="absolute left-10 top-[-12px] bg-white px-2 text-black">
         Texts
       </span>
-      <Text type="primary">Primary</Text>
-      <Text type="success">Success</Text>
-      <Text type="warning">Warning</Text>
-      <Text type="error">Error</Text>
-      <Text type="disabled">Disabled</Text>
+      <Text variant="primary">Primary</Text>
+      <Text variant="success">Success</Text>
+      <Text variant="warning">Warning</Text>
+      <Text variant="error">Error</Text>
+      <Text variant="disabled">Disabled</Text>
+
+      {/* <Text asChild>
+        <h3>AsChild</h3>
+      </Text> */}
     </div>
   );
 }
