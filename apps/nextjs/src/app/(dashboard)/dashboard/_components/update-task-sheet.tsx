@@ -37,8 +37,8 @@ import {
   SheetTitle,
 } from "@init/ui/sheet";
 import { Textarea } from "@init/ui/textarea";
+import { toast } from "@init/ui/toast";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 import type { UpdateInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";

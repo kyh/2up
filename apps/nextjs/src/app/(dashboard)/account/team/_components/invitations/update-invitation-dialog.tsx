@@ -118,7 +118,6 @@ function UpdateInvitationForm({
   return (
     <Form {...form}>
       <form
-        data-test={"update-invitation-form"}
         onSubmit={form.handleSubmit(onSubmit)}
         className={"flex flex-col space-y-6"}
       >
