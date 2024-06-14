@@ -20,27 +20,25 @@ const avatarStyles = cva("aspect-square overflow-hidden bg-gray-500", {
   },
 });
 
-type AvatarProps = VariantProps<typeof avatarStyles> & {
-  alt: string;
-  source: string;
-} & React.ImgHTMLAttributes<HTMLImageElement>;
+type AvatarProps = VariantProps<typeof avatarStyles> &
+  React.ImgHTMLAttributes<HTMLImageElement>;
 
-export default function Avatar({
+export const Avatar = ({
   alt,
   size = "normal",
-  source,
+  src,
   rounded = false,
   ...props
-}: AvatarProps) {
+}: AvatarProps) => {
   const classes = avatarStyles({ size, rounded });
 
   return (
     <img
       style={{ imageRendering: "pixelated" }}
-      src={source}
+      src={src}
       alt={alt}
       className={classes}
       {...props}
     />
   );
-}
+};
