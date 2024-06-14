@@ -1,10 +1,12 @@
 import React, { HTMLAttributes } from "react";
+import { Slot, SlotProps } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
 
 interface TextProps
-  extends HTMLAttributes<HTMLDivElement>,
+  extends HTMLAttributes<HTMLSpanElement | SlotProps>,
     VariantProps<typeof textStyles> {
   variant?: "success" | "primary" | "error" | "disabled" | "warning";
+  asChild?: boolean;
 }
 
 const textStyles = cva("text-base", {
@@ -25,12 +27,15 @@ const textStyles = cva("text-base", {
 const Text: React.FC<TextProps> = ({
   variant = "primary",
   children,
+  asChild,
   ...props
 }) => {
+  const Comp = asChild ? Slot : "span";
+
   return (
-    <Slot {...props} className={textStyles({ variant })}>
+    <Comp {...props} className={textStyles({ variant })}>
       {children}
-    </Slot>
+    </Comp>
   );
 };
 
