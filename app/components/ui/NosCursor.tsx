@@ -11,9 +11,9 @@ interface CursorProps extends HTMLAttributes<HTMLDivElement> {
 
 const cursorStyles = cva("cursor-pointer");
 
-const Cursor = ({ type, from, children, ...props }: CursorProps) => {
+const Cursor = ({ type, from, children, className, ...props }: CursorProps) => {
   return (
-    <div className={cursorStyles()} {...props}>
+    <div className={cursorStyles({ className })} {...props}>
       <Balloon type={type} from={from}>
         {children}
       </Balloon>
