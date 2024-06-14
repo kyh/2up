@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import clsx from "clsx";
 
 import CornerShapes from "./Corners";
-import NosBtn from "./NosBtn";
+import { NosBtn } from "./NosBtn";
 
 export default function Dialog({
   variant,

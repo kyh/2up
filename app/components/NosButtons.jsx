@@ -1,6 +1,6 @@
 import React from "react";
 
-import NosBtn from "./ui/NosBtn";
+import { NosBtn } from "./ui/NosBtn";
 
 export default function Buttons() {
   return (

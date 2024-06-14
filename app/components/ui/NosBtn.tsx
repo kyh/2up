@@ -1,17 +1,12 @@
-import React, { ButtonHTMLAttributes, FC, LabelHTMLAttributes } from "react";
+import React, { ButtonHTMLAttributes } from "react";
 import { cva, VariantProps } from "class-variance-authority";
 
-interface NostalgicBtnBaseProps extends VariantProps<typeof buttonStyles> {
+interface NosBtnProps
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonStyles> {
   block?: boolean;
   className?: string;
 }
-
-interface NostalgicBtnButtonProps
-  extends NostalgicBtnBaseProps,
-    ButtonHTMLAttributes<HTMLButtonElement> {}
-interface NostalgicBtnLabelProps
-  extends NostalgicBtnBaseProps,
-    LabelHTMLAttributes<HTMLLabelElement> {}
 
 const buttonStyles = cva("relative m-2 px-3 py-3 text-base capitalize", {
   variants: {
@@ -58,13 +53,13 @@ const spanStyles = cva("pointer-events-none absolute", {
   },
 });
 
-const NostalgicBtn: FC<NostalgicBtnButtonProps | NostalgicBtnLabelProps> = ({
+export const NosBtn = ({
   block,
   variant,
   className,
   children,
   ...props
-}) => {
+}: NosBtnProps) => {
   const commonProps = {
     className:
       buttonStyles({ variant, block }) + (className ? ` ${className}` : ""),
@@ -90,7 +85,6 @@ const NostalgicBtn: FC<NostalgicBtnButtonProps | NostalgicBtnLabelProps> = ({
 
   return variant === "file" ? (
     <label
-      {...(commonProps as LabelHTMLAttributes<HTMLLabelElement>)}
       className={`${commonProps.className} shadow-[inset_-4px_-4px] hover:shadow-[inset_-6px_-6px] focus:outline focus:outline-[6px] active:shadow-[inset_6px_6px]`}
     >
       {renderSpan(variant)}
@@ -100,7 +94,7 @@ const NostalgicBtn: FC<NostalgicBtnButtonProps | NostalgicBtnLabelProps> = ({
   ) : (
     <button
       type="button"
-      {...(commonProps as ButtonHTMLAttributes<HTMLButtonElement>)}
+      {...commonProps}
       className={`${commonProps.className} shadow-[inset_-4px_-4px] ${variant !== "disabled" && "hover:shadow-[inset_-6px_-6px] focus:outline focus:outline-[6px] active:shadow-[inset_6px_6px]"}`}
     >
       {renderSpan(variant!)}
@@ -108,5 +102,3 @@ const NostalgicBtn: FC<NostalgicBtnButtonProps | NostalgicBtnLabelProps> = ({
     </button>
   );
 };
-
-export default NostalgicBtn;
