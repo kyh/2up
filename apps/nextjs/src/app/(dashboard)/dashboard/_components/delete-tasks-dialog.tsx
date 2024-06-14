@@ -14,9 +14,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@init/ui/dialog";
+import { toast } from "@init/ui/toast";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { type Row } from "@tanstack/react-table";
-import { toast } from "sonner";
 
 import { api } from "@/trpc/react";
 

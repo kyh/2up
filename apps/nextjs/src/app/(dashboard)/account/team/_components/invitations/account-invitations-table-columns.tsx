@@ -36,10 +36,7 @@ export function getColumns(permissions: {
         const email = member.email;
 
         return (
-          <span
-            data-test={"invitation-email"}
-            className={"flex items-center space-x-4 text-left"}
-          >
+          <span className={"flex items-center space-x-4 text-left"}>
             <span>
               <ProfileAvatar text={email} />
             </span>

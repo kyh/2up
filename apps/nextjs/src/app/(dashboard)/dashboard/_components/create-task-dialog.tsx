@@ -37,9 +37,9 @@ import {
   SelectValue,
 } from "@init/ui/select";
 import { Textarea } from "@init/ui/textarea";
+import { toast } from "@init/ui/toast";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 import type { CreateInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";

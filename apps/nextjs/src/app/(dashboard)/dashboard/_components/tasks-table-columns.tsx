@@ -26,9 +26,9 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
+import { toast } from "@init/ui/toast";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
-import { toast } from "sonner";
 
 import { getErrorMessage } from "@/lib/handle-error";
 import { api } from "@/trpc/react";

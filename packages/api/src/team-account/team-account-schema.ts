@@ -35,6 +35,23 @@ export const teamWorkspaceInput = z.object({
   slug: z.string(),
 });
 
+export const createTeamAccountInput = z.object({
+  name: z.string(),
+});
+
+export const updateTeamAccountNameInput = z.object({
+  slug: z.string(),
+  name: z.string(),
+});
+
+export const deleteTeamAccountInput = z.object({
+  accountId: z.string(),
+});
+
+export const leaveTeamAccountInput = z.object({
+  accountId: z.string(),
+});
+
 export const membersInput = z.object({
   slug: z.string(),
 });

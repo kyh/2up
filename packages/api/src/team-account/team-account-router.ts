@@ -3,8 +3,11 @@ import { addDays, formatISO } from "date-fns";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import {
+  createTeamAccountInput,
   deleteInvitationInput,
+  deleteTeamAccountInput,
   invitationsInput,
+  leaveTeamAccountInput,
   membersInput,
   removeMemberInput,
   renewInvitationInput,
@@ -13,6 +16,7 @@ import {
   transferOwnershipInput,
   updateInvitationInput,
   updateMemberRoleInput,
+  updateTeamAccountNameInput,
 } from "./team-account-schema";
 
 export const teamAccountRouter = createTRPCRouter({
@@ -31,6 +35,90 @@ export const teamAccountRouter = createTRPCRouter({
         account: response.data[0],
         user: ctx.user,
       };
+    }),
+
+  createTeamAccount: protectedProcedure
+    .input(createTeamAccountInput)
+    .mutation(async ({ ctx, input }) => {
+      const response = await ctx.supabase.rpc("create_team_account", {
+        account_name: input.name,
+      });
+
+      if (response.error) {
+        throw response.error;
+      }
+
+      return response.data;
+    }),
+
+  updateTeamAccountName: protectedProcedure
+    .input(updateTeamAccountNameInput)
+    .mutation(async ({ ctx, input }) => {
+      const response = await ctx.supabase
+        .from("accounts")
+        .update({
+          name: input.name,
+          slug: input.slug,
+        })
+        .match({
+          slug: input.slug,
+        })
+        .select("slug")
+        .single();
+
+      if (response.error) {
+        throw response.error;
+      }
+
+      return response.data;
+    }),
+
+  deleteTeamAccount: protectedProcedure
+    .input(deleteTeamAccountInput)
+    .mutation(async ({ ctx, input }) => {
+      const adminSupabase = getSupabaseServerClient({ admin: true });
+
+      const accountResponse = await ctx.supabase
+        .from("accounts")
+        .select("id")
+        .eq("primary_owner_user_id", ctx.user.id)
+        .eq("is_personal_account", false)
+        .eq("id", input.accountId);
+
+      if (accountResponse.error ?? !accountResponse.data) {
+        throw new Error("Account not found");
+      }
+
+      const deleteResponse = await adminSupabase
+        .from("accounts")
+        .delete()
+        .eq("id", input.accountId);
+
+      if (deleteResponse.error) {
+        throw deleteResponse.error;
+      }
+
+      return deleteResponse.data;
+    }),
+
+  leaveTeamAccount: protectedProcedure
+    .input(leaveTeamAccountInput)
+    .mutation(async ({ ctx, input }) => {
+      const adminSupabase = getSupabaseServerClient({ admin: true });
+
+      const response = await adminSupabase
+        .from("accounts_memberships")
+        .delete()
+        .match({
+          account_id: input.accountId,
+          user_id: ctx.user.id,
+        });
+
+      if (response.error) {
+        throw response.error;
+      }
+
+      return response.data;
     }),
 
   members: protectedProcedure
