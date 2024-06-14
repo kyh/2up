@@ -1,6 +1,6 @@
 import React from "react";
 
-import Avatar from "./ui/NosAvatar";
+import { Avatar } from "./ui/NosAvatar";
 
 export default function Avatars() {
   return (
@@ -9,49 +9,33 @@ export default function Avatars() {
         Avatars
       </span>
 
-      <Avatar
-        alt=""
-        size="normal"
-        source="https://avatar.iran.liara.run/public"
-      />
-      <Avatar
-        alt=""
-        size="small"
-        source="https://avatar.iran.liara.run/public"
-      />
-      <Avatar
-        alt=""
-        size="medium"
-        source="https://avatar.iran.liara.run/public"
-      />
-      <Avatar
-        alt=""
-        size="large"
-        source="https://avatar.iran.liara.run/public"
-      />
+      <Avatar alt="" size="normal" src="https://avatar.iran.liara.run/public" />
+      <Avatar alt="" size="small" src="https://avatar.iran.liara.run/public" />
+      <Avatar alt="" size="medium" src="https://avatar.iran.liara.run/public" />
+      <Avatar alt="" size="large" src="https://avatar.iran.liara.run/public" />
 
       <Avatar
         alt=""
         size="normal"
-        source="https://avatar.iran.liara.run/public"
+        src="https://avatar.iran.liara.run/public"
         rounded
       />
       <Avatar
         alt=""
         size="small"
-        source="https://avatar.iran.liara.run/public"
+        src="https://avatar.iran.liara.run/public"
         rounded
       />
       <Avatar
         alt=""
         size="medium"
-        source="https://avatar.iran.liara.run/public"
+        src="https://avatar.iran.liara.run/public"
         rounded
       />
       <Avatar
         alt=""
         size="large"
-        source="https://avatar.iran.liara.run/public"
+        src="https://avatar.iran.liara.run/public"
         rounded
       />
     </div>
