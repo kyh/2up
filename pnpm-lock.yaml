@@ -361,6 +361,9 @@ importers:
 
   packages/game:
     dependencies:
+      '@2up/api':
+        specifier: workspace:*
+        version: link:../api
       '@2up/db':
         specifier: workspace:*
         version: link:../db

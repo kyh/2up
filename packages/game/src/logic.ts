@@ -1,8 +1,10 @@
+import { SceneAnswerSchema } from "@2up/api/scene/scene-schema";
+
 import type { Database } from "@2up/db/database.types";
 import { calculateScore, compareAnswer } from "./utils";
 
-type SceneWithAnswers = Database["public"]["Tables"]["scenes"]["Row"] & {
-  sceneAnswers: Database["public"]["Tables"]["scene_answers"]["Row"][];
+export type SceneWithAnswers = Database["public"]["Tables"]["scenes"]["Row"] & {
+  sceneAnswers: SceneAnswerSchema[];
 };
 
 export type GameView =
@@ -99,7 +101,7 @@ const gameActions = {
   submit: (action: ServerAction, state: GameState) => {
     const currentScene = state.scenes[state.currentSceneIndex]!;
     const correctAnswer = currentScene.sceneAnswers.find(
-      (answer: any) => answer.isCorrect,
+      (answer) => answer.isCorrect,
     )!;
 
     // Update player scores and submissions
@@ -110,7 +112,7 @@ const gameActions = {
 
       const isCorrect = compareAnswer(
         action.payload as string,
-        correctAnswer.answer ?? "",
+        correctAnswer.content ?? "",
       );
 
       const newScore = calculateScore(

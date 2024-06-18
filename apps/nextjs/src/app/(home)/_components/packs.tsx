@@ -18,7 +18,7 @@ export const Discover = ({
       <h2 className="text-2xl">{packSection.title}</h2>
       <div className="space-y-1">
         {packSection.packs.map((pack) => (
-          <PackRow key={pack?.id} pack={pack} />
+          <PackRow key={pack.id} pack={pack} />
         ))}
       </div>
     </section>
@@ -37,7 +37,7 @@ const PackRow = ({ pack }: { pack: Pack }) => {
 
   return (
     <div className="flex w-full items-center justify-between text-sm">
-      {pack?.name}{" "}
+      {pack.name}{" "}
       <button
         className="bg-gray-700 p-2 text-xs"
         onClick={onCreateGame}

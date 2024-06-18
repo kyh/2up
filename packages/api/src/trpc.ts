@@ -6,6 +6,7 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
+import { getSupabaseServerClient } from "@2up/db/supabase-server-client";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -93,7 +94,13 @@ export const createTRPCRouter = t.router;
  * tRPC API. It does not guarantee that a user querying is authorized, but you
  * can still access user session data if they are logged in
  */
-export const publicProcedure = t.procedure;
+export const publicProcedure = t.procedure.use(({ ctx, next }) => {
+  return next({
+    ctx: {
+      adminSupabase: getSupabaseServerClient({ admin: true }),
+    },
+  });
+});
 
 /**
  * Protected (authenticated) procedure

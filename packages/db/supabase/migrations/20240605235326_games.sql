@@ -53,6 +53,7 @@ create table if not exists
     game_scenes jsonb,
     is_started boolean default false not null,
     is_finished boolean default false not null,
+    pack_id uuid references public.packs (id),
     
     updated_at timestamp with time zone,
     created_at timestamp with time zone,

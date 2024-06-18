@@ -24,43 +24,37 @@ const discoverMap = {
   ],
 };
 
-function groupByTags<T extends { tags: string[] | null }>(
-  data: T[],
-): { [key: string]: T[] } {
-  const grouped: Record<string, T[]> = {};
-
-  data.forEach((item) => {
-    item.tags?.forEach((tag) => {
-      if (!grouped[tag]) {
-        grouped[tag] = [];
-      }
-      grouped[tag]?.push(item);
-    });
-  });
-
-  return grouped;
-}
-
 export const packRouter = createTRPCRouter({
   discover: publicProcedure
     .input(z.object({ ref: z.string().optional() }).optional())
     .query(async ({ ctx, input }) => {
-      const adminSupabase = getSupabaseServerClient({ admin: true });
-
       const sections =
         discoverMap[(input?.ref as keyof typeof discoverMap) || "default"];
 
-      const response = await adminSupabase.from("packs").select();
+      const response = await ctx.adminSupabase.from("packs").select();
 
       if (response.error) {
         throw response.error;
       }
 
-      const packsByTag = groupByTags(response.data);
+      const packsByTag = response.data.reduce(
+        (grouped, item) => {
+          item.tags?.forEach((tag) => {
+            if (!grouped[tag]) {
+              grouped[tag] = [];
+            }
+            grouped[tag]?.push(item);
+          });
+          return grouped;
+        },
+        {} as Record<string, typeof response.data>,
+      );
 
       return sections.map((section) => ({
         ...section,
-        packs: section.tags.flatMap((tag) => packsByTag[tag]).filter(Boolean),
+        packs: section.tags
+          .flatMap((tag) => packsByTag[tag])
+          .filter(Boolean) as typeof response.data,
       }));
     }),
 

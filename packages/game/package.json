@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@2up/db": "workspace:*"
+    "@2up/db": "workspace:*",
+    "@2up/api": "workspace:*"
   },
   "devDependencies": {
     "@kyh/eslint-config": "latest",

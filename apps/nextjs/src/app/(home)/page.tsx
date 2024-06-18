@@ -6,6 +6,7 @@ export const runtime = "edge";
 
 const Page = async () => {
   const packsBySection = await api.pack.discover();
+
   return (
     <main className="space-y-5">
       <JoinGameForm />

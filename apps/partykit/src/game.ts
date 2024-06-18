@@ -12,13 +12,13 @@ import type {
 } from "@2up/game";
 
 export default class Server implements Party.Server {
-  private db: SupabaseClient<Database>;
+  private supabase: SupabaseClient<Database>;
   private gameState: GameState;
 
   constructor(readonly party: Party.Party) {
     console.log("Room created:", party.id);
     this.gameState = createGame();
-    this.db = createClient<Database>(
+    this.supabase = createClient<Database>(
       this.party.env.NEXT_PUBLIC_SUPABASE_URL as string,
       this.party.env.SUPABASE_SERVICE_ROLE_KEY as string,
       {
@@ -32,14 +32,16 @@ export default class Server implements Party.Server {
   }
 
   async onStart() {
-    const game = await this.db.game.findFirstOrThrow({
-      where: {
-        code: this.party.id,
-        isActive: true,
-      },
-    });
+    const response = await this.supabase
+      .from("games")
+      .select()
+      .eq("code", this.party.id)
+      .single();
 
-    const scenes = game.scenes as unknown as SceneWithAnswers[];
+    if (response.error || !response.data) {
+      throw response.error;
+    }
+    const scenes = response.data.game_scenes as SceneWithAnswers[];
 
     this.gameState = createGame(scenes ?? []);
   }

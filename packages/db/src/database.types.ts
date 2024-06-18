@@ -645,91 +645,45 @@ export type Database = {
         }
         Relationships: []
       }
-      scene_answers: {
-        Row: {
-          answer: string | null
-          created_at: string | null
-          created_by: string | null
-          id: string
-          is_correct: boolean | null
-          scene_id: string | null
-          updated_at: string | null
-          updated_by: string | null
-        }
-        Insert: {
-          answer?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          id?: string
-          is_correct?: boolean | null
-          scene_id?: string | null
-          updated_at?: string | null
-          updated_by?: string | null
-        }
-        Update: {
-          answer?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          id?: string
-          is_correct?: boolean | null
-          scene_id?: string | null
-          updated_at?: string | null
-          updated_by?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "scene_answers_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "scene_answers_scene_id_fkey"
-            columns: ["scene_id"]
-            isOneToOne: false
-            referencedRelation: "scenes"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "scene_answers_updated_by_fkey"
-            columns: ["updated_by"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       scenes: {
         Row: {
+          answer: Json | null
+          answer_description: string | null
           answer_type: Database["public"]["Enums"]["answer_type"]
           created_at: string | null
           created_by: string | null
           id: string
           pack_id: string | null
           question: string | null
+          question_description: string | null
           question_type: Database["public"]["Enums"]["question_type"]
           updated_at: string | null
           updated_by: string | null
         }
         Insert: {
+          answer?: Json | null
+          answer_description?: string | null
           answer_type?: Database["public"]["Enums"]["answer_type"]
           created_at?: string | null
           created_by?: string | null
           id?: string
           pack_id?: string | null
           question?: string | null
+          question_description?: string | null
           question_type?: Database["public"]["Enums"]["question_type"]
           updated_at?: string | null
           updated_by?: string | null
         }
         Update: {
+          answer?: Json | null
+          answer_description?: string | null
           answer_type?: Database["public"]["Enums"]["answer_type"]
           created_at?: string | null
           created_by?: string | null
           id?: string
           pack_id?: string | null
           question?: string | null
+          question_description?: string | null
           question_type?: Database["public"]["Enums"]["question_type"]
           updated_at?: string | null
           updated_by?: string | null
@@ -884,84 +838,6 @@ export type Database = {
             columns: ["billing_customer_id"]
             isOneToOne: false
             referencedRelation: "billing_customers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      tasks: {
-        Row: {
-          account_id: string
-          created_at: string | null
-          created_by: string | null
-          id: string
-          label: Database["public"]["Enums"]["task_label"]
-          priority: Database["public"]["Enums"]["task_priority"]
-          slug: string | null
-          status: Database["public"]["Enums"]["task_status"]
-          title: string | null
-          updated_at: string | null
-          updated_by: string | null
-        }
-        Insert: {
-          account_id: string
-          created_at?: string | null
-          created_by?: string | null
-          id?: string
-          label?: Database["public"]["Enums"]["task_label"]
-          priority?: Database["public"]["Enums"]["task_priority"]
-          slug?: string | null
-          status?: Database["public"]["Enums"]["task_status"]
-          title?: string | null
-          updated_at?: string | null
-          updated_by?: string | null
-        }
-        Update: {
-          account_id?: string
-          created_at?: string | null
-          created_by?: string | null
-          id?: string
-          label?: Database["public"]["Enums"]["task_label"]
-          priority?: Database["public"]["Enums"]["task_priority"]
-          slug?: string | null
-          status?: Database["public"]["Enums"]["task_status"]
-          title?: string | null
-          updated_at?: string | null
-          updated_by?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "tasks_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "tasks_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "user_account_workspace"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "tasks_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "user_accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "tasks_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "tasks_updated_by_fkey"
-            columns: ["updated_by"]
-            isOneToOne: false
-            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -1305,9 +1181,6 @@ export type Database = {
         | "incomplete"
         | "incomplete_expired"
         | "paused"
-      task_label: "bug" | "feature" | "enhancement" | "documentation"
-      task_priority: "low" | "medium" | "high"
-      task_status: "todo" | "in-progress" | "done" | "canceled"
     }
     CompositeTypes: {
       invitation: {
