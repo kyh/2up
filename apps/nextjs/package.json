@@ -26,6 +26,7 @@
     "@trpc/client": "11.0.0-next-beta.294",
     "@trpc/react-query": "11.0.0-next-beta.294",
     "@trpc/server": "11.0.0-next-beta.294",
+    "partysocket": "1.0.1",
     "next": "^14.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

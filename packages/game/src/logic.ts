@@ -1,11 +1,6 @@
-import { SceneAnswerSchema } from "@2up/api/scene/scene-schema";
+import { SceneSchema } from "@2up/api/scene/scene-schema";
 
-import type { Database } from "@2up/db/database.types";
 import { calculateScore, compareAnswer } from "./utils";
-
-export type SceneWithAnswers = Database["public"]["Tables"]["scenes"]["Row"] & {
-  sceneAnswers: SceneAnswerSchema[];
-};
 
 export type GameView =
   | "lobby"
@@ -15,7 +10,7 @@ export type GameView =
   | "leaderboard";
 
 export type GameState = {
-  scenes: SceneWithAnswers[];
+  scenes: SceneSchema[];
   players: LivePlayer[];
 
   // Scene state
@@ -52,7 +47,7 @@ export type ServerAction = PlayerAction & {
   player: LivePlayer;
 };
 
-export const createGame = (scenes?: SceneWithAnswers[]): GameState => {
+export const createGame = (scenes?: SceneSchema[]): GameState => {
   return {
     scenes: scenes ?? [],
     players: [],
@@ -99,8 +94,10 @@ const gameActions = {
   },
 
   submit: (action: ServerAction, state: GameState) => {
-    const currentScene = state.scenes[state.currentSceneIndex]!;
-    const correctAnswer = currentScene.sceneAnswers.find(
+    const currentScene = state.scenes[state.currentSceneIndex];
+    if (!currentScene) return;
+
+    const correctAnswer = currentScene.answer.find(
       (answer) => answer.isCorrect,
     )!;
 

@@ -8,20 +8,6 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 // type SceneWithAnswers = Scene & { answers: SceneAnswer[] };
 
-// const convertScene = (scene: SceneWithAnswers) => {
-//   return {
-//     questionDescription: scene.questionDescription,
-//     question: scene.question,
-//     questionType: scene.questionType,
-//     answerType: scene.answerType,
-//     sceneAnswers: scene.answers.map((sa) => ({
-//       id: sa.id,
-//       content: sa.content,
-//       isCorrect: sa.isCorrect,
-//     })),
-//   };
-// };
-
 export const gameRouter = createTRPCRouter({
   check: publicProcedure
     .input(z.object({ gameCode: z.string() }))
@@ -41,7 +27,7 @@ export const gameRouter = createTRPCRouter({
   create: publicProcedure
     .input(z.object({ packId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const response = await ctx.adminSupabase
+      const packsResponse = await ctx.adminSupabase
         .from("packs")
         .select(
           `
@@ -65,33 +51,31 @@ export const gameRouter = createTRPCRouter({
         )
       `,
         )
-        .eq("id", input.packId);
+        .eq("id", input.packId)
+        .single();
 
-      if (response.error) {
-        throw response.error;
+      if (packsResponse.error) {
+        throw packsResponse.error;
       }
 
-      const pack = response.data[0];
-
-      if (!pack) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Invalid packId.",
-        });
-      }
-
-      const game = await ctx.adminSupabase
+      const gamesResponse = await ctx.adminSupabase
         .from("games")
         .insert({
           code: generateGameCode(),
           history: [],
-          game_scenes: sampleSize(pack.scenes, pack.game_length),
+          game_scenes: sampleSize(
+            packsResponse.data.scenes,
+            packsResponse.data.game_length,
+          ),
           pack_id: input.packId,
         })
-        .select("*");
+        .select()
+        .single();
 
-      console.log("game", game);
+      if (gamesResponse.error) {
+        throw gamesResponse.error;
+      }
 
-      return game;
+      return objectToCamel(gamesResponse.data);
     }),
 });

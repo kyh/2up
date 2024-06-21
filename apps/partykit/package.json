@@ -12,6 +12,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@2up/api": "workspace:*",
     "@2up/db": "workspace:*",
     "@2up/game": "workspace:*"
   },
