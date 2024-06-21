@@ -14,7 +14,7 @@ export function RolesDataProvider(props: {
 
   if (retrieveQuery.isLoading) {
     return (
-      <div className={"flex flex-col items-center justify-center space-y-4"}>
+      <div className={"flex flex-col items-center justify-center p-4"}>
         <Spinner />
       </div>
     );

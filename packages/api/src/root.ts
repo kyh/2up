@@ -1,5 +1,6 @@
 import { accountRouter } from "./account/account-router";
 import { authRouter } from "./auth/auth-router";
+import { billingRouter } from "./billing/billing-router";
 import { roleRouter } from "./role/role-router";
 import { storageRouter } from "./storage/storage-router";
 import { taskRouter } from "./task/task-router";
@@ -10,6 +11,7 @@ import { waitlistRouter } from "./waitlist/waitlist-router";
 export const appRouter = createTRPCRouter({
   auth: authRouter,
   account: accountRouter,
+  billing: billingRouter,
   role: roleRouter,
   storage: storageRouter,
   task: taskRouter,
