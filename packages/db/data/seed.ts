@@ -23,12 +23,6 @@ const client = createClient<Database>(keys.url, serviceRoleKey, {
 
 const packs = [
   {
-    name: "Example Pack",
-    description: "Example Pack Description",
-    sceneData: "example.csv",
-    tags: ["example"],
-  },
-  {
     name: "So you think you can AWS?",
     description: "If AWS certification were like a drivers test",
     sceneData: "aws.csv",
@@ -94,9 +88,10 @@ async function main() {
           description: pack.description,
           tags: pack.tags,
         })
-        .select();
+        .select()
+        .single();
 
-      const createdPackId = createdPack?.[0].id;
+      const createdPackId = createdPack?.id;
 
       if (!createdPackId || createPackError) {
         throw createPackError;
@@ -128,53 +123,48 @@ const getDataPath = (file: string) => {
 };
 
 type SceneRecord = {
-  external_id: string;
-  question_description: string;
-  question_type: Database["public"]["Enums"]["question_type"];
+  externalId: string;
+  questionDescription: string;
+  questionType: Database["public"]["Enums"]["question_type"];
   question: string;
-  answer: { is_correct: boolean; content: string }[];
-  answer_type: Database["public"]["Enums"]["answer_type"];
-  answer_description: string;
+  answer: { isCorrect: boolean; content: string }[];
+  answerType: Database["public"]["Enums"]["answer_type"];
+  answerDescription: string;
 };
 
 const processCsv = async (input: string) => {
   const records: SceneRecord[] = [];
-  const parser = createReadStream(input).pipe(
-    parse({
-      columns: true,
-    }),
-  );
+  const parser = createReadStream(input).pipe(parse({ columns: true }));
 
   parser.on("readable", () => {
     let record;
     while ((record = parser.read()) !== null) {
-      // handle answerTypes
-      if (record.answerType === "multiText") {
-        record.answer = record.answer
-          .split("-")
-          .filter(Boolean)
-          .map((a: string) => {
-            const isCorrect = a.includes("(correct)");
-            return {
-              content: a.replace("(correct)", "").replace("\n", "").trim(),
-              isCorrect,
-            };
-          });
-      }
-
-      if (record.answerType === "text") {
-        record.answer = [{ content: record.answer, isCorrect: true }];
-      }
-
+      record.answer = [{ content: record.answer, isCorrect: true }];
       delete record.externalId;
-
-      records.push(objectToSnake(record as unknown as SceneRecord));
+      records.push(record);
     }
   });
 
   await finished(parser);
 
-  return records;
+  // parse answers
+  const parsed = records.map((record) => {
+    if (record.answerType === "multiText") {
+      const randomScenes = [...records]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3);
+      const otherRandomAnswers = randomScenes.map(
+        (scene) => scene.answer[0].content,
+      );
+      record.answer = record.answer.concat(
+        otherRandomAnswers.map((content) => ({ content, isCorrect: false })),
+      );
+    }
+
+    return record;
+  });
+
+  return objectToSnake(parsed);
 };
 
 main().catch((e) => {
