@@ -1,5 +1,3 @@
-import { getSupabaseServerClient } from "@init/db/supabase-server-client";
-
 import {
   createTRPCRouter,
   publicProcedure,
@@ -12,17 +10,17 @@ export const waitlistRouter = createTRPCRouter({
     return ctx.supabase.from("waitlist").select("*");
   }),
 
-  join: publicProcedure.input(joinWaitlistInput).mutation(async ({ input }) => {
-    // We use the admin client here because the waitlist table is is available to the public
-    const adminSupabase = getSupabaseServerClient({ admin: true });
-    const response = await adminSupabase
-      .from("waitlist")
-      .insert([{ email: input.email }]);
+  join: publicProcedure
+    .input(joinWaitlistInput)
+    .mutation(async ({ ctx, input }) => {
+      const response = await ctx.adminSupabase
+        .from("waitlist")
+        .insert({ email: input.email });
 
-    if (response.error) {
-      throw response.error;
-    }
+      if (response.error) {
+        throw response.error;
+      }
 
-    return response.data;
-  }),
+      return response.data;
+    }),
 });
