@@ -1,6 +1,5 @@
 import type { NextRequest } from "next/server";
 import { appRouter, createTRPCContext } from "@init/api";
-import { getSupabaseServerClient } from "@init/db/supabase-server-client";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 // export const runtime = "edge";
@@ -27,13 +26,11 @@ export const OPTIONS = () => {
 };
 
 const handler = async (req: NextRequest) => {
-  const supabase = getSupabaseServerClient();
-
   const response = await fetchRequestHandler({
     endpoint: "/api/trpc",
     router: appRouter,
     req,
-    createContext: () => createTRPCContext({ headers: req.headers, supabase }),
+    createContext: () => createTRPCContext({ headers: req.headers }),
     onError: ({ error, path }) => {
       console.error(`>>> tRPC Error on '${path}'`, error);
     },

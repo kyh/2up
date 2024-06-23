@@ -1,4 +1,3 @@
-import { getSupabaseServerClient } from "@init/db/supabase-server-client";
 import { addDays, formatISO } from "date-fns";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
@@ -76,8 +75,6 @@ export const teamAccountRouter = createTRPCRouter({
   deleteTeamAccount: protectedProcedure
     .input(deleteTeamAccountInput)
     .mutation(async ({ ctx, input }) => {
-      const adminSupabase = getSupabaseServerClient({ admin: true });
-
       const accountResponse = await ctx.supabase
         .from("accounts")
         .select("id")
@@ -89,7 +86,7 @@ export const teamAccountRouter = createTRPCRouter({
         throw new Error("Account not found");
       }
 
-      const deleteResponse = await adminSupabase
+      const deleteResponse = await ctx.adminSupabase
         .from("accounts")
         .delete()
         .eq("id", input.accountId);
@@ -104,9 +101,7 @@ export const teamAccountRouter = createTRPCRouter({
   leaveTeamAccount: protectedProcedure
     .input(leaveTeamAccountInput)
     .mutation(async ({ ctx, input }) => {
-      const adminSupabase = getSupabaseServerClient({ admin: true });
-
-      const response = await adminSupabase
+      const response = await ctx.adminSupabase
         .from("accounts_memberships")
         .delete()
         .match({
@@ -170,8 +165,6 @@ export const teamAccountRouter = createTRPCRouter({
   updateMemberRole: protectedProcedure
     .input(updateMemberRoleInput)
     .mutation(async ({ ctx, input }) => {
-      const adminSupabase = getSupabaseServerClient({ admin: true });
-
       const { data: canActionAccountMember, error: accountError } =
         await ctx.supabase.rpc("can_action_account_member", {
           target_user_id: input.userId,
@@ -182,7 +175,7 @@ export const teamAccountRouter = createTRPCRouter({
         throw new Error(`Failed to validate permissions to update member role`);
       }
 
-      const response = await adminSupabase
+      const response = await ctx.adminSupabase
         .from("accounts_memberships")
         .update({
           account_role: input.role,
@@ -202,8 +195,6 @@ export const teamAccountRouter = createTRPCRouter({
   transferOwnership: protectedProcedure
     .input(transferOwnershipInput)
     .mutation(async ({ ctx, input }) => {
-      const adminSupabase = getSupabaseServerClient({ admin: true });
-
       const { data: isOwner, error } = await ctx.supabase.rpc(
         "is_account_owner",
         {
@@ -217,7 +208,7 @@ export const teamAccountRouter = createTRPCRouter({
         );
       }
 
-      const response = await adminSupabase.rpc(
+      const response = await ctx.adminSupabase.rpc(
         "transfer_team_account_ownership",
         {
           target_account_id: input.accountId,
