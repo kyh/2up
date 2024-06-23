@@ -259,7 +259,6 @@ export type Database = {
           is_finished: boolean
           is_started: boolean
           pack_id: string | null
-          state: Json | null
           updated_at: string | null
           updated_by: string | null
         }
@@ -273,7 +272,6 @@ export type Database = {
           is_finished?: boolean
           is_started?: boolean
           pack_id?: string | null
-          state?: Json | null
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -287,7 +285,6 @@ export type Database = {
           is_finished?: boolean
           is_started?: boolean
           pack_id?: string | null
-          state?: Json | null
           updated_at?: string | null
           updated_by?: string | null
         }
