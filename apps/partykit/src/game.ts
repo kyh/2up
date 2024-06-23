@@ -15,9 +15,11 @@ import type {
 export default class Server implements Party.Server {
   private supabase: SupabaseClient<Database>;
   private gameState: GameState;
+  private gameId: string;
 
   constructor(readonly party: Party.Party) {
     console.log("Room created:", party.id);
+    this.gameId = "";
     this.gameState = createGame();
     this.supabase = createClient<Database>(
       this.party.env.NEXT_PUBLIC_SUPABASE_URL as string,
@@ -45,6 +47,7 @@ export default class Server implements Party.Server {
 
     const scenes = objectToCamel(response.data.game_scenes as SceneSchema[]);
 
+    this.gameId = response.data.id;
     this.gameState = createGame(scenes);
   }
 
@@ -69,7 +72,10 @@ export default class Server implements Party.Server {
     this.party.broadcast(JSON.stringify(this.gameState));
   }
 
-  onMessage(message: string, sender: Party.Connection<{ player: LivePlayer }>) {
+  async onMessage(
+    message: string,
+    sender: Party.Connection<{ player: LivePlayer }>,
+  ) {
     const player = sender.state?.player;
 
     if (!player) return;
@@ -83,6 +89,11 @@ export default class Server implements Party.Server {
 
     this.gameState = updateGame(action, this.gameState);
     this.party.broadcast(JSON.stringify(this.gameState));
+
+    await this.supabase.rpc("update_game_state", {
+      game_id: this.gameId,
+      game_state: this.gameState,
+    });
   }
 }
 

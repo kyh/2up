@@ -48,7 +48,6 @@ create table if not exists
     id uuid unique not null default extensions.uuid_generate_v4 (),
     
     code text unique,
-    state jsonb,
     history jsonb,
     game_scenes jsonb,
     is_started boolean default false not null,
@@ -62,3 +61,20 @@ create table if not exists
     
     primary key (id)
   );
+
+create or replace function update_game_state(
+    game_id uuid,
+    game_state JSONB
+) returns void as $$
+begin
+    update games
+    set history = 
+        case 
+            when jsonb_typeof(history) = 'array' then history || game_state
+            else jsonb_build_array(history) || game_state
+        end,
+        is_started = (game_state->>'currentView' <> 'lobby'),
+        is_finished = (game_state->>'currentView' = 'leaderboard')
+    where id = game_id;
+end;
+$$ language plpgsql;

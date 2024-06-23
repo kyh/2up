@@ -258,6 +258,7 @@ export type Database = {
           id: string
           is_finished: boolean
           is_started: boolean
+          pack_id: string | null
           state: Json | null
           updated_at: string | null
           updated_by: string | null
@@ -271,6 +272,7 @@ export type Database = {
           id?: string
           is_finished?: boolean
           is_started?: boolean
+          pack_id?: string | null
           state?: Json | null
           updated_at?: string | null
           updated_by?: string | null
@@ -284,6 +286,7 @@ export type Database = {
           id?: string
           is_finished?: boolean
           is_started?: boolean
+          pack_id?: string | null
           state?: Json | null
           updated_at?: string | null
           updated_by?: string | null
@@ -294,6 +297,13 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "games_pack_id_fkey"
+            columns: ["pack_id"]
+            isOneToOne: false
+            referencedRelation: "packs"
             referencedColumns: ["id"]
           },
           {
@@ -1098,6 +1108,13 @@ export type Database = {
         Args: {
           target_account_id: string
           new_owner_id: string
+        }
+        Returns: undefined
+      }
+      update_game_state: {
+        Args: {
+          game_id: string
+          game_state: Json
         }
         Returns: undefined
       }

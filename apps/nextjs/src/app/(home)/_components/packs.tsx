@@ -32,7 +32,7 @@ const PackRow = ({ pack }: { pack: Pack }) => {
   const onCreateGame = async () => {
     if (!pack) return;
     const response = await mutateAsync({ packId: pack.id });
-    // router.push(`/game?code=${response.code}`);
+    router.push(`/game?code=${response.code}`);
   };
 
   return (
