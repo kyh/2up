@@ -1,31 +1,29 @@
 import { generateGameCode } from "@2up/db/uuid";
-import { TRPCError } from "@trpc/server";
 import { sampleSize } from "lodash";
 import { objectToCamel } from "ts-case-convert";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
-
-// type SceneWithAnswers = Scene & { answers: SceneAnswer[] };
+import { checkInput, createInput } from "./game-schema";
 
 export const gameRouter = createTRPCRouter({
-  check: publicProcedure
-    .input(z.object({ gameCode: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      // const game = await ctx.db.game.findFirst({
-      //   where: { code: input.gameCode, isActive: true },
-      // });
-      // if (!game) {
-      //   throw new TRPCError({
-      //     code: "BAD_REQUEST",
-      //     message: "Game not found",
-      //   });
-      // }
-      // return game;
-    }),
+  check: publicProcedure.input(checkInput).mutation(async ({ ctx, input }) => {
+    const response = await ctx.adminSupabase
+      .from("games")
+      .select()
+      .eq("code", input.gameCode)
+      .neq("is_finished", true)
+      .single();
+
+    if (response.error) {
+      throw response.error;
+    }
+
+    return objectToCamel(response.data);
+  }),
 
   create: publicProcedure
-    .input(z.object({ packId: z.string() }))
+    .input(createInput)
     .mutation(async ({ ctx, input }) => {
       const packsResponse = await ctx.adminSupabase
         .from("packs")

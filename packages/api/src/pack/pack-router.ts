@@ -1,36 +1,11 @@
-import { getSupabaseServerClient } from "@2up/db/supabase-server-client";
-import { z } from "zod";
-
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-
-const discoverMap = {
-  producthunt: [
-    { title: "Packs for you", tags: ["product"] },
-    { title: "Featured Packs", tags: ["code"] },
-    { title: "Learn your geography", tags: ["geography"] },
-    { title: "Trending now", tags: ["crypto"] },
-  ],
-  devto: [
-    { title: "Packs for you", tags: ["code"] },
-    { title: "Top played", tags: ["crypto"] },
-    { title: "Learn your geography", tags: ["geography"] },
-    { title: "Trending now", tags: ["product"] },
-  ],
-  default: [
-    { title: "Featured Packs", tags: ["featured"] },
-    { title: "For the hackers", tags: ["code"] },
-    { title: "Trending now", tags: ["product", "crypto"] },
-    { title: "Learn your geography", tags: ["geography"] },
-  ],
-};
+import { discoverInput, getDiscoverSection } from "./pack-schema";
 
 export const packRouter = createTRPCRouter({
   discover: publicProcedure
-    .input(z.object({ ref: z.string().optional() }).optional())
+    .input(discoverInput)
     .query(async ({ ctx, input }) => {
-      const sections =
-        discoverMap[(input?.ref as keyof typeof discoverMap) || "default"];
-
+      const sections = getDiscoverSection(input?.ref);
       const response = await ctx.adminSupabase.from("packs").select();
 
       if (response.error) {
@@ -59,13 +34,7 @@ export const packRouter = createTRPCRouter({
     }),
 
   all: publicProcedure.query(async ({ ctx, input }) => {
-    const response = await ctx.supabase.from("packs").select();
-
-    if (response.error) {
-      throw response.error;
-    }
-
-    return response.data;
+    return;
   }),
 
   byId: publicProcedure.query(async ({ ctx, input }) => {
@@ -80,9 +49,7 @@ export const packRouter = createTRPCRouter({
     return;
   }),
 
-  delete: protectedProcedure
-    .input(z.object({ id: z.string() }))
-    .mutation(() => {
-      return;
-    }),
+  delete: protectedProcedure.mutation(() => {
+    return;
+  }),
 });

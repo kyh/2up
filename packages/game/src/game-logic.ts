@@ -1,6 +1,6 @@
 import { SceneSchema } from "@2up/api/scene/scene-schema";
 
-import { calculateScore, compareAnswer } from "./utils";
+import { calculateScore, compareAnswer } from "./game-utils";
 
 export type GameView =
   | "lobby"

@@ -1,2 +1,2 @@
-export * from "./logic";
-export * from "./utils";
+export * from "./game-logic";
+export * from "./game-utils";

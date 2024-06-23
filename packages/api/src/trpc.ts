@@ -11,9 +11,6 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import type { Database } from "@2up/db/database.types";
-import type { SupabaseClient } from "@supabase/supabase-js";
-
 /**
  * 1. CONTEXT
  *
@@ -26,19 +23,15 @@ import type { SupabaseClient } from "@supabase/supabase-js";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: {
-  headers: Headers;
-  supabase: SupabaseClient<Database>;
-}) => {
+export const createTRPCContext = async (opts: { headers: Headers }) => {
+  const supabase = getSupabaseServerClient();
   // React Native will pass their token through headers,
   // browsers will have the session cookie set
   const token = opts.headers.get("authorization");
 
   const { data } = token
-    ? await opts.supabase.auth.getUser(token)
-    : await opts.supabase.auth.getUser();
-
-  const supabase = opts.supabase;
+    ? await supabase.auth.getUser(token)
+    : await supabase.auth.getUser();
 
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
 
