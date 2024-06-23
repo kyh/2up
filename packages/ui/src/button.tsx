@@ -73,7 +73,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           >
             <Spinner />
           </div>
-          <div className={cn("transition", loading && "opacity-0")}>
+          <div
+            className={cn(
+              "flex items-center justify-center transition",
+              loading && "opacity-0",
+            )}
+          >
             {children}
           </div>
         </div>
