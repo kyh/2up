@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { Database } from "@init/db/database.types";
 import { Input } from "@init/ui/input";
 import {
@@ -17,13 +17,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import { api } from "@/trpc/react";
 import { getColumns } from "./account-members-table-columns";
 
 type Members =
   Database["public"]["Functions"]["get_account_members"]["Returns"];
 
 interface AccountMembersTableProps {
-  members: Members;
+  slug: string;
+  membersPromise: Promise<Members>;
   currentUserId: string;
   currentAccountId: string;
   userRoleHierarchy: number;
@@ -32,7 +34,8 @@ interface AccountMembersTableProps {
 }
 
 export function AccountMembersTable({
-  members,
+  slug,
+  membersPromise,
   currentUserId,
   currentAccountId,
   isPrimaryOwner,
@@ -40,6 +43,14 @@ export function AccountMembersTable({
   canManageRoles,
 }: AccountMembersTableProps) {
   const [search, setSearch] = useState("");
+
+  const initialData = use(membersPromise);
+  const { data: members } = api.teamAccount.members.useQuery(
+    { slug },
+    {
+      initialData,
+    },
+  );
 
   const permissions = {
     canUpdateRole: (targetRole: number) => {
@@ -65,27 +76,31 @@ export function AccountMembersTable({
     [permissions, currentUserId, currentAccountId, userRoleHierarchy],
   );
 
-  const filteredMembers = members
-    .filter((member) => {
-      const searchString = search.toLowerCase();
-      const displayName = member.name ?? member.email.split("@")[0];
+  const filteredMembers = React.useMemo(
+    () =>
+      members
+        .filter((member) => {
+          const searchString = search.toLowerCase();
+          const displayName = member.name ?? member.email.split("@")[0];
 
-      return (
-        displayName.includes(searchString) ||
-        member.role.toLowerCase().includes(searchString)
-      );
-    })
-    .sort((prev, next) => {
-      if (prev.primary_owner_user_id === prev.user_id) {
-        return -1;
-      }
+          return (
+            displayName.includes(searchString) ||
+            member.role.toLowerCase().includes(searchString)
+          );
+        })
+        .sort((prev, next) => {
+          if (prev.primary_owner_user_id === prev.user_id) {
+            return -1;
+          }
 
-      if (prev.role_hierarchy_level < next.role_hierarchy_level) {
-        return -1;
-      }
+          if (prev.role_hierarchy_level < next.role_hierarchy_level) {
+            return -1;
+          }
 
-      return 1;
-    });
+          return 1;
+        }),
+    [members],
+  );
 
   const table = useReactTable({
     data: filteredMembers,

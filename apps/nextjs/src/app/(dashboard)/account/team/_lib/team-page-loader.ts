@@ -16,13 +16,12 @@ export async function loadTeamPagePageData() {
     return redirect("/account");
   }
 
-  const members = await api.teamAccount.members({ slug });
   const invitations = await api.teamAccount.invitations({ slug });
 
   return {
     account,
     user,
-    members: members ?? [],
+    slug,
     invitations: invitations ?? [],
   };
 }
