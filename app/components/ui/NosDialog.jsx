@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import clsx from "clsx";
 
 import CornerShapes from "./Corners";
-import NosBtn from "./NosBtn";
+import { NosBtn } from "./NosBtn";
 
 export default function Dialog({
-  type,
+  variant,
   label,
   alert,
   onConfirm,
@@ -30,18 +30,18 @@ export default function Dialog({
     dark: "text-light bg-dark",
   };
 
-  var classes = typeClassMap[type] || typeClassMap.normal;
+  var classes = typeClassMap[variant] || typeClassMap.normal;
 
   const borders = {
     normal: "border-4 border-dark ",
     dark: "border-4 border-light ",
   };
 
-  var bordersclasses = borders[type] || borders.normal;
+  var bordersclasses = borders[variant] || borders.normal;
 
   return (
     <div>
-      <NosBtn type="primary" block={block} onClick={handleOpenDialog}>
+      <NosBtn variant="primary" block={block} onClick={handleOpenDialog}>
         {label}
       </NosBtn>
 
@@ -58,23 +58,23 @@ export default function Dialog({
             <p className="max-w-sm">Alert: {alert}</p>
 
             <div className="flex justify-center gap-2">
-              <NosBtn type="normal" onClick={handleCloseDialog}>
+              <NosBtn variant="normal" onClick={handleCloseDialog}>
                 Cancel
               </NosBtn>
 
-              <NosBtn type="primary" onClick={onConfirm}>
+              <NosBtn variant="primary" onClick={onConfirm}>
                 Confirm
               </NosBtn>
             </div>
 
             {rounded &&
-              (type === "dark" ? (
+              (variant === "dark" ? (
                 <>
-                  <CornerShapes type="dark" />
+                  <CornerShapes variant="dark" />
                 </>
               ) : (
                 <>
-                  <CornerShapes type="light" />
+                  <CornerShapes variant="light" />
                 </>
               ))}
           </div>

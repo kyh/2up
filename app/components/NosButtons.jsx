@@ -1,6 +1,6 @@
 import React from "react";
 
-import NosBtn from "./ui/NosBtn";
+import { NosBtn } from "./ui/NosBtn";
 
 export default function Buttons() {
   return (
@@ -9,19 +9,19 @@ export default function Buttons() {
         Buttons
       </span>
 
-      <NosBtn type="normal">normal</NosBtn>
+      <NosBtn variant="normal">normal</NosBtn>
 
-      <NosBtn type="primary">primary</NosBtn>
+      <NosBtn variant="primary">primary</NosBtn>
 
-      <NosBtn type="success">success</NosBtn>
+      <NosBtn variant="success">success</NosBtn>
 
-      <NosBtn type="warning">warning</NosBtn>
+      <NosBtn variant="warning">warning</NosBtn>
 
-      <NosBtn type="error">error</NosBtn>
+      <NosBtn variant="error">error</NosBtn>
 
-      <NosBtn type="disabled">disabled</NosBtn>
+      <NosBtn variant="disabled">disabled</NosBtn>
 
-      <NosBtn type="file">select your file</NosBtn>
+      <NosBtn variant="file">select your file</NosBtn>
     </div>
   );
 }
