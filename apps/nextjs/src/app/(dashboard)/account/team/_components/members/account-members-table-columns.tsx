@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Database } from "@init/db/database.types";
+import { RouterOutputs } from "@init/api";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
 import {
@@ -20,8 +20,7 @@ import { RemoveMemberDialog } from "./remove-member-dialog";
 import { TransferOwnershipDialog } from "./transfer-ownership-dialog";
 import { UpdateMemberRoleDialog } from "./update-member-role-dialog";
 
-type Members =
-  Database["public"]["Functions"]["get_account_members"]["Returns"];
+type Members = RouterOutputs["team"]["members"];
 
 interface Permissions {
   canUpdateRole: (roleHierarchy: number) => boolean;

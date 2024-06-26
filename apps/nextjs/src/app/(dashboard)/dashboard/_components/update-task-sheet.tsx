@@ -3,13 +3,13 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RouterOutputs } from "@init/api";
 import {
   TaskLabels,
   TaskPriorites,
   TaskStatuses,
   updateInput,
 } from "@init/api/task/task-schema";
-import { Database } from "@init/db/database.types";
 import { Button } from "@init/ui/button";
 import {
   Form,
@@ -43,7 +43,7 @@ import { useForm } from "react-hook-form";
 import type { UpdateInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Task = RouterOutputs["task"]["retrieve"]["data"][0];
 
 interface UpdateTaskSheetProps
   extends React.ComponentPropsWithRef<typeof Sheet> {

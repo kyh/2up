@@ -6,7 +6,7 @@ import { UpdateTeamAccountImage } from "./_components/update-team-account-image-
 import { UpdateTeamAccountNameForm } from "./_components/update-team-account-name-form";
 
 async function Page({ params }: { params: { slug: string } }) {
-  const { account } = await api.teamAccount.teamWorkspace({
+  const { account } = await api.team.teamWorkspace({
     slug: params.slug,
   });
 

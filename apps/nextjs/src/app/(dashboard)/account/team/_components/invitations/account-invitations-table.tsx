@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Database } from "@init/db/database.types";
+import { RouterOutputs } from "@init/api";
 import { Input } from "@init/ui/input";
 import {
   Table,
@@ -19,8 +19,7 @@ import {
 
 import { getColumns } from "./account-invitations-table-columns";
 
-type Invitations =
-  Database["public"]["Functions"]["get_account_invitations"]["Returns"];
+type Invitations = RouterOutputs["team"]["invitations"];
 
 type AccountInvitationsTableProps = {
   invitations: Invitations;
