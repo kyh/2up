@@ -1,6 +1,7 @@
 import { accountRouter } from "./account/account-router";
 import { adminRouter } from "./admin/admin-router";
 import { authRouter } from "./auth/auth-router";
+import { billingRouter } from "./billing/billing-router";
 import { roleRouter } from "./role/role-router";
 import { storageRouter } from "./storage/storage-router";
 import { taskRouter } from "./task/task-router";
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   admin: adminRouter,
   auth: authRouter,
   account: accountRouter,
+  billing: billingRouter,
   role: roleRouter,
   storage: storageRouter,
   task: taskRouter,
