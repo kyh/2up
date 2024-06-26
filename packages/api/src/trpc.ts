@@ -124,6 +124,10 @@ export const superAdminProcedure = t.procedure.use(({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
+  if (!ctx.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
   return next({
     ctx: {
       // infers the `user` as non-nullable

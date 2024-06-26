@@ -3,11 +3,8 @@
 import { use } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  GetAccountsInput,
-  getAccountsInput,
-} from "@init/api/admin/admin-schema";
-import { Database } from "@init/db/database.types";
+import { RouterOutputs } from "@init/api";
+import { GetAccountsInput } from "@init/api/admin/admin-schema";
 import { DataTable } from "@init/ui/data-table/data-table";
 import { Form, FormControl, FormField, FormItem } from "@init/ui/form";
 import { Input } from "@init/ui/input";
@@ -27,7 +24,7 @@ import { useDataTable } from "@/hooks/use-data-table";
 import { api } from "@/trpc/react";
 import { getColumns } from "./admin-accounts-table-columns";
 
-type Account = Database["public"]["Tables"]["accounts"]["Row"];
+type Account = RouterOutputs["admin"]["getAccounts"]["data"][0];
 
 const FiltersSchema = z.object({
   type: z.enum(["all", "team", "personal"]),

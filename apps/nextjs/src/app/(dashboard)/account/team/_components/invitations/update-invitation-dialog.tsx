@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { role } from "@init/api/team-account/team-account-schema";
+import { role } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
 import {
   Dialog,
@@ -77,7 +77,7 @@ function UpdateInvitationForm({
   setIsOpen: (isOpen: boolean) => void;
 }>) {
   const router = useRouter();
-  const updateInvitation = api.teamAccount.updateInvitation.useMutation({
+  const updateInvitation = api.team.updateInvitation.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Invite updated successfully");
