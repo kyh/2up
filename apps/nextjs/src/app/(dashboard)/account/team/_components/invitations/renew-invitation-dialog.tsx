@@ -55,7 +55,7 @@ function RenewInvitationForm({
   setIsOpen: (isOpen: boolean) => void;
 }) {
   const router = useRouter();
-  const renewInvitation = api.teamAccount.renewInvitation.useMutation({
+  const renewInvitation = api.team.renewInvitation.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Invite renewed successfully");

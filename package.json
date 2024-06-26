@@ -13,7 +13,8 @@
     "db:start": "pnpm -F db start",
     "db:stop": "pnpm -F db stop",
     "db:reset": "pnpm -F db reset",
-    "db:deploy": "pnpm -F db deploy",
+    "db:push": "pnpm -F db push",
+    "db:migrate": "pnpm -F db migrate",
     "db:typegen": "pnpm -F db typegen",
     "dev": "turbo dev --parallel",
     "dev:nextjs": "turbo dev --filter=@init/nextjs",
@@ -28,12 +29,12 @@
   },
   "devDependencies": {
     "@kyh/prettier-config": "^0.1.8",
-    "@turbo/gen": "^2.0.1",
+    "@turbo/gen": "^2.0.4",
     "dotenv-cli": "^7.4.2",
-    "prettier": "^3.3.1",
-    "tsx": "^4.11.2",
-    "turbo": "^2.0.1",
-    "typescript": "^5.4.5"
+    "prettier": "^3.3.2",
+    "tsx": "^4.15.7",
+    "turbo": "^2.0.4",
+    "typescript": "^5.5.2"
   },
   "prettier": "@kyh/prettier-config"
 }

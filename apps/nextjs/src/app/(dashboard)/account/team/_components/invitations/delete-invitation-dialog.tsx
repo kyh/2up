@@ -53,7 +53,7 @@ function DeleteInvitationForm({
   setIsOpen: (isOpen: boolean) => void;
 }) {
   const router = useRouter();
-  const deleteInvitation = api.teamAccount.deleteInvitation.useMutation({
+  const deleteInvitation = api.team.deleteInvitation.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Invite deleted successfully");

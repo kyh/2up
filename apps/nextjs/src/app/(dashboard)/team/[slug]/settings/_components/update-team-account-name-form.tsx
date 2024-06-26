@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateTeamAccountNameInput } from "@init/api/team-account/team-account-schema";
+import { updateTeamAccountNameInput } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
 import {
   Form,
@@ -24,8 +24,7 @@ export const UpdateTeamAccountNameForm = (props: {
   };
 }) => {
   const router = useRouter();
-  const updateTeamAccountName =
-    api.teamAccount.updateTeamAccountName.useMutation();
+  const updateTeamAccountName = api.team.updateTeamAccountName.useMutation();
   const form = useForm({
     resolver: zodResolver(updateTeamAccountNameInput.omit({ slug: true })),
     defaultValues: {

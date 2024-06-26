@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Database } from "@init/db/database.types";
+import { RouterOutputs } from "@init/api";
 import { Button } from "@init/ui/button";
 import {
   Dialog,
@@ -16,15 +16,14 @@ import {
 } from "@init/ui/dialog";
 import { toast } from "@init/ui/toast";
 import { TrashIcon } from "@radix-ui/react-icons";
-import { type Row } from "@tanstack/react-table";
 
 import { api } from "@/trpc/react";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Tasks = RouterOutputs["task"]["retrieve"]["data"];
 
 interface DeleteTasksDialogProps
   extends React.ComponentPropsWithoutRef<typeof Dialog> {
-  tasks: Row<Task>["original"][];
+  tasks: Tasks;
   showTrigger?: boolean;
   onSuccess?: () => void;
 }

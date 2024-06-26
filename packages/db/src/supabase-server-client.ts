@@ -7,10 +7,7 @@ import { createClient } from "@supabase/supabase-js";
 
 import type { Database } from "./database.types";
 import type { CookieOptions } from "@supabase/ssr";
-import {
-  getServiceRoleKey,
-  warnServiceRoleKeyUsage,
-} from "./get-service-role-key";
+import { getServiceRoleKey } from "./get-service-role-key";
 import { getSupabaseClientKeys } from "./get-supabase-client-keys";
 
 const serviceRoleKey = getServiceRoleKey();
@@ -29,8 +26,6 @@ export const getSupabaseServerClient = <GenericSchema = Database>(
   noStore();
 
   if (params.admin) {
-    warnServiceRoleKeyUsage();
-
     return createClient<GenericSchema>(keys.url, serviceRoleKey, {
       auth: {
         persistSession: false,
