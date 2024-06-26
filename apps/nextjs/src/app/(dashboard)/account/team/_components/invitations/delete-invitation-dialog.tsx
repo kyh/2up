@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -52,12 +51,13 @@ function DeleteInvitationForm({
   invitationId: number;
   setIsOpen: (isOpen: boolean) => void;
 }) {
-  const router = useRouter();
+  const utils = api.useUtils();
+
   const deleteInvitation = api.team.deleteInvitation.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Invite deleted successfully");
-      router.refresh();
+      utils.team.invitations.invalidate();
     },
     onError: () => toast.error("Invite not deleted. Please try again."),
   });

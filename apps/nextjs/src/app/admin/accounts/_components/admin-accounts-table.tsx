@@ -38,14 +38,15 @@ export function AdminAccountsTable(
   }>,
 ) {
   const initialData = use(props.accountsPromise);
-
   const { data } = api.admin.getAccounts.useQuery(props.searchParams, {
     initialData,
   });
 
+  const columns = React.useMemo(() => getColumns(), []);
+
   const { table } = useDataTable({
     data: data.data,
-    columns: getColumns(),
+    columns,
     pageCount: data.pageCount ?? 1,
     // optional props
     defaultSort: "created_at.desc",

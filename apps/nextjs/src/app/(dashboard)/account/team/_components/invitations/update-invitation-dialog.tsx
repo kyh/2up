@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { role } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
@@ -76,12 +75,12 @@ function UpdateInvitationForm({
   userRoleHierarchy: number;
   setIsOpen: (isOpen: boolean) => void;
 }>) {
-  const router = useRouter();
+  const utils = api.useUtils();
   const updateInvitation = api.team.updateInvitation.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Invite updated successfully");
-      router.refresh();
+      utils.team.invitations.invalidate();
     },
     onError: () =>
       toast.error(

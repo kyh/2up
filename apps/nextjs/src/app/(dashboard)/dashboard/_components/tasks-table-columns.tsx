@@ -35,9 +35,9 @@ import { getPriorityIcon, getStatusIcon } from "../_lib/utils";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";
 import { UpdateTaskSheet } from "./update-task-sheet";
 
-type Tasks = RouterOutputs["task"]["retrieve"]["data"];
+type Task = RouterOutputs["task"]["retrieve"]["data"][0];
 
-export function getColumns(): ColumnDef<Tasks[0]>[] {
+export function getColumns(): ColumnDef<Task>[] {
   return [
     {
       id: "select",
@@ -143,11 +143,11 @@ export function getColumns(): ColumnDef<Tasks[0]>[] {
     {
       id: "actions",
       cell: function Cell({ row }) {
-        const router = useRouter();
+        const utils = api.useUtils();
         const updateTask = api.task.update.useMutation({
           onSuccess: () => {
             toast.success("Label updated");
-            router.refresh();
+            utils.task.retrieve.invalidate();
           },
           onError: (error) => toast.error(error.message),
         });
@@ -155,10 +155,6 @@ export function getColumns(): ColumnDef<Tasks[0]>[] {
           React.useState(false);
         const [showDeleteTaskDialog, setShowDeleteTaskDialog] =
           React.useState(false);
-
-        if (updateTask.isPending) {
-          toast.loading("Updating...");
-        }
 
         return (
           <>
