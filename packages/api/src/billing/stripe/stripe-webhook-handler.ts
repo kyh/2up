@@ -1,6 +1,6 @@
-import { Database } from "@init/db/database.types";
 import Stripe from "stripe";
 
+import type { Database } from "@init/db/database.types";
 import { BillingConfig } from "../billing-schema";
 import { getLineItemTypeById } from "../billing-util";
 import { stripeServerEnvSchema } from "./stripe-schema";

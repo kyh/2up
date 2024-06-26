@@ -1,11 +1,11 @@
 import { BillingConfig } from "@init/api/billing/billing-schema";
 import { getProductPlanPairByVariantId } from "@init/api/billing/billing-util";
-import { Database } from "@init/db/database.types";
 import { Alert, AlertDescription, AlertTitle } from "@init/ui/alert";
 import { If } from "@init/ui/if";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { formatDate } from "date-fns";
 
+import type { Database } from "@init/db/database.types";
 import { CurrentPlanAlert } from "./current-plan-alert";
 import { CurrentPlanBadge } from "./current-plan-badge";
 import { LineItemDetails } from "./line-item-details";

@@ -1,4 +1,3 @@
-import { RouterOutputs } from "@init/api";
 import { Alert, AlertDescription, AlertTitle } from "@init/ui/alert";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
@@ -15,6 +14,7 @@ import {
 } from "@init/ui/table";
 import { BadgeX, Ban, ShieldPlus, VenetianMask } from "lucide-react";
 
+import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/server";
 import { AdminBanUserDialog } from "./admin-ban-user-dialog";
 import { AdminDeleteAccountDialog } from "./admin-delete-account-dialog";

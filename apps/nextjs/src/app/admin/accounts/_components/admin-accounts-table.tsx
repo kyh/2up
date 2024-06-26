@@ -3,7 +3,6 @@
 import { use } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RouterOutputs } from "@init/api";
 import { GetAccountsInput } from "@init/api/admin/admin-schema";
 import { DataTable } from "@init/ui/data-table/data-table";
 import { Form, FormControl, FormField, FormItem } from "@init/ui/form";
@@ -20,6 +19,7 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import type { RouterOutputs } from "@init/api";
 import { useDataTable } from "@/hooks/use-data-table";
 import { api } from "@/trpc/react";
 import { getColumns } from "./admin-accounts-table-columns";

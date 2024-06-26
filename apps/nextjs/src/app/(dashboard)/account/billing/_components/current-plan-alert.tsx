@@ -1,5 +1,6 @@
-import { Database } from "@init/db/database.types";
 import { Alert, AlertDescription, AlertTitle } from "@init/ui/alert";
+
+import type { RouterOutputs } from "@init/api";
 
 export function CurrentPlanAlert(
   props: React.PropsWithoutRef<{
