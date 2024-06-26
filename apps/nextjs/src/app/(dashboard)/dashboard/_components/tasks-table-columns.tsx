@@ -2,13 +2,13 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { RouterOutputs } from "@init/api";
 import {
   TaskLabels,
   TaskPriorites,
   TaskStatuses,
 } from "@init/api/task/task-schema";
 import { formatDate } from "@init/api/task/task-util";
-import { Database } from "@init/db/database.types";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
 import { Checkbox } from "@init/ui/checkbox";
@@ -30,15 +30,14 @@ import { toast } from "@init/ui/toast";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { getErrorMessage } from "@/lib/handle-error";
 import { api } from "@/trpc/react";
 import { getPriorityIcon, getStatusIcon } from "../_lib/utils";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";
 import { UpdateTaskSheet } from "./update-task-sheet";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Tasks = RouterOutputs["task"]["retrieve"]["data"];
 
-export function getColumns(): ColumnDef<Task>[] {
+export function getColumns(): ColumnDef<Tasks[0]>[] {
   return [
     {
       id: "select",

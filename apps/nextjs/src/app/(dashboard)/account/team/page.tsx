@@ -9,7 +9,7 @@ import { loadTeamPagePageData } from "./_lib/team-page-loader";
 async function Page() {
   const { account, user, slug, invitations } = await loadTeamPagePageData();
 
-  const membersPromise = api.teamAccount.members({ slug });
+  const membersPromise = api.team.members({ slug });
 
   const canManageRoles = account.permissions.includes("roles.manage");
   const canManageInvitations = account.permissions.includes("invites.manage");

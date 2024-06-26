@@ -9,14 +9,6 @@ import {
 } from "./task-schema";
 
 export const taskRouter = createTRPCRouter({
-  byAccountId: protectedProcedure.input(byAccountIdInput).query(({ ctx }) => {
-    return;
-  }),
-
-  byId: protectedProcedure.input(byIdInput).query(({ ctx, input }) => {
-    return;
-  }),
-
   create: protectedProcedure
     .input(createInput)
     .mutation(async ({ ctx, input }) => {

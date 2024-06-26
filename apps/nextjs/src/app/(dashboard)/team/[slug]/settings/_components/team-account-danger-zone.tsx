@@ -44,7 +44,7 @@ export function TeamAccountDangerZone({
 
   if (!user) {
     return (
-      <div className={"flex flex-col items-center justify-center space-y-4"}>
+      <div className={"flex flex-col items-center justify-center p-4"}>
         <Spinner />
       </div>
     );
@@ -115,7 +115,7 @@ function DeleteTeamConfirmationForm({
   name: string;
   id: string;
 }) {
-  const deleteTeamAccount = api.teamAccount.deleteTeamAccount.useMutation({
+  const deleteTeamAccount = api.team.deleteTeamAccount.useMutation({
     onSuccess: () => {
       toast.success("Team deleted successfully");
     },
@@ -214,7 +214,7 @@ function LeaveTeamContainer(props: {
     id: string;
   };
 }) {
-  const leaveTeamAccount = api.teamAccount.leaveTeamAccount.useMutation({
+  const leaveTeamAccount = api.team.leaveTeamAccount.useMutation({
     onSuccess: () => {
       toast.success("Team left successfully");
     },

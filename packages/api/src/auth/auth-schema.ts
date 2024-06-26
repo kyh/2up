@@ -33,3 +33,8 @@ export const updatePasswordInput = z.object({
   password: z.string(),
 });
 export type UpdatePasswordInput = z.infer<typeof updatePasswordInput>;
+
+export const setSessionInput = z.object({
+  refreshToken: z.string(),
+  accessToken: z.string(),
+});

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { transferOwnershipInput } from "@init/api/team-account/team-account-schema";
+import { transferOwnershipInput } from "@init/api/team/team-schema";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -76,7 +76,7 @@ function TransferOrganizationOwnershipForm({
   setIsOpen: (isOpen: boolean) => void;
 }) {
   const router = useRouter();
-  const transferOwnership = api.teamAccount.transferOwnership.useMutation({
+  const transferOwnership = api.team.transferOwnership.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Ownership transfered successfully");
