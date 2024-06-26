@@ -21,7 +21,9 @@
     "@init/ui": "workspace:latest",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
-    "@next/mdx": "^14.2.4",
+    "@next/mdx": "^14.2.3",
+    "@stripe/react-stripe-js": "^2.7.1",
+    "@stripe/stripe-js": "^3.5.0",
     "@tanstack/react-query": "^5.45.1",
     "@tanstack/react-table": "^8.17.3",
     "@trpc/client": "11.0.0-next-beta.294",
@@ -32,6 +34,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hotkeys-hook": "^4.5.0",
+    "stripe": "^15.9.0",
     "superjson": "^2.2.1",
     "zod": "^3.23.8"
   },
