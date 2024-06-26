@@ -1,4 +1,4 @@
-import { Database } from "@init/db/database.types";
+import { RouterOutputs } from "@init/api";
 import {
   ArrowDownIcon,
   ArrowRightIcon,
@@ -10,7 +10,7 @@ import {
   StopwatchIcon,
 } from "@radix-ui/react-icons";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Task = RouterOutputs["task"]["retrieve"]["data"][0];
 
 /**
  * Returns the appropriate status icon based on the provided status.

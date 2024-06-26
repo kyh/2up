@@ -1,7 +1,7 @@
 "use client";
 
 import React, { use, useState } from "react";
-import { Database } from "@init/db/database.types";
+import { RouterOutputs } from "@init/api";
 import { Input } from "@init/ui/input";
 import {
   Table,
@@ -20,8 +20,7 @@ import {
 import { api } from "@/trpc/react";
 import { getColumns } from "./account-members-table-columns";
 
-type Members =
-  Database["public"]["Functions"]["get_account_members"]["Returns"];
+type Members = RouterOutputs["team"]["members"];
 
 interface AccountMembersTableProps {
   slug: string;
@@ -45,7 +44,7 @@ export function AccountMembersTable({
   const [search, setSearch] = useState("");
 
   const initialData = use(membersPromise);
-  const { data: members } = api.teamAccount.members.useQuery(
+  const { data: members } = api.team.members.useQuery(
     { slug },
     {
       initialData,

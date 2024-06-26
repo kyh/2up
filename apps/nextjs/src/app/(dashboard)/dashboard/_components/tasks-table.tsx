@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Database } from "@init/db/database.types";
+import { RouterOutputs } from "@init/api";
 import { DataTable } from "@init/ui/data-table/data-table";
 import { DataTableToolbar } from "@init/ui/data-table/data-table-toolbar";
 
@@ -9,10 +9,10 @@ import { useDataTable } from "@/hooks/use-data-table";
 import { getColumns } from "./tasks-table-columns";
 import { TasksTableToolbarActions } from "./tasks-table-toolbar-actions";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Tasks = RouterOutputs["task"]["retrieve"]["data"];
 
 interface TasksTableProps {
-  data: Task[];
+  data: Tasks;
   pageCount: number;
 }
 
