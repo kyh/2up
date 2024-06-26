@@ -1,4 +1,4 @@
-import { Database } from "@init/db/database.types";
+import { RouterOutputs } from "@init/api";
 import { Alert, AlertDescription, AlertTitle } from "@init/ui/alert";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
@@ -24,9 +24,8 @@ import { AdminMembersTable } from "./admin-members-table";
 import { AdminMembershipsTable } from "./admin-memberships-table";
 import { AdminReactivateUserDialog } from "./admin-reactivate-user-dialog";
 
-type Db = Database["public"]["Tables"];
-type Account = Db["accounts"]["Row"];
-type Membership = Db["accounts_memberships"]["Row"];
+type Account = RouterOutputs["admin"]["getAccount"];
+type Membership = RouterOutputs["admin"]["getMemberships"][0];
 
 export function AdminAccountPage(props: {
   account: Account & { memberships: Membership[] };

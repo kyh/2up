@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { Database } from "@init/db/database.types";
+import { RouterOutputs } from "@init/api";
 import { ProfileAvatar } from "@init/ui/profile-avatar";
 import {
   Table,
@@ -19,10 +19,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-type Member =
-  Database["public"]["Functions"]["get_account_members"]["Returns"][number];
+type Members = RouterOutputs["admin"]["getMembers"];
 
-export function AdminMembersTable(props: { members: Member[] }) {
+export function AdminMembersTable(props: { members: Members }) {
   const columns = useMemo(() => getColumns(), []);
   const table = useReactTable({
     data: props.members,
@@ -80,7 +79,7 @@ export function AdminMembersTable(props: { members: Member[] }) {
   );
 }
 
-function getColumns(): ColumnDef<Memberships>[] {
+function getColumns(): ColumnDef<Members[0]>[] {
   return [
     {
       header: "User ID",

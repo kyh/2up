@@ -10,13 +10,13 @@ export async function loadTeamPagePageData() {
     return redirect("/account");
   }
 
-  const { account, user } = await api.teamAccount.teamWorkspace({ slug });
+  const { account, user } = await api.team.teamWorkspace({ slug });
 
   if (!account) {
     return redirect("/account");
   }
 
-  const invitations = await api.teamAccount.invitations({ slug });
+  const invitations = await api.team.invitations({ slug });
 
   return {
     account,

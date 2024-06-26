@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { role } from "@init/api/team-account/team-account-schema";
+import { role } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
 import {
   Dialog,
@@ -85,7 +85,7 @@ function UpdateMemberForm({
   roles: Role[];
 }>) {
   const utils = api.useUtils();
-  const updateMemberRole = api.teamAccount.updateMemberRole.useMutation({
+  const updateMemberRole = api.team.updateMemberRole.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Role updated successfully");

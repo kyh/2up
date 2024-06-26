@@ -16,9 +16,9 @@ import {
   updateInvitationInput,
   updateMemberRoleInput,
   updateTeamAccountNameInput,
-} from "./team-account-schema";
+} from "./team-schema";
 
-export const teamAccountRouter = createTRPCRouter({
+export const teamRouter = createTRPCRouter({
   teamWorkspace: protectedProcedure
     .input(teamWorkspaceInput)
     .query(async ({ ctx, input }) => {

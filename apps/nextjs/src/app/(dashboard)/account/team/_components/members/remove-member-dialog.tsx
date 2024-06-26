@@ -58,7 +58,7 @@ function RemoveMemberForm({
   setIsOpen: (isOpen: boolean) => void;
 }) {
   const router = useRouter();
-  const removeMember = api.teamAccount.removeMember.useMutation({
+  const removeMember = api.team.removeMember.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Member removed successfully");

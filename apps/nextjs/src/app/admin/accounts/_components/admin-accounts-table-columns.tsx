@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Database } from "@init/db/database.types";
+import { RouterOutputs } from "@init/api";
 import { Button } from "@init/ui/button";
 import {
   DropdownMenu,
@@ -17,7 +17,7 @@ import { AdminDeleteAccountDialog } from "./admin-delete-account-dialog";
 import { AdminDeleteUserDialog } from "./admin-delete-user-dialog";
 import { AdminImpersonateUserDialog } from "./admin-impersonate-user-dialog";
 
-type Account = Database["public"]["Tables"]["accounts"]["Row"];
+type Account = RouterOutputs["admin"]["getAccounts"]["data"][0];
 
 export function getColumns(): ColumnDef<Account>[] {
   return [

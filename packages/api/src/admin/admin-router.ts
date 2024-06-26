@@ -1,6 +1,4 @@
-import { Database } from "@init/db/database.types";
-
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, superAdminProcedure } from "../trpc";
 import {
   banUserInput,
   deleteAccountInput,
@@ -15,10 +13,8 @@ import {
   reactivateUserInput,
 } from "./admin-schema";
 
-type Membership = Database["public"]["Tables"]["accounts_memberships"]["Row"];
-
 export const adminRouter = createTRPCRouter({
-  getAccount: protectedProcedure
+  getAccount: superAdminProcedure
     .input(getAccountInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase
@@ -33,7 +29,7 @@ export const adminRouter = createTRPCRouter({
 
       return response.data;
     }),
-  getAccounts: protectedProcedure
+  getAccounts: superAdminProcedure
     .input(getAccountsInput)
     .query(async ({ ctx, input }) => {
       const page = input.page ? parseInt(input.page) : 1;
@@ -75,7 +71,7 @@ export const adminRouter = createTRPCRouter({
 
       return { data: response.data, pageCount };
     }),
-  getUserById: protectedProcedure
+  getUserById: superAdminProcedure
     .input(getUserByIdInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase.auth.admin.getUserById(
@@ -88,7 +84,7 @@ export const adminRouter = createTRPCRouter({
 
       return response.data;
     }),
-  getDashboardData: protectedProcedure.mutation(async ({ ctx }) => {
+  getDashboardData: superAdminProcedure.mutation(async ({ ctx }) => {
     const selectParams: {
       head?: boolean;
       count?: "exact" | "estimated" | "planned";
@@ -159,7 +155,7 @@ export const adminRouter = createTRPCRouter({
       teamAccounts,
     };
   }),
-  deleteAccount: protectedProcedure
+  deleteAccount: superAdminProcedure
     .input(deleteAccountInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase
@@ -173,7 +169,7 @@ export const adminRouter = createTRPCRouter({
 
       return response.data;
     }),
-  deleteUser: protectedProcedure
+  deleteUser: superAdminProcedure
     .input(deleteUserInput)
     .mutation(async ({ ctx, input }) => {
       if (ctx.user.id === input.userId) {
@@ -189,7 +185,7 @@ export const adminRouter = createTRPCRouter({
         throw response.error;
       }
     }),
-  impersonateUser: protectedProcedure
+  impersonateUser: superAdminProcedure
     .input(impersonateUserInput)
     .mutation(async ({ ctx, input }) => {
       if (ctx.user.id === input.userId) {
@@ -255,7 +251,7 @@ export const adminRouter = createTRPCRouter({
         refreshToken,
       };
     }),
-  getMembers: protectedProcedure
+  getMembers: superAdminProcedure
     .input(getMembersInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase.rpc("get_account_members", {
@@ -268,20 +264,12 @@ export const adminRouter = createTRPCRouter({
 
       return response.data;
     }),
-  getMemberships: protectedProcedure
+  getMemberships: superAdminProcedure
     .input(getMembershipsInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase
         .from("accounts_memberships")
-        .select<
-          string,
-          Membership & {
-            account: {
-              id: string;
-              name: string;
-            };
-          }
-        >("*, account: account_id !inner (id, name)")
+        .select("*, account: account_id !inner (id, name)")
         .eq("user_id", input.userId);
 
       if (response.error) {
@@ -290,7 +278,7 @@ export const adminRouter = createTRPCRouter({
 
       return response.data;
     }),
-  getSubscription: protectedProcedure
+  getSubscription: superAdminProcedure
     .input(getSubscriptionInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase
@@ -305,7 +293,7 @@ export const adminRouter = createTRPCRouter({
 
       return response.data;
     }),
-  banUser: protectedProcedure
+  banUser: superAdminProcedure
     .input(banUserInput)
     .mutation(async ({ ctx, input }) => {
       if (ctx.user.id === input.userId) {
@@ -317,7 +305,7 @@ export const adminRouter = createTRPCRouter({
         ban_duration: "876600h",
       });
     }),
-  reactivateUser: protectedProcedure
+  reactivateUser: superAdminProcedure
     .input(reactivateUserInput)
     .mutation(async ({ ctx, input }) => {
       if (ctx.user.id === input.userId) {
