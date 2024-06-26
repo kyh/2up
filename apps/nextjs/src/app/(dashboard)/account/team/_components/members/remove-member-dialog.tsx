@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -57,12 +56,12 @@ function RemoveMemberForm({
   userId: string;
   setIsOpen: (isOpen: boolean) => void;
 }) {
-  const router = useRouter();
+  const utils = api.useUtils();
   const removeMember = api.team.removeMember.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Member removed successfully");
-      router.refresh();
+      utils.team.members.invalidate();
     },
     onError: () =>
       toast.error("Sorry, we encountered an error. Please try again"),

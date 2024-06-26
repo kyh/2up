@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   TaskLabels,
@@ -51,14 +50,14 @@ interface UpdateTaskSheetProps
 }
 
 export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
-  const router = useRouter();
+  const utils = api.useUtils();
 
   const updateTask = api.task.update.useMutation({
     onSuccess: () => {
       form.reset();
       props.onOpenChange?.(false);
       toast.success("Task updated");
-      router.refresh();
+      utils.task.retrieve.invalidate();
     },
     onError: (error) => toast.error(error.message),
   });

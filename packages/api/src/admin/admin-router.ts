@@ -32,23 +32,15 @@ export const adminRouter = createTRPCRouter({
   getAccounts: superAdminProcedure
     .input(getAccountsInput)
     .query(async ({ ctx, input }) => {
-      const page = input.page ? parseInt(input.page) : 1;
-      const perPage = input.per_page ? parseInt(input.per_page) : 10;
+      const page = parseInt(input.page);
+      const perPage = parseInt(input.per_page);
+      const offset = (page - 1) * perPage;
 
       let query = ctx.adminSupabase
         .from("accounts")
-        .select("*", { count: "exact" });
-
-      // Offset to paginate the results
-      const offset = (page - 1) * perPage;
-
-      if (perPage) {
-        query = query.limit(perPage);
-      }
-
-      if (offset) {
-        query = query.range(offset, offset + perPage - 1);
-      }
+        .select("*", { count: "exact" })
+        .limit(perPage)
+        .range(offset, offset + perPage - 1);
 
       if (input.account_type && input.account_type !== "all") {
         query = query.eq(
