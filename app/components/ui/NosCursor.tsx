@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from "react";
 import { cva } from "class-variance-authority";
 
-import Balloon from "./NosBalloon";
+import { Balloon } from "./NosBalloon";
 
 interface CursorProps extends HTMLAttributes<HTMLDivElement> {
   type: "normal" | "dark";
@@ -14,7 +14,7 @@ const cursorStyles = cva("cursor-pointer");
 const Cursor = ({ type, from, children, className, ...props }: CursorProps) => {
   return (
     <div className={cursorStyles({ className })} {...props}>
-      <Balloon type={type} from={from}>
+      <Balloon variant={type} from={from}>
         {children}
       </Balloon>
     </div>
