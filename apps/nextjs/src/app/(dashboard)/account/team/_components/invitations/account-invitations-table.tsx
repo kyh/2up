@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { RouterOutputs } from "@init/api";
 import { Input } from "@init/ui/input";
 import {
   Table,
@@ -17,6 +16,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import type { RouterOutputs } from "@init/api";
 import { getColumns } from "./account-invitations-table-columns";
 
 type Invitations = RouterOutputs["team"]["invitations"];

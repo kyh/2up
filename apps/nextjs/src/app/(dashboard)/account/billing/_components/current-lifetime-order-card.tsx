@@ -1,8 +1,8 @@
 import { BillingConfig } from "@init/api/billing/billing-schema";
 import { getProductPlanPairByVariantId } from "@init/api/billing/billing-util";
-import { Database } from "@init/db/database.types";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 
+import type { Database } from "@init/db/database.types";
 import { CurrentPlanBadge } from "./current-plan-badge";
 import { LineItemDetails } from "./line-item-details";
 

@@ -1,4 +1,3 @@
-import { RouterOutputs } from "@init/api";
 import {
   ArrowDownIcon,
   ArrowRightIcon,
@@ -9,6 +8,8 @@ import {
   QuestionMarkCircledIcon,
   StopwatchIcon,
 } from "@radix-ui/react-icons";
+
+import type { RouterOutputs } from "@init/api";
 
 type Task = RouterOutputs["task"]["retrieve"]["data"][0];
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { RouterOutputs } from "@init/api";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
 import {
@@ -15,6 +14,7 @@ import { ProfileAvatar } from "@init/ui/profile-avatar";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 
+import type { RouterOutputs } from "@init/api";
 import { RoleBadge } from "../role-badge";
 import { RemoveMemberDialog } from "./remove-member-dialog";
 import { TransferOwnershipDialog } from "./transfer-ownership-dialog";

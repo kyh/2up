@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { RouterOutputs } from "@init/api";
 import { Button } from "@init/ui/button";
 import {
   DropdownMenu,
@@ -13,6 +12,7 @@ import { If } from "@init/ui/if";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 
+import type { RouterOutputs } from "@init/api";
 import { AdminDeleteAccountDialog } from "./admin-delete-account-dialog";
 import { AdminDeleteUserDialog } from "./admin-delete-user-dialog";
 import { AdminImpersonateUserDialog } from "./admin-impersonate-user-dialog";

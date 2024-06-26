@@ -1,5 +1,6 @@
-import { Database } from "@init/db/database.types";
 import { Badge } from "@init/ui/badge";
+
+import type { Database } from "@init/db/database.types";
 
 type Status =
   | Database["public"]["Enums"]["subscription_status"]

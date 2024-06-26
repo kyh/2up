@@ -1,8 +1,8 @@
 "use client";
 
-import { RouterOutputs } from "@init/api";
 import { type Table } from "@tanstack/react-table";
 
+import type { RouterOutputs } from "@init/api";
 import { CreateTaskDialog } from "./create-task-dialog";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";
 
