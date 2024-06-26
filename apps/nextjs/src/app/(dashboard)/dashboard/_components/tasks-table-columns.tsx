@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { RouterOutputs } from "@init/api";
 import {
   TaskLabels,
   TaskPriorites,
@@ -30,6 +29,7 @@ import { toast } from "@init/ui/toast";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 
+import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 import { getPriorityIcon, getStatusIcon } from "../_lib/utils";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";

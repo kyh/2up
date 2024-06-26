@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RouterOutputs } from "@init/api";
 import {
   TaskLabels,
   TaskPriorites,
@@ -40,6 +39,7 @@ import { Textarea } from "@init/ui/textarea";
 import { toast } from "@init/ui/toast";
 import { useForm } from "react-hook-form";
 
+import type { RouterOutputs } from "@init/api";
 import type { UpdateInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";
 

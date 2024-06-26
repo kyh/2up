@@ -2,7 +2,6 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { RouterOutputs } from "@init/api";
 import { ProfileAvatar } from "@init/ui/profile-avatar";
 import {
   Table,
@@ -18,6 +17,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+
+import type { RouterOutputs } from "@init/api";
 
 type Members = RouterOutputs["admin"]["getMembers"];
 

@@ -2,7 +2,6 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { RouterOutputs } from "@init/api";
 import {
   Table,
   TableBody,
@@ -17,6 +16,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+
+import type { RouterOutputs } from "@init/api";
 
 type Memberships = RouterOutputs["admin"]["getMemberships"];
 
