@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createInput,
@@ -45,15 +44,15 @@ import type { CreateInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";
 
 export function CreateTaskDialog() {
-  const router = useRouter();
   const [open, setOpen] = React.useState(false);
 
+  const utils = api.useUtils();
   const createTask = api.task.create.useMutation({
     onSuccess: () => {
       setOpen(false);
       form.reset();
       toast.success("Task created");
-      router.refresh();
+      utils.task.retrieve.invalidate();
     },
     onError: (error) => toast.error(error.message),
   });
