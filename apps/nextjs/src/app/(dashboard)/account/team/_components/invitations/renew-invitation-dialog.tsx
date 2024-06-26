@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -54,12 +53,12 @@ function RenewInvitationForm({
   invitationId: number;
   setIsOpen: (isOpen: boolean) => void;
 }) {
-  const router = useRouter();
+  const utils = api.useUtils();
   const renewInvitation = api.team.renewInvitation.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Invite renewed successfully");
-      router.refresh();
+      utils.team.invitations.invalidate();
     },
     onError: () =>
       toast.error(

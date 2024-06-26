@@ -5,8 +5,8 @@ export const getAccountInput = z.object({
 });
 
 export const getAccountsInput = z.object({
-  page: z.string().optional(),
-  per_page: z.string().optional(),
+  page: z.string().default("1"),
+  per_page: z.string().default("10"),
   account_type: z.enum(["all", "team", "personal"]).optional(),
   query: z.string().optional(),
 });
