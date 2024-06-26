@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { RouterOutputs } from "@init/api";
 import { DataTable } from "@init/ui/data-table/data-table";
 import { DataTableToolbar } from "@init/ui/data-table/data-table-toolbar";
 
+import type { RouterOutputs } from "@init/api";
 import { useDataTable } from "@/hooks/use-data-table";
 import { getColumns } from "./tasks-table-columns";
 import { TasksTableToolbarActions } from "./tasks-table-toolbar-actions";
