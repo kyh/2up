@@ -16,7 +16,7 @@ const listStyles = cva("list-none text-base text-dark", {
 
 type ListProps = VariantProps<typeof listStyles> &
   React.HTMLAttributes<HTMLUListElement> & {
-    data: string[];
+    data: React.ReactNode[];
   };
 
 export const List = ({ data, variant, ...props }: ListProps) => {
