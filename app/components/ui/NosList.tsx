@@ -2,7 +2,7 @@ import React from "react";
 import { cva, VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 
-const listStyles = cva("text-dark` list-none text-base", {
+const listStyles = cva("list-none text-base text-dark", {
   variants: {
     variant: {
       normal: "text-dark",
