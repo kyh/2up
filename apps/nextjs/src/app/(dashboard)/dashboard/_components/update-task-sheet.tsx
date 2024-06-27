@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   TaskLabels,
@@ -9,7 +8,6 @@ import {
   TaskStatuses,
   updateInput,
 } from "@init/api/task/task-schema";
-import { Database } from "@init/db/database.types";
 import { Button } from "@init/ui/button";
 import {
   Form,
@@ -40,10 +38,11 @@ import { Textarea } from "@init/ui/textarea";
 import { toast } from "@init/ui/toast";
 import { useForm } from "react-hook-form";
 
+import type { RouterOutputs } from "@init/api";
 import type { UpdateInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Task = RouterOutputs["task"]["retrieve"]["data"][0];
 
 interface UpdateTaskSheetProps
   extends React.ComponentPropsWithRef<typeof Sheet> {
@@ -51,14 +50,14 @@ interface UpdateTaskSheetProps
 }
 
 export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
-  const router = useRouter();
+  const utils = api.useUtils();
 
   const updateTask = api.task.update.useMutation({
     onSuccess: () => {
       form.reset();
       props.onOpenChange?.(false);
       toast.success("Task updated");
-      router.refresh();
+      utils.task.retrieve.invalidate();
     },
     onError: (error) => toast.error(error.message),
   });

@@ -1,12 +1,15 @@
 import { If } from "@init/ui/if";
 
+import { api } from "@/trpc/server";
 import { AccountInvitationsTable } from "./_components/invitations/account-invitations-table";
 import { AccountMembersTable } from "./_components/members/account-members-table";
 import { InviteMembersDialogContainer } from "./_components/members/invite-members-dialog-container";
 import { loadTeamPagePageData } from "./_lib/team-page-loader";
 
 async function Page() {
-  const { account, user, members, invitations } = await loadTeamPagePageData();
+  const { account, user, slug, invitations } = await loadTeamPagePageData();
+
+  const membersPromise = api.team.members({ slug });
 
   const canManageRoles = account.permissions.includes("roles.manage");
   const canManageInvitations = account.permissions.includes("invites.manage");
@@ -32,10 +35,11 @@ async function Page() {
               accountSlug={account.slug}
             />
             <AccountMembersTable
+              slug={slug}
               userRoleHierarchy={currentUserRoleHierarchy}
               currentUserId={user.id}
               currentAccountId={account.id}
-              members={members}
+              membersPromise={membersPromise}
               isPrimaryOwner={isPrimaryOwner}
               canManageRoles={canManageRoles}
             />

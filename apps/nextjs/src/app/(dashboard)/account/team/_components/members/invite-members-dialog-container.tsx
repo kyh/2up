@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inviteMembers } from "@init/api/team-account/team-account-schema";
+import { inviteMembers } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
 import {
   Dialog,
@@ -55,7 +55,7 @@ export function InviteMembersDialogContainer({
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const createInvitations = api.teamAccount.sendInvitations.useMutation();
+  const createInvitations = api.team.sendInvitations.useMutation();
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen} modal>

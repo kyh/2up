@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Database } from "@init/db/database.types";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
 import {
@@ -15,13 +14,13 @@ import { ProfileAvatar } from "@init/ui/profile-avatar";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 
+import type { RouterOutputs } from "@init/api";
 import { RoleBadge } from "../role-badge";
 import { DeleteInvitationDialog } from "./delete-invitation-dialog";
 import { RenewInvitationDialog } from "./renew-invitation-dialog";
 import { UpdateInvitationDialog } from "./update-invitation-dialog";
 
-type Invitations =
-  Database["public"]["Functions"]["get_account_invitations"]["Returns"];
+type Invitations = RouterOutputs["team"]["invitations"];
 
 export function getColumns(permissions: {
   canUpdateInvitation: boolean;
