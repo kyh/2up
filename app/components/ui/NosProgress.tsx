@@ -37,7 +37,7 @@ export const Progress = ({ variant, percent, ...props }: ProgressProps) => {
   };
 
   return (
-    <div {...props} className="relative p-1">
+    <div {...props} className="relative w-full p-1">
       <Borders />
       <div
         className={classes}
