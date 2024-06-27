@@ -9,12 +9,12 @@ export default function ProgressComponents() {
         Progress
       </span>
 
-      <Progress type="normal" percent="80" />
-      <Progress type="primary" percent="65" />
-      <Progress type="success" percent="50" />
-      <Progress type="warning" percent="35" />
-      <Progress type="error" percent="20" />
-      <Progress type="pattern" percent="50" />
+      <Progress variant="normal" percent="80" />
+      <Progress variant="primary" percent="65" />
+      <Progress variant="success" percent="50" />
+      <Progress variant="warning" percent="35" />
+      <Progress variant="error" percent="20" />
+      <Progress variant="pattern" percent="50" />
     </div>
   );
 }
