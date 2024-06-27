@@ -4,7 +4,7 @@ import { cva, VariantProps } from "class-variance-authority";
 const borders = cva("pointer-events-none absolute px-3 py-2", {
   variants: {
     variant: {
-      normal: "border-normal",
+      normal: "border-normal-border",
       success: "border-success",
       primary: "border-primary",
       error: "border-error",
