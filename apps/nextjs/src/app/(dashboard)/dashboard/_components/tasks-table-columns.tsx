@@ -8,7 +8,6 @@ import {
   TaskStatuses,
 } from "@init/api/task/task-schema";
 import { formatDate } from "@init/api/task/task-util";
-import { Database } from "@init/db/database.types";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
 import { Checkbox } from "@init/ui/checkbox";
@@ -30,13 +29,13 @@ import { toast } from "@init/ui/toast";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { getErrorMessage } from "@/lib/handle-error";
+import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 import { getPriorityIcon, getStatusIcon } from "../_lib/utils";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";
 import { UpdateTaskSheet } from "./update-task-sheet";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Task = RouterOutputs["task"]["retrieve"]["data"][0];
 
 export function getColumns(): ColumnDef<Task>[] {
   return [
@@ -144,11 +143,11 @@ export function getColumns(): ColumnDef<Task>[] {
     {
       id: "actions",
       cell: function Cell({ row }) {
-        const router = useRouter();
+        const utils = api.useUtils();
         const updateTask = api.task.update.useMutation({
           onSuccess: () => {
             toast.success("Label updated");
-            router.refresh();
+            utils.task.retrieve.invalidate();
           },
           onError: (error) => toast.error(error.message),
         });
@@ -156,10 +155,6 @@ export function getColumns(): ColumnDef<Task>[] {
           React.useState(false);
         const [showDeleteTaskDialog, setShowDeleteTaskDialog] =
           React.useState(false);
-
-        if (updateTask.isPending) {
-          toast.loading("Updating...");
-        }
 
         return (
           <>

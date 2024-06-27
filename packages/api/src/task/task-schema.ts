@@ -39,8 +39,8 @@ export const createInput = z.object({
 export type CreateInput = z.infer<typeof createInput>;
 
 export const retrieveInput = z.object({
-  page: z.number().default(1),
-  perPage: z.number().default(10),
+  page: z.string().default("1"),
+  per_page: z.string().default("10"),
   sort: z.string().default("created_at"),
 });
 export type RetrieveInput = z.infer<typeof retrieveInput>;

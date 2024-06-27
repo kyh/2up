@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createTeamAccountInput } from "@init/api/team-account/team-account-schema";
+import { createTeamAccountInput } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
 import {
   Dialog,
@@ -53,7 +53,7 @@ export function CreateTeamAccountDialog(
 }
 
 function CreateOrganizationAccountForm(props: { onClose: () => void }) {
-  const createTeamAccount = api.teamAccount.createTeamAccount.useMutation({
+  const createTeamAccount = api.team.createTeamAccount.useMutation({
     onSuccess: () => {
       toast.success("Team created successfully");
     },

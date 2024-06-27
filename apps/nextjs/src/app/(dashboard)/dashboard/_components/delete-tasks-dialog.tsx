@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
-import { Database } from "@init/db/database.types";
 import { Button } from "@init/ui/button";
 import {
   Dialog,
@@ -16,15 +14,15 @@ import {
 } from "@init/ui/dialog";
 import { toast } from "@init/ui/toast";
 import { TrashIcon } from "@radix-ui/react-icons";
-import { type Row } from "@tanstack/react-table";
 
+import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Tasks = RouterOutputs["task"]["retrieve"]["data"];
 
 interface DeleteTasksDialogProps
   extends React.ComponentPropsWithoutRef<typeof Dialog> {
-  tasks: Row<Task>["original"][];
+  tasks: Tasks;
   showTrigger?: boolean;
   onSuccess?: () => void;
 }
@@ -35,14 +33,13 @@ export function DeleteTasksDialog({
   onSuccess,
   ...props
 }: DeleteTasksDialogProps) {
-  const router = useRouter();
-
+  const utils = api.useUtils();
   const deleteTask = api.task.delete.useMutation({
     onSuccess: () => {
       props.onOpenChange?.(false);
       toast.success("Tasks deleted");
       onSuccess?.();
-      router.refresh();
+      utils.task.retrieve.invalidate();
     },
     onError: (error) => toast.error(error.message),
   });

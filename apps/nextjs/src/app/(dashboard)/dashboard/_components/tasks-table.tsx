@@ -1,29 +1,37 @@
 "use client";
 
 import * as React from "react";
-import { Database } from "@init/db/database.types";
+import { RetrieveInput } from "@init/api/task/task-schema";
 import { DataTable } from "@init/ui/data-table/data-table";
 import { DataTableToolbar } from "@init/ui/data-table/data-table-toolbar";
 
+import type { RouterOutputs } from "@init/api";
 import { useDataTable } from "@/hooks/use-data-table";
+import { api } from "@/trpc/react";
 import { getColumns } from "./tasks-table-columns";
 import { TasksTableToolbarActions } from "./tasks-table-toolbar-actions";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Tasks = RouterOutputs["task"]["retrieve"];
 
 interface TasksTableProps {
-  data: Task[];
-  pageCount: number;
+  tasksPromise: Promise<Tasks>;
+  searchParams: RetrieveInput;
 }
 
-export function TasksTable({ data, pageCount }: TasksTableProps) {
+export function TasksTable(props: TasksTableProps) {
   // Memoize the columns so they don't re-render on every render
+
+  const initialData = React.use(props.tasksPromise);
+  const { data } = api.task.retrieve.useQuery(props.searchParams, {
+    initialData,
+  });
+
   const columns = React.useMemo(() => getColumns(), []);
 
   const { table } = useDataTable({
-    data,
+    data: data.data,
     columns,
-    pageCount,
+    pageCount: data.pageCount,
     // optional props
     defaultPerPage: 10,
     defaultSort: "created_at.desc",

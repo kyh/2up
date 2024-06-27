@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Database } from "@init/db/database.types";
 import { Input } from "@init/ui/input";
 import {
   Table,
@@ -17,10 +16,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import type { RouterOutputs } from "@init/api";
 import { getColumns } from "./account-invitations-table-columns";
 
-type Invitations =
-  Database["public"]["Functions"]["get_account_invitations"]["Returns"];
+type Invitations = RouterOutputs["team"]["invitations"];
 
 type AccountInvitationsTableProps = {
   invitations: Invitations;

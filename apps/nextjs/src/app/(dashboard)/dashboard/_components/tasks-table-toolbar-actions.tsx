@@ -1,12 +1,12 @@
 "use client";
 
-import { Database } from "@init/db/database.types";
 import { type Table } from "@tanstack/react-table";
 
+import type { RouterOutputs } from "@init/api";
 import { CreateTaskDialog } from "./create-task-dialog";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Task = RouterOutputs["task"]["retrieve"]["data"][0];
 
 interface TasksTableToolbarActionsProps {
   table: Table<Task>;
