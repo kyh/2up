@@ -15,8 +15,8 @@ export default function Texts() {
         Lists
       </span>
 
-      <List type="normal" data={listdata} />
-      <List type="dark" data={listdata} />
+      <List variant="normal" data={listdata} />
+      <List variant="dark" data={listdata} />
     </div>
   );
 }
