@@ -1,6 +1,6 @@
 import React from "react";
 
-import Radio from "./ui/NosRadio";
+import { Radio } from "./ui/NosRadio";
 
 export default function Radios() {
   return (
@@ -9,10 +9,10 @@ export default function Radios() {
         Radios
       </span>
 
-      <Radio name="pass" type="normal" />
+      <Radio name="pass" variant="normal" />
 
       <div className="bg-dark py-5">
-        <Radio name="fail" type="dark" />
+        <Radio name="fail" variant="dark" />
       </div>
     </div>
   );

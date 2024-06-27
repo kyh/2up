@@ -1,55 +1,87 @@
-"use client"
+"use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { cva, VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 
-export default function Radio({ name, type, yes, no, ...props }) {
-  const [checked, setChecked] = useState("yes");
-  const typeClassMap = {
-    normal: "text-dark",
-    dark: "text-light",
+const radioStyles = cva("m-5 cursor-pointer text-base", {
+  variants: {
+    variant: {
+      normal: "group text-dark",
+      dark: "text-light",
+    },
+  },
+  defaultVariants: {
+    variant: "normal",
+  },
+});
+
+type RadioProps = VariantProps<typeof radioStyles> &
+  React.HTMLAttributes<HTMLLabelElement> & {
+    name?: string;
+    yes: React.InputHTMLAttributes<HTMLInputElement>["value"];
+    no: React.InputHTMLAttributes<HTMLInputElement>["value"];
   };
 
+export const Radio = ({
+  name,
+  variant,
+  yes = "Yes",
+  no = "No",
+  ...props
+}: RadioProps) => {
+  const [checked, setChecked] = useState("yes");
   const [isBlinking, setIsBlinking] = useState(false);
+  const specificDivRef = useRef<HTMLDivElement>(null);
+  const classes = radioStyles({ variant });
 
-  useEffect(() => {
-    if (isBlinking) {
-      const blinkIntervalout = setInterval(() => {
-        specificDivRef.current.querySelectorAll(
-          ".animate-custom",
-        )[0].style.opacity = 0;
-      }, 1000);
-      const blinkIntervalin = setInterval(() => {
-        specificDivRef.current.querySelectorAll(
-          ".animate-custom",
-        )[0].style.opacity = 1;
-      }, 2000);
+  const handleClickOutside = (event: MouseEvent) => {
+    if (!event) return;
 
-      return () => {
-        clearInterval(blinkIntervalin);
-        clearInterval(blinkIntervalout);
-      };
-    }
-  }, [isBlinking]);
-
-  const handleClickOutside = (event) => {
     if (
       specificDivRef.current &&
-      !specificDivRef.current.contains(event.target)
+      !specificDivRef.current.contains(event.target as HTMLElement)
     ) {
-      // The click is outside the specific div
-      if (specificDivRef.current.querySelectorAll(".animate-custom")[0]) {
-        specificDivRef.current.querySelectorAll(
-          ".animate-custom",
-        )[0].style.opacity = 1;
-      }
+      const logoDiv = specificDivRef.current?.querySelector(
+        ".animate-custom",
+      ) as HTMLDivElement;
+
+      if (!logoDiv) return;
+
+      logoDiv.style.opacity = "1";
       setIsBlinking(false);
     }
   };
 
   useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
+    if (isBlinking) {
+      const blinkIntervalOut = setInterval(() => {
+        const logoDiv = specificDivRef.current?.querySelector(
+          ".animate-custom",
+        ) as HTMLDivElement;
+        if (!logoDiv) return;
 
+        logoDiv.style.opacity = "0";
+      }, 1000);
+
+      const blinkIntervalIn = setInterval(() => {
+        const logoDiv = specificDivRef.current?.querySelector(
+          ".animate-custom",
+        ) as HTMLDivElement;
+        if (!logoDiv) return;
+
+        logoDiv.style.opacity = "1";
+      }, 2000);
+
+      return () => {
+        clearInterval(blinkIntervalOut);
+        clearInterval(blinkIntervalIn);
+      };
+    }
+  }, [isBlinking, specificDivRef]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
@@ -70,12 +102,8 @@ export default function Radio({ name, type, yes, no, ...props }) {
       6px 12px, 8px 12px, 2px 14px, 4px 14px
     `,
       }}
-    ></div>
+    />
   );
-
-  const specificDivRef = useRef();
-
-  var classes = typeClassMap[type] || typeClassMap.normal;
 
   return (
     <div ref={specificDivRef}>
@@ -86,11 +114,7 @@ export default function Radio({ name, type, yes, no, ...props }) {
           setChecked("yes");
           setIsBlinking(true);
         }}
-        className={clsx(
-          classes,
-          `m-5 cursor-pointer text-base `,
-          type === "dark" ? `` : `group`,
-        )}
+        className={classes}
       >
         <input
           type="radio"
@@ -103,11 +127,12 @@ export default function Radio({ name, type, yes, no, ...props }) {
             isBlinking && `animate-blink`,
           )}
         />
-        <span className={clsx(`relative`)}>
+        <span className="relative">
           {checked === "yes" && logo}
           {yes}
         </span>
       </label>
+
       <label
         {...props}
         htmlFor={name + "no"}
@@ -115,11 +140,7 @@ export default function Radio({ name, type, yes, no, ...props }) {
           setChecked("no");
           setIsBlinking(true);
         }}
-        className={clsx(
-          classes,
-          `m-5 cursor-pointer text-base `,
-          type === "dark" ? `` : `group`,
-        )}
+        className={classes}
       >
         <input
           type="radio"
@@ -132,16 +153,11 @@ export default function Radio({ name, type, yes, no, ...props }) {
             isBlinking && `animate-blink`,
           )}
         />
-        <span className="relative ">
+        <span className="relative">
           {checked === "no" && logo}
           {no}
         </span>
       </label>
     </div>
   );
-}
-
-Radio.defaultProps = {
-  yes: "Yes",
-  no: "No",
 };
