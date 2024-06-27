@@ -1,6 +1,6 @@
 import React from "react";
 
-import List from "./ui/NosList";
+import { List } from "./ui/NosList";
 
 export default function Texts() {
   const listdata = [
@@ -15,8 +15,8 @@ export default function Texts() {
         Lists
       </span>
 
-      <List type="normal" data={listdata} />
-      <List type="dark" data={listdata} />
+      <List variant="normal" data={listdata} />
+      <List variant="dark" data={listdata} />
     </div>
   );
 }
