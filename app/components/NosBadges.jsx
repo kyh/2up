@@ -1,7 +1,7 @@
 import React from "react";
 
 import starticon from "./icons/startIcon";
-import Badge from "./ui/NosBadge";
+import { Badge } from "./ui/NosBadge";
 
 export default function Badges() {
   return (
@@ -10,15 +10,15 @@ export default function Badges() {
         Badges
       </span>
 
-      <Badge type="dark" label="this" />
-      <Badge type="primary" label="is" />
-      <Badge type="success" label="a" />
-      <Badge type="warning" label="great" />
-      <Badge type="error" label="framework!" />
-      <Badge type="dark" type2="primary" label="npm" label2="1.1.0" />
+      <Badge variant="dark" label="this" />
+      <Badge variant="primary" label="is" />
+      <Badge variant="success" label="a" />
+      <Badge variant="warning" label="great" />
+      <Badge variant="error" label="framework!" />
+      <Badge variant="dark" variant2="primary" label="npm" label2="1.1.0" />
       <Badge
-        type="dark"
-        type2="success"
+        variant="dark"
+        variant2="success"
         label="test"
         label2="100%"
         size="normal"
@@ -26,16 +26,16 @@ export default function Badges() {
 
       <div className="relative ml-1">
         <div className="absolute -left-4 -top-3 z-10 h-full w-full ">
-          <Badge type="warning" label={starticon} size="small" />
+          <Badge variant="warning" label={starticon} size="small" />
         </div>
-        <Badge type="primary" label="Icons" size="medium" />
+        <Badge variant="primary" label="Icons" size="medium" />
       </div>
 
       <div className="relative   ml-1">
         <div className="absolute -left-4 -top-3 z-10 h-full w-full ">
-          <Badge type="dark" label="hi" size="small" />
+          <Badge variant="dark" label="hi" size="small" />
         </div>
-        <Badge type="warning" label="text" size="medium" />
+        <Badge variant="warning" label="text" size="medium" />
       </div>
     </div>
   );
