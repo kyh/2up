@@ -1,6 +1,6 @@
 import React from "react";
 
-import Checkbox from "./ui/NosCheckbox";
+import { Checkbox } from "./ui/NosCheckbox";
 
 export default function Checkboxs() {
   return (
@@ -9,10 +9,10 @@ export default function Checkboxs() {
         Checkboxs
       </span>
 
-      <Checkbox name="passw" type="normal" label="Enable" />
+      <Checkbox name="passw" variant="normal" label="Enable" />
 
       <div className="bg-dark py-5">
-        <Checkbox name="failww" type="dark" label="Dark" />
+        <Checkbox name="failww" variant="dark" label="Dark" />
       </div>
     </div>
   );
