@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { cva, VariantProps } from "class-variance-authority";
-import clsx from "clsx";
 
 import Borders from "./Borders";
 
@@ -24,7 +23,7 @@ const selectContainerStyles = cva("", {
   },
 });
 
-const selectLabelStyles = cva("", {
+const selectLabelStyles = cva("flex-grow-1 mr-6 basis-0 text-base", {
   variants: {
     variant: {
       normal: "text-normal-text",
@@ -133,10 +132,7 @@ export const Select = ({
     >
       <label
         htmlFor={name}
-        className={clsx(
-          "flex-grow-1 mr-6 basis-0 text-base",
-          selectLabelStyles({ variant, isInline }),
-        )}
+        className={selectLabelStyles({ variant, isInline })}
       >
         {label}
       </label>
