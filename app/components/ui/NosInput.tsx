@@ -1,6 +1,5 @@
 import React from "react";
 import { cva, VariantProps } from "class-variance-authority";
-import { clsx } from "clsx";
 
 import Borders from "./Borders";
 
@@ -48,6 +47,18 @@ const inputStyles = cva(
   },
 );
 
+const inputLabelStyles = cva("flex-grow-1 mr-6 basis-0 text-base", {
+  variants: {
+    isInline: {
+      true: "mb-4 text-left sm:mb-0 sm:text-right",
+      false: "mb-4 text-left",
+    },
+  },
+  defaultVariants: {
+    isInline: false,
+  },
+});
+
 type InputProps = VariantProps<typeof inputStyles> &
   React.HTMLAttributes<HTMLInputElement> & {
     name: string;
@@ -68,13 +79,7 @@ export const Input = ({
 }: InputProps) => {
   return (
     <div {...props} className={inputContainerStyles({ variant, isInline })}>
-      <label
-        htmlFor={name}
-        className={clsx(
-          `flex-grow-1 mr-6 basis-0 text-base`,
-          isInline ? `mb-4 text-left sm:mb-0 sm:text-right` : `mb-4 text-left`,
-        )}
-      >
+      <label htmlFor={name} className={inputLabelStyles({ isInline })}>
         {label}
       </label>
 
