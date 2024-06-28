@@ -28,11 +28,11 @@ import { useForm } from "react-hook-form";
 
 import { api } from "@/trpc/react";
 
-export function AdminReactivateUserDialog(
+export const AdminReactivateUserDialog = (
   props: React.PropsWithChildren<{
     userId: string;
   }>,
-) {
+) => {
   const reactivateUserAction = api.admin.reactivateUser.useMutation({
     onSuccess: () => {
       toast.success("User reactivated successfully");
@@ -64,13 +64,13 @@ export function AdminReactivateUserDialog(
 
         <Form {...form}>
           <form
-            className={"flex flex-col space-y-8"}
+            className="flex flex-col space-y-8"
             onSubmit={form.handleSubmit((data) => {
               return reactivateUserAction.mutate(data);
             })}
           >
             <FormField
-              name={"confirmation"}
+              name="confirmation"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
@@ -80,8 +80,8 @@ export function AdminReactivateUserDialog(
                   <FormControl>
                     <Input
                       required
-                      pattern={"CONFIRM"}
-                      placeholder={"Type CONFIRM to confirm"}
+                      pattern="CONFIRM"
+                      placeholder="Type CONFIRM to confirm"
                       {...field}
                     />
                   </FormControl>
@@ -98,11 +98,11 @@ export function AdminReactivateUserDialog(
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-              <Button type={"submit"}>Reactivate User</Button>
+              <Button type="submit">Reactivate User</Button>
             </AlertDialogFooter>
           </form>
         </Form>
       </AlertDialogContent>
     </AlertDialog>
   );
-}
+};

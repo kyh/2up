@@ -14,37 +14,35 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@edge-csrf/nextjs": "^2.2.0",
+    "@edge-csrf/nextjs": "^2.2.2",
     "@init/api": "workspace:latest",
     "@init/db": "workspace:latest",
     "@init/mdx": "workspace:latest",
     "@init/ui": "workspace:latest",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
-    "@next/mdx": "^14.2.3",
-    "@stripe/react-stripe-js": "^2.7.1",
+    "@next/mdx": "^14.2.4",
+    "@stripe/react-stripe-js": "^2.7.2",
     "@stripe/stripe-js": "^3.5.0",
-    "@tanstack/react-query": "^5.45.1",
+    "@tanstack/react-query": "^5.48.0",
     "@tanstack/react-table": "^8.17.3",
     "@trpc/client": "11.0.0-next-beta.294",
     "@trpc/react-query": "11.0.0-next-beta.294",
     "@trpc/server": "11.0.0-next-beta.294",
-    "lucide-react": "^0.395.0",
     "next": "^14.2.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hotkeys-hook": "^4.5.0",
-    "stripe": "^15.9.0",
     "superjson": "^2.2.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@init/tailwind-config": "workspace:latest",
-    "@kyh/eslint-config": "^0.1.8",
-    "@kyh/prettier-config": "^0.1.8",
-    "@kyh/tsconfig": "^0.1.8",
+    "@kyh/eslint-config": "^0.1.9",
+    "@kyh/prettier-config": "^0.1.9",
+    "@kyh/tsconfig": "^0.1.9",
     "@types/mdx": "^2.0.13",
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.14.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "eslint": "^8.57.0",
@@ -58,7 +56,16 @@
       "@kyh/eslint-config/base",
       "@kyh/eslint-config/nextjs",
       "@kyh/eslint-config/react"
-    ]
+    ],
+    "rules": {
+      "react/jsx-curly-brace-presence": [
+        "error",
+        {
+          "props": "never",
+          "children": "never"
+        }
+      ]
+    }
   },
   "prettier": "@kyh/prettier-config"
 }

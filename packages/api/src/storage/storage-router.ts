@@ -36,12 +36,12 @@ export const storageRouter = createTRPCRouter({
     }),
 });
 
-async function getAvatarFileName(
+const getAvatarFileName = async (
   userId: string,
   extension: string | undefined,
-) {
+) => {
   const { nanoid } = await import("nanoid");
   const uniqueId = nanoid(16);
 
   return `${userId}.${extension}?v=${uniqueId}`;
-}
+};

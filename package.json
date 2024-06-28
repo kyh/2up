@@ -2,9 +2,9 @@
   "name": "init",
   "private": true,
   "engines": {
-    "node": ">=20.12.2"
+    "node": ">=20.15.0"
   },
-  "packageManager": "pnpm@9.1.4",
+  "packageManager": "pnpm@9.4.0",
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
@@ -28,12 +28,12 @@
     "ui:add": "pnpm -F ui ui:add"
   },
   "devDependencies": {
-    "@kyh/prettier-config": "^0.1.8",
-    "@turbo/gen": "^2.0.4",
+    "@kyh/prettier-config": "^0.1.9",
+    "@turbo/gen": "^2.0.5",
     "dotenv-cli": "^7.4.2",
     "prettier": "^3.3.2",
     "tsx": "^4.15.7",
-    "turbo": "^2.0.4",
+    "turbo": "^2.0.5",
     "typescript": "^5.5.2"
   },
   "prettier": "@kyh/prettier-config"

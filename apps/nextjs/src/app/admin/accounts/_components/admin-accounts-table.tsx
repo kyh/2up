@@ -1,9 +1,8 @@
 "use client";
 
-import { use } from "react";
+import { use, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GetAccountsInput } from "@init/api/admin/admin-schema";
 import { DataTable } from "@init/ui/data-table/data-table";
 import { Form, FormControl, FormField, FormItem } from "@init/ui/form";
 import { Input } from "@init/ui/input";
@@ -20,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import type { RouterOutputs } from "@init/api";
+import type { GetAccountsInput } from "@init/api/admin/admin-schema";
 import { useDataTable } from "@/hooks/use-data-table";
 import { api } from "@/trpc/react";
 import { getColumns } from "./admin-accounts-table-columns";
@@ -31,18 +31,18 @@ const FiltersSchema = z.object({
   query: z.string().optional(),
 });
 
-export function AdminAccountsTable(
+export const AdminAccountsTable = (
   props: React.PropsWithChildren<{
     searchParams: GetAccountsInput;
     accountsPromise: Promise<{ data: Account[]; pageCount: number }>;
   }>,
-) {
+) => {
   const initialData = use(props.accountsPromise);
   const { data } = api.admin.getAccounts.useQuery(props.searchParams, {
     initialData,
   });
 
-  const columns = React.useMemo(() => getColumns(), []);
+  const columns = useMemo(() => getColumns(), []);
 
   const { table } = useDataTable({
     data: data.data,
@@ -53,7 +53,7 @@ export function AdminAccountsTable(
   });
 
   return (
-    <div className={"flex flex-col space-y-4"}>
+    <div className="flex flex-col space-y-4">
       <AccountsTableFilters
         filters={{ type: props.searchParams.account_type ?? "all" }}
       />
@@ -61,15 +61,15 @@ export function AdminAccountsTable(
       <DataTable table={table} />
     </div>
   );
-}
+};
 
-function AccountsTableFilters(props: {
+const AccountsTableFilters = (props: {
   filters: z.infer<typeof FiltersSchema>;
-}) {
+}) => {
   const form = useForm({
     resolver: zodResolver(FiltersSchema),
     defaultValues: {
-      type: props.filters?.type ?? "all",
+      type: props.filters.type ?? "all",
       query: "",
     },
     mode: "onChange",
@@ -91,11 +91,11 @@ function AccountsTableFilters(props: {
   };
 
   return (
-    <div className={"flex items-center justify-between space-x-4"}>
-      <div className={"flex space-x-4"}>
+    <div className="flex items-center justify-between space-x-4">
+      <div className="flex space-x-4">
         <Form {...form}>
           <form
-            className={"flex space-x-4"}
+            className="flex space-x-4"
             onSubmit={form.handleSubmit((data) => onSubmit(data))}
           >
             <Select
@@ -115,28 +115,28 @@ function AccountsTableFilters(props: {
               }}
             >
               <SelectTrigger>
-                <SelectValue placeholder={"Account Type"} />
+                <SelectValue placeholder="Account Type" />
               </SelectTrigger>
 
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Account Type</SelectLabel>
 
-                  <SelectItem value={"all"}>All accounts</SelectItem>
-                  <SelectItem value={"team"}>Team</SelectItem>
-                  <SelectItem value={"personal"}>Personal</SelectItem>
+                  <SelectItem value="all">All accounts</SelectItem>
+                  <SelectItem value="team">Team</SelectItem>
+                  <SelectItem value="personal">Personal</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
 
             <FormField
-              name={"query"}
+              name="query"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl className={"w-full min-w-36 md:min-w-72"}>
+                  <FormControl className="w-full min-w-36 md:min-w-72">
                     <Input
-                      className={"w-full"}
-                      placeholder={`Search account...`}
+                      className="w-full"
+                      placeholder="Search account..."
                       {...field}
                     />
                   </FormControl>
@@ -148,4 +148,4 @@ function AccountsTableFilters(props: {
       </div>
     </div>
   );
-}
+};

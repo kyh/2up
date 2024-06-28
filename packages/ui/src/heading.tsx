@@ -2,11 +2,11 @@ import { cn } from "@init/ui/utils";
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
 
-export function Heading({
+export const Heading = ({
   level,
   children,
   className,
-}: React.PropsWithChildren<{ level?: Level; className?: string }>) {
+}: React.PropsWithChildren<{ level?: Level; className?: string }>) => {
   switch (level) {
     case 1:
       return (
@@ -78,4 +78,4 @@ export function Heading({
     default:
       return <Heading level={1}>{children}</Heading>;
   }
-}
+};

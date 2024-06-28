@@ -13,19 +13,19 @@ import {
   CaretSortIcon,
   EyeNoneIcon,
 } from "@radix-ui/react-icons";
-import { type Column } from "@tanstack/react-table";
 
-interface DataTableColumnHeaderProps<TData, TValue>
-  extends React.HTMLAttributes<HTMLDivElement> {
+import type { Column } from "@tanstack/react-table";
+
+type DataTableColumnHeaderProps<TData, TValue> = {
   column: Column<TData, TValue>;
   title: string;
-}
+} & React.HTMLAttributes<HTMLDivElement>;
 
-export function DataTableColumnHeader<TData, TValue>({
+export const DataTableColumnHeader = <TData, TValue>({
   column,
   title,
   className,
-}: DataTableColumnHeaderProps<TData, TValue>) {
+}: DataTableColumnHeaderProps<TData, TValue>) => {
   if (!column.getCanSort() && !column.getCanHide()) {
     return <div className={cn(className)}>{title}</div>;
   }
@@ -100,4 +100,4 @@ export function DataTableColumnHeader<TData, TValue>({
       </DropdownMenu>
     </div>
   );
-}
+};
