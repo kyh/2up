@@ -214,7 +214,7 @@ export const adminRouter = createTRPCRouter({
         throw new Error(`Error generating magic link`);
       }
 
-      const response = await fetch(data.properties?.action_link, {
+      const response = await fetch(data.properties.action_link, {
         method: "GET",
         redirect: "manual",
       });

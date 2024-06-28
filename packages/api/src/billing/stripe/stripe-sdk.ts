@@ -7,7 +7,7 @@ const STRIPE_API_VERSION = "2024-04-10";
 /**
  * @description returns a Stripe instance
  */
-export async function createStripeClient() {
+export const createStripeClient = async () => {
   const { default: Stripe } = await import("stripe");
 
   // Parse the environment variables and validate them
@@ -19,4 +19,4 @@ export async function createStripeClient() {
   return new Stripe(stripeServerEnv.secretKey, {
     apiVersion: STRIPE_API_VERSION,
   });
-}
+};

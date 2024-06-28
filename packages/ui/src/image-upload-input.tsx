@@ -19,7 +19,7 @@ type Props = Omit<React.InputHTMLAttributes<unknown>, "value"> & {
 const IMAGE_SIZE = 22;
 
 export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
-  function ImageUploadInputComponent(
+  (
     {
       children,
       image,
@@ -30,7 +30,7 @@ export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
       ...props
     },
     forwardedRef,
-  ) {
+  ) => {
     const localRef = useRef<HTMLInputElement>();
 
     const [state, setState] = useState({

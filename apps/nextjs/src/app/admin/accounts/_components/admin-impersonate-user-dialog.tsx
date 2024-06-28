@@ -29,11 +29,11 @@ import { useForm } from "react-hook-form";
 
 import { api } from "@/trpc/react";
 
-export function AdminImpersonateUserDialog(
+export const AdminImpersonateUserDialog = (
   props: React.PropsWithChildren<{
     userId: string;
   }>,
-) {
+) => {
   const impersonateUserAction = api.admin.impersonateUser.useMutation();
   const form = useForm({
     resolver: zodResolver(impersonateUserInput),
@@ -68,7 +68,7 @@ export function AdminImpersonateUserDialog(
 
         <Form {...form}>
           <form
-            className={"flex flex-col space-y-8"}
+            className="flex flex-col space-y-8"
             onSubmit={form.handleSubmit(async (data) => {
               await impersonateUserAction.mutateAsync(data).then((tokens) => {
                 setTokens(tokens);
@@ -76,7 +76,7 @@ export function AdminImpersonateUserDialog(
             })}
           >
             <FormField
-              name={"confirmation"}
+              name="confirmation"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
@@ -86,8 +86,8 @@ export function AdminImpersonateUserDialog(
                   <FormControl>
                     <Input
                       required
-                      pattern={"CONFIRM"}
-                      placeholder={"Type CONFIRM to confirm"}
+                      pattern="CONFIRM"
+                      placeholder="Type CONFIRM to confirm"
                       {...field}
                     />
                   </FormControl>
@@ -104,7 +104,7 @@ export function AdminImpersonateUserDialog(
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-              <Button type={"submit"} loading={impersonateUserAction.isPending}>
+              <Button type="submit" loading={impersonateUserAction.isPending}>
                 Impersonate User
               </Button>
             </AlertDialogFooter>
@@ -113,16 +113,16 @@ export function AdminImpersonateUserDialog(
       </AlertDialogContent>
     </AlertDialog>
   );
-}
+};
 
-function ImpersonateUserAuthSetter({
+const ImpersonateUserAuthSetter = ({
   tokens,
 }: React.PropsWithChildren<{
   tokens: {
     accessToken: string;
     refreshToken: string;
   };
-}>) {
+}>) => {
   const setSessionAction = api.auth.setSession.useMutation();
 
   useEffect(() => {
@@ -133,4 +133,4 @@ function ImpersonateUserAuthSetter({
   }, [tokens]);
 
   return null;
-}
+};
