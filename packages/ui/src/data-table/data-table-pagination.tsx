@@ -7,11 +7,11 @@ import {
   SelectValue,
 } from "@init/ui/select";
 import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  DoubleArrowLeftIcon,
-  DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
+} from "lucide-react";
 
 import type { Table } from "@tanstack/react-table";
 
@@ -62,7 +62,7 @@ export const DataTablePagination = <TData,>({
           onClick={() => table.setPageIndex(0)}
           disabled={!table.getCanPreviousPage()}
         >
-          <DoubleArrowLeftIcon className="size-4" aria-hidden="true" />
+          <ArrowLeftIcon className="size-4" aria-hidden="true" />
         </Button>
         <Button
           aria-label="Go to previous page"
@@ -92,7 +92,7 @@ export const DataTablePagination = <TData,>({
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage()}
         >
-          <DoubleArrowRightIcon className="size-4" aria-hidden="true" />
+          <ArrowRightIcon className="size-4" aria-hidden="true" />
         </Button>
       </div>
     </div>

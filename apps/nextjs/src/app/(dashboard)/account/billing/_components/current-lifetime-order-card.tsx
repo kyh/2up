@@ -1,7 +1,7 @@
-import { BillingConfig } from "@init/api/billing/billing-schema";
 import { getProductPlanPairByVariantId } from "@init/api/billing/billing-util";
-import { CheckCircledIcon } from "@radix-ui/react-icons";
+import { CircleCheckIcon } from "lucide-react";
 
+import type { BillingConfig } from "@init/api/billing/billing-schema";
 import type { Database } from "@init/db/database.types";
 import { CurrentPlanBadge } from "./current-plan-badge";
 import { LineItemDetails } from "./line-item-details";
@@ -9,18 +9,18 @@ import { LineItemDetails } from "./line-item-details";
 type Order = Database["public"]["Tables"]["orders"]["Row"];
 type LineItem = Database["public"]["Tables"]["order_items"]["Row"];
 
-interface Props {
+type Props = {
   order: Order & {
     items: LineItem[];
   };
 
   config: BillingConfig;
-}
+};
 
-export function CurrentLifetimeOrderCard({
+export const CurrentLifetimeOrderCard = ({
   order,
   config,
-}: React.PropsWithChildren<Props>) {
+}: React.PropsWithChildren<Props>) => {
   const lineItems = order.items;
   const firstLineItem = lineItems[0];
 
@@ -54,16 +54,10 @@ export function CurrentLifetimeOrderCard({
           </p>
         </div>
         <div className="md:col-span-2">
-          <div className={"space-y-4 text-sm"}>
-            <div className={"flex flex-col space-y-1"}>
-              <div
-                className={"flex items-center space-x-2 text-lg font-semibold"}
-              >
-                <CheckCircledIcon
-                  className={
-                    "s-6 fill-green-500 text-black dark:fill-white dark:text-white"
-                  }
-                />
+          <div className="space-y-4 text-sm">
+            <div className="flex flex-col space-y-1">
+              <div className="flex items-center space-x-2 text-lg font-semibold">
+                <CircleCheckIcon className="s-6 fill-green-500 text-black dark:fill-white dark:text-white" />
 
                 <span>{product.name}</span>
 
@@ -86,4 +80,4 @@ export function CurrentLifetimeOrderCard({
       </div>
     </div>
   );
-}
+};

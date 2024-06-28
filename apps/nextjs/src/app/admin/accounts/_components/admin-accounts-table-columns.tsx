@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
 import { If } from "@init/ui/if";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { MoreHorizontalIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -67,7 +67,7 @@ export const getColumns = (): ColumnDef<Account>[] => [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost">
-              <DotsHorizontalIcon className="h-4" />
+              <MoreHorizontalIcon className="h-4" />
             </Button>
           </DropdownMenuTrigger>
 

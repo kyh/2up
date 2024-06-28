@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@init/ui/button";
 import {
   CommandDialog,
@@ -11,16 +12,10 @@ import {
   CommandList,
   CommandSeparator,
 } from "@init/ui/command";
-import {
-  CardStackMinusIcon,
-  ChatBubbleIcon,
-  DashboardIcon,
-  MagnifyingGlassIcon,
-  MixIcon,
-  PersonIcon,
-  QuestionMarkCircledIcon,
-} from "@radix-ui/react-icons";
+import { SearchIcon } from "lucide-react";
 import { useHotkeys } from "react-hotkeys-hook";
+
+import { accountPageLinks, dashboardPageLinks } from "@/lib/page-links";
 
 type PageHeaderProps = {
   children: React.ReactNode;
@@ -56,7 +51,7 @@ const SearchButton = () => {
         size="icon"
         onClick={onClick}
       >
-        <MagnifyingGlassIcon />
+        <SearchIcon />
         <span className="sr-only">Search</span>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
@@ -64,33 +59,33 @@ const SearchButton = () => {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Suggestions">
-            <CommandItem>
-              <DashboardIcon className="mr-3 !size-4" />
-              <span>CRUD</span>
-            </CommandItem>
-            <CommandItem>
-              <ChatBubbleIcon className="mr-3 !size-4" />
-              <span>AI</span>
-            </CommandItem>
-            <CommandItem>
-              <QuestionMarkCircledIcon className="mr-3 !size-4" />
-              <span>Docs</span>
-            </CommandItem>
+            {dashboardPageLinks.map((link) => (
+              <CommandItem
+                key={link.id}
+                className="group flex flex-col items-center gap-1 p-2 text-xs"
+                asChild
+              >
+                <Link href={link.href}>
+                  <link.Icon className="mr-3 !size-4" />
+                  <span>{link.label}</span>
+                </Link>
+              </CommandItem>
+            ))}
           </CommandGroup>
           <CommandSeparator />
           <CommandGroup heading="Settings">
-            <CommandItem>
-              <PersonIcon className="mr-3 !size-4" />
-              <span>Account</span>
-            </CommandItem>
-            <CommandItem>
-              <CardStackMinusIcon className="mr-3 !size-4" />
-              <span>Billing</span>
-            </CommandItem>
-            <CommandItem>
-              <MixIcon className="mr-3 !size-4" />
-              <span>Team</span>
-            </CommandItem>
+            {accountPageLinks.map((link) => (
+              <CommandItem
+                key={link.id}
+                className="group flex flex-col items-center gap-1 p-2 text-xs"
+                asChild
+              >
+                <Link href={link.href}>
+                  <link.Icon className="mr-3 !size-4" />
+                  <span>{link.label}</span>
+                </Link>
+              </CommandItem>
+            ))}
           </CommandGroup>
         </CommandList>
       </CommandDialog>

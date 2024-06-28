@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@init/ui/button";
-import { ImageIcon } from "@radix-ui/react-icons";
+import { ImageIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { ImageUploadInput } from "./image-upload-input";

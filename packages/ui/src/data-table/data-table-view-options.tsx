@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
-import { MixerHorizontalIcon } from "@radix-ui/react-icons";
+import { EyeIcon } from "lucide-react";
 
 import type { Table } from "@tanstack/react-table";
 
@@ -28,7 +28,7 @@ export const DataTableViewOptions = <TData,>({
         size="sm"
         className="ml-auto hidden h-8 lg:flex"
       >
-        <MixerHorizontalIcon className="mr-2 size-4" />
+        <EyeIcon className="mr-2 size-4" />
         View
       </Button>
     </DropdownMenuTrigger>

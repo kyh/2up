@@ -6,7 +6,7 @@ import { AccountMembersTable } from "./_components/members/account-members-table
 import { InviteMembersDialogContainer } from "./_components/members/invite-members-dialog-container";
 import { loadTeamPagePageData } from "./_lib/team-page-loader";
 
-async function Page() {
+const Page = async () => {
   const { account, user, slug, invitations } = await loadTeamPagePageData();
 
   const membersPromise = api.team.members({ slug });
@@ -70,6 +70,6 @@ async function Page() {
       </If>
     </section>
   );
-}
+};
 
 export default Page;

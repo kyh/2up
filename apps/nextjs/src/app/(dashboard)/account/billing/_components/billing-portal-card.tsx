@@ -2,11 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@init/ui/button";
-import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import { ExternalLinkIcon } from "lucide-react";
 
 import { api } from "@/trpc/react";
 
-export function BillingPortalCard(props: { customerId: string }) {
+export const BillingPortalCard = (props: { customerId: string }) => {
   const router = useRouter();
   const createBillingPortalSession =
     api.billing.createBillingPortalSession.useMutation();
@@ -26,7 +26,7 @@ export function BillingPortalCard(props: { customerId: string }) {
         <div className="md:col-span-2">
           <Button
             onClick={() => {
-              createBillingPortalSession
+              void createBillingPortalSession
                 .mutateAsync({
                   returnUrl: getBillingPortalReturnUrl(),
                   customerId: props.customerId,
@@ -37,18 +37,16 @@ export function BillingPortalCard(props: { customerId: string }) {
             }}
           >
             <span>Visit Billing Portal</span>
-
-            <ArrowTopRightIcon className={"h-4"} />
+            <ExternalLinkIcon className="h-4" />
           </Button>
         </div>
       </div>
     </div>
   );
-}
+};
 
-function getBillingPortalReturnUrl() {
-  return new URL(
+const getBillingPortalReturnUrl = () =>
+  new URL(
     "/account/billing/return",
     process.env.NEXT_PUBLIC_SITE_URL,
   ).toString();
-}

@@ -37,13 +37,13 @@ import {
 } from "@init/ui/select";
 import { Textarea } from "@init/ui/textarea";
 import { toast } from "@init/ui/toast";
-import { PlusIcon } from "@radix-ui/react-icons";
+import { PlusIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import type { CreateInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";
 
-export function CreateTaskDialog() {
+export const CreateTaskDialog = () => {
   const [open, setOpen] = React.useState(false);
 
   const utils = api.useUtils();
@@ -61,9 +61,9 @@ export function CreateTaskDialog() {
     resolver: zodResolver(createInput),
   });
 
-  function onSubmit(input: CreateInput) {
+  const onSubmit = (input: CreateInput) => {
     createTask.mutate(input);
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -214,4 +214,4 @@ export function CreateTaskDialog() {
       </DialogContent>
     </Dialog>
   );
-}
+};
