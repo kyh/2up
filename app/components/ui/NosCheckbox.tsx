@@ -2,12 +2,11 @@
 
 import React, { useState } from "react";
 import { cva, VariantProps } from "class-variance-authority";
-import clsx from "clsx";
 
 const checkboxStyles = cva("m-5 cursor-pointer text-base", {
   variants: {
     variant: {
-      normal: "text-dark",
+      normal: "group text-dark",
       dark: "text-light",
     },
   },
@@ -35,6 +34,7 @@ export const Checkbox = ({ variant, label, name, ...props }: CheckboxProps) => {
       }}
     />
   );
+
   const boxLogo = (
     <div
       className="logo absolute -left-8 -top-[3px] h-[2px] w-[2px] -translate-y-1/2 transform group-active:text-dark-888"
@@ -49,11 +49,7 @@ export const Checkbox = ({ variant, label, name, ...props }: CheckboxProps) => {
 
   return (
     <div>
-      <label
-        {...props}
-        htmlFor={name}
-        className={clsx(classes, variant === "dark" ? "" : "group")}
-      >
+      <label {...props} htmlFor={name} className={classes}>
         <input
           type="checkbox"
           id={name}
