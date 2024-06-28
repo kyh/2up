@@ -53,6 +53,24 @@ export const Radio = ({
     }
   };
 
+  const logo = (
+    <div
+      className={clsx(
+        "logo absolute -left-6 top-0 h-[2px] w-[2px] -translate-y-1/2 transform group-active:text-dark-888",
+        isBlinking && `animate-custom`,
+      )}
+      style={{
+        boxShadow: `
+      2px 2px, 4px 2px, 2px 4px, 4px 4px, 6px 4px, 8px 4px,
+      2px 6px, 4px 6px, 6px 6px, 8px 6px, 10px 6px, 2px 8px,
+      4px 8px, 6px 8px, 8px 8px, 10px 8px, 12px 8px, 2px 10px,
+      4px 10px, 6px 10px, 8px 10px, 10px 10px, 2px 12px, 4px 12px,
+      6px 12px, 8px 12px, 2px 14px, 4px 14px
+    `,
+      }}
+    />
+  );
+
   useEffect(() => {
     if (isBlinking) {
       const blinkIntervalOut = setInterval(() => {
@@ -86,24 +104,6 @@ export const Radio = ({
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
-
-  const logo = (
-    <div
-      className={clsx(
-        "logo absolute -left-6 top-0 h-[2px] w-[2px] -translate-y-1/2 transform group-active:text-dark-888",
-        isBlinking && `animate-custom`,
-      )}
-      style={{
-        boxShadow: `
-      2px 2px, 4px 2px, 2px 4px, 4px 4px, 6px 4px, 8px 4px,
-      2px 6px, 4px 6px, 6px 6px, 8px 6px, 10px 6px, 2px 8px,
-      4px 8px, 6px 8px, 8px 8px, 10px 8px, 12px 8px, 2px 10px,
-      4px 10px, 6px 10px, 8px 10px, 10px 10px, 2px 12px, 4px 12px,
-      6px 12px, 8px 12px, 2px 14px, 4px 14px
-    `,
-      }}
-    />
-  );
 
   return (
     <div ref={specificDivRef}>
