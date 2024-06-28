@@ -90,7 +90,7 @@ export const Radio = ({
   const logo = (
     <div
       className={clsx(
-        `logo absolute -left-6 top-0 h-[2px] w-[2px] -translate-y-1/2 transform group-active:text-dark-888`,
+        "logo absolute -left-6 top-0 h-[2px] w-[2px] -translate-y-1/2 transform group-active:text-dark-888",
         isBlinking && `animate-custom`,
       )}
       style={{
@@ -123,8 +123,8 @@ export const Radio = ({
           value={yes}
           checked={checked === "yes"}
           className={clsx(
-            `mr-4 h-0 w-0 outline-0`,
-            isBlinking && `animate-blink`,
+            "mr-4 h-0 w-0 outline-0",
+            isBlinking && "animate-blink",
           )}
         />
         <span className="relative">
@@ -149,8 +149,8 @@ export const Radio = ({
           value={no}
           checked={checked === "no"}
           className={clsx(
-            `mr-4 h-0 w-0 outline-0`,
-            isBlinking && `animate-blink`,
+            "mr-4 h-0 w-0 outline-0",
+            isBlinking && "animate-blink",
           )}
         />
         <span className="relative">
