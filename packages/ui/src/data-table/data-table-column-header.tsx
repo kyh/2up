@@ -9,10 +9,10 @@ import {
 import { cn } from "@init/ui/utils";
 import {
   ArrowDownIcon,
+  ArrowUpDownIcon,
   ArrowUpIcon,
-  CaretSortIcon,
-  EyeNoneIcon,
-} from "@radix-ui/react-icons";
+  EyeOffIcon,
+} from "lucide-react";
 
 import type { Column } from "@tanstack/react-table";
 
@@ -52,7 +52,7 @@ export const DataTableColumnHeader = <TData, TValue>({
             ) : column.getIsSorted() === "asc" ? (
               <ArrowUpIcon className="ml-2 size-4" aria-hidden="true" />
             ) : (
-              <CaretSortIcon className="ml-2 size-4" aria-hidden="true" />
+              <ArrowUpDownIcon className="ml-2 size-4" aria-hidden="true" />
             )}
           </Button>
         </DropdownMenuTrigger>
@@ -89,7 +89,7 @@ export const DataTableColumnHeader = <TData, TValue>({
               aria-label="Hide column"
               onClick={() => column.toggleVisibility(false)}
             >
-              <EyeNoneIcon
+              <EyeOffIcon
                 className="mr-2 size-3.5 text-muted-foreground/70"
                 aria-hidden="true"
               />

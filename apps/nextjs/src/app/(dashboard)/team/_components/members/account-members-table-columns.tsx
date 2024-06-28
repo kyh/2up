@@ -11,10 +11,10 @@ import {
 } from "@init/ui/dropdown-menu";
 import { If } from "@init/ui/if";
 import { ProfileAvatar } from "@init/ui/profile-avatar";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontalIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
+import type { ColumnDef } from "@tanstack/react-table";
 import { RoleBadge } from "../role-badge";
 import { RemoveMemberDialog } from "./remove-member-dialog";
 import { TransferOwnershipDialog } from "./transfer-ownership-dialog";
@@ -22,98 +22,92 @@ import { UpdateMemberRoleDialog } from "./update-member-role-dialog";
 
 type Members = RouterOutputs["team"]["members"];
 
-interface Permissions {
+type Permissions = {
   canUpdateRole: (roleHierarchy: number) => boolean;
   canRemoveFromAccount: (roleHierarchy: number) => boolean;
   canTransferOwnership: boolean;
-}
+};
 
-export function getColumns(
+export const getColumns = (
   permissions: Permissions,
   params: {
     currentUserId: string;
     currentAccountId: string;
     currentRoleHierarchy: number;
   },
-): ColumnDef<Members[0]>[] {
-  return [
-    {
-      header: "Name",
-      cell: ({ row }) => {
-        const member = row.original;
-        const displayName = member.name ?? member.email.split("@")[0];
-        const isSelf = member.user_id === params.currentUserId;
+): ColumnDef<Members[0]>[] => [
+  {
+    header: "Name",
+    cell: ({ row }) => {
+      const member = row.original;
+      const displayName = member.name ?? member.email.split("@")[0];
+      const isSelf = member.user_id === params.currentUserId;
 
-        return (
-          <span className={"flex items-center space-x-4 text-left"}>
-            <span>
-              <ProfileAvatar
-                displayName={displayName}
-                pictureUrl={member.picture_url}
-              />
+      return (
+        <span className="flex items-center space-x-4 text-left">
+          <span>
+            <ProfileAvatar
+              displayName={displayName}
+              pictureUrl={member.picture_url}
+            />
+          </span>
+
+          <span>{displayName}</span>
+
+          <If condition={isSelf}>
+            <Badge variant="outline">You</Badge>
+          </If>
+        </span>
+      );
+    },
+  },
+  {
+    header: "Email",
+    cell: ({ row }) => {
+      return row.original.email ?? "-";
+    },
+  },
+  {
+    header: "Role",
+    cell: ({ row }) => {
+      const { role, primary_owner_user_id, user_id } = row.original;
+      const isPrimaryOwner = primary_owner_user_id === user_id;
+
+      return (
+        <span className="flex items-center space-x-1">
+          <RoleBadge role={role} />
+
+          <If condition={isPrimaryOwner}>
+            <span className="rounded-md bg-yellow-400 px-2.5 py-1 text-xs font-medium dark:text-black">
+              Primary Owner
             </span>
-
-            <span>{displayName}</span>
-
-            <If condition={isSelf}>
-              <Badge variant={"outline"}>You</Badge>
-            </If>
-          </span>
-        );
-      },
+          </If>
+        </span>
+      );
     },
-    {
-      header: "Email",
-      cell: ({ row }) => {
-        return row.original.email ?? "-";
-      },
+  },
+  {
+    header: "Joined at",
+    cell: ({ row }) => {
+      return new Date(row.original.created_at).toLocaleDateString();
     },
-    {
-      header: "Role",
-      cell: ({ row }) => {
-        const { role, primary_owner_user_id, user_id } = row.original;
-        const isPrimaryOwner = primary_owner_user_id === user_id;
+  },
+  {
+    header: "",
+    id: "actions",
+    cell: ({ row }) => (
+      <ActionsDropdown
+        permissions={permissions}
+        member={row.original}
+        currentUserId={params.currentUserId}
+        currentTeamAccountId={params.currentAccountId}
+        currentRoleHierarchy={params.currentRoleHierarchy}
+      />
+    ),
+  },
+];
 
-        return (
-          <span className={"flex items-center space-x-1"}>
-            <RoleBadge role={role} />
-
-            <If condition={isPrimaryOwner}>
-              <span
-                className={
-                  "rounded-md bg-yellow-400 px-2.5 py-1 text-xs font-medium dark:text-black"
-                }
-              >
-                Primary Owner
-              </span>
-            </If>
-          </span>
-        );
-      },
-    },
-    {
-      header: "Joined at",
-      cell: ({ row }) => {
-        return new Date(row.original.created_at).toLocaleDateString();
-      },
-    },
-    {
-      header: "",
-      id: "actions",
-      cell: ({ row }) => (
-        <ActionsDropdown
-          permissions={permissions}
-          member={row.original}
-          currentUserId={params.currentUserId}
-          currentTeamAccountId={params.currentAccountId}
-          currentRoleHierarchy={params.currentRoleHierarchy}
-        />
-      ),
-    },
-  ];
-}
-
-function ActionsDropdown({
+const ActionsDropdown = ({
   permissions,
   member,
   currentUserId,
@@ -125,7 +119,7 @@ function ActionsDropdown({
   currentUserId: string;
   currentTeamAccountId: string;
   currentRoleHierarchy: number;
-}) {
+}) => {
   const [isRemoving, setIsRemoving] = useState(false);
   const [isTransferring, setIsTransferring] = useState(false);
   const [isUpdatingRole, setIsUpdatingRole] = useState(false);
@@ -162,7 +156,7 @@ function ActionsDropdown({
             variant="ghost"
             className="flex size-8 p-0 data-[state=open]:bg-muted"
           >
-            <DotsHorizontalIcon className="size-4" aria-hidden="true" />
+            <MoreHorizontalIcon className="size-4" aria-hidden="true" />
           </Button>
         </DropdownMenuTrigger>
 
@@ -218,4 +212,4 @@ function ActionsDropdown({
       </If>
     </>
   );
-}
+};

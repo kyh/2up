@@ -2,7 +2,7 @@ import { isRedirectError } from "next/dist/client/components/redirect";
 import { toast } from "@init/ui/toast";
 import { z } from "zod";
 
-export function getErrorMessage(err: unknown) {
+export const getErrorMessage = (err: unknown) => {
   const unknownError = "Something went wrong, please try again later.";
 
   if (err instanceof z.ZodError) {
@@ -17,9 +17,9 @@ export function getErrorMessage(err: unknown) {
   } else {
     return unknownError;
   }
-}
+};
 
-export function showErrorToast(err: unknown) {
+export const showErrorToast = (err: unknown) => {
   const errorMessage = getErrorMessage(err);
   return toast.error(errorMessage);
-}
+};

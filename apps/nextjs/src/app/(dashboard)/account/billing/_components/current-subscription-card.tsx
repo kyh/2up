@@ -1,10 +1,10 @@
-import { BillingConfig } from "@init/api/billing/billing-schema";
 import { getProductPlanPairByVariantId } from "@init/api/billing/billing-util";
 import { Alert, AlertDescription, AlertTitle } from "@init/ui/alert";
 import { If } from "@init/ui/if";
-import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { formatDate } from "date-fns";
+import { CircleCheckIcon } from "lucide-react";
 
+import type { BillingConfig } from "@init/api/billing/billing-schema";
 import type { Database } from "@init/db/database.types";
 import { CurrentPlanAlert } from "./current-plan-alert";
 import { CurrentPlanBadge } from "./current-plan-badge";
@@ -13,18 +13,18 @@ import { LineItemDetails } from "./line-item-details";
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type LineItem = Database["public"]["Tables"]["subscription_items"]["Row"];
 
-interface Props {
+type Props = {
   subscription: Subscription & {
     items: LineItem[];
   };
 
   config: BillingConfig;
-}
+};
 
-export function CurrentSubscriptionCard({
+export const CurrentSubscriptionCard = ({
   subscription,
   config,
-}: React.PropsWithChildren<Props>) {
+}: React.PropsWithChildren<Props>) => {
   const lineItems = subscription.items;
   const firstLineItem = lineItems[0];
 
@@ -57,24 +57,16 @@ export function CurrentSubscriptionCard({
         </p>
       </div>
       <div className="md:col-span-2">
-        <div className={"space-y-4 text-sm"}>
-          <div className={"flex flex-col space-y-1"}>
-            <div
-              className={"flex items-center space-x-2 text-lg font-semibold"}
-            >
-              <CheckCircledIcon
-                className={
-                  "s-6 fill-green-500 text-black dark:fill-white dark:text-white"
-                }
-              />
-
+        <div className="space-y-4 text-sm">
+          <div className="flex flex-col space-y-1">
+            <div className="flex items-center space-x-2 text-lg font-semibold">
+              <CircleCheckIcon className="s-6 fill-green-500 text-black dark:fill-white dark:text-white" />
               <span>{product.name}</span>
-
               <CurrentPlanBadge status={subscription.status} />
             </div>
 
             <div>
-              <p className={"text-muted-foreground"}>{product.description}</p>
+              <p className="text-muted-foreground">{product.description}</p>
             </div>
           </div>
 
@@ -92,7 +84,7 @@ export function CurrentSubscriptionCard({
             <div className="flex flex-col space-y-0.5">
               <span className="font-semibold">Your trial ends on</span>
 
-              <div className={"text-muted-foreground"}>
+              <div className="text-muted-foreground">
                 <span>
                   {subscription.trial_ends_at
                     ? formatDate(subscription.trial_ends_at, "P")
@@ -103,12 +95,12 @@ export function CurrentSubscriptionCard({
           </If>
 
           <If condition={subscription.cancel_at_period_end}>
-            <Alert variant={"warning"}>
+            <Alert variant="warning">
               <AlertTitle>Subscription Cancelled</AlertTitle>
 
               <AlertDescription>
                 Your subscription will be cancelled at the end of the period:
-                <span className={"ml-1"}>
+                <span className="ml-1">
                   {formatDate(subscription.period_ends_at ?? "", "P")}
                 </span>
               </AlertDescription>
@@ -128,4 +120,4 @@ export function CurrentSubscriptionCard({
       </div>
     </div>
   );
-}
+};

@@ -2,28 +2,14 @@
 
 import { PageHeader } from "@/components/header";
 import { NavLink } from "@/components/nav";
-
-const navLinks = [
-  {
-    title: "Account",
-    href: "/account",
-  },
-  {
-    title: "Billing",
-    href: "/account/billing",
-  },
-  {
-    title: "Team",
-    href: "/account/team",
-  },
-];
+import { accountPageLinks } from "@/lib/page-links";
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <main className="flex flex-1 flex-col px-5">
       <PageHeader>Profile</PageHeader>
       <nav className="inline-flex h-9 w-full items-center justify-start rounded-none border-b bg-transparent p-0 text-muted-foreground">
-        {navLinks.map((item) => (
+        {accountPageLinks.map((item) => (
           <NavLink
             key={item.href}
             href={item.href}
@@ -31,7 +17,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
             activeClassName="border-b-primary text-foreground shadow-none"
             exact
           >
-            {item.title}
+            {item.label}
           </NavLink>
         ))}
       </nav>
