@@ -16,6 +16,7 @@
   "dependencies": {
     "@edge-csrf/nextjs": "^2.2.0",
     "@init/api": "workspace:latest",
+    "@init/cms": "workspace:latest",
     "@init/db": "workspace:latest",
     "@init/mdx": "workspace:latest",
     "@init/ui": "workspace:latest",
