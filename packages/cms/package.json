@@ -1,11 +1,13 @@
 {
-  "name": "@init/mdx",
+  "name": "@init/cms",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "exports": {
-    ".": "./src/index.tsx",
-    "./*": "./src/*"
+    ".": "./src/cms-client.d.ts",
+    "./keystatic-admin": "./src/keystatic-admin.tsx",
+    "./keystatic-client": "./src/keystatic-client.ts",
+    "./keystatic-route-handler": "./src/keystatic-route-handler.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
@@ -14,17 +16,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@init/ui": "workspace:latest",
-    "@mdx-js/react": "^3.0.1",
-    "@sindresorhus/slugify": "^2.2.1",
-    "mdast-util-to-string": "^4.0.0",
-    "mdx-annotations": "^0.1.4",
-    "remark": "^15.0.1",
-    "remark-gfm": "^4.0.0",
-    "remark-mdx": "^3.0.1",
-    "remark-toc": "^9.0.0",
-    "shiki": "^0.14.7",
-    "unist-util-visit": "^5.0.0"
+    "@init/mdx": "workspace:latest",
+    "@keystatic/core": "0.5.19",
+    "@keystatic/next": "^5.0.1"
   },
   "devDependencies": {
     "@kyh/eslint-config": "^0.1.8",
