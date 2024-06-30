@@ -28,11 +28,11 @@ import { useForm } from "react-hook-form";
 
 import { api } from "@/trpc/react";
 
-export function AdminBanUserDialog(
+export const AdminBanUserDialog = (
   props: React.PropsWithChildren<{
     userId: string;
   }>,
-) {
+) => {
   const banUserAction = api.admin.banUser.useMutation({
     onSuccess: () => {
       toast.success("User banned successfully");
@@ -64,13 +64,13 @@ export function AdminBanUserDialog(
 
         <Form {...form}>
           <form
-            className={"flex flex-col space-y-8"}
+            className="flex flex-col space-y-8"
             onSubmit={form.handleSubmit((data) => {
               return banUserAction.mutate(data);
             })}
           >
             <FormField
-              name={"confirmation"}
+              name="confirmation"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
@@ -80,8 +80,8 @@ export function AdminBanUserDialog(
                   <FormControl>
                     <Input
                       required
-                      pattern={"CONFIRM"}
-                      placeholder={"Type CONFIRM to confirm"}
+                      pattern="CONFIRM"
+                      placeholder="Type CONFIRM to confirm"
                       {...field}
                     />
                   </FormControl>
@@ -98,7 +98,7 @@ export function AdminBanUserDialog(
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-              <Button type={"submit"} variant={"destructive"}>
+              <Button type="submit" variant="destructive">
                 Ban User
               </Button>
             </AlertDialogFooter>
@@ -107,4 +107,4 @@ export function AdminBanUserDialog(
       </AlertDialogContent>
     </AlertDialog>
   );
-}
+};

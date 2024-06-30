@@ -1,25 +1,25 @@
-import { z } from "zod";
+import type { z } from "zod";
 
-import { BillingConfig, BillingSchema, LineItemType } from "./billing-schema";
+import type { BillingConfig, BillingSchema } from "./billing-schema";
+import { LineItemType } from "./billing-schema";
 
 /**
  *@name formatCurrency
  * @description Format the currency based on the currency code
  */
-export function formatCurrency(currencyCode: string, value: string | number) {
-  return new Intl.NumberFormat("en-US", {
+export const formatCurrency = (currencyCode: string, value: string | number) =>
+  new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: currencyCode,
   }).format(Number(value));
-}
 
-export function getPlanIntervals(config: z.infer<typeof BillingSchema>) {
+export const getPlanIntervals = (config: z.infer<typeof BillingSchema>) => {
   const intervals = config.products
     .flatMap((product) => product.plans.map((plan) => plan.interval))
     .filter(Boolean);
 
   return Array.from(new Set(intervals));
-}
+};
 
 /**
  * @name getPrimaryLineItem
@@ -31,10 +31,10 @@ export function getPlanIntervals(config: z.infer<typeof BillingSchema>) {
  * @param config
  * @param planId
  */
-export function getPrimaryLineItem(
+export const getPrimaryLineItem = (
   config: z.infer<typeof BillingSchema>,
   planId: string,
-) {
+) => {
   for (const product of config.products) {
     for (const plan of product.plans) {
       if (plan.id === planId) {
@@ -52,9 +52,9 @@ export function getPrimaryLineItem(
   }
 
   throw new Error("Base line item not found");
-}
+};
 
-export function getProductPlanPair(config: BillingConfig, planId: string) {
+export const getProductPlanPair = (config: BillingConfig, planId: string) => {
   for (const product of config.products) {
     for (const plan of product.plans) {
       if (plan.id === planId) {
@@ -64,12 +64,12 @@ export function getProductPlanPair(config: BillingConfig, planId: string) {
   }
 
   throw new Error("Plan not found");
-}
+};
 
-export function getProductPlanPairByVariantId(
+export const getProductPlanPairByVariantId = (
   config: BillingConfig,
   planId: string,
-) {
+) => {
   for (const product of config.products) {
     for (const plan of product.plans) {
       for (const lineItem of plan.lineItems) {
@@ -81,9 +81,9 @@ export function getProductPlanPairByVariantId(
   }
 
   throw new Error("Plan not found");
-}
+};
 
-export function getLineItemTypeById(config: BillingConfig, id: string) {
+export const getLineItemTypeById = (config: BillingConfig, id: string) => {
   for (const product of config.products) {
     for (const plan of product.plans) {
       for (const lineItem of plan.lineItems) {
@@ -95,4 +95,4 @@ export function getLineItemTypeById(config: BillingConfig, id: string) {
   }
 
   throw new Error(`Line Item with ID ${id} not found`);
-}
+};

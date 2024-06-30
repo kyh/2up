@@ -11,17 +11,17 @@ import {
   TableRow,
 } from "@init/ui/table";
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
 import type { RouterOutputs } from "@init/api";
+import type { ColumnDef } from "@tanstack/react-table";
 
 type Memberships = RouterOutputs["admin"]["getMemberships"];
 
-export function AdminMembershipsTable(props: { memberships: Memberships }) {
+export const AdminMembershipsTable = (props: { memberships: Memberships }) => {
   const columns = useMemo(() => getColumns(), []);
   const table = useReactTable({
     data: props.memberships,
@@ -52,7 +52,7 @@ export function AdminMembershipsTable(props: { memberships: Memberships }) {
         </TableHeader>
 
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -77,38 +77,36 @@ export function AdminMembershipsTable(props: { memberships: Memberships }) {
       </Table>
     </div>
   );
-}
+};
 
-function getColumns(): ColumnDef<Memberships[0]>[] {
-  return [
-    {
-      header: "User ID",
-      accessorKey: "user_id",
+const getColumns = (): ColumnDef<Memberships[0]>[] => [
+  {
+    header: "User ID",
+    accessorKey: "user_id",
+  },
+  {
+    header: "Team",
+    cell: ({ row }) => {
+      return (
+        <Link
+          className="hover:underline"
+          href={`/admin/accounts/${row.original.account_id}`}
+        >
+          {row.original.account.name}
+        </Link>
+      );
     },
-    {
-      header: "Team",
-      cell: ({ row }) => {
-        return (
-          <Link
-            className={"hover:underline"}
-            href={`/admin/accounts/${row.original.account_id}`}
-          >
-            {row.original.account.name}
-          </Link>
-        );
-      },
-    },
-    {
-      header: "Role",
-      accessorKey: "account_role",
-    },
-    {
-      header: "Created At",
-      accessorKey: "created_at",
-    },
-    {
-      header: "Updated At",
-      accessorKey: "updated_at",
-    },
-  ];
-}
+  },
+  {
+    header: "Role",
+    accessorKey: "account_role",
+  },
+  {
+    header: "Created At",
+    accessorKey: "created_at",
+  },
+  {
+    header: "Updated At",
+    accessorKey: "updated_at",
+  },
+];

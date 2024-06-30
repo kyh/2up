@@ -12,17 +12,17 @@ import {
   TableRow,
 } from "@init/ui/table";
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
 import type { RouterOutputs } from "@init/api";
+import type { ColumnDef } from "@tanstack/react-table";
 
 type Members = RouterOutputs["admin"]["getMembers"];
 
-export function AdminMembersTable(props: { members: Members }) {
+export const AdminMembersTable = (props: { members: Members }) => {
   const columns = useMemo(() => getColumns(), []);
   const table = useReactTable({
     data: props.members,
@@ -53,7 +53,7 @@ export function AdminMembersTable(props: { members: Members }) {
         </TableHeader>
 
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -78,55 +78,53 @@ export function AdminMembersTable(props: { members: Members }) {
       </Table>
     </div>
   );
-}
+};
 
-function getColumns(): ColumnDef<Members[0]>[] {
-  return [
-    {
-      header: "User ID",
-      accessorKey: "user_id",
-    },
-    {
-      header: "Name",
-      cell: ({ row }) => {
-        const name = row.original.name ?? row.original.email;
+const getColumns = (): ColumnDef<Members[0]>[] => [
+  {
+    header: "User ID",
+    accessorKey: "user_id",
+  },
+  {
+    header: "Name",
+    cell: ({ row }) => {
+      const name = row.original.name ?? row.original.email;
 
-        return (
-          <div className={"flex items-center space-x-2"}>
-            <div>
-              <ProfileAvatar
-                pictureUrl={row.original.picture_url}
-                displayName={name}
-              />
-            </div>
-
-            <Link
-              className={"hover:underline"}
-              href={`/admin/accounts/${row.original.id}`}
-            >
-              <span>{name}</span>
-            </Link>
+      return (
+        <div className="flex items-center space-x-2">
+          <div>
+            <ProfileAvatar
+              pictureUrl={row.original.picture_url}
+              displayName={name}
+            />
           </div>
-        );
-      },
+
+          <Link
+            className="hover:underline"
+            href={`/admin/accounts/${row.original.id}`}
+          >
+            <span>{name}</span>
+          </Link>
+        </div>
+      );
     },
-    {
-      header: "Email",
-      accessorKey: "email",
+  },
+  {
+    header: "Email",
+    accessorKey: "email",
+  },
+  {
+    header: "Role",
+    cell: ({ row }) => {
+      return row.original.role;
     },
-    {
-      header: "Role",
-      cell: ({ row }) => {
-        return row.original.role;
-      },
-    },
-    {
-      header: "Created At",
-      accessorKey: "created_at",
-    },
-    {
-      header: "Updated At",
-      accessorKey: "updated_at",
-    },
-  ];
-}
+  },
+  {
+    header: "Created At",
+    accessorKey: "created_at",
+  },
+  {
+    header: "Updated At",
+    accessorKey: "updated_at",
+  },
+];

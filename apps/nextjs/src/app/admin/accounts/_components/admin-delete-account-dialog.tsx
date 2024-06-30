@@ -27,11 +27,11 @@ import { useForm } from "react-hook-form";
 
 import { api } from "@/trpc/react";
 
-export function AdminDeleteAccountDialog(
+export const AdminDeleteAccountDialog = (
   props: React.PropsWithChildren<{
     accountId: string;
   }>,
-) {
+) => {
   const utils = api.useUtils();
   const deleteAccountAction = api.admin.deleteAccount.useMutation({
     onSuccess: () => {
@@ -70,13 +70,13 @@ export function AdminDeleteAccountDialog(
 
         <Form {...form}>
           <form
-            className={"flex flex-col space-y-8"}
+            className="flex flex-col space-y-8"
             onSubmit={form.handleSubmit((data) => {
               return deleteAccountAction.mutate(data);
             })}
           >
             <FormField
-              name={"confirmation"}
+              name="confirmation"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
@@ -85,9 +85,9 @@ export function AdminDeleteAccountDialog(
 
                   <FormControl>
                     <Input
-                      pattern={"CONFIRM"}
+                      pattern="CONFIRM"
                       required
-                      placeholder={"Type CONFIRM to confirm"}
+                      placeholder="Type CONFIRM to confirm"
                       {...field}
                     />
                   </FormControl>
@@ -104,8 +104,8 @@ export function AdminDeleteAccountDialog(
               <AlertDialogCancel>Cancel</AlertDialogCancel>
 
               <Button
-                type={"submit"}
-                variant={"destructive"}
+                type="submit"
+                variant="destructive"
                 loading={deleteAccountAction.isPending}
               >
                 Delete
@@ -116,4 +116,4 @@ export function AdminDeleteAccountDialog(
       </AlertDialogContent>
     </AlertDialog>
   );
-}
+};

@@ -13,26 +13,25 @@ import {
   DialogTrigger,
 } from "@init/ui/dialog";
 import { toast } from "@init/ui/toast";
-import { TrashIcon } from "@radix-ui/react-icons";
+import { TrashIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 
 type Tasks = RouterOutputs["task"]["retrieve"]["data"];
 
-interface DeleteTasksDialogProps
-  extends React.ComponentPropsWithoutRef<typeof Dialog> {
+type DeleteTasksDialogProps = {
   tasks: Tasks;
   showTrigger?: boolean;
   onSuccess?: () => void;
-}
+} & React.ComponentPropsWithoutRef<typeof Dialog>;
 
-export function DeleteTasksDialog({
+export const DeleteTasksDialog = ({
   tasks,
   showTrigger = true,
   onSuccess,
   ...props
-}: DeleteTasksDialogProps) {
+}: DeleteTasksDialogProps) => {
   const utils = api.useUtils();
   const deleteTask = api.task.delete.useMutation({
     onSuccess: () => {
@@ -83,4 +82,4 @@ export function DeleteTasksDialog({
       </DialogContent>
     </Dialog>
   );
-}
+};

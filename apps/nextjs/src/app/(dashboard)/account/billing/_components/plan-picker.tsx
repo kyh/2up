@@ -3,10 +3,6 @@
 import { useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  BillingConfig,
-  LineItemSchema,
-} from "@init/api/billing/billing-schema";
-import {
   formatCurrency,
   getPlanIntervals,
   getPrimaryLineItem,
@@ -32,20 +28,24 @@ import {
 } from "@init/ui/radio-group";
 import { Separator } from "@init/ui/separator";
 import { cn } from "@init/ui/utils";
-import { ArrowRightIcon, CheckCircledIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon, CircleCheckIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import type {
+  BillingConfig,
+  LineItemSchema,
+} from "@init/api/billing/billing-schema";
 import { LineItemDetails } from "./line-item-details";
 
-export function PlanPicker(
+export const PlanPicker = (
   props: React.PropsWithChildren<{
     config: BillingConfig;
     onSubmit: (data: { planId: string; productId: string }) => void;
     canStartTrial?: boolean;
     pending?: boolean;
   }>,
-) {
+) => {
   const intervals = useMemo(
     () => getPlanIntervals(props.config),
     [props.config],
@@ -104,13 +104,9 @@ export function PlanPicker(
 
   return (
     <Form {...form}>
-      <div
-        className={
-          "flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0"
-        }
-      >
+      <div className="flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
         <form
-          className={"flex w-full max-w-xl flex-col space-y-4"}
+          className="flex w-full max-w-xl flex-col space-y-4"
           onSubmit={form.handleSubmit(props.onSubmit)}
         >
           <If condition={intervals.length}>
@@ -120,17 +116,17 @@ export function PlanPicker(
               })}
             >
               <FormField
-                name={"interval"}
+                name="interval"
                 render={({ field }) => {
                   return (
-                    <FormItem className={"rounded-md border p-4"}>
-                      <FormLabel htmlFor={"plan-picker-id"}>
+                    <FormItem className="rounded-md border p-4">
+                      <FormLabel htmlFor="plan-picker-id">
                         Choose your billing interval
                       </FormLabel>
 
-                      <FormControl id={"plan-picker-id"}>
+                      <FormControl id="plan-picker-id">
                         <RadioGroup name={field.name} value={field.value}>
-                          <div className={"flex space-x-2.5"}>
+                          <div className="flex space-x-2.5">
                             {intervals.map((interval) => {
                               const selected = field.value === interval;
 
@@ -196,7 +192,7 @@ export function PlanPicker(
           </If>
 
           <FormField
-            name={"planId"}
+            name="planId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Pick your preferred plan</FormLabel>
@@ -252,18 +248,12 @@ export function PlanPicker(
                             }}
                           />
 
-                          <div
-                            className={
-                              "flex w-full flex-col content-center space-y-2 lg:flex-row lg:items-center lg:justify-between lg:space-y-0"
-                            }
-                          >
+                          <div className="flex w-full flex-col content-center space-y-2 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
                             <Label
                               htmlFor={plan.id}
-                              className={
-                                "flex flex-col justify-center space-y-2"
-                              }
+                              className="flex flex-col justify-center space-y-2"
                             >
-                              <div className={"flex items-center space-x-2.5"}>
+                              <div className="flex items-center space-x-2.5">
                                 <span className="font-semibold">
                                   {product.name}
                                 </span>
@@ -275,8 +265,8 @@ export function PlanPicker(
                                 >
                                   <div>
                                     <Badge
-                                      className={"px-1 py-0.5 text-xs"}
-                                      variant={"success"}
+                                      className="px-1 py-0.5 text-xs"
+                                      variant="success"
                                     >
                                       {plan.trialDays} day trial
                                     </Badge>
@@ -284,16 +274,12 @@ export function PlanPicker(
                                 </If>
                               </div>
 
-                              <span className={"text-muted-foreground"}>
+                              <span className="text-muted-foreground">
                                 {product.description}
                               </span>
                             </Label>
 
-                            <div
-                              className={
-                                "flex flex-col space-y-2 lg:flex-row lg:items-center lg:space-x-4 lg:space-y-0 lg:text-right"
-                              }
-                            >
+                            <div className="flex flex-col space-y-2 lg:flex-row lg:items-center lg:space-x-4 lg:space-y-0 lg:text-right">
                               <div>
                                 <Price key={plan.id}>
                                   <span>
@@ -305,12 +291,12 @@ export function PlanPicker(
                                 </Price>
 
                                 <div>
-                                  <span className={"text-muted-foreground"}>
+                                  <span className="text-muted-foreground">
                                     <If
                                       condition={
                                         plan.paymentType === "recurring"
                                       }
-                                      fallback={"Lifetime"}
+                                      fallback="Lifetime"
                                     >
                                       per {selectedInterval}
                                     </If>
@@ -338,12 +324,12 @@ export function PlanPicker(
                 <>
                   <If
                     condition={selectedPlan?.trialDays && props.canStartTrial}
-                    fallback={"Proceed to Payment"}
+                    fallback="Proceed to Payment"
                   >
-                    <span>{"Start Trial"}</span>
+                    <span>Start Trial</span>
                   </If>
 
-                  <ArrowRightIcon className={"ml-2 h-4 w-4"} />
+                  <ArrowRightIcon className="ml-2 h-4 w-4" />
                 </>
               )}
             </Button>
@@ -360,9 +346,9 @@ export function PlanPicker(
       </div>
     </Form>
   );
-}
+};
 
-function PlanDetails({
+const PlanDetails = ({
   selectedProduct,
   selectedInterval,
   selectedPlan,
@@ -381,7 +367,7 @@ function PlanDetails({
     lineItems: z.infer<typeof LineItemSchema>[];
     paymentType: string;
   };
-}) {
+}) => {
   const isRecurring = selectedPlan.paymentType === "recurring";
 
   // trick to force animation on re-render
@@ -390,11 +376,9 @@ function PlanDetails({
   return (
     <div
       key={key}
-      className={
-        "flex w-full flex-col space-y-4 py-2 animate-in fade-in zoom-in-95 lg:px-8"
-      }
+      className="flex w-full flex-col space-y-4 py-2 animate-in fade-in zoom-in-95 lg:px-8"
     >
-      <div className={"flex flex-col space-y-0.5"}>
+      <div className="flex flex-col space-y-0.5">
         <Heading level={5}>
           <b>{selectedProduct.name}</b>{" "}
           <If condition={isRecurring}>
@@ -404,7 +388,7 @@ function PlanDetails({
         </Heading>
 
         <p>
-          <span className={"text-muted-foreground"}>
+          <span className="text-muted-foreground">
             {selectedProduct.description}
           </span>
         </p>
@@ -413,8 +397,8 @@ function PlanDetails({
       <If condition={selectedPlan.lineItems.length > 0}>
         <Separator />
 
-        <div className={"flex flex-col space-y-2"}>
-          <span className={"text-sm font-semibold"}>Details</span>
+        <div className="flex flex-col space-y-2">
+          <span className="text-sm font-semibold">Details</span>
 
           <LineItemDetails
             lineItems={selectedPlan.lineItems ?? []}
@@ -426,31 +410,25 @@ function PlanDetails({
 
       <Separator />
 
-      <div className={"flex flex-col space-y-2"}>
-        <span className={"text-sm font-semibold"}>Features</span>
+      <div className="flex flex-col space-y-2">
+        <span className="text-sm font-semibold">Features</span>
 
         {selectedProduct.features.map((item) => {
           return (
-            <div key={item} className={"flex items-center space-x-1 text-sm"}>
-              <CheckCircledIcon className={"h-4 text-green-500"} />
+            <div key={item} className="flex items-center space-x-1 text-sm">
+              <CircleCheckIcon className="h-4 text-green-500" />
 
-              <span className={"text-secondary-foreground"}>{item}</span>
+              <span className="text-secondary-foreground">{item}</span>
             </div>
           );
         })}
       </div>
     </div>
   );
-}
+};
 
-function Price(props: React.PropsWithChildren) {
-  return (
-    <span
-      className={
-        "text-xl font-bold duration-500 animate-in fade-in slide-in-from-left-4"
-      }
-    >
-      {props.children}
-    </span>
-  );
-}
+const Price = (props: React.PropsWithChildren) => (
+  <span className="text-xl font-bold duration-500 animate-in fade-in slide-in-from-left-4">
+    {props.children}
+  </span>
+);

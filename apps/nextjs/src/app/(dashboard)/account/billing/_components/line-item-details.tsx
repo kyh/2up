@@ -1,168 +1,167 @@
-import { LineItemSchema } from "@init/api/billing/billing-schema";
+import type { z } from "zod";
 import { formatCurrency } from "@init/api/billing/billing-util";
 import { If } from "@init/ui/if";
 import { cn } from "@init/ui/utils";
-import { PlusIcon } from "@radix-ui/react-icons";
-import { z } from "zod";
+import { PlusIcon } from "lucide-react";
+
+import type { LineItemSchema } from "@init/api/billing/billing-schema";
 
 const className = "flex text-secondary-foreground items-center text-sm";
 
-export function LineItemDetails(
+export const LineItemDetails = (
   props: React.PropsWithChildren<{
     lineItems: z.infer<typeof LineItemSchema>[];
     currency: string;
     selectedInterval?: string | undefined;
   }>,
-) {
-  return (
-    <div className={"flex flex-col space-y-1"}>
-      {props.lineItems.map((item, index) => {
-        // If the item has a description, we render it as a simple text
-        // and pass the item as values to the translation so we can use
-        // the item properties in the translation.
-        if (item.description) {
-          return (
-            <div key={index} className={className}>
-              <span className={"flex items-center space-x-1.5"}>
-                <PlusIcon className={"w-4"} />
-                {item.description}
-              </span>
-            </div>
-          );
-        }
-
-        const SetupFee = () => (
-          <If condition={item.setupFee}>
-            <div className={className}>
-              <span className={"flex items-center space-x-1"}>
-                <PlusIcon className={"w-3"} />
-
-                <span>
-                  {`plus a ${formatCurrency(props?.currency.toLowerCase(), item.setupFee as number)} setup fee`}
-                </span>
-              </span>
-            </div>
-          </If>
+) => (
+  <div className="flex flex-col space-y-1">
+    {props.lineItems.map((item, index) => {
+      // If the item has a description, we render it as a simple text
+      // and pass the item as values to the translation so we can use
+      // the item properties in the translation.
+      if (item.description) {
+        return (
+          <div key={index} className={className}>
+            <span className="flex items-center space-x-1.5">
+              <PlusIcon className="w-4" />
+              {item.description}
+            </span>
+          </div>
         );
+      }
 
-        const FlatFee = () => (
-          <div className={"flex flex-col"}>
-            <div className={cn(className, "space-x-1")}>
-              <span className={"flex items-center space-x-1"}>
-                <span className={"flex items-center space-x-1.5"}>
-                  <PlusIcon className={"w-3"} />
+      const SetupFee = () => (
+        <If condition={item.setupFee}>
+          <div className={className}>
+            <span className="flex items-center space-x-1">
+              <PlusIcon className="w-3" />
 
-                  <span>Base Plan</span>
-                </span>
+              <span>
+                {`plus a ${formatCurrency(props.currency.toLowerCase(), item.setupFee as number)} setup fee`}
+              </span>
+            </span>
+          </div>
+        </If>
+      );
 
-                <span>
-                  <If condition={props.selectedInterval} fallback={"Lifetime"}>
-                    {props.selectedInterval == "month" && "Billed monthly"}
-                    {props.selectedInterval == "year" && "Billed yearly"}
-                  </If>
-                </span>
+      const FlatFee = () => (
+        <div className="flex flex-col">
+          <div className={cn(className, "space-x-1")}>
+            <span className="flex items-center space-x-1">
+              <span className="flex items-center space-x-1.5">
+                <PlusIcon className="w-3" />
+
+                <span>Base Plan</span>
               </span>
 
-              <span>-</span>
-
-              <span className={"text-xs font-semibold"}>
-                {formatCurrency(props?.currency.toLowerCase(), item.cost)}
+              <span>
+                <If condition={props.selectedInterval} fallback="Lifetime">
+                  {props.selectedInterval == "month" && "Billed monthly"}
+                  {props.selectedInterval == "year" && "Billed yearly"}
+                </If>
               </span>
-            </div>
+            </span>
 
-            <SetupFee />
+            <span>-</span>
 
-            <If condition={item.tiers?.length}>
-              <span className={"flex items-center space-x-1.5"}>
-                <PlusIcon className={"w-3"} />
+            <span className="text-xs font-semibold">
+              {formatCurrency(props.currency.toLowerCase(), item.cost)}
+            </span>
+          </div>
 
-                <span className={"flex space-x-1 text-sm"}>
+          <SetupFee />
+
+          <If condition={item.tiers?.length}>
+            <span className="flex items-center space-x-1.5">
+              <PlusIcon className="w-3" />
+
+              <span className="flex space-x-1 text-sm">
+                <span>Per {item.unit} usage</span>
+              </span>
+            </span>
+
+            <Tiers item={item} currency={props.currency} />
+          </If>
+        </div>
+      );
+
+      const PerSeat = () => (
+        <div key={index} className="flex flex-col">
+          <div className={className}>
+            <span className="flex items-center space-x-1.5">
+              <PlusIcon className="w-3" />
+
+              <span>Per team member</span>
+            </span>
+
+            <If condition={!item.tiers?.length}>
+              <span className="font-semibold">
+                {formatCurrency(props.currency.toLowerCase(), item.cost)}
+              </span>
+            </If>
+          </div>
+
+          <SetupFee />
+
+          <If condition={item.tiers?.length}>
+            <Tiers item={item} currency={props.currency} />
+          </If>
+        </div>
+      );
+
+      const Metered = () => (
+        <div key={index} className="flex flex-col">
+          <div className={className}>
+            <span className="flex items-center space-x-1">
+              <span className="flex items-center space-x-1.5">
+                <PlusIcon className="w-3" />
+
+                <span className="flex space-x-1">
                   <span>Per {item.unit} usage</span>
                 </span>
               </span>
+            </span>
 
-              <Tiers item={item} currency={props.currency} />
-            </If>
-          </div>
-        );
-
-        const PerSeat = () => (
-          <div key={index} className={"flex flex-col"}>
-            <div className={className}>
-              <span className={"flex items-center space-x-1.5"}>
-                <PlusIcon className={"w-3"} />
-
-                <span>Per team member</span>
+            {/* If there are no tiers, there is a flat cost for usage */}
+            <If condition={!item.tiers?.length}>
+              <span className="font-semibold">
+                {formatCurrency(props.currency.toLowerCase(), item.cost)}
               </span>
-
-              <If condition={!item.tiers?.length}>
-                <span className={"font-semibold"}>
-                  {formatCurrency(props.currency.toLowerCase(), item.cost)}
-                </span>
-              </If>
-            </div>
-
-            <SetupFee />
-
-            <If condition={item.tiers?.length}>
-              <Tiers item={item} currency={props.currency} />
             </If>
           </div>
-        );
 
-        const Metered = () => (
-          <div key={index} className={"flex flex-col"}>
-            <div className={className}>
-              <span className={"flex items-center space-x-1"}>
-                <span className={"flex items-center space-x-1.5"}>
-                  <PlusIcon className={"w-3"} />
+          <SetupFee />
 
-                  <span className={"flex space-x-1"}>
-                    <span>Per {item.unit} usage</span>
-                  </span>
-                </span>
-              </span>
+          {/* If there are tiers, we render them as a list */}
+          <If condition={item.tiers?.length}>
+            <Tiers item={item} currency={props.currency} />
+          </If>
+        </div>
+      );
 
-              {/* If there are no tiers, there is a flat cost for usage */}
-              <If condition={!item.tiers?.length}>
-                <span className={"font-semibold"}>
-                  {formatCurrency(props?.currency.toLowerCase(), item.cost)}
-                </span>
-              </If>
-            </div>
+      switch (item.type) {
+        case "flat":
+          return <FlatFee key={item.id} />;
 
-            <SetupFee />
+        case "per_seat":
+          return <PerSeat key={item.id} />;
 
-            {/* If there are tiers, we render them as a list */}
-            <If condition={item.tiers?.length}>
-              <Tiers item={item} currency={props.currency} />
-            </If>
-          </div>
-        );
-
-        switch (item.type) {
-          case "flat":
-            return <FlatFee key={item.id} />;
-
-          case "per_seat":
-            return <PerSeat key={item.id} />;
-
-          case "metered": {
-            return <Metered key={item.id} />;
-          }
+        case "metered": {
+          return <Metered key={item.id} />;
         }
-      })}
-    </div>
-  );
-}
+      }
+    })}
+  </div>
+);
 
-function Tiers({
+const Tiers = ({
   currency,
   item,
 }: {
   currency: string;
   item: z.infer<typeof LineItemSchema>;
-}) {
+}) => {
   const unit = item.unit;
 
   const tiers = item.tiers?.map((tier, index) => {
@@ -182,13 +181,13 @@ function Tiers({
 
     return (
       <span
-        className={"flex space-x-1 text-xs text-secondary-foreground"}
+        className="flex space-x-1 text-xs text-secondary-foreground"
         key={index}
       >
         <span>-</span>
 
         <If condition={isLastTier}>
-          <span className={"font-bold"}>
+          <span className="font-bold">
             {formatCurrency(currency.toLowerCase(), tier.cost)}
           </span>
 
@@ -211,7 +210,7 @@ function Tiers({
           </If>
 
           <If condition={!isIncluded}>
-            <span className={"font-bold"}>
+            <span className="font-bold">
               {formatCurrency(currency.toLowerCase(), tier.cost)}
             </span>
 
@@ -224,5 +223,5 @@ function Tiers({
     );
   });
 
-  return <div className={"my-1 flex flex-col space-y-1.5"}>{tiers}</div>;
-}
+  return <div className="my-1 flex flex-col space-y-1.5">{tiers}</div>;
+};
