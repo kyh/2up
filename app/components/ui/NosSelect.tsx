@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import { cva, VariantProps } from "class-variance-authority";
+import clsx from "clsx";
 
+import { cn } from "@/lib/utils";
 import Borders from "./Borders";
 
 const selectContainerStyles = cva("", {
@@ -23,7 +25,7 @@ const selectContainerStyles = cva("", {
   },
 });
 
-const selectLabelStyles = cva("flex-grow-1 mr-6 basis-0 text-base", {
+const selectLabelStyles = cva("", {
   variants: {
     variant: {
       normal: "text-normal-text",
@@ -46,7 +48,7 @@ const selectLabelStyles = cva("flex-grow-1 mr-6 basis-0 text-base", {
 });
 
 const selectIconStyles = cva(
-  "logo absolute right-9 top-1/3 h-[3px] w-[3px] -translate-y-1/2 transform",
+  "logo absolute right-9 top-1/3 h-[3px] w-[3px] -translate-y-1/2 transform shadow-[3px_3px,6px_3px,9px_3px,12px_3px,15px_3px,18px_3px,21px_3px,3px_6px,6px_6px,9px_6px,12px_6px,15px_6px,18px_6px,21px_6px,6px_9px,9px_9px,12px_9px,15px_9px,18px_9px,6px_12px,9px_12px,12px_12px,15px_12px,18px_12px,9px_15px,12px_15px,15px_15px,12px_18px]",
   {
     variants: {
       variant: {
@@ -138,7 +140,10 @@ export const Select = ({
     >
       <label
         htmlFor={name}
-        className={selectLabelStyles({ variant, isInline })}
+        className={clsx(
+          "flex-grow-1 mr-6 basis-0 text-base",
+          selectLabelStyles({ variant, isInline }),
+        )}
       >
         {label}
       </label>
@@ -150,7 +155,7 @@ export const Select = ({
           required={required}
           value={parsedValue}
           onChange={handleChange}
-          className={selectClasses}
+          className={cn(selectClasses, className)}
         >
           <option value="" disabled selected hidden>
             {placeholder}
@@ -158,7 +163,7 @@ export const Select = ({
           {children}
         </select>
 
-        {dropdownIcon}
+        <div className={selectIconStyles({ variant })} />
 
         <Borders variant={variant === "dark" ? "light" : variant} />
       </div>
