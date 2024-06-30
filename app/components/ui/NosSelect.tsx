@@ -94,6 +94,8 @@ type SelectProps = VariantProps<typeof selectStyles> &
     isInline?: boolean;
     required?: boolean;
     placeholder?: string;
+    value?: string;
+    onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   };
 
 export const Select = ({
@@ -104,22 +106,26 @@ export const Select = ({
   required,
   children,
   placeholder,
+  className,
+  value,
+  onChange,
   ...props
 }: SelectProps) => {
-  const [isSelected, setIsSelected] = useState(false);
+  const [internalValue, setInternalValue] = useState<string>();
   const selectClasses = selectStyles({ variant });
 
-  const dropdownIcon = (
-    <div
-      className={selectIconStyles({ variant })}
-      style={{
-        boxShadow:
-          "3px 3px, 6px 3px, 9px 3px, 12px 3px, 15px 3px, 18px 3px, 21px 3px, 3px 6px, 6px 6px, 9px 6px, 12px 6px, 15px 6px, 18px 6px, 21px 6px, 6px 9px, 9px 9px, 12px 9px, 15px 9px, 18px 9px, 6px 12px, 9px 12px, 12px 12px, 15px 12px, 18px 12px, 9px 15px, 12px 15px, 15px 15px, 12px 18px",
-      }}
-    />
-  );
+  const isControlled = value !== undefined;
+  const parsedValue = isControlled ? value : internalValue;
+  const isSelected = !!parsedValue;
 
-  const handleChange = () => setIsSelected(true);
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    if (!isControlled) {
+      setInternalValue(event.target.value);
+    }
+    if (onChange) {
+      onChange(event);
+    }
+  };
 
   return (
     <div
@@ -142,6 +148,7 @@ export const Select = ({
           id={name}
           name={name}
           required={required}
+          value={parsedValue}
           onChange={handleChange}
           className={selectClasses}
         >
