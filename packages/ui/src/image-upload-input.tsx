@@ -7,7 +7,7 @@ import { Button } from "@init/ui/button";
 import { If } from "@init/ui/if";
 import { Label } from "@init/ui/label";
 import { cn } from "@init/ui/utils";
-import { Cross1Icon, UploadIcon } from "@radix-ui/react-icons";
+import { UploadIcon, XIcon } from "lucide-react";
 
 type Props = Omit<React.InputHTMLAttributes<unknown>, "value"> & {
   image?: string | null;
@@ -19,7 +19,7 @@ type Props = Omit<React.InputHTMLAttributes<unknown>, "value"> & {
 const IMAGE_SIZE = 22;
 
 export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
-  function ImageUploadInputComponent(
+  (
     {
       children,
       image,
@@ -30,7 +30,7 @@ export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
       ...props
     },
     forwardedRef,
-  ) {
+  ) => {
     const localRef = useRef<HTMLInputElement>();
 
     const [state, setState] = useState({
@@ -191,7 +191,7 @@ export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
               className={"!h-5 !w-5"}
               onClick={imageRemoved}
             >
-              <Cross1Icon className="h-4" />
+              <XIcon className="h-4" />
             </Button>
           </If>
         </div>
@@ -199,3 +199,5 @@ export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
     );
   },
 );
+
+ImageUploadInput.displayName = "ImageUploadInput";

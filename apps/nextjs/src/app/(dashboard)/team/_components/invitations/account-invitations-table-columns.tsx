@@ -11,10 +11,10 @@ import {
 } from "@init/ui/dropdown-menu";
 import { If } from "@init/ui/if";
 import { ProfileAvatar } from "@init/ui/profile-avatar";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { ColumnDef } from "@tanstack/react-table";
+import { EllipsisIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
+import type { ColumnDef } from "@tanstack/react-table";
 import { RoleBadge } from "../role-badge";
 import { DeleteInvitationDialog } from "./delete-invitation-dialog";
 import { RenewInvitationDialog } from "./renew-invitation-dialog";
@@ -22,72 +22,70 @@ import { UpdateInvitationDialog } from "./update-invitation-dialog";
 
 type Invitations = RouterOutputs["team"]["invitations"];
 
-export function getColumns(permissions: {
+export const getColumns = (permissions: {
   canUpdateInvitation: boolean;
   canRemoveInvitation: boolean;
   currentUserRoleHierarchy: number;
-}): ColumnDef<Invitations[0]>[] {
-  return [
-    {
-      header: "Email",
-      cell: ({ row }) => {
-        const member = row.original;
-        const email = member.email;
+}): ColumnDef<Invitations[0]>[] => [
+  {
+    header: "Email",
+    cell: ({ row }) => {
+      const member = row.original;
+      const email = member.email;
 
-        return (
-          <span className={"flex items-center space-x-4 text-left"}>
-            <span>
-              <ProfileAvatar text={email} />
-            </span>
-
-            <span>{email}</span>
+      return (
+        <span className="flex items-center space-x-4 text-left">
+          <span>
+            <ProfileAvatar text={email} />
           </span>
-        );
-      },
-    },
-    {
-      header: "Role",
-      cell: ({ row }) => {
-        const { role } = row.original;
 
-        return <RoleBadge role={role} />;
-      },
+          <span>{email}</span>
+        </span>
+      );
     },
-    {
-      header: "Invited at",
-      cell: ({ row }) => {
-        return new Date(row.original.created_at).toLocaleDateString();
-      },
-    },
-    {
-      header: "Expires at",
-      cell: ({ row }) => {
-        return new Date(row.original.expires_at).toLocaleDateString();
-      },
-    },
-    {
-      header: "Status",
-      cell: ({ row }) => {
-        const isExpired = getIsInviteExpired(row.original.expires_at);
+  },
+  {
+    header: "Role",
+    cell: ({ row }) => {
+      const { role } = row.original;
 
-        if (isExpired) {
-          return <Badge variant={"warning"}>Expired</Badge>;
-        }
-
-        return <Badge variant={"success"}>Active</Badge>;
-      },
+      return <RoleBadge role={role} />;
     },
-    {
-      header: "",
-      id: "actions",
-      cell: ({ row }) => (
-        <ActionsDropdown permissions={permissions} invitation={row.original} />
-      ),
+  },
+  {
+    header: "Invited at",
+    cell: ({ row }) => {
+      return new Date(row.original.created_at).toLocaleDateString();
     },
-  ];
-}
+  },
+  {
+    header: "Expires at",
+    cell: ({ row }) => {
+      return new Date(row.original.expires_at).toLocaleDateString();
+    },
+  },
+  {
+    header: "Status",
+    cell: ({ row }) => {
+      const isExpired = getIsInviteExpired(row.original.expires_at);
 
-function ActionsDropdown({
+      if (isExpired) {
+        return <Badge variant="warning">Expired</Badge>;
+      }
+
+      return <Badge variant="success">Active</Badge>;
+    },
+  },
+  {
+    header: "",
+    id: "actions",
+    cell: ({ row }) => (
+      <ActionsDropdown permissions={permissions} invitation={row.original} />
+    ),
+  },
+];
+
+const ActionsDropdown = ({
   permissions,
   invitation,
 }: {
@@ -97,7 +95,7 @@ function ActionsDropdown({
     currentUserRoleHierarchy: number;
   };
   invitation: Invitations[0];
-}) {
+}) => {
   const [isDeletingInvite, setIsDeletingInvite] = useState(false);
   const [isUpdatingRole, setIsUpdatingRole] = useState(false);
   const [isRenewingInvite, setIsRenewingInvite] = useState(false);
@@ -115,7 +113,7 @@ function ActionsDropdown({
             variant="ghost"
             className="flex size-8 p-0 data-[state=open]:bg-muted"
           >
-            <DotsHorizontalIcon className="size-4" aria-hidden="true" />
+            <EllipsisIcon className="size-4" aria-hidden="true" />
           </Button>
         </DropdownMenuTrigger>
 
@@ -168,13 +166,13 @@ function ActionsDropdown({
       </If>
     </>
   );
-}
+};
 
-function getIsInviteExpired(isoExpiresAt: string) {
+const getIsInviteExpired = (isoExpiresAt: string) => {
   const currentIsoTime = new Date().toISOString();
 
   const isoExpiresAtDate = new Date(isoExpiresAt);
   const currentIsoTimeDate = new Date(currentIsoTime);
 
   return isoExpiresAtDate < currentIsoTimeDate;
-}
+};

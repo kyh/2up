@@ -5,7 +5,7 @@ import { TeamAccountDangerZone } from "./_components/team-account-danger-zone";
 import { UpdateTeamAccountImage } from "./_components/update-team-account-image-container";
 import { UpdateTeamAccountNameForm } from "./_components/update-team-account-name-form";
 
-async function Page({ params }: { params: { slug: string } }) {
+const Page = async ({ params }: { params: { slug: string } }) => {
   const { account } = await api.team.teamWorkspace({
     slug: params.slug,
   });
@@ -73,6 +73,6 @@ async function Page({ params }: { params: { slug: string } }) {
       </section>
     </>
   );
-}
+};
 
 export default Page;

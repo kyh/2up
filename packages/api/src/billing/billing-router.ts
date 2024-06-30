@@ -277,10 +277,10 @@ export const billingRouter = createTRPCRouter({
     }),
 });
 
-function getUrls(params: { returnUrl: string }) {
+const getUrls = (params: { returnUrl: string }) => {
   const returnUrl = `${params.returnUrl}?session_id={CHECKOUT_SESSION_ID}`;
 
   return {
     return_url: returnUrl,
   };
-}
+};

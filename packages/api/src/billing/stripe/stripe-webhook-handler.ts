@@ -1,17 +1,17 @@
-import Stripe from "stripe";
+import type Stripe from "stripe";
 
+import type { BillingConfig } from "../billing-schema";
 import type { Database } from "@init/db/database.types";
-import { BillingConfig } from "../billing-schema";
 import { getLineItemTypeById } from "../billing-util";
 import { stripeServerEnvSchema } from "./stripe-schema";
 import { createStripeClient } from "./stripe-sdk";
 
 type UpsertSubscriptionParams =
   Database["public"]["Functions"]["upsert_subscription"]["Args"] & {
-    line_items: Array<LineItem>;
+    line_items: LineItem[];
   };
 
-interface LineItem {
+type LineItem = {
   id: string;
   quantity: number;
   subscription_id: string;
@@ -22,7 +22,7 @@ interface LineItem {
   interval: string;
   interval_count: number;
   type: "flat" | "metered" | "per_seat" | undefined;
-}
+};
 
 type UpsertOrderParams =
   Database["public"]["Functions"]["upsert_order"]["Args"];
@@ -180,7 +180,7 @@ export class StripeWebhookHandlerService {
       const lineItems = sessionWithLineItems.line_items?.data ?? [];
       const paymentStatus = sessionWithLineItems.payment_status;
       const status = paymentStatus === "unpaid" ? "pending" : "succeeded";
-      const currency = event.data.object.currency as string;
+      const currency = event.data.object.currency!;
 
       const payload: UpsertOrderParams = {
         target_account_id: accountId,
@@ -191,7 +191,7 @@ export class StripeWebhookHandlerService {
         currency: currency,
         total_amount: sessionWithLineItems.amount_total ?? 0,
         line_items: lineItems.map((item) => {
-          const price = item.price as Stripe.Price;
+          const price = item.price!;
 
           return {
             id: item.id,
@@ -233,7 +233,7 @@ export class StripeWebhookHandlerService {
   ) {
     const subscription = event.data.object;
     const subscriptionId = subscription.id;
-    const accountId = subscription.metadata.accountId as string;
+    const accountId = subscription.metadata.accountId!;
 
     const subscriptionPayloadBuilderService =
       new StripeSubscriptionPayloadBuilderService();
@@ -279,7 +279,7 @@ export class StripeWebhookHandlerService {
       expand: ["line_items"],
     });
 
-    const accountId = subscription.metadata.accountId as string;
+    const accountId = subscription.metadata.accountId!;
 
     const subscriptionPayloadBuilderService =
       new StripeSubscriptionPayloadBuilderService();
@@ -358,7 +358,7 @@ class StripeSubscriptionPayloadBuilderService {
 
     const lineItems = params.lineItems.map((item) => {
       const quantity = item.quantity ?? 1;
-      const variantId = item.price?.id as string;
+      const variantId = item.price?.id!;
 
       return {
         id: item.id,
@@ -369,7 +369,7 @@ class StripeSubscriptionPayloadBuilderService {
         variant_id: variantId,
         price_amount: item.price?.unit_amount,
         interval: item.price?.recurring?.interval as string,
-        interval_count: item.price?.recurring?.interval_count as number,
+        interval_count: item.price?.recurring?.interval_count!,
         type: this.config
           ? getLineItemTypeById(this.config, variantId)
           : undefined,
@@ -388,14 +388,13 @@ class StripeSubscriptionPayloadBuilderService {
       active,
       currency: params.currency,
       cancel_at_period_end: params.cancelAtPeriodEnd ?? false,
-      period_starts_at: getISOString(params.periodStartsAt) as string,
-      period_ends_at: getISOString(params.periodEndsAt) as string,
+      period_starts_at: getISOString(params.periodStartsAt)!,
+      period_ends_at: getISOString(params.periodEndsAt)!,
       trial_starts_at: getISOString(params.trialStartsAt),
       trial_ends_at: getISOString(params.trialEndsAt),
     };
   }
 }
 
-function getISOString(date: number | null) {
-  return date ? new Date(date * 1000).toISOString() : undefined;
-}
+const getISOString = (date: number | null) =>
+  date ? new Date(date * 1000).toISOString() : undefined;

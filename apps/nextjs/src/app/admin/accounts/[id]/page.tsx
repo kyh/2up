@@ -2,11 +2,11 @@ import { api } from "@/trpc/server";
 import { AdminAccountPage } from "../_components/admin-account-page";
 import { AdminGuard } from "../../_components/admin-guard";
 
-interface Params {
+type Params = {
   params: {
     id: string;
   };
-}
+};
 
 export const generateMetadata = async ({ params }: Params) => {
   const account = await api.admin.getAccount({ accountId: params.id });
@@ -16,7 +16,7 @@ export const generateMetadata = async ({ params }: Params) => {
   };
 };
 
-async function AccountPage({ params }: Params) {
+const AccountPage = async ({ params }: Params) => {
   const account = await api.admin.getAccount({ accountId: params.id });
 
   return (
@@ -24,6 +24,6 @@ async function AccountPage({ params }: Params) {
       <AdminAccountPage account={account} />
     </main>
   );
-}
+};
 
 export default AdminGuard(AccountPage);

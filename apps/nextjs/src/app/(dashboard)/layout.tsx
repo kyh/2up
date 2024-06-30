@@ -15,14 +15,10 @@ import {
 } from "@init/ui/dropdown-menu";
 import { Logo } from "@init/ui/logo";
 import { getInitials } from "@init/ui/utils";
-import {
-  ChatBubbleIcon,
-  DashboardIcon,
-  QuestionMarkCircledIcon,
-} from "@radix-ui/react-icons";
 
 import type { RouterOutputs } from "@init/api";
 import { NavLink } from "@/components/nav";
+import { accountPageLinks, dashboardPageLinks } from "@/lib/page-links";
 import { api } from "@/trpc/server";
 
 export const metadata: Metadata = {
@@ -41,18 +37,6 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Layout;
-
-const navLinks = [
-  { id: "crud", href: "/dashboard", label: "CRUD", Icon: DashboardIcon },
-  { id: "chat", href: "/chat", label: "Chat", Icon: ChatBubbleIcon },
-  { id: "docs", href: "/docs", label: "Docs", Icon: QuestionMarkCircledIcon },
-] as const;
-
-const userDropdownLinks = [
-  { id: "account", href: "/account", label: "Account" },
-  { id: "billing", href: "/account/billing", label: "Billing" },
-  { id: "team", href: "/account/team", label: "Team" },
-] as const;
 
 const Sidebar = ({
   user,
@@ -80,7 +64,7 @@ const Sidebar = ({
           />
           <span className="sr-only">Init</span>
         </Link>
-        {navLinks.map((link) => (
+        {dashboardPageLinks.map((link) => (
           <NavLink
             key={link.id}
             href={link.href}
@@ -122,7 +106,7 @@ const Sidebar = ({
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            {userDropdownLinks.map((link) => (
+            {accountPageLinks.map((link) => (
               <DropdownMenuItem key={link.id} asChild>
                 <Link href={link.href}>{link.label}</Link>
               </DropdownMenuItem>

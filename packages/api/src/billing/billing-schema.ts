@@ -8,8 +8,7 @@ export enum LineItemType {
 
 const BillingIntervalSchema = z.enum(["month", "year"]);
 const LineItemTypeSchema = z.enum(["flat", "per_seat", "metered"]);
-
-export const PaymentTypeSchema = z.enum(["one-time", "recurring"]);
+const PaymentTypeSchema = z.enum(["one-time", "recurring"]);
 
 export const LineItemSchema = z
   .object({
@@ -271,9 +270,8 @@ export const BillingSchema = z
     },
   );
 
-export function createBillingSchema(config: z.infer<typeof BillingSchema>) {
-  return BillingSchema.parse(config);
-}
+export const createBillingSchema = (config: z.infer<typeof BillingSchema>) =>
+  BillingSchema.parse(config);
 
 export type BillingConfig = z.infer<typeof BillingSchema>;
 export type ProductSchema = z.infer<typeof ProductSchema>;

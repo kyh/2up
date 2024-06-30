@@ -16,21 +16,21 @@ import { Popover, PopoverContent, PopoverTrigger } from "@init/ui/popover";
 import { Separator } from "@init/ui/separator";
 import { cn } from "@init/ui/utils";
 import {
-  CaretSortIcon,
-  CheckCircledIcon,
-  PersonIcon,
+  ArrowUpDownIcon,
+  CircleCheckIcon,
   PlusIcon,
-} from "@radix-ui/react-icons";
+  UserIcon,
+} from "lucide-react";
 
 import { api } from "@/trpc/react";
 import { CreateTeamAccountDialog } from "./create-team-account-dialog";
 
-interface AccountSelectorProps {
-  accounts: Array<{
+type AccountSelectorProps = {
+  accounts: {
     label: string | null;
     value: string | null;
     image?: string | null;
-  }>;
+  }[];
 
   features: {
     enableTeamCreation: boolean;
@@ -42,11 +42,11 @@ interface AccountSelectorProps {
   className?: string;
 
   onAccountChange: (value: string | undefined) => void;
-}
+};
 
 const PERSONAL_ACCOUNT_SLUG = "personal";
 
-export function AccountSelector({
+export const AccountSelector = ({
   accounts,
   selectedAccount,
   onAccountChange,
@@ -56,7 +56,7 @@ export function AccountSelector({
     enableTeamCreation: true,
   },
   collapsed = false,
-}: React.PropsWithChildren<AccountSelectorProps>) {
+}: React.PropsWithChildren<AccountSelectorProps>) => {
   const [open, setOpen] = useState<boolean>(false);
   const [isCreatingAccount, setIsCreatingAccount] = useState<boolean>(false);
 
@@ -74,7 +74,7 @@ export function AccountSelector({
 
   const Icon = (props: { item: string }) => {
     return (
-      <CheckCircledIcon
+      <CircleCheckIcon
         className={cn(
           "ml-auto h-4 w-4",
           value === props.item ? "opacity-100" : "opacity-0",
@@ -90,7 +90,7 @@ export function AccountSelector({
     pictureUrl ? (
       <UserAvatar pictureUrl={pictureUrl} />
     ) : (
-      <PersonIcon className="h-4 min-h-4 w-4 min-w-4" />
+      <UserIcon className="h-4 min-h-4 w-4 min-w-4" />
     );
 
   return (
@@ -114,7 +114,7 @@ export function AccountSelector({
             <If
               condition={selected}
               fallback={
-                <span className={"flex max-w-full items-center space-x-2"}>
+                <span className="flex max-w-full items-center space-x-2">
                   <PersonalAccountAvatar />
 
                   <span
@@ -128,11 +128,11 @@ export function AccountSelector({
               }
             >
               {(account) => (
-                <span className={"flex max-w-full items-center space-x-2"}>
-                  <Avatar className={"h-5 w-5"}>
+                <span className="flex max-w-full items-center space-x-2">
+                  <Avatar className="h-5 w-5">
                     <AvatarImage src={account.image ?? undefined} />
 
-                    <AvatarFallback className={"group-hover:bg-background"}>
+                    <AvatarFallback className="group-hover:bg-background">
                       {account.label ? account.label[0] : ""}
                     </AvatarFallback>
                   </Avatar>
@@ -148,13 +148,13 @@ export function AccountSelector({
               )}
             </If>
 
-            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <ArrowUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
 
         <PopoverContent className="w-full p-0" collisionPadding={20}>
           <Command>
-            <CommandInput placeholder={"Search Account..."} className="h-9" />
+            <CommandInput placeholder="Search Account..." className="h-9" />
 
             <CommandList>
               <CommandGroup>
@@ -164,7 +164,7 @@ export function AccountSelector({
                 >
                   <PersonalAccountAvatar />
 
-                  <span className={"ml-2"}>Personal Account</span>
+                  <span className="ml-2">Personal Account</span>
 
                   <Icon item={PERSONAL_ACCOUNT_SLUG} />
                 </CommandItem>
@@ -195,8 +195,8 @@ export function AccountSelector({
                         }
                       }}
                     >
-                      <div className={"flex items-center"}>
-                        <Avatar className={"mr-2 h-5 w-5"}>
+                      <div className="flex items-center">
+                        <Avatar className="mr-2 h-5 w-5">
                           <AvatarImage src={account.image ?? undefined} />
 
                           <AvatarFallback
@@ -210,7 +210,7 @@ export function AccountSelector({
                           </AvatarFallback>
                         </Avatar>
 
-                        <span className={"mr-2 max-w-[165px] truncate"}>
+                        <span className="mr-2 max-w-[165px] truncate">
                           {account.label}
                         </span>
                       </div>
@@ -226,10 +226,10 @@ export function AccountSelector({
           <Separator />
 
           <If condition={features.enableTeamCreation}>
-            <div className={"p-1"}>
+            <div className="p-1">
               <Button
                 variant="ghost"
-                size={"sm"}
+                size="sm"
                 className="w-full justify-start text-sm font-normal"
                 onClick={() => {
                   setIsCreatingAccount(true);
@@ -253,12 +253,10 @@ export function AccountSelector({
       </If>
     </>
   );
-}
+};
 
-function UserAvatar(props: { pictureUrl?: string }) {
-  return (
-    <Avatar className={"h-6 w-6"}>
-      <AvatarImage src={props.pictureUrl} />
-    </Avatar>
-  );
-}
+const UserAvatar = (props: { pictureUrl?: string }) => (
+  <Avatar className="h-6 w-6">
+    <AvatarImage src={props.pictureUrl} />
+  </Avatar>
+);

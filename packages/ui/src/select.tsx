@@ -2,13 +2,13 @@
 
 import * as React from "react";
 import { cn } from "@init/ui/utils";
+import * as SelectPrimitive from "@radix-ui/react-select";
 import {
-  CaretSortIcon,
+  ArrowUpDownIcon,
   CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-} from "@radix-ui/react-icons";
-import * as SelectPrimitive from "@radix-ui/react-select";
+} from "lucide-react";
 
 const Select = SelectPrimitive.Root;
 
@@ -30,7 +30,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <CaretSortIcon className="h-4 w-4 opacity-50" />
+      <ArrowUpDownIcon className="h-4 w-4 opacity-50" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
