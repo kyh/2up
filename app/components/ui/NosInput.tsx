@@ -1,6 +1,7 @@
 import React from "react";
 import { cva, VariantProps } from "class-variance-authority";
 
+import { cn } from "@/lib/utils";
 import Borders from "./Borders";
 
 const inputContainerStyles = cva("mb-3 flex w-full flex-nowrap text-base", {
@@ -75,10 +76,14 @@ export const Input = ({
   variant,
   type,
   placeholder,
+  className,
   ...props
 }: InputProps) => {
   return (
-    <div {...props} className={inputContainerStyles({ variant, isInline })}>
+    <div
+      {...props}
+      className={cn(inputContainerStyles({ variant, isInline }), className)}
+    >
       <label htmlFor={name} className={inputLabelStyles({ isInline })}>
         {label}
       </label>
