@@ -4,7 +4,34 @@ import clsx from "clsx";
 
 import Borders from "./Borders";
 
-const tableStyles = cva("h-10", {
+const tableContainerStyles = cva(
+  "relative max-w-[100%] overflow-auto p-2 text-base",
+  {
+    variants: {
+      variant: {
+        normal: "bg-light",
+        dark: "bg-dark",
+      },
+    },
+    defaultVariants: {
+      variant: "normal",
+    },
+  },
+);
+
+const tableStyles = cva("relative table-fixed border-collapse border-0", {
+  variants: {
+    variant: {
+      normal: "bg-light",
+      dark: "bg-dark",
+    },
+  },
+  defaultVariants: {
+    variant: "normal",
+  },
+});
+
+const tableCellStyles = cva("h-10", {
   variants: {
     variant: {
       normal: "text-dark",
@@ -34,7 +61,7 @@ export interface TableData {
   body: string[][];
 }
 
-type TableProps = VariantProps<typeof tableStyles> &
+type TableProps = VariantProps<typeof tableCellStyles> &
   React.HTMLAttributes<HTMLDivElement> & {
     data: TableData;
   };
@@ -46,30 +73,20 @@ export const Table = ({
   centered,
   ...props
 }: TableProps) => {
-  const classes = tableStyles({ variant, bordered, centered });
+  const tableContainerClasses = tableContainerStyles({ variant });
+  const tableClasses = tableStyles({ variant });
+  const tableCellClasses = tableCellStyles({ variant, bordered, centered });
 
   return (
-    <div
-      {...props}
-      className={clsx(
-        variant === "dark" ? "bg-dark p-2" : "p-2",
-        `relative max-w-[100%] overflow-auto text-base`,
-      )}
-    >
-      <table
-        className={clsx(
-          variant === "dark" ? "bg-dark" : "bg-light",
-          "relative table-fixed border-collapse border-0",
-        )}
-      >
+    <div {...props} className={tableContainerClasses}>
+      <table className={tableClasses}>
         {bordered && (
           <Borders variant={variant === "dark" ? "light" : "normal"} />
         )}
-
-        <thead className={clsx(classes)}>
+        <thead className={clsx(tableCellClasses)}>
           <tr>
             {data.head.map((th, i) => (
-              <th key={i} className={clsx("p-3", classes)}>
+              <th key={i} className={clsx("p-3", tableCellClasses)}>
                 {th}
               </th>
             ))}
@@ -77,9 +94,9 @@ export const Table = ({
         </thead>
         <tbody>
           {data.body.map((tr, i) => (
-            <tr key={i} className={clsx("p-3", classes)}>
+            <tr key={i} className={clsx("p-3", tableCellClasses)}>
               {tr.map((td, j) => (
-                <td key={j} className={clsx("p-2", classes)}>
+                <td key={j} className={clsx("p-2", tableCellClasses)}>
                   {td}
                 </td>
               ))}
