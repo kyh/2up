@@ -5,6 +5,7 @@ const borders = cva("pointer-events-none absolute px-3 py-2", {
   variants: {
     variant: {
       normal: "border-normal-border",
+      light: "border-light",
       success: "border-success",
       primary: "border-primary",
       error: "border-error",
@@ -33,11 +34,11 @@ const Borders: React.FC<BordersProps> = ({ variant, className, ...props }) => {
       <span
         className={borders({ variant, position: "top", className })}
         {...props}
-      ></span>
+      />
       <span
         className={borders({ variant, position: "left", className })}
         {...props}
-      ></span>
+      />
     </>
   );
 };
