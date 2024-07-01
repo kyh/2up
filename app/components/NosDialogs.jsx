@@ -1,6 +1,6 @@
 import React from "react";
 
-import Dialog from "./ui/NosDialog.jsx";
+import { Dialog } from "./ui/NosDialog";
 
 export default function Dialogs() {
   return (
@@ -9,16 +9,12 @@ export default function Dialogs() {
         Dialogs
       </span>
 
-      <Dialog
-        label="Open dialog"
-        alert="this is a dialog."
-        block
-      />
+      <Dialog label="Open dialog" alert="this is a dialog." block />
 
       <Dialog
         label="Open dark dialog"
         alert="this is a dialog."
-        type="dark"
+        variant="dark"
         block
       />
 
@@ -32,7 +28,7 @@ export default function Dialogs() {
       <Dialog
         label="Open dark and rounded dialog"
         alert="this is a dialog."
-        type="dark"
+        variant="dark"
         rounded
         block
       />
