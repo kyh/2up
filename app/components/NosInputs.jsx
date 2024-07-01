@@ -1,6 +1,6 @@
 import React from "react";
 
-import NosInput from "./ui/NosInput";
+import { Input } from "./ui/NosInput";
 
 export default function Inputs() {
   return (
@@ -9,38 +9,38 @@ export default function Inputs() {
         Inputs
       </span>
 
-      <NosInput theme="normal" type="text" name="name" label="Your Name" />
-      <NosInput
-        theme="success"
+      <Input variant="normal" type="text" name="name" label="Your Name" />
+      <Input
+        variant="success"
         type="text"
         name="name"
         placeholder="Best.css"
-        label=".input.is- success"
-        isinline
+        label=".input.is-success"
+        isInline
       />
-      <NosInput
-        theme="warning"
+      <Input
+        variant="warning"
         type="text"
         name="name"
         placeholder="8bit.css"
-        label=".input.is- warning"
-        isinline
+        label=".input.is-warning"
+        isInline
       />
-      <NosInput
-        theme="error"
+      <Input
+        variant="error"
         type="text"
         name="name"
         placeholder="awesome.css"
-        label=".input.is- error"
-        isinline
+        label=".input.is-error"
+        isInline
       />
-      <NosInput
-        theme="dark"
+      <Input
+        variant="dark"
         type="text"
         name="name"
         placeholder="dark.css"
-        label=".input.is- dark"
-        isinline
+        label=".input.is-dark"
+        isInline
       />
     </div>
   );
