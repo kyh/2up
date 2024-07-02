@@ -11,7 +11,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
   });
 
   if (!account) {
-    return redirect("/account");
+    return redirect("/team");
   }
 
   return (

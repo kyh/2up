@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createTeamAccountInput } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
@@ -9,6 +10,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@init/ui/dialog";
 import {
   Form,
@@ -26,14 +28,14 @@ import { z } from "zod";
 
 import { api } from "@/trpc/react";
 
-export function CreateTeamAccountDialog(
-  props: React.PropsWithChildren<{
-    isOpen: boolean;
-    setIsOpen: (isOpen: boolean) => void;
-  }>,
-) {
+export function CreateTeamAccountDialog() {
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
   return (
-    <Dialog open={props.isOpen} onOpenChange={props.setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button>Create a Team</Button>
+      </DialogTrigger>
       <DialogContent
         onEscapeKeyDown={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
@@ -46,16 +48,19 @@ export function CreateTeamAccountDialog(
           </DialogDescription>
         </DialogHeader>
 
-        <CreateOrganizationAccountForm onClose={() => props.setIsOpen(false)} />
+        <CreateOrganizationAccountForm onClose={() => setIsOpen(false)} />
       </DialogContent>
     </Dialog>
   );
 }
 
 function CreateOrganizationAccountForm(props: { onClose: () => void }) {
+  const utils = api.useUtils();
   const createTeamAccount = api.team.createTeamAccount.useMutation({
     onSuccess: () => {
       toast.success("Team created successfully");
+      utils.account.userWorkspace.invalidate();
+      props.onClose();
     },
     onError: () =>
       toast.error(

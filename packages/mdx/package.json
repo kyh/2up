@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@init/ui": "workspace:latest",
+    "@mdx-js/react": "^3.0.1",
     "@sindresorhus/slugify": "^2.2.1",
     "mdast-util-to-string": "^4.0.0",
     "mdx-annotations": "^0.1.4",
