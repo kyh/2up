@@ -58,7 +58,7 @@ function RenewInvitationForm({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Invite renewed successfully");
-      utils.team.invitations.invalidate();
+      utils.account.userWorkspace.invalidate();
     },
     onError: () =>
       toast.error(

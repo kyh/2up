@@ -1,74 +1,32 @@
-import { If } from "@init/ui/if";
+import Link from "next/link";
+import { Button } from "@init/ui/button";
 
 import { api } from "@/trpc/server";
-import { AccountInvitationsTable } from "./_components/invitations/account-invitations-table";
-import { AccountMembersTable } from "./_components/members/account-members-table";
-import { InviteMembersDialogContainer } from "./_components/members/invite-members-dialog-container";
-import { loadTeamPagePageData } from "./_lib/team-page-loader";
+import { AccountSelector } from "./_components/account-selector";
+import { CreateTeamAccountDialog } from "./_components/create-team-account-dialog";
 
 const Page = async () => {
-  const { account, user, slug, invitations } = await loadTeamPagePageData();
-
-  const membersPromise = api.team.members({ slug });
-
-  const canManageRoles = account.permissions.includes("roles.manage");
-  const canManageInvitations = account.permissions.includes("invites.manage");
-
-  const isPrimaryOwner = account.primary_owner_user_id === user.id;
-  const currentUserRoleHierarchy = account.role_hierarchy_level;
+  const userWorkspacePromise = api.account.userWorkspace();
 
   return (
-    <section className="divide-y divide-border">
-      <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 py-8 md:grid-cols-3">
-        <div>
-          <h2 className="text-base font-light leading-7 text-primary">
-            Members
-          </h2>
-          <p className="mt-1 text-sm leading-6 text-muted-foreground">
-            Here you can manage the members of your team.
-          </p>
-        </div>
-        <div className="md:col-span-2">
-          <div className="space-y-4">
-            <InviteMembersDialogContainer
-              userRoleHierarchy={currentUserRoleHierarchy}
-              accountSlug={account.slug}
-            />
-            <AccountMembersTable
-              slug={slug}
-              userRoleHierarchy={currentUserRoleHierarchy}
-              currentUserId={user.id}
-              currentAccountId={account.id}
-              membersPromise={membersPromise}
-              isPrimaryOwner={isPrimaryOwner}
-              canManageRoles={canManageRoles}
-            />
-          </div>
-        </div>
-      </div>
-      <If condition={canManageInvitations}>
+    <main className="flex flex-1 flex-col px-5">
+      <section className="divide-y divide-border">
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 py-8 md:grid-cols-3">
           <div>
             <h2 className="text-base font-light leading-7 text-primary">
-              Pending Invites
+              Teams
             </h2>
             <p className="mt-1 text-sm leading-6 text-muted-foreground">
-              Here you can manage the pending invitations to your team.
+              Here you can manage your teams
             </p>
           </div>
-          <div className="md:col-span-2">
-            <AccountInvitationsTable
-              permissions={{
-                canUpdateInvitation: canManageRoles,
-                canRemoveInvitation: canManageRoles,
-                currentUserRoleHierarchy,
-              }}
-              invitations={invitations}
-            />
-          </div>
+          <AccountSelector userWorkspacePromise={userWorkspacePromise} />
         </div>
-      </If>
-    </section>
+      </section>
+      <section className="divide-y divide-border">
+        <CreateTeamAccountDialog />
+      </section>
+    </main>
   );
 };
 

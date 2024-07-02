@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { use, useMemo, useState } from "react";
 import { Input } from "@init/ui/input";
 import {
   Table,
@@ -17,13 +17,14 @@ import {
 } from "@tanstack/react-table";
 
 import type { RouterOutputs } from "@init/api";
+import { api } from "@/trpc/react";
 import { getColumns } from "./account-invitations-table-columns";
 
 type Invitations = RouterOutputs["team"]["invitations"];
 
 type AccountInvitationsTableProps = {
-  invitations: Invitations;
-
+  slug: string;
+  invitationsPromise: Promise<Invitations>;
   permissions: {
     canUpdateInvitation: boolean;
     canRemoveInvitation: boolean;
@@ -32,10 +33,20 @@ type AccountInvitationsTableProps = {
 };
 
 export function AccountInvitationsTable({
-  invitations,
+  slug,
+  invitationsPromise,
   permissions,
 }: AccountInvitationsTableProps) {
   const [search, setSearch] = useState("");
+
+  const initialData = use(invitationsPromise);
+  const { data: invitations } = api.team.invitations.useQuery(
+    { slug },
+    {
+      initialData,
+    },
+  );
+
   const columns = useMemo(() => getColumns(permissions), [permissions]);
 
   const filteredInvitations = invitations.filter((member) => {
