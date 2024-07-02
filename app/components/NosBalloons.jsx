@@ -2,7 +2,7 @@ import React from "react";
 
 import bcrikkoIcon from "./icons/bcrikkoIcon";
 import { Balloon } from "./ui/NosBalloon";
-import Container from "./ui/NosContainer";
+import { Container } from "./ui/NosContainer";
 
 export default function Balloons() {
   return (

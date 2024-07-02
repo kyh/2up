@@ -1,6 +1,6 @@
 import React from "react";
 
-import Container from "./ui/NosContainer.jsx";
+import { Container } from "./ui/NosContainer";
 
 export default function Containers() {
   return (
@@ -9,19 +9,19 @@ export default function Containers() {
         Containers
       </span>
 
-      <Container type="normal" heading="Container.is-centered" centered>
+      <Container variant="normal" heading="Container.is-centered" centered>
         Good morning. Thou hast had a good night's sleep, I hope.
       </Container>
 
-      <Container type="dark" heading="Container.is-dark">
+      <Container variant="dark" heading="Container.is-dark">
         Good morning. Thou hast had a good night's sleep, I hope.
       </Container>
 
-      <Container type="normal" rounded>
+      <Container variant="normal" rounded>
         Good morning. Thou hast had a good night's sleep, I hope.
       </Container>
 
-      <Container type="dark" rounded>
+      <Container variant="dark" rounded>
         Good morning. Thou hast had a good night's sleep, I hope.
       </Container>
     </div>
