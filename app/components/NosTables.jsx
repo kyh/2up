@@ -1,6 +1,6 @@
 import React from "react";
 
-import Table from "./ui/NosTable";
+import { Table } from "./ui/NosTable";
 
 export default function Tables() {
   const tabledata = {
@@ -40,8 +40,8 @@ export default function Tables() {
         Tables
       </span>
 
-      <Table type="normal" data={tabledata} centered bordered />
-      <Table type="dark" data={tabledata2} bordered />
+      <Table variant="normal" data={tabledata} centered bordered />
+      <Table variant="dark" data={tabledata2} bordered />
     </div>
   );
 }
