@@ -5,7 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   httpBatchLink,
   loggerLink,
-  unstable_httpBatchStreamLink, // currently doesn't support setting cookies for auth
+  splitLink,
+  unstable_httpBatchStreamLink,
 } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
@@ -49,14 +50,28 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
             process.env.NODE_ENV === "development" ||
             (op.direction === "down" && op.result instanceof Error),
         }),
-        httpBatchLink({
-          transformer: SuperJSON,
-          url: `${getBaseUrl()}/api/trpc`,
-          headers: async () => {
-            const headers = new Headers();
-            headers.set("x-trpc-source", "nextjs-react");
-            return headers;
+        splitLink({
+          condition: (op) => {
+            return op.path.startsWith("auth.");
           },
+          true: httpBatchLink({
+            transformer: SuperJSON,
+            url: `${getBaseUrl()}/api/trpc`,
+            headers: async () => {
+              const headers = new Headers();
+              headers.set("x-trpc-source", "nextjs-react-batch");
+              return headers;
+            },
+          }),
+          false: unstable_httpBatchStreamLink({
+            transformer: SuperJSON,
+            url: `${getBaseUrl()}/api/trpc`,
+            headers: async () => {
+              const headers = new Headers();
+              headers.set("x-trpc-source", "nextjs-react-batch-stream");
+              return headers;
+            },
+          }),
         }),
       ],
     }),
