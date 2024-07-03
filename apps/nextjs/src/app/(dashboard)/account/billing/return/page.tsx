@@ -5,11 +5,11 @@ import { BlurryBackdrop } from "@init/ui/blurry-backdrop";
 import { api } from "@/trpc/server";
 import { BillingSessionStatus } from "../_components/billing-session-status";
 
-interface SessionPageProps {
+type SessionPageProps = {
   searchParams: {
     session_id: string;
   };
-}
+};
 
 const LazyEmbeddedCheckout = dynamic(
   async () => {
@@ -24,7 +24,7 @@ const LazyEmbeddedCheckout = dynamic(
   },
 );
 
-async function Page({ searchParams }: SessionPageProps) {
+const Page = async ({ searchParams }: SessionPageProps) => {
   const sessionId = searchParams.session_id;
 
   if (!sessionId) {
@@ -39,7 +39,7 @@ async function Page({ searchParams }: SessionPageProps) {
 
   return (
     <>
-      <div className={"fixed left-0 top-48 z-50 mx-auto w-full"}>
+      <div className="fixed left-0 top-48 z-50 mx-auto w-full">
         <BillingSessionStatus
           onRedirect={onRedirect}
           customerEmail={customerEmail ?? ""}
@@ -49,11 +49,11 @@ async function Page({ searchParams }: SessionPageProps) {
       <BlurryBackdrop />
     </>
   );
-}
+};
 
 export default Page;
 
-async function loadCheckoutSession(sessionId: string) {
+const loadCheckoutSession = async (sessionId: string) => {
   const session = await api.billing.retrieveCheckoutSession({
     sessionId,
   });
@@ -71,16 +71,16 @@ async function loadCheckoutSession(sessionId: string) {
     customerEmail: session.customer.email,
     checkoutToken,
   };
-}
+};
 
 /**
  * Revalidates the layout to update cached pages
  * and redirects back to the home page.
  */
-// eslint-disable-next-line @typescript-eslint/require-await
-async function onRedirect() {
+
+const onRedirect = async () => {
   "use server";
 
   // redirect back to billing page
   redirect("../billing");
-}
+};
