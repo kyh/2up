@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 import { billingConfig } from "@/lib/config";
 import { api } from "@/trpc/server";

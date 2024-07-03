@@ -13,9 +13,9 @@ import { MoreHorizontalIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
 import type { ColumnDef } from "@tanstack/react-table";
-import { AdminDeleteAccountDialog } from "./admin-delete-account-dialog";
-import { AdminDeleteUserDialog } from "./admin-delete-user-dialog";
-import { AdminImpersonateUserDialog } from "./admin-impersonate-user-dialog";
+import { AdminDeleteAccountDialog } from "./[id]/admin-delete-account-dialog";
+import { AdminDeleteUserDialog } from "./[id]/admin-delete-user-dialog";
+import { AdminImpersonateUserDialog } from "./[id]/admin-impersonate-user-dialog";
 
 type Account = RouterOutputs["admin"]["getAccounts"]["data"][0];
 
