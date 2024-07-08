@@ -3,16 +3,19 @@ import { Logo } from "@init/ui/logo";
 import { LayoutDashboardIcon, User2Icon } from "lucide-react";
 
 import { NavLink } from "@/components/nav";
+import { HydrateClient } from "@/trpc/server";
 
 export const metadata = {
   title: `Super Admin`,
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex min-h-dvh">
-    <Sidebar />
-    {children}
-  </div>
+  <HydrateClient>
+    <div className="flex min-h-dvh">
+      <Sidebar />
+      {children}
+    </div>
+  </HydrateClient>
 );
 
 export default Layout;

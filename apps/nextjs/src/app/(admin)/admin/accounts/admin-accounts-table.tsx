@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useMemo } from "react";
+import { useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { DataTable } from "@init/ui/data-table/data-table";
 import { Form, FormControl, FormField, FormItem, useForm } from "@init/ui/form";
@@ -16,13 +16,10 @@ import {
 } from "@init/ui/select";
 import { z } from "zod";
 
-import type { RouterOutputs } from "@init/api";
 import type { GetAccountsInput } from "@init/api/admin/admin-schema";
 import { useDataTable } from "@/hooks/use-data-table";
 import { api } from "@/trpc/react";
 import { getColumns } from "./admin-accounts-table-columns";
-
-type Account = RouterOutputs["admin"]["getAccounts"]["data"][0];
 
 const FiltersSchema = z.object({
   type: z.enum(["all", "team", "personal"]),
@@ -32,20 +29,16 @@ const FiltersSchema = z.object({
 export const AdminAccountsTable = (
   props: React.PropsWithChildren<{
     searchParams: GetAccountsInput;
-    accountsPromise: Promise<{ data: Account[]; pageCount: number }>;
   }>,
 ) => {
-  const initialData = use(props.accountsPromise);
-  const { data } = api.admin.getAccounts.useQuery(props.searchParams, {
-    initialData,
-  });
+  const [data] = api.admin.getAccounts.useSuspenseQuery(props.searchParams);
 
   const columns = useMemo(() => getColumns(), []);
 
   const { table } = useDataTable({
     data: data.data,
     columns,
-    pageCount: data.pageCount ?? 1,
+    pageCount: data.pageCount,
     // optional props
     defaultSort: "created_at.desc",
   });
@@ -67,7 +60,7 @@ const AccountsTableFilters = (props: {
   const form = useForm({
     schema: FiltersSchema,
     defaultValues: {
-      type: props.filters.type ?? "all",
+      type: props.filters.type,
       query: "",
     },
     mode: "onChange",

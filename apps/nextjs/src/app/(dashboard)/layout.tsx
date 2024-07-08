@@ -19,7 +19,7 @@ import { getInitials } from "@init/ui/utils";
 import type { RouterOutputs } from "@init/api";
 import { NavLink } from "@/components/nav";
 import { accountPageLinks, dashboardPageLinks } from "@/lib/page-links";
-import { api } from "@/trpc/server";
+import { api, HydrateClient } from "@/trpc/server";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -29,10 +29,12 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
   const data = await api.account.userWorkspace();
 
   return (
-    <div className="flex min-h-dvh">
-      <Sidebar user={data.user} />
-      {children}
-    </div>
+    <HydrateClient>
+      <div className="flex min-h-dvh">
+        <Sidebar user={data.user} />
+        {children}
+      </div>
+    </HydrateClient>
   );
 };
 

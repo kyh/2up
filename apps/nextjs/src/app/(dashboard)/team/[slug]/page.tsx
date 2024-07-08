@@ -6,11 +6,11 @@ import { AccountMembersTable } from "../_components/members/account-members-tabl
 import { InviteMembersDialogContainer } from "../_components/members/invite-members-dialog-container";
 import { loadTeamPagePageData } from "../_lib/team-page-loader";
 
-interface Params {
+type Params = {
   params: {
     slug: string;
   };
-}
+};
 
 const Page = async ({ params }: Params) => {
   const { account, user } = await loadTeamPagePageData(params.slug);
@@ -65,6 +65,7 @@ const Page = async ({ params }: Params) => {
           </div>
           <div className="md:col-span-2">
             <AccountInvitationsTable
+              slug={params.slug}
               permissions={{
                 canUpdateInvitation: canManageRoles,
                 canRemoveInvitation: canManageRoles,
