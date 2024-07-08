@@ -1,6 +1,6 @@
 import React from "react";
 
-import { NosBtn } from "./ui/NosBtn";
+import { Button } from "./ui/NosButton";
 import {
   Dialog,
   DialogContent,
@@ -20,7 +20,7 @@ export default function Dialogs() {
 
       <Dialog>
         <DialogTrigger asChild>
-          <NosBtn variant="primary">Open dialog</NosBtn>
+          <Button variant="primary">Open dialog</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" block>
           <DialogHeader>
@@ -33,15 +33,15 @@ export default function Dialogs() {
             <p>This is a dialog.</p>
           </div>
           <DialogFooter>
-            <NosBtn variant="normal">Cancel</NosBtn>
-            <NosBtn variant="primary">Confirm</NosBtn>
+            <Button variant="normal">Cancel</Button>
+            <Button variant="primary">Confirm</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog>
         <DialogTrigger asChild>
-          <NosBtn variant="primary">Open dark dialog</NosBtn>
+          <Button variant="primary">Open dark dialog</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" variant="dark" block>
           <DialogHeader>
@@ -54,15 +54,15 @@ export default function Dialogs() {
             <p>This is a dark dialog.</p>
           </div>
           <DialogFooter>
-            <NosBtn variant="normal">Cancel</NosBtn>
-            <NosBtn variant="primary">Confirm</NosBtn>
+            <Button variant="normal">Cancel</Button>
+            <Button variant="primary">Confirm</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog>
         <DialogTrigger asChild>
-          <NosBtn variant="primary">Open rounded dialog</NosBtn>
+          <Button variant="primary">Open rounded dialog</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" block rounded>
           <DialogHeader>
@@ -75,15 +75,15 @@ export default function Dialogs() {
             <p>This is a rounded dialog.</p>
           </div>
           <DialogFooter>
-            <NosBtn variant="normal">Cancel</NosBtn>
-            <NosBtn variant="primary">Confirm</NosBtn>
+            <Button variant="normal">Cancel</Button>
+            <Button variant="primary">Confirm</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog>
         <DialogTrigger asChild>
-          <NosBtn variant="primary">Open dark and rounded dialog</NosBtn>
+          <Button variant="primary">Open dark and rounded dialog</Button>
         </DialogTrigger>
         <DialogContent
           className="sm:max-w-[425px]"
@@ -101,8 +101,8 @@ export default function Dialogs() {
             <p>This is a rounded and dark dialog.</p>
           </div>
           <DialogFooter>
-            <NosBtn variant="normal">Cancel</NosBtn>
-            <NosBtn variant="primary">Confirm</NosBtn>
+            <Button variant="normal">Cancel</Button>
+            <Button variant="primary">Confirm</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
