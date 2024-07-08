@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createInput,
   TaskLabels,
@@ -26,6 +25,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useForm,
 } from "@init/ui/form";
 import {
   Select,
@@ -38,7 +38,6 @@ import {
 import { Textarea } from "@init/ui/textarea";
 import { toast } from "@init/ui/toast";
 import { PlusIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
 
 import type { CreateInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";
@@ -57,8 +56,8 @@ export const CreateTaskDialog = () => {
     onError: (error) => toast.error(error.message),
   });
 
-  const form = useForm<CreateInput>({
-    resolver: zodResolver(createInput),
+  const form = useForm({
+    schema: createInput,
   });
 
   const onSubmit = (input: CreateInput) => {

@@ -1,6 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { transferOwnershipInput } from "@init/api/team/team-schema";
 import {
   AlertDialog,
@@ -20,15 +19,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useForm,
 } from "@init/ui/form";
 import { If } from "@init/ui/if";
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
-import { useForm } from "react-hook-form";
 
 import { api } from "@/trpc/react";
 
-export function TransferOwnershipDialog({
+export const TransferOwnershipDialog = ({
   isOpen,
   setIsOpen,
   targetDisplayName,
@@ -40,30 +39,28 @@ export function TransferOwnershipDialog({
   accountId: string;
   userId: string;
   targetDisplayName: string;
-}) {
-  return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Transfer Ownership</AlertDialogTitle>
+}) => (
+  <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Transfer Ownership</AlertDialogTitle>
 
-          <AlertDialogDescription>
-            Transfer ownership of the team to another member.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+        <AlertDialogDescription>
+          Transfer ownership of the team to another member.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
 
-        <TransferOrganizationOwnershipForm
-          accountId={accountId}
-          userId={userId}
-          targetDisplayName={targetDisplayName}
-          setIsOpen={setIsOpen}
-        />
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-}
+      <TransferOrganizationOwnershipForm
+        accountId={accountId}
+        userId={userId}
+        targetDisplayName={targetDisplayName}
+        setIsOpen={setIsOpen}
+      />
+    </AlertDialogContent>
+  </AlertDialog>
+);
 
-function TransferOrganizationOwnershipForm({
+const TransferOrganizationOwnershipForm = ({
   accountId,
   userId,
   targetDisplayName,
@@ -73,7 +70,7 @@ function TransferOrganizationOwnershipForm({
   accountId: string;
   targetDisplayName: string;
   setIsOpen: (isOpen: boolean) => void;
-}) {
+}) => {
   const utils = api.useUtils();
   const transferOwnership = api.team.transferOwnership.useMutation({
     onSuccess: () => {
@@ -86,7 +83,7 @@ function TransferOrganizationOwnershipForm({
   });
 
   const form = useForm({
-    resolver: zodResolver(transferOwnershipInput),
+    schema: transferOwnershipInput,
     defaultValues: {
       confirmation: "",
       accountId,
@@ -97,7 +94,7 @@ function TransferOrganizationOwnershipForm({
   return (
     <Form {...form}>
       <form
-        className={"flex flex-col space-y-4 text-sm"}
+        className="flex flex-col space-y-4 text-sm"
         onSubmit={form.handleSubmit((data) => {
           transferOwnership.mutate(data);
         })}
@@ -108,7 +105,7 @@ function TransferOrganizationOwnershipForm({
         </p>
 
         <FormField
-          name={"confirmation"}
+          name="confirmation"
           render={({ field }) => {
             return (
               <FormItem>
@@ -117,12 +114,7 @@ function TransferOrganizationOwnershipForm({
                 </FormLabel>
 
                 <FormControl>
-                  <Input
-                    autoComplete={"off"}
-                    type={"text"}
-                    required
-                    {...field}
-                  />
+                  <Input autoComplete="off" type="text" required {...field} />
                 </FormControl>
 
                 <FormDescription>
@@ -137,7 +129,7 @@ function TransferOrganizationOwnershipForm({
         />
 
         <div>
-          <p className={"text-muted-foreground"}>
+          <p className="text-muted-foreground">
             Are you sure you want to continue?
           </p>
         </div>
@@ -146,13 +138,13 @@ function TransferOrganizationOwnershipForm({
           <AlertDialogCancel>Cancel</AlertDialogCancel>
 
           <Button
-            type={"submit"}
-            variant={"destructive"}
+            type="submit"
+            variant="destructive"
             disabled={transferOwnership.isPending}
           >
             <If
               condition={transferOwnership.isPending}
-              fallback={"Transfer Ownership"}
+              fallback="Transfer Ownership"
             >
               Transferring ownership...
             </If>
@@ -161,4 +153,4 @@ function TransferOrganizationOwnershipForm({
       </form>
     </Form>
   );
-}
+};

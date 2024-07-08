@@ -3,17 +3,17 @@ import { BlurryBackdrop } from "@init/ui/blurry-backdrop";
 import { Spinner } from "@init/ui/spinner";
 
 const Fallback = (
-  <div className={"flex flex-col items-center justify-center p-4"}>
+  <div className="flex flex-col items-center justify-center p-4">
     <Spinner />
   </div>
 );
 
-export function EmbeddedCheckout(
+export const EmbeddedCheckout = (
   props: React.PropsWithChildren<{
     checkoutToken: string;
     onClose?: () => void;
   }>,
-) {
+) => {
   const CheckoutComponent = useMemo(() => loadCheckoutComponent(), []);
 
   return (
@@ -26,19 +26,18 @@ export function EmbeddedCheckout(
       <BlurryBackdrop />
     </>
   );
-}
+};
 
-function loadCheckoutComponent() {
-  return buildLazyComponent(() => {
+const loadCheckoutComponent = () =>
+  buildLazyComponent(() => {
     return import("./stripe-embedded-checkout").then(({ StripeCheckout }) => {
       return {
         default: StripeCheckout,
       };
     });
   });
-}
 
-function buildLazyComponent<
+const buildLazyComponent = <
   Component extends React.ComponentType<{
     onClose: (() => unknown) | undefined;
     checkoutToken: string;
@@ -48,7 +47,7 @@ function buildLazyComponent<
     default: Component;
   }>,
   fallback = Fallback,
-) {
+) => {
   let LoadedComponent: ReturnType<typeof lazy<Component>> | null = null;
 
   const LazyComponent = forwardRef<
@@ -57,7 +56,7 @@ function buildLazyComponent<
       onClose: (() => unknown) | undefined;
       checkoutToken: string;
     }
-  >(function LazyDynamicComponent(props, ref) {
+  >((props, ref) => {
     if (!LoadedComponent) {
       LoadedComponent = lazy(load);
     }
@@ -75,4 +74,4 @@ function buildLazyComponent<
   });
 
   return memo(LazyComponent);
-}
+};

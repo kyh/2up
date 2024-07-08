@@ -1,6 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteAccountInput } from "@init/api/admin/admin-schema";
 import {
   AlertDialog,
@@ -20,10 +19,10 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  useForm,
 } from "@init/ui/form";
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
-import { useForm } from "react-hook-form";
 
 import { api } from "@/trpc/react";
 
@@ -46,10 +45,9 @@ export const AdminDeleteAccountDialog = (
   });
 
   const form = useForm({
-    resolver: zodResolver(deleteAccountInput),
+    schema: deleteAccountInput,
     defaultValues: {
       accountId: props.accountId,
-      confirmation: "",
     },
   });
 

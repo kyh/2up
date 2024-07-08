@@ -1,6 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { banUserInput } from "@init/api/admin/admin-schema";
 import {
   AlertDialog,
@@ -21,10 +20,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useForm,
 } from "@init/ui/form";
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
-import { useForm } from "react-hook-form";
 
 import { api } from "@/trpc/react";
 
@@ -42,10 +41,9 @@ export const AdminBanUserDialog = (
     },
   });
   const form = useForm({
-    resolver: zodResolver(banUserInput),
+    schema: banUserInput,
     defaultValues: {
       userId: props.userId,
-      confirmation: "",
     },
   });
 

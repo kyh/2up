@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { updateTeamAccountNameInput } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
 import {
@@ -10,10 +9,10 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  useForm,
 } from "@init/ui/form";
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
-import { useForm } from "react-hook-form";
 
 import { api } from "@/trpc/react";
 
@@ -26,17 +25,17 @@ export const UpdateTeamAccountNameForm = (props: {
   const router = useRouter();
   const updateTeamAccountName = api.team.updateTeamAccountName.useMutation();
   const form = useForm({
-    resolver: zodResolver(updateTeamAccountNameInput.omit({ slug: true })),
+    schema: updateTeamAccountNameInput.omit({ slug: true }),
     defaultValues: {
       name: props.account.name,
     },
   });
 
   return (
-    <div className={"space-y-8"}>
+    <div className="space-y-8">
       <Form {...form}>
         <form
-          className={"flex flex-col space-y-4"}
+          className="flex flex-col space-y-4"
           onSubmit={form.handleSubmit((data) => {
             const promise = updateTeamAccountName
               .mutateAsync({
@@ -54,14 +53,14 @@ export const UpdateTeamAccountNameForm = (props: {
           })}
         >
           <FormField
-            name={"name"}
+            name="name"
             render={({ field }) => {
               return (
                 <FormItem>
                   <FormLabel>Team Name</FormLabel>
 
                   <FormControl>
-                    <Input required placeholder={""} {...field} />
+                    <Input required placeholder="" {...field} />
                   </FormControl>
                 </FormItem>
               );
@@ -70,7 +69,7 @@ export const UpdateTeamAccountNameForm = (props: {
 
           <div>
             <Button
-              className={"w-full md:w-auto"}
+              className="w-full md:w-auto"
               disabled={updateTeamAccountName.isPending}
             >
               Update Team
