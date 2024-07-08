@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import localFont from "next/font/local";
 
+import DiscoverIcon from "@/public/icons/discover.svg";
+import HeartIcon from "@/public/icons/heart.svg";
+import LogoIcon from "@/public/icons/logo.svg";
+import PlayIcon from "@/public/icons/play.svg";
+
 import "./globals.css";
+
+import { IconButton } from "./components/ui/NosIconButton";
 
 const carbonFont = localFont({
   src: "./fonts/carbon.woff2",
@@ -33,7 +40,22 @@ export default function RootLayout({
       <body
         className={`${carbonFont.variable} ${robotoFont.variable} font-mono`}
       >
-        {children}
+        <div className="flex min-h-screen w-full">
+          <div className="flex w-full max-w-[120px] flex-col gap-20 bg-normal p-10">
+            <LogoIcon />
+            <div className="flex flex-col gap-14">
+              <IconButton variant="transparent" icon={<DiscoverIcon />} />
+              <IconButton variant="transparent" icon={<PlayIcon />} />
+              <IconButton variant="transparent" icon={<HeartIcon />} />
+            </div>
+          </div>
+
+          <div className="flex w-full justify-center bg-gray-50">
+            <div className="w-full max-w-[1320px]">
+              <div className="px-12 py-10">{children}</div>
+            </div>
+          </div>
+        </div>
       </body>
     </html>
   );

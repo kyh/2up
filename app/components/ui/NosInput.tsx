@@ -62,8 +62,8 @@ const inputLabelStyles = cva("flex-grow-1 mr-6 basis-0 text-base", {
 
 type InputProps = VariantProps<typeof inputStyles> &
   React.HTMLAttributes<HTMLInputElement> & {
-    name: string;
-    label: string;
+    name?: string;
+    label?: string;
     type?: React.HTMLInputTypeAttribute;
     placeholder?: string;
     isInline?: boolean;
