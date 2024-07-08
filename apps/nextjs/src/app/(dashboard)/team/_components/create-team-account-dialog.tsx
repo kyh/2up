@@ -53,11 +53,9 @@ export const CreateTeamAccountDialog = () => {
 };
 
 const CreateOrganizationAccountForm = (props: { onClose: () => void }) => {
-  const utils = api.useUtils();
   const createTeamAccount = api.team.createTeamAccount.useMutation({
     onSuccess: () => {
       toast.success("Team created successfully");
-      utils.account.userWorkspace.invalidate();
       props.onClose();
     },
     onError: () =>

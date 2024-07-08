@@ -14,7 +14,7 @@ import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
-export function DeleteInvitationDialog({
+export const DeleteInvitationDialog = ({
   isOpen,
   setIsOpen,
   invitationId,
@@ -22,42 +22,34 @@ export function DeleteInvitationDialog({
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   invitationId: number;
-}) {
-  return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Delete Invitation</AlertDialogTitle>
+}) => (
+  <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Delete Invitation</AlertDialogTitle>
 
-          <AlertDialogDescription>
-            You are about to delete the invitation. The user will no longer be
-            able to join the team.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+        <AlertDialogDescription>
+          You are about to delete the invitation. The user will no longer be
+          able to join the team.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
 
-        <DeleteInvitationForm
-          setIsOpen={setIsOpen}
-          invitationId={invitationId}
-        />
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-}
+      <DeleteInvitationForm setIsOpen={setIsOpen} invitationId={invitationId} />
+    </AlertDialogContent>
+  </AlertDialog>
+);
 
-function DeleteInvitationForm({
+const DeleteInvitationForm = ({
   invitationId,
   setIsOpen,
 }: {
   invitationId: number;
   setIsOpen: (isOpen: boolean) => void;
-}) {
-  const utils = api.useUtils();
-
+}) => {
   const deleteInvitation = api.team.deleteInvitation.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Invite deleted successfully");
-      utils.team.invitations.invalidate();
     },
     onError: () => toast.error("Invite not deleted. Please try again."),
   });
@@ -68,8 +60,8 @@ function DeleteInvitationForm({
 
   return (
     <form action={onInvitationRemoved}>
-      <div className={"flex flex-col space-y-6"}>
-        <p className={"text-sm text-muted-foreground"}>
+      <div className="flex flex-col space-y-6">
+        <p className="text-sm text-muted-foreground">
           Are you sure you want to continue?
         </p>
 
@@ -77,8 +69,8 @@ function DeleteInvitationForm({
           <AlertDialogCancel>Cancel</AlertDialogCancel>
 
           <Button
-            type={"submit"}
-            variant={"destructive"}
+            type="submit"
+            variant="destructive"
             disabled={deleteInvitation.isPending}
           >
             Delete Invitation
@@ -87,4 +79,4 @@ function DeleteInvitationForm({
       </div>
     </form>
   );
-}
+};

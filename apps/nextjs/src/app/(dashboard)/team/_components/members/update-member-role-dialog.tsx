@@ -81,12 +81,10 @@ const UpdateMemberForm = ({
   setIsOpen: (isOpen: boolean) => void;
   roles: Role[];
 }>) => {
-  const utils = api.useUtils();
   const updateMemberRole = api.team.updateMemberRole.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Role updated successfully");
-      utils.team.members.invalidate();
     },
     onError: () =>
       toast.error(

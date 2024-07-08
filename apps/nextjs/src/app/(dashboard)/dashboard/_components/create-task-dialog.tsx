@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import {
   createInput,
   TaskLabels,
@@ -43,15 +43,13 @@ import type { CreateInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";
 
 export const CreateTaskDialog = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const utils = api.useUtils();
   const createTask = api.task.create.useMutation({
     onSuccess: () => {
       setOpen(false);
       form.reset();
       toast.success("Task created");
-      utils.task.retrieve.invalidate();
     },
     onError: (error) => toast.error(error.message),
   });

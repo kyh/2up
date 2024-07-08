@@ -72,12 +72,10 @@ const UpdateInvitationForm = ({
   userRoleHierarchy: number;
   setIsOpen: (isOpen: boolean) => void;
 }>) => {
-  const utils = api.useUtils();
   const updateInvitation = api.team.updateInvitation.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Invite updated successfully");
-      utils.team.invitations.invalidate();
     },
     onError: () =>
       toast.error(

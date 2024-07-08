@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { Button } from "@init/ui/button";
 import {
   Dialog,
@@ -32,13 +31,11 @@ export const DeleteTasksDialog = ({
   onSuccess,
   ...props
 }: DeleteTasksDialogProps) => {
-  const utils = api.useUtils();
   const deleteTask = api.task.delete.useMutation({
     onSuccess: () => {
       props.onOpenChange?.(false);
       toast.success("Tasks deleted");
       onSuccess?.();
-      utils.task.retrieve.invalidate();
     },
     onError: (error) => toast.error(error.message),
   });

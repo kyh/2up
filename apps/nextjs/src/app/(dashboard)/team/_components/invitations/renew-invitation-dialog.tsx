@@ -14,7 +14,7 @@ import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
-export function RenewInvitationDialog({
+export const RenewInvitationDialog = ({
   isOpen,
   setIsOpen,
   invitationId,
@@ -24,41 +24,34 @@ export function RenewInvitationDialog({
   setIsOpen: (isOpen: boolean) => void;
   invitationId: number;
   email: string;
-}) {
-  return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Renew Invitation</AlertDialogTitle>
+}) => (
+  <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Renew Invitation</AlertDialogTitle>
 
-          <AlertDialogDescription>
-            You are about to renew the invitation to {email}. The user will be
-            able to join the team.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+        <AlertDialogDescription>
+          You are about to renew the invitation to {email}. The user will be
+          able to join the team.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
 
-        <RenewInvitationForm
-          setIsOpen={setIsOpen}
-          invitationId={invitationId}
-        />
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-}
+      <RenewInvitationForm setIsOpen={setIsOpen} invitationId={invitationId} />
+    </AlertDialogContent>
+  </AlertDialog>
+);
 
-function RenewInvitationForm({
+const RenewInvitationForm = ({
   invitationId,
   setIsOpen,
 }: {
   invitationId: number;
   setIsOpen: (isOpen: boolean) => void;
-}) {
-  const utils = api.useUtils();
+}) => {
   const renewInvitation = api.team.renewInvitation.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Invite renewed successfully");
-      utils.account.userWorkspace.invalidate();
     },
     onError: () =>
       toast.error(
@@ -72,8 +65,8 @@ function RenewInvitationForm({
 
   return (
     <form action={inInvitationRenewed}>
-      <div className={"flex flex-col space-y-6"}>
-        <p className={"text-sm text-muted-foreground"}>
+      <div className="flex flex-col space-y-6">
+        <p className="text-sm text-muted-foreground">
           Are you sure you want to continue?
         </p>
 
@@ -85,4 +78,4 @@ function RenewInvitationForm({
       </div>
     </form>
   );
-}
+};
