@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { impersonateUserInput } from "@init/api/admin/admin-schema";
 import {
   AlertDialog,
@@ -22,10 +21,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useForm,
 } from "@init/ui/form";
 import { Input } from "@init/ui/input";
-import { Spinner } from "@init/ui/spinner";
-import { useForm } from "react-hook-form";
 
 import { api } from "@/trpc/react";
 
@@ -36,10 +34,9 @@ export const AdminImpersonateUserDialog = (
 ) => {
   const impersonateUserAction = api.admin.impersonateUser.useMutation();
   const form = useForm({
-    resolver: zodResolver(impersonateUserInput),
+    schema: impersonateUserInput,
     defaultValues: {
       userId: props.userId,
-      confirmation: "",
     },
   });
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { role } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
 import {
@@ -18,9 +17,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useForm,
 } from "@init/ui/form";
 import { toast } from "@init/ui/toast";
-import { useForm } from "react-hook-form";
 
 import { api } from "@/trpc/react";
 import { MembershipRoleSelector } from "../membership-role-selector";
@@ -28,7 +27,7 @@ import { RolesDataProvider } from "./roles-data-provider";
 
 type Role = string;
 
-export function UpdateMemberRoleDialog({
+export const UpdateMemberRoleDialog = ({
   isOpen,
   setIsOpen,
   userId,
@@ -42,36 +41,34 @@ export function UpdateMemberRoleDialog({
   teamAccountId: string;
   userRole: Role;
   userRoleHierarchy: number;
-}) {
-  return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Update Member's Role</DialogTitle>
+}) => (
+  <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Update Member's Role</DialogTitle>
 
-          <DialogDescription>
-            Change the role of the selected member. The role determines the
-            permissions of the member.
-          </DialogDescription>
-        </DialogHeader>
+        <DialogDescription>
+          Change the role of the selected member. The role determines the
+          permissions of the member.
+        </DialogDescription>
+      </DialogHeader>
 
-        <RolesDataProvider maxRoleHierarchy={userRoleHierarchy}>
-          {(data) => (
-            <UpdateMemberForm
-              setIsOpen={setIsOpen}
-              userId={userId}
-              teamAccountId={teamAccountId}
-              userRole={userRole}
-              roles={data}
-            />
-          )}
-        </RolesDataProvider>
-      </DialogContent>
-    </Dialog>
-  );
-}
+      <RolesDataProvider maxRoleHierarchy={userRoleHierarchy}>
+        {(data) => (
+          <UpdateMemberForm
+            setIsOpen={setIsOpen}
+            userId={userId}
+            teamAccountId={teamAccountId}
+            userRole={userRole}
+            roles={data}
+          />
+        )}
+      </RolesDataProvider>
+    </DialogContent>
+  </Dialog>
+);
 
-function UpdateMemberForm({
+const UpdateMemberForm = ({
   userId,
   userRole,
   teamAccountId,
@@ -83,13 +80,13 @@ function UpdateMemberForm({
   teamAccountId: string;
   setIsOpen: (isOpen: boolean) => void;
   roles: Role[];
-}>) {
+}>) => {
   const utils = api.useUtils();
   const updateMemberRole = api.team.updateMemberRole.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Role updated successfully");
-      utils.teamAccount.members.invalidate();
+      utils.team.members.invalidate();
     },
     onError: () =>
       toast.error(
@@ -106,16 +103,14 @@ function UpdateMemberForm({
   };
 
   const form = useForm({
-    resolver: zodResolver(
-      role.refine(
-        (data) => {
-          return data.role !== userRole;
-        },
-        {
-          message: "Role must be different from the current one",
-          path: ["role"],
-        },
-      ),
+    schema: role.refine(
+      (data) => {
+        return data.role !== userRole;
+      },
+      {
+        message: "Role must be different from the current one",
+        path: ["role"],
+      },
     ),
     reValidateMode: "onChange",
     mode: "onChange",
@@ -128,10 +123,10 @@ function UpdateMemberForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={"flex flex-col space-y-6"}
+        className="flex flex-col space-y-6"
       >
         <FormField
-          name={"role"}
+          name="role"
           render={({ field }) => {
             return (
               <FormItem>
@@ -158,4 +153,4 @@ function UpdateMemberForm({
       </form>
     </Form>
   );
-}
+};

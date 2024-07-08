@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   formatCurrency,
   getPlanIntervals,
@@ -17,6 +16,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useForm,
 } from "@init/ui/form";
 import { Heading } from "@init/ui/heading";
 import { If } from "@init/ui/if";
@@ -29,7 +29,6 @@ import {
 import { Separator } from "@init/ui/separator";
 import { cn } from "@init/ui/utils";
 import { ArrowRightIcon, CircleCheckIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import type {
@@ -54,29 +53,27 @@ export const PlanPicker = (
   const form = useForm({
     reValidateMode: "onChange",
     mode: "onChange",
-    resolver: zodResolver(
-      z
-        .object({
-          planId: z.string(),
-          productId: z.string(),
-          interval: z.string().optional(),
-        })
-        .refine(
-          (data) => {
-            try {
-              const { product, plan } = getProductPlanPair(
-                props.config,
-                data.planId,
-              );
+    schema: z
+      .object({
+        planId: z.string(),
+        productId: z.string(),
+        interval: z.string().optional(),
+      })
+      .refine(
+        (data) => {
+          try {
+            const { product, plan } = getProductPlanPair(
+              props.config,
+              data.planId,
+            );
 
-              return product && plan;
-            } catch {
-              return false;
-            }
-          },
-          { message: "Please choose a plan", path: ["planId"] },
-        ),
-    ),
+            return product && plan;
+          } catch {
+            return false;
+          }
+        },
+        { message: "Please choose a plan", path: ["planId"] },
+      ),
     defaultValues: {
       interval: intervals[0],
       planId: "",

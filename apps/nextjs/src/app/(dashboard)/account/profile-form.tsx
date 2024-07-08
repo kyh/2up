@@ -1,6 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@init/ui/button";
 import {
   Form,
@@ -10,10 +9,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useForm,
 } from "@init/ui/form";
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
-import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 const profileFormSchema = z.object({
@@ -37,8 +36,8 @@ const defaultValues: Partial<ProfileFormValues> = {
 };
 
 export const ProfileForm = () => {
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
+  const form = useForm({
+    schema: profileFormSchema,
     defaultValues,
   });
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { inviteMembers } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
 import {
@@ -19,6 +18,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useFieldArray,
+  useForm,
 } from "@init/ui/form";
 import { If } from "@init/ui/if";
 import { Input } from "@init/ui/input";
@@ -30,7 +31,6 @@ import {
   TooltipTrigger,
 } from "@init/ui/tooltip";
 import { PlusIcon, XIcon } from "lucide-react";
-import { useFieldArray, useForm } from "react-hook-form";
 
 import { api } from "@/trpc/react";
 import { MembershipRoleSelector } from "../membership-role-selector";
@@ -113,7 +113,7 @@ const InviteMembersForm = ({
   roles: string[];
 }) => {
   const form = useForm({
-    resolver: zodResolver(inviteMembers),
+    schema: inviteMembers,
     shouldUseNativeValidation: true,
     reValidateMode: "onSubmit",
     defaultValues: {

@@ -6,7 +6,7 @@ import type {
   FieldValues,
   UseFormProps,
 } from "react-hook-form";
-import type { ZodType } from "zod";
+import type { ZodType, ZodTypeDef } from "zod";
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@init/ui/utils";
@@ -21,12 +21,16 @@ import {
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Label } from "./label";
 
-const useForm = <TSchema extends ZodType>(
-  props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
-    schema: TSchema;
+const useForm = <
+  TOut extends FieldValues,
+  TDef extends ZodTypeDef,
+  TIn extends FieldValues,
+>(
+  props: Omit<UseFormProps<TIn>, "resolver"> & {
+    schema: ZodType<TOut, TDef, TIn>;
   },
 ) => {
-  const form = __useForm<TSchema["_input"]>({
+  const form = __useForm<TIn, unknown, TOut>({
     ...props,
     resolver: zodResolver(props.schema, undefined),
   });

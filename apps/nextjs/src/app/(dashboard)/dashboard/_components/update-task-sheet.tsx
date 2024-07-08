@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   TaskLabels,
   TaskPriorites,
@@ -16,6 +15,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useForm,
 } from "@init/ui/form";
 import {
   Select,
@@ -36,7 +36,6 @@ import {
 } from "@init/ui/sheet";
 import { Textarea } from "@init/ui/textarea";
 import { toast } from "@init/ui/toast";
-import { useForm } from "react-hook-form";
 
 import type { RouterOutputs } from "@init/api";
 import type { UpdateInput } from "@init/api/task/task-schema";
@@ -44,12 +43,11 @@ import { api } from "@/trpc/react";
 
 type Task = RouterOutputs["task"]["retrieve"]["data"][0];
 
-interface UpdateTaskSheetProps
-  extends React.ComponentPropsWithRef<typeof Sheet> {
+type UpdateTaskSheetProps = {
   task: Task;
-}
+} & React.ComponentPropsWithRef<typeof Sheet>;
 
-export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
+export const UpdateTaskSheet = ({ task, ...props }: UpdateTaskSheetProps) => {
   const utils = api.useUtils();
 
   const updateTask = api.task.update.useMutation({
@@ -62,8 +60,8 @@ export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
     onError: (error) => toast.error(error.message),
   });
 
-  const form = useForm<Omit<UpdateInput, "id">>({
-    resolver: zodResolver(updateInput.omit({ id: true })),
+  const form = useForm({
+    schema: updateInput.omit({ id: true }),
     defaultValues: {
       title: task.title ?? "",
       label: task.label,
@@ -72,12 +70,12 @@ export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
     },
   });
 
-  function onSubmit(input: Omit<UpdateInput, "id">) {
+  const onSubmit = (input: Omit<UpdateInput, "id">) => {
     updateTask.mutate({
       id: task.id,
       ...input,
     });
-  }
+  };
 
   return (
     <Sheet {...props}>
@@ -222,4 +220,4 @@ export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
       </SheetContent>
     </Sheet>
   );
-}
+};

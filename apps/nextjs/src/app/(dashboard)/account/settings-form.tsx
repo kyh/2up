@@ -1,6 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@init/ui/button";
 import { Checkbox } from "@init/ui/checkbox";
 import {
@@ -10,10 +9,10 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  useForm,
 } from "@init/ui/form";
 import { Switch } from "@init/ui/switch";
 import { toast } from "@init/ui/toast";
-import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 const settingsFormSchema = z.object({
@@ -26,18 +25,15 @@ const settingsFormSchema = z.object({
 
 type SettingsFormValues = z.infer<typeof settingsFormSchema>;
 
-// This can come from your database or API.
-const defaultValues: Partial<SettingsFormValues> = {
-  communication_emails: false,
-  marketing_emails: false,
-  social_emails: true,
-  security_emails: true,
-};
-
 export const SettingsForm = () => {
-  const form = useForm<SettingsFormValues>({
-    resolver: zodResolver(settingsFormSchema),
-    defaultValues,
+  const form = useForm({
+    schema: settingsFormSchema,
+    defaultValues: {
+      communication_emails: false,
+      marketing_emails: false,
+      social_emails: true,
+      security_emails: true,
+    },
   });
 
   const onSubmit = (data: SettingsFormValues) => {

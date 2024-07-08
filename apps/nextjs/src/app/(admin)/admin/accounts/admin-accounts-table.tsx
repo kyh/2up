@@ -2,9 +2,8 @@
 
 import { use, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { DataTable } from "@init/ui/data-table/data-table";
-import { Form, FormControl, FormField, FormItem } from "@init/ui/form";
+import { Form, FormControl, FormField, FormItem, useForm } from "@init/ui/form";
 import { Input } from "@init/ui/input";
 import {
   Select,
@@ -15,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@init/ui/select";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import type { RouterOutputs } from "@init/api";
@@ -67,7 +65,7 @@ const AccountsTableFilters = (props: {
   filters: z.infer<typeof FiltersSchema>;
 }) => {
   const form = useForm({
-    resolver: zodResolver(FiltersSchema),
+    schema: FiltersSchema,
     defaultValues: {
       type: props.filters.type ?? "all",
       query: "",

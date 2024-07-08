@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { createTeamAccountInput } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
 import {
@@ -20,15 +19,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useForm,
 } from "@init/ui/form";
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 import { api } from "@/trpc/react";
 
-export function CreateTeamAccountDialog() {
+export const CreateTeamAccountDialog = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
   return (
@@ -52,9 +50,9 @@ export function CreateTeamAccountDialog() {
       </DialogContent>
     </Dialog>
   );
-}
+};
 
-function CreateOrganizationAccountForm(props: { onClose: () => void }) {
+const CreateOrganizationAccountForm = (props: { onClose: () => void }) => {
   const utils = api.useUtils();
   const createTeamAccount = api.team.createTeamAccount.useMutation({
     onSuccess: () => {
@@ -68,11 +66,11 @@ function CreateOrganizationAccountForm(props: { onClose: () => void }) {
       ),
   });
 
-  const form = useForm<z.infer<typeof createTeamAccountInput>>({
+  const form = useForm({
+    schema: createTeamAccountInput,
     defaultValues: {
       name: "",
     },
-    resolver: zodResolver(createTeamAccountInput),
   });
 
   return (
@@ -82,9 +80,9 @@ function CreateOrganizationAccountForm(props: { onClose: () => void }) {
           createTeamAccount.mutate(data);
         })}
       >
-        <div className={"flex flex-col space-y-4"}>
+        <div className="flex flex-col space-y-4">
           <FormField
-            name={"name"}
+            name="name"
             render={({ field }) => {
               return (
                 <FormItem>
@@ -95,7 +93,7 @@ function CreateOrganizationAccountForm(props: { onClose: () => void }) {
                       required
                       minLength={2}
                       maxLength={50}
-                      placeholder={""}
+                      placeholder=""
                       {...field}
                     />
                   </FormControl>
@@ -110,10 +108,10 @@ function CreateOrganizationAccountForm(props: { onClose: () => void }) {
             }}
           />
 
-          <div className={"flex justify-end space-x-2"}>
+          <div className="flex justify-end space-x-2">
             <Button
-              variant={"outline"}
-              type={"button"}
+              variant="outline"
+              type="button"
               disabled={createTeamAccount.isPending}
               onClick={props.onClose}
             >
@@ -128,4 +126,4 @@ function CreateOrganizationAccountForm(props: { onClose: () => void }) {
       </form>
     </Form>
   );
-}
+};

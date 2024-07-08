@@ -532,6 +532,7 @@ $$;
 -- trigger the function whenever a new account is created
 create trigger "add_current_user_to_new_account"
 after insert on public.accounts for each row
+when (new.is_personal_account = false)
 execute function kit.add_current_user_to_new_account ();
 
 -- create a trigger to update the account email when the primary owner email is updated
