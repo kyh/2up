@@ -71,12 +71,10 @@ const TransferOrganizationOwnershipForm = ({
   targetDisplayName: string;
   setIsOpen: (isOpen: boolean) => void;
 }) => {
-  const utils = api.useUtils();
   const transferOwnership = api.team.transferOwnership.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Ownership transfered successfully");
-      utils.team.teamWorkspace.invalidate();
     },
     onError: () =>
       toast.error("Sorry, we couldn't transfer ownership of your team."),

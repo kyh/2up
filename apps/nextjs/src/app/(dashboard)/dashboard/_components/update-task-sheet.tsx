@@ -48,14 +48,11 @@ type UpdateTaskSheetProps = {
 } & React.ComponentPropsWithRef<typeof Sheet>;
 
 export const UpdateTaskSheet = ({ task, ...props }: UpdateTaskSheetProps) => {
-  const utils = api.useUtils();
-
   const updateTask = api.task.update.useMutation({
     onSuccess: () => {
       form.reset();
       props.onOpenChange?.(false);
       toast.success("Task updated");
-      utils.task.retrieve.invalidate();
     },
     onError: (error) => toast.error(error.message),
   });

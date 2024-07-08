@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   TaskLabels,
   TaskPriorites,
@@ -142,18 +141,12 @@ export const getColumns = (): ColumnDef<Task>[] => [
   {
     id: "actions",
     cell: ({ row }) => {
-      const utils = api.useUtils();
       const updateTask = api.task.update.useMutation({
-        onSuccess: () => {
-          toast.success("Label updated");
-          utils.task.retrieve.invalidate();
-        },
+        onSuccess: () => toast.success("Label updated"),
         onError: (error) => toast.error(error.message),
       });
-      const [showUpdateTaskSheet, setShowUpdateTaskSheet] =
-        React.useState(false);
-      const [showDeleteTaskDialog, setShowDeleteTaskDialog] =
-        React.useState(false);
+      const [showUpdateTaskSheet, setShowUpdateTaskSheet] = useState(false);
+      const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false);
 
       return (
         <>

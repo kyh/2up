@@ -31,17 +31,9 @@ export const AdminDeleteAccountDialog = (
     accountId: string;
   }>,
 ) => {
-  const utils = api.useUtils();
   const deleteAccountAction = api.admin.deleteAccount.useMutation({
-    onSuccess: () => {
-      toast.success("Account deleted successfully");
-      utils.admin.getAccounts.invalidate();
-    },
-    onError: () => {
-      toast.error(
-        "There was an error deleting the account. Please try again later.",
-      );
-    },
+    onSuccess: () => toast.success("Account deleted successfully"),
+    onError: () => toast.error("There was an error deleting the account"),
   });
 
   const form = useForm({

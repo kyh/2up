@@ -28,7 +28,26 @@ const getQueryClient = () => {
   }
 };
 
-export const api = createTRPCReact<AppRouter>();
+export const api = createTRPCReact<AppRouter>({
+  overrides: {
+    useMutation: {
+      /**
+       * This function is called whenever a `.useMutation` succeeds
+       **/
+      onSuccess: async (opts) => {
+        /**
+         * @note that order here matters:
+         * The order here allows route changes in `onSuccess` without
+         * having a flash of content change whilst redirecting.
+         **/
+        // Calls the `onSuccess` defined in the `useQuery()`-options:
+        await opts.originalFn();
+        // Invalidate all queries in the react-query cache:
+        await opts.queryClient.invalidateQueries();
+      },
+    },
+  },
+});
 
 export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
   const queryClient = getQueryClient();
@@ -43,7 +62,8 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
         }),
         splitLink({
           condition: (op) => {
-            return op.path.startsWith("auth.");
+            // return op.path.startsWith("auth.");
+            return true;
           },
           true: httpBatchLink({
             transformer: SuperJSON,

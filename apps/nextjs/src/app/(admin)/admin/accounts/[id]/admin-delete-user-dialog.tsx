@@ -32,15 +32,9 @@ export const AdminDeleteUserDialog = (
     userId: string;
   }>,
 ) => {
-  const utils = api.useUtils();
   const deleteUserAction = api.admin.deleteUser.useMutation({
-    onSuccess: () => {
-      toast.success("User deleted successfully");
-      utils.admin.getAccounts.invalidate();
-    },
-    onError: () => {
-      toast.error("Error deleting user record or auth record.");
-    },
+    onSuccess: () => toast.success("User deleted successfully"),
+    onError: () => toast.error("Error deleting user record or auth record."),
   });
   const form = useForm({
     schema: deleteUserInput,
