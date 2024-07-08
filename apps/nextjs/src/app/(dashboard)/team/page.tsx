@@ -1,12 +1,9 @@
-import Link from "next/link";
-import { Button } from "@init/ui/button";
-
 import { api } from "@/trpc/server";
 import { AccountSelector } from "./_components/account-selector";
 import { CreateTeamAccountDialog } from "./_components/create-team-account-dialog";
 
 const Page = async () => {
-  const userWorkspacePromise = api.account.userWorkspace();
+  await api.account.userWorkspace.prefetch();
 
   return (
     <main className="flex flex-1 flex-col px-5">
@@ -20,7 +17,7 @@ const Page = async () => {
               Here you can manage your teams
             </p>
           </div>
-          <AccountSelector userWorkspacePromise={userWorkspacePromise} />
+          <AccountSelector />
         </div>
       </section>
       <section className="divide-y divide-border">

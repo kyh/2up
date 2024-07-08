@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { api } from "@/trpc/server";
 
-export async function loadTeamPagePageData(slug: string) {
+export const loadTeamPagePageData = async (slug: string) => {
   const { account, user } = await api.team.teamWorkspace({ slug });
 
   if (!account) {
@@ -13,4 +13,4 @@ export async function loadTeamPagePageData(slug: string) {
     account,
     user,
   };
-}
+};

@@ -32,7 +32,7 @@
     "@kyh/tsconfig": "^0.1.9",
     "eslint": "^8.57.0",
     "prettier": "^3.3.2",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.3"
   },
   "eslintConfig": {
     "extends": [

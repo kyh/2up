@@ -9,16 +9,13 @@ export const metadata = {
   title: `Accounts`,
 };
 
-const Page = ({ searchParams }: { searchParams: SearchParams }) => {
-  const accountsPromise = api.admin.getAccounts(searchParams);
+const Page = async ({ searchParams }: { searchParams: SearchParams }) => {
+  await api.admin.getAccounts.prefetch(searchParams);
 
   return (
     <main className="flex flex-1 flex-col px-5">
       <PageHeader>Accounts</PageHeader>
-      <AdminAccountsTable
-        searchParams={searchParams}
-        accountsPromise={accountsPromise}
-      />
+      <AdminAccountsTable searchParams={searchParams} />
     </main>
   );
 };

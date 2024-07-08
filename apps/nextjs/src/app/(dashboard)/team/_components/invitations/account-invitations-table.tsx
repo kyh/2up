@@ -32,11 +32,11 @@ type AccountInvitationsTableProps = {
   };
 };
 
-export function AccountInvitationsTable({
+export const AccountInvitationsTable = ({
   slug,
   invitationsPromise,
   permissions,
-}: AccountInvitationsTableProps) {
+}: AccountInvitationsTableProps) => {
   const [search, setSearch] = useState("");
 
   const initialData = use(invitationsPromise);
@@ -66,14 +66,14 @@ export function AccountInvitationsTable({
   });
 
   return (
-    <div className={"flex flex-col space-y-2"}>
+    <div className="flex flex-col space-y-2">
       <Input
         value={search}
         onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
-        placeholder={"Search Invitations"}
+        placeholder="Search Invitations"
       />
 
-      <div className={"rounded-md border"}>
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -95,7 +95,7 @@ export function AccountInvitationsTable({
           </TableHeader>
 
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -116,7 +116,7 @@ export function AccountInvitationsTable({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className={"h-24 text-center"}
+                  className="h-24 text-center"
                 >
                   No data available
                 </TableCell>
@@ -127,4 +127,4 @@ export function AccountInvitationsTable({
       </div>
     </div>
   );
-}
+};

@@ -14,10 +14,6 @@ import type { Table as TanstackTable } from "@tanstack/react-table";
 import { DataTablePagination } from "./data-table-pagination";
 
 type DataTableProps<TData> = {
-  /**
-   * The table instance returned from useDataTable hook with pagination, sorting, filtering, etc.
-   * @type TanstackTable<TData>
-   */
   table: TanstackTable<TData>;
 } & React.HTMLAttributes<HTMLDivElement>;
 
