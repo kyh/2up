@@ -3,11 +3,11 @@
 import type { FormEvent, MouseEventHandler } from "react";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Button } from "@init/ui/button";
-import { If } from "@init/ui/if";
-import { Label } from "@init/ui/label";
-import { cn } from "@init/ui/utils";
-import { Cross1Icon, UploadIcon } from "@radix-ui/react-icons";
+import { Button } from "@2up/ui/button";
+import { If } from "@2up/ui/if";
+import { Label } from "@2up/ui/label";
+import { cn } from "@2up/ui/utils";
+import { UploadIcon, XIcon } from "lucide-react";
 
 type Props = Omit<React.InputHTMLAttributes<unknown>, "value"> & {
   image?: string | null;
@@ -19,7 +19,7 @@ type Props = Omit<React.InputHTMLAttributes<unknown>, "value"> & {
 const IMAGE_SIZE = 22;
 
 export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
-  function ImageUploadInputComponent(
+  (
     {
       children,
       image,
@@ -30,7 +30,7 @@ export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
       ...props
     },
     forwardedRef,
-  ) {
+  ) => {
     const localRef = useRef<HTMLInputElement>();
 
     const [state, setState] = useState({
@@ -137,15 +137,15 @@ export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
     return (
       <label
         id={"image-upload-input"}
-        className={`relative flex h-10 w-full cursor-pointer rounded-md border border-dashed border-input
-         bg-background px-3 py-2 text-sm outline-none ring-primary ring-offset-2 ring-offset-background transition-all file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus:ring-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}
+        className={`border-input bg-background ring-primary ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring relative flex h-10
+         w-full cursor-pointer rounded-md border border-dashed px-3 py-2 text-sm outline-none ring-offset-2 transition-all file:border-0 file:bg-transparent file:text-sm file:font-medium focus:ring-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}
       >
         <Input />
 
         <div className={"flex items-center space-x-4"}>
           <div className={"flex"}>
             <If condition={!state.image}>
-              <UploadIcon className={"h-5 text-muted-foreground"} />
+              <UploadIcon className={"text-muted-foreground h-5"} />
             </If>
 
             <If condition={state.image}>
@@ -191,7 +191,7 @@ export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
               className={"!h-5 !w-5"}
               onClick={imageRemoved}
             >
-              <Cross1Icon className="h-4" />
+              <XIcon className="h-4" />
             </Button>
           </If>
         </div>
@@ -199,3 +199,5 @@ export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
     );
   },
 );
+
+ImageUploadInput.displayName = "ImageUploadInput";

@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@2up/ui/avatar";
 
 type SessionProps = {
   displayName: string | null;
@@ -11,7 +11,7 @@ type TextProps = {
 
 type ProfileAvatarProps = SessionProps | TextProps;
 
-export function ProfileAvatar(props: ProfileAvatarProps) {
+export const ProfileAvatar = (props: ProfileAvatarProps) => {
   const avatarClassName = "mx-auto w-9 h-9 group-focus:ring-2";
 
   if ("text" in props) {
@@ -37,4 +37,4 @@ export function ProfileAvatar(props: ProfileAvatarProps) {
       </AvatarFallback>
     </Avatar>
   );
-}
+};

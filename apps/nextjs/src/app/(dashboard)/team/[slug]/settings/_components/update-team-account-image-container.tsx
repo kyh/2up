@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback } from "react";
-import { ImageUploader } from "@init/ui/image-uploader";
-import { toast } from "@init/ui/toast";
+import { ImageUploader } from "@2up/ui/image-uploader";
+import { toast } from "@2up/ui/toast";
 
 import { api } from "@/trpc/react";
 

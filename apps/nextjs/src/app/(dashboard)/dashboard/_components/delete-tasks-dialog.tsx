@@ -1,9 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { useRouter } from "next/navigation";
-import { Database } from "@init/db/database.types";
-import { Button } from "@init/ui/button";
+import { Button } from "@2up/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -13,36 +10,32 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@init/ui/dialog";
-import { toast } from "@init/ui/toast";
-import { TrashIcon } from "@radix-ui/react-icons";
-import { type Row } from "@tanstack/react-table";
+} from "@2up/ui/dialog";
+import { toast } from "@2up/ui/toast";
+import { TrashIcon } from "lucide-react";
 
+import type { RouterOutputs } from "@2up/api";
 import { api } from "@/trpc/react";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Tasks = RouterOutputs["task"]["retrieve"]["data"];
 
-interface DeleteTasksDialogProps
-  extends React.ComponentPropsWithoutRef<typeof Dialog> {
-  tasks: Row<Task>["original"][];
+type DeleteTasksDialogProps = {
+  tasks: Tasks;
   showTrigger?: boolean;
   onSuccess?: () => void;
-}
+} & React.ComponentPropsWithoutRef<typeof Dialog>;
 
-export function DeleteTasksDialog({
+export const DeleteTasksDialog = ({
   tasks,
   showTrigger = true,
   onSuccess,
   ...props
-}: DeleteTasksDialogProps) {
-  const router = useRouter();
-
+}: DeleteTasksDialogProps) => {
   const deleteTask = api.task.delete.useMutation({
     onSuccess: () => {
       props.onOpenChange?.(false);
       toast.success("Tasks deleted");
       onSuccess?.();
-      router.refresh();
     },
     onError: (error) => toast.error(error.message),
   });
@@ -86,4 +79,4 @@ export function DeleteTasksDialog({
       </DialogContent>
     </Dialog>
   );
-}
+};

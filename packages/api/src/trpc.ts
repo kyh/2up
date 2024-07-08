@@ -25,6 +25,7 @@ import { ZodError } from "zod";
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const supabase = getSupabaseServerClient();
+  const adminSupabase = getSupabaseServerClient({ admin: true });
   // React Native will pass their token through headers,
   // browsers will have the session cookie set
   const token = opts.headers.get("authorization");
@@ -41,6 +42,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     headers: opts.headers,
     user: data.user,
     supabase,
+    adminSupabase,
   };
 };
 
@@ -125,6 +127,10 @@ export const superAdminProcedure = t.procedure.use(({ ctx, next }) => {
   const role = ctx.user?.app_metadata.role;
 
   if (!role || role !== "super-admin") {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  if (!ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 

@@ -2,18 +2,18 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { Button } from "@init/ui/button";
-import { ImageIcon } from "@radix-ui/react-icons";
+import { Button } from "@2up/ui/button";
+import { ImageIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { ImageUploadInput } from "./image-upload-input";
 
-export function ImageUploader(
+export const ImageUploader = (
   props: React.PropsWithChildren<{
     value: string | null | undefined;
     onValueChange: (value: File | null) => unknown;
   }>,
-) {
+) => {
   const [image, setImage] = useState(props.value);
 
   const { setValue, register } = useForm<{
@@ -68,7 +68,7 @@ export function ImageUploader(
 
   return (
     <div className={"flex items-center space-x-4"}>
-      <label className={"relative h-20 w-20 animate-in fade-in zoom-in-50"}>
+      <label className={"animate-in fade-in zoom-in-50 relative h-20 w-20"}>
         <Image fill className={"h-20 w-20 rounded-full"} src={image} alt={""} />
 
         <Input />
@@ -81,26 +81,24 @@ export function ImageUploader(
       </div>
     </div>
   );
-}
+};
 
-function FallbackImage(
+const FallbackImage = (
   props: React.PropsWithChildren<{
     descriptionSection?: React.ReactNode;
   }>,
-) {
-  return (
-    <div className={"flex items-center space-x-4"}>
-      <label
-        className={
-          "relative flex h-20 w-20 cursor-pointer flex-col items-center justify-center rounded-full border border-border animate-in fade-in zoom-in-50 hover:border-primary"
-        }
-      >
-        <ImageIcon className={"h-8 text-primary"} />
+) => (
+  <div className={"flex items-center space-x-4"}>
+    <label
+      className={
+        "border-border animate-in fade-in zoom-in-50 hover:border-primary relative flex h-20 w-20 cursor-pointer flex-col items-center justify-center rounded-full border"
+      }
+    >
+      <ImageIcon className={"text-primary h-8"} />
 
-        {props.children}
-      </label>
+      {props.children}
+    </label>
 
-      {props.descriptionSection}
-    </div>
-  );
-}
+    {props.descriptionSection}
+  </div>
+);

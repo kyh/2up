@@ -2,9 +2,9 @@
   "name": "2up",
   "private": true,
   "engines": {
-    "node": ">=20.12.2"
+    "node": ">=20.15.0"
   },
-  "packageManager": "pnpm@9.1.4",
+  "packageManager": "pnpm@9.4.0",
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
@@ -13,7 +13,8 @@
     "db:start": "pnpm -F db start",
     "db:stop": "pnpm -F db stop",
     "db:reset": "pnpm -F db reset",
-    "db:deploy": "pnpm -F db deploy",
+    "db:push": "pnpm -F db push",
+    "db:migrate": "pnpm -F db migrate",
     "db:typegen": "pnpm -F db typegen",
     "dev": "turbo dev --parallel",
     "dev:nextjs": "turbo dev --filter=@2up/nextjs",
@@ -27,13 +28,13 @@
     "ui:add": "pnpm -F ui ui:add"
   },
   "devDependencies": {
-    "@kyh/prettier-config": "^0.1.8",
-    "@turbo/gen": "^2.0.1",
+    "@kyh/prettier-config": "^0.1.9",
+    "@turbo/gen": "^2.0.6",
     "dotenv-cli": "^7.4.2",
-    "prettier": "^3.3.1",
-    "tsx": "^4.11.2",
-    "turbo": "^2.0.1",
-    "typescript": "^5.4.5"
+    "prettier": "^3.3.2",
+    "tsx": "^4.16.2",
+    "turbo": "^2.0.6",
+    "typescript": "^5.5.3"
   },
   "prettier": "@kyh/prettier-config"
 }

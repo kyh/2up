@@ -1,19 +1,18 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { updateTeamAccountNameInput } from "@init/api/team-account/team-account-schema";
-import { Button } from "@init/ui/button";
+import { updateTeamAccountNameInput } from "@2up/api/team/team-schema";
+import { Button } from "@2up/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-} from "@init/ui/form";
-import { Input } from "@init/ui/input";
-import { toast } from "@init/ui/toast";
-import { useForm } from "react-hook-form";
+  useForm,
+} from "@2up/ui/form";
+import { Input } from "@2up/ui/input";
+import { toast } from "@2up/ui/toast";
 
 import { api } from "@/trpc/react";
 
@@ -24,20 +23,19 @@ export const UpdateTeamAccountNameForm = (props: {
   };
 }) => {
   const router = useRouter();
-  const updateTeamAccountName =
-    api.teamAccount.updateTeamAccountName.useMutation();
+  const updateTeamAccountName = api.team.updateTeamAccountName.useMutation();
   const form = useForm({
-    resolver: zodResolver(updateTeamAccountNameInput.omit({ slug: true })),
+    schema: updateTeamAccountNameInput.omit({ slug: true }),
     defaultValues: {
       name: props.account.name,
     },
   });
 
   return (
-    <div className={"space-y-8"}>
+    <div className="space-y-8">
       <Form {...form}>
         <form
-          className={"flex flex-col space-y-4"}
+          className="flex flex-col space-y-4"
           onSubmit={form.handleSubmit((data) => {
             const promise = updateTeamAccountName
               .mutateAsync({
@@ -55,14 +53,14 @@ export const UpdateTeamAccountNameForm = (props: {
           })}
         >
           <FormField
-            name={"name"}
+            name="name"
             render={({ field }) => {
               return (
                 <FormItem>
                   <FormLabel>Team Name</FormLabel>
 
                   <FormControl>
-                    <Input required placeholder={""} {...field} />
+                    <Input required placeholder="" {...field} />
                   </FormControl>
                 </FormItem>
               );
@@ -71,7 +69,7 @@ export const UpdateTeamAccountNameForm = (props: {
 
           <div>
             <Button
-              className={"w-full md:w-auto"}
+              className="w-full md:w-auto"
               disabled={updateTeamAccountName.isPending}
             >
               Update Team

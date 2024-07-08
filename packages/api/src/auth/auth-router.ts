@@ -1,6 +1,7 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import {
   requestPasswordResetInput,
+  setSessionInput,
   signInWithOAuthInput,
   signInWithOtpInput,
   signInWithPasswordInput,
@@ -105,4 +106,24 @@ export const authRouter = createTRPCRouter({
 
     return response.data;
   }),
+  setSession: protectedProcedure
+    .input(setSessionInput)
+    .mutation(async ({ ctx, input }) => {
+      const signOutResponse = await ctx.supabase.auth.signOut();
+
+      if (signOutResponse.error) {
+        throw signOutResponse.error;
+      }
+
+      const setSessionResponse = await ctx.supabase.auth.setSession({
+        refresh_token: input.refreshToken,
+        access_token: input.accessToken,
+      });
+
+      if (setSessionResponse.error) {
+        throw setSessionResponse.error;
+      }
+
+      return setSessionResponse.data;
+    }),
 });

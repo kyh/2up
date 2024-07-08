@@ -1,15 +1,13 @@
 "use client";
 
-import * as React from "react";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import {
   createInput,
   TaskLabels,
   TaskPriorites,
   TaskStatuses,
-} from "@init/api/task/task-schema";
-import { Button } from "@init/ui/button";
+} from "@2up/api/task/task-schema";
+import { Button } from "@2up/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -19,7 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@init/ui/dialog";
+} from "@2up/ui/dialog";
 import {
   Form,
   FormControl,
@@ -27,7 +25,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@init/ui/form";
+  useForm,
+} from "@2up/ui/form";
 import {
   Select,
   SelectContent,
@@ -35,36 +34,33 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@init/ui/select";
-import { Textarea } from "@init/ui/textarea";
-import { toast } from "@init/ui/toast";
-import { PlusIcon } from "@radix-ui/react-icons";
-import { useForm } from "react-hook-form";
+} from "@2up/ui/select";
+import { Textarea } from "@2up/ui/textarea";
+import { toast } from "@2up/ui/toast";
+import { PlusIcon } from "lucide-react";
 
-import type { CreateInput } from "@init/api/task/task-schema";
+import type { CreateInput } from "@2up/api/task/task-schema";
 import { api } from "@/trpc/react";
 
-export function CreateTaskDialog() {
-  const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+export const CreateTaskDialog = () => {
+  const [open, setOpen] = useState(false);
 
   const createTask = api.task.create.useMutation({
     onSuccess: () => {
       setOpen(false);
       form.reset();
       toast.success("Task created");
-      router.refresh();
     },
     onError: (error) => toast.error(error.message),
   });
 
-  const form = useForm<CreateInput>({
-    resolver: zodResolver(createInput),
+  const form = useForm({
+    schema: createInput,
   });
 
-  function onSubmit(input: CreateInput) {
+  const onSubmit = (input: CreateInput) => {
     createTask.mutate(input);
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -215,4 +211,4 @@ export function CreateTaskDialog() {
       </DialogContent>
     </Dialog>
   );
-}
+};

@@ -1,16 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   TaskLabels,
   TaskPriorites,
   TaskStatuses,
   updateInput,
-} from "@init/api/task/task-schema";
-import { Database } from "@init/db/database.types";
-import { Button } from "@init/ui/button";
+} from "@2up/api/task/task-schema";
+import { Button } from "@2up/ui/button";
 import {
   Form,
   FormControl,
@@ -18,7 +15,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@init/ui/form";
+  useForm,
+} from "@2up/ui/form";
 import {
   Select,
   SelectContent,
@@ -26,7 +24,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@init/ui/select";
+} from "@2up/ui/select";
 import {
   Sheet,
   SheetClose,
@@ -35,36 +33,32 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "@init/ui/sheet";
-import { Textarea } from "@init/ui/textarea";
-import { toast } from "@init/ui/toast";
-import { useForm } from "react-hook-form";
+} from "@2up/ui/sheet";
+import { Textarea } from "@2up/ui/textarea";
+import { toast } from "@2up/ui/toast";
 
-import type { UpdateInput } from "@init/api/task/task-schema";
+import type { RouterOutputs } from "@2up/api";
+import type { UpdateInput } from "@2up/api/task/task-schema";
 import { api } from "@/trpc/react";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type Task = RouterOutputs["task"]["retrieve"]["data"][0];
 
-interface UpdateTaskSheetProps
-  extends React.ComponentPropsWithRef<typeof Sheet> {
+type UpdateTaskSheetProps = {
   task: Task;
-}
+} & React.ComponentPropsWithRef<typeof Sheet>;
 
-export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
-  const router = useRouter();
-
+export const UpdateTaskSheet = ({ task, ...props }: UpdateTaskSheetProps) => {
   const updateTask = api.task.update.useMutation({
     onSuccess: () => {
       form.reset();
       props.onOpenChange?.(false);
       toast.success("Task updated");
-      router.refresh();
     },
     onError: (error) => toast.error(error.message),
   });
 
-  const form = useForm<Omit<UpdateInput, "id">>({
-    resolver: zodResolver(updateInput.omit({ id: true })),
+  const form = useForm({
+    schema: updateInput.omit({ id: true }),
     defaultValues: {
       title: task.title ?? "",
       label: task.label,
@@ -73,12 +67,12 @@ export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
     },
   });
 
-  function onSubmit(input: Omit<UpdateInput, "id">) {
+  const onSubmit = (input: Omit<UpdateInput, "id">) => {
     updateTask.mutate({
       id: task.id,
       ...input,
     });
-  }
+  };
 
   return (
     <Sheet {...props}>
@@ -223,4 +217,4 @@ export function UpdateTaskSheet({ task, ...props }: UpdateTaskSheetProps) {
       </SheetContent>
     </Sheet>
   );
-}
+};

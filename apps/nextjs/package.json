@@ -14,21 +14,23 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@edge-csrf/nextjs": "2.0.0",
+    "@edge-csrf/nextjs": "^2.2.2",
     "@2up/api": "workspace:latest",
     "@2up/db": "workspace:latest",
     "@2up/mdx": "workspace:latest",
     "@2up/ui": "workspace:latest",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
-    "@next/mdx": "^14.2.3",
-    "@tanstack/react-table": "^8.17.3",
-    "@tanstack/react-query": "^5.40.1",
-    "@trpc/client": "11.0.0-next-beta.294",
-    "@trpc/react-query": "11.0.0-next-beta.294",
-    "@trpc/server": "11.0.0-next-beta.294",
+    "@next/mdx": "^14.2.4",
+    "@stripe/react-stripe-js": "^2.7.3",
+    "@stripe/stripe-js": "^4.1.0",
+    "@tanstack/react-query": "^5.50.1",
+    "@tanstack/react-table": "^8.19.2",
+    "@trpc/client": "11.0.0-rc.441",
+    "@trpc/react-query": "11.0.0-rc.441",
+    "@trpc/server": "11.0.0-rc.441",
     "partysocket": "1.0.1",
-    "next": "^14.2.3",
+    "next": "^14.2.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hotkeys-hook": "^4.5.0",
@@ -37,17 +39,17 @@
   },
   "devDependencies": {
     "@2up/tailwind-config": "workspace:latest",
-    "@kyh/eslint-config": "^0.1.8",
-    "@kyh/prettier-config": "^0.1.8",
-    "@kyh/tsconfig": "^0.1.8",
+    "@kyh/eslint-config": "^0.1.9",
+    "@kyh/prettier-config": "^0.1.9",
+    "@kyh/tsconfig": "^0.1.9",
     "@types/mdx": "^2.0.13",
-    "@types/node": "^20.14.2",
+    "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "eslint": "^8.57.0",
-    "prettier": "^3.3.1",
+    "prettier": "^3.3.2",
     "tailwindcss": "^3.4.4",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.3"
   },
   "eslintConfig": {
     "root": true,
@@ -55,7 +57,16 @@
       "@kyh/eslint-config/base",
       "@kyh/eslint-config/nextjs",
       "@kyh/eslint-config/react"
-    ]
+    ],
+    "rules": {
+      "react/jsx-curly-brace-presence": [
+        "error",
+        {
+          "props": "never",
+          "children": "never"
+        }
+      ]
+    }
   },
   "prettier": "@kyh/prettier-config"
 }

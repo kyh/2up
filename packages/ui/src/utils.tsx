@@ -12,4 +12,8 @@ const getInitials = (name: string) => {
   return `${first}${last}`.toUpperCase();
 };
 
-export { cn, getInitials };
+const isBrowser = () => {
+  return typeof window !== "undefined";
+};
+
+export { cn, getInitials, isBrowser };

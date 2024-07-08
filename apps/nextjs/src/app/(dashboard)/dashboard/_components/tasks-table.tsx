@@ -1,29 +1,28 @@
 "use client";
 
-import * as React from "react";
-import { Database } from "@init/db/database.types";
-import { DataTable } from "@init/ui/data-table/data-table";
-import { DataTableToolbar } from "@init/ui/data-table/data-table-toolbar";
+import { useMemo } from "react";
+import { DataTable } from "@2up/ui/data-table/data-table";
+import { DataTableToolbar } from "@2up/ui/data-table/data-table-toolbar";
 
+import type { RetrieveInput } from "@2up/api/task/task-schema";
 import { useDataTable } from "@/hooks/use-data-table";
+import { api } from "@/trpc/react";
 import { getColumns } from "./tasks-table-columns";
 import { TasksTableToolbarActions } from "./tasks-table-toolbar-actions";
 
-type Task = Database["public"]["Tables"]["tasks"]["Row"];
+type TasksTableProps = {
+  searchParams: RetrieveInput;
+};
 
-interface TasksTableProps {
-  data: Task[];
-  pageCount: number;
-}
+export const TasksTable = (props: TasksTableProps) => {
+  const [data] = api.task.retrieve.useSuspenseQuery(props.searchParams);
 
-export function TasksTable({ data, pageCount }: TasksTableProps) {
-  // Memoize the columns so they don't re-render on every render
-  const columns = React.useMemo(() => getColumns(), []);
+  const columns = useMemo(() => getColumns(), []);
 
   const { table } = useDataTable({
-    data,
+    data: data.data,
     columns,
-    pageCount,
+    pageCount: data.pageCount,
     // optional props
     defaultPerPage: 10,
     defaultSort: "created_at.desc",
@@ -36,4 +35,4 @@ export function TasksTable({ data, pageCount }: TasksTableProps) {
       </DataTableToolbar>
     </DataTable>
   );
-}
+};

@@ -1,29 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import {
   httpBatchLink,
   loggerLink,
-  unstable_httpBatchStreamLink, // currently doesn't support setting cookies for auth
+  splitLink,
+  unstable_httpBatchStreamLink,
 } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 
 import type { AppRouter } from "@2up/api";
+import type { QueryClient } from "@tanstack/react-query";
+import { createQueryClient } from "./query-client";
 
 export type { TRPCError } from "@trpc/server";
-
-const createQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: {
-        // With SSR, we usually want to set some default staleTime
-        // above 0 to avoid refetching immediately on the client
-        staleTime: 30 * 1000,
-      },
-    },
-  });
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 const getQueryClient = () => {
@@ -36,7 +28,26 @@ const getQueryClient = () => {
   }
 };
 
-export const api = createTRPCReact<AppRouter>();
+export const api = createTRPCReact<AppRouter>({
+  overrides: {
+    useMutation: {
+      /**
+       * This function is called whenever a `.useMutation` succeeds
+       **/
+      onSuccess: async (opts) => {
+        /**
+         * @note that order here matters:
+         * The order here allows route changes in `onSuccess` without
+         * having a flash of content change whilst redirecting.
+         **/
+        // Calls the `onSuccess` defined in the `useQuery()`-options:
+        await opts.originalFn();
+        // Invalidate all queries in the react-query cache:
+        await opts.queryClient.invalidateQueries();
+      },
+    },
+  },
+});
 
 export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
   const queryClient = getQueryClient();
@@ -49,14 +60,29 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
             process.env.NODE_ENV === "development" ||
             (op.direction === "down" && op.result instanceof Error),
         }),
-        httpBatchLink({
-          transformer: SuperJSON,
-          url: `${getBaseUrl()}/api/trpc`,
-          headers: async () => {
-            const headers = new Headers();
-            headers.set("x-trpc-source", "nextjs-react");
-            return headers;
+        splitLink({
+          condition: (op) => {
+            // return op.path.startsWith("auth.");
+            return true;
           },
+          true: httpBatchLink({
+            transformer: SuperJSON,
+            url: `${getBaseUrl()}/api/trpc`,
+            headers: async () => {
+              const headers = new Headers();
+              headers.set("x-trpc-source", "nextjs-react-batch");
+              return headers;
+            },
+          }),
+          false: unstable_httpBatchStreamLink({
+            transformer: SuperJSON,
+            url: `${getBaseUrl()}/api/trpc`,
+            headers: async () => {
+              const headers = new Headers();
+              headers.set("x-trpc-source", "nextjs-react-batch-stream");
+              return headers;
+            },
+          }),
         }),
       ],
     }),
