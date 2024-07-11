@@ -13,7 +13,7 @@ export const AccountSelector = () => {
     <div className="flex w-fit flex-col space-y-2 md:col-span-2">
       {data.accounts.map((account) => (
         <Button asChild key={account.slug} variant="outline">
-          <Link href={`/team/${account.slug}`}>{account.name}</Link>
+          <Link href={`/dashboard/${account.slug}`}>{account.name}</Link>
         </Button>
       ))}
       <CreateTeamAccountDialog>
