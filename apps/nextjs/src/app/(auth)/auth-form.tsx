@@ -25,7 +25,7 @@ type AuthFormProps = {
 
 export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   const router = useRouter();
-  const nextPath = useSearchParams().get("next") ?? "/dashboard";
+  const nextPath = useSearchParams().get("next") ?? "/home/dashboard";
 
   const signInWithOAuth = api.auth.signInWithOAuth.useMutation({
     onError: (error) => toast.error(error.message),
