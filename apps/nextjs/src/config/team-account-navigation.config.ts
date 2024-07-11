@@ -9,20 +9,20 @@ export const getTeamAccountPageLinks = (account: string) =>
   [
     {
       id: "crud",
-      href: createPath("/home/[account]", account),
+      href: createPath("/dashboard/[account]", account),
       label: "CRUD",
       Icon: LayoutDashboardIcon,
       exact: true,
     },
     {
       id: "members",
-      href: createPath("/home/[account]/members", account),
+      href: createPath("/dashboard/[account]/members", account),
       label: "Members",
       Icon: UsersIcon,
     },
     {
       id: "settings",
-      href: createPath("/home/[account]/settings", account),
+      href: createPath("/dashboard/[account]/settings", account),
       label: "Settings",
       Icon: SettingsIcon,
     },

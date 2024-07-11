@@ -4,20 +4,20 @@ export const getPersonalAccountPageLinks = () =>
   [
     {
       id: "teams",
-      href: "/home",
+      href: "/dashboard",
       label: "Teams",
       Icon: HomeIcon,
       exact: true,
     },
     {
       id: "billing",
-      href: "/home/billing",
+      href: "/dashboard/billing",
       label: "Billing",
       Icon: CreditCardIcon,
     },
     {
       id: "settings",
-      href: "/home/settings",
+      href: "/dashboard/settings",
       label: "Settings",
       Icon: SettingsIcon,
     },

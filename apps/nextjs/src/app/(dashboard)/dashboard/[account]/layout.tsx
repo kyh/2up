@@ -23,7 +23,7 @@ const Layout = async ({
   });
 
   if (!account) {
-    redirect("/home");
+    redirect("/dashboard");
   }
 
   const pageLinks = getTeamAccountPageLinks(account.slug);

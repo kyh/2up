@@ -6,7 +6,7 @@ export const loadTeamPagePageData = async (slug: string) => {
   const { account, user } = await api.team.teamWorkspace({ slug });
 
   if (!account) {
-    return redirect("/home");
+    return redirect("/dashboard");
   }
 
   return {

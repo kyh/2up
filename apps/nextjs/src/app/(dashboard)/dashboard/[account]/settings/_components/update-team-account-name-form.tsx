@@ -43,7 +43,7 @@ export const UpdateTeamAccountNameForm = (props: {
                 name: data.name,
               })
               .then((data) => {
-                router.replace(`/home/${data.slug}/settings`);
+                router.replace(`/dashboard/${data.slug}/settings`);
               });
             toast.promise(promise, {
               loading: "Updating Team name...",

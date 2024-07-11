@@ -15,7 +15,7 @@ const Page = async ({ params }: { params: Params }) => {
   });
 
   if (!account) {
-    return redirect("/home");
+    return redirect("/dashboard");
   }
 
   return (
