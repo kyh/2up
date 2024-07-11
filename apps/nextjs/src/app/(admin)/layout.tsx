@@ -23,7 +23,7 @@ export default Layout;
 const Sidebar = async () => (
   <nav className="sticky top-0 flex h-dvh w-[80px] flex-col items-center overflow-y-auto overflow-x-hidden px-4 py-[26px]">
     <div className="flex flex-col">
-      <Link href="/home" className="flex justify-center pb-2">
+      <Link href="/dashboard" className="flex justify-center pb-2">
         <Logo
           width={40}
           height={40}

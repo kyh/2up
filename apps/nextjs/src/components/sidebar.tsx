@@ -85,7 +85,7 @@ export async function Sidebar({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Link
-                  href={"/home"}
+                  href={"/dashboard"}
                   className="inline-flex w-full items-center font-normal"
                 >
                   <UserIcon className="h-4 min-h-4 w-4 min-w-4" />
@@ -102,7 +102,7 @@ export async function Sidebar({
               {accounts.map((account) => (
                 <DropdownMenuLabel>
                   <Link
-                    href={`/home/${account.slug}`}
+                    href={`/dashboard/${account.slug}`}
                     className="inline-flex w-full items-center font-normal"
                   >
                     <Avatar className={"h-5 w-5"}>
@@ -175,7 +175,7 @@ export async function Sidebar({
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link href={"/home/settings"}>Settings</Link>
+              <Link href={"/dashboard/settings"}>Settings</Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
