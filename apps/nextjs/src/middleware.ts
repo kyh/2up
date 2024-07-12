@@ -95,7 +95,7 @@ const isServerAction = (request: NextRequest) => {
  */
 const getPatterns = () => [
   {
-    pattern: new URLPattern({ pathname: "/admin*" }),
+    pattern: new URLPattern({ pathname: "/admin/*?" }),
     handler: async (request: NextRequest, response: NextResponse) => {
       const isAdminPath = request.nextUrl.pathname.startsWith("/admin");
 
@@ -130,7 +130,7 @@ const getPatterns = () => [
     },
   },
   {
-    pattern: new URLPattern({ pathname: "/auth*" }),
+    pattern: new URLPattern({ pathname: "/auth/*?" }),
     handler: async (req: NextRequest, res: NextResponse) => {
       const {
         data: { user },
@@ -154,7 +154,7 @@ const getPatterns = () => [
     },
   },
   {
-    pattern: new URLPattern({ pathname: "/dashboard*" }),
+    pattern: new URLPattern({ pathname: "/dashboard/*?" }),
     handler: async (req: NextRequest, res: NextResponse) => {
       const {
         data: { user },
