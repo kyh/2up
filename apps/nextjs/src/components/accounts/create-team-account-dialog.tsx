@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { createTeamAccountInput } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
 import {
@@ -53,10 +54,13 @@ export const CreateTeamAccountDialog = ({
 };
 
 const CreateOrganizationAccountForm = (props: { onClose: () => void }) => {
+  const router = useRouter();
+
   const createTeamAccount = api.team.createTeamAccount.useMutation({
-    onSuccess: () => {
+    onSuccess: (res) => {
       toast.success("Team created successfully");
       props.onClose();
+      router.push(`/dashboard/${res.slug}`);
     },
     onError: () =>
       toast.error(
