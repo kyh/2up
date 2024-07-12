@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@keystatic/core": "^0.5.26",
+    "@keystatic/core": "^0.5.27",
     "@keystatic/next": "^5.0.1"
   },
   "devDependencies": {
