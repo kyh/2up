@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { Input } from "@init/ui/input";
 import {
   Table,
@@ -20,11 +20,8 @@ import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 import { getColumns } from "./account-members-table-columns";
 
-type Members = RouterOutputs["team"]["members"];
-
 interface AccountMembersTableProps {
   slug: string;
-  membersPromise: Promise<Members>;
   currentUserId: string;
   currentAccountId: string;
   userRoleHierarchy: number;
@@ -34,7 +31,6 @@ interface AccountMembersTableProps {
 
 export function AccountMembersTable({
   slug,
-  membersPromise,
   currentUserId,
   currentAccountId,
   isPrimaryOwner,
@@ -43,13 +39,9 @@ export function AccountMembersTable({
 }: AccountMembersTableProps) {
   const [search, setSearch] = useState("");
 
-  const initialData = use(membersPromise);
-  const { data: members } = api.team.members.useQuery(
-    { slug },
-    {
-      initialData,
-    },
-  );
+  const [members] = api.team.members.useSuspenseQuery({
+    slug,
+  });
 
   const permissions = {
     canUpdateRole: (targetRole: number) => {

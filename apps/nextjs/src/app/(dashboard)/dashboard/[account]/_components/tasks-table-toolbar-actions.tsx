@@ -9,10 +9,12 @@ import { DeleteTasksDialog } from "./delete-tasks-dialog";
 type Task = RouterOutputs["task"]["retrieve"]["data"][0];
 
 interface TasksTableToolbarActionsProps {
+  accountId: string;
   table: Table<Task>;
 }
 
 export function TasksTableToolbarActions({
+  accountId,
   table,
 }: TasksTableToolbarActionsProps) {
   return (
@@ -25,7 +27,7 @@ export function TasksTableToolbarActions({
           onSuccess={() => table.toggleAllRowsSelected(false)}
         />
       ) : null}
-      <CreateTaskDialog />
+      <CreateTaskDialog accountId={accountId} />
       {/**
        * Other actions can be added here.
        * For example, import, view, etc.

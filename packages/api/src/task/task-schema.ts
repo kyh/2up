@@ -35,6 +35,7 @@ export const createInput = z.object({
   label: z.enum(TaskLabels).optional(),
   priority: z.enum(TaskPriorites).optional(),
   status: z.enum(TaskStatuses).optional(),
+  accountId: z.string(),
 });
 export type CreateInput = z.infer<typeof createInput>;
 
@@ -42,6 +43,7 @@ export const retrieveInput = z.object({
   page: z.string().default("1"),
   per_page: z.string().default("10"),
   sort: z.string().default("created_at"),
+  accountId: z.string(),
 });
 export type RetrieveInput = z.infer<typeof retrieveInput>;
 
