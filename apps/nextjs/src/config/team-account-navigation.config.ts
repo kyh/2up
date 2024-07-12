@@ -1,9 +1,4 @@
-import {
-  CircleHelpIcon,
-  LayoutDashboardIcon,
-  SettingsIcon,
-  UsersIcon,
-} from "lucide-react";
+import { LayoutDashboardIcon, SettingsIcon, UsersIcon } from "lucide-react";
 
 export const getTeamAccountPageLinks = (account: string) =>
   [
@@ -28,6 +23,5 @@ export const getTeamAccountPageLinks = (account: string) =>
     },
   ] as const;
 
-function createPath(path: string, account: string) {
-  return path.replace("[account]", account);
-}
+const createPath = (path: string, account: string) =>
+  path.replace("[account]", account);

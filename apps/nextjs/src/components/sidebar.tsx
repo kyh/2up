@@ -1,4 +1,6 @@
-import React, { ForwardRefExoticComponent, RefAttributes } from "react";
+import type { LucideProps } from "lucide-react";
+import type { ForwardRefExoticComponent, RefAttributes } from "react";
+import React from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
@@ -15,7 +17,7 @@ import {
 } from "@init/ui/dropdown-menu";
 import { Logo } from "@init/ui/logo";
 import { cn, getInitials } from "@init/ui/utils";
-import { CheckCircleIcon, LucideProps, PlusIcon, UserIcon } from "lucide-react";
+import { CheckCircleIcon, PlusIcon, UserIcon } from "lucide-react";
 
 import { NavLink } from "@/components/nav";
 import { api } from "@/trpc/server";
@@ -23,7 +25,7 @@ import { CreateTeamAccountDialog } from "./accounts/create-team-account-dialog";
 
 const PERSONAL_ACCOUNT_SLUG = "personal";
 
-export async function Sidebar({
+export const Sidebar = async ({
   slug = PERSONAL_ACCOUNT_SLUG,
   pageLinks,
 }: {
@@ -37,7 +39,7 @@ export async function Sidebar({
     >;
     exact?: boolean;
   }[];
-}) {
+}) => {
   const { user, accounts } = await api.account.userWorkspace();
 
   const userEmail = user.email ?? "";
@@ -85,7 +87,7 @@ export async function Sidebar({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Link
-                  href={"/dashboard"}
+                  href="/dashboard"
                   className="inline-flex w-full items-center font-normal"
                 >
                   <UserIcon className="h-4 min-h-4 w-4 min-w-4" />
@@ -105,8 +107,8 @@ export async function Sidebar({
                     href={`/dashboard/${account.slug}`}
                     className="inline-flex w-full items-center font-normal"
                   >
-                    <Avatar className={"h-5 w-5"}>
-                      <AvatarFallback className={"group-hover:bg-background"}>
+                    <Avatar className="h-5 w-5">
+                      <AvatarFallback className="group-hover:bg-background">
                         {account.name ? account.name[0] : ""}
                       </AvatarFallback>
                     </Avatar>
@@ -175,7 +177,7 @@ export async function Sidebar({
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link href={"/dashboard/settings"}>Settings</Link>
+              <Link href="/dashboard/settings">Settings</Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
@@ -191,4 +193,4 @@ export async function Sidebar({
       </DropdownMenu>
     </nav>
   );
-}
+};
