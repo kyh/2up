@@ -42,7 +42,7 @@ import { PlusIcon } from "lucide-react";
 import type { CreateInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";
 
-export const CreateTaskDialog = () => {
+export const CreateTaskDialog = ({ accountId }: { accountId: string }) => {
   const [open, setOpen] = useState(false);
 
   const createTask = api.task.create.useMutation({
@@ -55,11 +55,11 @@ export const CreateTaskDialog = () => {
   });
 
   const form = useForm({
-    schema: createInput,
+    schema: createInput.omit({ accountId: true }),
   });
 
-  const onSubmit = (input: CreateInput) => {
-    createTask.mutate(input);
+  const onSubmit = (input: Omit<CreateInput, "accountId">) => {
+    createTask.mutate({ ...input, accountId });
   };
 
   return (

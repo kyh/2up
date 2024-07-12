@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { RouterOutputs } from "@init/api";
 import { DataTable } from "@init/ui/data-table/data-table";
 import { DataTableToolbar } from "@init/ui/data-table/data-table-toolbar";
 
@@ -11,11 +12,15 @@ import { getColumns } from "./tasks-table-columns";
 import { TasksTableToolbarActions } from "./tasks-table-toolbar-actions";
 
 type TasksTableProps = {
+  accountId: string;
   searchParams: RetrieveInput;
 };
 
-export const TasksTable = (props: TasksTableProps) => {
-  const [data] = api.task.retrieve.useSuspenseQuery(props.searchParams);
+export const TasksTable = ({ accountId, searchParams }: TasksTableProps) => {
+  const [data] = api.task.retrieve.useSuspenseQuery({
+    ...searchParams,
+    accountId: accountId,
+  });
 
   const columns = useMemo(() => getColumns(), []);
 
@@ -31,7 +36,7 @@ export const TasksTable = (props: TasksTableProps) => {
   return (
     <DataTable table={table}>
       <DataTableToolbar table={table}>
-        <TasksTableToolbarActions table={table} />
+        <TasksTableToolbarActions accountId={accountId} table={table} />
       </DataTableToolbar>
     </DataTable>
   );
