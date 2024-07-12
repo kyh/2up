@@ -30,14 +30,14 @@ export const Sidebar = async ({
   pageLinks,
 }: {
   slug?: string;
-  pageLinks: {
-    id: string;
-    href: string;
-    label: string;
-    Icon: ForwardRefExoticComponent<
+  pageLinks: readonly {
+    readonly id: string;
+    readonly href: string;
+    readonly label: string;
+    readonly Icon: ForwardRefExoticComponent<
       Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
     >;
-    exact?: boolean;
+    readonly exact?: boolean;
   }[];
 }) => {
   const { user, accounts } = await api.account.userWorkspace();
@@ -102,7 +102,7 @@ export const Sidebar = async ({
                 Your Teams ({accounts.length})
               </div>
               {accounts.map((account) => (
-                <DropdownMenuLabel>
+                <DropdownMenuLabel key={account.id}>
                   <Link
                     href={`/dashboard/${account.slug}`}
                     className="inline-flex w-full items-center font-normal"
