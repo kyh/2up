@@ -4,12 +4,45 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@kyh/eslint-config':
+      specifier: ^0.1.9
+      version: 0.1.9
+    '@kyh/prettier-config':
+      specifier: ^0.1.9
+      version: 0.1.9
+    '@kyh/tsconfig':
+      specifier: ^0.1.9
+      version: 0.1.9
+    '@types/node':
+      specifier: ^20.14.10
+      version: 20.14.10
+    '@types/react':
+      specifier: ^18.3.3
+      version: 18.3.3
+    '@types/react-dom':
+      specifier: ^18.3.0
+      version: 18.3.0
+    eslint:
+      specifier: ^8.57.0
+      version: 8.57.0
+    prettier:
+      specifier: ^3.3.2
+      version: 3.3.2
+    tailwindcss:
+      specifier: ^3.4.4
+      version: 3.4.4
+    typescript:
+      specifier: ^5.5.3
+      version: 5.5.3
+
 importers:
 
   .:
     devDependencies:
       '@kyh/prettier-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@turbo/gen':
         specifier: ^2.0.6
@@ -18,7 +51,7 @@ importers:
         specifier: ^7.4.2
         version: 7.4.2
       prettier:
-        specifier: ^3.3.2
+        specifier: 'catalog:'
         version: 3.3.2
       tsx:
         specifier: ^4.16.2
@@ -27,7 +60,7 @@ importers:
         specifier: ^2.0.6
         version: 2.0.6
       typescript:
-        specifier: ^5.5.3
+        specifier: 'catalog:'
         version: 5.5.3
 
   apps/expo:
@@ -115,31 +148,31 @@ importers:
         specifier: workspace:latest
         version: link:../../packages/tailwind
       '@kyh/eslint-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9(eslint@8.57.0)(typescript@5.5.3)
       '@kyh/prettier-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@kyh/tsconfig':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
       '@types/react':
-        specifier: ^18.3.3
+        specifier: 'catalog:'
         version: 18.3.3
       eslint:
-        specifier: ^8.57.0
+        specifier: 'catalog:'
         version: 8.57.0
       prettier:
-        specifier: ^3.3.2
+        specifier: 'catalog:'
         version: 3.3.2
       tailwindcss:
-        specifier: ^3.4.4
+        specifier: 'catalog:'
         version: 3.4.4(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3))
       typescript:
-        specifier: ^5.5.3
+        specifier: 'catalog:'
         version: 5.5.3
 
   apps/nextjs:
@@ -212,37 +245,37 @@ importers:
         specifier: workspace:latest
         version: link:../../packages/tailwind
       '@kyh/eslint-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9(eslint@8.57.0)(typescript@5.5.3)
       '@kyh/prettier-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@kyh/tsconfig':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@types/mdx':
         specifier: ^2.0.13
         version: 2.0.13
       '@types/node':
-        specifier: ^20.14.10
+        specifier: 'catalog:'
         version: 20.14.10
       '@types/react':
-        specifier: ^18.3.3
+        specifier: 'catalog:'
         version: 18.3.3
       '@types/react-dom':
-        specifier: ^18.3.0
+        specifier: 'catalog:'
         version: 18.3.0
       eslint:
-        specifier: ^8.57.0
+        specifier: 'catalog:'
         version: 8.57.0
       prettier:
-        specifier: ^3.3.2
+        specifier: 'catalog:'
         version: 3.3.2
       tailwindcss:
-        specifier: ^3.4.4
+        specifier: 'catalog:'
         version: 3.4.4(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3))
       typescript:
-        specifier: ^5.5.3
+        specifier: 'catalog:'
         version: 5.5.3
 
   packages/api:
@@ -267,22 +300,22 @@ importers:
         version: 2.0.2(zod@3.23.8)
     devDependencies:
       '@kyh/eslint-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9(eslint@8.57.0)(typescript@5.5.3)
       '@kyh/prettier-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@kyh/tsconfig':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       eslint:
-        specifier: ^8.57.0
+        specifier: 'catalog:'
         version: 8.57.0
       prettier:
-        specifier: ^3.3.2
+        specifier: 'catalog:'
         version: 3.3.2
       typescript:
-        specifier: ^5.5.3
+        specifier: 'catalog:'
         version: 5.5.3
 
   packages/cms:
@@ -295,22 +328,22 @@ importers:
         version: 5.0.1(@keystatic/core@0.5.27(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@kyh/eslint-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9(eslint@8.57.0)(typescript@5.5.3)
       '@kyh/prettier-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@kyh/tsconfig':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       eslint:
-        specifier: ^8.57.0
+        specifier: 'catalog:'
         version: 8.57.0
       prettier:
-        specifier: ^3.3.2
+        specifier: 'catalog:'
         version: 3.3.2
       typescript:
-        specifier: ^5.5.3
+        specifier: 'catalog:'
         version: 5.5.3
 
   packages/db:
@@ -332,28 +365,28 @@ importers:
         version: 3.23.8
     devDependencies:
       '@kyh/eslint-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9(eslint@8.57.0)(typescript@5.5.3)
       '@kyh/prettier-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@kyh/tsconfig':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@types/react':
-        specifier: ^18.3.3
+        specifier: 'catalog:'
         version: 18.3.3
       eslint:
-        specifier: ^8.57.0
+        specifier: 'catalog:'
         version: 8.57.0
       prettier:
-        specifier: ^3.3.2
+        specifier: 'catalog:'
         version: 3.3.2
       supabase:
         specifier: ^1.183.5
         version: 1.183.5
       typescript:
-        specifier: ^5.5.3
+        specifier: 'catalog:'
         version: 5.5.3
 
   packages/mdx:
@@ -393,22 +426,22 @@ importers:
         version: 5.0.0
     devDependencies:
       '@kyh/eslint-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9(eslint@8.57.0)(typescript@5.5.3)
       '@kyh/prettier-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@kyh/tsconfig':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       eslint:
-        specifier: ^8.57.0
+        specifier: 'catalog:'
         version: 8.57.0
       prettier:
-        specifier: ^3.3.2
+        specifier: 'catalog:'
         version: 3.3.2
       typescript:
-        specifier: ^5.5.3
+        specifier: 'catalog:'
         version: 5.5.3
 
   packages/tailwind:
@@ -420,29 +453,29 @@ importers:
         specifier: ^8.4.39
         version: 8.4.39
       tailwindcss:
-        specifier: ^3.4.4
+        specifier: 'catalog:'
         version: 3.4.4(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3))
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.4(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3)))
     devDependencies:
       '@kyh/eslint-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9(eslint@8.57.0)(typescript@5.5.3)
       '@kyh/prettier-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@kyh/tsconfig':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       eslint:
-        specifier: ^8.57.0
+        specifier: 'catalog:'
         version: 8.57.0
       prettier:
-        specifier: ^3.3.2
+        specifier: 'catalog:'
         version: 3.3.2
       typescript:
-        specifier: ^5.5.3
+        specifier: 'catalog:'
         version: 5.5.3
 
   packages/ui:
@@ -533,28 +566,28 @@ importers:
         specifier: workspace:latest
         version: link:../tailwind
       '@kyh/eslint-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9(eslint@8.57.0)(typescript@5.5.3)
       '@kyh/prettier-config':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@kyh/tsconfig':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       '@types/react':
-        specifier: ^18.3.3
+        specifier: 'catalog:'
         version: 18.3.3
       eslint:
-        specifier: ^8.57.0
+        specifier: 'catalog:'
         version: 8.57.0
       prettier:
-        specifier: ^3.3.2
+        specifier: 'catalog:'
         version: 3.3.2
       tailwindcss:
-        specifier: ^3.4.4
+        specifier: 'catalog:'
         version: 3.4.4(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3))
       typescript:
-        specifier: ^5.5.3
+        specifier: 'catalog:'
         version: 5.5.3
       zod:
         specifier: ^3.23.8
