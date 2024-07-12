@@ -30,14 +30,14 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@kyh/eslint-config": "^0.1.9",
-    "@kyh/prettier-config": "^0.1.9",
-    "@kyh/tsconfig": "^0.1.9",
-    "@types/react": "^18.3.3",
-    "eslint": "^8.57.0",
-    "prettier": "^3.3.2",
+    "@kyh/eslint-config": "catalog:",
+    "@kyh/prettier-config": "catalog:",
+    "@kyh/tsconfig": "catalog:",
+    "@types/react": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
     "supabase": "^1.183.5",
-    "typescript": "^5.5.3"
+    "typescript": "catalog:"
   },
   "eslintConfig": {
     "root": true,
