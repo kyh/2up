@@ -1,18 +1,13 @@
-import type { Metadata } from "next";
 import React from "react";
 import { redirect } from "next/navigation";
 
 import { Sidebar } from "@/components/sidebar";
 import { getTeamAccountPageLinks } from "@/config/team-account-navigation.config";
-import { api, HydrateClient } from "@/trpc/server";
+import { api } from "@/trpc/server";
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-};
-
-interface Params {
+type Params = {
   account: string;
-}
+};
 
 const Layout = async ({
   children,
@@ -29,12 +24,10 @@ const Layout = async ({
   const pageLinks = getTeamAccountPageLinks(account.slug);
 
   return (
-    <HydrateClient>
-      <div className="flex min-h-dvh">
-        <Sidebar slug={account.slug} pageLinks={pageLinks} />
-        {children}
-      </div>
-    </HydrateClient>
+    <div className="flex min-h-dvh">
+      <Sidebar slug={account.slug} pageLinks={pageLinks} />
+      {children}
+    </div>
   );
 };
 
