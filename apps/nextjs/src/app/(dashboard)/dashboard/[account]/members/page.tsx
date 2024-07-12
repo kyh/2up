@@ -1,17 +1,23 @@
+import { redirect } from "next/navigation";
 import { If } from "@init/ui/if";
 
 import { api } from "@/trpc/server";
 import { AccountInvitationsTable } from "./_components/invitations/account-invitations-table";
 import { AccountMembersTable } from "./_components/members/account-members-table";
 import { InviteMembersDialogContainer } from "./_components/members/invite-members-dialog-container";
-import { loadTeamPagePageData } from "./_lib/team-page-loader";
 
-interface Params {
+type Params = {
   account: string;
-}
+};
 
 const Page = async ({ params }: { params: Params }) => {
-  const { account, user } = await loadTeamPagePageData(params.account);
+  const { account, user } = await api.team.teamWorkspace({
+    slug: params.account,
+  });
+
+  if (!account) {
+    return redirect("/dashboard");
+  }
 
   const membersPromise = api.team.members({ slug: params.account });
   const invitationsPromise = api.team.invitations({ slug: params.account });
@@ -63,7 +69,7 @@ const Page = async ({ params }: { params: Params }) => {
           </div>
           <div className="md:col-span-2">
             <AccountInvitationsTable
-              slug={params.slug}
+              slug={params.account}
               permissions={{
                 canUpdateInvitation: canManageRoles,
                 canRemoveInvitation: canManageRoles,
