@@ -17,11 +17,11 @@
   "dependencies": {
     "@expo/metro-config": "^0.18.8",
     "@shopify/flash-list": "^1.7.0",
-    "@tanstack/react-query": "^5.51.1",
+    "@tanstack/react-query": "^5.51.5",
     "@trpc/client": "11.0.0-rc.441",
     "@trpc/react-query": "11.0.0-rc.441",
     "@trpc/server": "11.0.0-rc.441",
-    "expo": "^51.0.20",
+    "expo": "^51.0.21",
     "expo-constants": "^16.0.2",
     "expo-linking": "^6.3.1",
     "expo-router": "^3.5.18",
@@ -39,7 +39,7 @@
     "superjson": "^2.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.8",
+    "@babel/core": "^7.24.9",
     "@babel/preset-env": "^7.24.8",
     "@babel/runtime": "^7.24.8",
     "@init/api": "workspace:^",
