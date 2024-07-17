@@ -19,8 +19,8 @@ const Page = async ({ params }: { params: Params }) => {
     return redirect("/dashboard");
   }
 
-  const membersPromise = api.team.members({ slug: params.account });
-  const invitationsPromise = api.team.invitations({ slug: params.account });
+  await api.team.members.prefetch({ slug: params.account });
+  await api.team.invitations({ slug: params.account });
 
   const canManageRoles = account.permissions.includes("roles.manage");
   const canManageInvitations = account.permissions.includes("invites.manage");
@@ -50,7 +50,6 @@ const Page = async ({ params }: { params: Params }) => {
               userRoleHierarchy={currentUserRoleHierarchy}
               currentUserId={user.id}
               currentAccountId={account.id}
-              membersPromise={membersPromise}
               isPrimaryOwner={isPrimaryOwner}
               canManageRoles={canManageRoles}
             />
@@ -75,7 +74,6 @@ const Page = async ({ params }: { params: Params }) => {
                 canRemoveInvitation: canManageRoles,
                 currentUserRoleHierarchy,
               }}
-              invitationsPromise={invitationsPromise}
             />
           </div>
         </div>
