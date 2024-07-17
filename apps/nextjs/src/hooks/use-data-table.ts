@@ -19,7 +19,7 @@ import type {
   VisibilityState,
 } from "@tanstack/react-table";
 
-interface UseDataTableProps<TData, TValue> {
+type UseDataTableProps<TData, TValue> = {
   /**
    * The data for the table.
    * @default []
@@ -55,7 +55,7 @@ interface UseDataTableProps<TData, TValue> {
    * @example "createdAt.desc"
    */
   defaultSort?: `${Extract<keyof TData, string | number>}.${"asc" | "desc"}`;
-}
+};
 
 const schema = z.object({
   page: z.coerce.number().default(1),
@@ -63,13 +63,13 @@ const schema = z.object({
   sort: z.string().optional(),
 });
 
-export function useDataTable<TData, TValue>({
+export const useDataTable = <TData, TValue>({
   data,
   columns,
   pageCount,
   defaultPerPage = 10,
   defaultSort,
-}: UseDataTableProps<TData, TValue>) {
+}: UseDataTableProps<TData, TValue>) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -84,7 +84,7 @@ export function useDataTable<TData, TValue>({
   // Create query string
   const createQueryString = React.useCallback(
     (params: Record<string, string | number | null>) => {
-      const newSearchParams = new URLSearchParams(searchParams?.toString());
+      const newSearchParams = new URLSearchParams(searchParams.toString());
 
       for (const [key, value] of Object.entries(params)) {
         if (value === null) {
@@ -178,4 +178,4 @@ export function useDataTable<TData, TValue>({
   });
 
   return { table };
-}
+};
