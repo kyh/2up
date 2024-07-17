@@ -22,13 +22,16 @@ import { CheckCircleIcon, PlusIcon, UserIcon } from "lucide-react";
 import { NavLink } from "@/components/nav";
 import { api } from "@/trpc/server";
 import { CreateTeamAccountDialog } from "./accounts/create-team-account-dialog";
+import { NotificationsPopover } from "./notifications/notifications-popover";
 
 const PERSONAL_ACCOUNT_SLUG = "personal";
 
 export const Sidebar = async ({
   slug = PERSONAL_ACCOUNT_SLUG,
+  accountId,
   pageLinks,
 }: {
+  accountId?: string;
   slug?: string;
   pageLinks: readonly {
     readonly id: string;
@@ -66,6 +69,12 @@ export const Sidebar = async ({
   return (
     <nav className="sticky top-0 flex h-dvh w-[80px] flex-col items-center overflow-y-auto overflow-x-hidden px-4 py-[26px]">
       <div className="flex flex-col">
+        <div className="flex justify-center pb-4">
+          <NotificationsPopover
+            accountIds={accountId ? [user.id, accountId] : [user.id]}
+            realtime={true}
+          />
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="flex cursor-pointer justify-center pb-2">

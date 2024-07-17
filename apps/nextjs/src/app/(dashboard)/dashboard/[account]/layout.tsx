@@ -25,7 +25,11 @@ const Layout = async ({
 
   return (
     <div className="flex min-h-dvh">
-      <Sidebar slug={account.slug} pageLinks={pageLinks} />
+      <Sidebar
+        slug={account.slug}
+        accountId={account.id}
+        pageLinks={pageLinks}
+      />
       {children}
     </div>
   );
