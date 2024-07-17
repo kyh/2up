@@ -27,6 +27,8 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   const router = useRouter();
   const nextPath = useSearchParams().get("next") ?? "/dashboard";
 
+  const createNotification = api.notifications.createNotification.useMutation();
+
   const signInWithOAuth = api.auth.signInWithOAuth.useMutation({
     onError: (error) => toast.error(error.message),
   });
@@ -35,7 +37,15 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
     onError: (error) => toast.error(error.message),
   });
   const signUp = api.auth.signUp.useMutation({
-    onSuccess: () => router.replace(nextPath),
+    onSuccess: ({ user }) => {
+      if (user) {
+        createNotification.mutate({
+          account_id: user.id,
+          body: "You have successfully signed up!",
+        });
+      }
+      router.replace(nextPath);
+    },
     onError: (error) => toast.error(error.message),
   });
 
