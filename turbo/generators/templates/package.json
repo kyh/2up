@@ -16,7 +16,7 @@
     "@kyh/eslint-config": "^0.1.6",
     "@kyh/prettier-config": "^0.1.6",
     "@kyh/tsconfig": "^0.1.6",
-    "eslint": "^8.57.0",
+    "eslint": "catalog:",
     "prettier": "^3.2.5",
     "typescript": "^5.3.3"
   },

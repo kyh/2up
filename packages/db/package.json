@@ -24,23 +24,22 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "ts-case-convert": "^2.0.7",
     "@supabase/ssr": "^0.4.0",
-    "@supabase/supabase-js": "^2.44.3",
-    "next": "^14.2.4",
+    "@supabase/supabase-js": "^2.44.4",
+    "next": "^14.2.5",
     "react": "^18.3.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@kyh/eslint-config": "^0.1.9",
-    "@kyh/prettier-config": "^0.1.9",
-    "@kyh/tsconfig": "^0.1.9",
-    "@types/react": "^18.3.3",
     "csv-parse": "^5.5.6",
-    "eslint": "^8.57.0",
-    "prettier": "^3.3.2",
-    "supabase": "^1.178.2",
-    "typescript": "^5.5.3"
+    "@kyh/eslint-config": "catalog:",
+    "@kyh/prettier-config": "catalog:",
+    "@kyh/tsconfig": "catalog:",
+    "@types/react": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "supabase": "^1.183.5",
+    "typescript": "catalog:"
   },
   "eslintConfig": {
     "root": true,

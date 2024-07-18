@@ -4,7 +4,7 @@ import { ThemeProvider } from "@2up/ui/theme";
 import { Toaster } from "@2up/ui/toast";
 import { cn } from "@2up/ui/utils";
 
-import { siteConfig } from "@/lib/config";
+import { siteConfig } from "@/config/site.config";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import "./globals.css";

@@ -1,9 +1,8 @@
 import type * as Party from "partykit/server";
-import { SceneSchema } from "@2up/api/scene/scene-schema";
 import { addPlayer, createGame, removePlayer, updateGame } from "@2up/game";
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
-import { objectToCamel } from "ts-case-convert";
+import { createClient } from "@supabase/supabase-js";
 
+import type { SceneSchema } from "@2up/api/scene/scene-schema";
 import type { Database } from "@2up/db/database.types";
 import type {
   GameState,
@@ -11,6 +10,7 @@ import type {
   PlayerAction,
   ServerAction,
 } from "@2up/game";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export default class Server implements Party.Server {
   private supabase: SupabaseClient<Database>;
@@ -45,7 +45,7 @@ export default class Server implements Party.Server {
       throw response.error;
     }
 
-    const scenes = objectToCamel(response.data.game_scenes as SceneSchema[]);
+    const scenes = response.data.game_scenes as SceneSchema[];
 
     this.gameId = response.data.id;
     this.gameState = createGame(scenes);

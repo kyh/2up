@@ -4,7 +4,6 @@ import { finished } from "stream/promises";
 import { fileURLToPath } from "url";
 import { createClient } from "@supabase/supabase-js";
 import { parse } from "csv-parse";
-import { objectToSnake } from "ts-case-convert";
 
 import type { Database } from "../src/database.types";
 import { getServiceRoleKey } from "../src/get-service-role-key";
@@ -164,7 +163,7 @@ const processCsv = async (input: string) => {
     return record;
   });
 
-  return objectToSnake(parsed);
+  return parsed;
 };
 
 main().catch((e) => {
