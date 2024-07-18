@@ -1,35 +1,20 @@
 import React from "react";
 import { cva, VariantProps } from "class-variance-authority";
 
+import { cn } from "@/lib/utils";
 import CornerShapes from "./Corners";
 
-const containerWrapperStyles = cva("", {
-  variants: {
-    variant: {
-      normal: "border-dark bg-light text-dark",
-      dark: "border-light bg-dark text-light",
-    },
-    rounded: {
-      true: "p-1",
-      false: "",
-    },
-  },
-  defaultVariants: {
-    variant: "normal",
-    rounded: false,
-  },
-});
-
 const containerStyles = cva(
-  "relative m-1 box-border flex  flex-wrap gap-5 p-6",
+  "relative m-1 box-border flex flex-wrap gap-5 p-6",
   {
     variants: {
       variant: {
-        normal: "border-dark bg-light text-dark",
-        dark: "border-light bg-dark text-light",
+        normal: "bg-light text-dark",
+        dark: "bg-dark text-light",
+        transparent: "bg-transparent p-0 text-dark",
       },
       rounded: {
-        true: "",
+        true: "rounded-2xl",
         false: "border-4",
       },
       heading: {
@@ -40,9 +25,27 @@ const containerStyles = cva(
         true: "text-center",
         false: "text-left",
       },
+      bordered: {
+        true: "",
+        false: "border-none",
+      },
     },
+    compoundVariants: [
+      {
+        variant: "normal",
+        bordered: true,
+        className: "border-dark",
+      },
+      {
+        variant: "dark",
+        bordered: true,
+        className: "border-light",
+      },
+    ],
     defaultVariants: {
       variant: "normal",
+      bordered: false,
+      rounded: false,
     },
   },
 );
@@ -52,6 +55,7 @@ const containerHeadingStyles = cva("absolute top-[-6px] px-2", {
     variant: {
       normal: "bg-light text-dark",
       dark: "bg-dark text-light",
+      transparent: "",
     },
     centered: {
       true: "left-1/2 -translate-x-1/2",
@@ -75,11 +79,12 @@ export const Container = ({
   variant,
   heading,
   children,
-  centered = false,
+  className,
+  bordered = false,
   rounded = false,
+  centered = false,
   ...props
 }: ContainerProps) => {
-  const containerWrapperClasses = containerWrapperStyles({ variant, rounded });
   const containerClasses = containerStyles({ variant, rounded, centered });
   const containerHeadingClasses = containerHeadingStyles({
     variant,
@@ -87,17 +92,18 @@ export const Container = ({
   });
 
   return (
-    <div className={containerWrapperClasses}>
-      <div {...props} className={containerClasses}>
-        {rounded &&
-          (variant === "dark" ? (
+    <div {...props} className={cn(containerClasses, className)}>
+      {bordered && rounded && (
+        <>
+          {variant === "dark" ? (
             <CornerShapes type="dark" />
           ) : (
             <CornerShapes type="normal" />
-          ))}
-        {heading && <span className={containerHeadingClasses}>{heading}</span>}
-        {children}
-      </div>
+          )}
+        </>
+      )}
+      {heading && <span className={containerHeadingClasses}>{heading}</span>}
+      {children}
     </div>
   );
 };
