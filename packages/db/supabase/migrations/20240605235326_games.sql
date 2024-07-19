@@ -62,19 +62,19 @@ create table if not exists
     primary key (id)
   );
 
-create or replace function updateGameState(
-    gameId uuid,
-    gameState JSONB
+create or replace function public."updateGameState"(
+    "gameId" uuid,
+    "gameState" JSONB
 ) returns void as $$
 begin
     update public."Games"
     set history = 
         case 
-            when jsonb_typeof(history) = 'array' then history || gameState
-            else jsonb_build_array(history) || gameState
+            when jsonb_typeof(history) = 'array' then history || "gameState"
+            else jsonb_build_array(history) || "gameState"
         end,
-        isStarted = (gameState->>'currentView' <> 'lobby'),
-        isFinished = (gameState->>'currentView' = 'leaderboard')
+        isStarted = ("gameState"->>'currentView' <> 'lobby'),
+        isFinished = ("gameState"->>'currentView' = 'leaderboard')
     where id = gameId;
 end;
 $$ language plpgsql;

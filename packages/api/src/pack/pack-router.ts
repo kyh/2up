@@ -6,7 +6,7 @@ export const packRouter = createTRPCRouter({
     .input(discoverInput)
     .query(async ({ ctx, input }) => {
       const sections = getDiscoverSection(input?.ref);
-      const response = await ctx.adminSupabase.from("packs").select();
+      const response = await ctx.adminSupabase.from("Packs").select();
 
       if (response.error) {
         throw response.error;
@@ -18,7 +18,7 @@ export const packRouter = createTRPCRouter({
             if (!grouped[tag]) {
               grouped[tag] = [];
             }
-            grouped[tag]?.push(item);
+            grouped[tag].push(item);
           });
           return grouped;
         },

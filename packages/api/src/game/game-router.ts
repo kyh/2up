@@ -7,7 +7,7 @@ import { checkInput, createInput } from "./game-schema";
 export const gameRouter = createTRPCRouter({
   check: publicProcedure.input(checkInput).mutation(async ({ ctx, input }) => {
     const response = await ctx.adminSupabase
-      .from("games")
+      .from("Games")
       .select()
       .eq("code", input.gameCode)
       .neq("is_finished", true)
@@ -17,14 +17,14 @@ export const gameRouter = createTRPCRouter({
       throw response.error;
     }
 
-    return objectToCamel(response.data);
+    return response.data;
   }),
 
   create: publicProcedure
     .input(createInput)
     .mutation(async ({ ctx, input }) => {
       const packsResponse = await ctx.adminSupabase
-        .from("packs")
+        .from("Packs")
         .select(
           `
         id,
@@ -32,18 +32,18 @@ export const gameRouter = createTRPCRouter({
         description,
         image,
         tags,
-        game_length,
-        is_random,
-        is_public,
-        is_published,
-        scenes (
+        gameLength,
+        isRandom,
+        isPublic,
+        isPublished,
+        Scenes (
           id,
           question,
-          question_description,
-          question_type,
+          questionDescription,
+          questionType,
           answer,
-          answer_description,
-          answer_type
+          answerDescription,
+          answerType
         )
       `,
         )
@@ -55,13 +55,13 @@ export const gameRouter = createTRPCRouter({
       }
 
       const gamesResponse = await ctx.adminSupabase
-        .from("games")
+        .from("Games")
         .insert({
           code: generateGameCode(),
           history: [],
-          game_scenes: sampleSize(
-            packsResponse.data.scenes,
-            packsResponse.data.game_length,
+          gameScenes: sampleSize(
+            packsResponse.data.Scenes,
+            packsResponse.data.gameLength,
           ),
           pack_id: input.packId,
         })
@@ -72,6 +72,6 @@ export const gameRouter = createTRPCRouter({
         throw gamesResponse.error;
       }
 
-      return objectToCamel(gamesResponse.data);
+      return gamesResponse.data;
     }),
 });

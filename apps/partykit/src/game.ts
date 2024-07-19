@@ -36,7 +36,7 @@ export default class Server implements Party.Server {
 
   async onStart() {
     const response = await this.supabase
-      .from("games")
+      .from("Games")
       .select()
       .eq("code", this.party.id)
       .single();
@@ -45,7 +45,7 @@ export default class Server implements Party.Server {
       throw response.error;
     }
 
-    const scenes = response.data.game_scenes as SceneSchema[];
+    const scenes = response.data.gameScenes as SceneSchema[];
 
     this.gameId = response.data.id;
     this.gameState = createGame(scenes);
@@ -90,7 +90,7 @@ export default class Server implements Party.Server {
     this.gameState = updateGame(action, this.gameState);
     this.party.broadcast(JSON.stringify(this.gameState));
 
-    await this.supabase.rpc("update_game_state", {
+    await this.supabase.rpc("updateGameState", {
       game_id: this.gameId,
       game_state: this.gameState,
     });

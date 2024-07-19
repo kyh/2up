@@ -1108,10 +1108,10 @@ export type Database = {
         }
         Returns: undefined
       }
-      updategamestate: {
+      updateGameState: {
         Args: {
-          gameid: string
-          gamestate: Json
+          gameId: string
+          gameState: Json
         }
         Returns: undefined
       }
