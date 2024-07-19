@@ -248,64 +248,64 @@ export type Database = {
         }
         Relationships: []
       }
-      games: {
+      Games: {
         Row: {
           code: string | null
-          created_at: string | null
-          created_by: string | null
-          game_scenes: Json | null
+          createdAt: string | null
+          createdBy: string | null
+          gameScenes: Json | null
           history: Json | null
           id: string
-          is_finished: boolean
-          is_started: boolean
-          pack_id: string | null
-          updated_at: string | null
-          updated_by: string | null
+          isFinished: boolean
+          isStarted: boolean
+          packId: string | null
+          updatedAt: string | null
+          updatedBy: string | null
         }
         Insert: {
           code?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          game_scenes?: Json | null
+          createdAt?: string | null
+          createdBy?: string | null
+          gameScenes?: Json | null
           history?: Json | null
           id?: string
-          is_finished?: boolean
-          is_started?: boolean
-          pack_id?: string | null
-          updated_at?: string | null
-          updated_by?: string | null
+          isFinished?: boolean
+          isStarted?: boolean
+          packId?: string | null
+          updatedAt?: string | null
+          updatedBy?: string | null
         }
         Update: {
           code?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          game_scenes?: Json | null
+          createdAt?: string | null
+          createdBy?: string | null
+          gameScenes?: Json | null
           history?: Json | null
           id?: string
-          is_finished?: boolean
-          is_started?: boolean
-          pack_id?: string | null
-          updated_at?: string | null
-          updated_by?: string | null
+          isFinished?: boolean
+          isStarted?: boolean
+          packId?: string | null
+          updatedAt?: string | null
+          updatedBy?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "games_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "Games_createdBy_fkey"
+            columns: ["createdBy"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "games_pack_id_fkey"
-            columns: ["pack_id"]
+            foreignKeyName: "Games_packId_fkey"
+            columns: ["packId"]
             isOneToOne: false
-            referencedRelation: "packs"
+            referencedRelation: "Packs"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "games_updated_by_fkey"
-            columns: ["updated_by"]
+            foreignKeyName: "Games_updatedBy_fkey"
+            columns: ["updatedBy"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -548,63 +548,63 @@ export type Database = {
           },
         ]
       }
-      packs: {
+      Packs: {
         Row: {
-          created_at: string | null
-          created_by: string | null
+          createdAt: string | null
+          createdBy: string | null
           description: string | null
-          game_length: number
+          gameLength: number
           id: string
           image: string | null
-          is_public: boolean
-          is_published: boolean
-          is_random: boolean
+          isPublic: boolean
+          isPublished: boolean
+          isRandom: boolean
           name: string | null
           tags: string[] | null
-          updated_at: string | null
-          updated_by: string | null
+          updatedAt: string | null
+          updatedBy: string | null
         }
         Insert: {
-          created_at?: string | null
-          created_by?: string | null
+          createdAt?: string | null
+          createdBy?: string | null
           description?: string | null
-          game_length?: number
+          gameLength?: number
           id?: string
           image?: string | null
-          is_public?: boolean
-          is_published?: boolean
-          is_random?: boolean
+          isPublic?: boolean
+          isPublished?: boolean
+          isRandom?: boolean
           name?: string | null
           tags?: string[] | null
-          updated_at?: string | null
-          updated_by?: string | null
+          updatedAt?: string | null
+          updatedBy?: string | null
         }
         Update: {
-          created_at?: string | null
-          created_by?: string | null
+          createdAt?: string | null
+          createdBy?: string | null
           description?: string | null
-          game_length?: number
+          gameLength?: number
           id?: string
           image?: string | null
-          is_public?: boolean
-          is_published?: boolean
-          is_random?: boolean
+          isPublic?: boolean
+          isPublished?: boolean
+          isRandom?: boolean
           name?: string | null
           tags?: string[] | null
-          updated_at?: string | null
-          updated_by?: string | null
+          updatedAt?: string | null
+          updatedBy?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "packs_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "Packs_createdBy_fkey"
+            columns: ["createdBy"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "packs_updated_by_fkey"
-            columns: ["updated_by"]
+            foreignKeyName: "Packs_updatedBy_fkey"
+            columns: ["updatedBy"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -652,67 +652,67 @@ export type Database = {
         }
         Relationships: []
       }
-      scenes: {
+      Scenes: {
         Row: {
           answer: Json | null
-          answer_description: string | null
-          answer_type: Database["public"]["Enums"]["answer_type"]
-          created_at: string | null
-          created_by: string | null
+          answerDescription: string | null
+          answerType: Database["public"]["Enums"]["AnswerType"]
+          createdAt: string | null
+          createdBy: string | null
           id: string
-          pack_id: string | null
+          packId: string | null
           question: string | null
-          question_description: string | null
-          question_type: Database["public"]["Enums"]["question_type"]
-          updated_at: string | null
-          updated_by: string | null
+          questionDescription: string | null
+          questionType: Database["public"]["Enums"]["QuestionType"]
+          updatedAt: string | null
+          updatedBy: string | null
         }
         Insert: {
           answer?: Json | null
-          answer_description?: string | null
-          answer_type?: Database["public"]["Enums"]["answer_type"]
-          created_at?: string | null
-          created_by?: string | null
+          answerDescription?: string | null
+          answerType?: Database["public"]["Enums"]["AnswerType"]
+          createdAt?: string | null
+          createdBy?: string | null
           id?: string
-          pack_id?: string | null
+          packId?: string | null
           question?: string | null
-          question_description?: string | null
-          question_type?: Database["public"]["Enums"]["question_type"]
-          updated_at?: string | null
-          updated_by?: string | null
+          questionDescription?: string | null
+          questionType?: Database["public"]["Enums"]["QuestionType"]
+          updatedAt?: string | null
+          updatedBy?: string | null
         }
         Update: {
           answer?: Json | null
-          answer_description?: string | null
-          answer_type?: Database["public"]["Enums"]["answer_type"]
-          created_at?: string | null
-          created_by?: string | null
+          answerDescription?: string | null
+          answerType?: Database["public"]["Enums"]["AnswerType"]
+          createdAt?: string | null
+          createdBy?: string | null
           id?: string
-          pack_id?: string | null
+          packId?: string | null
           question?: string | null
-          question_description?: string | null
-          question_type?: Database["public"]["Enums"]["question_type"]
-          updated_at?: string | null
-          updated_by?: string | null
+          questionDescription?: string | null
+          questionType?: Database["public"]["Enums"]["QuestionType"]
+          updatedAt?: string | null
+          updatedBy?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "scenes_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "Scenes_createdBy_fkey"
+            columns: ["createdBy"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "scenes_pack_id_fkey"
-            columns: ["pack_id"]
+            foreignKeyName: "Scenes_packId_fkey"
+            columns: ["packId"]
             isOneToOne: false
-            referencedRelation: "packs"
+            referencedRelation: "Packs"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "scenes_updated_by_fkey"
-            columns: ["updated_by"]
+            foreignKeyName: "Scenes_updatedBy_fkey"
+            columns: ["updatedBy"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -1108,10 +1108,10 @@ export type Database = {
         }
         Returns: undefined
       }
-      update_game_state: {
+      updategamestate: {
         Args: {
-          game_id: string
-          game_state: Json
+          gameid: string
+          gamestate: Json
         }
         Returns: undefined
       }
@@ -1173,7 +1173,7 @@ export type Database = {
       }
     }
     Enums: {
-      answer_type: "text" | "multiText"
+      AnswerType: "text" | "multiText"
       app_permissions:
         | "roles.manage"
         | "billing.manage"
@@ -1184,7 +1184,7 @@ export type Database = {
       notification_channel: "in_app" | "email"
       notification_type: "info" | "warning" | "error"
       payment_status: "pending" | "succeeded" | "failed"
-      question_type: "text" | "image" | "video" | "audio" | "code"
+      QuestionType: "text" | "image" | "video" | "audio" | "code"
       subscription_item_type: "flat" | "per_seat" | "metered"
       subscription_status:
         | "active"

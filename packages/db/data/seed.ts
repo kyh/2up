@@ -71,7 +71,7 @@ async function main() {
   // create packs
   console.log("Creating packs...");
   for (const pack of packs) {
-    const { data } = await client.from("packs").select().eq("name", pack.name);
+    const { data } = await client.from("Packs").select().eq("name", pack.name);
 
     if (data && data.length) {
       console.log(`"${pack.name}" pack already exists, skipping...`);
@@ -81,7 +81,7 @@ async function main() {
       const scenes = await processCsv(getDataPath(pack.sceneData));
 
       const { data: createdPack, error: createPackError } = await client
-        .from("packs")
+        .from("Packs")
         .insert({
           name: pack.name,
           description: pack.description,
@@ -97,11 +97,11 @@ async function main() {
       }
 
       const { data: createdScenes, error: createScenesError } = await client
-        .from("scenes")
+        .from("Scenes")
         .insert(
           scenes.map((scene) => ({
             ...scene,
-            pack_id: createdPackId,
+            packId: createdPackId,
           })),
         )
         .select();
@@ -124,10 +124,10 @@ const getDataPath = (file: string) => {
 type SceneRecord = {
   externalId: string;
   questionDescription: string;
-  questionType: Database["public"]["Enums"]["question_type"];
+  questionType: Database["public"]["Enums"]["QuestionType"];
   question: string;
   answer: { isCorrect: boolean; content: string }[];
-  answerType: Database["public"]["Enums"]["answer_type"];
+  answerType: Database["public"]["Enums"]["AnswerType"];
   answerDescription: string;
 };
 
