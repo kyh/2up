@@ -41,7 +41,7 @@ export default class Server implements Party.Server {
       .eq("code", this.party.id)
       .single();
 
-    if (response.error || !response.data) {
+    if (response.error) {
       throw response.error;
     }
 
@@ -91,8 +91,8 @@ export default class Server implements Party.Server {
     this.party.broadcast(JSON.stringify(this.gameState));
 
     await this.supabase.rpc("updateGameState", {
-      game_id: this.gameId,
-      game_state: this.gameState,
+      gameId: this.gameId,
+      gameState: this.gameState,
     });
   }
 }

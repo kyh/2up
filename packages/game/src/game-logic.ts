@@ -1,5 +1,4 @@
-import { SceneSchema } from "@2up/api/scene/scene-schema";
-
+import type { SceneSchema } from "@2up/api/scene/scene-schema";
 import { calculateScore, compareAnswer } from "./game-utils";
 
 export type GameView =

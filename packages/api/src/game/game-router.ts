@@ -63,7 +63,7 @@ export const gameRouter = createTRPCRouter({
             packsResponse.data.Scenes,
             packsResponse.data.gameLength,
           ),
-          pack_id: input.packId,
+          packId: input.packId,
         })
         .select()
         .single();
