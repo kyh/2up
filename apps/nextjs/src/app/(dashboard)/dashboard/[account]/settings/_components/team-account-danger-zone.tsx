@@ -39,7 +39,7 @@ export const TeamAccountDangerZone = ({
 
   primaryOwnerUserId: string;
 }>) => {
-  const { data: user } = api.account.me.useQuery();
+  const [user] = api.account.me.useSuspenseQuery();
 
   if (!user) {
     return (

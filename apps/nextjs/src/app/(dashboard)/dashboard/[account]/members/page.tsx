@@ -20,7 +20,7 @@ const Page = async ({ params }: { params: Params }) => {
   }
 
   await api.team.members.prefetch({ slug: params.account });
-  await api.team.invitations({ slug: params.account });
+  await api.team.invitations.prefetch({ slug: params.account });
 
   const canManageRoles = account.permissions.includes("roles.manage");
   const canManageInvitations = account.permissions.includes("invites.manage");
