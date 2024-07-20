@@ -16,13 +16,13 @@ import { BadgeX, Ban, ShieldPlus, VenetianMask } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/server";
-import { AdminBanUserDialog } from "./[id]/admin-ban-user-dialog";
-import { AdminDeleteAccountDialog } from "./[id]/admin-delete-account-dialog";
-import { AdminDeleteUserDialog } from "./[id]/admin-delete-user-dialog";
-import { AdminImpersonateUserDialog } from "./[id]/admin-impersonate-user-dialog";
-import { AdminMembersTable } from "./[id]/admin-members-table";
-import { AdminMembershipsTable } from "./[id]/admin-memberships-table";
-import { AdminReactivateUserDialog } from "./[id]/admin-reactivate-user-dialog";
+import { AdminBanUserDialog } from "./admin-ban-user-dialog";
+import { AdminDeleteAccountDialog } from "./admin-delete-account-dialog";
+import { AdminDeleteUserDialog } from "./admin-delete-user-dialog";
+import { AdminImpersonateUserDialog } from "./admin-impersonate-user-dialog";
+import { AdminMembersTable } from "./admin-members-table";
+import { AdminMembershipsTable } from "./admin-memberships-table";
+import { AdminReactivateUserDialog } from "./admin-reactivate-user-dialog";
 
 type Account = RouterOutputs["admin"]["getAccount"];
 
