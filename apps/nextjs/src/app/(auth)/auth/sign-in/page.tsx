@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 
 import { AuthForm } from "@/app/(auth)/auth-form";
@@ -13,7 +14,9 @@ const SignInPage = () => (
     <div className="flex flex-col space-y-2 text-center">
       <h1 className="text-lg font-light">Welcome back</h1>
     </div>
-    <AuthForm type="signin" />
+    <Suspense>
+      <AuthForm type="signin" />
+    </Suspense>
     <p className="px-8 text-center text-sm text-muted-foreground">
       Don't have an account?{" "}
       <Link href="/auth/sign-up" className="underline">

@@ -1,7 +1,7 @@
 import type { GetAccountsInput } from "@init/api/admin/admin-schema";
 import { PageHeader } from "@/components/header";
 import { api } from "@/trpc/server";
-import { AdminAccountsTable } from "./admin-accounts-table";
+import { AdminAccountsTable } from "./_components/admin-accounts-table";
 
 type SearchParams = {} & GetAccountsInput;
 
