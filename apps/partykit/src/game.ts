@@ -17,7 +17,7 @@ export default class Server implements Party.Server {
   private gameState: GameState;
   private gameId: string;
 
-  constructor(readonly party: Party.Party) {
+  constructor(readonly party: Party.Room) {
     console.log("Room created:", party.id);
     this.gameId = "";
     this.gameState = createGame();
