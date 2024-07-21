@@ -49,6 +49,9 @@ export const Sidebar = async ({
   const userImage = user.user_metadata.image ?? "";
   const userName = user.user_metadata.name ?? userEmail ?? "No name";
 
+  const accountIds = accountId ? [user.id, accountId] : [user.id];
+  api.notifications.fetchNotifications.prefetch({ accountIds });
+
   const signOut = async () => {
     "use server";
     await api.auth.signOut();
@@ -70,10 +73,7 @@ export const Sidebar = async ({
     <nav className="sticky top-0 flex h-dvh w-[80px] flex-col items-center overflow-y-auto overflow-x-hidden px-4 py-[26px]">
       <div className="flex flex-col">
         <div className="flex justify-center pb-4">
-          <NotificationsPopover
-            accountIds={accountId ? [user.id, accountId] : [user.id]}
-            realtime={true}
-          />
+          <NotificationsPopover accountIds={accountIds} realtime={true} />
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
