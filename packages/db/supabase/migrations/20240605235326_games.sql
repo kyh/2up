@@ -73,8 +73,8 @@ begin
             when jsonb_typeof(history) = 'array' then history || "gameState"
             else jsonb_build_array(history) || "gameState"
         end,
-        isStarted = ("gameState"->>'currentView' <> 'lobby'),
-        isFinished = ("gameState"->>'currentView' = 'leaderboard')
-    where id = gameId;
+        "isStarted" = ("gameState"->>'currentView' <> 'lobby'),
+        "isFinished" = ("gameState"->>'currentView' = 'leaderboard')
+    where id = "gameId";
 end;
 $$ language plpgsql;

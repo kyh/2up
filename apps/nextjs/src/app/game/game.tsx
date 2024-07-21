@@ -13,17 +13,19 @@ export const Game = ({ code }: { code: string }) => {
     return <div>Loading...</div>;
   }
 
-  console.log("gameState", gameState)
+  console.log("gameState", gameState);
 
   const currentScene = gameState.scenes[gameState.currentSceneIndex];
 
-  switch (gameState?.currentView) {
+  switch (gameState.currentView) {
     case "lobby":
       return (
         <div className="space-y-5">
           <h1>Lobby</h1>
           <pre>{JSON.stringify(gameState.players, null, 2)}</pre>
-          <button onClick={() => dispatch({ type: "start" })}>Start</button>
+          <button onClick={() => dispatch({ type: "start" })} autoFocus>
+            Start
+          </button>
         </div>
       );
     case "question":
@@ -38,7 +40,7 @@ export const Game = ({ code }: { code: string }) => {
               dispatch({ type: "submit", payload: formData.get("answer") });
             }}
           >
-            <input id="answer" name="answer" type="text" />
+            <input id="answer" name="answer" type="text" autoFocus />
             <button type="submit">Submit</button>
           </form>
         </div>
@@ -48,7 +50,9 @@ export const Game = ({ code }: { code: string }) => {
         <div className="space-y-5">
           <h1>Results</h1>
           <pre>{JSON.stringify(gameState.playerSubmissions, null, 2)}</pre>
-          <button onClick={() => dispatch({ type: "next" })}>Next</button>
+          <button onClick={() => dispatch({ type: "next" })} autoFocus>
+            Next
+          </button>
         </div>
       );
     case "scoreboard":
@@ -56,7 +60,9 @@ export const Game = ({ code }: { code: string }) => {
         <div className="space-y-5">
           <h1>Scoreboard</h1>
           <pre>{JSON.stringify(gameState.players, null, 2)}</pre>
-          <button onClick={() => dispatch({ type: "next" })}>Next</button>
+          <button onClick={() => dispatch({ type: "next" })} autoFocus>
+            Next
+          </button>
         </div>
       );
     case "leaderboard":
