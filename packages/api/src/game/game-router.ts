@@ -10,7 +10,7 @@ export const gameRouter = createTRPCRouter({
       .from("Games")
       .select()
       .eq("code", input.gameCode)
-      .neq("is_finished", true)
+      .neq("isFinished", true)
       .single();
 
     if (response.error) {
