@@ -15,8 +15,8 @@ export function useFetchNotifications({
   accountIds: string[];
   realtime: boolean;
 }) {
-  const { data: initialNotifications } =
-    api.notifications.fetchNotifications.useQuery({
+  const [initialNotifications] =
+    api.notifications.fetchNotifications.useSuspenseQuery({
       accountIds,
     });
 
