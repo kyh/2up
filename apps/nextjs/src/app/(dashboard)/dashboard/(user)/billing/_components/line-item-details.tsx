@@ -31,20 +31,6 @@ export const LineItemDetails = (
         );
       }
 
-      const SetupFee = () => (
-        <If condition={item.setupFee}>
-          <div className={className}>
-            <span className="flex items-center space-x-1">
-              <PlusIcon className="w-3" />
-
-              <span>
-                {`plus a ${formatCurrency(props.currency.toLowerCase(), item.setupFee as number)} setup fee`}
-              </span>
-            </span>
-          </div>
-        </If>
-      );
-
       const FlatFee = () => (
         <div className="flex flex-col">
           <div className={cn(className, "space-x-1")}>
@@ -69,8 +55,6 @@ export const LineItemDetails = (
               {formatCurrency(props.currency.toLowerCase(), item.cost)}
             </span>
           </div>
-
-          <SetupFee />
 
           <If condition={item.tiers?.length}>
             <span className="flex items-center space-x-1.5">
@@ -102,8 +86,6 @@ export const LineItemDetails = (
             </If>
           </div>
 
-          <SetupFee />
-
           <If condition={item.tiers?.length}>
             <Tiers item={item} currency={props.currency} />
           </If>
@@ -130,8 +112,6 @@ export const LineItemDetails = (
               </span>
             </If>
           </div>
-
-          <SetupFee />
 
           {/* If there are tiers, we render them as a list */}
           <If condition={item.tiers?.length}>

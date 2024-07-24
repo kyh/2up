@@ -6,10 +6,10 @@ export const roleRouter = createTRPCRouter({
     .input(retrieveInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("roles")
+        .from("Roles")
         .select("name")
-        .gte("hierarchy_level", input.maxRoleHierarchy)
-        .order("hierarchy_level", { ascending: true });
+        .gte("hierarchyLevel", input.maxRoleHierarchy)
+        .order("hierarchyLevel", { ascending: true });
 
       if (response.error) {
         throw response.error;

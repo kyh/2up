@@ -40,7 +40,7 @@ export const AdminAccountsTable = (
     columns,
     pageCount: data.pageCount,
     // optional props
-    defaultSort: "created_at.desc",
+    defaultSort: "createdAt.desc",
   });
 
   return (

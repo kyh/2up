@@ -55,19 +55,19 @@ export const getColumns = (permissions: {
   {
     header: "Invited at",
     cell: ({ row }) => {
-      return new Date(row.original.created_at).toLocaleDateString();
+      return new Date(row.original.createdAt).toLocaleDateString();
     },
   },
   {
     header: "Expires at",
     cell: ({ row }) => {
-      return new Date(row.original.expires_at).toLocaleDateString();
+      return new Date(row.original.expiresAt).toLocaleDateString();
     },
   },
   {
     header: "Status",
     cell: ({ row }) => {
-      const isExpired = getIsInviteExpired(row.original.expires_at);
+      const isExpired = getIsInviteExpired(row.original.expiresAt);
 
       if (isExpired) {
         return <Badge variant="warning">Expired</Badge>;
@@ -123,7 +123,7 @@ const ActionsDropdown = ({
               Update Invitation
             </DropdownMenuItem>
 
-            <If condition={getIsInviteExpired(invitation.expires_at)}>
+            <If condition={getIsInviteExpired(invitation.expiresAt)}>
               <DropdownMenuItem onClick={() => setIsRenewingInvite(true)}>
                 Renew Invitation
               </DropdownMenuItem>

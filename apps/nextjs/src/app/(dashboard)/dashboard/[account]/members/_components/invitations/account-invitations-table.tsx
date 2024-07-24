@@ -16,7 +16,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 import { getColumns } from "./account-invitations-table-columns";
 

@@ -1,18 +1,15 @@
 import { getProductPlanPairByVariantId } from "@init/api/billing/billing-util";
 import { CircleCheckIcon } from "lucide-react";
 
+import type { RouterOutputs } from "@init/api";
 import type { BillingConfig } from "@init/api/billing/billing-schema";
-import type { Database } from "@init/db/database.types";
 import { CurrentPlanBadge } from "./current-plan-badge";
 import { LineItemDetails } from "./line-item-details";
 
-type Order = Database["public"]["Tables"]["orders"]["Row"];
-type LineItem = Database["public"]["Tables"]["order_items"]["Row"];
+type Order = RouterOutputs["billing"]["getOrder"];
 
 type Props = {
-  order: Order & {
-    items: LineItem[];
-  };
+  order: Order;
 
   config: BillingConfig;
 };
@@ -21,6 +18,10 @@ export const CurrentLifetimeOrderCard = ({
   order,
   config,
 }: React.PropsWithChildren<Props>) => {
+  if (!order) {
+    throw new Error("No order in subscription");
+  }
+
   const lineItems = order.items;
   const firstLineItem = lineItems[0];
 
@@ -30,7 +31,7 @@ export const CurrentLifetimeOrderCard = ({
 
   const { product, plan } = getProductPlanPairByVariantId(
     config,
-    firstLineItem.variant_id,
+    firstLineItem.variantId,
   );
 
   if (!product || !plan) {

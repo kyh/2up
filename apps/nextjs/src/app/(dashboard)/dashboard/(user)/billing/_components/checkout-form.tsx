@@ -22,11 +22,11 @@ const EmbeddedCheckout = dynamic(
   },
 );
 
-export function CheckoutForm(props: {
+export const CheckoutForm = (props: {
   userId: string;
   userEmail?: string;
   customerId: string | undefined;
-}) {
+}) => {
   const [checkoutToken, setCheckoutToken] = useState<string | undefined>(
     undefined,
   );
@@ -109,7 +109,7 @@ export function CheckoutForm(props: {
       </div>
     </div>
   );
-}
+};
 
 const getCheckoutSessionReturnUrl = () => {
   return new URL(

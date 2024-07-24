@@ -54,7 +54,7 @@ export const teamRouter = createTRPCRouter({
     .input(updateTeamAccountNameInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("accounts")
+        .from("Accounts")
         .update({
           name: input.name,
           slug: input.slug,
@@ -76,10 +76,10 @@ export const teamRouter = createTRPCRouter({
     .input(deleteTeamAccountInput)
     .mutation(async ({ ctx, input }) => {
       const accountResponse = await ctx.supabase
-        .from("accounts")
+        .from("Accounts")
         .select("id")
-        .eq("primary_owner_user_id", ctx.user.id)
-        .eq("is_personal_account", false)
+        .eq("primaryOwnerUserId", ctx.user.id)
+        .eq("isPersonalAccount", false)
         .eq("id", input.accountId);
 
       if (accountResponse.error ?? !accountResponse.data) {
@@ -87,7 +87,7 @@ export const teamRouter = createTRPCRouter({
       }
 
       const deleteResponse = await ctx.adminSupabase
-        .from("accounts")
+        .from("Accounts")
         .delete()
         .eq("id", input.accountId);
 
@@ -102,7 +102,7 @@ export const teamRouter = createTRPCRouter({
     .input(leaveTeamAccountInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase
-        .from("accounts_memberships")
+        .from("AccountsMemberships")
         .delete()
         .match({
           account_id: input.accountId,
@@ -127,7 +127,7 @@ export const teamRouter = createTRPCRouter({
         throw response.error;
       }
 
-      return response.data ?? [];
+      return response.data;
     }),
 
   invitations: protectedProcedure
@@ -141,18 +141,18 @@ export const teamRouter = createTRPCRouter({
         throw response.error;
       }
 
-      return response.data ?? [];
+      return response.data;
     }),
 
   removeMember: protectedProcedure
     .input(removeMemberInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("accounts_memberships")
+        .from("AccountsMemberships")
         .delete()
         .match({
-          account_id: input.accountId,
-          user_id: input.userId,
+          accountId: input.accountId,
+          userId: input.userId,
         });
 
       if (response.error) {
@@ -167,8 +167,8 @@ export const teamRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { data: canActionAccountMember, error: accountError } =
         await ctx.supabase.rpc("can_action_account_member", {
-          target_user_id: input.userId,
-          target_team_account_id: input.accountId,
+          targetUserId: input.userId,
+          targetTeamAccountId: input.accountId,
         });
 
       if (accountError ?? !canActionAccountMember) {
@@ -176,13 +176,13 @@ export const teamRouter = createTRPCRouter({
       }
 
       const response = await ctx.adminSupabase
-        .from("accounts_memberships")
+        .from("AccountsMemberships")
         .update({
-          account_role: input.role,
+          accountRole: input.role,
         })
         .match({
-          account_id: input.accountId,
-          user_id: input.userId,
+          accountId: input.accountId,
+          userId: input.userId,
         });
 
       if (response.error) {
@@ -198,7 +198,7 @@ export const teamRouter = createTRPCRouter({
       const { data: isOwner, error } = await ctx.supabase.rpc(
         "is_account_owner",
         {
-          account_id: input.accountId,
+          accountId: input.accountId,
         },
       );
 
@@ -211,8 +211,8 @@ export const teamRouter = createTRPCRouter({
       const response = await ctx.adminSupabase.rpc(
         "transfer_team_account_ownership",
         {
-          target_account_id: input.accountId,
-          new_owner_id: input.userId,
+          targetAccountId: input.accountId,
+          newOwnerId: input.userId,
         },
       );
 
@@ -227,7 +227,7 @@ export const teamRouter = createTRPCRouter({
     .input(sendInvitationsInput)
     .mutation(async ({ ctx, input }) => {
       const accountResponse = await ctx.supabase
-        .from("accounts")
+        .from("Accounts")
         .select("name")
         .eq("slug", input.accountSlug)
         .single();
@@ -256,7 +256,7 @@ export const teamRouter = createTRPCRouter({
     .input(updateInvitationInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("invitations")
+        .from("Invitations")
         .update({
           role: input.role,
         })
@@ -277,9 +277,9 @@ export const teamRouter = createTRPCRouter({
       const sevenDaysFromNow = formatISO(addDays(new Date(), 7));
 
       const response = await ctx.supabase
-        .from("invitations")
+        .from("Invitations")
         .update({
-          expires_at: sevenDaysFromNow,
+          expiresAt: sevenDaysFromNow,
         })
         .match({
           id: input.invitationId,
@@ -295,7 +295,7 @@ export const teamRouter = createTRPCRouter({
   deleteInvitation: protectedProcedure
     .input(deleteInvitationInput)
     .mutation(async ({ ctx, input }) => {
-      const response = await ctx.supabase.from("invitations").delete().match({
+      const response = await ctx.supabase.from("Invitations").delete().match({
         id: input.invitationId,
       });
 

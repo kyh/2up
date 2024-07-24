@@ -2,15 +2,13 @@ import { Badge } from "@init/ui/badge";
 
 import type { Database } from "@init/db/database.types";
 
-type Status =
-  | Database["public"]["Enums"]["subscription_status"]
-  | Database["public"]["Enums"]["payment_status"];
+type Status = Database["public"]["Enums"]["SubscriptionStatus"];
 
-export function CurrentPlanBadge(
+export const CurrentPlanBadge = (
   props: React.PropsWithoutRef<{
     status: Status;
   }>,
-) {
+) => {
   let variant: "success" | "warning" | "destructive";
   let text = "";
 
@@ -19,10 +17,10 @@ export function CurrentPlanBadge(
       text = "Active";
       variant = "success";
       break;
-    case "succeeded":
-      text = "Succeeded";
-      variant = "success";
-      break;
+    // case "succeeded":
+    //   text = "Succeeded";
+    //   variant = "success";
+    //   break;
     case "trialing":
       text = "Trial";
       variant = "success";
@@ -30,9 +28,9 @@ export function CurrentPlanBadge(
     case "past_due":
       text = "Past Due";
       variant = "destructive";
-    case "failed":
-      text = "Failed";
-      variant = "destructive";
+      // case "failed":
+      //   text = "Failed";
+      //   variant = "destructive";
       break;
     case "canceled":
       text = "Canceled";
@@ -46,10 +44,10 @@ export function CurrentPlanBadge(
       text = "Incomplete";
       variant = "warning";
       break;
-    case "pending":
-      text = "Pending";
-      variant = "warning";
-      break;
+    // case "pending":
+    //   text = "Pending";
+    //   variant = "warning";
+    //   break;
     case "incomplete_expired":
       text = "Expired";
       variant = "destructive";
@@ -61,4 +59,4 @@ export function CurrentPlanBadge(
   }
 
   return <Badge variant={variant}>{text}</Badge>;
-}
+};

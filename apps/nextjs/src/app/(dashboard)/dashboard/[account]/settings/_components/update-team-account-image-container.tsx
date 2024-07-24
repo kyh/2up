@@ -6,13 +6,13 @@ import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
-export function UpdateTeamAccountImage(props: {
+export const UpdateTeamAccountImage = (props: {
   account: {
     id: string;
     name: string;
     pictureUrl: string | null;
   };
-}) {
+}) => {
   const deleteProfilePhoto = api.storage.deleteProfilePhoto.useMutation();
   const uploadUserProfilePhoto =
     api.storage.uploadUserProfilePhoto.useMutation();
@@ -75,13 +75,13 @@ export function UpdateTeamAccountImage(props: {
       value={props.account.pictureUrl}
       onValueChange={onValueChange}
     >
-      <div className={"flex flex-col space-y-1"}>
-        <span className={"text-sm"}>Upload a Profile Picture</span>
+      <div className="flex flex-col space-y-1">
+        <span className="text-sm">Upload a Profile Picture</span>
 
-        <span className={"text-xs"}>
+        <span className="text-xs">
           Choose a photo to upload as your profile picture.
         </span>
       </div>
     </ImageUploader>
   );
-}
+};
