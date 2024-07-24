@@ -1,22 +1,22 @@
--- Seed the roles table with default roles 'owner' and 'member'
-insert into public.roles(
-    name,
-    hierarchy_level)
+-- Seed the Roles table with default roles 'owner' and 'member'
+insert into public."Roles"(
+    "name",
+    "hierarchyLevel")
 values (
     'owner',
     1);
 
-insert into public.roles(
-    name,
-    hierarchy_level)
+insert into public."Roles"(
+    "name",
+    "hierarchyLevel")
 values (
     'member',
     2);
 
--- We seed the role_permissions table with the default roles and permissions
-insert into public.role_permissions(
-  role,
-  permission)
+-- We seed the RolePermissions table with the default roles and permissions
+insert into public."RolePermissions"(
+  "role",
+  "permission")
 values (
   'owner',
   'roles.manage'),

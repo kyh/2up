@@ -12,12 +12,12 @@ export const taskRouter = createTRPCRouter({
   create: protectedProcedure
     .input(createInput)
     .mutation(async ({ ctx, input }) => {
-      const response = await ctx.supabase.from("tasks").insert({
+      const response = await ctx.supabase.from("Tasks").insert({
         title: input.title,
         label: input.label,
         priority: input.priority,
         status: input.status,
-        account_id: input.accountId,
+        accountId: input.accountId,
       });
 
       if (response.error) {
@@ -35,11 +35,11 @@ export const taskRouter = createTRPCRouter({
       const offset = (page - 1) * perPage;
 
       const response = await ctx.supabase
-        .from("tasks")
+        .from("Tasks")
         .select("*", { count: "exact" })
         .limit(perPage)
         .range(offset, offset + perPage - 1)
-        .eq("account_id", input.accountId);
+        .eq("accountId", input.accountId);
 
       if (response.error) {
         throw response.error;
@@ -54,7 +54,7 @@ export const taskRouter = createTRPCRouter({
     .input(updateInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("tasks")
+        .from("Tasks")
         .update({
           title: input.title,
           label: input.label,
@@ -74,7 +74,7 @@ export const taskRouter = createTRPCRouter({
     .input(deleteInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("tasks")
+        .from("Tasks")
         .delete()
         .in("id", input.ids);
 

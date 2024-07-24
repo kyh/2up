@@ -41,14 +41,14 @@ export const getColumns = (
     cell: ({ row }) => {
       const member = row.original;
       const displayName = member.name ?? member.email.split("@")[0];
-      const isSelf = member.user_id === params.currentUserId;
+      const isSelf = member.userId === params.currentUserId;
 
       return (
         <span className="flex items-center space-x-4 text-left">
           <span>
             <ProfileAvatar
               displayName={displayName}
-              pictureUrl={member.picture_url}
+              pictureUrl={member.pictureUrl}
             />
           </span>
 
@@ -70,8 +70,8 @@ export const getColumns = (
   {
     header: "Role",
     cell: ({ row }) => {
-      const { role, primary_owner_user_id, user_id } = row.original;
-      const isPrimaryOwner = primary_owner_user_id === user_id;
+      const { role, primaryOwnerUserId, userId } = row.original;
+      const isPrimaryOwner = primaryOwnerUserId === userId;
 
       return (
         <span className="flex items-center space-x-1">
@@ -89,7 +89,7 @@ export const getColumns = (
   {
     header: "Joined at",
     cell: ({ row }) => {
-      return new Date(row.original.created_at).toLocaleDateString();
+      return new Date(row.original.createdAt).toLocaleDateString();
     },
   },
   {
@@ -124,14 +124,14 @@ const ActionsDropdown = ({
   const [isTransferring, setIsTransferring] = useState(false);
   const [isUpdatingRole, setIsUpdatingRole] = useState(false);
 
-  const isCurrentUser = member.user_id === currentUserId;
-  const isPrimaryOwner = member.primary_owner_user_id === member.user_id;
+  const isCurrentUser = member.userId === currentUserId;
+  const isPrimaryOwner = member.primaryOwnerUserId === member.userId;
 
   if (isCurrentUser || isPrimaryOwner) {
     return null;
   }
 
-  const memberRoleHierarchy = member.role_hierarchy_level;
+  const memberRoleHierarchy = member.roleHierarchyLevel;
   const canUpdateRole = permissions.canUpdateRole(memberRoleHierarchy);
 
   const canRemoveFromAccount =
@@ -186,7 +186,7 @@ const ActionsDropdown = ({
           isOpen
           setIsOpen={setIsRemoving}
           teamAccountId={currentTeamAccountId}
-          userId={member.user_id}
+          userId={member.userId}
         />
       </If>
 
@@ -194,7 +194,7 @@ const ActionsDropdown = ({
         <UpdateMemberRoleDialog
           isOpen
           setIsOpen={setIsUpdatingRole}
-          userId={member.user_id}
+          userId={member.userId}
           userRole={member.role}
           teamAccountId={currentTeamAccountId}
           userRoleHierarchy={currentRoleHierarchy}
@@ -206,8 +206,8 @@ const ActionsDropdown = ({
           isOpen
           setIsOpen={setIsTransferring}
           targetDisplayName={member.name ?? member.email}
-          accountId={member.account_id}
-          userId={member.user_id}
+          accountId={member.accountId}
+          userId={member.userId}
         />
       </If>
     </>

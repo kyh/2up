@@ -15,31 +15,29 @@ const { publishableKey } = stripeClientEnvSchema.parse({
 
 const stripePromise = loadStripe(publishableKey);
 
-export function StripeCheckout({
+export const StripeCheckout = ({
   checkoutToken,
   onClose,
 }: React.PropsWithChildren<{
   checkoutToken: string;
   onClose?: () => void;
-}>) {
-  return (
-    <EmbeddedCheckoutPopup key={checkoutToken} onClose={onClose}>
-      <EmbeddedCheckoutProvider
-        stripe={stripePromise}
-        options={{ clientSecret: checkoutToken }}
-      >
-        <EmbeddedCheckout className={"EmbeddedCheckoutClassName"} />
-      </EmbeddedCheckoutProvider>
-    </EmbeddedCheckoutPopup>
-  );
-}
+}>) => (
+  <EmbeddedCheckoutPopup key={checkoutToken} onClose={onClose}>
+    <EmbeddedCheckoutProvider
+      stripe={stripePromise}
+      options={{ clientSecret: checkoutToken }}
+    >
+      <EmbeddedCheckout className="EmbeddedCheckoutClassName" />
+    </EmbeddedCheckoutProvider>
+  </EmbeddedCheckoutPopup>
+);
 
-function EmbeddedCheckoutPopup({
+const EmbeddedCheckoutPopup = ({
   onClose,
   children,
 }: React.PropsWithChildren<{
   onClose?: () => void;
-}>) {
+}>) => {
   const [open, setOpen] = useState(true);
   const className = `bg-white p-4 max-h-[98vh] overflow-y-auto shadow-transparent border`;
 
@@ -64,4 +62,4 @@ function EmbeddedCheckoutPopup({
       </DialogContent>
     </Dialog>
   );
-}
+};
