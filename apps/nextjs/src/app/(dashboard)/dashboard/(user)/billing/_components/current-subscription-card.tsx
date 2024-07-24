@@ -4,19 +4,17 @@ import { If } from "@init/ui/if";
 import { formatDate } from "date-fns";
 import { CircleCheckIcon } from "lucide-react";
 
+import type { RouterOutputs } from "@init/api";
 import type { BillingConfig } from "@init/api/billing/billing-schema";
 import type { Database } from "@init/db/database.types";
 import { CurrentPlanAlert } from "./current-plan-alert";
 import { CurrentPlanBadge } from "./current-plan-badge";
 import { LineItemDetails } from "./line-item-details";
 
-type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
-type LineItem = Database["public"]["Tables"]["subscription_items"]["Row"];
+type Subscription = RouterOutputs["billing"]["getSubscription"];
 
 type Props = {
-  subscription: Subscription & {
-    items: LineItem[];
-  };
+  subscription: Subscription;
 
   config: BillingConfig;
 };
@@ -25,6 +23,10 @@ export const CurrentSubscriptionCard = ({
   subscription,
   config,
 }: React.PropsWithChildren<Props>) => {
+  if (!subscription) {
+    throw new Error("No subscription");
+  }
+
   const lineItems = subscription.items;
   const firstLineItem = lineItems[0];
 
@@ -34,7 +36,7 @@ export const CurrentSubscriptionCard = ({
 
   const { product, plan } = getProductPlanPairByVariantId(
     config,
-    firstLineItem.variant_id,
+    firstLineItem.variantId,
   );
 
   if (!product || !plan) {
@@ -86,22 +88,22 @@ export const CurrentSubscriptionCard = ({
 
               <div className="text-muted-foreground">
                 <span>
-                  {subscription.trial_ends_at
-                    ? formatDate(subscription.trial_ends_at, "P")
+                  {subscription.trialEndsAt
+                    ? formatDate(subscription.trialEndsAt, "P")
                     : ""}
                 </span>
               </div>
             </div>
           </If>
 
-          <If condition={subscription.cancel_at_period_end}>
+          <If condition={subscription.cancelAtPeriodEnd}>
             <Alert variant="warning">
               <AlertTitle>Subscription Cancelled</AlertTitle>
 
               <AlertDescription>
                 Your subscription will be cancelled at the end of the period:
                 <span className="ml-1">
-                  {formatDate(subscription.period_ends_at ?? "", "P")}
+                  {formatDate(subscription.periodEndsAt ?? "", "P")}
                 </span>
               </AlertDescription>
             </Alert>

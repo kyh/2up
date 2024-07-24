@@ -16,33 +16,33 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 import { getColumns } from "./account-members-table-columns";
 
-interface AccountMembersTableProps {
+type AccountMembersTableProps = {
   slug: string;
   currentUserId: string;
   currentAccountId: string;
   userRoleHierarchy: number;
   isPrimaryOwner: boolean;
   canManageRoles: boolean;
-}
+};
 
-export function AccountMembersTable({
+export const AccountMembersTable = ({
   slug,
   currentUserId,
   currentAccountId,
   isPrimaryOwner,
   userRoleHierarchy,
   canManageRoles,
-}: AccountMembersTableProps) {
+}: AccountMembersTableProps) => {
   const [search, setSearch] = useState("");
 
   const [members] = api.team.members.useSuspenseQuery({
     slug,
   });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const permissions = {
     canUpdateRole: (targetRole: number) => {
       return (
@@ -80,11 +80,11 @@ export function AccountMembersTable({
           );
         })
         .sort((prev, next) => {
-          if (prev.primary_owner_user_id === prev.user_id) {
+          if (prev.primaryOwnerUserId === prev.userId) {
             return -1;
           }
 
-          if (prev.role_hierarchy_level < next.role_hierarchy_level) {
+          if (prev.roleHierarchyLevel < next.roleHierarchyLevel) {
             return -1;
           }
 
@@ -100,14 +100,14 @@ export function AccountMembersTable({
   });
 
   return (
-    <div className={"flex flex-col space-y-2"}>
+    <div className="flex flex-col space-y-2">
       <Input
         value={search}
         onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
-        placeholder={"Search members"}
+        placeholder="Search members"
       />
 
-      <div className={"rounded-md border"}>
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -129,7 +129,7 @@ export function AccountMembersTable({
           </TableHeader>
 
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -150,7 +150,7 @@ export function AccountMembersTable({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className={"h-24 text-center"}
+                  className="h-24 text-center"
                 >
                   No data available
                 </TableCell>
@@ -161,4 +161,4 @@ export function AccountMembersTable({
       </div>
     </div>
   );
-}
+};

@@ -132,7 +132,7 @@ export const getColumns = (): ColumnDef<Task>[] => [
     },
   },
   {
-    accessorKey: "created_at",
+    accessorKey: "createdAt",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Created At" />
     ),
