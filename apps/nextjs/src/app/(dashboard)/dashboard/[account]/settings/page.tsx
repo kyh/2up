@@ -5,9 +5,9 @@ import { TeamAccountDangerZone } from "./_components/team-account-danger-zone";
 import { UpdateTeamAccountImage } from "./_components/update-team-account-image-container";
 import { UpdateTeamAccountNameForm } from "./_components/update-team-account-name-form";
 
-interface Params {
+type Params = {
   account: string;
-}
+};
 
 const Page = async ({ params }: { params: Params }) => {
   const { account } = await api.team.teamWorkspace({
@@ -35,7 +35,7 @@ const Page = async ({ params }: { params: Params }) => {
               account={{
                 id: account.id,
                 name: account.name,
-                pictureUrl: account.picture_url,
+                pictureUrl: account.pictureUrl,
               }}
             />
           </div>
@@ -69,7 +69,7 @@ const Page = async ({ params }: { params: Params }) => {
           </div>
           <div className="md:col-span-2">
             <TeamAccountDangerZone
-              primaryOwnerUserId={account.primary_owner_user_id}
+              primaryOwnerUserId={account.primaryOwnerUserId}
               account={account}
             />
           </div>

@@ -1,8 +1,5 @@
-import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/server";
 import { AdminAccountPage } from "./_components/admin-account-page";
-
-type Account = RouterOutputs["admin"]["getAccount"];
 
 type Params = {
   params: {

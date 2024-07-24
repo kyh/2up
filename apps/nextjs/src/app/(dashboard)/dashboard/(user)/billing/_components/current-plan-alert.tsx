@@ -1,12 +1,12 @@
 import { Alert, AlertDescription, AlertTitle } from "@init/ui/alert";
 
-import type { RouterOutputs } from "@init/api";
+import type { Database } from "@init/db/database.types";
 
-export function CurrentPlanAlert(
+export const CurrentPlanAlert = (
   props: React.PropsWithoutRef<{
-    status: Database["public"]["Enums"]["subscription_status"];
+    status: Database["public"]["Enums"]["SubscriptionStatus"];
   }>,
-) {
+) => {
   let variant: "success" | "warning" | "destructive";
   let text = "";
   let title = "";
@@ -64,4 +64,4 @@ export function CurrentPlanAlert(
       <AlertDescription>{text}</AlertDescription>
     </Alert>
   );
-}
+};

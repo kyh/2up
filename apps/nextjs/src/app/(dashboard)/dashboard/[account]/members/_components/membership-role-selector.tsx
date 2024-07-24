@@ -8,7 +8,7 @@ import {
 
 type Role = string;
 
-export function MembershipRoleSelector({
+export const MembershipRoleSelector = ({
   roles,
   value,
   currentUserRole,
@@ -18,26 +18,24 @@ export function MembershipRoleSelector({
   value: Role;
   currentUserRole?: Role;
   onChange: (role: Role) => unknown;
-}) {
-  return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger>
-        <SelectValue />
-      </SelectTrigger>
+}) => (
+  <Select value={value} onValueChange={onChange}>
+    <SelectTrigger>
+      <SelectValue />
+    </SelectTrigger>
 
-      <SelectContent>
-        {roles.map((role) => {
-          return (
-            <SelectItem
-              key={role}
-              disabled={currentUserRole === role}
-              value={role}
-            >
-              <span className={"text-sm capitalize"}>{role}</span>
-            </SelectItem>
-          );
-        })}
-      </SelectContent>
-    </Select>
-  );
-}
+    <SelectContent>
+      {roles.map((role) => {
+        return (
+          <SelectItem
+            key={role}
+            disabled={currentUserRole === role}
+            value={role}
+          >
+            <span className="text-sm capitalize">{role}</span>
+          </SelectItem>
+        );
+      })}
+    </SelectContent>
+  </Select>
+);

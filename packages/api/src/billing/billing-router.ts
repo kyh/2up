@@ -19,9 +19,9 @@ export const billingRouter = createTRPCRouter({
     .input(getSubscriptionInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("subscriptions")
-        .select("*, items: subscription_items !inner (*)")
-        .eq("account_id", input.accountId)
+        .from("Subscriptions")
+        .select("*, items: SubscriptionItems !inner (*)")
+        .eq("accountId", input.accountId)
         .maybeSingle();
 
       if (response.error) {
@@ -34,9 +34,9 @@ export const billingRouter = createTRPCRouter({
     .input(getOrderInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("orders")
-        .select("*, items: order_items !inner (*)")
-        .eq("account_id", input.accountId)
+        .from("Orders")
+        .select("*, items: OrderItems !inner (*)")
+        .eq("accountId", input.accountId)
         .maybeSingle();
 
       if (response.error) {
@@ -49,16 +49,16 @@ export const billingRouter = createTRPCRouter({
     .input(getCustomerIdInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("billing_customers")
-        .select("customer_id")
-        .eq("account_id", input.accountId)
+        .from("BillingCustomers")
+        .select("customerId")
+        .eq("accountId", input.accountId)
         .maybeSingle();
 
       if (response.error) {
         throw response.error;
       }
 
-      return response.data?.customer_id;
+      return response.data?.customerId;
     }),
   createCheckoutSession: protectedProcedure
     .input(createCheckoutSessionInput)
@@ -201,7 +201,7 @@ export const billingRouter = createTRPCRouter({
           // here we delete the subscription from the database
 
           const { error } = await adminSupabase
-            .from("subscriptions")
+            .from("Subscriptions")
             .delete()
             .match({ id: subscriptionId });
 
@@ -251,9 +251,9 @@ export const billingRouter = createTRPCRouter({
           // here we update the payment status in the database
 
           const { error } = await adminSupabase
-            .from("orders")
+            .from("Orders")
             .update({ status: "succeeded" })
-            .match({ session_id: sessionId });
+            .match({ sessionId: sessionId });
 
           // handle the error
           if (error) {
@@ -265,9 +265,9 @@ export const billingRouter = createTRPCRouter({
           // here we update the payment status in the database
 
           const { error } = await adminSupabase
-            .from("orders")
+            .from("Orders")
             .update({ status: "failed" })
-            .match({ session_id: sessionId });
+            .match({ sessionId: sessionId });
 
           if (error) {
             throw new Error("Failed to update payment status");
