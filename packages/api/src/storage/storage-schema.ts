@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
-export const AVATARS_BUCKET = "account_image";
+export const AVATARS_BUCKET = "AccountImage";
 
 export const deleteProfilePhotoInput = z.object({
   url: z.string(),

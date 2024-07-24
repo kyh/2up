@@ -22,7 +22,7 @@ export const teamRouter = createTRPCRouter({
   teamWorkspace: protectedProcedure
     .input(teamWorkspaceInput)
     .query(async ({ ctx, input }) => {
-      const response = await ctx.supabase.rpc("team_account_workspace", {
+      const response = await ctx.supabase.rpc("teamAccountWorkspace", {
         account_slug: input.slug,
       });
 
@@ -39,7 +39,7 @@ export const teamRouter = createTRPCRouter({
   createTeamAccount: protectedProcedure
     .input(createTeamAccountInput)
     .mutation(async ({ ctx, input }) => {
-      const response = await ctx.supabase.rpc("create_team_account", {
+      const response = await ctx.supabase.rpc("createTeamAccount", {
         account_name: input.name,
       });
 
@@ -119,7 +119,7 @@ export const teamRouter = createTRPCRouter({
   members: protectedProcedure
     .input(membersInput)
     .query(async ({ ctx, input }) => {
-      const response = await ctx.supabase.rpc("get_account_members", {
+      const response = await ctx.supabase.rpc("getAccountMembers", {
         account_slug: input.slug,
       });
 
@@ -133,7 +133,7 @@ export const teamRouter = createTRPCRouter({
   invitations: protectedProcedure
     .input(invitationsInput)
     .query(async ({ ctx, input }) => {
-      const response = await ctx.supabase.rpc("get_account_invitations", {
+      const response = await ctx.supabase.rpc("getAccountInvitations", {
         account_slug: input.slug,
       });
 
@@ -166,7 +166,7 @@ export const teamRouter = createTRPCRouter({
     .input(updateMemberRoleInput)
     .mutation(async ({ ctx, input }) => {
       const { data: canActionAccountMember, error: accountError } =
-        await ctx.supabase.rpc("can_action_account_member", {
+        await ctx.supabase.rpc("canActionAccountMember", {
           targetUserId: input.userId,
           targetTeamAccountId: input.accountId,
         });
@@ -196,7 +196,7 @@ export const teamRouter = createTRPCRouter({
     .input(transferOwnershipInput)
     .mutation(async ({ ctx, input }) => {
       const { data: isOwner, error } = await ctx.supabase.rpc(
-        "is_account_owner",
+        "isAccountOwner",
         {
           accountId: input.accountId,
         },
@@ -209,7 +209,7 @@ export const teamRouter = createTRPCRouter({
       }
 
       const response = await ctx.adminSupabase.rpc(
-        "transfer_team_account_ownership",
+        "transferTeamAccountOwnership",
         {
           targetAccountId: input.accountId,
           newOwnerId: input.userId,
@@ -236,7 +236,7 @@ export const teamRouter = createTRPCRouter({
         throw new Error("Account not found");
       }
 
-      const response = await ctx.supabase.rpc("add_invitations_to_account", {
+      const response = await ctx.supabase.rpc("addInvitationsToAccount", {
         invitations: input.invitations,
         account_slug: input.accountSlug,
       });
