@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.13",
-    "postcss": "^8.4.39",
+    "postcss": "^8.4.40",
     "tailwindcss": "catalog:",
     "tailwindcss-animate": "^1.0.7"
   },
