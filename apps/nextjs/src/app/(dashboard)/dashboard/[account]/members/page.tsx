@@ -25,8 +25,8 @@ const Page = async ({ params }: { params: Params }) => {
   const canManageRoles = account.permissions.includes("roles.manage");
   const canManageInvitations = account.permissions.includes("invites.manage");
 
-  const isPrimaryOwner = account.primary_owner_user_id === user.id;
-  const currentUserRoleHierarchy = account.role_hierarchy_level;
+  const isPrimaryOwner = account.primaryOwnerUserId === user.id;
+  const currentUserRoleHierarchy = account.roleHierarchyLevel;
 
   return (
     <section className="divide-y divide-border">

@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { RouterOutputs } from "@init/api";
 import { Button } from "@init/ui/button";
 import { Divider } from "@init/ui/divider";
 import { If } from "@init/ui/if";
@@ -9,6 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@init/ui/popover";
 import { cn } from "@init/ui/utils";
 import { Bell, CircleAlert, Info, TriangleAlert, XIcon } from "lucide-react";
 
+import type { RouterOutputs } from "@init/api";
 import { useFetchNotifications } from "@/hooks/use-fetch-notifications";
 import { api } from "@/trpc/react";
 
@@ -16,14 +16,14 @@ type Notification = RouterOutputs["notifications"]["fetchNotifications"][0];
 
 type PartialNotification = Pick<
   Notification,
-  "id" | "body" | "dismissed" | "type" | "created_at" | "link"
+  "id" | "body" | "dismissed" | "type" | "createdAt" | "link"
 >;
 
-export function NotificationsPopover(params: {
+export const NotificationsPopover = (params: {
   realtime: boolean;
   accountIds: string[];
   onClick?: (notification: PartialNotification) => void;
-}) {
+}) => {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<PartialNotification[]>([]);
 
@@ -118,8 +118,8 @@ export function NotificationsPopover(params: {
   return (
     <Popover modal open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button className={"relative h-10 w-10 rounded-lg"} variant={"ghost"}>
-          <Bell className={"h-5 w-5"} />
+        <Button className="relative h-10 w-10 rounded-lg" variant="ghost">
+          <Bell className="h-5 w-5" />
 
           <span
             className={cn(
@@ -135,26 +135,22 @@ export function NotificationsPopover(params: {
       </PopoverTrigger>
 
       <PopoverContent
-        className={"flex w-full max-w-96 flex-col p-0 lg:min-w-64"}
-        align={"start"}
+        className="flex w-full max-w-96 flex-col p-0 lg:min-w-64"
+        align="start"
         collisionPadding={20}
         sideOffset={10}
       >
-        <div className={"flex items-center px-3 py-2 text-sm font-semibold"}>
+        <div className="flex items-center px-3 py-2 text-sm font-semibold">
           Notifications
         </div>
 
         <Divider />
 
         <If condition={!notifications.length}>
-          <div className={"px-3 py-2 text-sm"}>No notifications</div>
+          <div className="px-3 py-2 text-sm">No notifications</div>
         </If>
 
-        <div
-          className={
-            "flex max-h-[60vh] flex-col divide-y divide-gray-100 overflow-y-auto dark:divide-gray-800"
-          }
-        >
+        <div className="flex max-h-[60vh] flex-col divide-y divide-gray-100 overflow-y-auto dark:divide-gray-800">
           {notifications.map((notification) => {
             const maxChars = 100;
 
@@ -167,11 +163,11 @@ export function NotificationsPopover(params: {
             const Icon = () => {
               switch (notification.type) {
                 case "warning":
-                  return <TriangleAlert className={"h-4 text-yellow-500"} />;
+                  return <TriangleAlert className="h-4 text-yellow-500" />;
                 case "error":
-                  return <CircleAlert className={"h-4 text-destructive"} />;
+                  return <CircleAlert className="h-4 text-destructive" />;
                 default:
-                  return <Info className={"h-4 text-blue-500"} />;
+                  return <Info className="h-4 text-blue-500" />;
               }
             };
 
@@ -187,36 +183,34 @@ export function NotificationsPopover(params: {
                   }
                 }}
               >
-                <div className={"flex w-full items-start justify-between"}>
-                  <div
-                    className={"flex items-start justify-start space-x-2 py-2"}
-                  >
-                    <div className={"py-0.5"}>
+                <div className="flex w-full items-start justify-between">
+                  <div className="flex items-start justify-start space-x-2 py-2">
+                    <div className="py-0.5">
                       <Icon />
                     </div>
 
-                    <div className={"flex flex-col space-y-1"}>
-                      <div className={"text-sm"}>
+                    <div className="flex flex-col space-y-1">
+                      <div className="text-sm">
                         <If condition={notification.link} fallback={body}>
                           {(link) => (
-                            <a href={link} className={"hover:underline"}>
+                            <a href={link} className="hover:underline">
                               {body}
                             </a>
                           )}
                         </If>
                       </div>
 
-                      <span className={"text-xs text-muted-foreground"}>
-                        {timeAgo(notification.created_at)}
+                      <span className="text-xs text-muted-foreground">
+                        {timeAgo(notification.createdAt)}
                       </span>
                     </div>
                   </div>
 
-                  <div className={"py-2"}>
+                  <div className="py-2">
                     <Button
-                      className={"max-h-6 max-w-6"}
-                      size={"icon"}
-                      variant={"ghost"}
+                      className="max-h-6 max-w-6"
+                      size="icon"
+                      variant="ghost"
                       onClick={() => {
                         setNotifications((existing) => {
                           return existing.filter(
@@ -230,7 +224,7 @@ export function NotificationsPopover(params: {
                         });
                       }}
                     >
-                      <XIcon className={"h-3"} />
+                      <XIcon className="h-3" />
                     </Button>
                   </div>
                 </div>
@@ -241,4 +235,4 @@ export function NotificationsPopover(params: {
       </PopoverContent>
     </Popover>
   );
-}
+};

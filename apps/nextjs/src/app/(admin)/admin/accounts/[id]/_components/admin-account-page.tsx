@@ -27,7 +27,7 @@ import { AdminReactivateUserDialog } from "./admin-reactivate-user-dialog";
 type Account = RouterOutputs["admin"]["getAccount"];
 
 export const AdminAccountPage = (props: { account: Account }) => {
-  const isPersonalAccount = props.account.is_personal_account;
+  const isPersonalAccount = props.account.isPersonalAccount;
 
   if (isPersonalAccount) {
     return <PersonalAccountPage account={props.account} />;
@@ -44,10 +44,6 @@ const PersonalAccountPage = async (props: { account: Account }) => {
     accountId: props.account.id,
   });
 
-  if (!data) {
-    throw new Error(`User not found`);
-  }
-
   const isBanned =
     "banned_until" in data.user && data.user.banned_until !== "none";
 
@@ -58,7 +54,7 @@ const PersonalAccountPage = async (props: { account: Account }) => {
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2.5">
               <ProfileAvatar
-                pictureUrl={props.account.picture_url}
+                pictureUrl={props.account.pictureUrl}
                 displayName={props.account.name}
               />
 
@@ -117,7 +113,7 @@ const PersonalAccountPage = async (props: { account: Account }) => {
           </Heading>
 
           <div>
-            <AdminMembershipsTable memberships={memberships ?? []} />
+            <AdminMembershipsTable memberships={memberships} />
           </div>
         </div>
       </div>
@@ -137,7 +133,7 @@ const TeamAccountPage = async (props: { account: Account }) => {
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2.5">
               <ProfileAvatar
-                pictureUrl={props.account.picture_url}
+                pictureUrl={props.account.pictureUrl}
                 displayName={props.account.name}
               />
 
@@ -165,7 +161,7 @@ const TeamAccountPage = async (props: { account: Account }) => {
               Team Members
             </Heading>
 
-            <AdminMembersTable members={members ?? []} />
+            <AdminMembersTable members={members} />
           </div>
         </div>
       </div>
@@ -223,11 +219,11 @@ const SubscriptionsTable = async (props: { accountId: string }) => {
                     </TableCell>
 
                     <TableCell>
-                      <span>{subscription.billing_provider}</span>
+                      <span>{subscription.billingProvider}</span>
                     </TableCell>
 
                     <TableCell>
-                      <span>{subscription.billing_customer_id}</span>
+                      <span>{subscription.billingCustomerId}</span>
                     </TableCell>
 
                     <TableCell>
@@ -235,15 +231,15 @@ const SubscriptionsTable = async (props: { accountId: string }) => {
                     </TableCell>
 
                     <TableCell>
-                      <span>{subscription.created_at}</span>
+                      <span>{subscription.createdAt}</span>
                     </TableCell>
 
                     <TableCell>
-                      <span>{subscription.period_starts_at}</span>
+                      <span>{subscription.periodStartsAt}</span>
                     </TableCell>
 
                     <TableCell>
-                      <span>{subscription.period_ends_at}</span>
+                      <span>{subscription.periodEndsAt}</span>
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -265,15 +261,15 @@ const SubscriptionsTable = async (props: { accountId: string }) => {
                 </TableHeader>
 
                 <TableBody>
-                  {subscription.subscription_items.map((item) => {
+                  {subscription.subscriptionItems.map((item) => {
                     return (
-                      <TableRow key={item.variant_id}>
+                      <TableRow key={item.variantId}>
                         <TableCell>
-                          <span>{item.product_id}</span>
+                          <span>{item.productId}</span>
                         </TableCell>
 
                         <TableCell>
-                          <span>{item.variant_id}</span>
+                          <span>{item.variantId}</span>
                         </TableCell>
 
                         <TableCell>
@@ -281,7 +277,7 @@ const SubscriptionsTable = async (props: { accountId: string }) => {
                         </TableCell>
 
                         <TableCell>
-                          <span>{item.price_amount}</span>
+                          <span>{item.priceAmount}</span>
                         </TableCell>
 
                         <TableCell>

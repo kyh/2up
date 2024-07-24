@@ -9,7 +9,7 @@ type Params = {
   account: string;
 };
 
-type SearchParams = {} & RetrieveInput;
+type SearchParams = RetrieveInput;
 
 const TasksPage = async ({
   params,

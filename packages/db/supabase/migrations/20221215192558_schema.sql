@@ -70,14 +70,14 @@ alter default privileges in schema public
 revoke
 execute on functions
 from
-  anon,
-  authenticated;
+  "anon",
+  "authenticated";
 
 -- we allow the authenticated role to execute functions in the public schema
-grant usage on schema public to authenticated;
+grant usage on schema public to "authenticated";
 
 -- we allow the service_role role to execute functions in the public schema
-grant usage on schema public to service_role;
+grant usage on schema public to "service_role";
 
 /*
  * -------------------------------------------------------
@@ -91,7 +91,7 @@ grant usage on schema public to service_role;
 - The permissions are 'roles.manage', 'billing.manage', 'settings.manage', 'members.manage', and 'invites.manage'.
 - You can add more permissions as needed.
 */
-create type public.app_permissions as enum(
+create type public."AppPermissions" as enum(
   'roles.manage',
   'billing.manage',
   'settings.manage',
@@ -105,7 +105,7 @@ create type public.app_permissions as enum(
 - The statuses are 'active', 'trialing', 'past_due', 'canceled', 'unpaid', 'incomplete', 'incomplete_expired', and 'paused'.
 - You can add more statuses as needed.
 */
-create type public.subscription_status as ENUM(
+create type public."SubscriptionStatus" as ENUM(
   'active',
   'trialing',
   'past_due',
@@ -120,7 +120,7 @@ create type public.subscription_status as ENUM(
 Payment Status
 - We create the payment status for the Supabase Init. These statuses are used to manage the status of the payments
 */
-create type public.payment_status as ENUM('pending', 'succeeded', 'failed');
+create type public."PaymentStatus" as ENUM('pending', 'succeeded', 'failed');
 
 /*
 * Billing Provider
@@ -128,7 +128,7 @@ create type public.payment_status as ENUM('pending', 'succeeded', 'failed');
 - The providers are 'stripe', 'lemon-squeezy', and 'paddle'.
 - You can add more providers as needed.
 */
-create type public.billing_provider as ENUM('stripe', 'lemon-squeezy', 'paddle');
+create type public."BillingProvider" as ENUM('stripe', 'lemon-squeezy', 'paddle');
 
 /*
 * Subscription Item Type
@@ -136,13 +136,13 @@ create type public.billing_provider as ENUM('stripe', 'lemon-squeezy', 'paddle')
 - The types are 'flat', 'per_seat', and 'metered'.
 - You can add more types as needed.
 */
-create type public.subscription_item_type as ENUM('flat', 'per_seat', 'metered');
+create type public."SubscriptionItemType" as ENUM('flat', 'per_seat', 'metered');
 
 /*
 * Invitation Type
 - We create the invitation type for the Supabase Init. These types are used to manage the type of the invitation
 */
-create type public.invitation as (email text, role varchar(50));
+create type public."Invitation" as (email text, role varchar(50));
 
 /*
  * -------------------------------------------------------
@@ -151,58 +151,58 @@ create type public.invitation as (email text, role varchar(50));
  * -------------------------------------------------------
  */
 create table if not exists
-  public.config (
-    enable_team_accounts boolean default true not null,
-    enable_account_billing boolean default true not null,
-    enable_team_account_billing boolean default true not null,
-    billing_provider public.billing_provider default 'stripe' not null
+  public."Config" (
+    "enableTeamAccounts" boolean default true not null,
+    "enableAccountBilling" boolean default true not null,
+    "enableTeamAccountBilling" boolean default true not null,
+    "billingProvider" public."BillingProvider" default 'stripe' not null
   );
 
-comment on table public.config is 'Configuration for the Supabase Init.';
+comment on table public."Config" is 'Configuration for the Supabase Init.';
 
-comment on column public.config.enable_team_accounts is 'Enable team accounts';
+comment on column public."Config"."enableTeamAccounts" is 'Enable team accounts';
 
-comment on column public.config.enable_account_billing is 'Enable billing for individual accounts';
+comment on column public."Config"."enableAccountBilling" is 'Enable billing for individual accounts';
 
-comment on column public.config.enable_team_account_billing is 'Enable billing for team accounts';
+comment on column public."Config"."enableTeamAccountBilling" is 'Enable billing for team accounts';
 
-comment on column public.config.billing_provider is 'The billing provider to use';
+comment on column public."Config"."billingProvider" is 'The billing provider to use';
 
--- RLS(config)
-alter table public.config enable row level security;
+-- RLS(Config)
+alter table public."Config" enable row level security;
 
--- create config row
+-- create Config row
 insert into
-  public.config (
-    enable_team_accounts,
-    enable_account_billing,
-    enable_team_account_billing
+  public."Config" (
+    "enableTeamAccounts",
+    "enableAccountBilling",
+    "enableTeamAccountBilling"
   )
 values
   (true, true, true);
 
 -- Revoke all on accounts table from authenticated and service_role
-revoke all on public.config
+revoke all on public."Config"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
--- Open up access to config table for authenticated users and service_role
+-- Open up access to Config table for authenticated users and service_role
 grant
 select
-  on public.config to authenticated,
-  service_role;
+  on public."Config" to "authenticated",
+  "service_role";
 
 -- RLS
--- SELECT(config):
--- Authenticated users can read the config
-create policy "public config can be read by authenticated users" on public.config for
+-- SELECT(Config):
+-- Authenticated users can read the Config
+create policy "public Config can be read by authenticated users" on public."Config" for
 select
-  to authenticated using (true);
+  to "authenticated" using (true);
 
--- Function to get the config settings
+-- Function to get the Config settings
 create
-or replace function public.get_config () returns json
+or replace function public."get_config" () returns json
 set
   search_path = '' as $$
 declare
@@ -211,7 +211,7 @@ begin
     select
         *
     from
-        public.config
+        public."Config"
     limit 1 into result;
 
     return row_to_json(result);
@@ -222,19 +222,19 @@ $$ language plpgsql;
 
 -- Automatically set timestamps on tables when a row is inserted or updated
 create
-or replace function public.trigger_set_timestamps () returns trigger
+or replace function public."trigger_set_timestamps" () returns trigger
 set
   search_path = '' as $$
 begin
     if TG_OP = 'INSERT' then
-        new.created_at = now();
+        new."createdAt" = now();
 
-        new.updated_at = now();
+        new."updatedAt" = now();
 
     else
-        new.updated_at = now();
+        new."updatedAt" = now();
 
-        new.created_at = old.created_at;
+        new."createdAt" = old."createdAt";
 
     end if;
 
@@ -245,18 +245,18 @@ $$ language plpgsql;
 
 -- Automatically set user tracking on tables when a row is inserted or updated
 create
-or replace function public.trigger_set_user_tracking () returns trigger
+or replace function public."trigger_set_user_tracking" () returns trigger
 set
   search_path = '' as $$
 begin
     if TG_OP = 'INSERT' then
-        new.created_by = auth.uid();
-        new.updated_by = auth.uid();
+        new."createdBy" = auth.uid();
+        new."updatedBy" = auth.uid();
 
     else
-        new.updated_by = auth.uid();
+        new."updatedBy" = auth.uid();
 
-        new.created_by = old.created_by;
+        new."createdBy" = old."createdBy";
 
     end if;
 
@@ -266,19 +266,19 @@ end
 $$ language plpgsql;
 
 grant
-execute on function public.get_config () to authenticated,
-service_role;
+execute on function public."get_config" () to "authenticated",
+"service_role";
 
 -- Function "public.is_set"
--- Check if a field is set in the config
+-- Check if a field is set in the Config
 create
-or replace function public.is_set (field_name text) returns boolean
+or replace function public."is_set" (fieldName text) returns boolean
 set
   search_path = '' as $$
 declare
     result boolean;
 begin
-    execute format('select %I from public.config limit 1', field_name) into result;
+    execute format('select %I from public."Config" limit 1', fieldName) into result;
 
     return result;
 
@@ -287,7 +287,7 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public.is_set (text) to authenticated;
+execute on function public."is_set" (text) to "authenticated";
 
 /*
  * -------------------------------------------------------
@@ -297,99 +297,98 @@ execute on function public.is_set (text) to authenticated;
  */
 -- Accounts table
 create table if not exists
-  public.accounts (
-    id uuid unique not null default extensions.uuid_generate_v4 (),
-    primary_owner_user_id uuid references auth.users on delete cascade not null default auth.uid (),
-    name varchar(255) not null,
-    slug text unique,
-    email varchar(320) unique,
-    is_personal_account boolean default false not null,
-    updated_at timestamp with time zone,
-    created_at timestamp with time zone,
-    created_by uuid references auth.users,
-    updated_by uuid references auth.users,
-    picture_url varchar(1000),
-    public_data jsonb default '{}'::jsonb not null,
-    primary key (id)
+  public."Accounts" (
+    "id" uuid unique not null default extensions.uuid_generate_v4 (),
+    "primaryOwnerUserId" uuid references auth.users on delete cascade not null default auth.uid (),
+    "name" varchar(255) not null,
+    "slug" text unique,
+    "email" varchar(320) unique,
+    "isPersonalAccount" boolean default false not null,
+    "updatedAt" timestamp with time zone,
+    "createdAt" timestamp with time zone,
+    "createdBy" uuid references auth.users,
+    "updatedBy" uuid references auth.users,
+    "pictureUrl" varchar(1000),
+    "publicData" jsonb default '{}'::jsonb not null,
+    primary key ("id")
   );
 
-comment on table public.accounts is 'Accounts are the top level entity in the Supabase Init. They can be team or personal accounts.';
+comment on table public."Accounts" is 'Accounts are the top level entity in the Supabase Init. They can be team or personal accounts.';
 
-comment on column public.accounts.is_personal_account is 'Whether the account is a personal account or not';
+comment on column public."Accounts"."isPersonalAccount" is 'Whether the account is a personal account or not';
 
-comment on column public.accounts.name is 'The name of the account';
+comment on column public."Accounts"."name" is 'The name of the account';
 
-comment on column public.accounts.slug is 'The slug of the account';
+comment on column public."Accounts"."slug" is 'The slug of the account';
 
-comment on column public.accounts.primary_owner_user_id is 'The primary owner of the account';
+comment on column public."Accounts"."primaryOwnerUserId" is 'The primary owner of the account';
 
-comment on column public.accounts.email is 'The email of the account. For teams, this is the email of the team (if any)';
+comment on column public."Accounts"."email" is 'The email of the account. For teams, this is the email of the team (if any)';
 
--- Enable RLS on the accounts table
-alter table "public"."accounts" enable row level security;
+-- Enable RLS on the Accounts table
+alter table "public"."Accounts" enable row level security;
 
--- Revoke all on accounts table from authenticated and service_role
-revoke all on public.accounts
+-- Revoke all on Accounts table from authenticated and service_role
+revoke all on public."Accounts"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
--- Open up access to accounts
+-- Open up access to Accounts
 grant
-select
-,
+select,
   insert,
 update,
-delete on table public.accounts to authenticated,
-service_role;
+delete on table public."Accounts" to "authenticated",
+"service_role";
 
 -- constraint that conditionally allows nulls on the slug ONLY if
 --  personal_account is true
-alter table public.accounts
-add constraint accounts_slug_null_if_personal_account_true check (
+alter table public."Accounts"
+add constraint "accounts_slug_null_if_personal_account_true" check (
   (
-    is_personal_account = true
-    and slug is null
+    "isPersonalAccount" = true
+    and "slug" is null
   )
   or (
-    is_personal_account = false
-    and slug is not null
+    "isPersonalAccount" = false
+    and "slug" is not null
   )
 );
 
 -- Indexes
-create index if not exists ix_accounts_primary_owner_user_id on public.accounts (primary_owner_user_id);
+create index if not exists ix_accounts_primary_owner_user_id on public."Accounts" ("primaryOwnerUserId");
 
-create index if not exists ix_accounts_is_personal_account on public.accounts (is_personal_account);
+create index if not exists ix_accounts_is_personal_account on public."Accounts" ("isPersonalAccount");
 
--- constraint to ensure that the primary_owner_user_id is unique for personal accounts
-create unique index unique_personal_account on public.accounts (primary_owner_user_id)
+-- constraint to ensure that the primaryOwnerUserId is unique for personal accounts
+create unique index unique_personal_account on public."Accounts" ("primaryOwnerUserId")
 where
-  is_personal_account = true;
+  "isPersonalAccount" = true;
 
--- RLS on the accounts table
--- UPDATE(accounts):
+-- RLS on the Accounts table
+-- UPDATE(Accounts):
 -- Team owners can update their accounts
-create policy accounts_self_update on public.accounts
+create policy accounts_self_update on public."Accounts"
 for update
-  to authenticated using (
+  to "authenticated" using (
     (
       select
         auth.uid ()
-    ) = primary_owner_user_id
+    ) = "primaryOwnerUserId"
   )
 with
   check (
     (
       select
         auth.uid ()
-    ) = primary_owner_user_id
+    ) = "primaryOwnerUserId"
   );
 
 -- Function "public.transfer_team_account_ownership"
 -- Function to transfer the ownership of a team account to another user
 create
-or replace function public.transfer_team_account_ownership (target_account_id uuid, new_owner_id uuid) returns void
+or replace function public."transfer_team_account_ownership" ("targetAccountId" uuid, "newOwnerId" uuid) returns void
 set
   search_path = '' as $$
 begin
@@ -402,45 +401,45 @@ begin
         select
             1
         from
-            public.accounts_memberships
+            public."AccountsMemberships"
         where
-            target_account_id = account_id
-            and user_id = new_owner_id) then
+            "targetAccountId" = "accountId"
+            and "userId" = "newOwnerId") then
         raise exception 'The new owner must be a member of the account';
     end if;
 
     -- update the primary owner of the account
     update
-        public.accounts
+        public."Accounts"
     set
-        primary_owner_user_id = new_owner_id
+        "primaryOwnerUserId" = "newOwnerId"
     where
-        id = target_account_id
-        and is_personal_account = false;
+        id = "targetAccountId"
+        and "isPersonalAccount" = false;
 
     -- update membership assigning it the hierarchy role
     update
-        public.accounts_memberships
+        public."AccountsMemberships"
     set
-        account_role =(
-            public.get_upper_system_role())
+        "accountRole" =(
+            public."get_upper_system_role"())
     where
-        target_account_id = account_id
-        and user_id = new_owner_id
-        and account_role <>(
-            public.get_upper_system_role());
+        "targetAccountId" = "accountId"
+        and "userId" = "newOwnerId"
+        and "accountRole" <>(
+            public."get_upper_system_role"());
 
 end;
 
 $$ language plpgsql;
 
 grant
-execute on function public.transfer_team_account_ownership (uuid, uuid) to service_role;
+execute on function public."transfer_team_account_ownership" (uuid, uuid) to "service_role";
 
 -- Function "public.is_account_owner"
 -- Function to check if a user is the primary owner of an account
 create
-or replace function public.is_account_owner (account_id uuid) returns boolean
+or replace function public."is_account_owner" ("accountId" uuid) returns boolean
 set
   search_path = '' as $$
     select
@@ -448,25 +447,25 @@ set
             select
                 1
             from
-                public.accounts
+                public."Accounts"
             where
-                id = is_account_owner.account_id
-                and primary_owner_user_id = auth.uid());
+                id = "is_account_owner"."accountId"
+                and "primaryOwnerUserId" = auth.uid());
 $$ language sql;
 
 grant
-execute on function public.is_account_owner (uuid) to authenticated,
-service_role;
+execute on function public."is_account_owner" (uuid) to "authenticated",
+"service_role";
 
 -- Function "kit.protect_account_fields"
 -- Function to protect account fields from being updated
 create
-or replace function kit.protect_account_fields () returns trigger as $$
+or replace function kit."protect_account_fields" () returns trigger as $$
 begin
     if current_user in('authenticated', 'anon') then
-	if new.id <> old.id or new.is_personal_account <>
-	    old.is_personal_account or new.primary_owner_user_id <>
-	    old.primary_owner_user_id or new.email <> old.email then
+	if new.id <> old.id or new."isPersonalAccount" <>
+	    old."isPersonalAccount" or new."primaryOwnerUserId" <>
+	    old."primaryOwnerUserId" or new.email <> old.email then
             raise exception 'You do not have permission to update this field';
 
         end if;
@@ -479,47 +478,46 @@ end
 $$ language plpgsql
 set
   search_path = '';
-
 -- trigger to protect account fields
 create trigger protect_account_fields before
-update on public.accounts for each row
-execute function kit.protect_account_fields ();
+update on public."Accounts" for each row
+execute function kit."protect_account_fields" ();
 
 -- Function "public.get_upper_system_role"
 -- Function to get the highest system role for an account
 create
-or replace function public.get_upper_system_role () returns varchar
+or replace function public."get_upper_system_role" () returns varchar
 set
   search_path = '' as $$
 declare
     role varchar(50);
 begin
-    select name from public.roles
-      where hierarchy_level = 1 into role;
+    select name from public."Roles"
+      where "hierarchyLevel" = 1 into role;
 
     return role;
 end;
 $$ language plpgsql;
 
 grant
-execute on function public.get_upper_system_role () to service_role;
+execute on function public."get_upper_system_role" () to "service_role";
 
 -- Function "kit.add_current_user_to_new_account"
 -- Trigger to add the current user to a new account as the primary owner
 create
-or replace function kit.add_current_user_to_new_account () returns trigger language plpgsql security definer
+or replace function kit."add_current_user_to_new_account" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 begin
-    if new.primary_owner_user_id = auth.uid() then
-        insert into public.accounts_memberships(
-            account_id,
-            user_id,
-            account_role)
+    if new."primaryOwnerUserId" = auth.uid() then
+        insert into public."AccountsMemberships"(
+            "accountId",
+            "userId",
+            "accountRole")
         values(
             new.id,
             auth.uid(),
-            public.get_upper_system_role());
+            public."get_upper_system_role"());
 
     end if;
 
@@ -531,23 +529,23 @@ $$;
 
 -- trigger the function whenever a new account is created
 create trigger "add_current_user_to_new_account"
-after insert on public.accounts for each row
-when (new.is_personal_account = false)
-execute function kit.add_current_user_to_new_account ();
+after insert on public."Accounts" for each row
+when (new."isPersonalAccount" = false)
+execute function kit."add_current_user_to_new_account" ();
 
 -- create a trigger to update the account email when the primary owner email is updated
 create
-or replace function kit.handle_update_user_email () returns trigger language plpgsql security definer
+or replace function kit."handle_update_user_email" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 begin
     update
-        public.accounts
+        public."Accounts"
     set
         email = new.email
     where
-        primary_owner_user_id = new.id
-        and is_personal_account = true;
+        "primaryOwnerUserId" = new.id
+        and "isPersonalAccount" = true;
 
     return new;
 
@@ -560,7 +558,7 @@ $$;
 create trigger "on_auth_user_updated"
 after
 update of email on auth.users for each row
-execute procedure kit.handle_update_user_email ();
+execute procedure kit."handle_update_user_email" ();
 
 /*
  * -------------------------------------------------------
@@ -570,27 +568,27 @@ execute procedure kit.handle_update_user_email ();
  */
 -- Roles Table
 create table if not exists
-  public.roles (
+  public."Roles" (
     name varchar(50) not null,
-    hierarchy_level int not null check (hierarchy_level > 0),
+    "hierarchyLevel" int not null check ("hierarchyLevel" > 0),
     primary key (name),
-    unique (hierarchy_level)
+    unique ("hierarchyLevel")
   );
 
 -- Revoke all on roles table from authenticated and service_role
-revoke all on public.roles
+revoke all on public."Roles"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
 -- Open up access to roles table for authenticated users and service_role
 grant
 select
-on table public.roles to authenticated,
-service_role;
+on table public."Roles" to "authenticated",
+"service_role";
 
 -- RLS
-alter table public.roles enable row level security;
+alter table public."Roles" enable row level security;
 
 /*
  * -------------------------------------------------------
@@ -600,52 +598,51 @@ alter table public.roles enable row level security;
  */
 -- Account Memberships table
 create table if not exists
-  public.accounts_memberships (
-    user_id uuid references auth.users on delete cascade not null,
-    account_id uuid references public.accounts (id) on delete cascade not null,
-    account_role varchar(50) references public.roles (name) not null,
-    created_at timestamptz default current_timestamp not null,
-    updated_at timestamptz default current_timestamp not null,
-    created_by uuid references auth.users,
-    updated_by uuid references auth.users,
-    primary key (user_id, account_id)
+  public."AccountsMemberships" (
+    "userId" uuid references auth.users on delete cascade not null,
+    "accountId" uuid references public."Accounts" (id) on delete cascade not null,
+    "accountRole" varchar(50) references public."Roles" (name) not null,
+    "createdAt" timestamptz default current_timestamp not null,
+    "updatedAt" timestamptz default current_timestamp not null,
+    "createdBy" uuid references auth.users,
+    "updatedBy" uuid references auth.users,
+    primary key ("userId", "accountId")
   );
 
-comment on table public.accounts_memberships is 'The memberships for an account';
+comment on table public."AccountsMemberships" is 'The memberships for an account';
 
-comment on column public.accounts_memberships.account_id is 'The account the membership is for';
+comment on column public."AccountsMemberships"."accountId" is 'The account the membership is for';
 
-comment on column public.accounts_memberships.account_role is 'The role for the membership';
+comment on column public."AccountsMemberships"."accountRole" is 'The role for the membership';
 
--- Revoke all on accounts_memberships table from authenticated and service_role
-revoke all on public.accounts_memberships
+-- Revoke all on AccountsMemberships table from authenticated and service_role
+revoke all on public."AccountsMemberships"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
--- Open up access to accounts_memberships table for authenticated users and service_role
+-- Open up access to AccountsMemberships table for authenticated users and service_role
 grant
-select
-,
+select,
   insert,
 update,
-delete on table public.accounts_memberships to authenticated,
-service_role;
+delete on table public."AccountsMemberships" to "authenticated",
+"service_role";
 
--- Indexes on the accounts_memberships table
-create index ix_accounts_memberships_account_id on public.accounts_memberships (account_id);
+-- Indexes on the AccountsMemberships table
+create index ix_accounts_memberships_account_id on public."AccountsMemberships" ("accountId");
 
-create index ix_accounts_memberships_user_id on public.accounts_memberships (user_id);
+create index ix_accounts_memberships_user_id on public."AccountsMemberships" ("userId");
 
-create index ix_accounts_memberships_account_role on public.accounts_memberships (account_role);
+create index ix_accounts_memberships_accountRole on public."AccountsMemberships" ("accountRole");
 
--- Enable RLS on the accounts_memberships table
-alter table public.accounts_memberships enable row level security;
+-- Enable RLS on the AccountsMemberships table
+alter table public."AccountsMemberships" enable row level security;
 
 -- Function "kit.prevent_account_owner_membership_delete"
 -- Trigger to prevent a primary owner from being removed from an account
 create
-or replace function kit.prevent_account_owner_membership_delete () returns trigger
+or replace function kit."prevent_account_owner_membership_delete" () returns trigger
 set
   search_path = '' as $$
 begin
@@ -653,10 +650,10 @@ begin
         select
             1
         from
-            public.accounts
+            public."Accounts"
         where
-            id = old.account_id
-            and primary_owner_user_id = old.user_id) then
+            id = old."accountId"
+            and "primaryOwnerUserId" = old."userId") then
     raise exception 'The primary account owner cannot be removed from the account membership list';
 
 end if;
@@ -668,35 +665,35 @@ end;
 $$ language plpgsql;
 
 create
-or replace trigger prevent_account_owner_membership_delete_check before delete on public.accounts_memberships for each row
-execute function kit.prevent_account_owner_membership_delete ();
+or replace trigger prevent_account_owner_membership_delete_check before delete on public."AccountsMemberships" for each row
+execute function kit."prevent_account_owner_membership_delete" ();
 
 -- Function "kit.prevent_memberships_update"
--- Trigger to prevent updates to account memberships with the exception of the account_role
+-- Trigger to prevent updates to account memberships with the exception of the accountRole
 create
-or replace function kit.prevent_memberships_update () returns trigger
+or replace function kit."prevent_memberships_update" () returns trigger
 set
   search_path = '' as $$
 begin
-    if new.account_role <> old.account_role then
+    if new."accountRole" <> old."accountRole" then
         return new;
     end if;
 
-    raise exception 'Only the account_role can be updated';
+    raise exception 'Only the accountRole can be updated';
 
 end; $$ language plpgsql;
 
 create
 or replace trigger prevent_memberships_update_check before
-update on public.accounts_memberships for each row
-execute function kit.prevent_memberships_update ();
+update on public."AccountsMemberships" for each row
+execute function kit."prevent_memberships_update" ();
 
 -- Function "public.has_role_on_account"
 -- Function to check if a user has a role on an account
 create
-or replace function public.has_role_on_account (
-  account_id uuid,
-  account_role varchar(50) default null
+or replace function public."has_role_on_account" (
+  "accountId" uuid,
+  "accountRole" varchar(50) default null
 ) returns boolean language sql security definer
 set
   search_path = '' as $$
@@ -705,21 +702,21 @@ set
             select
                 1
             from
-                public.accounts_memberships membership
+                public."AccountsMemberships" membership
             where
-                membership.user_id = (select auth.uid())
-                and membership.account_id = has_role_on_account.account_id
-                and((membership.account_role = has_role_on_account.account_role
-                    or has_role_on_account.account_role is null)));
+                membership."userId" = (select auth.uid())
+                and membership."accountId" = "has_role_on_account"."accountId"
+                and((membership."accountRole" = "has_role_on_account"."accountRole"
+                    or "has_role_on_account"."accountRole" is null)));
 $$;
 
 grant
-execute on function public.has_role_on_account (uuid, varchar) to authenticated;
+execute on function public."has_role_on_account" (uuid, varchar) to "authenticated";
 
 -- Function "public.is_team_member"
 -- Check if a user is a team member of an account or not
 create
-or replace function public.is_team_member (account_id uuid, user_id uuid) returns boolean language sql security definer
+or replace function public."is_team_member" ("accountId" uuid, "userId" uuid) returns boolean language sql security definer
 set
   search_path = '' as $$
     select
@@ -727,45 +724,45 @@ set
             select
                 1
             from
-                public.accounts_memberships membership
+                public."AccountsMemberships" membership
             where
-                public.has_role_on_account(account_id)
-                and membership.user_id = is_team_member.user_id
-                and membership.account_id = is_team_member.account_id);
+                public."has_role_on_account"("accountId")
+                and membership."userId" = "is_team_member"."userId"
+                and membership."accountId" = "is_team_member"."accountId");
 $$;
 
 grant
-execute on function public.is_team_member (uuid, uuid) to authenticated,
-service_role;
+execute on function public."is_team_member" (uuid, uuid) to "authenticated",
+"service_role";
 
 -- RLS
--- SELECT(roles)
--- authenticated users can query roles
-create policy roles_read on public.roles for
+-- SELECT(Roles)
+-- authenticated users can query Roles
+create policy roles_read on public."Roles" for
 select
-  to authenticated using (
+  to "authenticated" using (
     true
   );
 
 -- Function "public.can_action_account_member"
 -- Check if a user can perform management actions on an account member
 create
-or replace function public.can_action_account_member (target_team_account_id uuid, target_user_id uuid) returns boolean
+or replace function public."can_action_account_member" ("targetTeamAccountId" uuid, "targetUserId" uuid) returns boolean
 set
   search_path = '' as $$
 declare
-    permission_granted boolean;
-    target_user_hierarchy_level int;
-    current_user_hierarchy_level int;
-    is_account_owner boolean;
-    target_user_role varchar(50);
+    "permissionGranted" boolean;
+    "targetUserHierarchyLevel" int;
+    "currentUserHierarchyLevel" int;
+    "isAccountOwner" boolean;
+    "targetUserRole" varchar(50);
 begin
-    if target_user_id = auth.uid() then
+    if "targetUserId" = auth.uid() then
       raise exception 'You cannot update your own account membership with this function';
     end if;
 
     -- an account owner can action any member of the account
-    if public.is_account_owner(target_team_account_id) then
+    if public."is_account_owner"("targetTeamAccountId") then
       return true;
     end if;
 
@@ -775,61 +772,61 @@ begin
             select
                 1
             from
-                public.accounts
+                public."Accounts"
             where
-                id = target_team_account_id
-                and primary_owner_user_id = target_user_id) into is_account_owner;
+                id = "targetTeamAccountId"
+                and "primaryOwnerUserId" = "targetUserId") into "isAccountOwner";
 
-    if is_account_owner then
+    if "isAccountOwner" then
         raise exception 'The primary account owner cannot be actioned';
     end if;
 
     -- validate the auth user has the required permission on the account
     -- to manage members of the account
     select
- public.has_permission(auth.uid(), target_team_account_id,
-     'members.manage'::public.app_permissions) into
-     permission_granted;
+ public."has_permission"(auth.uid(), "targetTeamAccountId",
+     'members.manage'::public."AppPermissions") into
+     "permissionGranted";
 
     -- if the user does not have the required permission, raise an exception
-    if not permission_granted then
+    if not "permissionGranted" then
       raise exception 'You do not have permission to action a member from this account';
     end if;
 
     -- get the role of the target user
     select
-        am.account_role,
-        r.hierarchy_level
+        am."accountRole",
+        r."hierarchyLevel"
     from
-        public.accounts_memberships as am
+        public."AccountsMemberships" as am
     join
-        public.roles as r on am.account_role = r.name
+        public."Roles" as r on am."accountRole" = r.name
     where
-        am.account_id = target_team_account_id
-        and am.user_id = target_user_id
-    into target_user_role, target_user_hierarchy_level;
+        am."accountId" = "targetTeamAccountId"
+        and am."userId" = "targetUserId"
+    into "targetUserRole", "targetUserHierarchyLevel";
 
     -- get the hierarchy level of the current user
     select
-        r.hierarchy_level into current_user_hierarchy_level
+        r."hierarchyLevel" into "currentUserHierarchyLevel"
     from
-        public.roles as r
+        public."Roles" as r
     join
-        public.accounts_memberships as am on r.name = am.account_role
+        public."AccountsMemberships" as am on r.name = am."accountRole"
     where
-        am.account_id = target_team_account_id
-        and am.user_id = auth.uid();
+        am."accountId" = "targetTeamAccountId"
+        and am."userId" = auth.uid();
 
-    if target_user_role is null then
+    if "targetUserRole" is null then
       raise exception 'The target user does not have a role on the account';
     end if;
 
-    if current_user_hierarchy_level is null then
+    if "currentUserHierarchyLevel" is null then
       raise exception 'The current user does not have a role on the account';
     end if;
 
     -- check the current user has a higher role than the target user
-    if current_user_hierarchy_level >= target_user_hierarchy_level then
+    if "currentUserHierarchyLevel" >= "targetUserHierarchyLevel" then
       raise exception 'You do not have permission to action a member from this account';
     end if;
 
@@ -840,68 +837,68 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public.can_action_account_member (uuid, uuid) to authenticated,
-service_role;
+execute on function public."can_action_account_member" (uuid, uuid) to "authenticated",
+"service_role";
 
 -- RLS
--- SELECT(accounts_memberships):
+-- SELECT(AccountsMemberships):
 -- Users can read their team members account memberships
-create policy accounts_memberships_read on public.accounts_memberships for
+create policy accounts_memberships_read on public."AccountsMemberships" for
 select
-  to authenticated using (
+  to "authenticated" using (
     (
       (
         select
           auth.uid ()
-      ) = user_id
+      ) = "userId"
     )
-    or is_team_member (account_id, user_id)
+    or public."is_team_member" ("accountId", "userId")
   );
 
 create
-or replace function public.is_account_team_member (target_account_id uuid) returns boolean
+or replace function public."is_account_team_member" ("targetAccountId" uuid) returns boolean
 set
   search_path = '' as $$
     select exists(
         select 1
-        from public.accounts_memberships as membership
-        where public.is_team_member (membership.account_id, target_account_id)
+        from public."AccountsMemberships" as membership
+        where public."is_team_member" (membership."accountId", "targetAccountId")
     );
 $$ language sql;
 
 grant
-execute on function public.is_account_team_member (uuid) to authenticated,
-service_role;
+execute on function public."is_account_team_member" (uuid) to "authenticated",
+"service_role";
 
--- RLS on the accounts table
--- SELECT(accounts):
--- Users can read the an account if
+-- RLS on the Accounts table
+-- SELECT(Accounts):
+-- Users can read an account if
 --   - they are the primary owner of the account
 --   - they have a role on the account
 --   - they are reading an account of the same team
-create policy accounts_read on public.accounts for
+create policy accounts_read on public."Accounts" for
 select
-  to authenticated using (
+  to "authenticated" using (
     (
       (
         select
           auth.uid ()
-      ) = primary_owner_user_id
+      ) = "primaryOwnerUserId"
     )
-    or public.has_role_on_account (id)
-    or public.is_account_team_member (id)
+    or public."has_role_on_account" (id)
+    or public."is_account_team_member" (id)
   );
 
--- DELETE(accounts_memberships):
+-- DELETE(AccountsMemberships):
 -- Users with the required role can remove members from an account or remove their own
-create policy accounts_memberships_delete on public.accounts_memberships for delete to authenticated using (
+create policy accounts_memberships_delete on public."AccountsMemberships" for delete to "authenticated" using (
   (
-    user_id = (
+    "userId" = (
       select
         auth.uid ()
     )
   )
-  or public.can_action_account_member (account_id, user_id)
+  or public."can_action_account_member" ("accountId", "userId")
 );
 
 /*
@@ -913,48 +910,47 @@ create policy accounts_memberships_delete on public.accounts_memberships for del
  */
 -- Create table for roles permissions
 create table if not exists
-  public.role_permissions (
+  public."RolePermissions" (
     id bigint generated by default as identity primary key,
-    role varchar(50) references public.roles (name) not null,
-    permission public.app_permissions not null,
+    role varchar(50) references public."Roles" (name) not null,
+    permission public."AppPermissions" not null,
     unique (role, permission)
   );
 
-comment on table public.role_permissions is 'The permissions for a role';
+comment on table public."RolePermissions" is 'The permissions for a role';
 
-comment on column public.role_permissions.role is 'The role the permission is for';
+comment on column public."RolePermissions".role is 'The role the permission is for';
 
-comment on column public.role_permissions.permission is 'The permission for the role';
+comment on column public."RolePermissions".permission is 'The permission for the role';
 
--- Indexes on the role_permissions table
-create index ix_role_permissions_role on public.role_permissions (role);
+-- Indexes on the RolePermissions table
+create index ix_role_permissions_role on public."RolePermissions" (role);
 
--- Revoke all on role_permissions table from authenticated and service_role
-revoke all on public.role_permissions
+-- Revoke all on RolePermissions table from authenticated and service_role
+revoke all on public."RolePermissions"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
--- Open up access to role_permissions table for authenticated users and service_role
+-- Open up access to RolePermissions table for authenticated users and service_role
 grant
-select
-,
+select,
   insert,
 update,
-delete on table public.role_permissions to service_role;
+delete on table public."RolePermissions" to "service_role";
 
 -- Authenticated users can read role permissions
 grant
 select
-  on table public.role_permissions to authenticated;
+  on table public."RolePermissions" to "authenticated";
 
 -- Function "public.has_permission"
 -- Create a function to check if a user has a permission
 create
-or replace function public.has_permission (
-  user_id uuid,
-  account_id uuid,
-  permission_name public.app_permissions
+or replace function public."has_permission" (
+  "userId" uuid,
+  "accountId" uuid,
+  "permissionName" public."AppPermissions"
 ) returns boolean
 set
   search_path = '' as $$
@@ -963,37 +959,37 @@ begin
         select
             1
         from
-            public.accounts_memberships
-	    join public.role_permissions on
-		accounts_memberships.account_role =
-		role_permissions.role
+            public."AccountsMemberships"
+	    join public."RolePermissions" on
+		"AccountsMemberships"."accountRole" =
+		"RolePermissions".role
         where
-            accounts_memberships.user_id = has_permission.user_id
-            and accounts_memberships.account_id = has_permission.account_id
-            and role_permissions.permission = has_permission.permission_name);
+            "AccountsMemberships"."userId" = "has_permission"."userId"
+            and "AccountsMemberships"."accountId" = "has_permission"."accountId"
+            and "RolePermissions".permission = "has_permission"."permissionName");
 
 end;
 
 $$ language plpgsql;
 
 grant
-execute on function public.has_permission (uuid, uuid, public.app_permissions) to authenticated,
-service_role;
+execute on function public."has_permission" (uuid, uuid, public."AppPermissions") to "authenticated",
+"service_role";
 
 -- Function "public.has_more_elevated_role"
 -- Check if a user has a more elevated role than the target role
 create
-or replace function public.has_more_elevated_role (
-  target_user_id uuid,
-  target_account_id uuid,
-  role_name varchar
+or replace function public."has_more_elevated_role" (
+  "targetUserId" uuid,
+  "targetAccountId" uuid,
+  "roleName" varchar
 ) returns boolean
 set
   search_path = '' as $$
 declare
-    declare is_primary_owner boolean;
-    user_role_hierarchy_level int;
-    target_role_hierarchy_level int;
+    "isPrimaryOwner" boolean;
+    "userRoleHierarchyLevel" int;
+    "targetRoleHierarchyLevel" int;
 begin
     -- Check if the user is the primary owner of the account
     select
@@ -1001,75 +997,75 @@ begin
             select
                 1
             from
-                public.accounts
+                public."Accounts"
             where
-                id = target_account_id
-                and primary_owner_user_id = target_user_id) into is_primary_owner;
+                id = "targetAccountId"
+                and "primaryOwnerUserId" = "targetUserId") into "isPrimaryOwner";
 
     -- If the user is the primary owner, they have the highest role and can
     --   perform any action
-    if is_primary_owner then
+    if "isPrimaryOwner" then
         return true;
     end if;
 
     -- Get the hierarchy level of the user's role within the account
     select
-        hierarchy_level into user_role_hierarchy_level
+        "hierarchyLevel" into "userRoleHierarchyLevel"
     from
-        public.roles
+        public."Roles"
     where
         name =(
             select
-                account_role
+                "accountRole"
             from
-                public.accounts_memberships
+                public."AccountsMemberships"
             where
-                account_id = target_account_id
-                and target_user_id = user_id);
+                "accountId" = "targetAccountId"
+                and "targetUserId" = "userId");
 
-    if user_role_hierarchy_level is null then
+    if "userRoleHierarchyLevel" is null then
         return false;
     end if;
 
     -- Get the hierarchy level of the target role
     select
-        hierarchy_level into target_role_hierarchy_level
+        "hierarchyLevel" into "targetRoleHierarchyLevel"
     from
-        public.roles
+        public."Roles"
     where
-        name = role_name;
+        name = "roleName";
 
     -- If the target role does not exist, the user cannot perform the action
-    if target_role_hierarchy_level is null then
+    if "targetRoleHierarchyLevel" is null then
         return false;
     end if;
 
     -- If the user's role is higher than the target role, they can perform
     --   the action
-    return user_role_hierarchy_level < target_role_hierarchy_level;
+    return "userRoleHierarchyLevel" < "targetRoleHierarchyLevel";
 
 end;
 
 $$ language plpgsql;
 
 grant
-execute on function public.has_more_elevated_role (uuid, uuid, varchar) to authenticated,
-service_role;
+execute on function public."has_more_elevated_role" (uuid, uuid, varchar) to "authenticated",
+"service_role";
 
--- Function "public.has_same_role_hierarchy_level"
+-- Function "public.has_same_role_hierarchyLevel"
 -- Check if a user has the same role hierarchy level as the target role
 create
-or replace function public.has_same_role_hierarchy_level (
-  target_user_id uuid,
-  target_account_id uuid,
-  role_name varchar
+or replace function public."has_same_role_hierarchyLevel" (
+  "targetUserId" uuid,
+  "targetAccountId" uuid,
+  "roleName" varchar
 ) returns boolean
 set
   search_path = '' as $$
 declare
-    is_primary_owner boolean;
-    user_role_hierarchy_level int;
-    target_role_hierarchy_level int;
+    "isPrimaryOwner" boolean;
+    "userRoleHierarchyLevel" int;
+    "targetRoleHierarchyLevel" int;
 begin
     -- Check if the user is the primary owner of the account
     select
@@ -1077,69 +1073,69 @@ begin
             select
                 1
             from
-                public.accounts
+                public."Accounts"
             where
-                id = target_account_id
-                and primary_owner_user_id = target_user_id) into is_primary_owner;
+                id = "targetAccountId"
+                and "primaryOwnerUserId" = "targetUserId") into "isPrimaryOwner";
 
     -- If the user is the primary owner, they have the highest role and can perform any action
-    if is_primary_owner then
+    if "isPrimaryOwner" then
         return true;
     end if;
 
     -- Get the hierarchy level of the user's role within the account
     select
-        hierarchy_level into user_role_hierarchy_level
+        "hierarchyLevel" into "userRoleHierarchyLevel"
     from
-        public.roles
+        public."Roles"
     where
         name =(
             select
-                account_role
+                "accountRole"
             from
-                public.accounts_memberships
+                public."AccountsMemberships"
             where
-                account_id = target_account_id
-                and target_user_id = user_id);
+                "accountId" = "targetAccountId"
+                and "targetUserId" = "userId");
 
     -- If the user does not have a role in the account, they cannot perform the action
-    if user_role_hierarchy_level is null then
+    if "userRoleHierarchyLevel" is null then
         return false;
     end if;
 
     -- Get the hierarchy level of the target role
     select
-        hierarchy_level into target_role_hierarchy_level
+        "hierarchyLevel" into "targetRoleHierarchyLevel"
     from
-        public.roles
+        public."Roles"
     where
-        name = role_name;
+        name = "roleName";
 
     -- If the target role does not exist, the user cannot perform the action
-    if target_role_hierarchy_level is null then
+    if "targetRoleHierarchyLevel" is null then
         return false;
     end if;
 
    -- check the user's role hierarchy level is the same as the target role
-    return user_role_hierarchy_level = target_role_hierarchy_level;
+    return "userRoleHierarchyLevel" = "targetRoleHierarchyLevel";
 
 end;
 
 $$ language plpgsql;
 
 grant
-execute on function public.has_same_role_hierarchy_level (uuid, uuid, varchar) to authenticated,
-service_role;
+execute on function public."has_same_role_hierarchyLevel" (uuid, uuid, varchar) to "authenticated",
+"service_role";
 
--- Enable RLS on the role_permissions table
-alter table public.role_permissions enable row level security;
+-- Enable RLS on the RolePermissions table
+alter table public."RolePermissions" enable row level security;
 
--- RLS on the role_permissions table
--- SELECT(role_permissions):
+-- RLS on the RolePermissions table
+-- SELECT(RolePermissions):
 -- Authenticated Users can read global permissions
-create policy role_permissions_read on public.role_permissions for
+create policy role_permissions_read on public."RolePermissions" for
 select
-  to authenticated using (true);
+  to "authenticated" using (true);
 
 /*
  * -------------------------------------------------------
@@ -1148,69 +1144,68 @@ select
  * -------------------------------------------------------
  */
 create table if not exists
-  public.invitations (
+  public."Invitations" (
     id serial primary key,
     email varchar(255) not null,
-    account_id uuid references public.accounts (id) on delete cascade not null,
-    invited_by uuid references auth.users on delete cascade not null,
-    role varchar(50) references public.roles (name) not null,
-    invite_token varchar(255) unique not null,
-    created_at timestamptz default current_timestamp not null,
-    updated_at timestamptz default current_timestamp not null,
-    expires_at timestamptz default current_timestamp + interval '7 days' not null,
-    unique (email, account_id)
+    "accountId" uuid references public."Accounts" (id) on delete cascade not null,
+    "invitedBy" uuid references auth.users on delete cascade not null,
+    role varchar(50) references public."Roles" (name) not null,
+    "inviteToken" varchar(255) unique not null,
+    "createdAt" timestamptz default current_timestamp not null,
+    "updatedAt" timestamptz default current_timestamp not null,
+    "expiresAt" timestamptz default current_timestamp + interval '7 days' not null,
+    unique (email, "accountId")
   );
 
-comment on table public.invitations is 'The invitations for an account';
+comment on table public."Invitations" is 'The invitations for an account';
 
-comment on column public.invitations.account_id is 'The account the invitation is for';
+comment on column public."Invitations"."accountId" is 'The account the invitation is for';
 
-comment on column public.invitations.invited_by is 'The user who invited the user';
+comment on column public."Invitations"."invitedBy" is 'The user who invited the user';
 
-comment on column public.invitations.role is 'The role for the invitation';
+comment on column public."Invitations".role is 'The role for the invitation';
 
-comment on column public.invitations.invite_token is 'The token for the invitation';
+comment on column public."Invitations"."inviteToken" is 'The token for the invitation';
 
-comment on column public.invitations.expires_at is 'The expiry date for the invitation';
+comment on column public."Invitations"."expiresAt" is 'The expiry date for the invitation';
 
-comment on column public.invitations.email is 'The email of the user being invited';
+comment on column public."Invitations".email is 'The email of the user being invited';
 
--- Indexes on the invitations table
-create index ix_invitations_account_id on public.invitations (account_id);
+-- Indexes on the Invitations table
+create index ix_invitations_account_id on public."Invitations" ("accountId");
 
--- Revoke all on invitations table from authenticated and service_role
-revoke all on public.invitations
+-- Revoke all on Invitations table from authenticated and service_role
+revoke all on public."Invitations"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
--- Open up access to invitations table for authenticated users and service_role
+-- Open up access to Invitations table for authenticated users and service_role
 grant
-select
-,
+select,
   insert,
 update,
-delete on table public.invitations to authenticated,
-service_role;
+delete on table public."Invitations" to "authenticated",
+"service_role";
 
--- Enable RLS on the invitations table
-alter table public.invitations enable row level security;
+-- Enable RLS on the Invitations table
+alter table public."Invitations" enable row level security;
 
 -- Function "kit.check_team_account"
 -- Function to check if the account is a team account or not when inserting or updating an invitation
 create
-or replace function kit.check_team_account () returns trigger
+or replace function kit."check_team_account" () returns trigger
 set
   search_path = '' as $$
 begin
     if(
         select
-            is_personal_account
+            "isPersonalAccount"
         from
-            public.accounts
+            public."Accounts"
         where
-            id = new.account_id) then
-        raise exception 'Account must be an team account';
+            id = new."accountId") then
+        raise exception 'Account must be a team account';
 
     end if;
 
@@ -1222,141 +1217,141 @@ $$ language plpgsql;
 
 create trigger only_team_accounts_check before insert
 or
-update on public.invitations for each row
-execute procedure kit.check_team_account ();
+update on public."Invitations" for each row
+execute procedure kit."check_team_account" ();
 
--- RLS on the invitations table
--- SELECT(invitations):
+-- RLS on the Invitations table
+-- SELECT(Invitations):
 -- Users can read invitations to users of an account they are a member of
-create policy invitations_read_self on public.invitations for
+create policy invitations_read_self on public."Invitations" for
 select
-  to authenticated using (public.has_role_on_account (account_id));
+  to "authenticated" using (public."has_role_on_account" ("accountId"));
 
--- INSERT(invitations):
+-- INSERT(Invitations):
 -- Users can create invitations to users of an account they are
 -- a member of  and have the 'invites.manage' permission AND the target role is not higher than the user's role
-create policy invitations_create_self on public.invitations for insert to authenticated
+create policy invitations_create_self on public."Invitations" for insert to "authenticated"
 with
   check (
-    public.is_set ('enable_team_accounts')
-    and public.has_permission (
+    public."is_set" ('enableTeamAccounts')
+    and public."has_permission" (
       (
         select
           auth.uid ()
       ),
-      account_id,
-      'invites.manage'::public.app_permissions
+      "accountId",
+      'invites.manage'::public."AppPermissions"
     )
-    and public.has_same_role_hierarchy_level (
+    and public."has_same_role_hierarchyLevel" (
       (
         select
           auth.uid ()
       ),
-      account_id,
+      "accountId",
       role
     )
   );
 
--- UPDATE(invitations):
+-- UPDATE(Invitations):
 -- Users can update invitations to users of an account they are a member of and have the 'invites.manage' permission AND
 -- the target role is not higher than the user's role
-create policy invitations_update on public.invitations
+create policy invitations_update on public."Invitations"
 for update
-  to authenticated using (
-    public.has_permission (
+  to "authenticated" using (
+    public."has_permission" (
       (
         select
           auth.uid ()
       ),
-      account_id,
-      'invites.manage'::public.app_permissions
+      "accountId",
+      'invites.manage'::public."AppPermissions"
     )
-    and public.has_more_elevated_role (
+    and public."has_more_elevated_role" (
       (
         select
           auth.uid ()
       ),
-      account_id,
+      "accountId",
       role
     )
   )
 with
   check (
-    public.has_permission (
+    public."has_permission" (
       (
         select
           auth.uid ()
       ),
-      account_id,
-      'invites.manage'::public.app_permissions
+      "accountId",
+      'invites.manage'::public."AppPermissions"
     )
-    and public.has_more_elevated_role (
+    and public."has_more_elevated_role" (
       (
         select
           auth.uid ()
       ),
-      account_id,
+      "accountId",
       role
     )
   );
 
--- DELETE(public.invitations):
+-- DELETE(public.Invitations):
 -- Users can delete invitations to users of an account they are a member of and have the 'invites.manage' permission
-create policy invitations_delete on public.invitations for delete to authenticated using (
-  has_role_on_account (account_id)
-  and public.has_permission (
+create policy invitations_delete on public."Invitations" for delete to "authenticated" using (
+  public."has_role_on_account" ("accountId")
+  and public."has_permission" (
     (
       select
         auth.uid ()
     ),
-    account_id,
-    'invites.manage'::public.app_permissions
+    "accountId",
+    'invites.manage'::public."AppPermissions"
   )
 );
 
 -- Functions "public.accept_invitation"
 -- Function to accept an invitation to an account
 create
-or replace function accept_invitation (token text, user_id uuid) returns uuid
+or replace function public."accept_invitation" ("token" text, "userId" uuid) returns uuid
 set
   search_path = '' as $$
 declare
-    target_account_id uuid;
-    target_role varchar(50);
+    "targetAccountId" uuid;
+    role varchar(50);
 begin
     select
-        account_id,
-        role into target_account_id,
-        target_role
+        "accountId",
+        role into "targetAccountId",
+        role
     from
-        public.invitations
+        public."Invitations"
     where
-        invite_token = token
-        and expires_at > now();
+        "inviteToken" = token
+        and "expiresAt" > now();
 
     if not found then
         raise exception 'Invalid or expired invitation token';
     end if;
 
-    insert into public.accounts_memberships(
-        user_id,
-        account_id,
-        account_role)
+    insert into public."AccountsMemberships"(
+        "userId",
+        "accountId",
+        "accountRole")
     values (
-        accept_invitation.user_id,
-        target_account_id,
-        target_role);
+        "accept_invitation"."userId",
+        "targetAccountId",
+        role);
 
-    delete from public.invitations
-    where invite_token = token;
+    delete from public."Invitations"
+    where "inviteToken" = token;
 
-    return target_account_id;
+    return "targetAccountId";
 end;
 
 $$ language plpgsql;
 
 grant
-execute on function accept_invitation (text, uuid) to service_role;
+execute on function public."accept_invitation" (text, uuid) to "service_role";
 
 /*
  * -------------------------------------------------------
@@ -1366,62 +1361,61 @@ execute on function accept_invitation (text, uuid) to service_role;
  */
 -- Account Subscriptions table
 create table
-  public.billing_customers (
-    account_id uuid references public.accounts (id) on delete cascade not null,
+  public."BillingCustomers" (
+    "accountId" uuid references public."Accounts" (id) on delete cascade not null,
     id serial primary key,
     email text,
-    provider public.billing_provider not null,
-    customer_id text not null,
-    unique (account_id, customer_id, provider)
+    provider public."BillingProvider" not null,
+    "customerId" text not null,
+    unique ("accountId", "customerId", provider)
   );
 
-comment on table public.billing_customers is 'The billing customers for an account';
+comment on table public."BillingCustomers" is 'The billing customers for an account';
 
-comment on column public.billing_customers.account_id is 'The account the billing customer is for';
+comment on column public."BillingCustomers"."accountId" is 'The account the billing customer is for';
 
-comment on column public.billing_customers.provider is 'The provider of the billing customer';
+comment on column public."BillingCustomers".provider is 'The provider of the billing customer';
 
-comment on column public.billing_customers.customer_id is 'The customer ID for the billing customer';
+comment on column public."BillingCustomers"."customerId" is 'The customer ID for the billing customer';
 
-comment on column public.billing_customers.email is 'The email of the billing customer';
+comment on column public."BillingCustomers".email is 'The email of the billing customer';
 
--- Indexes on the billing_customers table
-create index ix_billing_customers_account_id on public.billing_customers (account_id);
+-- Indexes on the BillingCustomers table
+create index ix_billing_customers_account_id on public."BillingCustomers" ("accountId");
 
--- Revoke all on billing_customers table from authenticated and service_role
-revoke all on public.billing_customers
+-- Revoke all on BillingCustomers table from authenticated and service_role
+revoke all on public."BillingCustomers"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
--- Open up relevant access to billing_customers table for authenticated users and service_role
+-- Open up relevant access to BillingCustomers table for authenticated users and service_role
 grant
-select
-,
+select,
   insert,
 update,
-delete on table public.billing_customers to service_role;
+delete on table public."BillingCustomers" to "service_role";
 
--- Open up access to billing_customers table for authenticated users
+-- Open up access to BillingCustomers table for authenticated users
 grant
 select
-  on table public.billing_customers to authenticated,
-  service_role;
+  on table public."BillingCustomers" to "authenticated",
+  "service_role";
 
--- Enable RLS on billing_customers table
-alter table public.billing_customers enable row level security;
+-- Enable RLS on BillingCustomers table
+alter table public."BillingCustomers" enable row level security;
 
--- RLS on the billing_customers table
--- SELECT(billing_customers):
+-- RLS on the BillingCustomers table
+-- SELECT(BillingCustomers):
 -- Users can read account subscriptions on an account they are a member of
-create policy billing_customers_read_self on public.billing_customers for
+create policy billing_customers_read_self on public."BillingCustomers" for
 select
-  to authenticated using (
-    account_id = (
+  to "authenticated" using (
+    "accountId" = (
       select
         auth.uid ()
     )
-    or has_role_on_account (account_id)
+    or public."has_role_on_account" ("accountId")
   );
 
 /*
@@ -1432,227 +1426,225 @@ select
  */
 -- Subscriptions table
 create table if not exists
-  public.subscriptions (
+  public."Subscriptions" (
     id text not null primary key,
-    account_id uuid references public.accounts (id) on delete cascade not null,
-    billing_customer_id int references public.billing_customers on delete cascade not null,
-    status public.subscription_status not null,
+    "accountId" uuid references public."Accounts" (id) on delete cascade not null,
+    "billingCustomerId" int references public."BillingCustomers" on delete cascade not null,
+    status public."SubscriptionStatus" not null,
     active bool not null,
-    billing_provider public.billing_provider not null,
-    cancel_at_period_end bool not null,
+    "billingProvider" public."BillingProvider" not null,
+    "cancelAtPeriodEnd" bool not null,
     currency varchar(3) not null,
-    created_at timestamptz not null default current_timestamp,
-    updated_at timestamptz not null default current_timestamp,
-    period_starts_at timestamptz not null,
-    period_ends_at timestamptz not null,
-    trial_starts_at timestamptz,
-    trial_ends_at timestamptz
+    "createdAt" timestamptz not null default current_timestamp,
+    "updatedAt" timestamptz not null default current_timestamp,
+    "periodStartsAt" timestamptz not null,
+    "periodEndsAt" timestamptz not null,
+    "trialStartsAt" timestamptz,
+    "trialEndsAt" timestamptz
   );
 
-comment on table public.subscriptions is 'The subscriptions for an account';
+comment on table public."Subscriptions" is 'The subscriptions for an account';
 
-comment on column public.subscriptions.account_id is 'The account the subscription is for';
+comment on column public."Subscriptions"."accountId" is 'The account the subscription is for';
 
-comment on column public.subscriptions.billing_provider is 'The provider of the subscription';
+comment on column public."Subscriptions"."billingProvider" is 'The provider of the subscription';
 
-comment on column public.subscriptions.cancel_at_period_end is 'Whether the subscription will be canceled at the end of the period';
+comment on column public."Subscriptions"."cancelAtPeriodEnd" is 'Whether the subscription will be canceled at the end of the period';
 
-comment on column public.subscriptions.currency is 'The currency for the subscription';
+comment on column public."Subscriptions".currency is 'The currency for the subscription';
 
-comment on column public.subscriptions.status is 'The status of the subscription';
+comment on column public."Subscriptions".status is 'The status of the subscription';
 
-comment on column public.subscriptions.period_starts_at is 'The start of the current period for the subscription';
+comment on column public."Subscriptions"."periodStartsAt" is 'The start of the current period for the subscription';
 
-comment on column public.subscriptions.period_ends_at is 'The end of the current period for the subscription';
+comment on column public."Subscriptions"."periodEndsAt" is 'The end of the current period for the subscription';
 
-comment on column public.subscriptions.trial_starts_at is 'The start of the trial period for the subscription';
+comment on column public."Subscriptions"."trialStartsAt" is 'The start of the trial period for the subscription';
 
-comment on column public.subscriptions.trial_ends_at is 'The end of the trial period for the subscription';
+comment on column public."Subscriptions"."trialEndsAt" is 'The end of the trial period for the subscription';
 
-comment on column public.subscriptions.active is 'Whether the subscription is active';
+comment on column public."Subscriptions".active is 'Whether the subscription is active';
 
-comment on column public.subscriptions.billing_customer_id is 'The billing customer ID for the subscription';
+comment on column public."Subscriptions"."billingCustomerId" is 'The billing customer ID for the subscription';
 
--- Revoke all on subscriptions table from authenticated and service_role
-revoke all on public.subscriptions
+-- Revoke all on Subscriptions table from authenticated and service_role
+revoke all on public."Subscriptions"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
--- Open up relevant access to subscriptions table for authenticated users and service_role
+-- Open up relevant access to Subscriptions table for authenticated users and service_role
 grant
-select
-,
+select,
   insert,
-update,
-delete on table public.subscriptions to service_role;
+  update,
+  delete on table public."Subscriptions" to "service_role";
 
 grant
-select
-  on table public.subscriptions to authenticated;
+select on table public."Subscriptions" to "authenticated";
 
--- Indexes on the subscriptions table
-create index ix_subscriptions_account_id on public.subscriptions (account_id);
+-- Indexes on the Subscriptions table
+create index ix_subscriptions_account_id on public."Subscriptions" ("accountId");
 
--- Enable RLS on subscriptions table
-alter table public.subscriptions enable row level security;
+-- Enable RLS on Subscriptions table
+alter table public."Subscriptions" enable row level security;
 
--- RLS on the subscriptions table
--- SELECT(subscriptions):
+-- RLS on the Subscriptions table
+-- SELECT(Subscriptions):
 -- Users can read account subscriptions on an account they are a member of
-create policy subscriptions_read_self on public.subscriptions for
+create policy subscriptions_read_self on public."Subscriptions" for
 select
-  to authenticated using (
+  to "authenticated" using (
     (
-      has_role_on_account (account_id)
-      and public.is_set ('enable_team_account_billing')
+      public."has_role_on_account" ("accountId")
+      and public."is_set" ('enableTeamAccountBilling')
     )
     or (
-      account_id = (
+      "accountId" = (
         select
           auth.uid ()
       )
-      and public.is_set ('enable_account_billing')
+      and public."is_set" ('enableAccountBilling')
     )
   );
 
 -- Function "public.upsert_subscription"
 -- Insert or Update a subscription and its items in the database when receiving a webhook from the billing provider
 create
-or replace function public.upsert_subscription (
-  target_account_id uuid,
-  target_customer_id varchar(255),
-  target_subscription_id text,
+or replace function public."upsert_subscription" (
+  "targetAccountId" uuid,
+  "targetCustomerId" varchar(255),
+  "targetSubscriptionId" text,
   active bool,
-  status public.subscription_status,
-  billing_provider public.billing_provider,
-  cancel_at_period_end bool,
+  status public."SubscriptionStatus",
+  "billingProvider" public."BillingProvider",
+  "cancelAtPeriodEnd" bool,
   currency varchar(3),
-  period_starts_at timestamptz,
-  period_ends_at timestamptz,
-  line_items jsonb,
-  trial_starts_at timestamptz default null,
-  trial_ends_at timestamptz default null
-) returns public.subscriptions
+  "periodStartsAt" timestamptz,
+  "periodEndsAt" timestamptz,
+  "lineItems" jsonb,
+  "trialStartsAt" timestamptz default null,
+  "trialEndsAt" timestamptz default null
+) returns public."Subscriptions"
 set
   search_path = '' as $$
 declare
-    new_subscription public.subscriptions;
+    new_subscription public."Subscriptions";
     new_billing_customer_id int;
 begin
-    insert into public.billing_customers(
-        account_id,
+    insert into public."BillingCustomers"(
+        "accountId",
         provider,
-        customer_id)
+        "customerId")
     values (
-        target_account_id,
-        billing_provider,
-        target_customer_id)
+        "targetAccountId",
+        provider,
+        "targetCustomerId")
 on conflict (
-    account_id,
+    "accountId",
     provider,
-    customer_id)
+    "customerId")
     do update set
         provider = excluded.provider
     returning
         id into new_billing_customer_id;
 
-    insert into public.subscriptions(
-        account_id,
-        billing_customer_id,
+    insert into public."Subscriptions"(
+        "accountId",
+        "billingCustomerId",
         id,
         active,
         status,
-        billing_provider,
-        cancel_at_period_end,
+        "billingProvider",
+        "cancelAtPeriodEnd",
         currency,
-        period_starts_at,
-        period_ends_at,
-        trial_starts_at,
-        trial_ends_at)
+        "periodStartsAt",
+        "periodEndsAt",
+        "trialStartsAt",
+        "trialEndsAt")
     values (
-        target_account_id,
+        "targetAccountId",
         new_billing_customer_id,
-        target_subscription_id,
+        "targetSubscriptionId",
         active,
         status,
-        billing_provider,
-        cancel_at_period_end,
+        "billingProvider",
+        "cancelAtPeriodEnd",
         currency,
-        period_starts_at,
-        period_ends_at,
-        trial_starts_at,
-        trial_ends_at)
+        "periodStartsAt",
+        "periodEndsAt",
+        "trialStartsAt",
+        "trialEndsAt")
 on conflict (
     id)
     do update set
         active = excluded.active,
         status = excluded.status,
-        cancel_at_period_end = excluded.cancel_at_period_end,
+        "cancelAtPeriodEnd" = excluded."cancelAtPeriodEnd",
         currency = excluded.currency,
-        period_starts_at = excluded.period_starts_at,
-        period_ends_at = excluded.period_ends_at,
-        trial_starts_at = excluded.trial_starts_at,
-        trial_ends_at = excluded.trial_ends_at
+        "periodStartsAt" = excluded."periodStartsAt",
+        "periodEndsAt" = excluded."periodEndsAt",
+        "trialStartsAt" = excluded."trialStartsAt",
+        "trialEndsAt" = excluded."trialEndsAt"
     returning
         * into new_subscription;
 
-    -- Upsert subscription items and delete ones that are not in the line_items array
+    -- Upsert subscription items and delete ones that are not in the "lineItems" array
     with item_data as (
         select
-            (line_item ->> 'id')::varchar as line_item_id,
-            (line_item ->> 'product_id')::varchar as prod_id,
-            (line_item ->> 'variant_id')::varchar as var_id,
-            (line_item ->> 'type')::public.subscription_item_type as type,
-            (line_item ->> 'price_amount')::numeric as price_amt,
+            (line_item ->> 'id')::varchar as "line_item_id",
+            (line_item ->> 'product_id')::varchar as "prod_id",
+            (line_item ->> 'variant_id')::varchar as "var_id",
+            (line_item ->> 'type')::public."SubscriptionItemType" as type,
+            (line_item ->> 'price_amount')::numeric as "price_amt",
             (line_item ->> 'quantity')::integer as qty,
             (line_item ->> 'interval')::varchar as intv,
-            (line_item ->> 'interval_count')::integer as intv_count
+            (line_item ->> 'interval_count')::integer as "intv_count"
         from
-            jsonb_array_elements(line_items) as line_item
+            jsonb_array_elements("lineItems") as line_item
     ),
-    line_item_ids as (
-        select line_item_id from item_data
+    "line_item_ids" as (
+        select "line_item_id" from item_data
     ),
     deleted_items as (
         delete from
-            public.subscription_items
+            public."SubscriptionItems"
         where
-            public.subscription_items.subscription_id = new_subscription.id
-            and public.subscription_items.id not in (select line_item_id from line_item_ids)
+            public."SubscriptionItems"."subscriptionId" = new_subscription.id
+            and public."SubscriptionItems".id not in (select "line_item_id" from "line_item_ids")
         returning *
     )
-    insert into public.subscription_items(
+    insert into public."SubscriptionItems"(
         id,
-        subscription_id,
-        product_id,
-        variant_id,
+        "subscriptionId",
+        "productId",
+        "variantId",
         type,
-        price_amount,
+        "priceAmount",
         quantity,
         interval,
-        interval_count)
+        "intervalCount")
     select
-        line_item_id,
-        target_subscription_id,
-        prod_id,
-        var_id,
+        "line_item_id",
+        "targetSubscriptionId",
+        "prod_id",
+        "var_id",
         type,
-        price_amt,
+        "price_amt",
         qty,
         intv,
-        intv_count
+        "intv_count"
     from
         item_data
     on conflict (id)
         do update set
-            product_id = excluded.product_id,
-            variant_id = excluded.variant_id,
-            price_amount = excluded.price_amount,
+            "productId" = excluded."productId",
+            "variantId" = excluded."variantId",
+            "priceAmount" = excluded."priceAmount",
             quantity = excluded.quantity,
             interval = excluded.interval,
             type = excluded.type,
-            interval_count = excluded.interval_count;
+            "intervalCount" = excluded."intervalCount";
 
     return new_subscription;
 
@@ -1661,13 +1653,13 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public.upsert_subscription (
+execute on function public."upsert_subscription" (
   uuid,
   varchar,
   text,
   bool,
-  public.subscription_status,
-  public.billing_provider,
+  public."SubscriptionStatus",
+  public."BillingProvider",
   bool,
   varchar,
   timestamptz,
@@ -1675,7 +1667,7 @@ execute on function public.upsert_subscription (
   jsonb,
   timestamptz,
   timestamptz
-) to service_role;
+) to "service_role";
 
 /* -------------------------------------------------------
 * Section: Subscription Items
@@ -1684,82 +1676,81 @@ execute on function public.upsert_subscription (
 * -------------------------------------------------------
 */
 create table if not exists
-  public.subscription_items (
+  public."SubscriptionItems" (
     id varchar(255) not null primary key,
-    subscription_id text references public.subscriptions (id) on delete cascade not null,
-    product_id varchar(255) not null,
-    variant_id varchar(255) not null,
-    type public.subscription_item_type not null,
-    price_amount numeric,
+    "subscriptionId" text references public."Subscriptions" (id) on delete cascade not null,
+    "productId" varchar(255) not null,
+    "variantId" varchar(255) not null,
+    type public."SubscriptionItemType" not null,
+    "priceAmount" numeric,
     quantity integer not null default 1,
     interval varchar(255) not null,
-    interval_count integer not null check (interval_count > 0),
-    created_at timestamptz not null default current_timestamp,
-    updated_at timestamptz not null default current_timestamp,
-    unique (subscription_id, product_id, variant_id)
+    "intervalCount" integer not null check ("intervalCount" > 0),
+    "createdAt" timestamptz not null default current_timestamp,
+    "updatedAt" timestamptz not null default current_timestamp,
+    unique ("subscriptionId", "productId", "variantId")
   );
 
-comment on table public.subscription_items is 'The items in a subscription';
+comment on table public."SubscriptionItems" is 'The items in a subscription';
 
-comment on column public.subscription_items.subscription_id is 'The subscription the item is for';
+comment on column public."SubscriptionItems"."subscriptionId" is 'The subscription the item is for';
 
-comment on column public.subscription_items.product_id is 'The product ID for the item';
+comment on column public."SubscriptionItems"."productId" is 'The product ID for the item';
 
-comment on column public.subscription_items.variant_id is 'The variant ID for the item';
+comment on column public."SubscriptionItems"."variantId" is 'The variant ID for the item';
 
-comment on column public.subscription_items.price_amount is 'The price amount for the item';
+comment on column public."SubscriptionItems"."priceAmount" is 'The price amount for the item';
 
-comment on column public.subscription_items.quantity is 'The quantity of the item';
+comment on column public."SubscriptionItems".quantity is 'The quantity of the item';
 
-comment on column public.subscription_items.interval is 'The interval for the item';
+comment on column public."SubscriptionItems".interval is 'The interval for the item';
 
-comment on column public.subscription_items.interval_count is 'The interval count for the item';
+comment on column public."SubscriptionItems"."intervalCount" is 'The interval count for the item';
 
-comment on column public.subscription_items.created_at is 'The creation date of the item';
+comment on column public."SubscriptionItems"."createdAt" is 'The creation date of the item';
 
-comment on column public.subscription_items.updated_at is 'The last update date of the item';
+comment on column public."SubscriptionItems"."updatedAt" is 'The last update date of the item';
 
--- Revoke all access to subscription_items table for authenticated users and service_role
-revoke all on public.subscription_items
+-- Revoke all access to SubscriptionItems table for authenticated users and service_role
+revoke all on public."SubscriptionItems"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
--- Open up relevant access to subscription_items table for authenticated users and service_role
+-- Open up relevant access to SubscriptionItems table for authenticated users and service_role
 grant
-select
-  on table public.subscription_items to authenticated,
-  service_role;
+select on table public."SubscriptionItems" to "authenticated",
+  "service_role";
 
 grant insert,
-update,
-delete on table public.subscription_items to service_role;
+  update,
+  delete on table public."SubscriptionItems" to "service_role";
 
 -- Indexes
--- Indexes on the subscription_items table
-create index ix_subscription_items_subscription_id on public.subscription_items (subscription_id);
+-- Indexes on the SubscriptionItems table
+create index ix_subscription_items_subscription_id on public."SubscriptionItems" ("subscriptionId");
 
 -- RLS
-alter table public.subscription_items enable row level security;
+alter table public."SubscriptionItems" enable row level security;
 
--- SELECT(subscription_items)
+-- SELECT(SubscriptionItems)
 -- Users can read subscription items on a subscription they are a member of
-create policy subscription_items_read_self on public.subscription_items for
+create policy subscription_items_read_self on public."SubscriptionItems" for
 select
-  to authenticated using (
+  to "authenticated" using (
     exists (
       select
         1
       from
-        public.subscriptions
+        public."Subscriptions"
       where
-        id = subscription_id
+        id = "subscriptionId"
         and (
-          account_id = (
+          "accountId" = (
             select
               auth.uid ()
           )
-          or has_role_on_account (account_id)
+          or public."has_role_on_account" ("accountId")
         )
     )
   );
@@ -1772,72 +1763,70 @@ select
  * -------------------------------------------------------
  */
 create table if not exists
-  public.orders (
+  public."Orders" (
     id text not null primary key,
-    account_id uuid references public.accounts (id) on delete cascade not null,
-    billing_customer_id int references public.billing_customers on delete cascade not null,
-    status public.payment_status not null,
-    billing_provider public.billing_provider not null,
-    total_amount numeric not null,
+    "accountId" uuid references public."Accounts" (id) on delete cascade not null,
+    "billingCustomerId" int references public."BillingCustomers" on delete cascade not null,
+    status public."PaymentStatus" not null,
+    "billingProvider" public."BillingProvider" not null,
+    "totalAmount" numeric not null,
     currency varchar(3) not null,
-    created_at timestamptz not null default current_timestamp,
-    updated_at timestamptz not null default current_timestamp
+    "createdAt" timestamptz not null default current_timestamp,
+    "updatedAt" timestamptz not null default current_timestamp
   );
 
-comment on table public.orders is 'The one-time orders for an account';
+comment on table public."Orders" is 'The one-time orders for an account';
 
-comment on column public.orders.account_id is 'The account the order is for';
+comment on column public."Orders"."accountId" is 'The account the order is for';
 
-comment on column public.orders.billing_provider is 'The provider of the order';
+comment on column public."Orders"."billingProvider" is 'The provider of the order';
 
-comment on column public.orders.total_amount is 'The total amount for the order';
+comment on column public."Orders"."totalAmount" is 'The total amount for the order';
 
-comment on column public.orders.currency is 'The currency for the order';
+comment on column public."Orders".currency is 'The currency for the order';
 
-comment on column public.orders.status is 'The status of the order';
+comment on column public."Orders".status is 'The status of the order';
 
-comment on column public.orders.billing_customer_id is 'The billing customer ID for the order';
+comment on column public."Orders"."billingCustomerId" is 'The billing customer ID for the order';
 
--- Revoke all access to orders table for authenticated users and service_role
-revoke all on public.orders
+-- Revoke all access to Orders table for authenticated users and service_role
+revoke all on public."Orders"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
--- Open up access to orders table for authenticated users and service_role
+-- Open up access to Orders table for authenticated users and service_role
 grant
-select
-  on table public.orders to authenticated;
+select on table public."Orders" to "authenticated";
 
 grant
-select
-,
+select,
   insert,
-update,
-delete on table public.orders to service_role;
+  update,
+  delete on table public."Orders" to "service_role";
 
 -- Indexes
--- Indexes on the orders table
-create index ix_orders_account_id on public.orders (account_id);
+-- Indexes on the Orders table
+create index ix_orders_account_id on public."Orders" ("accountId");
 
 -- RLS
-alter table public.orders enable row level security;
+alter table public."Orders" enable row level security;
 
--- SELECT(orders)
+-- SELECT(Orders)
 -- Users can read orders on an account they are a member of or the account is their own
-create policy orders_read_self on public.orders for
+create policy orders_read_self on public."Orders" for
 select
-  to authenticated using (
+  to "authenticated" using (
     (
-      account_id = (
+      "accountId" = (
         select
           auth.uid ()
       )
-      and public.is_set ('enable_account_billing')
+      and public."is_set" ('enableAccountBilling')
     )
     or (
-      has_role_on_account (account_id)
-      and public.is_set ('enable_team_account_billing')
+      public."has_role_on_account" ("accountId")
+      and public."is_set" ('enableTeamAccountBilling')
     )
   );
 
@@ -1848,74 +1837,71 @@ select
  * -------------------------------------------------------
  */
 create table if not exists
-  public.order_items (
+  public."OrderItems" (
     id text not null primary key,
-    order_id text references public.orders (id) on delete cascade not null,
-    product_id text not null,
-    variant_id text not null,
-    price_amount numeric,
+    "orderId" text references public."Orders" (id) on delete cascade not null,
+    "productId" text not null,
+    "variantId" text not null,
+    "priceAmount" numeric,
     quantity integer not null default 1,
-    created_at timestamptz not null default current_timestamp,
-    updated_at timestamptz not null default current_timestamp,
-    unique (order_id, product_id, variant_id)
+    "createdAt" timestamptz not null default current_timestamp,
+    "updatedAt" timestamptz not null default current_timestamp,
+    unique ("orderId", "productId", "variantId")
   );
 
-comment on table public.order_items is 'The items in an order';
+comment on table public."OrderItems" is 'The items in an order';
 
-comment on column public.order_items.order_id is 'The order the item is for';
+comment on column public."OrderItems"."orderId" is 'The order the item is for';
 
-comment on column public.order_items.order_id is 'The order the item is for';
+comment on column public."OrderItems"."productId" is 'The product ID for the item';
 
-comment on column public.order_items.product_id is 'The product ID for the item';
+comment on column public."OrderItems"."variantId" is 'The variant ID for the item';
 
-comment on column public.order_items.variant_id is 'The variant ID for the item';
+comment on column public."OrderItems"."priceAmount" is 'The price amount for the item';
 
-comment on column public.order_items.price_amount is 'The price amount for the item';
+comment on column public."OrderItems".quantity is 'The quantity of the item';
 
-comment on column public.order_items.quantity is 'The quantity of the item';
+comment on column public."OrderItems"."createdAt" is 'The creation date of the item';
 
-comment on column public.order_items.created_at is 'The creation date of the item';
+comment on column public."OrderItems"."updatedAt" is 'The last update date of the item';
 
-comment on column public.order_items.updated_at is 'The last update date of the item';
-
--- Revoke all access to order_items table for authenticated users and service_role
-revoke all on public.order_items
+-- Revoke all access to OrderItems table for authenticated users and service_role
+revoke all on public."OrderItems"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
--- Open up relevant access to order_items table for authenticated users and service_role
+-- Open up relevant access to OrderItems table for authenticated users and service_role
 grant
-select
-  on table public.order_items to authenticated,
-  service_role;
+select on table public."OrderItems" to "authenticated",
+  "service_role";
 
-grant insert on table public.order_items to service_role;
+grant insert on table public."OrderItems" to "service_role";
 
--- Indexes on the order_items table
-create index ix_order_items_order_id on public.order_items (order_id);
+-- Indexes on the OrderItems table
+create index ix_order_items_order_id on public."OrderItems" ("orderId");
 
 -- RLS
-alter table public.order_items enable row level security;
+alter table public."OrderItems" enable row level security;
 
--- SELECT(order_items):
+-- SELECT(OrderItems):
 -- Users can read order items on an order they are a member of
-create policy order_items_read_self on public.order_items for
+create policy order_items_read_self on public."OrderItems" for
 select
-  to authenticated using (
+  to "authenticated" using (
     exists (
       select
         1
       from
-        public.orders
+        public."Orders"
       where
-        id = order_id
+        id = "orderId"
         and (
-          account_id = (
+          "accountId" = (
             select
               auth.uid ()
           )
-          or has_role_on_account (account_id)
+          or public."has_role_on_account" ("accountId")
         )
     )
   );
@@ -1923,107 +1909,107 @@ select
 -- Function "public.upsert_order"
 -- Insert or update an order and its items when receiving a webhook from the billing provider
 create
-or replace function public.upsert_order (
-  target_account_id uuid,
-  target_customer_id varchar(255),
-  target_order_id text,
-  status public.payment_status,
-  billing_provider public.billing_provider,
-  total_amount numeric,
+or replace function public."upsert_order" (
+  "targetAccountId" uuid,
+  "targetCustomerId" varchar(255),
+  "targetOrderId" text,
+  status public."PaymentStatus",
+  "billingProvider" public."BillingProvider",
+  "totalAmount" numeric,
   currency varchar(3),
-  line_items jsonb
-) returns public.orders
+  "lineItems" jsonb
+) returns public."Orders"
 set
   search_path = '' as $$
 declare
-    new_order public.orders;
+    new_order public."Orders";
     new_billing_customer_id int;
 begin
-    insert into public.billing_customers(
-        account_id,
+    insert into public."BillingCustomers"(
+        "accountId",
         provider,
-        customer_id)
+        "customerId")
     values (
-        target_account_id,
-        billing_provider,
-        target_customer_id)
+        "targetAccountId",
+        "billingProvider",
+        "targetCustomerId")
 on conflict (
-    account_id,
+    "accountId",
     provider,
-    customer_id)
+    "customerId")
     do update set
         provider = excluded.provider
     returning
         id into new_billing_customer_id;
 
-    insert into public.orders(
-        account_id,
-        billing_customer_id,
+    insert into public."Orders"(
+        "accountId",
+        "billingCustomerId",
         id,
         status,
-        billing_provider,
-        total_amount,
+        "billingProvider",
+        "totalAmount",
         currency)
     values (
-        target_account_id,
+        "targetAccountId",
         new_billing_customer_id,
-        target_order_id,
+        "targetOrderId",
         status,
-        billing_provider,
-        total_amount,
+        "billingProvider",
+        "totalAmount",
         currency)
 on conflict (
     id)
     do update set
         status = excluded.status,
-        total_amount = excluded.total_amount,
+        "totalAmount" = excluded."totalAmount",
         currency = excluded.currency
     returning
         * into new_order;
 
-    -- Upsert order items and delete ones that are not in the line_items array
+    -- Upsert order items and delete ones that are not in the "lineItems" array
     with item_data as (
         select
-            (line_item ->> 'id')::varchar as line_item_id,
-            (line_item ->> 'product_id')::varchar as prod_id,
-            (line_item ->> 'variant_id')::varchar as var_id,
-            (line_item ->> 'price_amount')::numeric as price_amt,
+            (line_item ->> 'id')::varchar as "line_item_id",
+            (line_item ->> 'product_id')::varchar as "prod_id",
+            (line_item ->> 'variant_id')::varchar as "var_id",
+            (line_item ->> 'price_amount')::numeric as "price_amt",
             (line_item ->> 'quantity')::integer as qty
         from
-            jsonb_array_elements(line_items) as line_item
+            jsonb_array_elements("lineItems") as line_item
     ),
-    line_item_ids as (
-        select line_item_id from item_data
+    "line_item_ids" as (
+        select "line_item_id" from item_data
     ),
     deleted_items as (
         delete from
-            public.order_items
+            public."OrderItems"
         where
-            public.order_items.order_id = new_order.id
-            and public.order_items.id not in (select line_item_id from line_item_ids)
+            public."OrderItems"."orderId" = new_order.id
+            and public."OrderItems".id not in (select "line_item_id" from "line_item_ids")
         returning *
     )
-    insert into public.order_items(
+    insert into public."OrderItems"(
         id,
-        order_id,
-        product_id,
-        variant_id,
-        price_amount,
+        "orderId",
+        "productId",
+        "variantId",
+        "priceAmount",
         quantity)
     select
-        line_item_id,
-        target_order_id,
-        prod_id,
-        var_id,
-        price_amt,
+        "line_item_id",
+        "targetOrderId",
+        "prod_id",
+        "var_id",
+        "price_amt",
         qty
     from
         item_data
     on conflict (id)
         do update set
-            price_amount = excluded.price_amount,
-            product_id = excluded.product_id,
-            variant_id = excluded.variant_id,
+            "priceAmount" = excluded."priceAmount",
+            "productId" = excluded."productId",
+            "variantId" = excluded."variantId",
             quantity = excluded.quantity;
 
     return new_order;
@@ -2033,16 +2019,16 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public.upsert_order (
+execute on function public."upsert_order" (
   uuid,
   varchar,
   text,
-  public.payment_status,
-  public.billing_provider,
+  public."PaymentStatus",
+  public."BillingProvider",
   numeric,
   varchar,
   jsonb
-) to service_role;
+) to "service_role";
 
 /**
  * -------------------------------------------------------
@@ -2050,96 +2036,95 @@ execute on function public.upsert_order (
  * We create the schema for the notifications. Notifications are the notifications for an account.
  * -------------------------------------------------------
  */
-create type public.notification_channel as enum('in_app', 'email');
+create type public."NotificationChannel" as enum('in_app', 'email');
 
-create type public.notification_type as enum('info', 'warning', 'error');
+create type public."NotificationType" as enum('info', 'warning', 'error');
 
 create table if not exists
-  public.notifications (
+  public."Notifications" (
     id bigint generated always as identity primary key,
-    account_id uuid not null references public.accounts (id) on delete cascade,
-    type public.notification_type not null default 'info',
+    "accountId" uuid not null references public."Accounts" (id) on delete cascade,
+    type public."NotificationType" not null default 'info',
     body varchar(5000) not null,
     link varchar(255),
-    channel public.notification_channel not null default 'in_app',
+    channel public."NotificationChannel" not null default 'in_app',
     dismissed boolean not null default false,
-    expires_at timestamptz default (now() + interval '1 month'),
-    created_at timestamptz not null default now()
+    "expiresAt" timestamptz default (now() + interval '1 month'),
+    "createdAt" timestamptz not null default now()
   );
 
-comment on table notifications is 'The notifications for an account';
+comment on table "Notifications" is 'The notifications for an account';
 
-comment on column notifications.account_id is 'The account the notification is for (null for system messages)';
+comment on column "Notifications"."accountId" is 'The account the notification is for (null for system messages)';
 
-comment on column notifications.type is 'The type of the notification';
+comment on column "Notifications".type is 'The type of the notification';
 
-comment on column notifications.body is 'The body of the notification';
+comment on column "Notifications".body is 'The body of the notification';
 
-comment on column notifications.link is 'The link for the notification';
+comment on column "Notifications".link is 'The link for the notification';
 
-comment on column notifications.channel is 'The channel for the notification';
+comment on column "Notifications".channel is 'The channel for the notification';
 
-comment on column notifications.dismissed is 'Whether the notification has been dismissed';
+comment on column "Notifications".dismissed is 'Whether the notification has been dismissed';
 
-comment on column notifications.expires_at is 'The expiry date for the notification';
+comment on column "Notifications"."expiresAt" is 'The expiry date for the notification';
 
-comment on column notifications.created_at is 'The creation date for the notification';
+comment on column "Notifications"."createdAt" is 'The creation date for the notification';
 
--- Revoke all access to notifications table for authenticated users and service_role
-revoke all on public.notifications
+-- Revoke all access to Notifications table for authenticated users and service_role
+revoke all on public."Notifications"
 from
-  authenticated,
-  service_role;
+  "authenticated",
+  "service_role";
 
--- Open up relevant access to notifications table for authenticated users and service_role
+-- Open up relevant access to Notifications table for authenticated users and service_role
 grant
-select
-,
-update on table public.notifications to authenticated,
-service_role;
+select,
+  update on table public."Notifications" to "authenticated",
+  "service_role";
 
-grant insert on table public.notifications to service_role;
+grant insert on table public."Notifications" to "service_role";
 
 -- enable realtime
 alter publication supabase_realtime
-add table public.notifications;
+add table public."Notifications";
 
 -- Indexes
--- Indexes on the notifications table
+-- Indexes on the Notifications table
 -- index for selecting notifications for an account that are not dismissed and not expired
-create index idx_notifications_account_dismissed on notifications (account_id, dismissed, expires_at);
+create index idx_notifications_account_dismissed on "Notifications" ("accountId", dismissed, "expiresAt");
 
 -- RLS
-alter table public.notifications enable row level security;
+alter table public."Notifications" enable row level security;
 
--- SELECT(notifications):
+-- SELECT(Notifications):
 -- Users can read notifications on an account they are a member of
-create policy notifications_read_self on public.notifications for
+create policy notifications_read_self on public."Notifications" for
 select
-  to authenticated using (
-    account_id = (
+  to "authenticated" using (
+    "accountId" = (
       select
         auth.uid ()
     )
-    or has_role_on_account (account_id)
+    or public."has_role_on_account" ("accountId")
   );
 
--- UPDATE(notifications):
+-- UPDATE(Notifications):
 -- Users can set notifications to read on an account they are a member of
-create policy notifications_update_self on public.notifications
+create policy notifications_update_self on public."Notifications"
 for update
-  to authenticated using (
-    account_id = (
+  to "authenticated" using (
+    "accountId" = (
       select
         auth.uid ()
     )
-    or has_role_on_account (account_id)
+    or public."has_role_on_account" ("accountId")
   );
 
 -- Function "kit.update_notification_dismissed_status"
 -- Make sure the only updatable field is the dismissed status and nothing else
 create
-or replace function kit.update_notification_dismissed_status () returns trigger
+or replace function kit."update_notification_dismissed_status" () returns trigger
 set
   search_path to '' as $$
 begin
@@ -2155,8 +2140,8 @@ $$ language plpgsql;
 
 -- add trigger when updating a notification to update the dismissed status
 create trigger update_notification_dismissed_status before
-update on public.notifications for each row
-execute procedure kit.update_notification_dismissed_status ();
+update on public."Notifications" for each row
+execute procedure kit."update_notification_dismissed_status" ();
 
 /**
  * -------------------------------------------------------
@@ -2168,7 +2153,7 @@ execute procedure kit.update_notification_dismissed_status ();
 -- Create a function to slugify a string
 -- useful for turning an account name into a unique slug
 create
-or replace function kit.slugify ("value" text) returns text as $$
+or replace function kit."slugify" ("value" text) returns text as $$
     -- removes accents (diacritic signs) from a given string --
     with "unaccented" as(
         select
@@ -2213,13 +2198,13 @@ set
   search_path to '';
 
 grant
-execute on function kit.slugify (text) to service_role,
-authenticated;
+execute on function kit."slugify" (text) to "service_role",
+"authenticated";
 
 -- Function "kit.set_slug_from_account_name"
 -- Set the slug from the account name and increment if the slug exists
 create
-or replace function kit.set_slug_from_account_name () returns trigger language plpgsql security definer
+or replace function kit."set_slug_from_account_name" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 declare
@@ -2235,14 +2220,14 @@ begin
 
     while tmp_row_count > 0 loop
         if increment > 0 then
-            tmp_slug = kit.slugify(new.name || ' ' || increment::varchar);
+            tmp_slug = kit."slugify"(new.name || ' ' || increment::varchar);
 
         else
-            tmp_slug = kit.slugify(new.name);
+            tmp_slug = kit."slugify"(new.name);
 
         end if;
 
-	sql_string = format('select count(1) cnt from public.accounts where slug = ''' || tmp_slug ||
+	sql_string = format('select count(1) cnt from public."Accounts" where slug = ''' || tmp_slug ||
 	    '''; ');
 
         for tmp_row in execute (sql_string)
@@ -2265,56 +2250,56 @@ end
 $$;
 
 -- Create a trigger to set the slug from the account name
-create trigger "set_slug_from_account_name" before insert on public.accounts for each row when (
+create trigger "set_slug_from_account_name" before insert on public."Accounts" for each row when (
   NEW.name is not null
   and NEW.slug is null
-  and NEW.is_personal_account = false
+  and NEW."isPersonalAccount" = false
 )
-execute procedure kit.set_slug_from_account_name ();
+execute procedure kit."set_slug_from_account_name" ();
 
 -- Create a trigger when a name is updated to update the slug
 create trigger "update_slug_from_account_name" before
-update on public.accounts for each row when (
+update on public."Accounts" for each row when (
   NEW.name is not null
   and NEW.name <> OLD.name
-  and NEW.is_personal_account = false
+  and NEW."isPersonalAccount" = false
 )
-execute procedure kit.set_slug_from_account_name ();
+execute procedure kit."set_slug_from_account_name" ();
 
 -- Function "kit.setup_new_user"
 -- Setup a new user account after user creation
 create
-or replace function kit.setup_new_user () returns trigger language plpgsql security definer
+or replace function kit."setup_new_user" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 declare
-    user_name text;
+    "user_name" text;
 begin
-    if new.raw_user_meta_data ->> 'display_name' is not null then
-        user_name := new.raw_user_meta_data ->> 'display_name';
+    if new."raw_user_meta_data" ->> 'display_name' is not null then
+        "user_name" := new."raw_user_meta_data" ->> 'display_name';
 
     end if;
 
-    if user_name is null and new.email is not null then
-        user_name := split_part(new.email, '@', 1);
+    if "user_name" is null and new.email is not null then
+        "user_name" := split_part(new.email, '@', 1);
 
     end if;
 
-    if user_name is null then
-        user_name := '';
+    if "user_name" is null then
+        "user_name" := '';
 
     end if;
 
-    insert into public.accounts(
+    insert into public."Accounts"(
         id,
-        primary_owner_user_id,
+        "primaryOwnerUserId",
         name,
-        is_personal_account,
+        "isPersonalAccount",
         email)
     values (
         new.id,
         new.id,
-        user_name,
+        "user_name",
         true,
         new.email);
 
@@ -2327,7 +2312,7 @@ $$;
 -- trigger the function every time a user is created
 create trigger on_auth_user_created
 after insert on auth.users for each row
-execute procedure kit.setup_new_user ();
+execute procedure kit."setup_new_user" ();
 
 /**
  * -------------------------------------------------------
@@ -2338,21 +2323,21 @@ execute procedure kit.setup_new_user ();
 -- Function "public.create_team_account"
 -- Create a team account if team accounts are enabled
 create
-or replace function public.create_team_account (account_name text) returns public.accounts
+or replace function public."create_team_account" ("account_name" text) returns public."Accounts"
 set
   search_path = '' as $$
 declare
-    new_account public.accounts;
+    new_account public."Accounts";
 begin
-    if (not public.is_set('enable_team_accounts')) then
+    if (not public."is_set"('enableTeamAccounts')) then
         raise exception 'Team accounts are not enabled';
     end if;
 
-    insert into public.accounts(
+    insert into public."Accounts"(
         name,
-        is_personal_account)
+        "isPersonalAccount")
     values (
-        account_name,
+        "account_name",
         false)
 returning
     * into new_account;
@@ -2364,42 +2349,42 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public.create_team_account (text) to authenticated,
-service_role;
+execute on function public."create_team_account" (text) to "authenticated",
+"service_role";
 
--- RLS(public.accounts)
+-- RLS(public."Accounts")
 -- Authenticated users can create team accounts
-create policy create_org_account on public.accounts for insert to authenticated
+create policy create_org_account on public."Accounts" for insert to "authenticated"
 with
   check (
-    public.is_set ('enable_team_accounts')
-    and public.accounts.is_personal_account = false
+    public."is_set" ('enableTeamAccounts')
+    and public."Accounts"."isPersonalAccount" = false
   );
 
 -- Function "public.create_invitation"
 -- create an invitation to an account
 create
-or replace function public.create_invitation (account_id uuid, email text, role varchar(50)) returns public.invitations
+or replace function public."create_invitation" ("accountId" uuid, email text, role varchar(50)) returns public."Invitations"
 set
   search_path = '' as $$
 declare
-    new_invitation public.invitations;
-    invite_token text;
+    new_invitation public."Invitations";
+    "invite_token" text;
 begin
-    invite_token := extensions.uuid_generate_v4();
+    "invite_token" := extensions.uuid_generate_v4();
 
-    insert into public.invitations(
+    insert into public."Invitations"(
         email,
-        account_id,
-        invited_by,
+        "accountId",
+        "invitedBy",
         role,
-        invite_token)
+        "invite_token")
     values (
         email,
-        account_id,
+        "accountId",
         auth.uid(),
         role,
-        invite_token)
+        "invite_token")
 returning
     * into new_invitation;
 
@@ -2414,135 +2399,135 @@ $$ language plpgsql;
 -- we create a view to load the general app data for the authenticated
 -- user which includes the user accounts and memberships
 create or replace view
-  public.user_account_workspace
+  public."user_account_workspace"
 with
   (security_invoker = true) as
 select
-  accounts.id as id,
-  accounts.name as name,
-  accounts.picture_url as picture_url,
+  "Accounts".id as id,
+  "Accounts".name as name,
+  "Accounts"."pictureUrl" as "pictureUrl",
   (
     select
       status
     from
-      public.subscriptions
+      public."Subscriptions"
     where
-      account_id = accounts.id
+      "accountId" = "Accounts".id
     limit
       1
-  ) as subscription_status
+  ) as "subscription_status"
 from
-  public.accounts
+  public."Accounts"
 where
-  primary_owner_user_id = (select auth.uid ())
-  and accounts.is_personal_account = true
+  "primaryOwnerUserId" = (select auth.uid ())
+  and "Accounts"."isPersonalAccount" = true
 limit
   1;
 
 grant
 select
-  on public.user_account_workspace to authenticated,
-  service_role;
+  on public."user_account_workspace" to "authenticated",
+  "service_role";
 
 --
 -- VIEW "user_accounts":
 -- we create a view to load the user's accounts and memberships
 -- useful to display the user's accounts in the app
 create or replace view
-  public.user_accounts (id, name, picture_url, slug, role)
+  public."user_accounts" (id, name, "pictureUrl", slug, role)
 with
   (security_invoker = true) as
 select
   account.id,
   account.name,
-  account.picture_url,
+  account."pictureUrl",
   account.slug,
-  membership.account_role
+  membership."accountRole"
 from
-  public.accounts account
-  join public.accounts_memberships membership on account.id = membership.account_id
+  public."Accounts" account
+  join public."AccountsMemberships" membership on account.id = membership."accountId"
 where
-  membership.user_id = (select auth.uid ())
-  and account.is_personal_account = false
+  membership."userId" = (select auth.uid ())
+  and account."isPersonalAccount" = false
   and account.id in (
     select
-      account_id
+      "accountId"
     from
-      public.accounts_memberships
+      public."AccountsMemberships"
     where
-      user_id = (select auth.uid ())
+      "userId" = (select auth.uid ())
   );
 
 grant
 select
-  on public.user_accounts to authenticated,
-  service_role;
+  on public."user_accounts" to "authenticated",
+  "service_role";
 
 --
 -- Function "public.team_account_workspace"
 -- Load all the data for a team account workspace
-create or replace function public.team_account_workspace(account_slug text)
+create or replace function public."team_account_workspace"(account_slug text)
 returns table (
   id uuid,
   name varchar(255),
-  picture_url varchar(1000),
+  "pictureUrl" varchar(1000),
   slug text,
   role varchar(50),
-  role_hierarchy_level int,
-  primary_owner_user_id uuid,
-  subscription_status public.subscription_status,
-  permissions public.app_permissions[]
+  "roleHierarchyLevel" int,
+  "primaryOwnerUserId" uuid,
+  "subscriptionStatus" public."SubscriptionStatus",
+  permissions public."AppPermissions"[]
 )
 set search_path to ''
 as $$
 begin
     return QUERY
     select
-        accounts.id,
-        accounts.name,
-        accounts.picture_url,
-        accounts.slug,
-        accounts_memberships.account_role,
-        roles.hierarchy_level,
-        accounts.primary_owner_user_id,
-        subscriptions.status,
-        array_agg(role_permissions.permission)
+        "Accounts".id,
+        "Accounts".name,
+        "Accounts"."pictureUrl",
+        "Accounts".slug,
+        "AccountsMemberships"."accountRole",
+        "Roles"."hierarchyLevel",
+        "Accounts"."primaryOwnerUserId",
+        "Subscriptions".status,
+        array_agg("RolePermissions".permission)
     from
-        public.accounts
-        join public.accounts_memberships on accounts.id = accounts_memberships.account_id
-        left join public.subscriptions on accounts.id = subscriptions.account_id
-        join public.roles on accounts_memberships.account_role = roles.name
-        left join public.role_permissions on accounts_memberships.account_role = role_permissions.role
+        public."Accounts"
+        join public."AccountsMemberships" on "Accounts".id = "AccountsMemberships"."accountId"
+        left join public."Subscriptions" on "Accounts".id = "Subscriptions"."accountId"
+        join public."Roles" on "AccountsMemberships"."accountRole" = "Roles".name
+        left join public."RolePermissions" on "AccountsMemberships"."accountRole" = "RolePermissions".role
     where
-        accounts.slug = account_slug
-        and public.accounts_memberships.user_id = (select auth.uid())
+        "Accounts".slug = account_slug
+        and public."AccountsMemberships"."userId" = (select auth.uid())
     group by
-        accounts.id,
-        accounts_memberships.account_role,
-        subscriptions.status,
-        roles.hierarchy_level;
+        "Accounts".id,
+        "AccountsMemberships"."accountRole",
+        "Subscriptions".status,
+        "Roles"."hierarchyLevel";
 end;
 $$ language plpgsql;
 
 grant
-execute on function public.team_account_workspace (text) to authenticated,
-service_role;
+execute on function public."team_account_workspace" (text) to "authenticated",
+"service_role";
 
 -- Functions "public.get_account_members"
 -- Function to get the members of an account by the account slug
 create
-or replace function public.get_account_members (account_slug text) returns table (
+or replace function public."get_account_members" (account_slug text) returns table (
   id uuid,
-  user_id uuid,
-  account_id uuid,
+  "userId" uuid,
+  "accountId" uuid,
   role varchar(50),
-  role_hierarchy_level int,
-  primary_owner_user_id uuid,
+  "roleHierarchyLevel" int,
+  "primaryOwnerUserId" uuid,
   name varchar,
   email varchar,
-  picture_url varchar,
-  created_at timestamptz,
-  updated_at timestamptz
+  "pictureUrl" varchar,
+  "createdAt" timestamptz,
+  "updatedAt" timestamptz
 ) language plpgsql
 set
   search_path = '' as $$
@@ -2550,21 +2535,21 @@ begin
     return QUERY
     select
         acc.id,
-        am.user_id,
-        am.account_id,
-        am.account_role,
-        r.hierarchy_level,
-        a.primary_owner_user_id,
+        am."userId",
+        am."accountId",
+        am."accountRole",
+        r."hierarchyLevel",
+        a."primaryOwnerUserId",
         acc.name,
         acc.email,
-        acc.picture_url,
-        am.created_at,
-        am.updated_at
+        acc."pictureUrl",
+        am."createdAt",
+        am."updatedAt"
     from
-        public.accounts_memberships am
-        join public.accounts a on a.id = am.account_id
-        join public.accounts acc on acc.id = am.user_id
-        join public.roles r on r.name = am.account_role
+        public."AccountsMemberships" am
+        join public."Accounts" a on a.id = am."accountId"
+        join public."Accounts" acc on acc.id = am."userId"
+        join public."Roles" r on r.name = am."accountRole"
     where
         a.slug = account_slug;
 
@@ -2573,23 +2558,23 @@ end;
 $$;
 
 grant
-execute on function public.get_account_members (text) to authenticated,
-service_role;
+execute on function public."get_account_members" (text) to "authenticated",
+"service_role";
 
 -- Function "public.get_account_invitations"
 -- List the account invitations by the account slug
 create
-or replace function public.get_account_invitations (account_slug text) returns table (
+or replace function public."get_account_invitations" (account_slug text) returns table (
   id integer,
   email varchar(255),
-  account_id uuid,
-  invited_by uuid,
+  "accountId" uuid,
+  "invitedBy" uuid,
   role varchar(50),
-  created_at timestamptz,
-  updated_at timestamptz,
-  expires_at timestamptz,
-  inviter_name varchar,
-  inviter_email varchar
+  "createdAt" timestamptz,
+  "updatedAt" timestamptz,
+  "expiresAt" timestamptz,
+  "inviterName" varchar,
+  "inviterEmail" varchar
 )
 set
   search_path = '' as $$
@@ -2598,17 +2583,17 @@ begin
     select
         invitation.id,
         invitation.email,
-        invitation.account_id,
-        invitation.invited_by,
+        invitation."accountId",
+        invitation."invitedBy",
         invitation.role,
-        invitation.created_at,
-        invitation.updated_at,
-        invitation.expires_at,
+        invitation."createdAt",
+        invitation."updatedAt",
+        invitation."expiresAt",
         account.name,
         account.email
     from
-        public.invitations as invitation
-        join public.accounts as account on invitation.account_id = account.id
+        public."Invitations" as invitation
+        join public."Accounts" as account on invitation."accountId" = account.id
     where
         account.slug = account_slug;
 
@@ -2617,44 +2602,44 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public.get_account_invitations (text) to authenticated,
-service_role;
+execute on function public."get_account_invitations" (text) to "authenticated",
+"service_role";
 
 -- Function "public.add_invitations_to_account"
 -- Add invitations to an account
 create
-or replace function public.add_invitations_to_account (
+or replace function public."add_invitations_to_account" (
   account_slug text,
-  invitations public.invitation[]
-) returns public.invitations[]
+  invitations public."Invitation"[]
+) returns public."Invitations"[]
 set
   search_path = '' as $$
 declare
-    new_invitation public.invitations;
-    all_invitations public.invitations[] := array[]::public.invitations[];
-    invite_token text;
+    new_invitation public."Invitations";
+    all_invitations public."Invitations"[] := array[]::public."Invitations"[];
+    "invite_token" text;
     email text;
     role varchar(50);
 begin
     FOREACH email,
     role in array invitations loop
-        invite_token := extensions.uuid_generate_v4();
+        "invite_token" := extensions.uuid_generate_v4();
 
-        insert into public.invitations(
+        insert into public."Invitations"(
             email,
-            account_id,
-            invited_by,
+            "accountId",
+            "invitedBy",
             role,
-            invite_token)
+            "invite_token")
         values (
             email,
-(
+            (
                 select
                     id
                 from
-                    public.accounts
+                    public."Accounts"
                 where
-                    slug = account_slug), auth.uid(), role, invite_token)
+                    slug = account_slug), auth.uid(), role, "invite_token")
     returning
         * into new_invitation;
 
@@ -2669,14 +2654,14 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public.add_invitations_to_account (text, public.invitation[]) to authenticated,
-service_role;
+execute on function public."add_invitations_to_account" (text, public."Invitation"[]) to "authenticated",
+"service_role";
 
 -- Function "public.has_active_subscription"
 -- Check if a user has an active subscription on an account - ie. it's trialing or active
 -- Useful to gate access to features that require a subscription
 create
-or replace function public.has_active_subscription (target_account_id uuid) returns boolean
+or replace function public."has_active_subscription" ("targetAccountId" uuid) returns boolean
 set
   search_path = '' as $$
 begin
@@ -2684,9 +2669,9 @@ begin
         select
             1
         from
-            public.subscriptions
+            public."Subscriptions"
         where
-            account_id = target_account_id
+            "accountId" = "targetAccountId"
             and active = true);
 
 end;
@@ -2694,20 +2679,20 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public.has_active_subscription (uuid) to authenticated,
-service_role;
+execute on function public."has_active_subscription" (uuid) to "authenticated",
+"service_role";
 
 -- Storage
 -- Account Image
 insert into
-  storage.buckets (id, name, PUBLIC)
+  storage.buckets (id, name, "public")
 values
   ('account_image', 'account_image', true);
 
 -- Function: get the storage filename as a UUID.
 -- Useful if you want to name files with UUIDs related to an account
 create
-or replace function kit.get_storage_filename_as_uuid (name text) returns uuid
+or replace function kit."get_storage_filename_as_uuid" (name text) returns uuid
 set
   search_path = '' as $$
 begin
@@ -2719,28 +2704,30 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function kit.get_storage_filename_as_uuid (text) to authenticated,
-service_role;
+execute on function kit."get_storage_filename_as_uuid" (text) to "authenticated",
+"service_role";
 
 -- RLS policies for storage
 create policy account_image on storage.objects for all using (
-  bucket_id = 'account_image'
-  and kit.get_storage_filename_as_uuid (name) = (
+  "bucket_id" = 'account_image'
+  and kit."get_storage_filename_as_uuid" (name) = (
     select
       auth.uid ()
   )
-  or public.has_role_on_account (kit.get_storage_filename_as_uuid (name))
+  or public."has_role_on_account" (kit."get_storage_filename_as_uuid" (name))
 )
 with
   check (
-    bucket_id = 'account_image'
-    and (kit.get_storage_filename_as_uuid (name) = (
+    "bucket_id" = 'account_image'
+    and (kit."get_storage_filename_as_uuid" (name) = (
       select
         auth.uid ()
     )
-    or public.has_permission (
+    or public."has_permission" (
       auth.uid (),
-      kit.get_storage_filename_as_uuid (name),
+      kit."get_storage_filename_as_uuid" (name),
       'settings.manage'
     ))
   );
+
+
