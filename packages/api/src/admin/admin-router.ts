@@ -246,7 +246,7 @@ export const adminRouter = createTRPCRouter({
   getMembers: superAdminProcedure
     .input(getMembersInput)
     .query(async ({ ctx, input }) => {
-      const response = await ctx.adminSupabase.rpc("get_account_members", {
+      const response = await ctx.adminSupabase.rpc("getAccountMembers", {
         account_slug: input.accountSlug,
       });
 

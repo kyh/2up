@@ -11,7 +11,7 @@ export const accountRouter = createTRPCRouter({
   }),
   userWorkspace: protectedProcedure.query(async ({ ctx }) => {
     const userAccountsResponse = await ctx.supabase
-      .from("user_accounts")
+      .from("UserAccounts")
       .select("*");
 
     if (userAccountsResponse.error) {
@@ -19,7 +19,7 @@ export const accountRouter = createTRPCRouter({
     }
 
     const userWorkspaceResponse = await ctx.supabase
-      .from("user_account_workspace")
+      .from("UserAccountWorkspace")
       .select("*")
       .single();
 

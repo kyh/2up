@@ -213,7 +213,7 @@ export const billingRouter = createTRPCRouter({
           // Handle the subscription updated event
           // here we update the subscription in the database
           const { error } = await adminSupabase.rpc(
-            "upsert_subscription",
+            "upsertSubscription",
             subscription,
           );
 
@@ -229,14 +229,14 @@ export const billingRouter = createTRPCRouter({
           // if it does, we add an order, otherwise we add a subscription
 
           if ("target_order_id" in payload) {
-            const { error } = await adminSupabase.rpc("upsert_order", payload);
+            const { error } = await adminSupabase.rpc("upsertOrder", payload);
 
             if (error) {
               throw new Error("Failed to add order");
             }
           } else {
             const { error } = await adminSupabase.rpc(
-              "upsert_subscription",
+              "upsertSubscription",
               payload,
             );
 
