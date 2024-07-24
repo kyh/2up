@@ -2617,20 +2617,20 @@ set
 declare
     new_invitation public."Invitations";
     all_invitations public."Invitations"[] := array[]::public."Invitations"[];
-    "invite_token" text;
+    "inviteToken" text;
     email text;
     role varchar(50);
 begin
     FOREACH email,
     role in array invitations loop
-        "invite_token" := extensions.uuid_generate_v4();
+        "inviteToken" := extensions.uuid_generate_v4();
 
         insert into public."Invitations"(
             email,
             "accountId",
             "invitedBy",
             role,
-            "invite_token")
+            "inviteToken")
         values (
             email,
             (
@@ -2639,7 +2639,7 @@ begin
                 from
                     public."Accounts"
                 where
-                    slug = account_slug), auth.uid(), role, "invite_token")
+                    slug = account_slug), auth.uid(), role, "inviteToken")
     returning
         * into new_invitation;
 
