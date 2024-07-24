@@ -10,7 +10,7 @@ export const notificationsRouter = createTRPCRouter({
     .input(createNotificationInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase
-        .from("notifications")
+        .from("Notifications")
         .insert(input);
 
       if (response.error) {
@@ -23,7 +23,7 @@ export const notificationsRouter = createTRPCRouter({
     .input(dismissNotificationInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("notifications")
+        .from("Notifications")
         .update({ dismissed: true })
         .eq("id", input.notification);
 
@@ -39,20 +39,20 @@ export const notificationsRouter = createTRPCRouter({
       const now = new Date().toISOString();
 
       const response = await ctx.supabase
-        .from("notifications")
+        .from("Notifications")
         .select(
           `id, 
            body, 
            dismissed, 
            type, 
-           created_at, 
+           createdAt, 
            link
            `,
         )
-        .in("account_id", input.accountIds)
+        .in("accountId", input.accountIds)
         .eq("dismissed", false)
-        .gt("expires_at", now)
-        .order("created_at", { ascending: false })
+        .gt("expiresAt", now)
+        .order("createdAt", { ascending: false })
         .limit(10);
 
       if (response.error) {

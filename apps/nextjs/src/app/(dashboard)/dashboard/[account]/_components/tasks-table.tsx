@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import { RouterOutputs } from "@init/api";
 import { DataTable } from "@init/ui/data-table/data-table";
 import { DataTableToolbar } from "@init/ui/data-table/data-table-toolbar";
 
@@ -30,7 +29,7 @@ export const TasksTable = ({ accountId, searchParams }: TasksTableProps) => {
     pageCount: data.pageCount,
     // optional props
     defaultPerPage: 10,
-    defaultSort: "created_at.desc",
+    defaultSort: "createdAt.desc",
   });
 
   return (
