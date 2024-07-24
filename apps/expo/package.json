@@ -2,7 +2,7 @@
   "name": "@init/expo",
   "version": "0.1.0",
   "private": true,
-  "main": "expo-router/entry",
+  "main": "index.ts",
   "scripts": {
     "clean": "git clean -xdf .expo .turbo node_modules",
     "dev": "expo start",
@@ -15,13 +15,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@expo/metro-config": "^0.18.8",
+    "@expo/metro-config": "^0.18.9",
     "@shopify/flash-list": "^1.7.0",
     "@tanstack/react-query": "catalog:",
     "@trpc/client": "catalog:",
     "@trpc/react-query": "catalog:",
     "@trpc/server": "catalog:",
-    "expo": "^51.0.21",
+    "expo": "^51.0.22",
     "expo-constants": "^16.0.2",
     "expo-linking": "^6.3.1",
     "expo-router": "^3.5.18",
