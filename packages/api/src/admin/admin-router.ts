@@ -18,8 +18,8 @@ export const adminRouter = createTRPCRouter({
     .input(getAccountInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase
-        .from("accounts")
-        .select("*, memberships: accounts_memberships (*)")
+        .from("Accounts")
+        .select("*, memberships: AccountsMemberships (*)")
         .eq("id", input.accountId)
         .single();
 
@@ -37,14 +37,14 @@ export const adminRouter = createTRPCRouter({
       const offset = (page - 1) * perPage;
 
       let query = ctx.adminSupabase
-        .from("accounts")
+        .from("Accounts")
         .select("*", { count: "exact" })
         .limit(perPage)
         .range(offset, offset + perPage - 1);
 
       if (input.account_type && input.account_type !== "all") {
         query = query.eq(
-          "is_personal_account",
+          "isPersonalAccount",
           input.account_type === "personal",
         );
       }
@@ -86,7 +86,7 @@ export const adminRouter = createTRPCRouter({
     };
 
     const subscriptionsPromise = ctx.adminSupabase
-      .from("subscriptions")
+      .from("Subscriptions")
       .select("*", selectParams)
       .eq("status", "active")
       .then((response) => {
@@ -98,7 +98,7 @@ export const adminRouter = createTRPCRouter({
       });
 
     const trialsPromise = ctx.adminSupabase
-      .from("subscriptions")
+      .from("Subscriptions")
       .select("*", selectParams)
       .eq("status", "trialing")
       .then((response) => {
@@ -110,9 +110,9 @@ export const adminRouter = createTRPCRouter({
       });
 
     const accountsPromise = ctx.adminSupabase
-      .from("accounts")
+      .from("Accounts")
       .select("*", selectParams)
-      .eq("is_personal_account", true)
+      .eq("isPersonalAccount", true)
       .then((response) => {
         if (response.error) {
           throw new Error(response.error.message);
@@ -122,9 +122,9 @@ export const adminRouter = createTRPCRouter({
       });
 
     const teamAccountsPromise = ctx.adminSupabase
-      .from("accounts")
+      .from("Accounts")
       .select("*", selectParams)
-      .eq("is_personal_account", false)
+      .eq("isPersonalAccount", false)
       .then((response) => {
         if (response.error) {
           throw new Error(response.error.message);
@@ -151,7 +151,7 @@ export const adminRouter = createTRPCRouter({
     .input(deleteAccountInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase
-        .from("accounts")
+        .from("Accounts")
         .delete()
         .eq("id", input.accountId);
 
@@ -260,9 +260,9 @@ export const adminRouter = createTRPCRouter({
     .input(getMembershipsInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase
-        .from("accounts_memberships")
-        .select("*, account: account_id !inner (id, name)")
-        .eq("user_id", input.userId);
+        .from("AccountsMemberships")
+        .select("*, account: Accounts !inner (id, name)")
+        .eq("userId", input.userId);
 
       if (response.error) {
         throw response.error;
@@ -274,9 +274,9 @@ export const adminRouter = createTRPCRouter({
     .input(getSubscriptionInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase
-        .from("subscriptions")
-        .select("*, subscription_items !inner (*)")
-        .eq("account_id", input.accountId)
+        .from("Subscriptions")
+        .select("*, subscriptionItems: SubscriptionItems !inner (*)")
+        .eq("accountId", input.accountId)
         .maybeSingle();
 
       if (response.error) {

@@ -35,7 +35,7 @@ export const accountRouter = createTRPCRouter({
   }),
   byId: protectedProcedure.input(byIdInput).query(async ({ ctx, input }) => {
     const response = await ctx.supabase
-      .from("accounts")
+      .from("Accounts")
       .select("*")
       .eq("id", input.id)
       .single();
@@ -50,10 +50,10 @@ export const accountRouter = createTRPCRouter({
     .input(personalAccountInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("accounts")
+        .from("Accounts")
         .select("*")
-        .eq("primary_owner_user_id", input.id)
-        .eq("is_personal_account", true)
+        .eq("primaryOwnerUserId", input.id)
+        .eq("isPersonalAccount", true)
         .single();
 
       if (response.error) {
@@ -66,9 +66,9 @@ export const accountRouter = createTRPCRouter({
     .input(updatePictureInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.supabase
-        .from("accounts")
+        .from("Accounts")
         .update({
-          picture_url: input.pictureUrl,
+          pictureUrl: input.pictureUrl,
         })
         .eq("id", input.accountId);
 

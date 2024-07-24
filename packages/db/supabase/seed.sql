@@ -6,39 +6,39 @@
 -- We don't do it because you'll need to manually add your webhook URL and secret key.
 
 -- this webhook will be triggered after deleting an account
-create trigger "accounts_teardown" after delete
-on "public"."accounts" for each row
-execute function "supabase_functions"."http_request"(
-  'http://host.docker.internal:3000/api/db/webhook',
-  'POST',
-  '{"Content-Type":"application/json", "X-Supabase-Event-Signature":"WEBHOOKSECRET"}',
-  '{}',
-  '5000'
-);
+-- create trigger "accounts_teardown" after delete
+-- on "public"."Accounts" for each row
+-- execute function "supabase_functions"."http_request"(
+--   'http://host.docker.internal:3000/api/db/webhook',
+--   'POST',
+--   '{"Content-Type":"application/json", "X-Supabase-Event-Signature":"WEBHOOKSECRET"}',
+--   '{}',
+--   '5000'
+-- );
 
--- this webhook will be triggered after a delete on the subscriptions table
--- which should happen when a user deletes their account (and all their subscriptions)
-create trigger "subscriptions_delete" after delete
-on "public"."subscriptions" for each row
-execute function "supabase_functions"."http_request"(
-  'http://host.docker.internal:3000/api/db/webhook',
-  'POST',
-  '{"Content-Type":"application/json", "X-Supabase-Event-Signature":"WEBHOOKSECRET"}',
-  '{}',
-  '5000'
-);
+-- -- this webhook will be triggered after a delete on the Subscriptions table
+-- -- which should happen when a user deletes their account (and all their subscriptions)
+-- create trigger "subscriptions_delete" after delete
+-- on "public"."Subscriptions" for each row
+-- execute function "supabase_functions"."http_request"(
+--   'http://host.docker.internal:3000/api/db/webhook',
+--   'POST',
+--   '{"Content-Type":"application/json", "X-Supabase-Event-Signature":"WEBHOOKSECRET"}',
+--   '{}',
+--   '5000'
+-- );
 
--- this webhook will be triggered after every insert on the invitations table
+-- this webhook will be triggered after every insert on the Invitations table
 -- which should happen when a user invites someone to their account
-create trigger "invitations_insert" after insert
-on "public"."invitations" for each row
-execute function "supabase_functions"."http_request"(
-  'http://host.docker.internal:3000/api/db/webhook',
-  'POST',
-  '{"Content-Type":"application/json", "X-Supabase-Event-Signature":"WEBHOOKSECRET"}',
-  '{}',
-  '5000'
-);
+-- create trigger "invitations_insert" after insert
+-- on "public"."Invitations" for each row
+-- execute function "supabase_functions"."http_request"(
+--   'http://host.docker.internal:3000/api/db/webhook',
+--   'POST',
+--   '{"Content-Type":"application/json", "X-Supabase-Event-Signature":"WEBHOOKSECRET"}',
+--   '{}',
+--   '5000'
+-- );
 
 
 -- DATA SEED
@@ -131,24 +131,24 @@ INSERT INTO "auth"."identities" ("provider_id", "user_id", "identity_data", "pro
 
 
 --
--- Data for Name: accounts; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: Accounts; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."accounts" ("id", "primary_owner_user_id", "name", "slug", "email", "is_personal_account", "updated_at", "created_at", "created_by", "updated_by", "picture_url", "public_data") VALUES
+INSERT INTO "public"."Accounts" ("id", "primaryOwnerUserId", "name", "slug", "email", "isPersonalAccount", "updatedAt", "createdAt", "createdBy", "updatedBy", "pictureUrl", "publicData") VALUES
         ('5deaa894-2094-4da3-b4fd-1fada0809d1c', '31a03e74-1639-45b6-bfa7-77447f1a4762', 'Init', 'init', NULL, false, NULL, NULL, NULL, NULL, NULL, '{}');
 
 --
--- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: Roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."roles" ("name", "hierarchy_level") VALUES
+INSERT INTO "public"."Roles" ("name", "hierarchyLevel") VALUES
         ('custom-role', 4);
 
 --
--- Data for Name: accounts_memberships; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: AccountsMemberships; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."accounts_memberships" ("user_id", "account_id", "account_role", "created_at", "updated_at", "created_by", "updated_by") VALUES
+INSERT INTO "public"."AccountsMemberships" ("userId", "accountId", "accountRole", "createdAt", "updatedAt", "createdBy", "updatedBy") VALUES
         ('31a03e74-1639-45b6-bfa7-77447f1a4762', '5deaa894-2094-4da3-b4fd-1fada0809d1c', 'owner', '2024-04-20 08:21:16.802867+00', '2024-04-20 08:21:16.802867+00', NULL, NULL),
         ('5c064f1b-78ee-4e1c-ac3b-e99aa97c99bf', '5deaa894-2094-4da3-b4fd-1fada0809d1c', 'owner', '2024-04-20 08:36:44.21028+00', '2024-04-20 08:36:44.21028+00', NULL, NULL),
         ('b73eb03e-fb7a-424d-84ff-18e2791ce0b4', '5deaa894-2094-4da3-b4fd-1fada0809d1c', 'custom-role', '2024-04-20 08:38:02.50993+00', '2024-04-20 08:38:02.50993+00', NULL, NULL),
@@ -156,36 +156,36 @@ INSERT INTO "public"."accounts_memberships" ("user_id", "account_id", "account_r
 
 
 --
--- Data for Name: billing_customers; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: BillingCustomers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- Data for Name: invitations; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: Invitations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: Orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- Data for Name: order_items; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: OrderItems; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 --
--- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: Subscriptions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- Data for Name: subscription_items; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: SubscriptionItems; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -233,29 +233,28 @@ SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 5, true);
 SELECT pg_catalog.setval('"pgsodium"."key_key_id_seq"', 1, false);
 
 
---
--- Name: billing_customers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."billing_customers_id_seq"', 1, false);
-
-
---
--- Name: invitations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: BillingCustomers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."invitations_id_seq"', 19, true);
+SELECT pg_catalog.setval('"public"."BillingCustomers_id_seq"', 1, false);
 
 
 --
--- Name: role_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: Invitations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."role_permissions_id_seq"', 7, true);
+SELECT pg_catalog.setval('"public"."Invitations_id_seq"', 19, true);
 
 
 --
--- Name: hooks_id_seq; Type: SEQUENCE SET; Schema: supabase_functions; Owner: supabase_functions_admin
+-- Name: RolePermissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"supabase_functions"."hooks_id_seq"', 19, true);
+SELECT pg_catalog.setval('"public"."RolePermissions_id_seq"', 7, true);
+
+
+--
+-- Name: Hooks_id_seq; Type: SEQUENCE SET; Schema: supabase_functions; Owner: supabase_functions_admin
+--
+
+-- SELECT pg_catalog.setval('"supabase_functions"."Hooks_id_seq"', 19, true);

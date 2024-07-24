@@ -7,11 +7,11 @@ import { api } from "@/trpc/react";
 
 type Notification = RouterOutputs["notifications"]["fetchNotifications"][0];
 
-export function useNotificationsStream(params: {
+export const useNotificationsStream = (params: {
   onNotifications: (notifications: Notification[]) => void;
   accountIds: string[];
   enabled: boolean;
-}) {
+}) => {
   const client = getSupabaseBrowserClient();
 
   const { data: subscription } = useQuery({
@@ -42,4 +42,4 @@ export function useNotificationsStream(params: {
       void subscription?.unsubscribe();
     };
   }, [subscription]);
-}
+};

@@ -6,7 +6,7 @@ import { useNotificationsStream } from "./use-notifications-stream";
 
 type Notification = RouterOutputs["notifications"]["fetchNotifications"][0];
 
-export function useFetchNotifications({
+export const useFetchNotifications = ({
   onNotifications,
   accountIds,
   realtime,
@@ -14,7 +14,7 @@ export function useFetchNotifications({
   onNotifications: (notifications: Notification[]) => unknown;
   accountIds: string[];
   realtime: boolean;
-}) {
+}) => {
   const [initialNotifications] =
     api.notifications.fetchNotifications.useSuspenseQuery({
       accountIds,
@@ -31,4 +31,4 @@ export function useFetchNotifications({
       onNotifications(initialNotifications);
     }
   }, [initialNotifications, onNotifications]);
-}
+};

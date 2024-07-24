@@ -7,14 +7,14 @@ import { joinWaitlistInput } from "./waitlist-schema";
 
 export const waitlistRouter = createTRPCRouter({
   all: superAdminProcedure.query(({ ctx }) => {
-    return ctx.supabase.from("waitlist").select("*");
+    return ctx.supabase.from("Waitlist").select("*");
   }),
 
   join: publicProcedure
     .input(joinWaitlistInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.adminSupabase
-        .from("waitlist")
+        .from("Waitlist")
         .insert({ email: input.email });
 
       if (response.error) {

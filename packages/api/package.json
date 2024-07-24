@@ -15,9 +15,9 @@
   },
   "dependencies": {
     "@2up/db": "workspace:latest",
-    "@trpc/server": "11.0.0-rc.441",
+    "@trpc/server": "catalog:",
+    "stripe": "^16.4.0",
     "superjson": "^2.2.1",
-    "stripe": "^16.2.0",
     "zod": "^3.23.8",
     "lodash": "^4.17.21",
     "zod-form-data": "^2.0.2"

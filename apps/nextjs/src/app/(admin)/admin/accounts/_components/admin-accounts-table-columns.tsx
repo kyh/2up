@@ -43,24 +43,24 @@ export const getColumns = (): ColumnDef<Account>[] => [
     id: "type",
     header: "Type",
     cell: ({ row }) => {
-      return row.original.is_personal_account ? "Personal" : "Team";
+      return row.original.isPersonalAccount ? "Personal" : "Team";
     },
   },
   {
-    id: "created_at",
+    id: "createdAt",
     header: "Created At",
-    accessorKey: "created_at",
+    accessorKey: "createdAt",
   },
   {
     id: "updated_at",
     header: "Updated At",
-    accessorKey: "updated_at",
+    accessorKey: "updatedAt",
   },
   {
     id: "actions",
     header: "",
     cell: ({ row }) => {
-      const isPersonalAccount = row.original.is_personal_account;
+      const isPersonalAccount = row.original.isPersonalAccount;
       const userId = row.original.id;
 
       return (

@@ -83,7 +83,7 @@ export const AdminMembersTable = (props: { members: Members }) => {
 const getColumns = (): ColumnDef<Members[0]>[] => [
   {
     header: "User ID",
-    accessorKey: "user_id",
+    accessorKey: "userId",
   },
   {
     header: "Name",
@@ -94,7 +94,7 @@ const getColumns = (): ColumnDef<Members[0]>[] => [
         <div className="flex items-center space-x-2">
           <div>
             <ProfileAvatar
-              pictureUrl={row.original.picture_url}
+              pictureUrl={row.original.pictureUrl}
               displayName={name}
             />
           </div>
@@ -121,10 +121,10 @@ const getColumns = (): ColumnDef<Members[0]>[] => [
   },
   {
     header: "Created At",
-    accessorKey: "created_at",
+    accessorKey: "createdAt",
   },
   {
     header: "Updated At",
-    accessorKey: "updated_at",
+    accessorKey: "updatedAt",
   },
 ];

@@ -82,7 +82,7 @@ export const AdminMembershipsTable = (props: { memberships: Memberships }) => {
 const getColumns = (): ColumnDef<Memberships[0]>[] => [
   {
     header: "User ID",
-    accessorKey: "user_id",
+    accessorKey: "userId",
   },
   {
     header: "Team",
@@ -90,7 +90,7 @@ const getColumns = (): ColumnDef<Memberships[0]>[] => [
       return (
         <Link
           className="hover:underline"
-          href={`/admin/accounts/${row.original.account_id}`}
+          href={`/admin/accounts/${row.original.accountId}`}
         >
           {row.original.account.name}
         </Link>
@@ -99,14 +99,14 @@ const getColumns = (): ColumnDef<Memberships[0]>[] => [
   },
   {
     header: "Role",
-    accessorKey: "account_role",
+    accessorKey: "accountRole",
   },
   {
     header: "Created At",
-    accessorKey: "created_at",
+    accessorKey: "createdAt",
   },
   {
     header: "Updated At",
-    accessorKey: "updated_at",
+    accessorKey: "updatedAt",
   },
 ];

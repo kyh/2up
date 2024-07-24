@@ -123,10 +123,15 @@ const ImpersonateUserAuthSetter = ({
   const setSessionAction = api.auth.setSession.useMutation();
 
   useEffect(() => {
-    setSessionAction.mutateAsync(tokens).then(() => {
-      // use a hard refresh to avoid hitting cached pages
-      window.location.replace("/dashboard");
-    });
+    setSessionAction
+      .mutateAsync(tokens)
+      .then(() => {
+        // use a hard refresh to avoid hitting cached pages
+        window.location.replace("/dashboard");
+      })
+      .catch((error) => {
+        console.error(error)
+      });
   }, [tokens]);
 
   return null;
