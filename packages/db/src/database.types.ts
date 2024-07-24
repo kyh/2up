@@ -120,14 +120,14 @@ export type Database = {
             foreignKeyName: "AccountsMemberships_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_account_workspace"
+            referencedRelation: "UserAccounts"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "AccountsMemberships_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_accounts"
+            referencedRelation: "UserAccountWorkspace"
             referencedColumns: ["id"]
           },
           {
@@ -194,14 +194,14 @@ export type Database = {
             foreignKeyName: "BillingCustomers_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_account_workspace"
+            referencedRelation: "UserAccounts"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "BillingCustomers_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_accounts"
+            referencedRelation: "UserAccountWorkspace"
             referencedColumns: ["id"]
           },
         ]
@@ -273,14 +273,14 @@ export type Database = {
             foreignKeyName: "Invitations_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_account_workspace"
+            referencedRelation: "UserAccounts"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "Invitations_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_accounts"
+            referencedRelation: "UserAccountWorkspace"
             referencedColumns: ["id"]
           },
           {
@@ -345,14 +345,14 @@ export type Database = {
             foreignKeyName: "Notifications_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_account_workspace"
+            referencedRelation: "UserAccounts"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "Notifications_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_accounts"
+            referencedRelation: "UserAccountWorkspace"
             referencedColumns: ["id"]
           },
         ]
@@ -444,14 +444,14 @@ export type Database = {
             foreignKeyName: "Orders_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_account_workspace"
+            referencedRelation: "UserAccounts"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "Orders_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_accounts"
+            referencedRelation: "UserAccountWorkspace"
             referencedColumns: ["id"]
           },
           {
@@ -615,14 +615,14 @@ export type Database = {
             foreignKeyName: "Subscriptions_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_account_workspace"
+            referencedRelation: "UserAccounts"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "Subscriptions_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_accounts"
+            referencedRelation: "UserAccountWorkspace"
             referencedColumns: ["id"]
           },
           {
@@ -686,14 +686,14 @@ export type Database = {
             foreignKeyName: "Tasks_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_account_workspace"
+            referencedRelation: "UserAccounts"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "Tasks_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_accounts"
+            referencedRelation: "UserAccountWorkspace"
             referencedColumns: ["id"]
           },
           {
@@ -740,32 +740,21 @@ export type Database = {
             foreignKeyName: "Waitlist_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_account_workspace"
+            referencedRelation: "UserAccounts"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "Waitlist_accountId_fkey"
             columns: ["accountId"]
             isOneToOne: false
-            referencedRelation: "user_accounts"
+            referencedRelation: "UserAccountWorkspace"
             referencedColumns: ["id"]
           },
         ]
       }
     }
     Views: {
-      user_account_workspace: {
-        Row: {
-          id: string | null
-          name: string | null
-          pictureUrl: string | null
-          subscription_status:
-            | Database["public"]["Enums"]["SubscriptionStatus"]
-            | null
-        }
-        Relationships: []
-      }
-      user_accounts: {
+      UserAccounts: {
         Row: {
           id: string | null
           name: string | null
@@ -783,30 +772,41 @@ export type Database = {
           },
         ]
       }
+      UserAccountWorkspace: {
+        Row: {
+          id: string | null
+          name: string | null
+          pictureUrl: string | null
+          subscription_status:
+            | Database["public"]["Enums"]["SubscriptionStatus"]
+            | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      accept_invitation: {
+      acceptInvitation: {
         Args: {
           token: string
           userId: string
         }
         Returns: string
       }
-      add_invitations_to_account: {
+      addInvitationsToAccount: {
         Args: {
           account_slug: string
           invitations: Database["public"]["CompositeTypes"]["Invitation"][]
         }
         Returns: Database["public"]["Tables"]["Invitations"]["Row"][]
       }
-      can_action_account_member: {
+      canActionAccountMember: {
         Args: {
           targetTeamAccountId: string
           targetUserId: string
         }
         Returns: boolean
       }
-      create_invitation: {
+      createInvitation: {
         Args: {
           accountId: string
           email: string
@@ -824,7 +824,7 @@ export type Database = {
           updatedAt: string
         }
       }
-      create_team_account: {
+      createTeamAccount: {
         Args: {
           account_name: string
         }
@@ -843,7 +843,7 @@ export type Database = {
           updatedBy: string | null
         }
       }
-      get_account_invitations: {
+      getAccountInvitations: {
         Args: {
           account_slug: string
         }
@@ -860,7 +860,7 @@ export type Database = {
           inviterEmail: string
         }[]
       }
-      get_account_members: {
+      getAccountMembers: {
         Args: {
           account_slug: string
         }
@@ -878,21 +878,21 @@ export type Database = {
           updatedAt: string
         }[]
       }
-      get_config: {
+      getConfig: {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
-      get_upper_system_role: {
+      getUpperSystemRole: {
         Args: Record<PropertyKey, never>
         Returns: string
       }
-      has_active_subscription: {
+      hasActiveSubscription: {
         Args: {
           targetAccountId: string
         }
         Returns: boolean
       }
-      has_more_elevated_role: {
+      hasMoreElevatedRole: {
         Args: {
           targetUserId: string
           targetAccountId: string
@@ -900,7 +900,7 @@ export type Database = {
         }
         Returns: boolean
       }
-      has_permission: {
+      hasPermission: {
         Args: {
           userId: string
           accountId: string
@@ -908,14 +908,14 @@ export type Database = {
         }
         Returns: boolean
       }
-      has_role_on_account: {
+      hasRoleOnAccount: {
         Args: {
           accountId: string
           accountRole?: string
         }
         Returns: boolean
       }
-      has_same_role_hierarchyLevel: {
+      hasSameRoleHierarchyLevel: {
         Args: {
           targetUserId: string
           targetAccountId: string
@@ -923,32 +923,32 @@ export type Database = {
         }
         Returns: boolean
       }
-      is_account_owner: {
+      isAccountOwner: {
         Args: {
           accountId: string
         }
         Returns: boolean
       }
-      is_account_team_member: {
+      isAccountTeamMember: {
         Args: {
           targetAccountId: string
         }
         Returns: boolean
       }
-      is_set: {
+      isSet: {
         Args: {
           fieldname: string
         }
         Returns: boolean
       }
-      is_team_member: {
+      isTeamMember: {
         Args: {
           accountId: string
           userId: string
         }
         Returns: boolean
       }
-      team_account_workspace: {
+      teamAccountWorkspace: {
         Args: {
           account_slug: string
         }
@@ -964,14 +964,14 @@ export type Database = {
           permissions: Database["public"]["Enums"]["AppPermissions"][]
         }[]
       }
-      transfer_team_account_ownership: {
+      transferTeamAccountOwnership: {
         Args: {
           targetAccountId: string
           newOwnerId: string
         }
         Returns: undefined
       }
-      upsert_order: {
+      upsertOrder: {
         Args: {
           targetAccountId: string
           targetCustomerId: string
@@ -994,7 +994,7 @@ export type Database = {
           updatedAt: string
         }
       }
-      upsert_subscription: {
+      upsertSubscription: {
         Args: {
           targetAccountId: string
           targetCustomerId: string

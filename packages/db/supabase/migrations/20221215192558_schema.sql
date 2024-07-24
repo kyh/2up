@@ -202,7 +202,7 @@ select
 
 -- Function to get the Config settings
 create
-or replace function public."get_config" () returns json
+or replace function public."getConfig" () returns json
 set
   search_path = '' as $$
 declare
@@ -222,7 +222,7 @@ $$ language plpgsql;
 
 -- Automatically set timestamps on tables when a row is inserted or updated
 create
-or replace function public."trigger_set_timestamps" () returns trigger
+or replace function public."triggerSetTimestamps" () returns trigger
 set
   search_path = '' as $$
 begin
@@ -245,7 +245,7 @@ $$ language plpgsql;
 
 -- Automatically set user tracking on tables when a row is inserted or updated
 create
-or replace function public."trigger_set_user_tracking" () returns trigger
+or replace function public."triggerSetUserTracking" () returns trigger
 set
   search_path = '' as $$
 begin
@@ -266,13 +266,13 @@ end
 $$ language plpgsql;
 
 grant
-execute on function public."get_config" () to "authenticated",
+execute on function public."getConfig" () to "authenticated",
 "service_role";
 
--- Function "public.is_set"
+-- Function "public.isSet"
 -- Check if a field is set in the Config
 create
-or replace function public."is_set" (fieldName text) returns boolean
+or replace function public."isSet" (fieldName text) returns boolean
 set
   search_path = '' as $$
 declare
@@ -287,7 +287,7 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."is_set" (text) to "authenticated";
+execute on function public."isSet" (text) to "authenticated";
 
 /*
  * -------------------------------------------------------
@@ -385,10 +385,10 @@ with
     ) = "primaryOwnerUserId"
   );
 
--- Function "public.transfer_team_account_ownership"
+-- Function "public.transferTeamAccountOwnership"
 -- Function to transfer the ownership of a team account to another user
 create
-or replace function public."transfer_team_account_ownership" ("targetAccountId" uuid, "newOwnerId" uuid) returns void
+or replace function public."transferTeamAccountOwnership" ("targetAccountId" uuid, "newOwnerId" uuid) returns void
 set
   search_path = '' as $$
 begin
@@ -422,24 +422,24 @@ begin
         public."AccountsMemberships"
     set
         "accountRole" =(
-            public."get_upper_system_role"())
+            public."getUpperSystemRole"())
     where
         "targetAccountId" = "accountId"
         and "userId" = "newOwnerId"
         and "accountRole" <>(
-            public."get_upper_system_role"());
+            public."getUpperSystemRole"());
 
 end;
 
 $$ language plpgsql;
 
 grant
-execute on function public."transfer_team_account_ownership" (uuid, uuid) to "service_role";
+execute on function public."transferTeamAccountOwnership" (uuid, uuid) to "service_role";
 
--- Function "public.is_account_owner"
+-- Function "public.isAccountOwner"
 -- Function to check if a user is the primary owner of an account
 create
-or replace function public."is_account_owner" ("accountId" uuid) returns boolean
+or replace function public."isAccountOwner" ("accountId" uuid) returns boolean
 set
   search_path = '' as $$
     select
@@ -449,18 +449,18 @@ set
             from
                 public."Accounts"
             where
-                id = "is_account_owner"."accountId"
+                id = "isAccountOwner"."accountId"
                 and "primaryOwnerUserId" = auth.uid());
 $$ language sql;
 
 grant
-execute on function public."is_account_owner" (uuid) to "authenticated",
+execute on function public."isAccountOwner" (uuid) to "authenticated",
 "service_role";
 
--- Function "kit.protect_account_fields"
+-- Function "kit.protectAccountFields"
 -- Function to protect account fields from being updated
 create
-or replace function kit."protect_account_fields" () returns trigger as $$
+or replace function kit."protectAccountFields" () returns trigger as $$
 begin
     if current_user in('authenticated', 'anon') then
 	if new.id <> old.id or new."isPersonalAccount" <>
@@ -481,12 +481,12 @@ set
 -- trigger to protect account fields
 create trigger protect_account_fields before
 update on public."Accounts" for each row
-execute function kit."protect_account_fields" ();
+execute function kit."protectAccountFields" ();
 
--- Function "public.get_upper_system_role"
+-- Function "public.getUpperSystemRole"
 -- Function to get the highest system role for an account
 create
-or replace function public."get_upper_system_role" () returns varchar
+or replace function public."getUpperSystemRole" () returns varchar
 set
   search_path = '' as $$
 declare
@@ -500,12 +500,12 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."get_upper_system_role" () to "service_role";
+execute on function public."getUpperSystemRole" () to "service_role";
 
--- Function "kit.add_current_user_to_new_account"
+-- Function "kit.addCurrentUserToNewAccount"
 -- Trigger to add the current user to a new account as the primary owner
 create
-or replace function kit."add_current_user_to_new_account" () returns trigger language plpgsql security definer
+or replace function kit."addCurrentUserToNewAccount" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 begin
@@ -517,7 +517,7 @@ begin
         values(
             new.id,
             auth.uid(),
-            public."get_upper_system_role"());
+            public."getUpperSystemRole"());
 
     end if;
 
@@ -528,14 +528,14 @@ end;
 $$;
 
 -- trigger the function whenever a new account is created
-create trigger "add_current_user_to_new_account"
+create trigger "addCurrentUserToNewAccount"
 after insert on public."Accounts" for each row
 when (new."isPersonalAccount" = false)
-execute function kit."add_current_user_to_new_account" ();
+execute function kit."addCurrentUserToNewAccount" ();
 
 -- create a trigger to update the account email when the primary owner email is updated
 create
-or replace function kit."handle_update_user_email" () returns trigger language plpgsql security definer
+or replace function kit."handleUpdateUserEmail" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 begin
@@ -555,10 +555,10 @@ $$;
 
 -- trigger the function every time a user email is updated only if the user is the primary owner of the account and
 -- the account is personal account
-create trigger "on_auth_user_updated"
+create trigger "onAuthUserUpdated"
 after
 update of email on auth.users for each row
-execute procedure kit."handle_update_user_email" ();
+execute procedure kit."handleUpdateUserEmail" ();
 
 /*
  * -------------------------------------------------------
@@ -639,10 +639,10 @@ create index ix_accounts_memberships_accountRole on public."AccountsMemberships"
 -- Enable RLS on the AccountsMemberships table
 alter table public."AccountsMemberships" enable row level security;
 
--- Function "kit.prevent_account_owner_membership_delete"
+-- Function "kit.preventAccountOwnerMembershipDelete"
 -- Trigger to prevent a primary owner from being removed from an account
 create
-or replace function kit."prevent_account_owner_membership_delete" () returns trigger
+or replace function kit."preventAccountOwnerMembershipDelete" () returns trigger
 set
   search_path = '' as $$
 begin
@@ -666,12 +666,12 @@ $$ language plpgsql;
 
 create
 or replace trigger prevent_account_owner_membership_delete_check before delete on public."AccountsMemberships" for each row
-execute function kit."prevent_account_owner_membership_delete" ();
+execute function kit."preventAccountOwnerMembershipDelete" ();
 
--- Function "kit.prevent_memberships_update"
+-- Function "kit.preventMembershipsUpdate"
 -- Trigger to prevent updates to account memberships with the exception of the accountRole
 create
-or replace function kit."prevent_memberships_update" () returns trigger
+or replace function kit."preventMembershipsUpdate" () returns trigger
 set
   search_path = '' as $$
 begin
@@ -686,12 +686,12 @@ end; $$ language plpgsql;
 create
 or replace trigger prevent_memberships_update_check before
 update on public."AccountsMemberships" for each row
-execute function kit."prevent_memberships_update" ();
+execute function kit."preventMembershipsUpdate" ();
 
--- Function "public.has_role_on_account"
+-- Function "public.hasRoleOnAccount"
 -- Function to check if a user has a role on an account
 create
-or replace function public."has_role_on_account" (
+or replace function public."hasRoleOnAccount" (
   "accountId" uuid,
   "accountRole" varchar(50) default null
 ) returns boolean language sql security definer
@@ -705,18 +705,18 @@ set
                 public."AccountsMemberships" membership
             where
                 membership."userId" = (select auth.uid())
-                and membership."accountId" = "has_role_on_account"."accountId"
-                and((membership."accountRole" = "has_role_on_account"."accountRole"
-                    or "has_role_on_account"."accountRole" is null)));
+                and membership."accountId" = "hasRoleOnAccount"."accountId"
+                and((membership."accountRole" = "hasRoleOnAccount"."accountRole"
+                    or "hasRoleOnAccount"."accountRole" is null)));
 $$;
 
 grant
-execute on function public."has_role_on_account" (uuid, varchar) to "authenticated";
+execute on function public."hasRoleOnAccount" (uuid, varchar) to "authenticated";
 
--- Function "public.is_team_member"
+-- Function "public.isTeamMember"
 -- Check if a user is a team member of an account or not
 create
-or replace function public."is_team_member" ("accountId" uuid, "userId" uuid) returns boolean language sql security definer
+or replace function public."isTeamMember" ("accountId" uuid, "userId" uuid) returns boolean language sql security definer
 set
   search_path = '' as $$
     select
@@ -726,13 +726,13 @@ set
             from
                 public."AccountsMemberships" membership
             where
-                public."has_role_on_account"("accountId")
-                and membership."userId" = "is_team_member"."userId"
-                and membership."accountId" = "is_team_member"."accountId");
+                public."hasRoleOnAccount"("accountId")
+                and membership."userId" = "isTeamMember"."userId"
+                and membership."accountId" = "isTeamMember"."accountId");
 $$;
 
 grant
-execute on function public."is_team_member" (uuid, uuid) to "authenticated",
+execute on function public."isTeamMember" (uuid, uuid) to "authenticated",
 "service_role";
 
 -- RLS
@@ -744,10 +744,10 @@ select
     true
   );
 
--- Function "public.can_action_account_member"
+-- Function "public.canActionAccountMember"
 -- Check if a user can perform management actions on an account member
 create
-or replace function public."can_action_account_member" ("targetTeamAccountId" uuid, "targetUserId" uuid) returns boolean
+or replace function public."canActionAccountMember" ("targetTeamAccountId" uuid, "targetUserId" uuid) returns boolean
 set
   search_path = '' as $$
 declare
@@ -762,7 +762,7 @@ begin
     end if;
 
     -- an account owner can action any member of the account
-    if public."is_account_owner"("targetTeamAccountId") then
+    if public."isAccountOwner"("targetTeamAccountId") then
       return true;
     end if;
 
@@ -784,7 +784,7 @@ begin
     -- validate the auth user has the required permission on the account
     -- to manage members of the account
     select
- public."has_permission"(auth.uid(), "targetTeamAccountId",
+ public."hasPermission"(auth.uid(), "targetTeamAccountId",
      'members.manage'::public."AppPermissions") into
      "permissionGranted";
 
@@ -837,7 +837,7 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."can_action_account_member" (uuid, uuid) to "authenticated",
+execute on function public."canActionAccountMember" (uuid, uuid) to "authenticated",
 "service_role";
 
 -- RLS
@@ -852,22 +852,22 @@ select
           auth.uid ()
       ) = "userId"
     )
-    or public."is_team_member" ("accountId", "userId")
+    or public."isTeamMember" ("accountId", "userId")
   );
 
 create
-or replace function public."is_account_team_member" ("targetAccountId" uuid) returns boolean
+or replace function public."isAccountTeamMember" ("targetAccountId" uuid) returns boolean
 set
   search_path = '' as $$
     select exists(
         select 1
         from public."AccountsMemberships" as membership
-        where public."is_team_member" (membership."accountId", "targetAccountId")
+        where public."isTeamMember" (membership."accountId", "targetAccountId")
     );
 $$ language sql;
 
 grant
-execute on function public."is_account_team_member" (uuid) to "authenticated",
+execute on function public."isAccountTeamMember" (uuid) to "authenticated",
 "service_role";
 
 -- RLS on the Accounts table
@@ -885,8 +885,8 @@ select
           auth.uid ()
       ) = "primaryOwnerUserId"
     )
-    or public."has_role_on_account" (id)
-    or public."is_account_team_member" (id)
+    or public."hasRoleOnAccount" (id)
+    or public."isAccountTeamMember" (id)
   );
 
 -- DELETE(AccountsMemberships):
@@ -898,7 +898,7 @@ create policy accounts_memberships_delete on public."AccountsMemberships" for de
         auth.uid ()
     )
   )
-  or public."can_action_account_member" ("accountId", "userId")
+  or public."canActionAccountMember" ("accountId", "userId")
 );
 
 /*
@@ -944,10 +944,10 @@ grant
 select
   on table public."RolePermissions" to "authenticated";
 
--- Function "public.has_permission"
+-- Function "public.hasPermission"
 -- Create a function to check if a user has a permission
 create
-or replace function public."has_permission" (
+or replace function public."hasPermission" (
   "userId" uuid,
   "accountId" uuid,
   "permissionName" public."AppPermissions"
@@ -964,22 +964,22 @@ begin
 		"AccountsMemberships"."accountRole" =
 		"RolePermissions".role
         where
-            "AccountsMemberships"."userId" = "has_permission"."userId"
-            and "AccountsMemberships"."accountId" = "has_permission"."accountId"
-            and "RolePermissions".permission = "has_permission"."permissionName");
+            "AccountsMemberships"."userId" = "hasPermission"."userId"
+            and "AccountsMemberships"."accountId" = "hasPermission"."accountId"
+            and "RolePermissions".permission = "hasPermission"."permissionName");
 
 end;
 
 $$ language plpgsql;
 
 grant
-execute on function public."has_permission" (uuid, uuid, public."AppPermissions") to "authenticated",
+execute on function public."hasPermission" (uuid, uuid, public."AppPermissions") to "authenticated",
 "service_role";
 
--- Function "public.has_more_elevated_role"
+-- Function "public.hasMoreElevatedRole"
 -- Check if a user has a more elevated role than the target role
 create
-or replace function public."has_more_elevated_role" (
+or replace function public."hasMoreElevatedRole" (
   "targetUserId" uuid,
   "targetAccountId" uuid,
   "roleName" varchar
@@ -1049,13 +1049,13 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."has_more_elevated_role" (uuid, uuid, varchar) to "authenticated",
+execute on function public."hasMoreElevatedRole" (uuid, uuid, varchar) to "authenticated",
 "service_role";
 
--- Function "public.has_same_role_hierarchyLevel"
+-- Function "public.hasSameRoleHierarchyLevel"
 -- Check if a user has the same role hierarchy level as the target role
 create
-or replace function public."has_same_role_hierarchyLevel" (
+or replace function public."hasSameRoleHierarchyLevel" (
   "targetUserId" uuid,
   "targetAccountId" uuid,
   "roleName" varchar
@@ -1124,7 +1124,7 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."has_same_role_hierarchyLevel" (uuid, uuid, varchar) to "authenticated",
+execute on function public."hasSameRoleHierarchyLevel" (uuid, uuid, varchar) to "authenticated",
 "service_role";
 
 -- Enable RLS on the RolePermissions table
@@ -1191,10 +1191,10 @@ delete on table public."Invitations" to "authenticated",
 -- Enable RLS on the Invitations table
 alter table public."Invitations" enable row level security;
 
--- Function "kit.check_team_account"
+-- Function "kit.checkTeamAccount"
 -- Function to check if the account is a team account or not when inserting or updating an invitation
 create
-or replace function kit."check_team_account" () returns trigger
+or replace function kit."checkTeamAccount" () returns trigger
 set
   search_path = '' as $$
 begin
@@ -1218,14 +1218,14 @@ $$ language plpgsql;
 create trigger only_team_accounts_check before insert
 or
 update on public."Invitations" for each row
-execute procedure kit."check_team_account" ();
+execute procedure kit."checkTeamAccount" ();
 
 -- RLS on the Invitations table
 -- SELECT(Invitations):
 -- Users can read invitations to users of an account they are a member of
 create policy invitations_read_self on public."Invitations" for
 select
-  to "authenticated" using (public."has_role_on_account" ("accountId"));
+  to "authenticated" using (public."hasRoleOnAccount" ("accountId"));
 
 -- INSERT(Invitations):
 -- Users can create invitations to users of an account they are
@@ -1233,8 +1233,8 @@ select
 create policy invitations_create_self on public."Invitations" for insert to "authenticated"
 with
   check (
-    public."is_set" ('enableTeamAccounts')
-    and public."has_permission" (
+    public."isSet" ('enableTeamAccounts')
+    and public."hasPermission" (
       (
         select
           auth.uid ()
@@ -1242,7 +1242,7 @@ with
       "accountId",
       'invites.manage'::public."AppPermissions"
     )
-    and public."has_same_role_hierarchyLevel" (
+    and public."hasSameRoleHierarchyLevel" (
       (
         select
           auth.uid ()
@@ -1258,7 +1258,7 @@ with
 create policy invitations_update on public."Invitations"
 for update
   to "authenticated" using (
-    public."has_permission" (
+    public."hasPermission" (
       (
         select
           auth.uid ()
@@ -1266,7 +1266,7 @@ for update
       "accountId",
       'invites.manage'::public."AppPermissions"
     )
-    and public."has_more_elevated_role" (
+    and public."hasMoreElevatedRole" (
       (
         select
           auth.uid ()
@@ -1277,7 +1277,7 @@ for update
   )
 with
   check (
-    public."has_permission" (
+    public."hasPermission" (
       (
         select
           auth.uid ()
@@ -1285,7 +1285,7 @@ with
       "accountId",
       'invites.manage'::public."AppPermissions"
     )
-    and public."has_more_elevated_role" (
+    and public."hasMoreElevatedRole" (
       (
         select
           auth.uid ()
@@ -1298,8 +1298,8 @@ with
 -- DELETE(public.Invitations):
 -- Users can delete invitations to users of an account they are a member of and have the 'invites.manage' permission
 create policy invitations_delete on public."Invitations" for delete to "authenticated" using (
-  public."has_role_on_account" ("accountId")
-  and public."has_permission" (
+  public."hasRoleOnAccount" ("accountId")
+  and public."hasPermission" (
     (
       select
         auth.uid ()
@@ -1309,10 +1309,10 @@ create policy invitations_delete on public."Invitations" for delete to "authenti
   )
 );
 
--- Functions "public.accept_invitation"
+-- Functions "public.acceptInvitation"
 -- Function to accept an invitation to an account
 create
-or replace function public."accept_invitation" ("token" text, "userId" uuid) returns uuid
+or replace function public."acceptInvitation" ("token" text, "userId" uuid) returns uuid
 set
   search_path = '' as $$
 declare
@@ -1338,7 +1338,7 @@ begin
         "accountId",
         "accountRole")
     values (
-        "accept_invitation"."userId",
+        "acceptInvitation"."userId",
         "targetAccountId",
         role);
 
@@ -1351,7 +1351,7 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."accept_invitation" (text, uuid) to "service_role";
+execute on function public."acceptInvitation" (text, uuid) to "service_role";
 
 /*
  * -------------------------------------------------------
@@ -1415,7 +1415,7 @@ select
       select
         auth.uid ()
     )
-    or public."has_role_on_account" ("accountId")
+    or public."hasRoleOnAccount" ("accountId")
   );
 
 /*
@@ -1496,22 +1496,22 @@ create policy subscriptions_read_self on public."Subscriptions" for
 select
   to "authenticated" using (
     (
-      public."has_role_on_account" ("accountId")
-      and public."is_set" ('enableTeamAccountBilling')
+      public."hasRoleOnAccount" ("accountId")
+      and public."isSet" ('enableTeamAccountBilling')
     )
     or (
       "accountId" = (
         select
           auth.uid ()
       )
-      and public."is_set" ('enableAccountBilling')
+      and public."isSet" ('enableAccountBilling')
     )
   );
 
--- Function "public.upsert_subscription"
+-- Function "public.upsertSubscription"
 -- Insert or Update a subscription and its items in the database when receiving a webhook from the billing provider
 create
-or replace function public."upsert_subscription" (
+or replace function public."upsertSubscription" (
   "targetAccountId" uuid,
   "targetCustomerId" varchar(255),
   "targetSubscriptionId" text,
@@ -1653,7 +1653,7 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."upsert_subscription" (
+execute on function public."upsertSubscription" (
   uuid,
   varchar,
   text,
@@ -1750,7 +1750,7 @@ select
             select
               auth.uid ()
           )
-          or public."has_role_on_account" ("accountId")
+          or public."hasRoleOnAccount" ("accountId")
         )
     )
   );
@@ -1822,11 +1822,11 @@ select
         select
           auth.uid ()
       )
-      and public."is_set" ('enableAccountBilling')
+      and public."isSet" ('enableAccountBilling')
     )
     or (
-      public."has_role_on_account" ("accountId")
-      and public."is_set" ('enableTeamAccountBilling')
+      public."hasRoleOnAccount" ("accountId")
+      and public."isSet" ('enableTeamAccountBilling')
     )
   );
 
@@ -1901,15 +1901,15 @@ select
             select
               auth.uid ()
           )
-          or public."has_role_on_account" ("accountId")
+          or public."hasRoleOnAccount" ("accountId")
         )
     )
   );
 
--- Function "public.upsert_order"
+-- Function "public.upsertOrder"
 -- Insert or update an order and its items when receiving a webhook from the billing provider
 create
-or replace function public."upsert_order" (
+or replace function public."upsertOrder" (
   "targetAccountId" uuid,
   "targetCustomerId" varchar(255),
   "targetOrderId" text,
@@ -2019,7 +2019,7 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."upsert_order" (
+execute on function public."upsertOrder" (
   uuid,
   varchar,
   text,
@@ -2106,7 +2106,7 @@ select
       select
         auth.uid ()
     )
-    or public."has_role_on_account" ("accountId")
+    or public."hasRoleOnAccount" ("accountId")
   );
 
 -- UPDATE(Notifications):
@@ -2118,13 +2118,13 @@ for update
       select
         auth.uid ()
     )
-    or public."has_role_on_account" ("accountId")
+    or public."hasRoleOnAccount" ("accountId")
   );
 
--- Function "kit.update_notification_dismissed_status"
+-- Function "kit.updateNotificationDismissedStatus"
 -- Make sure the only updatable field is the dismissed status and nothing else
 create
-or replace function kit."update_notification_dismissed_status" () returns trigger
+or replace function kit."updateNotificationDismissedStatus" () returns trigger
 set
   search_path to '' as $$
 begin
@@ -2141,7 +2141,7 @@ $$ language plpgsql;
 -- add trigger when updating a notification to update the dismissed status
 create trigger update_notification_dismissed_status before
 update on public."Notifications" for each row
-execute procedure kit."update_notification_dismissed_status" ();
+execute procedure kit."updateNotificationDismissedStatus" ();
 
 /**
  * -------------------------------------------------------
@@ -2201,10 +2201,10 @@ grant
 execute on function kit."slugify" (text) to "service_role",
 "authenticated";
 
--- Function "kit.set_slug_from_account_name"
+-- Function "kit.setSlugFromAccountName"
 -- Set the slug from the account name and increment if the slug exists
 create
-or replace function kit."set_slug_from_account_name" () returns trigger language plpgsql security definer
+or replace function kit."setSlugFromAccountName" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 declare
@@ -2250,26 +2250,26 @@ end
 $$;
 
 -- Create a trigger to set the slug from the account name
-create trigger "set_slug_from_account_name" before insert on public."Accounts" for each row when (
+create trigger "setSlugFromAccountName" before insert on public."Accounts" for each row when (
   NEW.name is not null
   and NEW.slug is null
   and NEW."isPersonalAccount" = false
 )
-execute procedure kit."set_slug_from_account_name" ();
+execute procedure kit."setSlugFromAccountName" ();
 
 -- Create a trigger when a name is updated to update the slug
-create trigger "update_slug_from_account_name" before
+create trigger "updateSlugFromAccountName" before
 update on public."Accounts" for each row when (
   NEW.name is not null
   and NEW.name <> OLD.name
   and NEW."isPersonalAccount" = false
 )
-execute procedure kit."set_slug_from_account_name" ();
+execute procedure kit."setSlugFromAccountName" ();
 
--- Function "kit.setup_new_user"
+-- Function "kit.setupNewUser"
 -- Setup a new user account after user creation
 create
-or replace function kit."setup_new_user" () returns trigger language plpgsql security definer
+or replace function kit."setupNewUser" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 declare
@@ -2312,7 +2312,7 @@ $$;
 -- trigger the function every time a user is created
 create trigger on_auth_user_created
 after insert on auth.users for each row
-execute procedure kit."setup_new_user" ();
+execute procedure kit."setupNewUser" ();
 
 /**
  * -------------------------------------------------------
@@ -2320,16 +2320,16 @@ execute procedure kit."setup_new_user" ();
  * We create the schema for the functions. Functions are the custom functions for the application.
  * -------------------------------------------------------
  */
--- Function "public.create_team_account"
+-- Function "public.createTeamAccount"
 -- Create a team account if team accounts are enabled
 create
-or replace function public."create_team_account" ("account_name" text) returns public."Accounts"
+or replace function public."createTeamAccount" ("account_name" text) returns public."Accounts"
 set
   search_path = '' as $$
 declare
     new_account public."Accounts";
 begin
-    if (not public."is_set"('enableTeamAccounts')) then
+    if (not public."isSet"('enableTeamAccounts')) then
         raise exception 'Team accounts are not enabled';
     end if;
 
@@ -2349,7 +2349,7 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."create_team_account" (text) to "authenticated",
+execute on function public."createTeamAccount" (text) to "authenticated",
 "service_role";
 
 -- RLS(public."Accounts")
@@ -2357,14 +2357,14 @@ execute on function public."create_team_account" (text) to "authenticated",
 create policy create_org_account on public."Accounts" for insert to "authenticated"
 with
   check (
-    public."is_set" ('enableTeamAccounts')
+    public."isSet" ('enableTeamAccounts')
     and public."Accounts"."isPersonalAccount" = false
   );
 
--- Function "public.create_invitation"
+-- Function "public.createInvitation"
 -- create an invitation to an account
 create
-or replace function public."create_invitation" ("accountId" uuid, email text, role varchar(50)) returns public."Invitations"
+or replace function public."createInvitation" ("accountId" uuid, email text, role varchar(50)) returns public."Invitations"
 set
   search_path = '' as $$
 declare
@@ -2395,11 +2395,11 @@ end;
 $$ language plpgsql;
 
 --
--- VIEW "user_account_workspace":
+-- VIEW "UserAccountWorkspace":
 -- we create a view to load the general app data for the authenticated
 -- user which includes the user accounts and memberships
 create or replace view
-  public."user_account_workspace"
+  public."UserAccountWorkspace"
 with
   (security_invoker = true) as
 select
@@ -2426,15 +2426,15 @@ limit
 
 grant
 select
-  on public."user_account_workspace" to "authenticated",
+  on public."UserAccountWorkspace" to "authenticated",
   "service_role";
 
 --
--- VIEW "user_accounts":
+-- VIEW "UserAccounts":
 -- we create a view to load the user's accounts and memberships
 -- useful to display the user's accounts in the app
 create or replace view
-  public."user_accounts" (id, name, "pictureUrl", slug, role)
+  public."UserAccounts" (id, name, "pictureUrl", slug, role)
 with
   (security_invoker = true) as
 select
@@ -2460,13 +2460,13 @@ where
 
 grant
 select
-  on public."user_accounts" to "authenticated",
+  on public."UserAccounts" to "authenticated",
   "service_role";
 
 --
--- Function "public.team_account_workspace"
+-- Function "public.teamAccountWorkspace"
 -- Load all the data for a team account workspace
-create or replace function public."team_account_workspace"(account_slug text)
+create or replace function public."teamAccountWorkspace"(account_slug text)
 returns table (
   id uuid,
   name varchar(255),
@@ -2510,13 +2510,13 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."team_account_workspace" (text) to "authenticated",
+execute on function public."teamAccountWorkspace" (text) to "authenticated",
 "service_role";
 
--- Functions "public.get_account_members"
+-- Functions "public.getAccountMembers"
 -- Function to get the members of an account by the account slug
 create
-or replace function public."get_account_members" (account_slug text) returns table (
+or replace function public."getAccountMembers" (account_slug text) returns table (
   id uuid,
   "userId" uuid,
   "accountId" uuid,
@@ -2558,13 +2558,13 @@ end;
 $$;
 
 grant
-execute on function public."get_account_members" (text) to "authenticated",
+execute on function public."getAccountMembers" (text) to "authenticated",
 "service_role";
 
--- Function "public.get_account_invitations"
+-- Function "public.getAccountInvitations"
 -- List the account invitations by the account slug
 create
-or replace function public."get_account_invitations" (account_slug text) returns table (
+or replace function public."getAccountInvitations" (account_slug text) returns table (
   id integer,
   email varchar(255),
   "accountId" uuid,
@@ -2602,13 +2602,13 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."get_account_invitations" (text) to "authenticated",
+execute on function public."getAccountInvitations" (text) to "authenticated",
 "service_role";
 
--- Function "public.add_invitations_to_account"
+-- Function "public.addInvitationsToAccount"
 -- Add invitations to an account
 create
-or replace function public."add_invitations_to_account" (
+or replace function public."addInvitationsToAccount" (
   account_slug text,
   invitations public."Invitation"[]
 ) returns public."Invitations"[]
@@ -2654,14 +2654,14 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."add_invitations_to_account" (text, public."Invitation"[]) to "authenticated",
+execute on function public."addInvitationsToAccount" (text, public."Invitation"[]) to "authenticated",
 "service_role";
 
--- Function "public.has_active_subscription"
+-- Function "public.hasActiveSubscription"
 -- Check if a user has an active subscription on an account - ie. it's trialing or active
 -- Useful to gate access to features that require a subscription
 create
-or replace function public."has_active_subscription" ("targetAccountId" uuid) returns boolean
+or replace function public."hasActiveSubscription" ("targetAccountId" uuid) returns boolean
 set
   search_path = '' as $$
 begin
@@ -2679,7 +2679,7 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function public."has_active_subscription" (uuid) to "authenticated",
+execute on function public."hasActiveSubscription" (uuid) to "authenticated",
 "service_role";
 
 -- Storage
@@ -2687,12 +2687,12 @@ execute on function public."has_active_subscription" (uuid) to "authenticated",
 insert into
   storage.buckets (id, name, "public")
 values
-  ('account_image', 'account_image', true);
+  ('AccountImage', 'AccountImage', true);
 
 -- Function: get the storage filename as a UUID.
 -- Useful if you want to name files with UUIDs related to an account
 create
-or replace function kit."get_storage_filename_as_uuid" (name text) returns uuid
+or replace function kit."getStorageFilenameAsUuid" (name text) returns uuid
 set
   search_path = '' as $$
 begin
@@ -2704,30 +2704,29 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function kit."get_storage_filename_as_uuid" (text) to "authenticated",
+execute on function kit."getStorageFilenameAsUuid" (text) to "authenticated",
 "service_role";
 
 -- RLS policies for storage
 create policy account_image on storage.objects for all using (
-  "bucket_id" = 'account_image'
-  and kit."get_storage_filename_as_uuid" (name) = (
+  "bucket_id" = 'AccountImage'
+  and kit."getStorageFilenameAsUuid" (name) = (
     select
       auth.uid ()
   )
-  or public."has_role_on_account" (kit."get_storage_filename_as_uuid" (name))
+  or public."hasRoleOnAccount" (kit."getStorageFilenameAsUuid" (name))
 )
 with
   check (
-    "bucket_id" = 'account_image'
-    and (kit."get_storage_filename_as_uuid" (name) = (
+    "bucket_id" = 'AccountImage'
+    and (kit."getStorageFilenameAsUuid" (name) = (
       select
         auth.uid ()
     )
-    or public."has_permission" (
+    or public."hasPermission" (
       auth.uid (),
-      kit."get_storage_filename_as_uuid" (name),
+      kit."getStorageFilenameAsUuid" (name),
       'settings.manage'
     ))
   );
-
 
