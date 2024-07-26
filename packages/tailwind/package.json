@@ -12,19 +12,17 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@tailwindcss/typography": "^0.5.13",
-    "postcss": "^8.4.40",
-    "tailwindcss": "catalog:",
-    "tailwindcss-animate": "^1.0.7"
-  },
   "devDependencies": {
     "@kyh/eslint-config": "catalog:",
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@tailwindcss/typography": "^0.5.13",
+    "postcss": "^8.4.40",
+    "tailwindcss": "catalog:",
+    "tailwindcss-animate": "^1.0.7"
   },
   "eslintConfig": {
     "root": true,
