@@ -27,8 +27,6 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   const router = useRouter();
   const nextPath = useSearchParams().get("next") ?? "/dashboard";
 
-  const createNotification = api.notifications.createNotification.useMutation();
-
   const signInWithOAuth = api.auth.signInWithOAuth.useMutation({
     onError: (error) => toast.error(error.message),
   });
@@ -37,15 +35,7 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
     onError: (error) => toast.error(error.message),
   });
   const signUp = api.auth.signUp.useMutation({
-    onSuccess: ({ user }) => {
-      if (user) {
-        createNotification.mutate({
-          account_id: user.id,
-          body: "You have successfully signed up!",
-        });
-      }
-      router.replace(nextPath);
-    },
+    onSuccess: () => router.replace(nextPath),
     onError: (error) => toast.error(error.message),
   });
 
@@ -56,6 +46,12 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
       password: "",
     },
   });
+
+  const handleAuthWithGithub = () => {
+    signInWithOAuth.mutate({
+      provider: "github",
+    });
+  };
 
   const handleAuthWithPassword = (credentials: SignInWithPasswordInput) => {
     if (type === "signup") {
@@ -72,11 +68,7 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
         variant="outline"
         type="button"
         loading={signInWithOAuth.isPending}
-        onClick={() =>
-          signInWithOAuth.mutate({
-            provider: "github",
-          })
-        }
+        onClick={handleAuthWithGithub}
       >
         Continue with Github
       </Button>
@@ -151,9 +143,13 @@ export const RequestPasswordResetForm = () => {
 };
 
 export const UpdatePasswordForm = () => {
+  const nextPath = useSearchParams().get("next") ?? "/dashboard";
+
   return null;
 };
 
 export const MultiFactorAuthForm = () => {
+  const nextPath = useSearchParams().get("next") ?? "/dashboard";
+
   return null;
 };
