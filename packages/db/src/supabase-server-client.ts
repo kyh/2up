@@ -6,7 +6,6 @@ import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 
 import type { Database } from "./database.types";
-import type { CookieOptions } from "@supabase/ssr";
 import { getServiceRoleKey } from "./get-service-role-key";
 import { getSupabaseClientKeys } from "./get-supabase-client-keys";
 
@@ -35,31 +34,22 @@ export const getSupabaseServerClient = <GenericSchema = Database>(
     });
   }
 
-  return createServerClient<GenericSchema>(keys.url, keys.anonKey, {
-    cookies: getCookiesStrategy(),
-  });
-};
-
-const getCookiesStrategy = () => {
   const cookieStore = cookies();
 
-  return {
-    get: (name: string) => {
-      return cookieStore.get(name)?.value;
+  return createServerClient<GenericSchema>(keys.url, keys.anonKey, {
+    cookies: {
+      getAll: () => cookieStore.getAll(),
+      setAll: (cookiesToSet) => {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options),
+          );
+        } catch {
+          // The `setAll` method was called from a Server Component.
+          // This can be ignored if you have middleware refreshing
+          // user sessions.
+        }
+      },
     },
-    set: (name: string, value: string, options: CookieOptions) => {
-      try {
-        cookieStore.set({ name, value, ...options });
-      } catch (error) {
-        // noop
-      }
-    },
-    remove: (name: string, options: CookieOptions) => {
-      try {
-        cookieStore.set({ name, value: "", ...options });
-      } catch (error) {
-        // noop
-      }
-    },
-  };
+  });
 };
