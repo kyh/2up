@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { If } from "@init/ui/if";
-import { z } from "zod";
 
 import { billingConfig } from "@/config/billing.config";
 import { api } from "@/trpc/server";
@@ -9,11 +8,6 @@ import { CheckoutForm } from "./_components/checkout-form";
 import { CurrentLifetimeOrderCard } from "./_components/current-lifetime-order-card";
 import { CurrentSubscriptionCard } from "./_components/current-subscription-card";
 
-const BILLING_MODE = z
-  .enum(["subscription", "one-time"])
-  .default("subscription")
-  .parse(process.env.BILLING_MODE);
-
 const Page = async () => {
   const user = await api.account.me();
 
@@ -21,11 +15,7 @@ const Page = async () => {
     return redirect("/account");
   }
 
-  const data =
-    BILLING_MODE === "subscription"
-      ? await api.billing.getSubscription({ accountId: user.id })
-      : await api.billing.getOrder({ accountId: user.id });
-
+  const data = await api.billing.getSubscription({ accountId: user.id });
   const customerId = await api.billing.getCustomerId({ accountId: user.id });
 
   return (
