@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { RequestPasswordResetForm } from "@/app/(auth)/auth-form";
+import { RequestPasswordResetForm } from "@/app/(auth)/_components/auth-form";
 
 export const generateMetadata = async () => {
   return {

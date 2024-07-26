@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createTeamAccountInput } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
@@ -30,7 +30,7 @@ import { api } from "@/trpc/react";
 export const CreateTeamAccountDialog = ({
   children,
 }: React.PropsWithChildren) => {
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -41,19 +41,17 @@ export const CreateTeamAccountDialog = ({
       >
         <DialogHeader>
           <DialogTitle>Create Team</DialogTitle>
-
           <DialogDescription>
             Create a new Team to manage your projects and members.
           </DialogDescription>
         </DialogHeader>
-
-        <CreateOrganizationAccountForm onClose={() => setIsOpen(false)} />
+        <CreateTeamAccountForm onClose={() => setIsOpen(false)} />
       </DialogContent>
     </Dialog>
   );
 };
 
-const CreateOrganizationAccountForm = (props: { onClose: () => void }) => {
+const CreateTeamAccountForm = (props: { onClose: () => void }) => {
   const router = useRouter();
 
   const createTeamAccount = api.team.createTeamAccount.useMutation({
@@ -89,7 +87,6 @@ const CreateOrganizationAccountForm = (props: { onClose: () => void }) => {
               return (
                 <FormItem>
                   <FormLabel>Team Name</FormLabel>
-
                   <FormControl>
                     <Input
                       required
@@ -99,11 +96,9 @@ const CreateOrganizationAccountForm = (props: { onClose: () => void }) => {
                       {...field}
                     />
                   </FormControl>
-
                   <FormDescription>
                     Your team name should be unique and descriptive
                   </FormDescription>
-
                   <FormMessage />
                 </FormItem>
               );
@@ -119,10 +114,7 @@ const CreateOrganizationAccountForm = (props: { onClose: () => void }) => {
             >
               Cancel
             </Button>
-
-            <Button disabled={createTeamAccount.isPending}>
-              {createTeamAccount.isPending ? "Creating Team..." : "Create Team"}
-            </Button>
+            <Button loading={createTeamAccount.isPending}>Create Team</Button>
           </div>
         </div>
       </form>
