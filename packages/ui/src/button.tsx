@@ -1,7 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "@init/ui/utils";
-import { Slot } from "@radix-ui/react-slot";
+import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 
 import { Spinner } from "./spinner";
@@ -64,24 +64,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled ?? loading}
         {...props}
       >
-        <div>
-          <div
-            className={cn(
-              "pointer-events-none absolute inset-0 grid place-items-center opacity-0 transition",
-              loading && "opacity-1",
-            )}
-          >
-            <Spinner />
-          </div>
-          <div
-            className={cn(
-              "flex items-center justify-center transition",
-              loading && "opacity-0",
-            )}
-          >
-            {children}
-          </div>
-        </div>
+        <span
+          className={cn(
+            "pointer-events-none absolute inset-0 grid place-items-center opacity-0 transition",
+            loading && "opacity-1",
+          )}
+        >
+          <Spinner />
+        </span>
+        <Slottable>{children}</Slottable>
       </Comp>
     );
   },

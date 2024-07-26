@@ -1,4 +1,4 @@
-import { MultiFactorAuthForm } from "@/app/(auth)/auth-form";
+import { MultiFactorAuthForm } from "@/app/(auth)/_components/auth-form";
 
 export const generateMetadata = async () => {
   return {

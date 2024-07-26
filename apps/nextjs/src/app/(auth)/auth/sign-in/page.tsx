@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 
-import { AuthForm } from "@/app/(auth)/auth-form";
+import { AuthForm } from "@/app/(auth)/_components/auth-form";
 
 export const generateMetadata = async () => {
   return {

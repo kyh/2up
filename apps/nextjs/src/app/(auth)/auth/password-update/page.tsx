@@ -1,4 +1,4 @@
-import { UpdatePasswordForm } from "@/app/(auth)/auth-form";
+import { UpdatePasswordForm } from "@/app/(auth)/_components/auth-form";
 
 export const generateMetadata = async () => {
   return {

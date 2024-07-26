@@ -12,23 +12,20 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
 import { Logo } from "@init/ui/logo";
 import { cn, getInitials } from "@init/ui/utils";
-import { CheckCircleIcon, PlusIcon, UserIcon } from "lucide-react";
+import { CheckCircleIcon, LogOutIcon, PlusIcon, UserIcon } from "lucide-react";
 
 import { NavLink } from "@/components/nav";
 import { api } from "@/trpc/server";
 import { CreateTeamAccountDialog } from "./accounts/create-team-account-dialog";
-import { NotificationsPopover } from "./notifications/notifications-popover";
 
 const PERSONAL_ACCOUNT_SLUG = "personal";
 
 export const Sidebar = async ({
   slug = PERSONAL_ACCOUNT_SLUG,
-  accountId,
   pageLinks,
 }: {
   accountId?: string;
@@ -49,99 +46,25 @@ export const Sidebar = async ({
   const userImage = user.user_metadata.image ?? "";
   const userName = user.user_metadata.name ?? userEmail ?? "No name";
 
-  const accountIds = accountId ? [user.id, accountId] : [user.id];
-  api.notifications.fetchNotifications.prefetch({ accountIds });
-
   const signOut = async () => {
     "use server";
     await api.auth.signOut();
     return redirect("/");
   };
 
-  const Icon = (props: { item: string }) => {
-    return (
-      <CheckCircleIcon
-        className={cn(
-          "ml-auto h-4 w-4",
-          slug === props.item ? "opacity-100" : "opacity-0",
-        )}
-      />
-    );
-  };
-
   return (
     <nav className="sticky top-0 flex h-dvh w-[80px] flex-col items-center overflow-y-auto overflow-x-hidden px-4 py-[26px]">
       <div className="flex flex-col">
-        <div className="flex justify-center pb-4">
-          <NotificationsPopover accountIds={accountIds} realtime={true} />
+        <div className="flex justify-center pb-2">
+          <NavLink href="/dashboard">
+            <Logo
+              width={40}
+              height={40}
+              className="rounded-lg bg-muted text-primary"
+            />
+            <span className="sr-only">Init</span>
+          </NavLink>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="flex cursor-pointer justify-center pb-2">
-              <Logo
-                width={40}
-                height={40}
-                className="rounded-lg bg-muted text-primary"
-              />
-              <span className="sr-only">Init</span>
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-56"
-            forceMount
-            alignOffset={8}
-            sideOffset={8}
-            collisionPadding={8}
-          >
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Link
-                  href="/dashboard"
-                  className="inline-flex w-full items-center font-normal"
-                >
-                  <UserIcon className="h-4 min-h-4 w-4 min-w-4" />
-                  <span className="ml-2">Personal Account</span>
-                  <Icon item={PERSONAL_ACCOUNT_SLUG} />
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <div className="px-2 py-1.5 text-xs font-light">
-                Your Teams ({accounts.length})
-              </div>
-              {accounts.map((account) => (
-                <DropdownMenuLabel key={account.id}>
-                  <Link
-                    href={`/dashboard/${account.slug}`}
-                    className="inline-flex w-full items-center font-normal"
-                  >
-                    <Avatar className="h-5 w-5">
-                      <AvatarFallback className="group-hover:bg-background">
-                        {account.name ? account.name[0] : ""}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="ml-2">{account.name}</span>
-                    <Icon item={account.slug ?? ""} />
-                  </Link>
-                </DropdownMenuLabel>
-              ))}
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <CreateTeamAccountDialog>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start px-2.5 font-normal"
-                >
-                  <PlusIcon className="mr-3 h-4 w-4" />
-                  Create a Team
-                </Button>
-              </CreateTeamAccountDialog>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
         {pageLinks.map((link) => (
           <NavLink
             key={link.id}
@@ -155,6 +78,7 @@ export const Sidebar = async ({
             <span>{link.label}</span>
           </NavLink>
         ))}
+        {/* <NotificationsPopover accountIds={accountIds} realtime={true} /> */}
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -190,11 +114,61 @@ export const Sidebar = async ({
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Your Accounts</DropdownMenuLabel>
+            <DropdownMenuItem asChild>
+              <Link
+                href="/dashboard"
+                className="inline-flex w-full items-center font-normal"
+              >
+                <UserIcon className="h-4 w-4" />
+                <span className="ml-2">Personal Account</span>
+                <CheckCircleIcon
+                  className={cn(
+                    "ml-auto h-4 w-4",
+                    slug === PERSONAL_ACCOUNT_SLUG
+                      ? "opacity-100"
+                      : "opacity-0",
+                  )}
+                />
+              </Link>
+            </DropdownMenuItem>
+            {accounts.map((account) => (
+              <DropdownMenuItem key={account.id} asChild>
+                <Link
+                  href={`/dashboard/${account.slug}`}
+                  className="inline-flex w-full items-center font-normal"
+                >
+                  <Avatar className="h-4 w-4">
+                    <AvatarFallback className="group-hover:bg-background">
+                      {account.name ? account.name[0] : ""}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="ml-2">{account.name}</span>
+                  <CheckCircleIcon
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      slug === account.slug ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                </Link>
+              </DropdownMenuItem>
+            ))}
+            <CreateTeamAccountDialog>
+              <DropdownMenuItem asChild>
+                <button className="flex w-full gap-2">
+                  <PlusIcon className="h-4 w-4" />
+                  Create a Team
+                </button>
+              </DropdownMenuItem>
+            </CreateTeamAccountDialog>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
           <form action={signOut}>
             <DropdownMenuItem className="w-full" asChild>
-              <button>
+              <button className="flex w-full gap-2">
+                <LogOutIcon className="h-4 w-4" />
                 Log out
-                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
               </button>
             </DropdownMenuItem>
           </form>
