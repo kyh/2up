@@ -54,7 +54,7 @@ const RemoveMemberForm = ({
   userId: string;
   setIsOpen: (isOpen: boolean) => void;
 }) => {
-  const removeMember = api.team.removeMember.useMutation({
+  const removeMember = api.account.removeMember.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Member removed successfully");

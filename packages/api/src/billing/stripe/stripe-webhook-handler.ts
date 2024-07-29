@@ -7,32 +7,31 @@ import { stripeServerEnvSchema } from "./stripe-schema";
 import { createStripeClient } from "./stripe-sdk";
 
 type UpsertSubscriptionParams =
-  Database["public"]["Functions"]["upsert_subscription"]["Args"] & {
-    line_items: LineItem[];
+  Database["public"]["Functions"]["upsertSubscription"]["Args"] & {
+    lineItems: LineItem[];
   };
 
 type LineItem = {
   id: string;
   quantity: number;
-  subscription_id: string;
-  subscription_item_id: string;
-  product_id: string;
-  variant_id: string;
-  price_amount: number | null | undefined;
+  subscriptionId: string;
+  subscriptionItemId: string;
+  productId: string;
+  variantId: string;
+  priceAmount: number | null | undefined;
   interval: string;
-  interval_count: number;
+  intervalCount: number;
   type: "flat" | "metered" | "per_seat" | undefined;
 };
 
-type UpsertOrderParams =
-  Database["public"]["Functions"]["upsert_order"]["Args"];
+type UpsertOrderParams = Database["public"]["Functions"]["upsertOrder"]["Args"];
 
 export class StripeWebhookHandlerService {
   private stripe: Stripe | undefined;
 
   constructor(private readonly config: BillingConfig) {}
 
-  private readonly provider: Database["public"]["Enums"]["billing_provider"] =
+  private readonly provider: Database["public"]["Enums"]["BillingProvider"] =
     "stripe";
 
   private readonly namespace = "billing.stripe";
@@ -183,21 +182,21 @@ export class StripeWebhookHandlerService {
       const currency = event.data.object.currency!;
 
       const payload: UpsertOrderParams = {
-        target_account_id: accountId,
-        target_customer_id: customerId,
-        target_order_id: sessionId,
-        billing_provider: this.provider,
+        targetAccountId: accountId,
+        targetCustomerId: customerId,
+        targetOrderId: sessionId,
+        billingProvider: this.provider,
         status: status,
         currency: currency,
-        total_amount: sessionWithLineItems.amount_total ?? 0,
-        line_items: lineItems.map((item) => {
+        totalAmount: sessionWithLineItems.amount_total ?? 0,
+        lineItems: lineItems.map((item) => {
           const price = item.price!;
 
           return {
             id: item.id,
-            product_id: price.product as string,
-            variant_id: price.id,
-            price_amount: price.unit_amount,
+            productId: price.product as string,
+            variantId: price.id,
+            priceAmount: price.unit_amount,
             quantity: item.quantity,
           };
         }),
@@ -363,13 +362,13 @@ class StripeSubscriptionPayloadBuilderService {
       return {
         id: item.id,
         quantity,
-        subscription_id: params.id,
-        subscription_item_id: item.id,
-        product_id: item.price?.product as string,
-        variant_id: variantId,
-        price_amount: item.price?.unit_amount,
+        subscriptionId: params.id,
+        subscriptionItemId: item.id,
+        productId: item.price?.product as string,
+        variantId: variantId,
+        priceAmount: item.price?.unit_amount,
         interval: item.price?.recurring?.interval as string,
-        interval_count: item.price?.recurring?.interval_count!,
+        intervalCount: item.price?.recurring?.interval_count!,
         type: this.config
           ? getLineItemTypeById(this.config, variantId)
           : undefined,
@@ -379,19 +378,19 @@ class StripeSubscriptionPayloadBuilderService {
     // otherwise we are updating a subscription
     // and we only need to return the update payload
     return {
-      target_subscription_id: params.id,
-      target_account_id: params.accountId,
-      target_customer_id: params.customerId,
-      billing_provider: "stripe",
+      targetSubscriptionId: params.id,
+      targetAccountId: params.accountId,
+      targetCustomerId: params.customerId,
+      billingProvider: "stripe",
       status: params.status,
-      line_items: lineItems,
+      lineItems: lineItems,
       active,
       currency: params.currency,
-      cancel_at_period_end: params.cancelAtPeriodEnd ?? false,
-      period_starts_at: getISOString(params.periodStartsAt)!,
-      period_ends_at: getISOString(params.periodEndsAt)!,
-      trial_starts_at: getISOString(params.trialStartsAt),
-      trial_ends_at: getISOString(params.trialEndsAt),
+      cancelAtPeriodEnd: params.cancelAtPeriodEnd ?? false,
+      periodStartsAt: getISOString(params.periodStartsAt)!,
+      periodEndsAt: getISOString(params.periodEndsAt)!,
+      trialStartsAt: getISOString(params.trialStartsAt),
+      trialEndsAt: getISOString(params.trialEndsAt),
     };
   }
 }

@@ -308,7 +308,7 @@ export const createBillingPortalSessionInput = z.object({
   returnUrl: z.string().url(),
 });
 
-export const retrieveCheckoutSessionInput = z.object({
+export const getCheckoutSessionInput = z.object({
   sessionId: z.string(),
 });
 

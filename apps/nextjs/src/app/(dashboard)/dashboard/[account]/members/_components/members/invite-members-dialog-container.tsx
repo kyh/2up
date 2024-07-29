@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { inviteMembers } from "@init/api/team/team-schema";
+import { inviteMembers } from "@init/api/account/team-account-schema";
 import { Button } from "@init/ui/button";
 import {
   Dialog,
@@ -55,7 +55,7 @@ export const InviteMembersDialogContainer = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const createInvitations = api.team.sendInvitations.useMutation();
+  const createInvitations = api.account.sendInvitations.useMutation();
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen} modal>

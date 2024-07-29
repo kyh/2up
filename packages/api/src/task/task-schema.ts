@@ -20,16 +20,6 @@ export const TaskStatuses: readonly [string, ...string[]] = [
   "canceled",
 ];
 
-export const byAccountIdInput = z.object({
-  id: z.string(),
-});
-export type ByAccountIdInput = z.infer<typeof byAccountIdInput>;
-
-export const byIdInput = z.object({
-  id: z.string(),
-});
-export type ById = z.infer<typeof byIdInput>;
-
 export const createInput = z.object({
   title: z.string(),
   label: z.enum(TaskLabels).optional(),

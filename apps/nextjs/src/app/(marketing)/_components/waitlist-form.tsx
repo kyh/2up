@@ -31,7 +31,7 @@ export const WaitlistForm = () => {
     toast.promise(joinWaitlist.mutateAsync({ email: values.email }), {
       loading: "Submitting...",
       success: "Waitlist joined!",
-      error: (error: TRPCError) => error.message,
+      error: "Failed to join waitlist",
     });
   };
 
@@ -63,15 +63,13 @@ export const WaitlistForm = () => {
             </FormItem>
           )}
         />
-        <div className="pr-4">
-          <Button
-            className="p-0 text-xs"
-            variant="ghost"
-            loading={joinWaitlist.isPending}
-          >
-            Join Waitlist
-          </Button>
-        </div>
+        <Button
+          className="text-xs"
+          variant="ghost"
+          loading={joinWaitlist.isPending}
+        >
+          Join Waitlist
+        </Button>
       </form>
     </Form>
   );

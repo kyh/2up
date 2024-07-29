@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { updateTeamAccountNameInput } from "@init/api/team/team-schema";
+import { updateTeamAccountNameInput } from "@init/api/account/team-account-schema";
 import { Button } from "@init/ui/button";
 import {
   Form,
@@ -23,7 +23,7 @@ export const UpdateTeamAccountNameForm = (props: {
   };
 }) => {
   const router = useRouter();
-  const updateTeamAccountName = api.team.updateTeamAccountName.useMutation();
+  const updateTeamAccountName = api.account.updateTeamAccountName.useMutation();
   const form = useForm({
     schema: updateTeamAccountNameInput.omit({ slug: true }),
     defaultValues: {

@@ -1,4 +1,4 @@
-import { CreditCardIcon, HomeIcon, SettingsIcon } from "lucide-react";
+import { HomeIcon, Users2Icon } from "lucide-react";
 
 import { Sidebar } from "@/components/sidebar";
 import { api } from "@/trpc/server";
@@ -6,22 +6,16 @@ import { api } from "@/trpc/server";
 const pageLinks = [
   {
     id: "home",
-    href: "/dashboard",
+    href: "/admin",
     label: "Home",
     Icon: HomeIcon,
     exact: true,
   },
   {
-    id: "billing",
-    href: "/dashboard/billing",
-    label: "Billing",
-    Icon: CreditCardIcon,
-  },
-  {
-    id: "settings",
-    href: "/dashboard/settings",
-    label: "Settings",
-    Icon: SettingsIcon,
+    id: "accounts",
+    href: "/admin/accounts",
+    label: "Accounts",
+    Icon: Users2Icon,
   },
 ];
 

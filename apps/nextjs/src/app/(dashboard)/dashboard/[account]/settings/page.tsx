@@ -10,7 +10,7 @@ type Params = {
 };
 
 const Page = async ({ params }: { params: Params }) => {
-  const { account } = await api.team.teamWorkspace({
+  const { account } = await api.account.teamWorkspace({
     slug: params.account,
   });
 
