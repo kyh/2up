@@ -18,11 +18,11 @@ const getUser = (request: NextRequest, response: NextResponse) => {
 };
 
 export const middleware = async (request: NextRequest) => {
-  const response = NextResponse.next();
+  const response = NextResponse.next({ request });
 
   // set a unique request ID for each request
   // this helps us log and trace requests
-  setRequestId(request);
+  request.headers.set("x-correlation-id", crypto.randomUUID());
 
   // apply CSRF protection for mutating requests
   const csrfResponse = await withCsrfMiddleware(request, response);
@@ -53,7 +53,7 @@ export const middleware = async (request: NextRequest) => {
 
 const withCsrfMiddleware = async (
   request: NextRequest,
-  response = new NextResponse(),
+  response: NextResponse,
 ) => {
   // set up CSRF protection
   const csrfProtect = createCsrfProtect({
@@ -199,12 +199,4 @@ const matchUrlPattern = (url: string) => {
       return pattern.handler;
     }
   }
-};
-
-/**
- * Set a unique request ID for each request.
- * @param request
- */
-const setRequestId = (request: Request) => {
-  request.headers.set("x-correlation-id", crypto.randomUUID());
 };

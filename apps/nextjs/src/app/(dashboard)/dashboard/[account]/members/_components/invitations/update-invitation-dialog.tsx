@@ -1,6 +1,6 @@
 "use client";
 
-import { role } from "@init/api/team/team-schema";
+import { role } from "@init/api/account/team-account-schema";
 import { Button } from "@init/ui/button";
 import {
   Dialog,
@@ -72,7 +72,7 @@ const UpdateInvitationForm = ({
   userRoleHierarchy: number;
   setIsOpen: (isOpen: boolean) => void;
 }>) => {
-  const updateInvitation = api.team.updateInvitation.useMutation({
+  const updateInvitation = api.account.updateInvitation.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Invite updated successfully");

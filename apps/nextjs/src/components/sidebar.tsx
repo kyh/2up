@@ -4,44 +4,59 @@ import React from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
-import { Button } from "@init/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@init/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
 import { Logo } from "@init/ui/logo";
 import { cn, getInitials } from "@init/ui/utils";
 import { CheckCircleIcon, LogOutIcon, PlusIcon, UserIcon } from "lucide-react";
 
-import { NavLink } from "@/components/nav";
+import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/server";
-import { CreateTeamAccountDialog } from "./accounts/create-team-account-dialog";
+import { CreateTeamAccountForm } from "./create-team-account-form";
+import { NavLink } from "./nav";
 
-const PERSONAL_ACCOUNT_SLUG = "personal";
+type PageLink = {
+  id: string;
+  href: string;
+  label: string;
+  Icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
+  exact?: boolean;
+};
 
 export const Sidebar = async ({
-  slug = PERSONAL_ACCOUNT_SLUG,
+  user,
+  accounts,
+  homeLink,
   pageLinks,
+  currentAccountSlug,
 }: {
-  accountId?: string;
-  slug?: string;
-  pageLinks: readonly {
-    readonly id: string;
-    readonly href: string;
-    readonly label: string;
-    readonly Icon: ForwardRefExoticComponent<
-      Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-    >;
-    readonly exact?: boolean;
-  }[];
+  user: RouterOutputs["account"]["userWorkspace"]["user"];
+  accounts: RouterOutputs["account"]["userWorkspace"]["accounts"];
+  homeLink: string;
+  pageLinks: PageLink[];
+  currentAccountSlug?: string;
 }) => {
-  const { user, accounts } = await api.account.userWorkspace();
-
   const userEmail = user.email ?? "";
   const userImage = user.user_metadata.image ?? "";
   const userName = user.user_metadata.name ?? userEmail ?? "No name";
@@ -56,12 +71,8 @@ export const Sidebar = async ({
     <nav className="sticky top-0 flex h-dvh w-[80px] flex-col items-center overflow-y-auto overflow-x-hidden px-4 py-[26px]">
       <div className="flex flex-col">
         <div className="flex justify-center pb-2">
-          <NavLink href="/dashboard">
-            <Logo
-              width={40}
-              height={40}
-              className="rounded-lg bg-muted text-primary"
-            />
+          <NavLink href={homeLink}>
+            <Logo className="size-10 rounded-lg bg-muted text-primary" />
             <span className="sr-only">Init</span>
           </NavLink>
         </div>
@@ -73,24 +84,18 @@ export const Sidebar = async ({
             className="group flex flex-col items-center gap-1 p-2 text-xs"
           >
             <span className="flex size-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
-              <link.Icon width={16} height={16} />
+              <link.Icon className="size-4" />
             </span>
             <span>{link.label}</span>
           </NavLink>
         ))}
-        {/* <NotificationsPopover accountIds={accountIds} realtime={true} /> */}
       </div>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="relative mt-auto h-8 w-8 rounded-full"
-          >
-            <Avatar className="h-9 w-9">
-              <AvatarImage src={userImage} alt={userName} />
-              <AvatarFallback>{getInitials(userName)}</AvatarFallback>
-            </Avatar>
-          </Button>
+        <DropdownMenuTrigger className="mt-auto">
+          <Avatar className="size-9">
+            <AvatarImage src={userImage} alt={userName} />
+            <AvatarFallback>{getInitials(userName)}</AvatarFallback>
+          </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-56"
@@ -115,59 +120,76 @@ export const Sidebar = async ({
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuLabel>Your Accounts</DropdownMenuLabel>
-            <DropdownMenuItem asChild>
-              <Link
-                href="/dashboard"
-                className="inline-flex w-full items-center font-normal"
-              >
-                <UserIcon className="h-4 w-4" />
-                <span className="ml-2">Personal Account</span>
-                <CheckCircleIcon
-                  className={cn(
-                    "ml-auto h-4 w-4",
-                    slug === PERSONAL_ACCOUNT_SLUG
-                      ? "opacity-100"
-                      : "opacity-0",
-                  )}
-                />
-              </Link>
-            </DropdownMenuItem>
-            {accounts.map((account) => (
-              <DropdownMenuItem key={account.id} asChild>
-                <Link
-                  href={`/dashboard/${account.slug}`}
-                  className="inline-flex w-full items-center font-normal"
-                >
-                  <Avatar className="h-4 w-4">
-                    <AvatarFallback className="group-hover:bg-background">
-                      {account.name ? account.name[0] : ""}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="ml-2">{account.name}</span>
-                  <CheckCircleIcon
-                    className={cn(
-                      "ml-auto h-4 w-4",
-                      slug === account.slug ? "opacity-100" : "opacity-0",
-                    )}
-                  />
-                </Link>
-              </DropdownMenuItem>
-            ))}
-            <CreateTeamAccountDialog>
-              <DropdownMenuItem asChild>
-                <button className="flex w-full gap-2">
-                  <PlusIcon className="h-4 w-4" />
-                  Create a Team
-                </button>
-              </DropdownMenuItem>
-            </CreateTeamAccountDialog>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Switch Teams</DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/dashboard"
+                      className="inline-flex w-full items-center font-normal"
+                    >
+                      <UserIcon className="size-4" />
+                      <span className="ml-2">Personal</span>
+                      <CheckCircleIcon
+                        className={cn(
+                          "ml-auto size-4",
+                          !currentAccountSlug ? "opacity-100" : "opacity-0",
+                        )}
+                      />
+                    </Link>
+                  </DropdownMenuItem>
+                  {accounts.map((account) => (
+                    <DropdownMenuItem key={account.id} asChild>
+                      <Link
+                        href={`/dashboard/${account.slug}`}
+                        className="inline-flex w-full items-center font-normal"
+                      >
+                        <Avatar className="size-4">
+                          <AvatarFallback className="group-hover:bg-background">
+                            {account.name ? getInitials(account.name) : ""}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="ml-2">{account.name}</span>
+                        <CheckCircleIcon
+                          className={cn(
+                            "ml-auto size-4",
+                            currentAccountSlug === account.slug
+                              ? "opacity-100"
+                              : "opacity-0",
+                          )}
+                        />
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <DropdownMenuItem className="flex w-full gap-2" asChild>
+                        <button type="button">
+                          <PlusIcon className="size-4" />
+                          Create a Team
+                        </button>
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Create Team</DialogTitle>
+                        <DialogDescription>
+                          Create a new Team to manage your projects and members.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <CreateTeamAccountForm />
+                    </DialogContent>
+                  </Dialog>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <form action={signOut}>
-            <DropdownMenuItem className="w-full" asChild>
+            <DropdownMenuItem asChild>
               <button className="flex w-full gap-2">
-                <LogOutIcon className="h-4 w-4" />
+                <LogOutIcon className="size-4" />
                 Log out
               </button>
             </DropdownMenuItem>

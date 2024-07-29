@@ -34,7 +34,7 @@ export const AccountInvitationsTable = ({
 }: AccountInvitationsTableProps) => {
   const [search, setSearch] = useState("");
 
-  const [invitations] = api.team.invitations.useSuspenseQuery({ slug });
+  const [invitations] = api.account.invitations.useSuspenseQuery({ slug });
 
   const columns = useMemo(() => getColumns(permissions), [permissions]);
 

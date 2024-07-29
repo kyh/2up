@@ -8,7 +8,7 @@ export const RolesDataProvider = (props: {
   maxRoleHierarchy: number;
   children: (roles: string[]) => React.ReactNode;
 }) => {
-  const retrieveQuery = api.role.retrieve.useQuery({
+  const retrieveQuery = api.account.retrieveRoles.useQuery({
     maxRoleHierarchy: props.maxRoleHierarchy,
   });
 

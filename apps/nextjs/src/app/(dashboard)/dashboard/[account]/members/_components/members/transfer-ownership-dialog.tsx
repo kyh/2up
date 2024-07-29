@@ -1,6 +1,6 @@
 "use client";
 
-import { transferOwnershipInput } from "@init/api/team/team-schema";
+import { transferOwnershipInput } from "@init/api/account/team-account-schema";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -71,7 +71,7 @@ const TransferOrganizationOwnershipForm = ({
   targetDisplayName: string;
   setIsOpen: (isOpen: boolean) => void;
 }) => {
-  const transferOwnership = api.team.transferOwnership.useMutation({
+  const transferOwnership = api.account.transferOwnership.useMutation({
     onSuccess: () => {
       setIsOpen(false);
       toast.success("Ownership transfered successfully");

@@ -38,7 +38,7 @@ export const AccountMembersTable = ({
 }: AccountMembersTableProps) => {
   const [search, setSearch] = useState("");
 
-  const [members] = api.team.members.useSuspenseQuery({
+  const [members] = api.account.members.useSuspenseQuery({
     slug,
   });
 

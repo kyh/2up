@@ -18,7 +18,7 @@ const TasksPage = async ({
   params: Params;
   searchParams: SearchParams;
 }) => {
-  const { account } = await api.team.teamWorkspace({
+  const { account } = await api.account.teamWorkspace({
     slug: params.account,
   });
 

@@ -1,17 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createTeamAccountInput } from "@init/api/team/team-schema";
+import { createTeamAccountInput } from "@init/api/account/team-account-schema";
 import { Button } from "@init/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@init/ui/dialog";
 import {
   Form,
   FormControl,
@@ -27,37 +18,12 @@ import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
-export const CreateTeamAccountDialog = ({
-  children,
-}: React.PropsWithChildren) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent
-        onEscapeKeyDown={(e) => e.preventDefault()}
-        onInteractOutside={(e) => e.preventDefault()}
-      >
-        <DialogHeader>
-          <DialogTitle>Create Team</DialogTitle>
-          <DialogDescription>
-            Create a new Team to manage your projects and members.
-          </DialogDescription>
-        </DialogHeader>
-        <CreateTeamAccountForm onClose={() => setIsOpen(false)} />
-      </DialogContent>
-    </Dialog>
-  );
-};
-
-const CreateTeamAccountForm = (props: { onClose: () => void }) => {
+export const CreateTeamAccountForm = () => {
   const router = useRouter();
 
-  const createTeamAccount = api.team.createTeamAccount.useMutation({
+  const createTeamAccount = api.account.createTeamAccount.useMutation({
     onSuccess: (res) => {
       toast.success("Team created successfully");
-      props.onClose();
       router.push(`/dashboard/${res.slug}`);
     },
     onError: () =>
@@ -106,14 +72,6 @@ const CreateTeamAccountForm = (props: { onClose: () => void }) => {
           />
 
           <div className="flex justify-end space-x-2">
-            <Button
-              variant="outline"
-              type="button"
-              disabled={createTeamAccount.isPending}
-              onClick={props.onClose}
-            >
-              Cancel
-            </Button>
             <Button loading={createTeamAccount.isPending}>Create Team</Button>
           </div>
         </div>

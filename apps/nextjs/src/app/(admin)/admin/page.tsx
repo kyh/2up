@@ -14,22 +14,15 @@ const Page = async () => {
 
   return (
     <main className="flex flex-1 flex-col px-5">
-      <PageHeader>Super Admin</PageHeader>
-      <div
-        className={
-          "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3" +
-          " xl:grid-cols-4"
-        }
-      >
+      <PageHeader>Admin</PageHeader>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <Card>
           <CardHeader>
             <CardTitle>Users</CardTitle>
-
             <CardDescription>
               The number of personal accounts that have been created.
             </CardDescription>
           </CardHeader>
-
           <CardContent>
             <div className="flex justify-between">
               <Figure>{data.accounts}</Figure>
@@ -40,12 +33,10 @@ const Page = async () => {
         <Card>
           <CardHeader>
             <CardTitle>Team Accounts</CardTitle>
-
             <CardDescription>
               The number of team accounts that have been created.
             </CardDescription>
           </CardHeader>
-
           <CardContent>
             <div className="flex justify-between">
               <Figure>{data.teamAccounts}</Figure>
@@ -60,7 +51,6 @@ const Page = async () => {
               The number of paying customers with active subscriptions.
             </CardDescription>
           </CardHeader>
-
           <CardContent>
             <div className="flex justify-between">
               <Figure>{data.subscriptions}</Figure>
@@ -71,12 +61,10 @@ const Page = async () => {
         <Card>
           <CardHeader>
             <CardTitle>Trials</CardTitle>
-
             <CardDescription>
               The number of trial subscriptions currently active.
             </CardDescription>
           </CardHeader>
-
           <CardContent>
             <div className="flex justify-between">
               <Figure>{data.trials}</Figure>

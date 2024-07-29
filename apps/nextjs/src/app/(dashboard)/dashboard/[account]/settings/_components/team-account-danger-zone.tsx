@@ -112,7 +112,7 @@ const DeleteTeamConfirmationForm = ({
   name: string;
   id: string;
 }) => {
-  const deleteTeamAccount = api.team.deleteTeamAccount.useMutation({
+  const deleteTeamAccount = api.account.deleteTeamAccount.useMutation({
     onSuccess: () => {
       toast.success("Team deleted successfully");
     },
@@ -206,7 +206,7 @@ const LeaveTeamContainer = (props: {
     id: string;
   };
 }) => {
-  const leaveTeamAccount = api.team.leaveTeamAccount.useMutation({
+  const leaveTeamAccount = api.account.leaveTeamAccount.useMutation({
     onSuccess: () => {
       toast.success("Team left successfully");
     },

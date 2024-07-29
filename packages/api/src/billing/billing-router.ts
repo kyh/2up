@@ -5,11 +5,11 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import {
   createBillingPortalSessionInput,
   createCheckoutSessionInput,
+  getCheckoutSessionInput,
   getCustomerIdInput,
   getOrderInput,
   getSubscriptionInput,
   handleWebhookEventInput,
-  retrieveCheckoutSessionInput,
 } from "./billing-schema";
 import { createStripeClient } from "./stripe/stripe-sdk";
 import { StripeWebhookHandlerService } from "./stripe/stripe-webhook-handler";
@@ -150,8 +150,8 @@ export const billingRouter = createTRPCRouter({
 
       return { checkoutToken: client_secret };
     }),
-  retrieveCheckoutSession: protectedProcedure
-    .input(retrieveCheckoutSessionInput)
+  getCheckoutSession: protectedProcedure
+    .input(getCheckoutSessionInput)
     .query(async ({ ctx, input }) => {
       const stripe = await createStripeClient();
       const session = await stripe.checkout.sessions.retrieve(input.sessionId);
@@ -228,7 +228,7 @@ export const billingRouter = createTRPCRouter({
           // Check if the payload contains an order_id
           // if it does, we add an order, otherwise we add a subscription
 
-          if ("target_order_id" in payload) {
+          if ("targetOrderId" in payload) {
             const { error } = await adminSupabase.rpc("upsertOrder", payload);
 
             if (error) {

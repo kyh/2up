@@ -11,7 +11,7 @@ type Params = {
 };
 
 const Page = async ({ params }: { params: Params }) => {
-  const { account, user } = await api.team.teamWorkspace({
+  const { account, user } = await api.account.teamWorkspace({
     slug: params.account,
   });
 
@@ -19,8 +19,8 @@ const Page = async ({ params }: { params: Params }) => {
     return redirect("/dashboard");
   }
 
-  await api.team.members.prefetch({ slug: params.account });
-  await api.team.invitations.prefetch({ slug: params.account });
+  await api.account.members.prefetch({ slug: params.account });
+  await api.account.invitations.prefetch({ slug: params.account });
 
   const canManageRoles = account.permissions.includes("roles.manage");
   const canManageInvitations = account.permissions.includes("invites.manage");
