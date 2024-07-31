@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { DataTable } from "@init/ui/data-table/data-table";
 import { DataTableToolbar } from "@init/ui/data-table/data-table-toolbar";
 
-import type { RetrieveInput } from "@init/api/task/task-schema";
+import type { GetTaskListInput } from "@init/api/task/task-schema";
 import { useDataTable } from "@/hooks/use-data-table";
 import { api } from "@/trpc/react";
 import { getColumns } from "./tasks-table-columns";
@@ -12,11 +12,11 @@ import { TasksTableToolbarActions } from "./tasks-table-toolbar-actions";
 
 type TasksTableProps = {
   accountId: string;
-  searchParams: RetrieveInput;
+  searchParams: GetTaskListInput;
 };
 
 export const TasksTable = ({ accountId, searchParams }: TasksTableProps) => {
-  const [data] = api.task.retrieve.useSuspenseQuery({
+  const [data] = api.task.getTaskList.useSuspenseQuery({
     ...searchParams,
     accountId: accountId,
   });

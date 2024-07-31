@@ -5,7 +5,7 @@ import type { Table } from "@tanstack/react-table";
 import { CreateTaskDialog } from "./create-task-dialog";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";
 
-type Task = RouterOutputs["task"]["retrieve"]["data"][0];
+type Task = RouterOutputs["task"]["getTaskList"]["data"][0];
 
 type TasksTableToolbarActionsProps = {
   accountId: string;

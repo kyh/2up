@@ -1,22 +1,21 @@
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import {
-  createInput,
-  deleteInput,
-  retrieveInput,
-  updateInput,
+  createTaskInput,
+  deleteTaskInput,
+  getTaskInput,
+  getTaskListInput,
+  updateTaskInput,
 } from "./task-schema";
 
 export const taskRouter = createTRPCRouter({
-  create: protectedProcedure
-    .input(createInput)
-    .mutation(async ({ ctx, input }) => {
-      const response = await ctx.supabase.from("Tasks").insert({
-        title: input.title,
-        label: input.label,
-        priority: input.priority,
-        status: input.status,
-        accountId: input.accountId,
-      });
+  getTask: protectedProcedure
+    .input(getTaskInput)
+    .query(async ({ ctx, input }) => {
+      const response = await ctx.supabase
+        .from("Tasks")
+        .select("*")
+        .eq("id", input.id)
+        .single();
 
       if (response.error) {
         throw response.error;
@@ -25,8 +24,8 @@ export const taskRouter = createTRPCRouter({
       return response.data;
     }),
 
-  retrieve: protectedProcedure
-    .input(retrieveInput)
+  getTaskList: protectedProcedure
+    .input(getTaskListInput)
     .query(async ({ ctx, input }) => {
       const page = parseInt(input.page);
       const perPage = parseInt(input.per_page);
@@ -48,8 +47,26 @@ export const taskRouter = createTRPCRouter({
       return { data: response.data, pageCount };
     }),
 
-  update: protectedProcedure
-    .input(updateInput)
+  createTask: protectedProcedure
+    .input(createTaskInput)
+    .mutation(async ({ ctx, input }) => {
+      const response = await ctx.supabase.from("Tasks").insert({
+        title: input.title,
+        label: input.label,
+        priority: input.priority,
+        status: input.status,
+        accountId: input.accountId,
+      });
+
+      if (response.error) {
+        throw response.error;
+      }
+
+      return response.data;
+    }),
+
+  updateTask: protectedProcedure
+    .input(updateTaskInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.supabase
         .from("Tasks")
@@ -68,8 +85,8 @@ export const taskRouter = createTRPCRouter({
       return response.data;
     }),
 
-  delete: protectedProcedure
-    .input(deleteInput)
+  deleteTask: protectedProcedure
+    .input(deleteTaskInput)
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.supabase
         .from("Tasks")

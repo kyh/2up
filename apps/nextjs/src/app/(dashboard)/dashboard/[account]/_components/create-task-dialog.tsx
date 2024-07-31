@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import {
-  createInput,
+  createTaskInput,
   TaskLabels,
   TaskPriorites,
   TaskStatuses,
@@ -39,13 +39,13 @@ import { Textarea } from "@init/ui/textarea";
 import { toast } from "@init/ui/toast";
 import { PlusIcon } from "lucide-react";
 
-import type { CreateInput } from "@init/api/task/task-schema";
+import type { CreateTaskInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";
 
 export const CreateTaskDialog = ({ accountId }: { accountId: string }) => {
   const [open, setOpen] = useState(false);
 
-  const createTask = api.task.create.useMutation({
+  const createTask = api.task.createTask.useMutation({
     onSuccess: () => {
       setOpen(false);
       form.reset();
@@ -55,10 +55,10 @@ export const CreateTaskDialog = ({ accountId }: { accountId: string }) => {
   });
 
   const form = useForm({
-    schema: createInput.omit({ accountId: true }),
+    schema: createTaskInput.omit({ accountId: true }),
   });
 
-  const onSubmit = (input: Omit<CreateInput, "accountId">) => {
+  const onSubmit = (input: Omit<CreateTaskInput, "accountId">) => {
     createTask.mutate({ ...input, accountId });
   };
 
