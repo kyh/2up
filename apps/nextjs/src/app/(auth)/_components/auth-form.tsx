@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { signInWithPasswordInput } from "@init/api/auth/auth-schema";
 import { Button } from "@init/ui/button";
 import {
@@ -21,11 +21,16 @@ import { api } from "@/trpc/react";
 
 type AuthFormProps = {
   type: "signin" | "signup";
+  nextPath?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
+export const AuthForm = ({
+  className,
+  type,
+  nextPath = "/dashboard",
+  ...props
+}: AuthFormProps) => {
   const router = useRouter();
-  const nextPath = useSearchParams().get("next") ?? "/dashboard";
 
   const signInWithOAuth = api.auth.signInWithOAuth.useMutation({
     onError: (error) => toast.error(error.message),
@@ -143,13 +148,9 @@ export const RequestPasswordResetForm = () => {
 };
 
 export const UpdatePasswordForm = () => {
-  const nextPath = useSearchParams().get("next") ?? "/dashboard";
-
   return null;
 };
 
 export const MultiFactorAuthForm = () => {
-  const nextPath = useSearchParams().get("next") ?? "/dashboard";
-
   return null;
 };

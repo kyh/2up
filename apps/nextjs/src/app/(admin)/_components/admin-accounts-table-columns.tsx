@@ -70,11 +70,9 @@ export const getColumns = (): ColumnDef<Account>[] => [
               <MoreHorizontalIcon className="h-4" />
             </Button>
           </DropdownMenuTrigger>
-
           <DropdownMenuContent align="end">
             <DropdownMenuGroup>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
               <DropdownMenuItem>
                 <Link
                   className="h-full w-full"
@@ -83,21 +81,18 @@ export const getColumns = (): ColumnDef<Account>[] => [
                   View
                 </Link>
               </DropdownMenuItem>
-
               <If condition={isPersonalAccount}>
                 <AdminImpersonateUserDialog userId={userId}>
                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                     Impersonate User
                   </DropdownMenuItem>
                 </AdminImpersonateUserDialog>
-
                 <AdminDeleteUserDialog userId={userId}>
                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                     Delete Personal Account
                   </DropdownMenuItem>
                 </AdminDeleteUserDialog>
               </If>
-
               <If condition={!isPersonalAccount}>
                 <AdminDeleteAccountDialog accountId={row.original.id}>
                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>

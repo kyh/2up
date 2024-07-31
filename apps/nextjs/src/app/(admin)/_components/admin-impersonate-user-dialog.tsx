@@ -52,17 +52,14 @@ export const AdminImpersonateUserDialog = (
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{props.children}</AlertDialogTrigger>
-
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Impersonate User</AlertDialogTitle>
-
           <AlertDialogDescription>
             Are you sure you want to impersonate this user? You will be logged
             in as this user. To stop impersonating, log out.
           </AlertDialogDescription>
         </AlertDialogHeader>
-
         <Form {...form}>
           <form
             className="flex flex-col space-y-8"
@@ -130,7 +127,7 @@ const ImpersonateUserAuthSetter = ({
         window.location.replace("/dashboard");
       })
       .catch((error) => {
-        console.error(error)
+        console.error(error);
       });
   }, [tokens]);
 

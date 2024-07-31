@@ -20,7 +20,7 @@ import { RemoveMemberDialog } from "./remove-member-dialog";
 import { TransferOwnershipDialog } from "./transfer-ownership-dialog";
 import { UpdateMemberRoleDialog } from "./update-member-role-dialog";
 
-type Members = RouterOutputs["team"]["members"];
+type Members = RouterOutputs["account"]["members"];
 
 type Permissions = {
   canUpdateRole: (roleHierarchy: number) => boolean;

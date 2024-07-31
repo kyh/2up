@@ -20,7 +20,7 @@ import { DeleteInvitationDialog } from "./delete-invitation-dialog";
 import { RenewInvitationDialog } from "./renew-invitation-dialog";
 import { UpdateInvitationDialog } from "./update-invitation-dialog";
 
-type Invitations = RouterOutputs["team"]["invitations"];
+type Invitations = RouterOutputs["account"]["invitations"];
 
 export const getColumns = (permissions: {
   canUpdateInvitation: boolean;
