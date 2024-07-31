@@ -1,5 +1,6 @@
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import {
+  byIdInput,
   createInput,
   deleteInput,
   retrieveInput,
@@ -7,6 +8,30 @@ import {
 } from "./task-schema";
 
 export const taskRouter = createTRPCRouter({
+  byId: protectedProcedure.input(byIdInput).query(async ({ ctx, input }) => {
+    const response = await ctx.supabase
+      .from("Tasks")
+      .select("*")
+      .eq("id", input.id)
+      .single();
+
+    if (response.error) {
+      throw response.error;
+    }
+
+    return response.data;
+  }),
+
+  all: protectedProcedure.query(async ({ ctx }) => {
+    const response = await ctx.supabase.from("Tasks").select("*");
+
+    if (response.error) {
+      throw response.error;
+    }
+
+    return response.data;
+  }),
+
   create: protectedProcedure
     .input(createInput)
     .mutation(async ({ ctx, input }) => {

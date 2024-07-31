@@ -20,6 +20,10 @@ export const TaskStatuses: readonly [string, ...string[]] = [
   "canceled",
 ];
 
+export const byIdInput = z.object({
+  id: z.string(),
+});
+
 export const createInput = z.object({
   title: z.string(),
   label: z.enum(TaskLabels).optional(),
