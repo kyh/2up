@@ -34,7 +34,7 @@ import { getPriorityIcon, getStatusIcon } from "../_lib/utils";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";
 import { UpdateTaskSheet } from "./update-task-sheet";
 
-type Task = RouterOutputs["task"]["retrieve"]["data"][0];
+type Task = RouterOutputs["task"]["getTaskList"]["data"][0];
 
 export const getColumns = (): ColumnDef<Task>[] => [
   {
@@ -141,7 +141,7 @@ export const getColumns = (): ColumnDef<Task>[] => [
   {
     id: "actions",
     cell: ({ row }) => {
-      const updateTask = api.task.update.useMutation({
+      const updateTask = api.task.updateTask.useMutation({
         onSuccess: () => toast.success("Label updated"),
         onError: (error) => toast.error(error.message),
       });

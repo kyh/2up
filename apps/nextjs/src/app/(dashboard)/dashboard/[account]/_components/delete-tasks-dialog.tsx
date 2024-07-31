@@ -17,7 +17,7 @@ import { TrashIcon } from "lucide-react";
 import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 
-type Tasks = RouterOutputs["task"]["retrieve"]["data"];
+type Tasks = RouterOutputs["task"]["getTaskList"]["data"];
 
 type DeleteTasksDialogProps = {
   tasks: Tasks;
@@ -31,7 +31,7 @@ export const DeleteTasksDialog = ({
   onSuccess,
   ...props
 }: DeleteTasksDialogProps) => {
-  const deleteTask = api.task.delete.useMutation({
+  const deleteTask = api.task.deleteTask.useMutation({
     onSuccess: () => {
       props.onOpenChange?.(false);
       toast.success("Tasks deleted");

@@ -5,7 +5,7 @@ import {
   TaskLabels,
   TaskPriorites,
   TaskStatuses,
-  updateInput,
+  updateTaskInput,
 } from "@init/api/task/task-schema";
 import { Button } from "@init/ui/button";
 import {
@@ -38,17 +38,17 @@ import { Textarea } from "@init/ui/textarea";
 import { toast } from "@init/ui/toast";
 
 import type { RouterOutputs } from "@init/api";
-import type { UpdateInput } from "@init/api/task/task-schema";
+import type { UpdateTaskInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";
 
-type Task = RouterOutputs["task"]["retrieve"]["data"][0];
+type Task = RouterOutputs["task"]["getTaskList"]["data"][0];
 
 type UpdateTaskSheetProps = {
   task: Task;
 } & React.ComponentPropsWithRef<typeof Sheet>;
 
 export const UpdateTaskSheet = ({ task, ...props }: UpdateTaskSheetProps) => {
-  const updateTask = api.task.update.useMutation({
+  const updateTask = api.task.updateTask.useMutation({
     onSuccess: () => {
       form.reset();
       props.onOpenChange?.(false);
@@ -58,7 +58,7 @@ export const UpdateTaskSheet = ({ task, ...props }: UpdateTaskSheetProps) => {
   });
 
   const form = useForm({
-    schema: updateInput.omit({ id: true }),
+    schema: updateTaskInput.omit({ id: true }),
     defaultValues: {
       title: task.title ?? "",
       label: task.label,
@@ -67,7 +67,7 @@ export const UpdateTaskSheet = ({ task, ...props }: UpdateTaskSheetProps) => {
     },
   });
 
-  const onSubmit = (input: Omit<UpdateInput, "id">) => {
+  const onSubmit = (input: Omit<UpdateTaskInput, "id">) => {
     updateTask.mutate({
       id: task.id,
       ...input,

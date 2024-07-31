@@ -107,6 +107,9 @@ importers:
       expo-router:
         specifier: ^3.5.18
         version: 3.5.18(lpcw5zpqk2emd46xxzz4jyeabe)
+      expo-secure-store:
+        specifier: ^13.0.2
+        version: 13.0.2(expo@51.0.22(@babel/core@7.24.9)(@babel/preset-env@7.25.0(@babel/core@7.24.9)))
       expo-splash-screen:
         specifier: ^0.27.5
         version: 0.27.5(expo-modules-autolinking@1.11.1)(expo@51.0.22(@babel/core@7.24.9)(@babel/preset-env@7.25.0(@babel/core@7.24.9)))
@@ -122,6 +125,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: ^7.52.1
+        version: 7.52.1(react@18.3.1)
       react-native:
         specifier: ^0.74.3
         version: 0.74.3(@babel/core@7.24.9)(@babel/preset-env@7.25.0(@babel/core@7.24.9))(@types/react@18.3.3)(react@18.3.1)
@@ -4190,6 +4196,11 @@ packages:
         optional: true
       react-native-reanimated:
         optional: true
+
+  expo-secure-store@13.0.2:
+    resolution: {integrity: sha512-3QYgoneo8p8yeeBPBiAfokNNc2xq6+n8+Ob4fAlErEcf4H7Y72LH+K/dx0nQyWau2ZKZUXBxyyfuHFyVKrEVLg==}
+    peerDependencies:
+      expo: '*'
 
   expo-splash-screen@0.27.5:
     resolution: {integrity: sha512-9rdZuLkFCfgJBxrheUsOEOIW6Rp+9NVlpSE0hgXQwbTCLTncf00IHSE8/L2NbFyeDLNjof1yZBppaV7tXHRUzA==}
@@ -12309,6 +12320,10 @@ snapshots:
       - react-native
       - supports-color
       - typescript
+
+  expo-secure-store@13.0.2(expo@51.0.22(@babel/core@7.24.9)(@babel/preset-env@7.25.0(@babel/core@7.24.9))):
+    dependencies:
+      expo: 51.0.22(@babel/core@7.24.9)(@babel/preset-env@7.25.0(@babel/core@7.24.9))
 
   expo-splash-screen@0.27.5(expo-modules-autolinking@1.11.1)(expo@51.0.22(@babel/core@7.24.9)(@babel/preset-env@7.25.0(@babel/core@7.24.9))):
     dependencies:
