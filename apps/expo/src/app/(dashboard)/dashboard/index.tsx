@@ -1,16 +1,22 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack } from "expo-router";
 
-import { Task } from "@/components/task";
+import { TaskList } from "@/components/task-list";
 import { api } from "@/trpc/react";
 
 const Dashboard = () => {
-  const { data: tasks } = api.task.all.useQuery();
+  const { data, isLoading } = api.account.userWorkspace.useQuery();
+
+  if (isLoading) {
+    return null;
+  }
+
+  const accountId = data?.accounts[0]?.id ?? "";
 
   return (
     <SafeAreaView className="bg-background">
       <Stack.Screen options={{ title: "Dashboard Page" }} />
-      {tasks?.map((task) => <Task key={task.id} {...task} />)}
+      <TaskList accountId={accountId} />
     </SafeAreaView>
   );
 };
