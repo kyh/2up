@@ -6,7 +6,7 @@ type Task = RouterOutputs["task"]["getTaskList"]["data"][0];
 
 export const Task = (task: Task) => {
   return (
-    <View className="flex-row gap-2">
+    <View className="flex-row justify-between gap-2 border-b p-2">
       <Text>{task.title}</Text>
       <Text>{task.label}</Text>
       <Text>{task.priority}</Text>

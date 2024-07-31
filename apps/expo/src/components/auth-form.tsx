@@ -1,4 +1,4 @@
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Alert, Button, Pressable, Text, TextInput, View } from "react-native";
 import { useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 
@@ -13,16 +13,16 @@ export const AuthForm = ({ type }: AuthFormProps) => {
   const router = useRouter();
   const nextPath = "/dashboard";
 
-  const signInWithOAuth = api.auth.signInWithOAuth.useMutation();
+  const signInWithOAuth = api.auth.signInWithOAuth.useMutation({
+    onError: (error) => Alert.alert(error.message),
+  });
   const signInWithPassword = api.auth.signInWithPassword.useMutation({
-    onSuccess: () => {
-      router.push(nextPath);
-    },
+    onSuccess: () => router.push(nextPath),
+    onError: (error) => Alert.alert(error.message),
   });
   const signUp = api.auth.signUp.useMutation({
-    onSuccess: () => {
-      router.push(nextPath);
-    },
+    onSuccess: () => router.push(nextPath),
+    onError: (error) => Alert.alert(error.message),
   });
 
   const form = useForm({
@@ -49,20 +49,13 @@ export const AuthForm = ({ type }: AuthFormProps) => {
 
   return (
     <View className="grid gap-6">
-      <Pressable onPress={handleAuthWithGithub}>
-        <Text>Continue with Github</Text>
-      </Pressable>
-      <View className="relative">
-        <View className="absolute inset-0 flex items-center">
-          <View className="w-full border-t" />
-        </View>
-        <View className="relative flex justify-center text-xs uppercase">
-          <View className="bg-background px-2 text-muted-foreground">
-            <Text>Or</Text>
-          </View>
+      <Button title="Continue with Github" onPress={handleAuthWithGithub} />
+      <View className="flex items-center justify-center">
+        <View className="px-2">
+          <Text className="text-xs uppercase text-muted-foreground">Or</Text>
         </View>
       </View>
-      <View>
+      <View className="grid gap-2">
         <Controller
           name="email"
           control={form.control}
@@ -72,6 +65,7 @@ export const AuthForm = ({ type }: AuthFormProps) => {
               onChangeText={onChange}
               onBlur={onBlur}
               textContentType="emailAddress"
+              className="border px-2"
             />
           )}
         />
@@ -84,12 +78,15 @@ export const AuthForm = ({ type }: AuthFormProps) => {
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
+              className="border px-2"
             />
           )}
         />
-        <Pressable onPress={form.handleSubmit(handleAuthWithPassword)}>
-          <Text>{type === "signin" ? "Login" : "Sign Up"}</Text>
-        </Pressable>
+        <Button
+          title={type === "signin" ? "Login" : "Sign Up"}
+          color={"#18181b"}
+          onPress={form.handleSubmit(handleAuthWithPassword)}
+        />
       </View>
     </View>
   );

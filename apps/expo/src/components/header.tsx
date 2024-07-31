@@ -27,7 +27,7 @@ export const Header = () => {
             <Text className={"px-4 py-2 text-muted-foreground"}>Github</Text>
           </Pressable>
         </Link>
-        <Link asChild href={{ pathname: "/sign-in" }}>
+        <Link asChild href={{ pathname: "/auth/sign-in" }}>
           <Pressable className="ml-4 h-8 flex-row items-center rounded-full bg-secondary px-5 text-xs text-secondary-foreground shadow-sm hover:bg-secondary/80">
             <Text>Login</Text>
           </Pressable>
