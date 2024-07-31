@@ -79,7 +79,12 @@ export const AuthForm = ({ type }: AuthFormProps) => {
           name="password"
           control={form.control}
           render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput value={value} onChangeText={onChange} onBlur={onBlur} />
+            <TextInput
+              secureTextEntry={true}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+            />
           )}
         />
         <Pressable onPress={form.handleSubmit(handleAuthWithPassword)}>
