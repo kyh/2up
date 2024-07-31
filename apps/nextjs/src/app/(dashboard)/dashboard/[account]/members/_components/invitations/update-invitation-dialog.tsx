@@ -44,13 +44,11 @@ export const UpdateInvitationDialog = ({
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Update Member's Role</DialogTitle>
-
         <DialogDescription>
           Change the role of the selected member. The role determines the
           permissions of the member.
         </DialogDescription>
       </DialogHeader>
-
       <UpdateInvitationForm
         invitationId={invitationId}
         userRole={userRole}

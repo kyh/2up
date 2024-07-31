@@ -5,20 +5,11 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@init/ui/dialog";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
@@ -27,11 +18,11 @@ import {
 } from "@init/ui/dropdown-menu";
 import { Logo } from "@init/ui/logo";
 import { cn, getInitials } from "@init/ui/utils";
-import { CheckCircleIcon, LogOutIcon, PlusIcon, UserIcon } from "lucide-react";
+import { CheckCircleIcon, LogOutIcon, UserIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/server";
-import { CreateTeamAccountForm } from "./create-team-account-form";
+import { CreateTeamAccountMenuItem } from "./create-team-account-form";
 import { NavLink } from "./nav";
 
 type PageLink = {
@@ -122,67 +113,47 @@ export const Sidebar = async ({
           <DropdownMenuGroup>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Switch Teams</DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  <DropdownMenuItem asChild>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex w-full items-center font-normal"
+                  >
+                    <UserIcon className="size-4" />
+                    <span className="ml-2">Personal</span>
+                    <CheckCircleIcon
+                      className={cn(
+                        "ml-auto size-4",
+                        !currentAccountSlug ? "opacity-100" : "opacity-0",
+                      )}
+                    />
+                  </Link>
+                </DropdownMenuItem>
+                {accounts.map((account) => (
+                  <DropdownMenuItem key={account.id} asChild>
                     <Link
-                      href="/dashboard"
+                      href={`/dashboard/${account.slug}`}
                       className="inline-flex w-full items-center font-normal"
                     >
-                      <UserIcon className="size-4" />
-                      <span className="ml-2">Personal</span>
+                      <Avatar className="size-4">
+                        <AvatarFallback className="group-hover:bg-background">
+                          {account.name ? getInitials(account.name) : ""}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="ml-2">{account.name}</span>
                       <CheckCircleIcon
                         className={cn(
                           "ml-auto size-4",
-                          !currentAccountSlug ? "opacity-100" : "opacity-0",
+                          currentAccountSlug === account.slug
+                            ? "opacity-100"
+                            : "opacity-0",
                         )}
                       />
                     </Link>
                   </DropdownMenuItem>
-                  {accounts.map((account) => (
-                    <DropdownMenuItem key={account.id} asChild>
-                      <Link
-                        href={`/dashboard/${account.slug}`}
-                        className="inline-flex w-full items-center font-normal"
-                      >
-                        <Avatar className="size-4">
-                          <AvatarFallback className="group-hover:bg-background">
-                            {account.name ? getInitials(account.name) : ""}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="ml-2">{account.name}</span>
-                        <CheckCircleIcon
-                          className={cn(
-                            "ml-auto size-4",
-                            currentAccountSlug === account.slug
-                              ? "opacity-100"
-                              : "opacity-0",
-                          )}
-                        />
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <DropdownMenuItem className="flex w-full gap-2" asChild>
-                        <button type="button">
-                          <PlusIcon className="size-4" />
-                          Create a Team
-                        </button>
-                      </DropdownMenuItem>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Create Team</DialogTitle>
-                        <DialogDescription>
-                          Create a new Team to manage your projects and members.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <CreateTeamAccountForm />
-                    </DialogContent>
-                  </Dialog>
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
+                ))}
+                <CreateTeamAccountMenuItem className="flex w-full gap-2" />
+              </DropdownMenuSubContent>
             </DropdownMenuSub>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
