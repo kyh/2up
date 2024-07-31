@@ -11,7 +11,7 @@ import {
 
 import type { RouterOutputs } from "@init/api";
 
-type Task = RouterOutputs["task"]["retrieve"]["data"][0];
+type Task = RouterOutputs["task"]["getTaskList"]["data"][0];
 
 /**
  * Returns the appropriate status icon based on the provided status.
