@@ -25,7 +25,6 @@
     "expo-constants": "^16.0.2",
     "expo-linking": "^6.3.1",
     "expo-router": "^3.5.18",
-    "expo-secure-store": "^13.0.2",
     "expo-splash-screen": "^0.27.5",
     "expo-status-bar": "^1.12.1",
     "nativewind": "^4.0.36",

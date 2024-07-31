@@ -20,37 +20,36 @@ export const TaskStatuses: readonly [string, ...string[]] = [
   "canceled",
 ];
 
-export const byIdInput = z.object({
+export const getTaskInput = z.object({
   id: z.string(),
 });
 
-export const createInput = z.object({
+export const createTaskInput = z.object({
   title: z.string(),
   label: z.enum(TaskLabels).optional(),
   priority: z.enum(TaskPriorites).optional(),
   status: z.enum(TaskStatuses).optional(),
   accountId: z.string(),
 });
-export type CreateInput = z.infer<typeof createInput>;
+export type CreateTaskInput = z.infer<typeof createTaskInput>;
 
-export const retrieveInput = z.object({
+export const getTaskListInput = z.object({
   page: z.string().default("1"),
   per_page: z.string().default("10"),
   sort: z.string().default("created_at"),
   accountId: z.string(),
 });
-export type RetrieveInput = z.infer<typeof retrieveInput>;
+export type GetTaskListInput = z.infer<typeof getTaskListInput>;
 
-export const updateInput = z.object({
+export const updateTaskInput = z.object({
   id: z.string(),
   title: z.string().optional(),
   label: z.enum(TaskLabels).optional(),
   priority: z.enum(TaskPriorites).optional(),
   status: z.enum(TaskStatuses).optional(),
 });
-export type UpdateInput = z.infer<typeof updateInput>;
+export type UpdateTaskInput = z.infer<typeof updateTaskInput>;
 
-export const deleteInput = z.object({
+export const deleteTaskInput = z.object({
   ids: z.string().array(),
 });
-export type DeleteInput = z.infer<typeof deleteInput>;

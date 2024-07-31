@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 
 import type { RouterOutputs } from "@init/api";
 
-type Task = RouterOutputs["task"]["all"][0];
+type Task = RouterOutputs["task"]["getTaskList"]["data"][0];
 
 export const Task = (task: Task) => {
   return (
