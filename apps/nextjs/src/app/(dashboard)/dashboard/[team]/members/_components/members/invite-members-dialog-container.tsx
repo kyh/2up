@@ -33,7 +33,7 @@ import {
 import { PlusIcon, XIcon } from "lucide-react";
 
 import { api } from "@/trpc/react";
-import { MembershipRoleSelector } from "../../../../[account]/members/_components/membership-role-selector";
+import { MembershipRoleSelector } from "../membership-role-selector";
 import { RolesDataProvider } from "./roles-data-provider";
 
 type InviteModel = ReturnType<typeof createEmptyInviteModel>;
@@ -69,7 +69,6 @@ export const InviteMembersDialogContainer = ({
       <DialogContent onInteractOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>Invite Members to your Team</DialogTitle>
-
           <DialogDescription>
             Invite members to your team by entering their email and role.
           </DialogDescription>

@@ -19,8 +19,8 @@ const Page = async ({ params }: { params: Params }) => {
     return redirect("/dashboard");
   }
 
-  await api.account.members.prefetch({ slug: params.team });
-  await api.account.invitations.prefetch({ slug: params.team });
+  await api.account.members.prefetch({ slug: account.slug });
+  await api.account.invitations.prefetch({ slug: account.slug });
 
   const canManageRoles = account.permissions.includes("roles.manage");
   const canManageInvitations = account.permissions.includes("invites.manage");
@@ -68,7 +68,7 @@ const Page = async ({ params }: { params: Params }) => {
           </div>
           <div className="md:col-span-2">
             <AccountInvitationsTable
-              slug={params.team}
+              slug={account.slug}
               permissions={{
                 canUpdateInvitation: canManageRoles,
                 canRemoveInvitation: canManageRoles,

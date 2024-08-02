@@ -83,7 +83,6 @@ const PersonalAccountPage = async (props: { account: Account }) => {
                 pictureUrl={props.account.pictureUrl}
                 displayName={props.account.name}
               />
-
               <span>{props.account.name}</span>
             </div>
 
@@ -205,13 +204,11 @@ const SubscriptionsTable = async (props: { accountId: string }) => {
       <Heading className="font-bold" level={5}>
         Subscription
       </Heading>
-
       <If
         condition={subscription}
         fallback={
           <Alert>
             <AlertTitle>No subscription found for this account.</AlertTitle>
-
             <AlertDescription>
               This account does not have a subscription.
             </AlertDescription>
@@ -224,46 +221,33 @@ const SubscriptionsTable = async (props: { accountId: string }) => {
               <Table>
                 <TableHeader>
                   <TableHead>Subscription ID</TableHead>
-
                   <TableHead>Provider</TableHead>
-
                   <TableHead>Customer ID</TableHead>
-
                   <TableHead>Status</TableHead>
-
                   <TableHead>Created At</TableHead>
-
                   <TableHead>Period Starts At</TableHead>
-
                   <TableHead>Ends At</TableHead>
                 </TableHeader>
-
                 <TableBody>
                   <TableRow>
                     <TableCell>
                       <span>{subscription.id}</span>
                     </TableCell>
-
                     <TableCell>
                       <span>{subscription.billingProvider}</span>
                     </TableCell>
-
                     <TableCell>
                       <span>{subscription.billingCustomerId}</span>
                     </TableCell>
-
                     <TableCell>
                       <span>{subscription.status}</span>
                     </TableCell>
-
                     <TableCell>
                       <span>{subscription.createdAt}</span>
                     </TableCell>
-
                     <TableCell>
                       <span>{subscription.periodStartsAt}</span>
                     </TableCell>
-
                     <TableCell>
                       <span>{subscription.periodEndsAt}</span>
                     </TableCell>
@@ -274,18 +258,12 @@ const SubscriptionsTable = async (props: { accountId: string }) => {
               <Table>
                 <TableHeader>
                   <TableHead>Product ID</TableHead>
-
                   <TableHead>Variant ID</TableHead>
-
                   <TableHead>Quantity</TableHead>
-
                   <TableHead>Price</TableHead>
-
                   <TableHead>Interval</TableHead>
-
                   <TableHead>Type</TableHead>
                 </TableHeader>
-
                 <TableBody>
                   {subscription.subscriptionItems.map((item) => {
                     return (
@@ -293,23 +271,18 @@ const SubscriptionsTable = async (props: { accountId: string }) => {
                         <TableCell>
                           <span>{item.productId}</span>
                         </TableCell>
-
                         <TableCell>
                           <span>{item.variantId}</span>
                         </TableCell>
-
                         <TableCell>
                           <span>{item.quantity}</span>
                         </TableCell>
-
                         <TableCell>
                           <span>{item.priceAmount}</span>
                         </TableCell>
-
                         <TableCell>
                           <span>{item.interval}</span>
                         </TableCell>
-
                         <TableCell>
                           <span>{item.type}</span>
                         </TableCell>

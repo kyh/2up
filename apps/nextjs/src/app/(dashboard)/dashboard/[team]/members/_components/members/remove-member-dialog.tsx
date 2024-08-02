@@ -29,7 +29,6 @@ export const RemoveMemberDialog = ({
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>You are removing this user</AlertDialogTitle>
-
         <AlertDialogDescription>
           Remove this member from the team. They will no longer have access to
           the team.

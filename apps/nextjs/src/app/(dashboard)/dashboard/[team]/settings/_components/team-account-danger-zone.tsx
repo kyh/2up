@@ -22,35 +22,21 @@ import {
   useForm,
 } from "@init/ui/form";
 import { Input } from "@init/ui/input";
-import { Spinner } from "@init/ui/spinner";
 import { toast } from "@init/ui/toast";
 import { z } from "zod";
 
+import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 
 export const TeamAccountDangerZone = ({
+  user,
   account,
-  primaryOwnerUserId,
 }: React.PropsWithChildren<{
-  account: {
-    name: string;
-    id: string;
-  };
-
-  primaryOwnerUserId: string;
+  user: RouterOutputs["account"]["teamWorkspace"]["user"];
+  account: NonNullable<RouterOutputs["account"]["teamWorkspace"]["account"]>;
 }>) => {
-  const [user] = api.account.me.useSuspenseQuery();
-
-  if (!user) {
-    return (
-      <div className="flex flex-col items-center justify-center p-4">
-        <Spinner />
-      </div>
-    );
-  }
-
   // Only the primary owner can delete the team account
-  const userIsPrimaryOwner = user.id === primaryOwnerUserId;
+  const userIsPrimaryOwner = user.id === account.primaryOwnerUserId;
 
   if (userIsPrimaryOwner) {
     return <DeleteTeamContainer account={account} />;
@@ -62,10 +48,7 @@ export const TeamAccountDangerZone = ({
 };
 
 const DeleteTeamContainer = (props: {
-  account: {
-    name: string;
-    id: string;
-  };
+  account: NonNullable<RouterOutputs["account"]["teamWorkspace"]["account"]>;
 }) => (
   <div className="flex flex-col space-y-4">
     <div className="flex flex-col space-y-1">
@@ -84,17 +67,14 @@ const DeleteTeamContainer = (props: {
             Delete Team
           </Button>
         </AlertDialogTrigger>
-
         <AlertDialogContent onEscapeKeyDown={(e) => e.preventDefault()}>
           <AlertDialogHeader>
             <AlertDialogTitle>Deleting team</AlertDialogTitle>
-
             <AlertDialogDescription>
               You are about to delete the team {props.account.name}. This action
               cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
-
           <DeleteTeamConfirmationForm
             name={props.account.name}
             id={props.account.id}
@@ -190,7 +170,6 @@ const DeleteTeamConfirmationForm = ({
 
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-
           <Button disabled={deleteTeamAccount.isPending} variant="destructive">
             Delete Team
           </Button>
@@ -201,10 +180,7 @@ const DeleteTeamConfirmationForm = ({
 };
 
 const LeaveTeamContainer = (props: {
-  account: {
-    name: string;
-    id: string;
-  };
+  account: NonNullable<RouterOutputs["account"]["teamWorkspace"]["account"]>;
 }) => {
   const leaveTeamAccount = api.account.leaveTeamAccount.useMutation({
     onSuccess: () => {
@@ -247,7 +223,6 @@ const LeaveTeamContainer = (props: {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Leaving Team</AlertDialogTitle>
-
             <AlertDialogDescription>
               You are about to leave this team. You will no longer have access
               to it.
@@ -269,7 +244,6 @@ const LeaveTeamContainer = (props: {
                       <FormLabel>
                         Please type LEAVE to confirm leaving the team.
                       </FormLabel>
-
                       <FormControl>
                         <Input
                           type="text"
@@ -286,7 +260,6 @@ const LeaveTeamContainer = (props: {
                         By leaving the team, you will no longer have access to
                         it.
                       </FormDescription>
-
                       <FormMessage />
                     </FormItem>
                   );
@@ -295,7 +268,6 @@ const LeaveTeamContainer = (props: {
 
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-
                 <Button
                   disabled={leaveTeamAccount.isPending}
                   variant="destructive"
