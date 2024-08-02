@@ -6,7 +6,7 @@ import { api } from "@/trpc/server";
 import { TasksTable } from "./_components/tasks-table";
 
 type Params = {
-  account: string;
+  team: string;
 };
 
 type SearchParams = GetTaskListInput;
@@ -19,7 +19,7 @@ const TasksPage = async ({
   searchParams: SearchParams;
 }) => {
   const { account } = await api.account.teamWorkspace({
-    slug: params.account,
+    slug: params.team,
   });
 
   if (!account) {

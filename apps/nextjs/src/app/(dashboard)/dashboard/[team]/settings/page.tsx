@@ -6,12 +6,12 @@ import { UpdateTeamAccountImage } from "./_components/update-team-account-image-
 import { UpdateTeamAccountNameForm } from "./_components/update-team-account-name-form";
 
 type Params = {
-  account: string;
+  team: string;
 };
 
 const Page = async ({ params }: { params: Params }) => {
   const { account } = await api.account.teamWorkspace({
-    slug: params.account,
+    slug: params.team,
   });
 
   if (!account) {

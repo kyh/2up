@@ -11,11 +11,11 @@ import { Sidebar } from "@/components/sidebar";
 import { api } from "@/trpc/server";
 
 type Params = {
-  account: string;
+  team: string;
 };
 
-const getTeamAccountPageLinks = (account: string) => {
-  const prefix = `/dashboard/${account}`;
+const getTeamAccountPageLinks = (slug: string) => {
+  const prefix = `/dashboard/${slug}`;
   return [
     {
       id: "crud",
@@ -51,7 +51,7 @@ const Layout = async ({
 }: React.PropsWithChildren<{ params: Params }>) => {
   const { user, accounts } = await api.account.userWorkspace();
   const { account } = await api.account.teamWorkspace({
-    slug: params.account,
+    slug: params.team,
   });
 
   if (!account) {
