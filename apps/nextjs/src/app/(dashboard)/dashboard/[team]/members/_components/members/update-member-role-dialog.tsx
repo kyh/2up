@@ -22,7 +22,7 @@ import {
 import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
-import { MembershipRoleSelector } from "../../../../[account]/members/_components/membership-role-selector";
+import { MembershipRoleSelector } from "../membership-role-selector";
 import { RolesDataProvider } from "./roles-data-provider";
 
 type Role = string;

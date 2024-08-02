@@ -15,7 +15,7 @@ import { MoreHorizontalIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
 import type { ColumnDef } from "@tanstack/react-table";
-import { RoleBadge } from "../../../../[account]/members/_components/role-badge";
+import { RoleBadge } from "../role-badge";
 import { RemoveMemberDialog } from "./remove-member-dialog";
 import { TransferOwnershipDialog } from "./transfer-ownership-dialog";
 import { UpdateMemberRoleDialog } from "./update-member-role-dialog";

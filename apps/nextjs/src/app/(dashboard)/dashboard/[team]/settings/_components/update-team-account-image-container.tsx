@@ -4,14 +4,11 @@ import { useCallback } from "react";
 import { ImageUploader } from "@init/ui/image-uploader";
 import { toast } from "@init/ui/toast";
 
+import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 
 export const UpdateTeamAccountImage = (props: {
-  account: {
-    id: string;
-    name: string;
-    pictureUrl: string | null;
-  };
+  account: NonNullable<RouterOutputs["account"]["teamWorkspace"]["account"]>;
 }) => {
   const deleteProfilePhoto = api.storage.deleteProfilePhoto.useMutation();
   const uploadUserProfilePhoto =
@@ -30,10 +27,9 @@ export const UpdateTeamAccountImage = (props: {
     (file: File | null) => {
       const removeExistingStorageFile = () => {
         if (props.account.pictureUrl) {
-          return (
-            deleteProfilePhoto.mutateAsync({ url: props.account.pictureUrl }) ??
-            Promise.resolve()
-          );
+          return deleteProfilePhoto.mutateAsync({
+            url: props.account.pictureUrl,
+          });
         }
 
         return Promise.resolve();
@@ -77,7 +73,6 @@ export const UpdateTeamAccountImage = (props: {
     >
       <div className="flex flex-col space-y-1">
         <span className="text-sm">Upload a Profile Picture</span>
-
         <span className="text-xs">
           Choose a photo to upload as your profile picture.
         </span>

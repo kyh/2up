@@ -21,7 +21,7 @@ import {
 } from "./team-account-schema";
 
 export const accountRouter = createTRPCRouter({
-  me: publicProcedure.query(async ({ ctx }) => {
+  me: publicProcedure.query(({ ctx }) => {
     return ctx.user;
   }),
 

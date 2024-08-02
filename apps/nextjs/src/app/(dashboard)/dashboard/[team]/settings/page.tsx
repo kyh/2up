@@ -10,7 +10,7 @@ type Params = {
 };
 
 const Page = async ({ params }: { params: Params }) => {
-  const { account } = await api.account.teamWorkspace({
+  const { account, user } = await api.account.teamWorkspace({
     slug: params.team,
   });
 
@@ -31,13 +31,7 @@ const Page = async ({ params }: { params: Params }) => {
             </p>
           </div>
           <div className="md:col-span-2">
-            <UpdateTeamAccountImage
-              account={{
-                id: account.id,
-                name: account.name,
-                pictureUrl: account.pictureUrl,
-              }}
-            />
+            <UpdateTeamAccountImage account={account} />
           </div>
         </div>
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 py-8 md:grid-cols-3">
@@ -50,12 +44,7 @@ const Page = async ({ params }: { params: Params }) => {
             </p>
           </div>
           <div className="md:col-span-2">
-            <UpdateTeamAccountNameForm
-              account={{
-                name: account.name,
-                slug: account.slug,
-              }}
-            />
+            <UpdateTeamAccountNameForm account={account} />
           </div>
         </div>
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 py-8 md:grid-cols-3">
@@ -68,10 +57,7 @@ const Page = async ({ params }: { params: Params }) => {
             </p>
           </div>
           <div className="md:col-span-2">
-            <TeamAccountDangerZone
-              primaryOwnerUserId={account.primaryOwnerUserId}
-              account={account}
-            />
+            <TeamAccountDangerZone user={user} account={account} />
           </div>
         </div>
       </section>

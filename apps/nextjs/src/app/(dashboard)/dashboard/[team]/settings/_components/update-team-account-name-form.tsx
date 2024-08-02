@@ -14,13 +14,11 @@ import {
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
 
+import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 
 export const UpdateTeamAccountNameForm = (props: {
-  account: {
-    name: string;
-    slug: string;
-  };
+  account: NonNullable<RouterOutputs["account"]["teamWorkspace"]["account"]>;
 }) => {
   const router = useRouter();
   const updateTeamAccountName = api.account.updateTeamAccountName.useMutation();
@@ -58,7 +56,6 @@ export const UpdateTeamAccountNameForm = (props: {
               return (
                 <FormItem>
                   <FormLabel>Team Name</FormLabel>
-
                   <FormControl>
                     <Input required placeholder="" {...field} />
                   </FormControl>
