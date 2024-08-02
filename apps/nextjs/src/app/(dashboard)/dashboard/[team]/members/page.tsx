@@ -7,20 +7,20 @@ import { AccountMembersTable } from "./_components/members/account-members-table
 import { InviteMembersDialogContainer } from "./_components/members/invite-members-dialog-container";
 
 type Params = {
-  account: string;
+  team: string;
 };
 
 const Page = async ({ params }: { params: Params }) => {
   const { account, user } = await api.account.teamWorkspace({
-    slug: params.account,
+    slug: params.team,
   });
 
   if (!account) {
     return redirect("/dashboard");
   }
 
-  await api.account.members.prefetch({ slug: params.account });
-  await api.account.invitations.prefetch({ slug: params.account });
+  await api.account.members.prefetch({ slug: params.team });
+  await api.account.invitations.prefetch({ slug: params.team });
 
   const canManageRoles = account.permissions.includes("roles.manage");
   const canManageInvitations = account.permissions.includes("invites.manage");
@@ -68,7 +68,7 @@ const Page = async ({ params }: { params: Params }) => {
           </div>
           <div className="md:col-span-2">
             <AccountInvitationsTable
-              slug={params.account}
+              slug={params.team}
               permissions={{
                 canUpdateInvitation: canManageRoles,
                 canRemoveInvitation: canManageRoles,

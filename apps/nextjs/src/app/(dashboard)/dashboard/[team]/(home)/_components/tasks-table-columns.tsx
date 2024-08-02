@@ -30,8 +30,8 @@ import { MoreHorizontalIcon } from "lucide-react";
 import type { RouterOutputs } from "@init/api";
 import type { ColumnDef } from "@tanstack/react-table";
 import { api } from "@/trpc/react";
-import { getPriorityIcon, getStatusIcon } from "../_lib/utils";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";
+import { getPriorityIcon, getStatusIcon } from "./task-utils";
 import { UpdateTaskSheet } from "./update-task-sheet";
 
 type Task = RouterOutputs["task"]["getTaskList"]["data"][0];
