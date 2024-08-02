@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import { RouterOutputs } from "@2up/api";
 import { getSupabaseBrowserClient } from "@2up/db/supabase-browser-client";
 import { useQuery } from "@tanstack/react-query";
 
-import { api } from "@/trpc/react";
+import type { RouterOutputs } from "@2up/api";
 
 type Notification = RouterOutputs["notifications"]["fetchNotifications"][0];
 
@@ -26,8 +25,8 @@ export const useNotificationsStream = (params: {
           {
             event: "INSERT",
             schema: "public",
-            filter: `account_id=in.(${params.accountIds.join(", ")})`,
-            table: "notifications",
+            filter: `accountId=in.(${params.accountIds.join(", ")})`,
+            table: "Notifications",
           },
           (payload) => {
             params.onNotifications([payload.new as Notification]);

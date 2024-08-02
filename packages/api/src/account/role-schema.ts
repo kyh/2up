@@ -1,5 +1,5 @@
 import { z } from "zod";
 
-export const retrieveInput = z.object({
+export const retrieveRoleInput = z.object({
   maxRoleHierarchy: z.number().default(1),
 });

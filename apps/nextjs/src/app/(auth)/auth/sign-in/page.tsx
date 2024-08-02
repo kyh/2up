@@ -1,7 +1,6 @@
-import { Suspense } from "react";
 import Link from "next/link";
 
-import { AuthForm } from "@/app/(auth)/auth-form";
+import { AuthForm } from "@/app/(auth)/_components/auth-form";
 
 export const generateMetadata = async () => {
   return {
@@ -9,14 +8,19 @@ export const generateMetadata = async () => {
   };
 };
 
-const SignInPage = () => (
+type SignInPageProps = {
+  searchParams: {
+    nextPath?: string;
+    invite_token?: string;
+  };
+};
+
+const SignInPage = ({ searchParams }: SignInPageProps) => (
   <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-    <div className="flex flex-col space-y-2 text-center">
+    <div className="flex flex-col text-center">
       <h1 className="text-lg font-light">Welcome back</h1>
     </div>
-    <Suspense>
-      <AuthForm type="signin" />
-    </Suspense>
+    <AuthForm type="signin" nextPath={searchParams.nextPath} />
     <p className="px-8 text-center text-sm text-muted-foreground">
       Don't have an account?{" "}
       <Link href="/auth/sign-up" className="underline">

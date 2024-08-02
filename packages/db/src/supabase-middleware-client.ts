@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 import type { Database } from "./database.types";
-import type { CookieOptions } from "@supabase/ssr";
 import { getSupabaseClientKeys } from "./get-supabase-client-keys";
 
 /**
@@ -19,46 +18,19 @@ export const createMiddlewareClient = <GenericSchema = Database>(
   const keys = getSupabaseClientKeys();
 
   return createServerClient<GenericSchema>(keys.url, keys.anonKey, {
-    cookies: getCookieStrategy(request, response),
+    cookies: {
+      getAll: () => request.cookies.getAll(),
+      setAll: (cookiesToSet) => {
+        cookiesToSet.forEach(({ name, value, options }) =>
+          request.cookies.set(name, value),
+        );
+        response = NextResponse.next({
+          request,
+        });
+        cookiesToSet.forEach(({ name, value, options }) =>
+          response.cookies.set(name, value, options),
+        );
+      },
+    },
   });
 };
-
-const getCookieStrategy = (request: NextRequest, response: NextResponse) => ({
-  set: (name: string, value: string, options: CookieOptions) => {
-    request.cookies.set({ name, value, ...options });
-
-    response = NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
-
-    response.cookies.set({
-      name,
-      value,
-      ...options,
-    });
-  },
-  get: (name: string) => {
-    return request.cookies.get(name)?.value;
-  },
-  remove: (name: string, options: CookieOptions) => {
-    request.cookies.set({
-      name,
-      value: "",
-      ...options,
-    });
-
-    response = NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
-
-    response.cookies.set({
-      name,
-      value: "",
-      ...options,
-    });
-  },
-});

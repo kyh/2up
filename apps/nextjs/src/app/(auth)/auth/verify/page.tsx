@@ -1,15 +1,4 @@
-import { redirect } from "next/navigation";
-import { checkRequiresMultiFactorAuthentication } from "@2up/api/auth/check-requires-mfa";
-import { requireUser } from "@2up/api/auth/require-user";
-import { getSupabaseServerClient } from "@2up/db/supabase-server-client";
-
-import { MultiFactorAuthForm } from "@/app/(auth)/auth-form";
-
-type Props = {
-  searchParams: {
-    next?: string;
-  };
-};
+import { MultiFactorAuthForm } from "@/app/(auth)/_components/auth-form";
 
 export const generateMetadata = async () => {
   return {
@@ -17,21 +6,7 @@ export const generateMetadata = async () => {
   };
 };
 
-const VerifyPage = async (props: Props) => {
-  const client = getSupabaseServerClient();
-  const needsMfa = await checkRequiresMultiFactorAuthentication(client);
-
-  if (!needsMfa) {
-    redirect("/auth/sign-in");
-  }
-
-  const redirectPath = props.searchParams.next ?? "/dashboard";
-  const auth = await requireUser(client);
-
-  if (auth.error) {
-    redirect(auth.redirectTo);
-  }
-
+const VerifyPage = async () => {
   return <MultiFactorAuthForm />;
 };
 
