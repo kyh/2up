@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import type { GetTaskListInput } from "@init/api/task/task-schema";
 import { PageHeader } from "@/components/header";
 import { api } from "@/trpc/server";
-import { TasksTable } from "./_components/tasks-table";
 
 type Params = {
   team: string;
@@ -11,7 +10,7 @@ type Params = {
 
 type SearchParams = GetTaskListInput;
 
-const TasksPage = async ({
+const Page = async ({
   params,
   searchParams,
 }: {
@@ -26,17 +25,11 @@ const TasksPage = async ({
     redirect("/dashboard");
   }
 
-  await api.task.getTaskList.prefetch({
-    ...searchParams,
-    accountId: account.id,
-  });
-
   return (
     <main className="flex flex-1 flex-col px-5">
-      <PageHeader showSearch>Welcome back</PageHeader>
-      <TasksTable accountId={account.id} searchParams={searchParams} />
+      <PageHeader showSearch>Welcome back {account.name}</PageHeader>
     </main>
   );
 };
 
-export default TasksPage;
+export default Page;
