@@ -5,8 +5,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
 import { EyeIcon } from "lucide-react";
@@ -33,8 +31,6 @@ export const DataTableViewOptions = <TData,>({
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" className="w-40">
-      <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-      <DropdownMenuSeparator />
       {table
         .getAllColumns()
         .filter(

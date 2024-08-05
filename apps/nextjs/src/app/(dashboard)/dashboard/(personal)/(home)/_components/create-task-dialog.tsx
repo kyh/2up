@@ -55,10 +55,10 @@ export const CreateTaskDialog = ({ accountId }: { accountId: string }) => {
   });
 
   const form = useForm({
-    schema: createTaskInput,
+    schema: createTaskInput.omit({ accountId: true }),
   });
 
-  const onSubmit = (input: CreateTaskInput) => {
+  const onSubmit = (input: Omit<CreateTaskInput, "accountId">) => {
     createTask.mutate({ ...input, accountId });
   };
 

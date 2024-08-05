@@ -18,7 +18,6 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -93,7 +92,7 @@ export const getColumns = (): ColumnDef<Task>[] => [
 
       if (!status) return null;
 
-      const Icon = getStatusIcon(status as Task["status"]);
+      const Icon = getStatusIcon(status);
 
       return (
         <div className="flex w-[6.25rem] items-center">
@@ -118,7 +117,7 @@ export const getColumns = (): ColumnDef<Task>[] => [
 
       if (!priority) return null;
 
-      const Icon = getPriorityIcon(priority as Task["priority"]);
+      const Icon = getPriorityIcon(priority);
 
       return (
         <div className="flex items-center">
@@ -204,7 +203,6 @@ export const getColumns = (): ColumnDef<Task>[] => [
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={() => setShowDeleteTaskDialog(true)}>
                 Delete
-                <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
