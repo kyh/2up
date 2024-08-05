@@ -1,18 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Button } from "@init/ui/button";
 import {
   CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem,
   CommandList,
-  CommandSeparator,
 } from "@init/ui/command";
-import { Divider } from "@init/ui/divider";
 import { If } from "@init/ui/if";
 import { Popover, PopoverContent, PopoverTrigger } from "@init/ui/popover";
 import { cn } from "@init/ui/utils";
@@ -26,9 +22,7 @@ import {
 } from "lucide-react";
 import { useHotkeys } from "react-hotkeys-hook";
 
-import type { RouterOutputs } from "@init/api";
-import { useNotificationsStream } from "@/lib/hooks/use-notifications-stream";
-import { accountPageLinks, dashboardPageLinks } from "@/lib/page-links";
+import { useNotificationsStream } from "@/lib/use-notifications-stream";
 import { api } from "@/trpc/react";
 
 type PageHeaderProps = {
@@ -77,42 +71,12 @@ const SearchButton = () => {
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Suggestions">
-            {dashboardPageLinks.map((link) => (
-              <CommandItem
-                key={link.id}
-                className="group flex flex-col items-center gap-1 p-2 text-xs"
-                asChild
-              >
-                <Link href={link.href}>
-                  <link.Icon className="mr-3 !size-4" />
-                  <span>{link.label}</span>
-                </Link>
-              </CommandItem>
-            ))}
-          </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="Settings">
-            {accountPageLinks.map((link) => (
-              <CommandItem
-                key={link.id}
-                className="group flex flex-col items-center gap-1 p-2 text-xs"
-                asChild
-              >
-                <Link href={link.href}>
-                  <link.Icon className="mr-3 !size-4" />
-                  <span>{link.label}</span>
-                </Link>
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <CommandGroup heading="Suggestions"></CommandGroup>
         </CommandList>
       </CommandDialog>
     </>
   );
 };
-
-type Notification = RouterOutputs["notifications"]["fetchNotifications"][0];
 
 export const NotificationsButton = () => {
   const [open, setOpen] = useState(false);
@@ -195,23 +159,15 @@ export const NotificationsButton = () => {
           </span>
         </Button>
       </PopoverTrigger>
-
       <PopoverContent
         className="flex w-full max-w-96 flex-col p-0 lg:min-w-64"
         align="start"
         collisionPadding={20}
         sideOffset={10}
       >
-        <div className="flex items-center px-3 py-2 text-sm font-semibold">
-          Notifications
-        </div>
-
-        <Divider />
-
         <If condition={!notifications.length}>
           <div className="px-3 py-2 text-sm">No notifications</div>
         </If>
-
         <div className="flex max-h-[60vh] flex-col divide-y divide-gray-100 overflow-y-auto dark:divide-gray-800">
           {notifications.map((notification) => {
             const maxChars = 100;
@@ -245,7 +201,6 @@ export const NotificationsButton = () => {
                     <div className="py-0.5">
                       <Icon />
                     </div>
-
                     <div className="flex flex-col space-y-1">
                       <div className="text-sm">
                         <If condition={notification.link} fallback={body}>
@@ -256,13 +211,11 @@ export const NotificationsButton = () => {
                           )}
                         </If>
                       </div>
-
                       <span className="text-xs text-muted-foreground">
                         {timeAgo(notification.createdAt)}
                       </span>
                     </div>
                   </div>
-
                   <div className="py-2">
                     <Button
                       className="max-h-6 max-w-6"

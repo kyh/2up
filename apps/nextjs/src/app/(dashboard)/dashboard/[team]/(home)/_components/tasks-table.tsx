@@ -5,7 +5,7 @@ import { DataTable } from "@init/ui/data-table/data-table";
 import { DataTableToolbar } from "@init/ui/data-table/data-table-toolbar";
 
 import type { GetTaskListInput } from "@init/api/task/task-schema";
-import { useDataTable } from "@/lib/hooks/use-data-table";
+import { useDataTable } from "@/lib/use-data-table";
 import { api } from "@/trpc/react";
 import { getColumns } from "./tasks-table-columns";
 import { TasksTableToolbarActions } from "./tasks-table-toolbar-actions";

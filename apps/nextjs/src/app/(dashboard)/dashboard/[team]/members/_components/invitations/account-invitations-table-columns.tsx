@@ -15,7 +15,7 @@ import { EllipsisIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
 import type { ColumnDef } from "@tanstack/react-table";
-import { RoleBadge } from "../../../../[account]/members/_components/role-badge";
+import { RoleBadge } from "../role-badge";
 import { DeleteInvitationDialog } from "./delete-invitation-dialog";
 import { RenewInvitationDialog } from "./renew-invitation-dialog";
 import { UpdateInvitationDialog } from "./update-invitation-dialog";
