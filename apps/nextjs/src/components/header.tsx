@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@init/ui/button";
 import {
@@ -27,7 +27,7 @@ import {
 import { useHotkeys } from "react-hotkeys-hook";
 
 import type { RouterOutputs } from "@init/api";
-import { useFetchNotifications } from "@/hooks/use-fetch-notifications";
+import { useNotificationsStream } from "@/lib/hooks/use-notifications-stream";
 import { accountPageLinks, dashboardPageLinks } from "@/lib/page-links";
 import { api } from "@/trpc/react";
 
@@ -45,7 +45,7 @@ export const PageHeader = ({
   return (
     <header className="flex h-20 items-center justify-between md:h-24">
       <h1 className="text-xl">{children}</h1>
-      <div>
+      <div className="flex gap-1">
         {showNotifications && <NotificationsButton />}
         {showSearch && <SearchButton />}
       </div>
@@ -70,7 +70,7 @@ const SearchButton = () => {
         size="icon"
         onClick={onClick}
       >
-        <SearchIcon />
+        <SearchIcon className="size-4" />
         <span className="sr-only">Search</span>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
@@ -114,38 +114,11 @@ const SearchButton = () => {
 
 type Notification = RouterOutputs["notifications"]["fetchNotifications"][0];
 
-type PartialNotification = Pick<
-  Notification,
-  "id" | "body" | "dismissed" | "type" | "createdAt" | "link"
->;
-
 export const NotificationsButton = () => {
   const [open, setOpen] = useState(false);
-  const [notifications, setNotifications] = useState<PartialNotification[]>([]);
-
-  const onNotifications = useCallback(
-    (notifications: PartialNotification[]) => {
-      setNotifications((existing) => {
-        const unique = new Set(existing.map((notification) => notification.id));
-
-        const notificationsFiltered = notifications.filter(
-          (notification) => !unique.has(notification.id),
-        );
-
-        return [...notificationsFiltered, ...existing];
-      });
-    },
-    [],
-  );
-
   const dismissNotification =
     api.notifications.dismissNotification.useMutation();
-
-  useFetchNotifications({
-    onNotifications,
-    accountIds: [],
-    realtime: true,
-  });
+  const { notifications, refetch } = useNotificationsStream();
 
   const timeAgo = (createdAt: string) => {
     const date = new Date(createdAt);
@@ -205,18 +178,11 @@ export const NotificationsButton = () => {
     return text.slice(0, 1).toUpperCase() + text.slice(1);
   };
 
-  useEffect(() => {
-    return () => {
-      setNotifications([]);
-    };
-  }, []);
-
   return (
     <Popover modal open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button className="relative h-10 w-10 rounded-lg" variant="ghost">
-          <Bell className="h-5 w-5" />
-
+        <Button className="relative rounded-full" variant="ghost" size="icon">
+          <Bell className="size-4" />
           <span
             className={cn(
               `absolute right-1 top-1 mt-0 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[0.65rem] text-white animate-in fade-in zoom-in`,
@@ -302,18 +268,16 @@ export const NotificationsButton = () => {
                       className="max-h-6 max-w-6"
                       size="icon"
                       variant="ghost"
-                      onClick={() => {
-                        setNotifications((existing) => {
-                          return existing.filter(
-                            (existingNotification) =>
-                              existingNotification.id !== notification.id,
-                          );
-                        });
-
-                        return dismissNotification.mutateAsync({
-                          notification: notification.id,
-                        });
-                      }}
+                      onClick={() =>
+                        dismissNotification.mutateAsync(
+                          {
+                            notification: notification.id,
+                          },
+                          {
+                            onSuccess: () => refetch(),
+                          },
+                        )
+                      }
                     >
                       <XIcon className="h-3" />
                     </Button>

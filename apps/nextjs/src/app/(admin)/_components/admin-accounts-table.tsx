@@ -17,7 +17,7 @@ import {
 import { z } from "zod";
 
 import type { GetAccountsInput } from "@init/api/admin/admin-schema";
-import { useDataTable } from "@/hooks/use-data-table";
+import { useDataTable } from "@/lib/hooks/use-data-table";
 import { api } from "@/trpc/react";
 import { getColumns } from "./admin-accounts-table-columns";
 

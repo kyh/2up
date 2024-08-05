@@ -1,22 +1,19 @@
+"use client";
+
 import { useEffect } from "react";
 import { getSupabaseBrowserClient } from "@init/db/supabase-browser-client";
 import { useQuery } from "@tanstack/react-query";
 
-import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 
-type Notification = RouterOutputs["notifications"]["fetchNotifications"][0];
-
-export const useFetchNotifications = ({
-  onNotifications,
-  accountIds,
-  realtime,
+export const useNotificationsStream = ({
+  accountIds = [],
+  realtime = true,
 }: {
-  onNotifications: (notifications: Notification[]) => unknown;
-  accountIds: string[];
-  realtime: boolean;
-}) => {
-  const [initialNotifications] =
+  accountIds?: string[];
+  realtime?: boolean;
+} = {}) => {
+  const [notifications, { isLoading, refetch }] =
     api.notifications.fetchNotifications.useSuspenseQuery({
       accountIds,
     });
@@ -28,7 +25,6 @@ export const useFetchNotifications = ({
     queryKey: ["realtime-notifications", ...accountIds],
     queryFn: () => {
       const channel = client.channel("notifications-channel");
-
       return channel
         .on(
           "postgres_changes",
@@ -38,9 +34,7 @@ export const useFetchNotifications = ({
             filter: `accountId=in.(${accountIds.join(", ")})`,
             table: "Notifications",
           },
-          (payload) => {
-            onNotifications([payload.new as Notification]);
-          },
+          () => refetch(),
         )
         .subscribe();
     },
@@ -52,9 +46,9 @@ export const useFetchNotifications = ({
     };
   }, [subscription]);
 
-  useEffect(() => {
-    if (initialNotifications) {
-      onNotifications(initialNotifications);
-    }
-  }, [initialNotifications, onNotifications]);
+  return {
+    notifications,
+    isLoading,
+    refetch,
+  };
 };
