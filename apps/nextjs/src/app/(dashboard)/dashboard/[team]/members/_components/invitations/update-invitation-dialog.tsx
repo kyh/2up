@@ -22,8 +22,8 @@ import {
 import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
-import { MembershipRoleSelector } from "../../../../[account]/members/_components/membership-role-selector";
 import { RolesDataProvider } from "../members/roles-data-provider";
+import { MembershipRoleSelector } from "../membership-role-selector";
 
 type Role = string;
 
