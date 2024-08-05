@@ -8,22 +8,17 @@ import { TasksTable } from "./_components/tasks-table";
 type SearchParams = GetTaskListInput;
 
 const Page = async ({ searchParams }: { searchParams: SearchParams }) => {
-  const { workspace } = await api.account.userWorkspace();
-
-  // This should never happen
-  if (!workspace.id) {
-    redirect("/");
-  }
+  const { user } = await api.account.userWorkspace();
 
   await api.task.getTaskList.prefetch({
     ...searchParams,
-    accountId: workspace.id,
+    accountId: user.id,
   });
 
   return (
     <main className="flex flex-1 flex-col px-5">
       <PageHeader>Welcome back</PageHeader>
-      <TasksTable accountId={workspace.id} searchParams={searchParams} />
+      <TasksTable accountId={user.id} searchParams={searchParams} />
     </main>
   );
 };

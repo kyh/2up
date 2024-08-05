@@ -1,24 +1,20 @@
 import { z } from "zod";
 
-export const TaskLabels: readonly [string, ...string[]] = [
+export const TaskLabels = [
   "bug",
   "feature",
   "enhancement",
   "documentation",
-];
+] as const;
 
-export const TaskPriorites: readonly [string, ...string[]] = [
-  "low",
-  "medium",
-  "high",
-];
+export const TaskPriorites = ["low", "medium", "high"] as const;
 
-export const TaskStatuses: readonly [string, ...string[]] = [
+export const TaskStatuses = [
   "todo",
   "in-progress",
   "done",
   "canceled",
-];
+] as const;
 
 export const getTaskInput = z.object({
   id: z.string(),
