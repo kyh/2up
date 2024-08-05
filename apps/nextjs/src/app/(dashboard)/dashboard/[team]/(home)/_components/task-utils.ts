@@ -26,7 +26,7 @@ export const getStatusIcon = (status: Task["status"]) => {
     todo: CircleHelpIcon,
   };
 
-  return statusIcons[status] || CircleIcon;
+  return statusIcons[status];
 };
 
 /**
@@ -41,5 +41,5 @@ export const getPriorityIcon = (priority: Task["priority"]) => {
     medium: ArrowRightIcon,
   };
 
-  return priorityIcons[priority] || CircleIcon;
+  return priorityIcons[priority];
 };
