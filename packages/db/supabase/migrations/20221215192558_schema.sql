@@ -2036,13 +2036,13 @@ execute on function public."upsertOrder" (
  * We create the schema for the notifications. Notifications are the notifications for an account.
  * -------------------------------------------------------
  */
-create type public."NotificationChannel" as enum('in_app', 'email');
+create type public."NotificationChannel" as enum('in_app', 'email', 'push');
 
 create type public."NotificationType" as enum('info', 'warning', 'error');
 
 create table if not exists
   public."Notifications" (
-    id bigint generated always as identity primary key,
+    id uuid unique not null default extensions.uuid_generate_v4 (),
     "accountId" uuid not null references public."Accounts" (id) on delete cascade,
     type public."NotificationType" not null default 'info',
     body varchar(5000) not null,
