@@ -24,11 +24,5 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "catalog:"
   },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@kyh/eslint-config/base"
-    ]
-  },
   "prettier": "@kyh/prettier-config"
 }

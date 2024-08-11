@@ -29,11 +29,5 @@
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@kyh/eslint-config/base"
-    ]
-  },
   "prettier": "@kyh/prettier-config"
 }
