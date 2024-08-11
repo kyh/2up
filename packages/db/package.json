@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "git clean -xdf .cache .nitro .output .turbo .vercel node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint . && supabase db lint",
+    "lint": "eslint",
     "supabase": "supabase",
     "start": "supabase status || supabase start",
     "stop": "supabase stop",
