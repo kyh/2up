@@ -2,9 +2,9 @@
   "name": "2up",
   "private": true,
   "engines": {
-    "node": ">=20.15.0"
+    "node": ">=20.16.0"
   },
-  "packageManager": "pnpm@9.6.0",
+  "packageManager": "pnpm@9.7.0",
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
@@ -19,21 +19,21 @@
     "dev": "turbo dev --parallel",
     "dev:nextjs": "turbo dev --filter=@2up/nextjs",
     "dev:expo": "turbo dev --filter=@2up/expo",
-    "format": "turbo format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
-    "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
-    "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
-    "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
+    "format": "turbo format --continue -- --cache --cache-location .cache/.prettiercache",
+    "format:fix": "turbo format --continue -- --write --cache --cache-location .cache/.prettiercache",
+    "lint": "turbo lint --continue -- --cache --cache-location .cache/.eslintcache",
+    "lint:fix": "turbo lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
     "typecheck": "turbo typecheck",
     "gen:package": "turbo gen package",
     "ui:add": "pnpm -F ui ui:add"
   },
   "devDependencies": {
     "@kyh/prettier-config": "catalog:",
-    "@turbo/gen": "^2.0.11",
+    "@turbo/gen": "^2.0.12",
     "dotenv-cli": "^7.4.2",
     "prettier": "catalog:",
-    "tsx": "^4.16.5",
-    "turbo": "^2.0.11",
+    "tsx": "^4.17.0",
+    "turbo": "^2.0.12",
     "typescript": "catalog:"
   },
   "prettier": "@kyh/prettier-config"

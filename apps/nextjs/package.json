@@ -8,7 +8,7 @@
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "pnpm with-env next dev",
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "dotenv -v SKIP_ENV_VALIDATION=1 next lint",
+    "lint": "eslint",
     "start": "pnpm with-env next start",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
@@ -23,7 +23,7 @@
     "@mdx-js/react": "^3.0.1",
     "@next/mdx": "^14.2.5",
     "@stripe/react-stripe-js": "^2.7.3",
-    "@stripe/stripe-js": "^4.1.0",
+    "@stripe/stripe-js": "^4.2.0",
     "partysocket": "1.0.1",
     "@tanstack/react-query": "catalog:",
     "@trpc/client": "catalog:",
@@ -49,23 +49,6 @@
     "prettier": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@kyh/eslint-config/base",
-      "@kyh/eslint-config/nextjs",
-      "@kyh/eslint-config/react"
-    ],
-    "rules": {
-      "react/jsx-curly-brace-presence": [
-        "error",
-        {
-          "props": "never",
-          "children": "never"
-        }
-      ]
-    }
   },
   "prettier": "@kyh/prettier-config"
 }

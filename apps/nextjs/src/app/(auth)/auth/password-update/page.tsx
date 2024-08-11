@@ -1,6 +1,6 @@
 import { UpdatePasswordForm } from "@/app/(auth)/_components/auth-form";
 
-export const generateMetadata = async () => {
+export const generateMetadata = () => {
   return {
     title: "Password Update",
   };

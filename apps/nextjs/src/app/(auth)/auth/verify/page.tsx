@@ -1,12 +1,12 @@
 import { MultiFactorAuthForm } from "@/app/(auth)/_components/auth-form";
 
-export const generateMetadata = async () => {
+export const generateMetadata = () => {
   return {
     title: "Verify Authentication",
   };
 };
 
-const VerifyPage = async () => {
+const VerifyPage = () => {
   return <MultiFactorAuthForm />;
 };
 
