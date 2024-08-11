@@ -49,22 +49,5 @@
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
   },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@kyh/eslint-config/base",
-      "@kyh/eslint-config/nextjs",
-      "@kyh/eslint-config/react"
-    ],
-    "rules": {
-      "react/jsx-curly-brace-presence": [
-        "error",
-        {
-          "props": "never",
-          "children": "never"
-        }
-      ]
-    }
-  },
   "prettier": "@kyh/prettier-config"
 }
