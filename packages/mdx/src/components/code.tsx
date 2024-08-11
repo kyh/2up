@@ -40,7 +40,7 @@ const CopyButton = ({ code }: { code: string }) => {
           : "hover:bg-white/7.5 dark:bg-white/2.5 bg-white/5 dark:hover:bg-white/5",
       )}
       onClick={() => {
-        window.navigator.clipboard.writeText(code).then(() => {
+        void window.navigator.clipboard.writeText(code).then(() => {
           setCopyCount((count) => count + 1);
         });
       }}
@@ -104,9 +104,9 @@ const CodePanel = ({
   const child = Children.only(children);
 
   if (isValidElement(child)) {
-    tag = child.props.tag ?? tag;
-    label = child.props.label ?? label;
-    code = child.props.code ?? code;
+    tag = (child.props as { tag?: string }).tag ?? tag;
+    label = (child.props as { label?: string }).label ?? label;
+    code = (child.props as { code?: string }).code ?? code;
   }
 
   if (!code) {

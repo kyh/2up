@@ -1,9 +1,7 @@
-// export const runtime = "edge";
-
 import { Meteors } from "@/app/(marketing)/_components/meteor";
 import { WaitlistForm } from "@/app/(marketing)/_components/waitlist-form";
 
-const Page = async () => {
+const Page = () => {
   return (
     <>
       <section>

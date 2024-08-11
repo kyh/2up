@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { AuthForm } from "@/app/(auth)/_components/auth-form";
 
-export const generateMetadata = async () => {
+export const generateMetadata = () => {
   return {
     title: "Sign Up",
   };
