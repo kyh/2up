@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@init/ui/theme";
 import { Toaster } from "@init/ui/toast";
+import { TooltipProvider } from "@init/ui/tooltip";
 import { cn } from "@init/ui/utils";
 
 import { siteConfig } from "@/config/site.config";
@@ -90,8 +91,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-          <Toaster />
+          <TooltipProvider>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+            <Toaster />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
