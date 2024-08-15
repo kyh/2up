@@ -1,5 +1,4 @@
 import type { Stripe } from "stripe";
-import { getSupabaseServerClient } from "@init/db/supabase-server-client";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import {
@@ -187,7 +186,6 @@ export const billingRouter = createTRPCRouter({
   handleWebhookEvent: publicProcedure
     .input(handleWebhookEventInput)
     .query(async ({ ctx, input }) => {
-      const adminSupabase = getSupabaseServerClient({ admin: true });
       const service = new StripeWebhookHandlerService(input.config);
       const event = await service.verifyWebhookSignature(input.request);
 
@@ -200,7 +198,7 @@ export const billingRouter = createTRPCRouter({
           // Handle the subscription deleted event
           // here we delete the subscription from the database
 
-          const { error } = await adminSupabase
+          const { error } = await ctx.adminSupabase
             .from("Subscriptions")
             .delete()
             .match({ id: subscriptionId });
@@ -212,7 +210,7 @@ export const billingRouter = createTRPCRouter({
         onSubscriptionUpdated: async (subscription) => {
           // Handle the subscription updated event
           // here we update the subscription in the database
-          const { error } = await adminSupabase.rpc(
+          const { error } = await ctx.adminSupabase.rpc(
             "upsertSubscription",
             subscription,
           );
@@ -229,13 +227,16 @@ export const billingRouter = createTRPCRouter({
           // if it does, we add an order, otherwise we add a subscription
 
           if ("targetOrderId" in payload) {
-            const { error } = await adminSupabase.rpc("upsertOrder", payload);
+            const { error } = await ctx.adminSupabase.rpc(
+              "upsertOrder",
+              payload,
+            );
 
             if (error) {
               throw new Error("Failed to add order");
             }
           } else {
-            const { error } = await adminSupabase.rpc(
+            const { error } = await ctx.adminSupabase.rpc(
               "upsertSubscription",
               payload,
             );
@@ -250,7 +251,7 @@ export const billingRouter = createTRPCRouter({
           // Handle the payment succeeded event
           // here we update the payment status in the database
 
-          const { error } = await adminSupabase
+          const { error } = await ctx.adminSupabase
             .from("Orders")
             .update({ status: "succeeded" })
             .match({ sessionId: sessionId });
@@ -264,7 +265,7 @@ export const billingRouter = createTRPCRouter({
           // Handle the payment failed event
           // here we update the payment status in the database
 
-          const { error } = await adminSupabase
+          const { error } = await ctx.adminSupabase
             .from("Orders")
             .update({ status: "failed" })
             .match({ sessionId: sessionId });

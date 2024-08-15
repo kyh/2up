@@ -36,7 +36,7 @@
     "@types/react": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "supabase": "^1.187.10",
+    "supabase": "^1.190.0",
     "typescript": "catalog:"
   },
   "prettier": "@kyh/prettier-config"
