@@ -227,27 +227,6 @@ export type Database = {
           },
         ]
       }
-      Config: {
-        Row: {
-          billingProvider: Database["public"]["Enums"]["BillingProvider"]
-          enableAccountBilling: boolean
-          enableTeamAccountBilling: boolean
-          enableTeamAccounts: boolean
-        }
-        Insert: {
-          billingProvider?: Database["public"]["Enums"]["BillingProvider"]
-          enableAccountBilling?: boolean
-          enableTeamAccountBilling?: boolean
-          enableTeamAccounts?: boolean
-        }
-        Update: {
-          billingProvider?: Database["public"]["Enums"]["BillingProvider"]
-          enableAccountBilling?: boolean
-          enableTeamAccountBilling?: boolean
-          enableTeamAccounts?: boolean
-        }
-        Relationships: []
-      }
       Invitations: {
         Row: {
           accountId: string
@@ -328,7 +307,7 @@ export type Database = {
           createdAt: string
           dismissed: boolean
           expiresAt: string | null
-          id: number
+          id: string
           link: string | null
           type: Database["public"]["Enums"]["NotificationType"]
         }
@@ -339,7 +318,7 @@ export type Database = {
           createdAt?: string
           dismissed?: boolean
           expiresAt?: string | null
-          id?: never
+          id?: string
           link?: string | null
           type?: Database["public"]["Enums"]["NotificationType"]
         }
@@ -350,7 +329,7 @@ export type Database = {
           createdAt?: string
           dismissed?: boolean
           expiresAt?: string | null
-          id?: never
+          id?: string
           link?: string | null
           type?: Database["public"]["Enums"]["NotificationType"]
         }
@@ -899,9 +878,11 @@ export type Database = {
           updatedAt: string
         }[]
       }
-      getConfig: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
+      getStorageFilenameAsUuid: {
+        Args: {
+          name: string
+        }
+        Returns: string
       }
       getUpperSystemRole: {
         Args: Record<PropertyKey, never>
@@ -956,18 +937,18 @@ export type Database = {
         }
         Returns: boolean
       }
-      isSet: {
-        Args: {
-          fieldname: string
-        }
-        Returns: boolean
-      }
       isTeamMember: {
         Args: {
           accountId: string
           userId: string
         }
         Returns: boolean
+      }
+      slugify: {
+        Args: {
+          value: string
+        }
+        Returns: string
       }
       teamAccountWorkspace: {
         Args: {
@@ -991,6 +972,18 @@ export type Database = {
           newOwnerId: string
         }
         Returns: undefined
+      }
+      unaccent: {
+        Args: {
+          "": string
+        }
+        Returns: string
+      }
+      unaccent_init: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
       }
       upsertOrder: {
         Args: {
@@ -1057,7 +1050,7 @@ export type Database = {
         | "members.manage"
         | "invites.manage"
       BillingProvider: "stripe" | "lemon-squeezy" | "paddle"
-      NotificationChannel: "in_app" | "email"
+      NotificationChannel: "in_app" | "email" | "push"
       NotificationType: "info" | "warning" | "error"
       PaymentStatus: "pending" | "succeeded" | "failed"
       SubscriptionItemType: "flat" | "per_seat" | "metered"

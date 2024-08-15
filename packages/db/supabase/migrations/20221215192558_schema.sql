@@ -1,83 +1,4 @@
-/*
- * -------------------------------------------------------
- * Supabase SaaS Starter Kit Schema
- * This is the schema for the Supabase SaaS Starter Kit.
- * It includes the schema for accounts, account roles, role permissions, memberships, invitations, subscriptions, and more.
- * -------------------------------------------------------
- */
-/*
- * -------------------------------------------------------
- * Section: Revoke default privileges from public schema
- * We will revoke all default privileges from public schema on functions to prevent public access to them
- * -------------------------------------------------------
- */
--- Create a private Init schema
-create schema if not exists kit;
-
-create extension if not exists "unaccent" schema kit;
-
--- We remove all default privileges from public schema on functions to
---   prevent public access to them
-alter default privileges
-revoke
-execute on functions
-from
-  public;
-
-revoke all on schema public
-from
-  public;
-
-revoke all PRIVILEGES on database "postgres"
-from
-  "anon";
-
-revoke all PRIVILEGES on schema "public"
-from
-  "anon";
-
-revoke all PRIVILEGES on schema "storage"
-from
-  "anon";
-
-revoke all PRIVILEGES on all SEQUENCES in schema "public"
-from
-  "anon";
-
-revoke all PRIVILEGES on all SEQUENCES in schema "storage"
-from
-  "anon";
-
-revoke all PRIVILEGES on all FUNCTIONS in schema "public"
-from
-  "anon";
-
-revoke all PRIVILEGES on all FUNCTIONS in schema "storage"
-from
-  "anon";
-
-revoke all PRIVILEGES on all TABLES in schema "public"
-from
-  "anon";
-
-revoke all PRIVILEGES on all TABLES in schema "storage"
-from
-  "anon";
-
--- We remove all default privileges from public schema on functions to
---   prevent public access to them by default
-alter default privileges in schema public
-revoke
-execute on functions
-from
-  "anon",
-  "authenticated";
-
--- we allow the authenticated role to execute functions in the public schema
-grant usage on schema public to "authenticated";
-
--- we allow the service_role role to execute functions in the public schema
-grant usage on schema public to "service_role";
+create extension if not exists "unaccent" schema public;
 
 /*
  * -------------------------------------------------------
@@ -144,82 +65,6 @@ create type public."SubscriptionItemType" as ENUM('flat', 'per_seat', 'metered')
 */
 create type public."Invitation" as (email text, role varchar(50));
 
-/*
- * -------------------------------------------------------
- * Section: App Configuration
- * We create the configuration for the Supabase Init to enable or disable features
- * -------------------------------------------------------
- */
-create table if not exists
-  public."Config" (
-    "enableTeamAccounts" boolean default true not null,
-    "enableAccountBilling" boolean default true not null,
-    "enableTeamAccountBilling" boolean default true not null,
-    "billingProvider" public."BillingProvider" default 'stripe' not null
-  );
-
-comment on table public."Config" is 'Configuration for the Supabase Init.';
-
-comment on column public."Config"."enableTeamAccounts" is 'Enable team accounts';
-
-comment on column public."Config"."enableAccountBilling" is 'Enable billing for individual accounts';
-
-comment on column public."Config"."enableTeamAccountBilling" is 'Enable billing for team accounts';
-
-comment on column public."Config"."billingProvider" is 'The billing provider to use';
-
--- RLS(Config)
-alter table public."Config" enable row level security;
-
--- create Config row
-insert into
-  public."Config" (
-    "enableTeamAccounts",
-    "enableAccountBilling",
-    "enableTeamAccountBilling"
-  )
-values
-  (true, true, true);
-
--- Revoke all on accounts table from authenticated and service_role
-revoke all on public."Config"
-from
-  "authenticated",
-  "service_role";
-
--- Open up access to Config table for authenticated users and service_role
-grant
-select
-  on public."Config" to "authenticated",
-  "service_role";
-
--- RLS
--- SELECT(Config):
--- Authenticated users can read the Config
-create policy "public Config can be read by authenticated users" on public."Config" for
-select
-  to "authenticated" using (true);
-
--- Function to get the Config settings
-create
-or replace function public."getConfig" () returns json
-set
-  search_path = '' as $$
-declare
-    result record;
-begin
-    select
-        *
-    from
-        public."Config"
-    limit 1 into result;
-
-    return row_to_json(result);
-
-end;
-
-$$ language plpgsql;
-
 -- Automatically set timestamps on tables when a row is inserted or updated
 create
 or replace function public."triggerSetTimestamps" () returns trigger
@@ -264,30 +109,6 @@ begin
 
 end
 $$ language plpgsql;
-
-grant
-execute on function public."getConfig" () to "authenticated",
-"service_role";
-
--- Function "public.isSet"
--- Check if a field is set in the Config
-create
-or replace function public."isSet" (fieldName text) returns boolean
-set
-  search_path = '' as $$
-declare
-    result boolean;
-begin
-    execute format('select %I from public."Config" limit 1', fieldName) into result;
-
-    return result;
-
-end;
-
-$$ language plpgsql;
-
-grant
-execute on function public."isSet" (text) to "authenticated";
 
 /*
  * -------------------------------------------------------
@@ -336,10 +157,10 @@ from
 
 -- Open up access to Accounts
 grant
-select,
+  select,
   insert,
-update,
-delete on table public."Accounts" to "authenticated",
+  update,
+  delete on table public."Accounts" to "authenticated",
 "service_role";
 
 -- constraint that conditionally allows nulls on the slug ONLY if
@@ -457,10 +278,10 @@ grant
 execute on function public."isAccountOwner" (uuid) to "authenticated",
 "service_role";
 
--- Function "kit.protectAccountFields"
+-- Function "public.protectAccountFields"
 -- Function to protect account fields from being updated
 create
-or replace function kit."protectAccountFields" () returns trigger as $$
+or replace function public."protectAccountFields" () returns trigger as $$
 begin
     if current_user in('authenticated', 'anon') then
 	if new.id <> old.id or new."isPersonalAccount" <>
@@ -481,7 +302,7 @@ set
 -- trigger to protect account fields
 create trigger protect_account_fields before
 update on public."Accounts" for each row
-execute function kit."protectAccountFields" ();
+execute function public."protectAccountFields" ();
 
 -- Function "public.getUpperSystemRole"
 -- Function to get the highest system role for an account
@@ -502,10 +323,10 @@ $$ language plpgsql;
 grant
 execute on function public."getUpperSystemRole" () to "service_role";
 
--- Function "kit.addCurrentUserToNewAccount"
+-- Function "public.addCurrentUserToNewAccount"
 -- Trigger to add the current user to a new account as the primary owner
 create
-or replace function kit."addCurrentUserToNewAccount" () returns trigger language plpgsql security definer
+or replace function public."addCurrentUserToNewAccount" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 begin
@@ -531,11 +352,11 @@ $$;
 create trigger "addCurrentUserToNewAccount"
 after insert on public."Accounts" for each row
 when (new."isPersonalAccount" = false)
-execute function kit."addCurrentUserToNewAccount" ();
+execute function public."addCurrentUserToNewAccount" ();
 
 -- create a trigger to update the account email when the primary owner email is updated
 create
-or replace function kit."handleUpdateUserEmail" () returns trigger language plpgsql security definer
+or replace function public."handleUpdateUserEmail" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 begin
@@ -558,7 +379,7 @@ $$;
 create trigger "onAuthUserUpdated"
 after
 update of email on auth.users for each row
-execute procedure kit."handleUpdateUserEmail" ();
+execute procedure public."handleUpdateUserEmail" ();
 
 /*
  * -------------------------------------------------------
@@ -623,10 +444,10 @@ from
 
 -- Open up access to AccountsMemberships table for authenticated users and service_role
 grant
-select,
+  select,
   insert,
-update,
-delete on table public."AccountsMemberships" to "authenticated",
+  update,
+  delete on table public."AccountsMemberships" to "authenticated",
 "service_role";
 
 -- Indexes on the AccountsMemberships table
@@ -639,10 +460,10 @@ create index ix_accounts_memberships_accountRole on public."AccountsMemberships"
 -- Enable RLS on the AccountsMemberships table
 alter table public."AccountsMemberships" enable row level security;
 
--- Function "kit.preventAccountOwnerMembershipDelete"
+-- Function "public.preventAccountOwnerMembershipDelete"
 -- Trigger to prevent a primary owner from being removed from an account
 create
-or replace function kit."preventAccountOwnerMembershipDelete" () returns trigger
+or replace function public."preventAccountOwnerMembershipDelete" () returns trigger
 set
   search_path = '' as $$
 begin
@@ -666,12 +487,12 @@ $$ language plpgsql;
 
 create
 or replace trigger prevent_account_owner_membership_delete_check before delete on public."AccountsMemberships" for each row
-execute function kit."preventAccountOwnerMembershipDelete" ();
+execute function public."preventAccountOwnerMembershipDelete" ();
 
--- Function "kit.preventMembershipsUpdate"
+-- Function "public.preventMembershipsUpdate"
 -- Trigger to prevent updates to account memberships with the exception of the accountRole
 create
-or replace function kit."preventMembershipsUpdate" () returns trigger
+or replace function public."preventMembershipsUpdate" () returns trigger
 set
   search_path = '' as $$
 begin
@@ -686,7 +507,7 @@ end; $$ language plpgsql;
 create
 or replace trigger prevent_memberships_update_check before
 update on public."AccountsMemberships" for each row
-execute function kit."preventMembershipsUpdate" ();
+execute function public."preventMembershipsUpdate" ();
 
 -- Function "public.hasRoleOnAccount"
 -- Function to check if a user has a role on an account
@@ -934,14 +755,14 @@ from
 
 -- Open up access to RolePermissions table for authenticated users and service_role
 grant
-select,
+  select,
   insert,
-update,
-delete on table public."RolePermissions" to "service_role";
+  update,
+  delete on table public."RolePermissions" to "service_role";
 
 -- Authenticated users can read role permissions
 grant
-select
+  select
   on table public."RolePermissions" to "authenticated";
 
 -- Function "public.hasPermission"
@@ -1182,19 +1003,19 @@ from
 
 -- Open up access to Invitations table for authenticated users and service_role
 grant
-select,
+  select,
   insert,
-update,
-delete on table public."Invitations" to "authenticated",
+  update,
+  delete on table public."Invitations" to "authenticated",
 "service_role";
 
 -- Enable RLS on the Invitations table
 alter table public."Invitations" enable row level security;
 
--- Function "kit.checkTeamAccount"
+-- Function "public.checkTeamAccount"
 -- Function to check if the account is a team account or not when inserting or updating an invitation
 create
-or replace function kit."checkTeamAccount" () returns trigger
+or replace function public."checkTeamAccount" () returns trigger
 set
   search_path = '' as $$
 begin
@@ -1218,7 +1039,7 @@ $$ language plpgsql;
 create trigger only_team_accounts_check before insert
 or
 update on public."Invitations" for each row
-execute procedure kit."checkTeamAccount" ();
+execute procedure public."checkTeamAccount" ();
 
 -- RLS on the Invitations table
 -- SELECT(Invitations):
@@ -1233,8 +1054,7 @@ select
 create policy invitations_create_self on public."Invitations" for insert to "authenticated"
 with
   check (
-    public."isSet" ('enableTeamAccounts')
-    and public."hasPermission" (
+    public."hasPermission" (
       (
         select
           auth.uid ()
@@ -1391,10 +1211,10 @@ from
 
 -- Open up relevant access to BillingCustomers table for authenticated users and service_role
 grant
-select,
+  select,
   insert,
-update,
-delete on table public."BillingCustomers" to "service_role";
+  update,
+  delete on table public."BillingCustomers" to "service_role";
 
 -- Open up access to BillingCustomers table for authenticated users
 grant
@@ -1497,14 +1317,12 @@ select
   to "authenticated" using (
     (
       public."hasRoleOnAccount" ("accountId")
-      and public."isSet" ('enableTeamAccountBilling')
     )
     or (
       "accountId" = (
         select
           auth.uid ()
       )
-      and public."isSet" ('enableAccountBilling')
     )
   );
 
@@ -1822,11 +1640,9 @@ select
         select
           auth.uid ()
       )
-      and public."isSet" ('enableAccountBilling')
     )
     or (
       public."hasRoleOnAccount" ("accountId")
-      and public."isSet" ('enableTeamAccountBilling')
     )
   );
 
@@ -2121,10 +1937,10 @@ for update
     or public."hasRoleOnAccount" ("accountId")
   );
 
--- Function "kit.updateNotificationDismissedStatus"
+-- Function "public.updateNotificationDismissedStatus"
 -- Make sure the only updatable field is the dismissed status and nothing else
 create
-or replace function kit."updateNotificationDismissedStatus" () returns trigger
+or replace function public."updateNotificationDismissedStatus" () returns trigger
 set
   search_path to '' as $$
 begin
@@ -2141,7 +1957,7 @@ $$ language plpgsql;
 -- add trigger when updating a notification to update the dismissed status
 create trigger update_notification_dismissed_status before
 update on public."Notifications" for each row
-execute procedure kit."updateNotificationDismissedStatus" ();
+execute procedure public."updateNotificationDismissedStatus" ();
 
 /**
  * -------------------------------------------------------
@@ -2153,11 +1969,11 @@ execute procedure kit."updateNotificationDismissedStatus" ();
 -- Create a function to slugify a string
 -- useful for turning an account name into a unique slug
 create
-or replace function kit."slugify" ("value" text) returns text as $$
+or replace function public."slugify" ("value" text) returns text as $$
     -- removes accents (diacritic signs) from a given string --
     with "unaccented" as(
         select
-            kit.unaccent("value") as "value"
+            public.unaccent("value") as "value"
 ),
 -- lowercases the string
 "lowercase" as(
@@ -2198,13 +2014,13 @@ set
   search_path to '';
 
 grant
-execute on function kit."slugify" (text) to "service_role",
+execute on function public."slugify" (text) to "service_role",
 "authenticated";
 
--- Function "kit.setSlugFromAccountName"
+-- Function "public.setSlugFromAccountName"
 -- Set the slug from the account name and increment if the slug exists
 create
-or replace function kit."setSlugFromAccountName" () returns trigger language plpgsql security definer
+or replace function public."setSlugFromAccountName" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 declare
@@ -2220,10 +2036,10 @@ begin
 
     while tmp_row_count > 0 loop
         if increment > 0 then
-            tmp_slug = kit."slugify"(new.name || ' ' || increment::varchar);
+            tmp_slug = public."slugify"(new.name || ' ' || increment::varchar);
 
         else
-            tmp_slug = kit."slugify"(new.name);
+            tmp_slug = public."slugify"(new.name);
 
         end if;
 
@@ -2255,7 +2071,7 @@ create trigger "setSlugFromAccountName" before insert on public."Accounts" for e
   and NEW.slug is null
   and NEW."isPersonalAccount" = false
 )
-execute procedure kit."setSlugFromAccountName" ();
+execute procedure public."setSlugFromAccountName" ();
 
 -- Create a trigger when a name is updated to update the slug
 create trigger "updateSlugFromAccountName" before
@@ -2264,12 +2080,12 @@ update on public."Accounts" for each row when (
   and NEW.name <> OLD.name
   and NEW."isPersonalAccount" = false
 )
-execute procedure kit."setSlugFromAccountName" ();
+execute procedure public."setSlugFromAccountName" ();
 
--- Function "kit.setupNewUser"
+-- Function "public.setupNewUser"
 -- Setup a new user account after user creation
 create
-or replace function kit."setupNewUser" () returns trigger language plpgsql security definer
+or replace function public."setupNewUser" () returns trigger language plpgsql security definer
 set
   search_path = '' as $$
 declare
@@ -2312,7 +2128,7 @@ $$;
 -- trigger the function every time a user is created
 create trigger on_auth_user_created
 after insert on auth.users for each row
-execute procedure kit."setupNewUser" ();
+execute procedure public."setupNewUser" ();
 
 /**
  * -------------------------------------------------------
@@ -2329,10 +2145,6 @@ set
 declare
     new_account public."Accounts";
 begin
-    if (not public."isSet"('enableTeamAccounts')) then
-        raise exception 'Team accounts are not enabled';
-    end if;
-
     insert into public."Accounts"(
         name,
         "isPersonalAccount")
@@ -2357,8 +2169,7 @@ execute on function public."createTeamAccount" (text) to "authenticated",
 create policy create_org_account on public."Accounts" for insert to "authenticated"
 with
   check (
-    public."isSet" ('enableTeamAccounts')
-    and public."Accounts"."isPersonalAccount" = false
+    public."Accounts"."isPersonalAccount" = false
   );
 
 -- Function "public.createInvitation"
@@ -2692,7 +2503,7 @@ values
 -- Function: get the storage filename as a UUID.
 -- Useful if you want to name files with UUIDs related to an account
 create
-or replace function kit."getStorageFilenameAsUuid" (name text) returns uuid
+or replace function public."getStorageFilenameAsUuid" (name text) returns uuid
 set
   search_path = '' as $$
 begin
@@ -2704,28 +2515,28 @@ end;
 $$ language plpgsql;
 
 grant
-execute on function kit."getStorageFilenameAsUuid" (text) to "authenticated",
+execute on function public."getStorageFilenameAsUuid" (text) to "authenticated",
 "service_role";
 
 -- RLS policies for storage
 create policy account_image on storage.objects for all using (
   "bucket_id" = 'AccountImage'
-  and kit."getStorageFilenameAsUuid" (name) = (
+  and public."getStorageFilenameAsUuid" (name) = (
     select
       auth.uid ()
   )
-  or public."hasRoleOnAccount" (kit."getStorageFilenameAsUuid" (name))
+  or public."hasRoleOnAccount" (public."getStorageFilenameAsUuid" (name))
 )
 with
   check (
     "bucket_id" = 'AccountImage'
-    and (kit."getStorageFilenameAsUuid" (name) = (
+    and (public."getStorageFilenameAsUuid" (name) = (
       select
         auth.uid ()
     )
     or public."hasPermission" (
       auth.uid (),
-      kit."getStorageFilenameAsUuid" (name),
+      public."getStorageFilenameAsUuid" (name),
       'settings.manage'
     ))
   );
