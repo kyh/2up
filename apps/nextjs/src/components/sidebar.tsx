@@ -35,23 +35,21 @@ type PageLink = {
   exact?: boolean;
 };
 
-export const Sidebar = async ({
-  user,
+export const Sidebar = ({
+  email,
+  account,
   accounts,
   homeLink,
   pageLinks,
   currentAccountSlug,
 }: {
-  user: RouterOutputs["account"]["userWorkspace"]["user"];
+  email: RouterOutputs["account"]["userWorkspace"]["user"]["email"];
+  account: RouterOutputs["account"]["userWorkspace"]["account"];
   accounts: RouterOutputs["account"]["userWorkspace"]["accounts"];
   homeLink: string;
   pageLinks: PageLink[];
   currentAccountSlug?: string;
 }) => {
-  const userEmail = user.email ?? "";
-  const userImage = user.user_metadata.image ?? "";
-  const userName = user.user_metadata.name ?? userEmail ?? "No name";
-
   const signOut = async () => {
     "use server";
     await api.auth.signOut();
@@ -84,8 +82,11 @@ export const Sidebar = async ({
       <DropdownMenu>
         <DropdownMenuTrigger className="mt-auto">
           <Avatar className="size-9">
-            <AvatarImage src={userImage} alt={userName} />
-            <AvatarFallback>{getInitials(userName)}</AvatarFallback>
+            <AvatarImage
+              src={account.pictureUrl ?? ""}
+              alt={account.name ?? ""}
+            />
+            <AvatarFallback>{getInitials(account.name ?? "")}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -97,9 +98,9 @@ export const Sidebar = async ({
         >
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">{userName}</p>
+              <p className="text-sm font-medium leading-none">{account.name}</p>
               <p className="text-xs leading-none text-muted-foreground">
-                {userEmail}
+                {email}
               </p>
             </div>
           </DropdownMenuLabel>

@@ -26,14 +26,15 @@ const pageLinks = [
 ];
 
 const Layout = async ({ children }: React.PropsWithChildren) => {
-  const { user, accounts } = await api.account.userWorkspace();
+  const { user, account, accounts } = await api.account.userWorkspace();
 
   return (
     <div className="flex min-h-dvh">
       <Sidebar
         homeLink="/dashboard"
         pageLinks={pageLinks}
-        user={user}
+        email={user.email}
+        account={account}
         accounts={accounts}
       />
       {children}

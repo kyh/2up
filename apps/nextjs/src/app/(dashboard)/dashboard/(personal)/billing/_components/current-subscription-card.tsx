@@ -6,7 +6,6 @@ import { CircleCheckIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
 import type { BillingConfig } from "@init/api/billing/billing-schema";
-import type { Database } from "@init/db/database.types";
 import { CurrentPlanAlert } from "./current-plan-alert";
 import { CurrentPlanBadge } from "./current-plan-badge";
 import { LineItemDetails } from "./line-item-details";

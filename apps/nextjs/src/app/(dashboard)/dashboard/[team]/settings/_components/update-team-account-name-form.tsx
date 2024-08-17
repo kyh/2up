@@ -15,40 +15,45 @@ import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
 
 import type { RouterOutputs } from "@init/api";
+import type { UpdateTeamAccountNameInput } from "@init/api/account/team-account-schema";
 import { api } from "@/trpc/react";
 
-export const UpdateTeamAccountNameForm = (props: {
+export const UpdateTeamAccountNameForm = ({
+  account,
+}: {
   account: NonNullable<RouterOutputs["account"]["teamWorkspace"]["account"]>;
 }) => {
   const router = useRouter();
-  const updateTeamAccountName = api.account.updateTeamAccountName.useMutation();
-  const form = useForm({
-    schema: updateTeamAccountNameInput.omit({ slug: true }),
-    defaultValues: {
-      name: props.account.name,
+  const updateTeamAccountName = api.account.updateTeamAccountName.useMutation({
+    onSuccess: (data) => {
+      router.replace(`/dashboard/${data.slug}/settings`);
     },
   });
+  const form = useForm({
+    schema: updateTeamAccountNameInput,
+    defaultValues: {
+      name: account.name,
+    },
+  });
+
+  const onSubmit = (data: UpdateTeamAccountNameInput) => {
+    const promise = updateTeamAccountName.mutateAsync({
+      slug: account.slug,
+      name: data.name,
+    });
+    toast.promise(promise, {
+      loading: "Updating Team name...",
+      success: "Team name successfully updated",
+      error: "Could not update Team name. Please try again.",
+    });
+  };
 
   return (
     <div className="space-y-8">
       <Form {...form}>
         <form
           className="flex flex-col space-y-4"
-          onSubmit={form.handleSubmit((data) => {
-            const promise = updateTeamAccountName
-              .mutateAsync({
-                slug: props.account.slug,
-                name: data.name,
-              })
-              .then((data) => {
-                router.replace(`/dashboard/${data.slug}/settings`);
-              });
-            toast.promise(promise, {
-              loading: "Updating Team name...",
-              success: "Team name successfully updated",
-              error: "Could not update Team name. Please try again.",
-            });
-          })}
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <FormField
             name="name"
@@ -63,7 +68,6 @@ export const UpdateTeamAccountNameForm = (props: {
               );
             }}
           />
-
           <div>
             <Button
               className="w-full md:w-auto"
