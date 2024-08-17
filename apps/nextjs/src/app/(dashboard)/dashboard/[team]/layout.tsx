@@ -49,24 +49,25 @@ const Layout = async ({
   children,
   params,
 }: React.PropsWithChildren<{ params: Params }>) => {
-  const { user, accounts } = await api.account.userWorkspace();
-  const { account } = await api.account.teamWorkspace({
+  const { user, account, accounts } = await api.account.userWorkspace();
+  const { account: teamAccount } = await api.account.teamWorkspace({
     slug: params.team,
   });
 
-  if (!account) {
+  if (!teamAccount) {
     redirect("/dashboard");
   }
 
-  const pageLinks = getTeamAccountPageLinks(account.slug);
+  const pageLinks = getTeamAccountPageLinks(teamAccount.slug);
 
   return (
     <div className="flex min-h-dvh">
       <Sidebar
-        homeLink={`/dashboard/${account.slug}`}
+        homeLink={`/dashboard/${teamAccount.slug}`}
         pageLinks={pageLinks}
-        currentAccountSlug={account.slug}
-        user={user}
+        currentAccountSlug={teamAccount.slug}
+        email={user.email}
+        account={account}
         accounts={accounts}
       />
       {children}

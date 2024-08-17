@@ -6,7 +6,6 @@ import {
   TaskPriorites,
   TaskStatuses,
 } from "@init/api/task/task-schema";
-import { formatDate } from "@init/api/task/task-util";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
 import { Checkbox } from "@init/ui/checkbox";
@@ -30,7 +29,7 @@ import type { RouterOutputs } from "@init/api";
 import type { ColumnDef } from "@tanstack/react-table";
 import { api } from "@/trpc/react";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";
-import { getPriorityIcon, getStatusIcon } from "./task-utils";
+import { formatDate, getPriorityIcon, getStatusIcon } from "./task-utils";
 import { UpdateTaskSheet } from "./update-task-sheet";
 
 type Task = RouterOutputs["task"]["getTaskList"]["data"][0];

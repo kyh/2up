@@ -1,5 +1,6 @@
 "use client";
 
+import { updateAccountNameInput } from "@init/api/account/personal-account-schema";
 import { Button } from "@init/ui/button";
 import {
   Form,
@@ -13,36 +14,31 @@ import {
 } from "@init/ui/form";
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
-import * as z from "zod";
 
-const profileFormSchema = z.object({
-  name: z
-    .string()
-    .min(2, {
-      message: "Name must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Name must not be longer than 30 characters.",
-    }),
-  email: z.string().email(),
-});
+import type { RouterOutputs } from "@init/api";
+import type { UpdateAccountNameInput } from "@init/api/account/personal-account-schema";
+import { api } from "@/trpc/react";
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>;
-
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  // name: "Your name",
-  // dob: new Date("2023-01-23"),
-};
-
-export const ProfileForm = () => {
+export const ProfileForm = ({
+  account,
+}: {
+  account: RouterOutputs["account"]["userWorkspace"]["account"];
+}) => {
+  const updateAccountName = api.account.updateAccountName.useMutation();
   const form = useForm({
-    schema: profileFormSchema,
-    defaultValues,
+    schema: updateAccountNameInput,
+    defaultValues: {
+      name: account.name ?? "",
+    },
   });
 
-  const onSubmit = (data: ProfileFormValues) => {
-    toast("Submitted");
+  const onSubmit = (data: UpdateAccountNameInput) => {
+    const promise = updateAccountName.mutateAsync(data);
+    toast.promise(promise, {
+      loading: "Updating profile...",
+      success: "Profile successfully updated",
+      error: "Could not update profile. Please try again.",
+    });
   };
 
   return (
@@ -50,7 +46,7 @@ export const ProfileForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="col-span-full flex items-center gap-x-8">
           <img
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+            src={account.pictureUrl ?? ""}
             alt=""
             className="h-24 w-24 flex-none rounded-lg bg-background object-cover"
           />
@@ -78,23 +74,12 @@ export const ProfileForm = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="Email" {...field} />
-              </FormControl>
-              <FormDescription>
-                You can always log in by receiving a magic link to the email
-                associated with your account.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FormItem>
+          <FormLabel>Email</FormLabel>
+          <FormControl>
+            <Input placeholder="Email" disabled />
+          </FormControl>
+        </FormItem>
         <footer className="flex justify-end">
           <Button type="submit">Update Profile</Button>
         </footer>

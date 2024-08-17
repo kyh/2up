@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-
 import type { GetTaskListInput } from "@init/api/task/task-schema";
 import { PageHeader } from "@/components/header";
 import { api } from "@/trpc/server";

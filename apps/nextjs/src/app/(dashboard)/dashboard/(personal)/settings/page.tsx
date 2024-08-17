@@ -2,10 +2,9 @@ import { PageHeader } from "@/components/header";
 import { api } from "@/trpc/server";
 import { AppearanceForm } from "./_components/appearance-form";
 import { ProfileForm } from "./_components/profile-form";
-import { SettingsForm } from "./_components/settings-form";
 
 const Page = async () => {
-  const { user } = await api.account.userWorkspace();
+  const { account } = await api.account.userWorkspace();
 
   return (
     <main className="flex flex-1 flex-col px-5">
@@ -21,20 +20,7 @@ const Page = async () => {
             </p>
           </div>
           <div className="md:col-span-2">
-            <ProfileForm />
-          </div>
-        </div>
-        <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 py-8 md:grid-cols-3">
-          <div>
-            <h2 className="text-base font-light leading-7 text-primary">
-              Notifications
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-muted-foreground">
-              Use a permanent address where you can receive mail.
-            </p>
-          </div>
-          <div className="md:col-span-2">
-            <SettingsForm />
+            <ProfileForm account={account} />
           </div>
         </div>
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 py-8 md:grid-cols-3">
