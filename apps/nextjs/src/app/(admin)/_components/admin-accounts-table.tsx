@@ -31,14 +31,16 @@ export const AdminAccountsTable = (
     searchParams: GetAccountsInput;
   }>,
 ) => {
-  const [data] = api.admin.getAccounts.useSuspenseQuery(props.searchParams);
+  const [{ data, pageCount }] = api.admin.getAccounts.useSuspenseQuery(
+    props.searchParams,
+  );
 
   const columns = useMemo(() => getColumns(), []);
 
   const { table } = useDataTable({
-    data: data.data,
+    data: data,
     columns,
-    pageCount: data.pageCount,
+    pageCount: pageCount,
     // optional props
     defaultSort: "createdAt.desc",
   });

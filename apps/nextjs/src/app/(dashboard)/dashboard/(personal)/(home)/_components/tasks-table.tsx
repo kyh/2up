@@ -16,7 +16,7 @@ type TasksTableProps = {
 };
 
 export const TasksTable = ({ accountId, searchParams }: TasksTableProps) => {
-  const [data] = api.task.getTaskList.useSuspenseQuery({
+  const [{ data, pageCount }] = api.task.getTaskList.useSuspenseQuery({
     ...searchParams,
     accountId: accountId,
   });
@@ -24,9 +24,9 @@ export const TasksTable = ({ accountId, searchParams }: TasksTableProps) => {
   const columns = useMemo(() => getColumns(), []);
 
   const { table } = useDataTable({
-    data: data.data,
+    data: data,
     columns,
-    pageCount: data.pageCount,
+    pageCount: pageCount,
     // optional props
     defaultPerPage: 10,
     defaultSort: "createdAt.desc",
