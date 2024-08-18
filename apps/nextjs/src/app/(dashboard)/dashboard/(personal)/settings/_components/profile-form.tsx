@@ -20,8 +20,10 @@ import type { UpdateAccountNameInput } from "@init/api/account/personal-account-
 import { api } from "@/trpc/react";
 
 export const ProfileForm = ({
+  user,
   account,
 }: {
+  user: RouterOutputs["account"]["userWorkspace"]["user"];
   account: RouterOutputs["account"]["userWorkspace"]["account"];
 }) => {
   const updateAccountName = api.account.updateAccountName.useMutation();
@@ -76,12 +78,15 @@ export const ProfileForm = ({
         />
         <FormItem>
           <FormLabel>Email</FormLabel>
-          <FormControl>
-            <Input placeholder="Email" disabled />
-          </FormControl>
+          <Input placeholder="Email" value={user.email} disabled />
+          <FormDescription>
+            Please contact support if you need to change your email address.
+          </FormDescription>
         </FormItem>
         <footer className="flex justify-end">
-          <Button type="submit">Update Profile</Button>
+          <Button type="submit" loading={updateAccountName.isPending}>
+            Update Profile
+          </Button>
         </footer>
       </form>
     </Form>

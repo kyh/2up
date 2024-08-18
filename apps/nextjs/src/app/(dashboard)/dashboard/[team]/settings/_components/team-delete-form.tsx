@@ -28,7 +28,7 @@ import { z } from "zod";
 import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 
-export const TeamAccountDangerZone = ({
+export const TeamDeleteForm = ({
   user,
   account,
 }: React.PropsWithChildren<{

@@ -9,6 +9,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
   useForm,
 } from "@init/ui/form";
 import { Input } from "@init/ui/input";
@@ -18,7 +19,7 @@ import type { RouterOutputs } from "@init/api";
 import type { UpdateTeamAccountNameInput } from "@init/api/account/team-account-schema";
 import { api } from "@/trpc/react";
 
-export const UpdateTeamAccountNameForm = ({
+export const TeamProfileForm = ({
   account,
 }: {
   account: NonNullable<RouterOutputs["account"]["teamWorkspace"]["account"]>;
@@ -32,7 +33,7 @@ export const UpdateTeamAccountNameForm = ({
   const form = useForm({
     schema: updateTeamAccountNameInput,
     defaultValues: {
-      name: account.name,
+      name: account.name ?? "",
     },
   });
 
@@ -49,35 +50,40 @@ export const UpdateTeamAccountNameForm = ({
   };
 
   return (
-    <div className="space-y-8">
-      <Form {...form}>
-        <form
-          className="flex flex-col space-y-4"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FormField
-            name="name"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Team Name</FormLabel>
-                  <FormControl>
-                    <Input required placeholder="" {...field} />
-                  </FormControl>
-                </FormItem>
-              );
-            }}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="col-span-full flex items-center gap-x-8">
+          <img
+            src={account.pictureUrl ?? ""}
+            alt=""
+            className="h-24 w-24 flex-none rounded-lg bg-background object-cover"
           />
           <div>
-            <Button
-              className="w-full md:w-auto"
-              disabled={updateTeamAccountName.isPending}
-            >
-              Update Team
-            </Button>
+            <Button variant="secondary">Change avatar</Button>
+            <p className="mt-2 text-xs leading-5 text-muted-foreground">
+              JPG, GIF or PNG. 1MB max.
+            </p>
           </div>
-        </form>
-      </Form>
-    </div>
+        </div>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Team Name</FormLabel>
+              <FormControl>
+                <Input required {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <footer className="flex justify-end">
+          <Button type="submit" loading={updateTeamAccountName.isPending}>
+            Update Team
+          </Button>
+        </footer>
+      </form>
+    </Form>
   );
 };

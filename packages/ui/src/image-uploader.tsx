@@ -70,7 +70,6 @@ export const ImageUploader = (
     <div className={"flex items-center space-x-4"}>
       <label className={"relative h-20 w-20 animate-in fade-in zoom-in-50"}>
         <Image fill className={"h-20 w-20 rounded-full"} src={image} alt={""} />
-
         <Input />
       </label>
 
@@ -95,10 +94,8 @@ const FallbackImage = (
       }
     >
       <ImageIcon className={"h-8 text-primary"} />
-
       {props.children}
     </label>
-
     {props.descriptionSection}
   </div>
 );
