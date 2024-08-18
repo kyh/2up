@@ -4,7 +4,7 @@ import { AppearanceForm } from "./_components/appearance-form";
 import { ProfileForm } from "./_components/profile-form";
 
 const Page = async () => {
-  const { account } = await api.account.userWorkspace();
+  const { user, account } = await api.account.userWorkspace();
 
   return (
     <main className="flex flex-1 flex-col px-5">
@@ -20,7 +20,7 @@ const Page = async () => {
             </p>
           </div>
           <div className="md:col-span-2">
-            <ProfileForm account={account} />
+            <ProfileForm user={user} account={account} />
           </div>
         </div>
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 py-8 md:grid-cols-3">
