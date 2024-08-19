@@ -38,15 +38,19 @@ export const AccountInvitationsTable = ({
 
   const columns = useMemo(() => getColumns(permissions), [permissions]);
 
-  const filteredInvitations = invitations.filter((member) => {
-    const searchString = search.toLowerCase();
-    const email = member.email.split("@")[0]?.toLowerCase() ?? "";
+  const filteredInvitations = useMemo(
+    () =>
+      invitations.filter((member) => {
+        const searchString = search.toLowerCase();
+        const email = member.email.split("@")[0]?.toLowerCase() ?? "";
 
-    return (
-      email.includes(searchString) ||
-      member.role.toLowerCase().includes(searchString)
-    );
-  });
+        return (
+          email.includes(searchString) ||
+          member.role.toLowerCase().includes(searchString)
+        );
+      }),
+    [search, invitations],
+  );
 
   const table = useReactTable({
     data: filteredInvitations,
