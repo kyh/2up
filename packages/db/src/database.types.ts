@@ -186,21 +186,21 @@ export type Database = {
           accountId: string
           customerId: string
           email: string | null
-          id: number
+          id: string
           provider: Database["public"]["Enums"]["BillingProvider"]
         }
         Insert: {
           accountId: string
           customerId: string
           email?: string | null
-          id?: number
+          id?: string
           provider: Database["public"]["Enums"]["BillingProvider"]
         }
         Update: {
           accountId?: string
           customerId?: string
           email?: string | null
-          id?: number
+          id?: string
           provider?: Database["public"]["Enums"]["BillingProvider"]
         }
         Relationships: [
@@ -233,7 +233,7 @@ export type Database = {
           createdAt: string
           email: string
           expiresAt: string
-          id: number
+          id: string
           invitedBy: string
           inviteToken: string
           role: string
@@ -244,7 +244,7 @@ export type Database = {
           createdAt?: string
           email: string
           expiresAt?: string
-          id?: number
+          id?: string
           invitedBy: string
           inviteToken: string
           role: string
@@ -255,7 +255,7 @@ export type Database = {
           createdAt?: string
           email?: string
           expiresAt?: string
-          id?: number
+          id?: string
           invitedBy?: string
           inviteToken?: string
           role?: string
@@ -401,7 +401,7 @@ export type Database = {
       Orders: {
         Row: {
           accountId: string
-          billingCustomerId: number
+          billingCustomerId: string
           billingProvider: Database["public"]["Enums"]["BillingProvider"]
           createdAt: string
           currency: string
@@ -412,7 +412,7 @@ export type Database = {
         }
         Insert: {
           accountId: string
-          billingCustomerId: number
+          billingCustomerId: string
           billingProvider: Database["public"]["Enums"]["BillingProvider"]
           createdAt?: string
           currency: string
@@ -423,7 +423,7 @@ export type Database = {
         }
         Update: {
           accountId?: string
-          billingCustomerId?: number
+          billingCustomerId?: string
           billingProvider?: Database["public"]["Enums"]["BillingProvider"]
           createdAt?: string
           currency?: string
@@ -465,17 +465,17 @@ export type Database = {
       }
       RolePermissions: {
         Row: {
-          id: number
+          id: string
           permission: Database["public"]["Enums"]["AppPermissions"]
           role: string
         }
         Insert: {
-          id?: number
+          id?: string
           permission: Database["public"]["Enums"]["AppPermissions"]
           role: string
         }
         Update: {
-          id?: number
+          id?: string
           permission?: Database["public"]["Enums"]["AppPermissions"]
           role?: string
         }
@@ -558,7 +558,7 @@ export type Database = {
         Row: {
           accountId: string
           active: boolean
-          billingCustomerId: number
+          billingCustomerId: string
           billingProvider: Database["public"]["Enums"]["BillingProvider"]
           cancelAtPeriodEnd: boolean
           createdAt: string
@@ -574,7 +574,7 @@ export type Database = {
         Insert: {
           accountId: string
           active: boolean
-          billingCustomerId: number
+          billingCustomerId: string
           billingProvider: Database["public"]["Enums"]["BillingProvider"]
           cancelAtPeriodEnd: boolean
           createdAt?: string
@@ -590,7 +590,7 @@ export type Database = {
         Update: {
           accountId?: string
           active?: boolean
-          billingCustomerId?: number
+          billingCustomerId?: string
           billingProvider?: Database["public"]["Enums"]["BillingProvider"]
           cancelAtPeriodEnd?: boolean
           createdAt?: string
@@ -817,7 +817,7 @@ export type Database = {
           createdAt: string
           email: string
           expiresAt: string
-          id: number
+          id: string
           invitedBy: string
           inviteToken: string
           role: string
@@ -998,7 +998,7 @@ export type Database = {
         }
         Returns: {
           accountId: string
-          billingCustomerId: number
+          billingCustomerId: string
           billingProvider: Database["public"]["Enums"]["BillingProvider"]
           createdAt: string
           currency: string
@@ -1027,7 +1027,7 @@ export type Database = {
         Returns: {
           accountId: string
           active: boolean
-          billingCustomerId: number
+          billingCustomerId: string
           billingProvider: Database["public"]["Enums"]["BillingProvider"]
           cancelAtPeriodEnd: boolean
           createdAt: string
