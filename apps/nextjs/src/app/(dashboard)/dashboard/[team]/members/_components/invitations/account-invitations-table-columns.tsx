@@ -116,54 +116,42 @@ const ActionsDropdown = ({
             <EllipsisIcon className="size-4" aria-hidden="true" />
           </Button>
         </DropdownMenuTrigger>
-
         <DropdownMenuContent>
           <If condition={permissions.canUpdateInvitation}>
-            <DropdownMenuItem onClick={() => setIsUpdatingRole(true)}>
+            <DropdownMenuItem onSelect={() => setIsUpdatingRole(true)}>
               Update Invitation
             </DropdownMenuItem>
-
             <If condition={getIsInviteExpired(invitation.expiresAt)}>
-              <DropdownMenuItem onClick={() => setIsRenewingInvite(true)}>
+              <DropdownMenuItem onSelect={() => setIsRenewingInvite(true)}>
                 Renew Invitation
               </DropdownMenuItem>
             </If>
           </If>
-
           <If condition={permissions.canRemoveInvitation}>
-            <DropdownMenuItem onClick={() => setIsDeletingInvite(true)}>
+            <DropdownMenuItem onSelect={() => setIsDeletingInvite(true)}>
               Remove Invitation
             </DropdownMenuItem>
           </If>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <If condition={isDeletingInvite}>
-        <DeleteInvitationDialog
-          isOpen
-          setIsOpen={setIsDeletingInvite}
-          invitationId={invitation.id}
-        />
-      </If>
-
-      <If condition={isUpdatingRole}>
-        <UpdateInvitationDialog
-          isOpen
-          setIsOpen={setIsUpdatingRole}
-          invitationId={invitation.id}
-          userRole={invitation.role}
-          userRoleHierarchy={permissions.currentUserRoleHierarchy}
-        />
-      </If>
-
-      <If condition={isRenewingInvite}>
-        <RenewInvitationDialog
-          isOpen
-          setIsOpen={setIsRenewingInvite}
-          invitationId={invitation.id}
-          email={invitation.email}
-        />
-      </If>
+      <DeleteInvitationDialog
+        open={isDeletingInvite}
+        onOpenChange={setIsDeletingInvite}
+        invitationId={invitation.id}
+      />
+      <UpdateInvitationDialog
+        open={isUpdatingRole}
+        onOpenChange={setIsUpdatingRole}
+        invitationId={invitation.id}
+        userRole={invitation.role}
+        userRoleHierarchy={permissions.currentUserRoleHierarchy}
+      />
+      <RenewInvitationDialog
+        open={isRenewingInvite}
+        onOpenChange={setIsRenewingInvite}
+        invitationId={invitation.id}
+        email={invitation.email}
+      />
     </>
   );
 };

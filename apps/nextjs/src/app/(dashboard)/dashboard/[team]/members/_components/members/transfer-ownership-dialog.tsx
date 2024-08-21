@@ -21,40 +21,36 @@ import {
   FormMessage,
   useForm,
 } from "@init/ui/form";
-import { If } from "@init/ui/if";
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
-export const TransferOwnershipDialog = ({
-  isOpen,
-  setIsOpen,
-  targetDisplayName,
-  accountId,
-  userId,
-}: {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+type TransferOwnershipDialogProps = {
   accountId: string;
   userId: string;
   targetDisplayName: string;
-}) => (
-  <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+} & React.ComponentPropsWithoutRef<typeof AlertDialog>;
+
+export const TransferOwnershipDialog = ({
+  targetDisplayName,
+  accountId,
+  userId,
+  ...props
+}: TransferOwnershipDialogProps) => (
+  <AlertDialog {...props}>
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Transfer Ownership</AlertDialogTitle>
-
         <AlertDialogDescription>
           Transfer ownership of the team to another member.
         </AlertDialogDescription>
       </AlertDialogHeader>
-
       <TransferOrganizationOwnershipForm
         accountId={accountId}
         userId={userId}
         targetDisplayName={targetDisplayName}
-        setIsOpen={setIsOpen}
+        onSuccess={() => props.onOpenChange?.(false)}
       />
     </AlertDialogContent>
   </AlertDialog>
@@ -64,16 +60,16 @@ const TransferOrganizationOwnershipForm = ({
   accountId,
   userId,
   targetDisplayName,
-  setIsOpen,
+  onSuccess,
 }: {
   userId: string;
   accountId: string;
   targetDisplayName: string;
-  setIsOpen: (isOpen: boolean) => void;
+  onSuccess?: () => void;
 }) => {
   const transferOwnership = api.account.transferOwnership.useMutation({
     onSuccess: () => {
-      setIsOpen(false);
+      onSuccess?.();
       toast.success("Ownership transfered successfully");
     },
     onError: () =>
@@ -101,7 +97,6 @@ const TransferOrganizationOwnershipForm = ({
           You are transferring ownership of the selected team to{" "}
           <b>{targetDisplayName}</b>.
         </p>
-
         <FormField
           name="confirmation"
           render={({ field }) => {
@@ -110,42 +105,31 @@ const TransferOrganizationOwnershipForm = ({
                 <FormLabel>
                   Please type TRANSFER to confirm the transfer of ownership.
                 </FormLabel>
-
                 <FormControl>
                   <Input autoComplete="off" type="text" required {...field} />
                 </FormControl>
-
                 <FormDescription>
                   By transferring ownership, you will no longer be the primary
                   owner of the team.
                 </FormDescription>
-
                 <FormMessage />
               </FormItem>
             );
           }}
         />
-
         <div>
           <p className="text-muted-foreground">
             Are you sure you want to continue?
           </p>
         </div>
-
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-
           <Button
             type="submit"
             variant="destructive"
-            disabled={transferOwnership.isPending}
+            loading={transferOwnership.isPending}
           >
-            <If
-              condition={transferOwnership.isPending}
-              fallback="Transfer Ownership"
-            >
-              Transferring ownership...
-            </If>
+            Transfer Ownership
           </Button>
         </AlertDialogFooter>
       </form>

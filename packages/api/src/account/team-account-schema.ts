@@ -95,17 +95,17 @@ export const sendInvitationsInput = z.object({
 export type SendInvitationsInput = z.infer<typeof sendInvitationsInput>;
 
 export const updateInvitationInput = z.object({
-  invitationId: z.number(),
+  invitationId: z.string().uuid(),
   role: z.string().min(1),
 });
 export type UpdateInvitationInput = z.infer<typeof updateInvitationInput>;
 
 export const renewInvitationInput = z.object({
-  invitationId: z.number().int(),
+  invitationId: z.string().uuid(),
 });
 export type RenewInvitationInput = z.infer<typeof renewInvitationInput>;
 
 export const deleteInvitationInput = z.object({
-  invitationId: z.number().int(),
+  invitationId: z.string().uuid(),
 });
 export type DeleteInvitationInput = z.infer<typeof deleteInvitationInput>;

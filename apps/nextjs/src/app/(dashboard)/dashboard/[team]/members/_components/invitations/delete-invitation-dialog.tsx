@@ -14,41 +14,41 @@ import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
+type DeleteInvitationDialogProps = {
+  invitationId: string;
+} & React.ComponentPropsWithoutRef<typeof AlertDialog>;
+
 export const DeleteInvitationDialog = ({
-  isOpen,
-  setIsOpen,
   invitationId,
-}: {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  invitationId: number;
-}) => (
-  <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+  ...props
+}: DeleteInvitationDialogProps) => (
+  <AlertDialog {...props}>
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Delete Invitation</AlertDialogTitle>
-
         <AlertDialogDescription>
           You are about to delete the invitation. The user will no longer be
           able to join the team.
         </AlertDialogDescription>
       </AlertDialogHeader>
-
-      <DeleteInvitationForm setIsOpen={setIsOpen} invitationId={invitationId} />
+      <DeleteInvitationForm
+        onSuccess={() => props.onOpenChange?.(false)}
+        invitationId={invitationId}
+      />
     </AlertDialogContent>
   </AlertDialog>
 );
 
 const DeleteInvitationForm = ({
   invitationId,
-  setIsOpen,
+  onSuccess,
 }: {
-  invitationId: number;
-  setIsOpen: (isOpen: boolean) => void;
+  invitationId: string;
+  onSuccess?: () => void;
 }) => {
   const deleteInvitation = api.account.deleteInvitation.useMutation({
     onSuccess: () => {
-      setIsOpen(false);
+      onSuccess?.();
       toast.success("Invite deleted successfully");
     },
     onError: () => toast.error("Invite not deleted. Please try again."),

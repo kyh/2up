@@ -15,17 +15,11 @@ import {
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
 
-import type { RouterOutputs } from "@init/api";
 import type { UpdateAccountNameInput } from "@init/api/account/personal-account-schema";
 import { api } from "@/trpc/react";
 
-export const ProfileForm = ({
-  user,
-  account,
-}: {
-  user: RouterOutputs["account"]["userWorkspace"]["user"];
-  account: RouterOutputs["account"]["userWorkspace"]["account"];
-}) => {
+export const ProfileForm = () => {
+  const [{ user, account }] = api.account.userWorkspace.useSuspenseQuery();
   const updateAccountName = api.account.updateAccountName.useMutation();
   const form = useForm({
     schema: updateAccountNameInput,

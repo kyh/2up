@@ -27,40 +27,37 @@ import { RolesDataProvider } from "./roles-data-provider";
 
 type Role = string;
 
+type UpdateMemberRoleDialogProps = {
+  teamAccountId: string;
+  userId: string;
+  userRole: Role;
+  userRoleHierarchy: number;
+} & React.ComponentPropsWithoutRef<typeof Dialog>;
+
 export const UpdateMemberRoleDialog = ({
-  isOpen,
-  setIsOpen,
   userId,
   teamAccountId,
   userRole,
   userRoleHierarchy,
-}: {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  userId: string;
-  teamAccountId: string;
-  userRole: Role;
-  userRoleHierarchy: number;
-}) => (
-  <Dialog open={isOpen} onOpenChange={setIsOpen}>
+  ...props
+}: UpdateMemberRoleDialogProps) => (
+  <Dialog {...props}>
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Update Member's Role</DialogTitle>
-
         <DialogDescription>
           Change the role of the selected member. The role determines the
           permissions of the member.
         </DialogDescription>
       </DialogHeader>
-
       <RolesDataProvider maxRoleHierarchy={userRoleHierarchy}>
         {(data) => (
           <UpdateMemberForm
-            setIsOpen={setIsOpen}
             userId={userId}
             teamAccountId={teamAccountId}
             userRole={userRole}
             roles={data}
+            onSuccess={() => props.onOpenChange?.(false)}
           />
         )}
       </RolesDataProvider>
@@ -72,18 +69,18 @@ const UpdateMemberForm = ({
   userId,
   userRole,
   teamAccountId,
-  setIsOpen,
+  onSuccess,
   roles,
-}: React.PropsWithChildren<{
+}: {
   userId: string;
   userRole: Role;
   teamAccountId: string;
-  setIsOpen: (isOpen: boolean) => void;
   roles: Role[];
-}>) => {
+  onSuccess?: () => void;
+}) => {
   const updateMemberRole = api.account.updateMemberRole.useMutation({
     onSuccess: () => {
-      setIsOpen(false);
+      onSuccess?.();
       toast.success("Role updated successfully");
     },
     onError: () =>
@@ -101,15 +98,10 @@ const UpdateMemberForm = ({
   };
 
   const form = useForm({
-    schema: role.refine(
-      (data) => {
-        return data.role !== userRole;
-      },
-      {
-        message: "Role must be different from the current one",
-        path: ["role"],
-      },
-    ),
+    schema: role.refine((data) => data.role !== userRole, {
+      message: "Role must be different from the current one",
+      path: ["role"],
+    }),
     reValidateMode: "onChange",
     mode: "onChange",
     defaultValues: {
@@ -129,7 +121,6 @@ const UpdateMemberForm = ({
             return (
               <FormItem>
                 <FormLabel>Role</FormLabel>
-
                 <FormControl>
                   <MembershipRoleSelector
                     roles={roles}
@@ -138,16 +129,13 @@ const UpdateMemberForm = ({
                     onChange={(newRole) => form.setValue("role", newRole)}
                   />
                 </FormControl>
-
                 <FormDescription>Pick a role for this member.</FormDescription>
-
                 <FormMessage />
               </FormItem>
             );
           }}
         />
-
-        <Button disabled={updateMemberRole.isPending}>Update Role</Button>
+        <Button loading={updateMemberRole.isPending}>Update Role</Button>
       </form>
     </Form>
   );

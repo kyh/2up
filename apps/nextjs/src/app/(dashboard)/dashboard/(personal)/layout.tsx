@@ -1,42 +1,28 @@
-import { CreditCardIcon, HomeIcon, SettingsIcon } from "lucide-react";
-
 import { Sidebar } from "@/components/sidebar";
-import { api } from "@/trpc/server";
 
 const pageLinks = [
   {
     id: "home",
     href: "/dashboard",
     label: "Home",
-    Icon: HomeIcon,
     exact: true,
   },
   {
     id: "billing",
     href: "/dashboard/billing",
     label: "Billing",
-    Icon: CreditCardIcon,
   },
   {
     id: "settings",
     href: "/dashboard/settings",
     label: "Settings",
-    Icon: SettingsIcon,
   },
 ];
 
-const Layout = async ({ children }: React.PropsWithChildren) => {
-  const { user, account, accounts } = await api.account.userWorkspace();
-
+const Layout = ({ children }: React.PropsWithChildren) => {
   return (
     <div className="flex min-h-dvh">
-      <Sidebar
-        homeLink="/dashboard"
-        pageLinks={pageLinks}
-        email={user.email}
-        account={account}
-        accounts={accounts}
-      />
+      <Sidebar homeLink="/dashboard" pageLinks={pageLinks} />
       {children}
     </div>
   );

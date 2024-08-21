@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@init/ui/button";
 import {
@@ -60,49 +63,75 @@ export const getColumns = (): ColumnDef<Account>[] => [
     id: "actions",
     header: "",
     cell: ({ row }) => {
+      const [showImpersonateUserDialog, setShowImpersonateUserDialog] =
+        useState(false);
+      const [showDeleteUserDialog, setShowDeleteUserDialog] = useState(false);
+      const [showDeleteTeamDialog, setShowDeleteTeamDialog] = useState(false);
+
       const isPersonalAccount = row.original.isPersonalAccount;
       const userId = row.original.id;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost">
-              <MoreHorizontalIcon className="h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem>
-                <Link
-                  className="h-full w-full"
-                  href={`/admin/accounts/${userId}`}
-                >
-                  View
-                </Link>
-              </DropdownMenuItem>
-              <If condition={isPersonalAccount}>
-                <AdminImpersonateUserDialog userId={userId}>
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost">
+                <MoreHorizontalIcon className="h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                  <Link
+                    className="h-full w-full"
+                    href={`/admin/accounts/${userId}`}
+                  >
+                    View
+                  </Link>
+                </DropdownMenuItem>
+                <If condition={isPersonalAccount}>
+                  <DropdownMenuItem
+                    onSelect={() => setShowImpersonateUserDialog(true)}
+                  >
                     Impersonate User
                   </DropdownMenuItem>
-                </AdminImpersonateUserDialog>
-                <AdminDeleteUserDialog userId={userId}>
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                  <DropdownMenuItem
+                    onSelect={() => setShowDeleteUserDialog(true)}
+                  >
                     Delete Personal Account
                   </DropdownMenuItem>
-                </AdminDeleteUserDialog>
-              </If>
-              <If condition={!isPersonalAccount}>
-                <AdminDeleteAccountDialog accountId={row.original.id}>
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                </If>
+                <If condition={!isPersonalAccount}>
+                  <DropdownMenuItem
+                    onSelect={() => setShowDeleteTeamDialog(true)}
+                  >
                     Delete Team Account
                   </DropdownMenuItem>
-                </AdminDeleteAccountDialog>
-              </If>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                </If>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <If condition={isPersonalAccount}>
+            <AdminImpersonateUserDialog
+              open={showImpersonateUserDialog}
+              onOpenChange={setShowImpersonateUserDialog}
+              userId={userId}
+            />
+            <AdminDeleteUserDialog
+              open={showDeleteUserDialog}
+              onOpenChange={setShowDeleteUserDialog}
+              userId={userId}
+            />
+          </If>
+          <If condition={!isPersonalAccount}>
+            <AdminDeleteAccountDialog
+              open={showDeleteTeamDialog}
+              onOpenChange={setShowDeleteTeamDialog}
+              accountId={row.original.id}
+            />
+          </If>
+        </>
       );
     },
   },

@@ -139,27 +139,16 @@ export const getColumns = (): ColumnDef<Task>[] => [
   {
     id: "actions",
     cell: ({ row }) => {
+      const [showUpdateTaskSheet, setShowUpdateTaskSheet] = useState(false);
+      const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false);
+
       const updateTask = api.task.updateTask.useMutation({
         onSuccess: () => toast.success("Label updated"),
         onError: (error) => toast.error(error.message),
       });
-      const [showUpdateTaskSheet, setShowUpdateTaskSheet] = useState(false);
-      const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false);
 
       return (
         <>
-          <UpdateTaskSheet
-            open={showUpdateTaskSheet}
-            onOpenChange={setShowUpdateTaskSheet}
-            task={row.original}
-          />
-          <DeleteTasksDialog
-            open={showDeleteTaskDialog}
-            onOpenChange={setShowDeleteTaskDialog}
-            tasks={[row.original]}
-            showTrigger={false}
-            onSuccess={() => row.toggleSelected(false)}
-          />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -205,6 +194,18 @@ export const getColumns = (): ColumnDef<Task>[] => [
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <UpdateTaskSheet
+            open={showUpdateTaskSheet}
+            onOpenChange={setShowUpdateTaskSheet}
+            task={row.original}
+          />
+          <DeleteTasksDialog
+            open={showDeleteTaskDialog}
+            onOpenChange={setShowDeleteTaskDialog}
+            tasks={[row.original]}
+            showTrigger={false}
+            onSuccess={() => row.toggleSelected(false)}
+          />
         </>
       );
     },

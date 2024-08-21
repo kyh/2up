@@ -2380,7 +2380,7 @@ execute on function public."getAccountMembers" (text) to "authenticated",
 -- List the account invitations by the account slug
 create
 or replace function public."getAccountInvitations" (account_slug text) returns table (
-  id integer,
+  id text,
   email varchar(255),
   "accountId" uuid,
   "invitedBy" uuid,

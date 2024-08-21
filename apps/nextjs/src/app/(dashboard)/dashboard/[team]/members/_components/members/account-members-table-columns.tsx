@@ -159,57 +159,45 @@ const ActionsDropdown = ({
             <MoreHorizontalIcon className="size-4" aria-hidden="true" />
           </Button>
         </DropdownMenuTrigger>
-
         <DropdownMenuContent>
           <If condition={canUpdateRole}>
-            <DropdownMenuItem onClick={() => setIsUpdatingRole(true)}>
+            <DropdownMenuItem onSelect={() => setIsUpdatingRole(true)}>
               Update Role
             </DropdownMenuItem>
           </If>
-
           <If condition={permissions.canTransferOwnership}>
-            <DropdownMenuItem onClick={() => setIsTransferring(true)}>
+            <DropdownMenuItem onSelect={() => setIsTransferring(true)}>
               Transfer Ownership
             </DropdownMenuItem>
           </If>
-
           <If condition={canRemoveFromAccount}>
-            <DropdownMenuItem onClick={() => setIsRemoving(true)}>
+            <DropdownMenuItem onSelect={() => setIsRemoving(true)}>
               Remove from Account
             </DropdownMenuItem>
           </If>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <If condition={isRemoving}>
-        <RemoveMemberDialog
-          isOpen
-          setIsOpen={setIsRemoving}
-          teamAccountId={currentTeamAccountId}
-          userId={member.userId}
-        />
-      </If>
-
-      <If condition={isUpdatingRole}>
-        <UpdateMemberRoleDialog
-          isOpen
-          setIsOpen={setIsUpdatingRole}
-          userId={member.userId}
-          userRole={member.role}
-          teamAccountId={currentTeamAccountId}
-          userRoleHierarchy={currentRoleHierarchy}
-        />
-      </If>
-
-      <If condition={isTransferring}>
-        <TransferOwnershipDialog
-          isOpen
-          setIsOpen={setIsTransferring}
-          targetDisplayName={member.name ?? member.email}
-          accountId={member.accountId}
-          userId={member.userId}
-        />
-      </If>
+      <RemoveMemberDialog
+        open={isRemoving}
+        onOpenChange={setIsRemoving}
+        teamAccountId={currentTeamAccountId}
+        userId={member.userId}
+      />
+      <UpdateMemberRoleDialog
+        open={isUpdatingRole}
+        onOpenChange={setIsUpdatingRole}
+        userId={member.userId}
+        userRole={member.role}
+        teamAccountId={currentTeamAccountId}
+        userRoleHierarchy={currentRoleHierarchy}
+      />
+      <TransferOwnershipDialog
+        open={isTransferring}
+        onOpenChange={setIsTransferring}
+        targetDisplayName={member.name ?? member.email}
+        accountId={member.accountId}
+        userId={member.userId}
+      />
     </>
   );
 };
