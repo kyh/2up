@@ -1,4 +1,4 @@
-import { Game } from "./game";
+import { Game } from "../_components/game";
 
 export const runtime = "edge";
 

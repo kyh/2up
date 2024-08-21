@@ -7,11 +7,11 @@
     "./*": "./src/*.tsx"
   },
   "scripts": {
-    "ui:add": "pnpm dlx shadcn-ui add && prettier src --write --list-different",
-    "clean": "git clean -xdf .cache .nitro .output .turbo .vercel node_modules",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "ui:add": "pnpm dlx shadcn-ui add && prettier src --write --list-different"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -33,11 +33,11 @@
     "class-variance-authority": "^0.7.0",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
-    "lucide-react": "^0.427.0",
+    "lucide-react": "^0.428.0",
     "next-themes": "^0.3.0",
     "react-hook-form": "^7.52.2",
     "sonner": "^1.5.0",
-    "tailwind-merge": "^2.5.0",
+    "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {

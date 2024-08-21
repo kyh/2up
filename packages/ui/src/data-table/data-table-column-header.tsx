@@ -61,7 +61,7 @@ export const DataTableColumnHeader = <TData, TValue>({
             <>
               <DropdownMenuItem
                 aria-label="Sort ascending"
-                onClick={() => column.toggleSorting(false)}
+                onSelect={() => column.toggleSorting(false)}
               >
                 <ArrowUpIcon
                   className="text-muted-foreground/70 mr-2 size-3.5"
@@ -71,7 +71,7 @@ export const DataTableColumnHeader = <TData, TValue>({
               </DropdownMenuItem>
               <DropdownMenuItem
                 aria-label="Sort descending"
-                onClick={() => column.toggleSorting(true)}
+                onSelect={() => column.toggleSorting(true)}
               >
                 <ArrowDownIcon
                   className="text-muted-foreground/70 mr-2 size-3.5"
@@ -87,7 +87,7 @@ export const DataTableColumnHeader = <TData, TValue>({
           {column.getCanHide() && (
             <DropdownMenuItem
               aria-label="Hide column"
-              onClick={() => column.toggleVisibility(false)}
+              onSelect={() => column.toggleVisibility(false)}
             >
               <EyeOffIcon
                 className="text-muted-foreground/70 mr-2 size-3.5"

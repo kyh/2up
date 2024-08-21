@@ -68,9 +68,8 @@ export const ImageUploader = (
 
   return (
     <div className={"flex items-center space-x-4"}>
-      <label className={"animate-in fade-in zoom-in-50 relative h-20 w-20"}>
+      <label className={"relative h-20 w-20 animate-in fade-in zoom-in-50"}>
         <Image fill className={"h-20 w-20 rounded-full"} src={image} alt={""} />
-
         <Input />
       </label>
 
@@ -91,14 +90,12 @@ const FallbackImage = (
   <div className={"flex items-center space-x-4"}>
     <label
       className={
-        "border-border animate-in fade-in zoom-in-50 hover:border-primary relative flex h-20 w-20 cursor-pointer flex-col items-center justify-center rounded-full border"
+        "relative flex h-20 w-20 cursor-pointer flex-col items-center justify-center rounded-full border border-border animate-in fade-in zoom-in-50 hover:border-primary"
       }
     >
-      <ImageIcon className={"text-primary h-8"} />
-
+      <ImageIcon className={"h-8 text-primary"} />
       {props.children}
     </label>
-
     {props.descriptionSection}
   </div>
 );

@@ -1,8 +1,11 @@
 import { addDays, formatISO } from "date-fns";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { updatePictureInput } from "./personal-account-schema";
-import { retrieveRoleInput } from "./role-schema";
+import {
+  updateAccountNameInput,
+  updatePictureInput,
+} from "./personal-account-schema";
+import { getRoleInput } from "./role-schema";
 import {
   createTeamAccountInput,
   deleteInvitationInput,
@@ -45,11 +48,12 @@ export const accountRouter = createTRPCRouter({
     }
 
     return {
-      workspace: userWorkspaceResponse.data,
-      accounts: userAccountsResponse.data,
+      account: userWorkspaceResponse.data,
       user: ctx.user,
+      accounts: userAccountsResponse.data,
     };
   }),
+
   updatePicture: protectedProcedure
     .input(updatePictureInput)
     .mutation(async ({ ctx, input }) => {
@@ -58,7 +62,24 @@ export const accountRouter = createTRPCRouter({
         .update({
           pictureUrl: input.pictureUrl,
         })
-        .eq("id", input.accountId);
+        .eq("id", ctx.user.id);
+
+      if (response.error) {
+        throw response.error;
+      }
+
+      return response.data;
+    }),
+
+  updateAccountName: protectedProcedure
+    .input(updateAccountNameInput)
+    .mutation(async ({ ctx, input }) => {
+      const response = await ctx.supabase
+        .from("Accounts")
+        .update({
+          name: input.name,
+        })
+        .eq("id", ctx.user.id);
 
       if (response.error) {
         throw response.error;
@@ -212,7 +233,7 @@ export const accountRouter = createTRPCRouter({
     }),
 
   retrieveRoles: protectedProcedure
-    .input(retrieveRoleInput)
+    .input(getRoleInput)
     .query(async ({ ctx, input }) => {
       const response = await ctx.supabase
         .from("Roles")

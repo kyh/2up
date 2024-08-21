@@ -7,24 +7,24 @@
     "./*": "./src/*.ts"
   },
   "scripts": {
-    "clean": "git clean -xdf .cache .nitro .output .turbo .vercel node_modules",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
     "supabase": "supabase",
     "start": "supabase status || supabase start",
     "stop": "supabase stop",
-    "reset": "supabase db reset && pnpm with-env tsx data/seed.ts",
+    "reset": "supabase db reset && pnpm typegen && pnpm with-env tsx data/seed.ts",
     "status": "supabase status",
     "test": "supabase db test",
     "push": "supabase link --project-ref $SUPABASE_PROJECT_REF && supabase db push",
     "typegen": "supabase gen types typescript --local > src/database.types.ts",
     "dump": "supabase db dump --local --data-only",
     "migrate": "supabase db migrate",
-    "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.4.0",
+    "@supabase/ssr": "^0.5.0",
     "@supabase/supabase-js": "^2.45.1",
     "next": "^14.2.5",
     "react": "^18.3.1",
@@ -38,7 +38,7 @@
     "@types/react": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "supabase": "^1.187.10",
+    "supabase": "^1.190.0",
     "typescript": "catalog:"
   },
   "prettier": "@kyh/prettier-config"
