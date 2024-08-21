@@ -27,11 +27,16 @@ import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
-export const AdminBanUserDialog = (
-  props: React.PropsWithChildren<{
-    userId: string;
-  }>,
-) => {
+type AdminBanUserDialogProps = {
+  children: React.ReactNode;
+  userId: string;
+} & React.ComponentPropsWithoutRef<typeof AlertDialog>;
+
+export const AdminBanUserDialog = ({
+  children,
+  userId,
+  ...props
+}: AdminBanUserDialogProps) => {
   const banUserAction = api.admin.banUser.useMutation({
     onSuccess: () => {
       toast.success("User banned successfully");
@@ -40,26 +45,24 @@ export const AdminBanUserDialog = (
       toast.error("There was an error. Please try again later.");
     },
   });
+
   const form = useForm({
     schema: banUserInput,
     defaultValues: {
-      userId: props.userId,
+      userId,
     },
   });
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{props.children}</AlertDialogTrigger>
-
+    <AlertDialog {...props}>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Ban User</AlertDialogTitle>
-
           <AlertDialogDescription>
             Are you sure you want to ban this user?
           </AlertDialogDescription>
         </AlertDialogHeader>
-
         <Form {...form}>
           <form
             className="flex flex-col space-y-8"
@@ -74,7 +77,6 @@ export const AdminBanUserDialog = (
                   <FormLabel>
                     Type <b>CONFIRM</b> to confirm
                   </FormLabel>
-
                   <FormControl>
                     <Input
                       required
@@ -83,19 +85,15 @@ export const AdminBanUserDialog = (
                       {...field}
                     />
                   </FormControl>
-
                   <FormDescription>
                     Are you sure you want to do this?
                   </FormDescription>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
-
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-
               <Button type="submit" variant="destructive">
                 Ban User
               </Button>

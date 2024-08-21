@@ -27,11 +27,16 @@ import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
-export const AdminReactivateUserDialog = (
-  props: React.PropsWithChildren<{
-    userId: string;
-  }>,
-) => {
+type AdminReactivateUserDialogProps = {
+  children: React.ReactNode;
+  userId: string;
+} & React.ComponentPropsWithoutRef<typeof AlertDialog>;
+
+export const AdminReactivateUserDialog = ({
+  children,
+  userId,
+  ...props
+}: AdminReactivateUserDialogProps) => {
   const reactivateUserAction = api.admin.reactivateUser.useMutation({
     onSuccess: () => {
       toast.success("User reactivated successfully");
@@ -40,26 +45,24 @@ export const AdminReactivateUserDialog = (
       toast.error("There was an error. Please try again later.");
     },
   });
+
   const form = useForm({
     schema: reactivateUserInput,
     defaultValues: {
-      userId: props.userId,
+      userId,
     },
   });
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{props.children}</AlertDialogTrigger>
-
+    <AlertDialog {...props}>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Reactivate User</AlertDialogTitle>
-
           <AlertDialogDescription>
             Are you sure you want to reactivate this user?
           </AlertDialogDescription>
         </AlertDialogHeader>
-
         <Form {...form}>
           <form
             className="flex flex-col space-y-8"
@@ -74,7 +77,6 @@ export const AdminReactivateUserDialog = (
                   <FormLabel>
                     Type <b>CONFIRM</b> to confirm
                   </FormLabel>
-
                   <FormControl>
                     <Input
                       required
@@ -83,19 +85,15 @@ export const AdminReactivateUserDialog = (
                       {...field}
                     />
                   </FormControl>
-
                   <FormDescription>
                     Are you sure you want to do this?
                   </FormDescription>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
-
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-
               <Button type="submit">Reactivate User</Button>
             </AlertDialogFooter>
           </form>

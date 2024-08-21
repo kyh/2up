@@ -85,14 +85,11 @@ const PersonalAccountPage = async (props: { account: Account }) => {
               />
               <span>{props.account.name}</span>
             </div>
-
             <Badge variant="outline">Personal Account</Badge>
-
             <If condition={isBanned}>
               <Badge variant="destructive">Banned</Badge>
             </If>
           </div>
-
           <div className="flex space-x-1">
             <If condition={isBanned}>
               <AdminReactivateUserDialog userId={props.account.id}>
@@ -102,7 +99,6 @@ const PersonalAccountPage = async (props: { account: Account }) => {
                 </Button>
               </AdminReactivateUserDialog>
             </If>
-
             <If condition={!isBanned}>
               <AdminBanUserDialog userId={props.account.id}>
                 <Button size="sm" variant="ghost">
@@ -110,7 +106,6 @@ const PersonalAccountPage = async (props: { account: Account }) => {
                   Ban
                 </Button>
               </AdminBanUserDialog>
-
               <AdminImpersonateUserDialog userId={props.account.id}>
                 <Button size="sm" variant="ghost">
                   <VenetianMask className="mr-1 h-4" />
@@ -118,7 +113,6 @@ const PersonalAccountPage = async (props: { account: Account }) => {
                 </Button>
               </AdminImpersonateUserDialog>
             </If>
-
             <AdminDeleteUserDialog userId={props.account.id}>
               <Button size="sm" variant="destructive">
                 <BadgeX className="mr-1 h-4" />
@@ -128,15 +122,12 @@ const PersonalAccountPage = async (props: { account: Account }) => {
           </div>
         </div>
       </header>
-
       <div className="flex flex-col space-y-8">
         <SubscriptionsTable accountId={props.account.id} />
-
         <div className="divider-divider-x flex flex-col space-y-2.5">
           <Heading className="font-bold" level={5}>
             Teams
           </Heading>
-
           <div>
             <AdminMembershipsTable memberships={memberships} />
           </div>
