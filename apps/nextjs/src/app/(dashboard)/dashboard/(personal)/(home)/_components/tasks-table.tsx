@@ -11,22 +11,31 @@ import { getColumns } from "./tasks-table-columns";
 import { TasksTableToolbarActions } from "./tasks-table-toolbar-actions";
 
 type TasksTableProps = {
-  accountId: string;
   searchParams: GetTaskListInput;
+  accountSlug?: string;
 };
 
-export const TasksTable = ({ accountId, searchParams }: TasksTableProps) => {
-  const [{ data, pageCount }] = api.task.getTaskList.useSuspenseQuery({
+export const TasksTable = ({ accountSlug, searchParams }: TasksTableProps) => {
+  const { data: teamWorkspaceData } = api.account.teamWorkspace.useQuery(
+    {
+      slug: accountSlug ?? "",
+    },
+    { enabled: !!accountSlug },
+  );
+
+  const account = teamWorkspaceData?.account;
+
+  const { data: taskListData } = api.task.getTaskList.useQuery({
     ...searchParams,
-    accountId: accountId,
+    accountId: account?.id,
   });
 
   const columns = useMemo(() => getColumns(), []);
 
   const { table } = useDataTable({
-    data: data,
+    data: taskListData?.data ?? [],
     columns,
-    pageCount: pageCount,
+    pageCount: taskListData?.pageCount ?? 0,
     // optional props
     defaultPerPage: 10,
     defaultSort: "createdAt.desc",
@@ -35,7 +44,7 @@ export const TasksTable = ({ accountId, searchParams }: TasksTableProps) => {
   return (
     <DataTable table={table}>
       <DataTableToolbar table={table}>
-        <TasksTableToolbarActions accountId={accountId} table={table} />
+        <TasksTableToolbarActions accountId={account?.id} table={table} />
       </DataTableToolbar>
     </DataTable>
   );

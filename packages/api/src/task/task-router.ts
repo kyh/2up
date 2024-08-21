@@ -36,7 +36,7 @@ export const taskRouter = createTRPCRouter({
         .select("*", { count: "exact" })
         .limit(perPage)
         .range(offset, offset + perPage - 1)
-        .eq("accountId", input.accountId);
+        .eq("accountId", input.accountId ?? ctx.user.id);
 
       if (response.error) {
         throw response.error;
@@ -55,7 +55,7 @@ export const taskRouter = createTRPCRouter({
         label: input.label,
         priority: input.priority,
         status: input.status,
-        accountId: input.accountId,
+        accountId: input.accountId ?? ctx.user.id,
       });
 
       if (response.error) {

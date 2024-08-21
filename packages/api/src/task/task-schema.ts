@@ -25,7 +25,7 @@ export const createTaskInput = z.object({
   label: z.enum(TaskLabels).optional(),
   priority: z.enum(TaskPriorites).optional(),
   status: z.enum(TaskStatuses).optional(),
-  accountId: z.string(),
+  accountId: z.string().optional(),
 });
 export type CreateTaskInput = z.infer<typeof createTaskInput>;
 
@@ -33,7 +33,7 @@ export const getTaskListInput = z.object({
   page: z.string().default("1"),
   per_page: z.string().default("10"),
   sort: z.string().default("created_at"),
-  accountId: z.string(),
+  accountId: z.string().optional(),
 });
 export type GetTaskListInput = z.infer<typeof getTaskListInput>;
 
