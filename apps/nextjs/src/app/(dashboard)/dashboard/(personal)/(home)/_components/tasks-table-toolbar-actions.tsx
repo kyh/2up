@@ -8,7 +8,7 @@ import { DeleteTasksDialog } from "./delete-tasks-dialog";
 type Task = RouterOutputs["task"]["getTaskList"]["data"][0];
 
 type TasksTableToolbarActionsProps = {
-  accountId: string;
+  accountId?: string;
   table: Table<Task>;
 };
 

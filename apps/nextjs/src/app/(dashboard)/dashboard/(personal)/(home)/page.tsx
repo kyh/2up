@@ -6,18 +6,15 @@ import { TasksTable } from "./_components/tasks-table";
 type SearchParams = GetTaskListInput;
 
 const Page = async ({ searchParams }: { searchParams: SearchParams }) => {
-  const { user } = await api.account.userWorkspace();
-
   void api.task.getTaskList.prefetch({
     ...searchParams,
-    accountId: user.id,
   });
 
   return (
     <HydrateClient>
       <main className="flex flex-1 flex-col px-5">
         <PageHeader>Welcome back</PageHeader>
-        <TasksTable accountId={user.id} searchParams={searchParams} />
+        <TasksTable searchParams={searchParams} />
       </main>
     </HydrateClient>
   );
