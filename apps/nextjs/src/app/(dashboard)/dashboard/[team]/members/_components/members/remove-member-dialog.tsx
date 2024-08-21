@@ -14,18 +14,17 @@ import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
-export const RemoveMemberDialog = ({
-  isOpen,
-  setIsOpen,
-  teamAccountId,
-  userId,
-}: {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+type RemoveMemberDialogProps = {
   teamAccountId: string;
   userId: string;
-}) => (
-  <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+} & React.ComponentPropsWithoutRef<typeof AlertDialog>;
+
+export const RemoveMemberDialog = ({
+  teamAccountId,
+  userId,
+  ...props
+}: RemoveMemberDialogProps) => (
+  <AlertDialog {...props}>
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>You are removing this user</AlertDialogTitle>
@@ -34,11 +33,10 @@ export const RemoveMemberDialog = ({
           the team.
         </AlertDialogDescription>
       </AlertDialogHeader>
-
       <RemoveMemberForm
-        setIsOpen={setIsOpen}
         accountId={teamAccountId}
         userId={userId}
+        onSuccess={() => props.onOpenChange?.(false)}
       />
     </AlertDialogContent>
   </AlertDialog>
@@ -47,15 +45,15 @@ export const RemoveMemberDialog = ({
 const RemoveMemberForm = ({
   accountId,
   userId,
-  setIsOpen,
+  onSuccess,
 }: {
   accountId: string;
   userId: string;
-  setIsOpen: (isOpen: boolean) => void;
+  onSuccess?: () => void;
 }) => {
   const removeMember = api.account.removeMember.useMutation({
     onSuccess: () => {
-      setIsOpen(false);
+      onSuccess?.();
       toast.success("Member removed successfully");
     },
     onError: () =>
@@ -72,11 +70,9 @@ const RemoveMemberForm = ({
         <p className="text-sm text-muted-foreground">
           Are you sure you want to continue?
         </p>
-
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-
-          <Button variant="destructive" disabled={removeMember.isPending}>
+          <Button variant="destructive" loading={removeMember.isPending}>
             Remove User from Team
           </Button>
         </AlertDialogFooter>

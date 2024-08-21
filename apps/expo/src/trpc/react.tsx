@@ -58,7 +58,7 @@ export const TRPCProvider = (props: { children: React.ReactNode }) => {
           url: `${getBaseUrl()}/api/trpc`,
           headers: () => {
             const headers = new Map<string, string>();
-            headers.set("x-trpc-source", "expo-react");
+            headers.set("x-trpc-source", "expo");
             return Object.fromEntries(headers);
           },
         }),

@@ -848,7 +848,7 @@ export type Database = {
           account_slug: string
         }
         Returns: {
-          id: number
+          id: string
           email: string
           accountId: string
           invitedBy: string

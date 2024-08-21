@@ -76,7 +76,7 @@ export const adminRouter = createTRPCRouter({
 
       return response.data;
     }),
-  getDashboardData: superAdminProcedure.mutation(async ({ ctx }) => {
+  getDashboardData: superAdminProcedure.query(async ({ ctx }) => {
     const selectParams: {
       head?: boolean;
       count?: "exact" | "estimated" | "planned";

@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import React from "react";
 
-import { HydrateClient } from "@/trpc/server";
+import { api, HydrateClient } from "@/trpc/server";
 
 export const metadata: Metadata = {
   title: "Dashboard",
 };
 
-const Layout = async ({ children }: React.PropsWithChildren) => {
+const Layout = ({ children }: React.PropsWithChildren) => {
+  void api.account.userWorkspace.prefetch();
+
   return <HydrateClient>{children}</HydrateClient>;
 };
 

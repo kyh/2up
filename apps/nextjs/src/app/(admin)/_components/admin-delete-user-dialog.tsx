@@ -9,7 +9,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@init/ui/alert-dialog";
 import { Button } from "@init/ui/button";
 import {
@@ -27,37 +26,37 @@ import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
-export const AdminDeleteUserDialog = (
-  props: React.PropsWithChildren<{
-    userId: string;
-  }>,
-) => {
+type AdminDeleteUserDialogProps = {
+  userId: string;
+} & React.ComponentPropsWithoutRef<typeof AlertDialog>;
+
+export const AdminDeleteUserDialog = ({
+  userId,
+  ...props
+}: AdminDeleteUserDialogProps) => {
   const deleteUserAction = api.admin.deleteUser.useMutation({
     onSuccess: () => toast.success("User deleted successfully"),
     onError: () => toast.error("Error deleting user record or auth record."),
   });
+
   const form = useForm({
     schema: deleteUserInput,
     defaultValues: {
-      userId: props.userId,
+      userId,
     },
   });
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{props.children}</AlertDialogTrigger>
-
+    <AlertDialog {...props}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete User</AlertDialogTitle>
-
           <AlertDialogDescription>
             Are you sure you want to delete this user? All the data associated
             with this user will be permanently deleted. Any active subscriptions
             will be canceled.
           </AlertDialogDescription>
         </AlertDialogHeader>
-
         <Form {...form}>
           <form
             className="flex flex-col space-y-8"
@@ -72,7 +71,6 @@ export const AdminDeleteUserDialog = (
                   <FormLabel>
                     Type <b>CONFIRM</b> to confirm
                   </FormLabel>
-
                   <FormControl>
                     <Input
                       required
@@ -81,20 +79,16 @@ export const AdminDeleteUserDialog = (
                       {...field}
                     />
                   </FormControl>
-
                   <FormDescription>
                     Are you sure you want to do this? This action cannot be
                     undone.
                   </FormDescription>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
-
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-
               <Button
                 type="submit"
                 variant="destructive"

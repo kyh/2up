@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   httpBatchLink,
   loggerLink,
@@ -70,7 +71,7 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
             url: `${getBaseUrl()}/api/trpc`,
             headers: async () => {
               const headers = new Headers();
-              headers.set("x-trpc-source", "nextjs-react-batch");
+              headers.set("x-trpc-source", "nextjs-client");
               return headers;
             },
           }),
@@ -79,7 +80,7 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
             url: `${getBaseUrl()}/api/trpc`,
             headers: async () => {
               const headers = new Headers();
-              headers.set("x-trpc-source", "nextjs-react-batch-stream");
+              headers.set("x-trpc-source", "nextjs-client-batch-stream");
               return headers;
             },
           }),
@@ -92,6 +93,7 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
         {props.children}
+        <ReactQueryDevtools initialIsOpen={false} />
       </api.Provider>
     </QueryClientProvider>
   );

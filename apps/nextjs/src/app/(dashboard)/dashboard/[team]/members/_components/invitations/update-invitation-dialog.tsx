@@ -27,20 +27,19 @@ import { MembershipRoleSelector } from "../membership-role-selector";
 
 type Role = string;
 
+type UpdateInvitationDialogProps = {
+  invitationId: string;
+  userRole: Role;
+  userRoleHierarchy: number;
+} & React.ComponentPropsWithoutRef<typeof Dialog>;
+
 export const UpdateInvitationDialog = ({
-  isOpen,
-  setIsOpen,
   invitationId,
   userRole,
   userRoleHierarchy,
-}: {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  invitationId: number;
-  userRole: Role;
-  userRoleHierarchy: number;
-}) => (
-  <Dialog open={isOpen} onOpenChange={setIsOpen}>
+  ...props
+}: UpdateInvitationDialogProps) => (
+  <Dialog {...props}>
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Update Member's Role</DialogTitle>
@@ -53,7 +52,7 @@ export const UpdateInvitationDialog = ({
         invitationId={invitationId}
         userRole={userRole}
         userRoleHierarchy={userRoleHierarchy}
-        setIsOpen={setIsOpen}
+        onSuccess={() => props.onOpenChange?.(false)}
       />
     </DialogContent>
   </Dialog>
@@ -63,16 +62,16 @@ const UpdateInvitationForm = ({
   invitationId,
   userRole,
   userRoleHierarchy,
-  setIsOpen,
-}: React.PropsWithChildren<{
-  invitationId: number;
+  onSuccess,
+}: {
+  invitationId: string;
   userRole: Role;
   userRoleHierarchy: number;
-  setIsOpen: (isOpen: boolean) => void;
-}>) => {
+  onSuccess?: () => void;
+}) => {
   const updateInvitation = api.account.updateInvitation.useMutation({
     onSuccess: () => {
-      setIsOpen(false);
+      onSuccess?.();
       toast.success("Invite updated successfully");
     },
     onError: () =>
@@ -117,7 +116,6 @@ const UpdateInvitationForm = ({
             return (
               <FormItem>
                 <FormLabel>Role</FormLabel>
-
                 <FormControl>
                   <RolesDataProvider maxRoleHierarchy={userRoleHierarchy}>
                     {(roles) => (
@@ -132,16 +130,13 @@ const UpdateInvitationForm = ({
                     )}
                   </RolesDataProvider>
                 </FormControl>
-
                 <FormDescription>Pick a role for this member.</FormDescription>
-
                 <FormMessage />
               </FormItem>
             );
           }}
         />
-
-        <Button type="submit" disabled={updateInvitation.isPending}>
+        <Button type="submit" loading={updateInvitation.isPending}>
           Update Role
         </Button>
       </form>

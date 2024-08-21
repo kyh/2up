@@ -13,7 +13,7 @@ import { createQueryClient } from "./query-client";
 const createContext = cache(async () => {
   const head = new Headers(headers());
 
-  head.set("x-trpc-source", "rsc");
+  head.set("x-trpc-source", "nextjs-rsc");
 
   return createTRPCContext({
     headers: head,

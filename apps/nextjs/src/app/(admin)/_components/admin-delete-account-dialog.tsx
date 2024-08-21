@@ -9,7 +9,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@init/ui/alert-dialog";
 import { Button } from "@init/ui/button";
 import {
@@ -26,11 +25,14 @@ import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
-export const AdminDeleteAccountDialog = (
-  props: React.PropsWithChildren<{
-    accountId: string;
-  }>,
-) => {
+type AdminDeleteAccountDialogProps = {
+  accountId: string;
+} & React.ComponentPropsWithoutRef<typeof AlertDialog>;
+
+export const AdminDeleteAccountDialog = ({
+  accountId,
+  ...props
+}: AdminDeleteAccountDialogProps) => {
   const deleteAccountAction = api.admin.deleteAccount.useMutation({
     onSuccess: () => toast.success("Account deleted successfully"),
     onError: () => toast.error("There was an error deleting the account"),
@@ -39,25 +41,21 @@ export const AdminDeleteAccountDialog = (
   const form = useForm({
     schema: deleteAccountInput,
     defaultValues: {
-      accountId: props.accountId,
+      accountId,
     },
   });
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{props.children}</AlertDialogTrigger>
-
+    <AlertDialog {...props}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Account</AlertDialogTitle>
-
           <AlertDialogDescription>
             Are you sure you want to delete this account? All the data
             associated with this account will be permanently deleted. Any active
             subscriptions will be canceled.
           </AlertDialogDescription>
         </AlertDialogHeader>
-
         <Form {...form}>
           <form
             className="flex flex-col space-y-8"
@@ -81,7 +79,6 @@ export const AdminDeleteAccountDialog = (
                       {...field}
                     />
                   </FormControl>
-
                   <FormDescription>
                     Are you sure you want to do this? This action cannot be
                     undone.
@@ -89,10 +86,8 @@ export const AdminDeleteAccountDialog = (
                 </FormItem>
               )}
             />
-
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-
               <Button
                 type="submit"
                 variant="destructive"

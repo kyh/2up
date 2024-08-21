@@ -14,43 +14,43 @@ import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
 
+type RenewInvitationDialogProps = {
+  invitationId: string;
+  email: string;
+} & React.ComponentPropsWithoutRef<typeof AlertDialog>;
+
 export const RenewInvitationDialog = ({
-  isOpen,
-  setIsOpen,
   invitationId,
   email,
-}: {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  invitationId: number;
-  email: string;
-}) => (
-  <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+  ...props
+}: RenewInvitationDialogProps) => (
+  <AlertDialog {...props}>
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Renew Invitation</AlertDialogTitle>
-
         <AlertDialogDescription>
           You are about to renew the invitation to {email}. The user will be
           able to join the team.
         </AlertDialogDescription>
       </AlertDialogHeader>
-
-      <RenewInvitationForm setIsOpen={setIsOpen} invitationId={invitationId} />
+      <RenewInvitationForm
+        onSuccess={() => props.onOpenChange?.(false)}
+        invitationId={invitationId}
+      />
     </AlertDialogContent>
   </AlertDialog>
 );
 
 const RenewInvitationForm = ({
   invitationId,
-  setIsOpen,
+  onSuccess,
 }: {
-  invitationId: number;
-  setIsOpen: (isOpen: boolean) => void;
+  invitationId: string;
+  onSuccess?: () => void;
 }) => {
   const renewInvitation = api.account.renewInvitation.useMutation({
     onSuccess: () => {
-      setIsOpen(false);
+      onSuccess?.();
       toast.success("Invite renewed successfully");
     },
     onError: () =>
@@ -69,11 +69,9 @@ const RenewInvitationForm = ({
         <p className="text-sm text-muted-foreground">
           Are you sure you want to continue?
         </p>
-
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-
-          <Button disabled={renewInvitation.isPending}>Renew Invitation</Button>
+          <Button loading={renewInvitation.isPending}>Renew Invitation</Button>
         </AlertDialogFooter>
       </div>
     </form>

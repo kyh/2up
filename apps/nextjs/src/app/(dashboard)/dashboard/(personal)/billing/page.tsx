@@ -10,10 +10,11 @@ import { CurrentSubscriptionCard } from "./_components/current-subscription-card
 
 const Page = async () => {
   const { user } = await api.account.userWorkspace();
-  const subscription = await api.billing.getSubscription({
-    accountId: user.id,
-  });
-  const customerId = await api.billing.getCustomerId({ accountId: user.id });
+
+  const [subscription, customerId] = await Promise.all([
+    api.billing.getSubscription({ accountId: user.id }),
+    api.billing.getCustomerId({ accountId: user.id }),
+  ]);
 
   return (
     <main className="flex flex-1 flex-col px-5">
