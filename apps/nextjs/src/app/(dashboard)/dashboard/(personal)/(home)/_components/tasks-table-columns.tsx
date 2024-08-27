@@ -28,9 +28,9 @@ import { MoreHorizontalIcon } from "lucide-react";
 import type { RouterOutputs } from "@init/api";
 import type { ColumnDef } from "@tanstack/react-table";
 import { api } from "@/trpc/react";
+import { CreateTaskDialog } from "./create-task-dialog";
 import { DeleteTasksDialog } from "./delete-tasks-dialog";
 import { formatDate, getPriorityIcon, getStatusIcon } from "./task-utils";
-import { UpdateTaskSheet } from "./update-task-sheet";
 
 type Task = RouterOutputs["task"]["getTaskList"]["data"][0];
 
@@ -139,7 +139,7 @@ export const getColumns = (): ColumnDef<Task>[] => [
   {
     id: "actions",
     cell: ({ row }) => {
-      const [showUpdateTaskSheet, setShowUpdateTaskSheet] = useState(false);
+      const [showUpdateTaskDialog, setShowUpdateTaskDialog] = useState(false);
       const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false);
 
       const updateTask = api.task.updateTask.useMutation({
@@ -160,7 +160,7 @@ export const getColumns = (): ColumnDef<Task>[] => [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
-              <DropdownMenuItem onSelect={() => setShowUpdateTaskSheet(true)}>
+              <DropdownMenuItem onSelect={() => setShowUpdateTaskDialog(true)}>
                 Edit
               </DropdownMenuItem>
               <DropdownMenuSub>
@@ -194,10 +194,12 @@ export const getColumns = (): ColumnDef<Task>[] => [
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <UpdateTaskSheet
-            open={showUpdateTaskSheet}
-            onOpenChange={setShowUpdateTaskSheet}
+          <CreateTaskDialog
+            open={showUpdateTaskDialog}
+            onOpenChange={setShowUpdateTaskDialog}
             task={row.original}
+            showTrigger={false}
+            onSuccess={() => setShowUpdateTaskDialog(false)}
           />
           <DeleteTasksDialog
             open={showDeleteTaskDialog}

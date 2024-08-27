@@ -39,10 +39,26 @@ import { Textarea } from "@init/ui/textarea";
 import { toast } from "@init/ui/toast";
 import { PlusIcon } from "lucide-react";
 
+import type { RouterOutputs } from "@init/api";
 import type { CreateTaskInput } from "@init/api/task/task-schema";
 import { api } from "@/trpc/react";
 
-export const CreateTaskDialog = ({ accountId }: { accountId?: string }) => {
+type Task = RouterOutputs["task"]["getTaskList"]["data"][0];
+
+type CreateTaskDialogProps = {
+  accountId?: string;
+  task?: Task;
+  showTrigger?: boolean;
+  onSuccess?: () => void;
+} & React.ComponentPropsWithRef<typeof Dialog>;
+
+export const CreateTaskDialog = ({
+  accountId,
+  task,
+  showTrigger = true,
+  onSuccess,
+  ...props
+}: CreateTaskDialogProps) => {
   const [open, setOpen] = useState(false);
 
   const createTask = api.task.createTask.useMutation({
@@ -50,31 +66,56 @@ export const CreateTaskDialog = ({ accountId }: { accountId?: string }) => {
       setOpen(false);
       form.reset();
       toast.success("Task created");
+      onSuccess?.();
+    },
+    onError: (error) => toast.error(error.message),
+  });
+
+  const updateTask = api.task.updateTask.useMutation({
+    onSuccess: () => {
+      setOpen(false);
+      form.reset();
+      toast.success("Task updated");
+      onSuccess?.();
     },
     onError: (error) => toast.error(error.message),
   });
 
   const form = useForm({
     schema: createTaskInput,
+    defaultValues: {
+      title: task?.title ?? "",
+      label: task?.label ?? "bug",
+      status: task?.status ?? "todo",
+      priority: task?.priority ?? "low",
+    },
   });
 
   const onSubmit = (input: CreateTaskInput) => {
-    createTask.mutate({ ...input, accountId });
+    if (task) {
+      updateTask.mutate({ ...input, id: task.id });
+    } else {
+      createTask.mutate({ ...input, accountId });
+    }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          <PlusIcon className="mr-2 size-4" aria-hidden="true" />
-          New task
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen} {...props}>
+      {showTrigger && (
+        <DialogTrigger asChild>
+          <Button variant="outline" size="sm">
+            <PlusIcon className="mr-2 size-4" aria-hidden="true" />
+            {task ? "Update task" : "New task"}
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create task</DialogTitle>
+          <DialogTitle>{task ? "Update task" : "Create task"}</DialogTitle>
           <DialogDescription>
-            Fill in the details below to create a new task.
+            {task
+              ? "Update the details below to update the task."
+              : "Fill in the details below to create a new task."}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -204,7 +245,9 @@ export const CreateTaskDialog = ({ accountId }: { accountId?: string }) => {
                   Cancel
                 </Button>
               </DialogClose>
-              <Button loading={createTask.isPending}>Create</Button>
+              <Button loading={createTask.isPending}>
+                {task ? "Update" : "Create"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

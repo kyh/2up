@@ -42,14 +42,14 @@ export const DeleteTasksDialog = ({
 
   return (
     <Dialog {...props}>
-      {showTrigger ? (
+      {showTrigger && (
         <DialogTrigger asChild>
           <Button variant="outline" size="sm">
             <TrashIcon className="mr-2 size-4" aria-hidden="true" />
             Delete ({tasks.length})
           </Button>
         </DialogTrigger>
-      ) : null}
+      )}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
