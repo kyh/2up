@@ -3,21 +3,21 @@ packages:
   - packages/*
 
 catalog:
-  eslint: ^9.9.0
+  eslint: ^9.9.1
   prettier: ^3.3.3
   typescript: ^5.5.4
   zod: ^3.23.8
   tailwindcss: ^3.4.10
   react: 18.3.1
   react-dom: 18.3.1
-  "@types/react": ^18.3.3
+  "@types/react": ^18.3.4
   "@types/react-dom": ^18.3.0
-  "@types/node": ^22.4.1
+  "@types/node": ^22.5.0
   "@kyh/eslint-config": ^1.0.3
   "@kyh/prettier-config": ^1.0.3
   "@kyh/tsconfig": ^1.0.3
-  "@tanstack/react-query": ^5.52.0
-  "@tanstack/react-query-devtools": "^5.52.0"
+  "@tanstack/react-query": ^5.52.2
+  "@tanstack/react-query-devtools": "^5.52.2"
   "@trpc/client": ^11.0.0-rc.477
   "@trpc/react-query": ^11.0.0-rc.477
   "@trpc/server": ^11.0.0-rc.477
