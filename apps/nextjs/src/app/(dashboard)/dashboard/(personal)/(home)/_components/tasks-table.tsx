@@ -2,7 +2,6 @@
 
 import { useMemo } from "react";
 import { DataTable } from "@init/ui/data-table/data-table";
-import { DataTableToolbar } from "@init/ui/data-table/data-table-toolbar";
 
 import type { GetTaskListInput } from "@init/api/task/task-schema";
 import { useDataTable } from "@/lib/use-data-table";
@@ -42,10 +41,9 @@ export const TasksTable = ({ accountSlug, searchParams }: TasksTableProps) => {
   });
 
   return (
-    <DataTable table={table}>
-      <DataTableToolbar table={table}>
-        <TasksTableToolbarActions accountId={account?.id} table={table} />
-      </DataTableToolbar>
-    </DataTable>
+    <>
+      <TasksTableToolbarActions accountId={account?.id} table={table} />
+      <DataTable table={table} className="py-3" />
+    </>
   );
 };

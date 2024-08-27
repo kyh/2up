@@ -15,17 +15,18 @@ import { DataTablePagination } from "./data-table-pagination";
 
 type DataTableProps<TData> = {
   table: TanstackTable<TData>;
-} & React.HTMLAttributes<HTMLDivElement>;
+} & Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
 
 export const DataTable = <TData,>({
   table,
-  children,
   className,
   ...props
 }: DataTableProps<TData>) => (
-  <div className={cn("w-full space-y-2.5 overflow-auto", className)} {...props}>
-    {children}
-    <div className="rounded-md border">
+  <div
+    className={cn("flex w-full flex-1 flex-col gap-2", className)}
+    {...props}
+  >
+    <div className="flex-1 rounded-md border">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -72,7 +73,7 @@ export const DataTable = <TData,>({
         </TableBody>
       </Table>
     </div>
-    <div className="flex flex-col gap-2.5">
+    <div className="flex flex-col gap-3">
       <DataTablePagination table={table} />
     </div>
   </div>

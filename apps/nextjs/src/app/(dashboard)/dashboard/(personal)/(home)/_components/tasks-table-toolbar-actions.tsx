@@ -1,5 +1,7 @@
 "use client";
 
+import { DataTableViewOptions } from "@init/ui/data-table/data-table-view-options";
+
 import type { RouterOutputs } from "@init/api";
 import type { Table } from "@tanstack/react-table";
 import { CreateTaskDialog } from "./create-task-dialog";
@@ -17,18 +19,15 @@ export const TasksTableToolbarActions = ({
   table,
 }: TasksTableToolbarActionsProps) => (
   <div className="flex items-center gap-2">
-    {table.getFilteredSelectedRowModel().rows.length > 0 ? (
+    {table.getFilteredSelectedRowModel().rows.length > 0 && (
       <DeleteTasksDialog
         tasks={table
           .getFilteredSelectedRowModel()
           .rows.map((row) => row.original)}
         onSuccess={() => table.toggleAllRowsSelected(false)}
       />
-    ) : null}
+    )}
     <CreateTaskDialog accountId={accountId} />
-    {/**
-     * Other actions can be added here.
-     * For example, import, view, etc.
-     */}
+    <DataTableViewOptions table={table} />
   </div>
 );

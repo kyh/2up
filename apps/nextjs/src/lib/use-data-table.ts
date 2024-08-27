@@ -66,7 +66,7 @@ const schema = z.object({
 export const useDataTable = <TData, TValue>({
   data,
   columns,
-  pageCount,
+  pageCount = -1,
   defaultPerPage = 10,
   defaultSort,
 }: UseDataTableProps<TData, TValue>) => {
@@ -120,7 +120,7 @@ export const useDataTable = <TData, TValue>({
   );
 
   React.useEffect(() => {
-    router.push(
+    router.replace(
       `${pathname}?${createQueryString({
         page: pageIndex + 1,
         per_page: pageSize,
@@ -142,7 +142,7 @@ export const useDataTable = <TData, TValue>({
   ]);
 
   React.useEffect(() => {
-    router.push(
+    router.replace(
       `${pathname}?${createQueryString({
         page,
         sort: sorting[0]?.id
@@ -156,7 +156,7 @@ export const useDataTable = <TData, TValue>({
   const table = useReactTable({
     data,
     columns,
-    pageCount: pageCount ?? -1,
+    pageCount,
     state: {
       pagination,
       sorting,
