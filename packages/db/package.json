@@ -23,9 +23,9 @@
     "migrate": "supabase db migrate"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.5.0",
-    "@supabase/supabase-js": "^2.45.2",
-    "next": "^14.2.6",
+    "@supabase/ssr": "^0.5.1",
+    "@supabase/supabase-js": "^2.45.3",
+    "next": "^14.2.8",
     "react": "^18.3.1",
     "zod": "^3.23.8"
   },
