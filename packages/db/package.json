@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.1",
-    "@supabase/supabase-js": "^2.45.3",
-    "next": "^14.2.8",
+    "@supabase/supabase-js": "^2.45.4",
+    "next": "^14.2.13",
     "react": "^18.3.1",
     "zod": "^3.23.8"
   },
@@ -36,7 +36,7 @@
     "@types/react": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "supabase": "^1.191.3",
+    "supabase": "^1.192.5",
     "typescript": "catalog:"
   },
   "prettier": "@kyh/prettier-config"
