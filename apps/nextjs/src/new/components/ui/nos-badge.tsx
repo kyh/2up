@@ -1,5 +1,6 @@
 import React from "react";
-import { cva, VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import clsx from "clsx";
 
 const badgeVariantStyles = cva("relative cursor-pointer p-1 text-center", {
@@ -51,11 +52,11 @@ const borderStyles = cva(
 export type BadgeStyleProps = VariantProps<typeof badgeVariantStyles> &
   VariantProps<typeof badgeSizeStyles>;
 
-export interface BadgeProps extends BadgeStyleProps {
+export type BadgeProps = {
   label: React.ReactNode;
   label2?: React.ReactNode;
   variant2?: BadgeStyleProps["variant"];
-}
+} & BadgeStyleProps
 
 export const Badge = ({
   size,

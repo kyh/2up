@@ -1,5 +1,6 @@
 import React from "react";
-import { cva, VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import clsx from "clsx";
 
 import Borders from "./Borders";
@@ -56,7 +57,7 @@ const tableCellStyles = cva("h-10", {
   },
 });
 
-export interface TableData {
+export type TableData = {
   head: string[];
   body: string[][];
 }

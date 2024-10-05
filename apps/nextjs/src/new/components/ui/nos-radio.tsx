@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { cva, VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import clsx from "clsx";
 
 const radioStyles = cva("m-5 cursor-pointer text-base", {
@@ -42,9 +43,9 @@ export const Radio = ({
       specificDivRef.current &&
       !specificDivRef.current.contains(event.target as HTMLElement)
     ) {
-      const logoDiv = specificDivRef.current?.querySelector(
+      const logoDiv = specificDivRef.current.querySelector(
         ".animate-custom",
-      ) as HTMLDivElement;
+      )!;
 
       if (!logoDiv) return;
 
@@ -76,7 +77,7 @@ export const Radio = ({
       const blinkIntervalOut = setInterval(() => {
         const logoDiv = specificDivRef.current?.querySelector(
           ".animate-custom",
-        ) as HTMLDivElement;
+        )!;
         if (!logoDiv) return;
 
         logoDiv.style.opacity = "0";
@@ -85,7 +86,7 @@ export const Radio = ({
       const blinkIntervalIn = setInterval(() => {
         const logoDiv = specificDivRef.current?.querySelector(
           ".animate-custom",
-        ) as HTMLDivElement;
+        )!;
         if (!logoDiv) return;
 
         logoDiv.style.opacity = "1";

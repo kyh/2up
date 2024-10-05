@@ -29,7 +29,7 @@ export const packRouter = createTRPCRouter({
         ...section,
         packs: section.tags
           .flatMap((tag) => packsByTag[tag])
-          .filter(Boolean) as typeof response.data,
+          .filter(Boolean),
       }));
     }),
 

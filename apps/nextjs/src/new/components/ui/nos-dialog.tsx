@@ -2,7 +2,8 @@
 
 import React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { cva, VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import clsx from "clsx";
 
 import { cn } from "@/lib/utils";

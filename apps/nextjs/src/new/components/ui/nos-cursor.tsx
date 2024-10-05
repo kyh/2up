@@ -1,13 +1,14 @@
-import React, { HTMLAttributes } from "react";
+import type { HTMLAttributes } from "react";
+import React from "react";
 import { cva } from "class-variance-authority";
 
 import { Balloon } from "./NosBalloon";
 
-interface CursorProps extends HTMLAttributes<HTMLDivElement> {
+type CursorProps = {
   type: "normal" | "dark";
   from: "left" | "right";
   children: React.ReactNode;
-}
+} & HTMLAttributes<HTMLDivElement>
 
 const cursorStyles = cva("cursor-pointer");
 

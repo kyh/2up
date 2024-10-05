@@ -1,5 +1,7 @@
-import React, { ButtonHTMLAttributes } from "react";
-import { cva, VariantProps } from "class-variance-authority";
+import type { ButtonHTMLAttributes } from "react";
+import React from "react";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
@@ -37,11 +39,9 @@ const iconButtonStyles = cva(
   },
 );
 
-interface IconButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof iconButtonStyles> {
+type IconButtonProps = {
   icon: React.ReactNode;
-}
+} & ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof iconButtonStyles>
 
 export const IconButton = ({
   variant,

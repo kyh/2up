@@ -1,5 +1,6 @@
 import React from "react";
-import { cva, VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import clsx from "clsx";
 
 const listStyles = cva("list-none text-base text-dark", {

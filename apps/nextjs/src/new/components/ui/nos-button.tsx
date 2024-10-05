@@ -1,14 +1,15 @@
-import React, { ButtonHTMLAttributes } from "react";
-import { cva, VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import type { ButtonHTMLAttributes } from "react";
+import React from "react";
+import { cva } from "class-variance-authority";
 
-interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonStyles> {
+type ButtonProps = {
   block?: boolean;
   className?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-}
+} & ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonStyles>;
 
 const buttonStyles = cva(
   "capitalize' relative m-2 flex gap-2 px-3 py-3 text-base",
@@ -20,11 +21,11 @@ const buttonStyles = cva(
         success:
           "border-success-border bg-success text-success-text shadow-success-shadow hover:bg-success-hover hover:shadow-success-shadow focus:outline-success-outline active:shadow-success-shadow",
         primary:
-          "border-primary-border bg-primary text-primary-text shadow-primary-shadow hover:bg-primary-hover hover:shadow-primary-shadow focus:outline-primary-outline active:shadow-primary-shadow",
+          "border-primary-border text-primary-text shadow-primary-shadow hover:bg-primary-hover hover:shadow-primary-shadow focus:outline-primary-outline active:shadow-primary-shadow bg-primary",
         error:
           "border-error-border bg-error text-error-text shadow-error-shadow hover:bg-error-hover hover:shadow-error-shadow focus:outline-error-outline active:shadow-error-shadow",
         disabled:
-          "cursor-not-allowed border-disabled-border bg-disabled text-disabled-text shadow-disabled-shadow",
+          "border-disabled-border bg-disabled text-disabled-text shadow-disabled-shadow cursor-not-allowed",
         warning:
           "border-warning-border bg-warning text-warning-text shadow-warning-shadow hover:bg-warning-hover hover:shadow-warning-shadow focus:outline-warning-outline active:shadow-warning-shadow",
         file: "border-normal-border bg-normal text-normal-text shadow-normal-shadow hover:bg-normal-hover hover:shadow-normal-shadow focus:outline-normal-outline active:shadow-normal-shadow",
@@ -109,7 +110,7 @@ export const Button = ({
       {...commonProps}
       className={`shadow-[inset_-0.25rem_-0.25rem] ${variant !== "disabled" && "hover:shadow-[inset_-0.375rem_-0.375rem] focus:outline focus:outline-[.375rem] active:shadow-[inset_.375rem_.375rem]"} ${commonProps.className}`}
     >
-      {renderSpan(variant!)}
+      {renderSpan(variant)}
       {leftIcon && leftIcon}
       {children}
       {rightIcon && rightIcon}

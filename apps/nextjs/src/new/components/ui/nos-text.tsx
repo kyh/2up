@@ -1,13 +1,14 @@
-import React, { HTMLAttributes } from "react";
-import { Slot, SlotProps } from "@radix-ui/react-slot";
-import { cva, VariantProps } from "class-variance-authority";
+import type { HTMLAttributes } from "react";
+import React from "react";
+import type { SlotProps } from "@radix-ui/react-slot";
+import { Slot } from "@radix-ui/react-slot";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 
-interface TextProps
-  extends HTMLAttributes<HTMLSpanElement | SlotProps>,
-    VariantProps<typeof textStyles> {
+type TextProps = {
   variant?: "success" | "primary" | "error" | "disabled" | "warning";
   asChild?: boolean;
-}
+} & HTMLAttributes<HTMLSpanElement | SlotProps> & VariantProps<typeof textStyles>
 
 const textStyles = cva("text-base", {
   variants: {

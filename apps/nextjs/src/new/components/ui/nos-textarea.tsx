@@ -1,5 +1,7 @@
-import React, { HTMLAttributes } from "react";
-import { cva, VariantProps } from "class-variance-authority";
+import type { HTMLAttributes } from "react";
+import React from "react";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 
 const containerStyles = cva("mb-3 flex w-full flex-col flex-nowrap text-base", {
   variants: {
@@ -49,13 +51,13 @@ type CombinedVariantProps = VariantProps<typeof containerStyles> &
   VariantProps<typeof inputStyles> &
   VariantProps<typeof spanStyles>;
 
-interface NostalgicTextareaProps extends HTMLAttributes<HTMLDivElement> {
+type NostalgicTextareaProps = {
   name: string;
   label: string;
   variant?: CombinedVariantProps["variant"];
   id: string;
   placeholder?: string;
-}
+} & HTMLAttributes<HTMLDivElement>
 
 const NostalgicTextarea: React.FC<NostalgicTextareaProps> = ({
   name,
