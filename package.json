@@ -19,6 +19,7 @@
     "dev": "turbo dev --parallel",
     "dev:nextjs": "turbo dev --filter=@2up/nextjs",
     "dev:expo": "turbo dev --filter=@2up/expo",
+    "dev:storybook": "turbo storybook --filter=@2up/storybook",
     "format": "turbo format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "turbo format --continue -- --write --cache --cache-location .cache/.prettiercache",
     "lint": "turbo lint --continue -- --cache --cache-location .cache/.eslintcache",

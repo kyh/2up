@@ -72,6 +72,10 @@
     },
     "//#clean": {
       "cache": false
+    },
+    "storybook": {
+      "persistent": true,
+      "cache": false
     }
   }
 }
