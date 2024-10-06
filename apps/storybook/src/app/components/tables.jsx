@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Table } from "./ui/table";
+import { Table } from "@2up/ui/ui/table";
 
 export default function Tables() {
   const tabledata = {

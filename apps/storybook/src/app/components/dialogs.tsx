@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Button } from "./ui/button";
+import { Button } from "@2up/ui/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
+} from "@2up/ui/ui/dialog";
 
 export default function Dialogs() {
   return (

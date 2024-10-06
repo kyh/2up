@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Progress } from "./ui/progress";
+import { Progress } from "@2up/ui/ui/progress";
 
 export default function ProgressComponents() {
   return (

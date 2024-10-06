@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "@2up/ui/ui/checkbox";
 
 export default function Checkboxs() {
   return (

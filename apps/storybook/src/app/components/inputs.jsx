@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Input } from "./ui/input";
+import { Input } from "@2up/ui/ui/input";
 
 export default function Inputs() {
   return (

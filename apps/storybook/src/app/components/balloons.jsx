@@ -1,8 +1,6 @@
 import React from "react";
-
-import bcrikkoIcon from "./icons/bcrikko-icon";
-import { Balloon } from "./ui/balloon";
-import { Container } from "./ui/container";
+import { Balloon } from "@2up/ui/ui/balloon";
+import { Container } from "@2up/ui/ui/container";
 
 export default function Balloons() {
   return (
@@ -13,7 +11,6 @@ export default function Balloons() {
 
       <Container>
         <div className="flex gap-4">
-          <div className="relative h-24 w-24 self-end">{bcrikkoIcon}</div>
           <Balloon variant="normal" from="left">
             Hello World.css
           </Balloon>
@@ -22,13 +19,11 @@ export default function Balloons() {
           <Balloon variant="normal" from="right">
             Good morning. Thou hast had a good night's sleep, I hope.
           </Balloon>
-          <div className="relative h-24 w-24 self-end">{bcrikkoIcon}</div>
         </div>
       </Container>
 
       <Container variant="dark">
         <div className="flex gap-4">
-          <div className="relative h-24 w-24 self-end">{bcrikkoIcon}</div>
           <Balloon variant="dark" from="left">
             Hello World.css
           </Balloon>
@@ -37,7 +32,6 @@ export default function Balloons() {
           <Balloon variant="dark" from="right">
             Good morning. Thou hast had a good night's sleep, I hope.
           </Balloon>
-          <div className="relative h-24 w-24 self-end">{bcrikkoIcon}</div>
         </div>
       </Container>
     </div>

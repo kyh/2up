@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Container } from "./ui/container";
+import { Container } from "@2up/ui/ui/container";
 
 export default function Containers() {
   return (

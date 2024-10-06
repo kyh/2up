@@ -1,6 +1,5 @@
 import React from "react";
-
-import { List } from "./ui/list";
+import { List } from "@2up/ui/ui/list";
 
 export default function Texts() {
   const listdata = [

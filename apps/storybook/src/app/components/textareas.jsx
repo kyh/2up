@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "@2up/ui/ui/textarea";
 
 export default function NosTextarea() {
   return (

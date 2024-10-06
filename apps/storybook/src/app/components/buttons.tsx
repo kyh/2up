@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Button } from "./ui/button";
+import { Button } from "@2up/ui/ui/button";
 
 export default function Buttons() {
   return (

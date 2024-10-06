@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Select } from "./ui/select";
+import { Select } from "@2up/ui/ui/select";
 
 export default function SelectComponents() {
   return (

@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Text } from "./ui/text";
+import { Text } from "@2up/ui/ui/text";
 
 export default function Texts() {
   return (

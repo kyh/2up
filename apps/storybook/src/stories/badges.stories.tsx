@@ -1,8 +1,21 @@
-import React from "react";
 import { Badge } from "@2up/ui/ui/badge";
 
-export default function Badges() {
-  return (
+import type { Meta, StoryObj } from "@storybook/react";
+
+const meta = {
+  title: "Badges",
+  component: Badge,
+  parameters: {
+    layout: "centered",
+  },
+} satisfies Meta<typeof Badge>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Badges: Story = {
+  render: () => (
     <div className="relative box-border flex max-w-full flex-wrap gap-5 border-4 border-black p-10">
       <span className="absolute left-10 top-[-12px] bg-white px-2 text-black">
         Badges
@@ -33,5 +46,5 @@ export default function Badges() {
         <Badge variant="warning" label="text" size="medium" />
       </div>
     </div>
-  );
-}
+  ),
+};

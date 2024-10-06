@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Radio } from "./ui/radio";
+import { Radio } from "@2up/ui/ui/radio";
 
 export default function Radios() {
   return (

@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Cursor } from "./ui/cursor";
+import { Cursor } from "@2up/ui/ui/cursor";
 
 export default function Cursors() {
   return (

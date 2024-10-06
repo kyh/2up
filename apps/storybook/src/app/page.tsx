@@ -1,4 +1,8 @@
 import React from "react";
+import { Button } from "@2up/ui/ui/button";
+import { Container } from "@2up/ui/ui/container";
+import { IconButton } from "@2up/ui/ui/icon-button";
+import { Input } from "@2up/ui/ui/input";
 
 import ArrowRightIcon from "@/public/icons/arrow-right.svg";
 import ChevronLeft from "@/public/icons/chevron-left.svg";
@@ -8,10 +12,6 @@ import KeyIcon from "@/public/icons/key.svg";
 import LightbuldIcon from "@/public/icons/lightbulb.svg";
 import ProfileIcon from "@/public/icons/profile.svg";
 import SearchIcon from "@/public/icons/search.svg";
-import { Button } from "./components/ui/button";
-import { Container } from "./components/ui/container";
-import { IconButton } from "./components/ui/icon-button";
-import { Input } from "./components/ui/input";
 
 export default function DiscoveryPage() {
   return (
