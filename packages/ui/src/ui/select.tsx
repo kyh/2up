@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { cva } from "class-variance-authority";
 import clsx from "clsx";
 
-import { cn } from "@/lib/utils";
+import { cn } from "../utils";
 import { Borders } from "./borders";
 
 const selectContainerStyles = cva("", {

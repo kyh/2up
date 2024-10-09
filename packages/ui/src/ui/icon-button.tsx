@@ -1,9 +1,9 @@
+import type { VariantProps } from "class-variance-authority";
 import type { ButtonHTMLAttributes } from "react";
 import React from "react";
-import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
-import { cn } from "@/lib/utils";
+import { cn } from "../utils";
 
 const iconButtonStyles = cva(
   "relative flex items-center justify-center rounded-full",
@@ -15,16 +15,16 @@ const iconButtonStyles = cva(
         success:
           "border-success-border bg-success text-success-text shadow-success-shadow hover:bg-success-hover hover:shadow-success-shadow focus:outline-success-outline active:shadow-success-shadow",
         primary:
-          "border-primary-border bg-primary text-primary-text shadow-primary-shadow hover:bg-primary-hover hover:shadow-primary-shadow focus:outline-primary-outline active:shadow-primary-shadow",
+          "border-primary-border text-primary-text shadow-primary-shadow hover:bg-primary-hover hover:shadow-primary-shadow focus:outline-primary-outline active:shadow-primary-shadow bg-primary",
         error:
           "border-error-border bg-error text-error-text shadow-error-shadow hover:bg-error-hover hover:shadow-error-shadow focus:outline-error-outline active:shadow-error-shadow",
         disabled:
-          "cursor-not-allowed border-disabled-border bg-disabled text-disabled-text shadow-disabled-shadow",
+          "border-disabled-border bg-disabled text-disabled-text shadow-disabled-shadow cursor-not-allowed",
         warning:
           "border-warning-border bg-warning text-warning-text shadow-warning-shadow hover:bg-warning-hover hover:shadow-warning-shadow focus:outline-warning-outline active:shadow-warning-shadow",
         file: "border-normal-border bg-normal text-normal-text shadow-normal-shadow hover:bg-normal-hover hover:shadow-normal-shadow focus:outline-normal-outline active:shadow-normal-shadow",
         transparent:
-          "bg-transparent hover:bg-normal-hover hover:shadow-normal-shadow focus:outline-normal-outline active:shadow-normal-shadow",
+          "hover:bg-normal-hover hover:shadow-normal-shadow focus:outline-normal-outline active:shadow-normal-shadow bg-transparent",
       },
       size: {
         default: "size-10 text-sm",
@@ -41,7 +41,8 @@ const iconButtonStyles = cva(
 
 type IconButtonProps = {
   icon: React.ReactNode;
-} & ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof iconButtonStyles>
+} & ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof iconButtonStyles>;
 
 export const IconButton = ({
   variant,

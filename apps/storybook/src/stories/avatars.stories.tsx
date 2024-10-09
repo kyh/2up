@@ -4,11 +4,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
   title: "Avatars",
-  component: Avatar,
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof Avatar>;
+} satisfies Meta;
 
 export default meta;
 

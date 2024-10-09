@@ -6,7 +6,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cva } from "class-variance-authority";
 import clsx from "clsx";
 
-import { cn } from "@/lib/utils";
+import { cn } from "../utils";
 import { CornerShapes } from "./corners";
 
 type DialogProps = VariantProps<typeof dialogStyles> &

@@ -4,11 +4,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
   title: "Badges",
-  component: Badge,
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof Badge>;
+} satisfies Meta;
 
 export default meta;
 

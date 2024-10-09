@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@2up/ui/ui/button";
 import {
   Dialog,
@@ -10,8 +9,21 @@ import {
   DialogTrigger,
 } from "@2up/ui/ui/dialog";
 
-export default function Dialogs() {
-  return (
+import type { Meta, StoryObj } from "@storybook/react";
+
+const meta = {
+  title: "Dialogs",
+  parameters: {
+    layout: "centered",
+  },
+} satisfies Meta;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Dialogs: Story = {
+  render: () => (
     <div className="relative box-border flex max-w-full flex-col flex-wrap border-4 border-black p-10">
       <span className="absolute left-10 top-[-12px] bg-white px-2 text-black">
         Dialogs
@@ -106,5 +118,5 @@ export default function Dialogs() {
         </DialogContent>
       </Dialog>
     </div>
-  );
-}
+  ),
+};

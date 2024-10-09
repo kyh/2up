@@ -2,7 +2,7 @@ import type { VariantProps } from "class-variance-authority";
 import React from "react";
 import { cva } from "class-variance-authority";
 
-import { cn } from "@/lib/utils";
+import { cn } from "../utils";
 import { Borders } from "./borders";
 
 const inputContainerStyles = cva("mb-3 flex w-full flex-nowrap text-base", {

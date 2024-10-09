@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
 import type { VariantProps } from "class-variance-authority";
+import React, { useState } from "react";
 import { cva } from "class-variance-authority";
 
-import { cn } from "@/lib/utils";
+import { cn } from "../utils";
 
 const checkboxStyles = cva("m-5 cursor-pointer text-base", {
   variants: {
     variant: {
-      normal: "group text-dark",
+      normal: "text-dark group",
       dark: "text-light",
     },
   },
@@ -19,7 +19,7 @@ const checkboxStyles = cva("m-5 cursor-pointer text-base", {
 });
 
 const iconBoxShadowStyles = cva(
-  "logo absolute -left-8 -top-[3px] h-[2px] w-[2px] -translate-y-1/2 transform group-active:text-dark-888",
+  "logo group-active:text-dark-888 absolute -left-8 -top-[3px] h-[2px] w-[2px] -translate-y-1/2 transform",
   {
     variants: {
       isChecked: {
