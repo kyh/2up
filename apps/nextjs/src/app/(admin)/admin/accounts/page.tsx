@@ -9,7 +9,8 @@ export const metadata = {
   title: `Accounts`,
 };
 
-const Page = async ({ searchParams }: { searchParams: SearchParams }) => {
+const Page = async (props: { searchParams: Promise<SearchParams> }) => {
+  const searchParams = await props.searchParams;
   void api.admin.getAccounts.prefetch(searchParams);
 
   return (

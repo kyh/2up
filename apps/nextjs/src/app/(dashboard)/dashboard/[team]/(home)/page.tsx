@@ -10,13 +10,11 @@ type Params = {
 
 type SearchParams = GetTaskListInput;
 
-const Page = async ({
-  params,
-  searchParams,
-}: {
-  params: Params;
-  searchParams: SearchParams;
+const Page = async (props: {
+  params: Promise<Params>;
+  searchParams: Promise<SearchParams>;
 }) => {
+  const params = await props.params;
   const { account } = await api.account.teamWorkspace({
     slug: params.team,
   });

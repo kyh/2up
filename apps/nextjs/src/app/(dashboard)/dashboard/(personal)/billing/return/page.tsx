@@ -5,9 +5,9 @@ import { api } from "@/trpc/server";
 import { BillingSessionStatus } from "../_components/billing-session-status";
 
 type SessionPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     session_id: string;
-  };
+  }>;
 };
 
 const LazyEmbeddedCheckout = dynamic(
@@ -23,7 +23,8 @@ const LazyEmbeddedCheckout = dynamic(
   },
 );
 
-const Page = async ({ searchParams }: SessionPageProps) => {
+const Page = async (props: SessionPageProps) => {
+  const searchParams = await props.searchParams;
   const sessionId = searchParams.session_id;
 
   if (!sessionId) {

@@ -25,12 +25,13 @@ import { AdminReactivateUserDialog } from "@/app/(admin)/_components/admin-react
 import { api } from "@/trpc/server";
 
 type Params = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export const generateMetadata = async ({ params }: Params) => {
+export const generateMetadata = async (props: Params) => {
+  const params = await props.params;
   const account = await api.admin.getAccount({ accountId: params.id });
 
   return {
@@ -38,7 +39,8 @@ export const generateMetadata = async ({ params }: Params) => {
   };
 };
 
-const Page = async ({ params }: Params) => {
+const Page = async (props: Params) => {
+  const params = await props.params;
   const account = await api.admin.getAccount({ accountId: params.id });
 
   return (

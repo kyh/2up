@@ -35,10 +35,11 @@ const getTeamAccountPageLinks = (slug: string) => {
   ];
 };
 
-const Layout = async ({
-  children,
-  params,
-}: React.PropsWithChildren<{ params: Params }>) => {
+const Layout = async (props: React.PropsWithChildren<{ params: Params }>) => {
+  const params = await props.params;
+
+  const { children } = props;
+
   const { account: teamAccount } = await api.account.teamWorkspace({
     slug: params.team,
   });

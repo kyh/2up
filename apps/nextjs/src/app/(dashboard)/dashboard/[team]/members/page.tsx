@@ -11,7 +11,8 @@ type Params = {
   team: string;
 };
 
-const Page = async ({ params }: { params: Params }) => {
+const Page = async (props: { params: Promise<Params> }) => {
+  const params = await props.params;
   const { account, user } = await api.account.teamWorkspace({
     slug: params.team,
   });

@@ -5,7 +5,8 @@ import { TasksTable } from "./_components/tasks-table";
 
 type SearchParams = GetTaskListInput;
 
-const Page = async ({ searchParams }: { searchParams: SearchParams }) => {
+const Page = async (props: { searchParams: Promise<SearchParams> }) => {
+  const searchParams = await props.searchParams;
   void api.task.getTaskList.prefetch({
     ...searchParams,
   });

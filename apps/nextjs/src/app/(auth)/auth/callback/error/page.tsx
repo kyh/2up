@@ -3,13 +3,14 @@ import { redirect } from "next/navigation";
 import { Button } from "@init/ui/button";
 
 type Params = {
-  searchParams: {
+  searchParams: Promise<{
     error: string;
     invite_token: string;
-  };
+  }>;
 };
 
-const AuthCallbackErrorPage = ({ searchParams }: Params) => {
+const AuthCallbackErrorPage = async (props: Params) => {
+  const searchParams = await props.searchParams;
   const { error, invite_token } = searchParams;
   const queryParam = invite_token ? `?invite_token=${invite_token}` : "";
   const signInPath = "/auth/sign-in" + queryParam;
