@@ -88,7 +88,7 @@ const getColumns = (): ColumnDef<Members[0]>[] => [
   {
     header: "Name",
     cell: ({ row }) => {
-      const name = row.original.name ?? row.original.email;
+      const name = row.original.name;
 
       return (
         <div className="flex items-center space-x-2">

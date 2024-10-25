@@ -157,7 +157,7 @@ export const ImageUploadInput = forwardRef<React.ElementRef<"input">, Props>(
                 className={"object-contain"}
                 width={IMAGE_SIZE}
                 height={IMAGE_SIZE}
-                src={state.image!}
+                src={state.image ?? ""}
                 alt={props.alt ?? ""}
               />
             </If>

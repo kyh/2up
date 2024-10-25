@@ -125,7 +125,7 @@ const ImpersonateUserAuthSetter = ({
       .catch((error) => {
         console.error(error);
       });
-  }, [tokens]);
+  }, [setSessionAction, tokens]);
 
   return null;
 };

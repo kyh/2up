@@ -65,7 +65,7 @@ export const CheckoutForm = (props: {
       });
 
       setCheckoutToken(checkoutToken);
-    } catch (error) {
+    } catch {
       toast.error(
         "There was an error requesting checkout. Please try again later.",
       );

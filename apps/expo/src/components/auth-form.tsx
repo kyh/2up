@@ -1,4 +1,4 @@
-import { Alert, Button, Pressable, Text, TextInput, View } from "react-native";
+import { Alert, Button, Text, TextInput, View } from "react-native";
 import { useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 
