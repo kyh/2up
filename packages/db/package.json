@@ -14,20 +14,26 @@
     "supabase": "supabase",
     "start": "supabase status || supabase start",
     "stop": "supabase stop",
-    "reset": "supabase db reset && pnpm typegen",
+    "reset": "supabase db reset",
     "status": "supabase status",
     "test": "supabase db test",
-    "push": "supabase link --project-ref $SUPABASE_PROJECT_REF && supabase db push",
-    "typegen": "supabase gen types typescript --local > src/database.types.ts",
-    "dump": "supabase db dump --local --data-only",
-    "migrate": "supabase db migrate"
+    "//": "supabase link --project-ref $SUPABASE_PROJECT_REF && supabase db push",
+    "push": "pnpm with-env drizzle-kit push",
+    "pull": "pnpm with-env drizzle-kit pull",
+    "generate": "pnpm with-env drizzle-kit generate",
+    "migrate": "pnpm with-env drizzle-kit migrate",
+    "studio": "pnpm with-env drizzle-kit studio",
+    "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.6",
-    "next": "^15.0.1",
-    "react": "^18.3.1",
-    "zod": "^3.23.8"
+    "next": "catalog:",
+    "react": "catalog:",
+    "postgres": "^3.4.5",
+    "drizzle-orm": "^0.35.3",
+    "drizzle-zod": "^0.5.1",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@kyh/eslint-config": "catalog:",
@@ -37,6 +43,7 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "supabase": "^1.207.9",
+    "drizzle-kit": "^0.26.2",
     "typescript": "catalog:"
   },
   "prettier": "@kyh/prettier-config"

@@ -2,11 +2,9 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
-import { createClient } from "@supabase/supabase-js";
 
-import type { Database } from "./database.types";
-import { getServiceRoleKey } from "./get-service-role-key";
-import { getSupabaseClientKeys } from "./get-supabase-client-keys";
+import type { Database } from "./types/database.types";
+import { getSupabaseClientKeys } from "./env/get-supabase-client-keys";
 
 const keys = getSupabaseClientKeys();
 
@@ -33,18 +31,6 @@ export const getSupabaseServerClient = <GenericSchema = Database>() => {
           // user sessions.
         }
       },
-    },
-  });
-};
-
-const serviceRoleKey = getServiceRoleKey();
-
-export const getSupabaseAdminClient = <GenericSchema = Database>() => {
-  return createClient<GenericSchema>(keys.url, serviceRoleKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-      detectSessionInUrl: false,
     },
   });
 };
