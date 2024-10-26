@@ -13,5 +13,6 @@ export default {
   dbCredentials: {
     url: nonPoolingUrl,
   },
+  schemaFilter: ["public"],
   casing: "snake_case",
 } satisfies Config;
