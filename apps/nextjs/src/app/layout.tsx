@@ -5,10 +5,13 @@ import { Toaster } from "@init/ui/toast";
 import { TooltipProvider } from "@init/ui/tooltip";
 import { cn } from "@init/ui/utils";
 
+import { UserProvider } from "@/components/user-provider";
 import { siteConfig } from "@/config/site.config";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import "./globals.css";
+
+import { api } from "@/trpc/server";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -81,7 +84,7 @@ const fontSans = Inter({
   variable: "--font-sans",
 });
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -92,7 +95,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TooltipProvider>
-            <TRPCReactProvider>{children}</TRPCReactProvider>
+            <TRPCReactProvider>
+              <AppLayout>{children}</AppLayout>
+            </TRPCReactProvider>
             <Toaster />
           </TooltipProvider>
         </ThemeProvider>
@@ -101,4 +106,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default Layout;
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
+  const userPromise = api.auth.me();
+  return <UserProvider userPromise={userPromise}>{children}</UserProvider>;
+};
+
+export default RootLayout;

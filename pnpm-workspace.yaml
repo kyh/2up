@@ -10,10 +10,10 @@ catalog:
   "tailwindcss": ^3.4.14
   "react": ^18.3.1
   "react-dom": ^18.3.1
-  "next": ^15.0.1
+  "next": ^15.0.2
   "@types/react": ^18.3.12
   "@types/react-dom": ^18.3.1
-  "@types/node": ^22.8.1
+  "@types/node": ^22.8.4
   "@kyh/eslint-config": ^1.0.9
   "@kyh/prettier-config": ^1.0.9
   "@kyh/tsconfig": ^1.0.9

@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+import type { User } from "@supabase/supabase-js";
+
+export type { User };
+
 export const signUpInput = z.object({
   email: z.string().email(),
   password: z.string(),

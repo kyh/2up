@@ -1,14 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { buttonVariants } from "@init/ui/button";
 import { cn } from "@init/ui/utils";
 
-import type { RouterOutputs } from "@init/api";
+import { useUser } from "@/components/user-provider";
 
-type HeaderProps = {
-  user: RouterOutputs["account"]["me"];
-};
+export const Header = () => {
+  const { user } = useUser();
 
-export const Header = ({ user }: HeaderProps) => {
   return (
     <div className="mx-auto w-full justify-center">
       <div className="border-t-none mx-auto flex w-full max-w-7xl items-center justify-between border border-border px-8 py-4 md:p-8">
