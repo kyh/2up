@@ -1,13 +1,8 @@
 import { relations, sql } from "drizzle-orm";
-import { pgEnum, pgSchema, pgTable, primaryKey } from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, primaryKey } from "drizzle-orm/pg-core";
+import { authUsers } from "drizzle-orm/supabase";
 
-const authSchema = pgSchema("auth");
-
-const users = authSchema.table("users", (t) => ({
-  id: t.uuid().primaryKey(),
-}));
-
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(authUsers, ({ many }) => ({
   teamMembers: many(teamMembers),
   invitationsSent: many(invitations),
 }));
@@ -42,7 +37,7 @@ export const teamMembers = pgTable(
     userId: t
       .uuid()
       .notNull()
-      .references(() => users.id),
+      .references(() => authUsers.id),
     teamId: t
       .uuid()
       .notNull()
@@ -61,9 +56,9 @@ export const teamMembers = pgTable(
 );
 
 export const teamMembersRelations = relations(teamMembers, ({ one }) => ({
-  user: one(users, {
+  user: one(authUsers, {
     fields: [teamMembers.userId],
-    references: [users.id],
+    references: [authUsers.id],
   }),
   team: one(teams, {
     fields: [teamMembers.teamId],
@@ -82,7 +77,7 @@ export const invitations = pgTable("invitations", (t) => ({
   invitedBy: t
     .uuid()
     .notNull()
-    .references(() => users.id),
+    .references(() => authUsers.id),
   invitedAt: t
     .timestamp({ mode: "date", withTimezone: true })
     .notNull()
@@ -95,9 +90,9 @@ export const invitationsRelations = relations(invitations, ({ one }) => ({
     fields: [invitations.teamId],
     references: [teams.id],
   }),
-  invitedBy: one(users, {
+  invitedBy: one(authUsers, {
     fields: [invitations.invitedBy],
-    references: [users.id],
+    references: [authUsers.id],
   }),
 }));
 
@@ -123,7 +118,7 @@ export const tasks = pgTable("tasks", (t) => ({
     .uuid()
     .notNull()
     .references(() => teams.id),
-  userId: t.uuid().references(() => users.id),
+  userId: t.uuid().references(() => authUsers.id),
   slug: t.text(),
   title: t.text(),
   status: taskStatus().default("todo").notNull(),
@@ -143,9 +138,9 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
     fields: [tasks.teamId],
     references: [teams.id],
   }),
-  user: one(users, {
+  user: one(authUsers, {
     fields: [tasks.userId],
-    references: [users.id],
+    references: [authUsers.id],
   }),
 }));
 
@@ -163,7 +158,7 @@ export const notificationType = pgEnum("notification_type", [
 
 export const notifications = pgTable("notifications", (t) => ({
   id: t.uuid().notNull().primaryKey().defaultRandom(),
-  userId: t.uuid().references(() => users.id),
+  userId: t.uuid().references(() => authUsers.id),
   type: notificationType().default("info").notNull(),
   body: t.varchar({ length: 5000 }).notNull(),
   link: t.varchar({ length: 255 }),
@@ -182,9 +177,9 @@ export const notifications = pgTable("notifications", (t) => ({
 }));
 
 export const notificationsRelations = relations(notifications, ({ one }) => ({
-  user: one(users, {
+  user: one(authUsers, {
     fields: [notifications.userId],
-    references: [users.id],
+    references: [authUsers.id],
   }),
 }));
 
@@ -192,14 +187,14 @@ export const waitlistType = pgEnum("waitlist_type", ["app"]);
 
 export const waitlist = pgTable("waitlist", (t) => ({
   id: t.uuid().notNull().primaryKey().defaultRandom(),
-  userId: t.uuid().references(() => users.id),
+  userId: t.uuid().references(() => authUsers.id),
   type: waitlistType().default("app").notNull(),
   email: t.text().unique(),
 }));
 
 export const waitlistRelations = relations(waitlist, ({ one }) => ({
-  user: one(users, {
+  user: one(authUsers, {
     fields: [waitlist.userId],
-    references: [users.id],
+    references: [authUsers.id],
   }),
 }));
