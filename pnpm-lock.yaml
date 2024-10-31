@@ -7,14 +7,14 @@ settings:
 catalogs:
   default:
     '@kyh/eslint-config':
-      specifier: ^1.0.9
-      version: 1.0.9
+      specifier: ^1.0.10
+      version: 1.0.10
     '@kyh/prettier-config':
-      specifier: ^1.0.9
-      version: 1.0.9
+      specifier: ^1.0.10
+      version: 1.0.10
     '@kyh/tsconfig':
-      specifier: ^1.0.9
-      version: 1.0.9
+      specifier: ^1.0.10
+      version: 1.0.10
     '@tanstack/react-query':
       specifier: ^5.59.16
       version: 5.59.16
@@ -70,7 +70,7 @@ importers:
     devDependencies:
       '@kyh/prettier-config':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@turbo/gen':
         specifier: ^2.2.3
         version: 2.2.3(@types/node@22.8.6)(typescript@5.6.3)
@@ -182,13 +182,13 @@ importers:
         version: link:../../packages/tailwind
       '@kyh/eslint-config':
         specifier: 'catalog:'
-        version: 1.0.9(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
+        version: 1.0.10(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
       '@kyh/prettier-config':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@kyh/tsconfig':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
@@ -267,13 +267,13 @@ importers:
         version: link:../../packages/tailwind
       '@kyh/eslint-config':
         specifier: 'catalog:'
-        version: 1.0.9(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
+        version: 1.0.10(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
       '@kyh/prettier-config':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@kyh/tsconfig':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@tanstack/react-query-devtools':
         specifier: 'catalog:'
         version: 5.59.16(@tanstack/react-query@5.59.16(react@18.3.1))(react@18.3.1)
@@ -325,13 +325,13 @@ importers:
     devDependencies:
       '@kyh/eslint-config':
         specifier: 'catalog:'
-        version: 1.0.9(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
+        version: 1.0.10(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
       '@kyh/prettier-config':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@kyh/tsconfig':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       eslint:
         specifier: 'catalog:'
         version: 9.13.0(jiti@1.21.6)
@@ -368,13 +368,13 @@ importers:
     devDependencies:
       '@kyh/eslint-config':
         specifier: 'catalog:'
-        version: 1.0.9(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
+        version: 1.0.10(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
       '@kyh/prettier-config':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@kyh/tsconfig':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@types/react':
         specifier: 'catalog:'
         version: 18.3.12
@@ -438,13 +438,13 @@ importers:
     devDependencies:
       '@kyh/eslint-config':
         specifier: 'catalog:'
-        version: 1.0.9(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
+        version: 1.0.10(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
       '@kyh/prettier-config':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@kyh/tsconfig':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       eslint:
         specifier: 'catalog:'
         version: 9.13.0(jiti@1.21.6)
@@ -459,13 +459,13 @@ importers:
     devDependencies:
       '@kyh/eslint-config':
         specifier: 'catalog:'
-        version: 1.0.9(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
+        version: 1.0.10(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
       '@kyh/prettier-config':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@kyh/tsconfig':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@tailwindcss/typography':
         specifier: ^0.5.15
         version: 0.5.15(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.8.6)(typescript@5.6.3)))
@@ -548,8 +548,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       lucide-react:
-        specifier: ^0.453.0
-        version: 0.453.0(react@18.3.1)
+        specifier: ^0.454.0
+        version: 0.454.0(react@18.3.1)
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -574,13 +574,13 @@ importers:
         version: link:../tailwind
       '@kyh/eslint-config':
         specifier: 'catalog:'
-        version: 1.0.9(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
+        version: 1.0.10(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
       '@kyh/prettier-config':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@kyh/tsconfig':
         specifier: 'catalog:'
-        version: 1.0.9
+        version: 1.0.10
       '@types/react':
         specifier: 'catalog:'
         version: 18.3.12
@@ -2181,14 +2181,14 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@kyh/eslint-config@1.0.9':
-    resolution: {integrity: sha512-uzmqPYyVyHuzvs0mbUSAjeV3Ug00NFO32+o5gCt3683oRLuo/GL9egey0Bx00eRkfTfUBt2i6mL959R6xVFTYw==}
+  '@kyh/eslint-config@1.0.10':
+    resolution: {integrity: sha512-ctnT2I7iILmCf+msZsPOEoMiYGHXTjHQPeK0qn8w3oUBaz8WNzWTnMAHzx9GKljJdqPxTavYE7h07+DwjTE19w==}
 
-  '@kyh/prettier-config@1.0.9':
-    resolution: {integrity: sha512-x+nQIOmOQRIFW0gTlSqXoIrWqmiFxhI0+4TTqKkh8hcEZsPzgM5LEma+i1Gcy4zqMqxMG4R52jUv+kVhHA8esg==}
+  '@kyh/prettier-config@1.0.10':
+    resolution: {integrity: sha512-RG81i1sHelGhRG/BgXdxbAmE9v+937t7cW8+bu58ngwchIOvpMEuEAttvMsaFnS1JGwZAvcPzqadKmgUql0M8g==}
 
-  '@kyh/tsconfig@1.0.9':
-    resolution: {integrity: sha512-mQct/6rZoF5BJ1SsDOkpFvTv2fTYwN9eHEGU3M2WQ6MlG4CYz4lNCqEGnpSvpMuxwBadYZ7ha5cQpINpID5wQA==}
+  '@kyh/tsconfig@1.0.10':
+    resolution: {integrity: sha512-86gSHXbxEntBripxLj+VjSNRT0ax0mRkr/PoCyioZ1P/qU9R08MPnwoGd4U1AD4iz5AC4fddCcJTiDWQw+DyeQ==}
 
   '@libsql/client-wasm@0.14.0':
     resolution: {integrity: sha512-gB/jtz0xuwrqAHApBv9e9JSew2030Fhj2edyZ83InZ4yPj/Q2LTUlEhaspEYT0T0xsAGqPy38uGrmq/OGS+DdQ==}
@@ -5807,8 +5807,8 @@ packages:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
 
-  lucide-react@0.453.0:
-    resolution: {integrity: sha512-kL+RGZCcJi9BvJtzg2kshO192Ddy9hv3ij+cPrVPWSRzgCWCVazoQJxOjAwgK53NomL07HB7GPHW120FimjNhQ==}
+  lucide-react@0.454.0:
+    resolution: {integrity: sha512-hw7zMDwykCLnEzgncEEjHeA6+45aeEzRYuKHuyRSOPkhko+J3ySGjGIzu+mmMfDFG1vazHepMaYFYHbTFAZAAQ==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
 
@@ -10044,7 +10044,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@kyh/eslint-config@1.0.9(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)':
+  '@kyh/eslint-config@1.0.10(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)':
     dependencies:
       '@eslint/compat': 1.2.2(eslint@9.13.0(jiti@1.21.6))
       '@next/eslint-plugin-next': 15.0.2
@@ -10062,7 +10062,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@kyh/prettier-config@1.0.9':
+  '@kyh/prettier-config@1.0.10':
     dependencies:
       '@ianvs/prettier-plugin-sort-imports': 4.3.1(prettier@3.3.3)
       prettier: 3.3.3
@@ -10086,7 +10086,7 @@ snapshots:
       - prettier-plugin-svelte
       - supports-color
 
-  '@kyh/tsconfig@1.0.9': {}
+  '@kyh/tsconfig@1.0.10': {}
 
   '@libsql/client-wasm@0.14.0':
     dependencies:
@@ -14392,7 +14392,7 @@ snapshots:
 
   lru-cache@7.18.3: {}
 
-  lucide-react@0.453.0(react@18.3.1):
+  lucide-react@0.454.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 
