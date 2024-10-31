@@ -1,4 +1,3 @@
--- Current sql file was generated after introspecting the database
 DROP TYPE IF EXISTS "public"."notification_channel" CASCADE;--> statement-breakpoint
 DROP TYPE IF EXISTS "public"."notification_type" CASCADE;--> statement-breakpoint
 DROP TYPE IF EXISTS "public"."task_label" CASCADE;--> statement-breakpoint
@@ -11,19 +10,6 @@ CREATE TYPE "public"."task_label" AS ENUM('bug', 'feature', 'enhancement', 'docu
 CREATE TYPE "public"."task_priority" AS ENUM('low', 'medium', 'high');--> statement-breakpoint
 CREATE TYPE "public"."task_status" AS ENUM('todo', 'in-progress', 'done', 'canceled');--> statement-breakpoint
 CREATE TYPE "public"."waitlist_type" AS ENUM('app');--> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "tasks" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"team_id" uuid NOT NULL,
-	"user_id" uuid,
-	"slug" text,
-	"title" text,
-	"status" "task_status" DEFAULT 'todo' NOT NULL,
-	"label" "task_label" DEFAULT 'bug' NOT NULL,
-	"priority" "task_priority" DEFAULT 'low' NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"updated_at" timestamp with time zone
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "invitations" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"team_id" uuid NOT NULL,
@@ -45,6 +31,27 @@ CREATE TABLE IF NOT EXISTS "notifications" (
 	"expires_at" timestamp with time zone DEFAULT (now() + '1 mon'::interval),
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "tasks" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"team_id" uuid NOT NULL,
+	"user_id" uuid,
+	"slug" text,
+	"title" text,
+	"status" "task_status" DEFAULT 'todo' NOT NULL,
+	"label" "task_label" DEFAULT 'bug' NOT NULL,
+	"priority" "task_priority" DEFAULT 'low' NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "team_members" (
+	"user_id" uuid NOT NULL,
+	"team_id" uuid NOT NULL,
+	"role" varchar(50) NOT NULL,
+	"joined_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "team_members_user_id_team_id_pk" PRIMARY KEY("user_id","team_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "teams" (
@@ -71,26 +78,6 @@ CREATE TABLE IF NOT EXISTS "waitlist" (
 	CONSTRAINT "waitlist_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "team_members" (
-	"user_id" uuid NOT NULL,
-	"team_id" uuid NOT NULL,
-	"role" varchar(50) NOT NULL,
-	"joined_at" timestamp with time zone DEFAULT now() NOT NULL,
-	CONSTRAINT "team_members_user_id_team_id_pk" PRIMARY KEY("user_id","team_id")
-);
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "tasks" ADD CONSTRAINT "tasks_team_id_teams_id_fk" FOREIGN KEY ("team_id") REFERENCES "public"."teams"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "tasks" ADD CONSTRAINT "tasks_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "invitations" ADD CONSTRAINT "invitations_team_id_teams_id_fk" FOREIGN KEY ("team_id") REFERENCES "public"."teams"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
@@ -110,7 +97,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "waitlist" ADD CONSTRAINT "waitlist_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "tasks" ADD CONSTRAINT "tasks_team_id_teams_id_fk" FOREIGN KEY ("team_id") REFERENCES "public"."teams"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "tasks" ADD CONSTRAINT "tasks_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -123,6 +116,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "team_members" ADD CONSTRAINT "team_members_team_id_teams_id_fk" FOREIGN KEY ("team_id") REFERENCES "public"."teams"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "waitlist" ADD CONSTRAINT "waitlist_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
