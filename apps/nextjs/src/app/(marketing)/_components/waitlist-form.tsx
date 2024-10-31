@@ -13,7 +13,6 @@ import {
 } from "@init/ui/form";
 import { toast } from "@init/ui/toast";
 
-import type { TRPCError } from "@/trpc/react";
 import type { JoinWaitlistInput } from "@init/api/waitlist/waitlist-schema";
 import { api } from "@/trpc/react";
 
@@ -27,12 +26,15 @@ export const WaitlistForm = () => {
     },
   });
 
-  const handleJoinWaitlist = async (values: JoinWaitlistInput) => {
-    toast.promise(joinWaitlist.mutateAsync({ email: values.email }), {
-      loading: "Submitting...",
-      success: "Waitlist joined!",
-      error: "Failed to join waitlist",
-    });
+  const handleJoinWaitlist = (values: JoinWaitlistInput) => {
+    toast.promise(
+      joinWaitlist.mutateAsync({ type: "app", email: values.email }),
+      {
+        loading: "Submitting...",
+        success: "Waitlist joined!",
+        error: "Failed to join waitlist",
+      },
+    );
   };
 
   return (

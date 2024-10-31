@@ -75,31 +75,37 @@ export type Database = {
       notifications: {
         Row: {
           body: string
+          channel: Database["public"]["Enums"]["notification_channel"]
           created_at: string
           dismissed: boolean
           expires_at: string | null
           id: string
           link: string | null
+          type: Database["public"]["Enums"]["notification_type"]
           updated_at: string | null
           user_id: string | null
         }
         Insert: {
           body: string
+          channel?: Database["public"]["Enums"]["notification_channel"]
           created_at?: string
           dismissed?: boolean
           expires_at?: string | null
           id?: string
           link?: string | null
+          type?: Database["public"]["Enums"]["notification_type"]
           updated_at?: string | null
           user_id?: string | null
         }
         Update: {
           body?: string
+          channel?: Database["public"]["Enums"]["notification_channel"]
           created_at?: string
           dismissed?: boolean
           expires_at?: string | null
           id?: string
           link?: string | null
+          type?: Database["public"]["Enums"]["notification_type"]
           updated_at?: string | null
           user_id?: string | null
         }
@@ -109,7 +115,10 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          label: Database["public"]["Enums"]["task_label"]
+          priority: Database["public"]["Enums"]["task_priority"]
           slug: string | null
+          status: Database["public"]["Enums"]["task_status"]
           team_id: string
           title: string | null
           updated_at: string | null
@@ -118,7 +127,10 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          label?: Database["public"]["Enums"]["task_label"]
+          priority?: Database["public"]["Enums"]["task_priority"]
           slug?: string | null
+          status?: Database["public"]["Enums"]["task_status"]
           team_id: string
           title?: string | null
           updated_at?: string | null
@@ -127,7 +139,10 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          label?: Database["public"]["Enums"]["task_label"]
+          priority?: Database["public"]["Enums"]["task_priority"]
           slug?: string | null
+          status?: Database["public"]["Enums"]["task_status"]
           team_id?: string
           title?: string | null
           updated_at?: string | null
@@ -215,16 +230,19 @@ export type Database = {
         Row: {
           email: string | null
           id: string
+          type: Database["public"]["Enums"]["waitlist_type"]
           user_id: string | null
         }
         Insert: {
           email?: string | null
           id?: string
+          type?: Database["public"]["Enums"]["waitlist_type"]
           user_id?: string | null
         }
         Update: {
           email?: string | null
           id?: string
+          type?: Database["public"]["Enums"]["waitlist_type"]
           user_id?: string | null
         }
         Relationships: []
