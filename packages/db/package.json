@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
+    ".": "./src/index.ts",
     "./*": "./src/*.ts"
   },
   "scripts": {
@@ -28,9 +29,8 @@
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.1",
-    "@supabase/supabase-js": "^2.46.0",
-    "drizzle-orm": "^0.35.3",
-    "drizzle-zod": "^0.5.1",
+    "@supabase/supabase-js": "^2.46.1",
+    "drizzle-orm": "^0.36.0",
     "next": "catalog:",
     "postgres": "^3.4.5",
     "react": "catalog:",
@@ -41,7 +41,7 @@
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",
     "@types/react": "catalog:",
-    "drizzle-kit": "^0.26.2",
+    "drizzle-kit": "^0.27.0",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "supabase": "^1.207.9",
