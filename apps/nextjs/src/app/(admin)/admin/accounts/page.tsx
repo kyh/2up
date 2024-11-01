@@ -1,7 +1,7 @@
 import type { GetAccountsInput } from "@init/api/admin/admin-schema";
-import { AdminAccountsTable } from "@/app/(admin)/_components/admin-accounts-table";
 import { PageHeader } from "@/components/header";
 import { api, HydrateClient } from "@/trpc/server";
+import { AdminAccountsTable } from "./_components/admin-accounts-table";
 
 type SearchParams = GetAccountsInput;
 

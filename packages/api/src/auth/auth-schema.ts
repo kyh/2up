@@ -7,6 +7,7 @@ export type { User };
 export const signUpInput = z.object({
   email: z.string().email(),
   password: z.string(),
+  inviteToken: z.string().optional(),
 });
 export type SignUpInput = z.infer<typeof signUpInput>;
 
@@ -42,3 +43,4 @@ export const setSessionInput = z.object({
   refreshToken: z.string(),
   accessToken: z.string(),
 });
+export type SetSessionInput = z.infer<typeof setSessionInput>;

@@ -1,11 +1,11 @@
+import { PageHeader } from "@/components/header";
+import { api, HydrateClient } from "@/trpc/server";
 import {
   AccountsCard,
   PayingCustomersCard,
   TeamAccountsCard,
   TrialsCard,
-} from "@/app/(admin)/_components/admin-cards";
-import { PageHeader } from "@/components/header";
-import { api, HydrateClient } from "@/trpc/server";
+} from "./_components/admin-cards";
 
 const Page = () => {
   void api.admin.getDashboardData.prefetch();

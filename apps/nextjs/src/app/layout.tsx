@@ -6,7 +6,7 @@ import { TooltipProvider } from "@init/ui/tooltip";
 import { cn } from "@init/ui/utils";
 
 import { UserProvider } from "@/components/user-provider";
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/lib/site-config";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import "./globals.css";

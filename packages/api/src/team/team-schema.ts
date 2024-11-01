@@ -1,51 +1,130 @@
 import { z } from "zod";
 
-export const TaskLabels = [
-  "bug",
-  "feature",
-  "enhancement",
-  "documentation",
-] as const;
-
-export const TaskPriorites = ["low", "medium", "high"] as const;
-
-export const TaskStatuses = [
-  "todo",
-  "in-progress",
-  "done",
-  "canceled",
-] as const;
-
-export const getTaskInput = z.object({
-  id: z.string(),
+// CREATE
+export const createTeamInput = z.object({
+  name: z.string(),
+  slug: z.string().optional(),
 });
+export type CreateTeamInput = z.infer<typeof createTeamInput>;
 
-export const createTaskInput = z.object({
-  title: z.string(),
-  label: z.enum(TaskLabels).optional(),
-  priority: z.enum(TaskPriorites).optional(),
-  status: z.enum(TaskStatuses).optional(),
-  accountId: z.string().optional(),
+export const createTeamsInput = z.array(createTeamInput);
+export type CreateTeamsInput = z.infer<typeof createTeamsInput>;
+
+export const createTeamMemberInput = z.object({
+  teamId: z.string(),
+  userId: z.string(),
+  role: z.enum(["owner", "admin", "member"]),
 });
-export type CreateTaskInput = z.infer<typeof createTaskInput>;
+export type CreateTeamMemberInput = z.infer<typeof createTeamMemberInput>;
 
-export const getTaskListInput = z.object({
+export const createTeamMembersInput = z.array(createTeamMemberInput);
+export type CreateTeamMembersInput = z.infer<typeof createTeamMembersInput>;
+
+export const createTeamInvitationInput = z.object({
+  teamId: z.string(),
+  email: z.string().email(),
+  role: createTeamMemberInput.shape.role,
+  invitedBy: z.string(),
+  status: z.enum(["pending", "accepted", "rejected"]).default("pending"),
+});
+export type CreateTeamInvitationInput = z.infer<
+  typeof createTeamInvitationInput
+>;
+
+export const createTeamInvitationsInput = z.array(createTeamInvitationInput);
+export type CreateTeamInvitationsInput = z.infer<
+  typeof createTeamInvitationsInput
+>;
+
+// READ
+export const getTeamInput = z
+  .object({
+    id: z.string(),
+  })
+  .required();
+export type GetTeamInput = z.infer<typeof getTeamInput>;
+
+export const getTeamsInput = z.object({
   page: z.string().default("1"),
-  per_page: z.string().default("10"),
-  sort: z.string().default("created_at"),
-  accountId: z.string().optional(),
+  perPage: z.string().default("10"),
+  sort: z
+    .array(
+      z.object({
+        field: createTeamInput.extend({ id: z.string() }).keyof(),
+        direction: z.enum(["asc", "desc"]).default("asc"),
+      }),
+    )
+    .default([{ field: "id", direction: "asc" }]),
+  filter: z
+    .array(
+      z.object({
+        field: createTeamInput.extend({ id: z.string() }).keyof(),
+        value: z.string(),
+      }),
+    )
+    .optional(),
 });
-export type GetTaskListInput = z.infer<typeof getTaskListInput>;
+export type GetTeamsInput = z.infer<typeof getTeamsInput>;
 
-export const updateTaskInput = z.object({
-  id: z.string(),
-  title: z.string().optional(),
-  label: z.enum(TaskLabels).optional(),
-  priority: z.enum(TaskPriorites).optional(),
-  status: z.enum(TaskStatuses).optional(),
-});
-export type UpdateTaskInput = z.infer<typeof updateTaskInput>;
+// UPDATE
+export const updateTeamInput = z
+  .object({
+    id: z.string(),
+  })
+  .merge(createTeamInput);
+export type UpdateTeamInput = z.infer<typeof updateTeamInput>;
 
-export const deleteTaskInput = z.object({
-  ids: z.string().array(),
+export const updateTeamsInput = z.array(updateTeamInput);
+export type UpdateTeamsInput = z.infer<typeof updateTeamsInput>;
+
+export const updateTeamMemberInput = createTeamMemberInput.pick({ role: true });
+export type UpdateTeamMemberInput = z.infer<typeof updateTeamMemberInput>;
+
+export const updateTeamMembersInput = z.array(updateTeamMemberInput);
+export type UpdateTeamMembersInput = z.infer<typeof updateTeamMembersInput>;
+
+export const updateTeamInvitationInput = createTeamInvitationInput.pick({
+  role: true,
+  status: true,
 });
+export type UpdateTeamInvitationInput = z.infer<
+  typeof updateTeamInvitationInput
+>;
+
+export const updateTeamInvitationsInput = z.array(updateTeamInvitationInput);
+export type UpdateTeamInvitationsInput = z.infer<
+  typeof updateTeamInvitationsInput
+>;
+
+// DELETE
+export const deleteTeamInput = z
+  .object({
+    id: z.string(),
+  })
+  .required();
+export type DeleteTeamInput = z.infer<typeof deleteTeamInput>;
+
+export const deleteTeamsInput = z.array(deleteTeamInput);
+export type DeleteTeamsInput = z.infer<typeof deleteTeamsInput>;
+
+export const deleteTeamMemberInput = createTeamMemberInput.pick({
+  teamId: true,
+  userId: true,
+});
+export type DeleteTeamMemberInput = z.infer<typeof deleteTeamMemberInput>;
+
+export const deleteTeamMembersInput = z.array(deleteTeamMemberInput);
+export type DeleteTeamMembersInput = z.infer<typeof deleteTeamMembersInput>;
+
+export const deleteTeamInvitationInput = createTeamInvitationInput.pick({
+  teamId: true,
+  email: true,
+});
+export type DeleteTeamInvitationInput = z.infer<
+  typeof deleteTeamInvitationInput
+>;
+
+export const deleteTeamInvitationsInput = z.array(deleteTeamInvitationInput);
+export type DeleteTeamInvitationsInput = z.infer<
+  typeof deleteTeamInvitationsInput
+>;
