@@ -1,16 +1,30 @@
-import type { Metadata } from "next";
-import React from "react";
+import { Sidebar } from "@/components/sidebar";
 
-import { api, HydrateClient } from "@/trpc/server";
-
-export const metadata: Metadata = {
-  title: "Admin",
+export const metadata = {
+  title: `Super Admin`,
 };
 
-const Layout = ({ children }: React.PropsWithChildren) => {
-  void api.account.userWorkspace.prefetch();
+const pageLinks = [
+  {
+    id: "home",
+    href: "/admin",
+    label: "Home",
+    exact: true,
+  },
+  {
+    id: "accounts",
+    href: "/admin/accounts",
+    label: "Accounts",
+  },
+];
 
-  return <HydrateClient>{children}</HydrateClient>;
+const Layout = ({ children }: React.PropsWithChildren) => {
+  return (
+    <div className="flex min-h-dvh">
+      <Sidebar homeLink="/dashboard" pageLinks={pageLinks} />
+      {children}
+    </div>
+  );
 };
 
 export default Layout;

@@ -15,14 +15,14 @@ import {
 import { BadgeX, Ban, ShieldPlus, VenetianMask } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
-import { AdminBanUserDialog } from "@/app/(admin)/_components/admin-ban-user-dialog";
-import { AdminDeleteAccountDialog } from "@/app/(admin)/_components/admin-delete-account-dialog";
-import { AdminDeleteUserDialog } from "@/app/(admin)/_components/admin-delete-user-dialog";
-import { AdminImpersonateUserDialog } from "@/app/(admin)/_components/admin-impersonate-user-dialog";
-import { AdminMembersTable } from "@/app/(admin)/_components/admin-members-table";
-import { AdminMembershipsTable } from "@/app/(admin)/_components/admin-memberships-table";
-import { AdminReactivateUserDialog } from "@/app/(admin)/_components/admin-reactivate-user-dialog";
 import { api } from "@/trpc/server";
+import { AdminBanUserDialog } from "../_components/admin-ban-user-dialog";
+import { AdminDeleteAccountDialog } from "../_components/admin-delete-account-dialog";
+import { AdminDeleteUserDialog } from "../_components/admin-delete-user-dialog";
+import { AdminImpersonateUserDialog } from "../_components/admin-impersonate-user-dialog";
+import { AdminMembersTable } from "../_components/admin-members-table";
+import { AdminMembershipsTable } from "../_components/admin-memberships-table";
+import { AdminReactivateUserDialog } from "../_components/admin-reactivate-user-dialog";
 
 type Params = {
   params: Promise<{

@@ -1,23 +1,10 @@
-import type { GetTaskListInput } from "@init/api/task/task-schema";
 import { PageHeader } from "@/components/header";
-import { api, HydrateClient } from "@/trpc/server";
-import { TasksTable } from "./_components/tasks-table";
 
-type SearchParams = GetTaskListInput;
-
-const Page = async (props: { searchParams: Promise<SearchParams> }) => {
-  const searchParams = await props.searchParams;
-  void api.task.getTaskList.prefetch({
-    ...searchParams,
-  });
-
+const Page = () => {
   return (
-    <HydrateClient>
-      <main className="flex flex-1 flex-col px-5">
-        <PageHeader>Welcome back</PageHeader>
-        <TasksTable searchParams={searchParams} />
-      </main>
-    </HydrateClient>
+    <main className="flex flex-1 flex-col px-5">
+      <PageHeader>Welcome back</PageHeader>
+    </main>
   );
 };
 

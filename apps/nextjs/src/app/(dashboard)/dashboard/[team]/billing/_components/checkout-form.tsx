@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { getProductPlanPair } from "@init/api/billing/billing-util";
 import { toast } from "@init/ui/toast";
 
-import { billingConfig } from "@/config/billing.config";
+import { billingConfig } from "@/lib/billing-config";
 import { api } from "@/trpc/react";
 import { PlanPicker } from "./plan-picker";
 

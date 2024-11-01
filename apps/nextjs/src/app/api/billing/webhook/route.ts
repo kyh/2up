@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 
-import { billingConfig } from "@/config/billing.config";
+import { billingConfig } from "@/lib/billing-config";
 import { api } from "@/trpc/server";
 
 /**

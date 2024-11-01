@@ -10,6 +10,9 @@ import {
 } from "./auth-schema";
 
 export const authRouter = createTRPCRouter({
+  me: publicProcedure.query(async ({ ctx }) => {
+    return { user: ctx.user };
+  }),
   signUp: publicProcedure
     .input(signUpInput)
     .mutation(async ({ ctx, input }) => {
@@ -27,6 +30,10 @@ export const authRouter = createTRPCRouter({
       // if the user has no identities, it means that the email is taken
       if (identities.length === 0) {
         throw new Error("User already registered");
+      }
+
+      if (!user) {
+        throw new Error("Unable to create user");
       }
 
       return response.data;

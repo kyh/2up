@@ -3,7 +3,7 @@
 import { createElement, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createTeamAccountInput } from "@init/api/account/team-account-schema";
+import { createTeamInput } from "@init/api/team/team-schema";
 import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
 import { Button } from "@init/ui/button";
 import {
@@ -80,11 +80,11 @@ export const Sidebar = ({
   pageLinks: PageLink[];
   currentAccountSlug?: string;
 }) => {
-  const [{ user, account, accounts }] =
-    api.account.userWorkspace.useSuspenseQuery();
+  const [{ user }] = api.auth.me.useSuspenseQuery();
+  const [teams] = api.team.getMyTeams.useSuspenseQuery();
+
   const signOut = api.auth.signOut.useMutation();
-  const [isCreateTeamAccountDialogOpen, setIsCreateTeamAccountDialogOpen] =
-    useState(false);
+  const [isCreateTeamDialogOpen, setIsCreateTeamDialogOpen] = useState(false);
 
   const handleSignOut = async () => {
     await signOut.mutateAsync();
@@ -107,12 +107,9 @@ export const Sidebar = ({
             className="group flex flex-col items-center gap-1 p-2 text-xs"
           >
             <span className="flex size-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
-              {createElement(
-                icons[link.id as keyof typeof icons] ?? icons.home,
-                {
-                  className: "size-4",
-                },
-              )}
+              {createElement(icons[link.id as keyof typeof icons], {
+                className: "size-4",
+              })}
             </span>
             <span>{link.label}</span>
           </NavLink>
@@ -122,10 +119,10 @@ export const Sidebar = ({
         <DropdownMenuTrigger className="mt-auto">
           <Avatar className="size-9">
             <AvatarImage
-              src={account.pictureUrl ?? ""}
-              alt={account.name ?? ""}
+              src={user?.user_metadata.profile_url ?? ""}
+              alt={user?.email ?? ""}
             />
-            <AvatarFallback>{getInitials(account.name ?? "")}</AvatarFallback>
+            <AvatarFallback>{getInitials(user?.email ?? "")}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -137,9 +134,9 @@ export const Sidebar = ({
         >
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">{account.name}</p>
+              <p className="text-sm font-medium leading-none">{user?.email}</p>
               <p className="text-xs leading-none text-muted-foreground">
-                {user.email}
+                {user?.email}
               </p>
             </div>
           </DropdownMenuLabel>
@@ -154,37 +151,22 @@ export const Sidebar = ({
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Switch Teams</DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
-                <DropdownMenuItem asChild>
-                  <Link
-                    href="/dashboard"
-                    className="inline-flex w-full items-center font-normal"
-                  >
-                    <UserIcon className="size-4" />
-                    <span className="ml-2">Personal</span>
-                    <CheckCircleIcon
-                      className={cn(
-                        "ml-auto size-4",
-                        !currentAccountSlug ? "opacity-100" : "opacity-0",
-                      )}
-                    />
-                  </Link>
-                </DropdownMenuItem>
-                {accounts.map((account) => (
-                  <DropdownMenuItem key={account.id} asChild>
+                {teams.map((team) => (
+                  <DropdownMenuItem key={team.id} asChild>
                     <Link
-                      href={`/dashboard/${account.slug}`}
+                      href={`/dashboard/${team.slug}`}
                       className="inline-flex w-full items-center font-normal"
                     >
                       <Avatar className="size-4">
                         <AvatarFallback className="group-hover:bg-background">
-                          {account.name ? getInitials(account.name) : ""}
+                          {team.name ? getInitials(team.name) : ""}
                         </AvatarFallback>
                       </Avatar>
-                      <span className="ml-2">{account.name}</span>
+                      <span className="ml-2">{team.name}</span>
                       <CheckCircleIcon
                         className={cn(
                           "ml-auto size-4",
-                          currentAccountSlug === account.slug
+                          currentAccountSlug === team.slug
                             ? "opacity-100"
                             : "opacity-0",
                         )}
@@ -194,7 +176,7 @@ export const Sidebar = ({
                 ))}
                 <DropdownMenuItem
                   className="flex w-full gap-2"
-                  onSelect={() => setIsCreateTeamAccountDialogOpen(true)}
+                  onSelect={() => setIsCreateTeamDialogOpen(true)}
                   asChild
                 >
                   <button type="button">
@@ -215,8 +197,8 @@ export const Sidebar = ({
         </DropdownMenuContent>
       </DropdownMenu>
       <CreateTeamAccountDialog
-        open={isCreateTeamAccountDialogOpen}
-        onOpenChange={setIsCreateTeamAccountDialogOpen}
+        open={isCreateTeamDialogOpen}
+        onOpenChange={setIsCreateTeamDialogOpen}
       />
     </nav>
   );
@@ -227,10 +209,12 @@ const CreateTeamAccountDialog = ({
 }: React.ComponentPropsWithoutRef<typeof Dialog>) => {
   const router = useRouter();
 
-  const createTeamAccount = api.account.createTeamAccount.useMutation({
+  const createTeamAccount = api.team.createTeam.useMutation({
     onSuccess: (res) => {
+      const createdTeam = res[0];
+      if (!createdTeam) return;
       toast.success("Team created successfully");
-      router.push(`/dashboard/${res.slug}`);
+      router.push(`/dashboard/${createdTeam.slug}`);
     },
     onError: () =>
       toast.error(
@@ -239,7 +223,7 @@ const CreateTeamAccountDialog = ({
   });
 
   const form = useForm({
-    schema: createTeamAccountInput,
+    schema: createTeamInput,
     defaultValues: {
       name: "",
     },

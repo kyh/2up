@@ -16,7 +16,7 @@
   "dependencies": {
     "@init/db": "workspace:latest",
     "@trpc/server": "catalog:",
-    "stripe": "^17.2.1",
+    "stripe": "^17.3.0",
     "superjson": "^2.2.1",
     "zod": "catalog:",
     "zod-form-data": "^2.0.2"

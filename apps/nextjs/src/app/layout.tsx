@@ -5,10 +5,12 @@ import { Toaster } from "@init/ui/toast";
 import { TooltipProvider } from "@init/ui/tooltip";
 import { cn } from "@init/ui/utils";
 
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/lib/site-config";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import "./globals.css";
+
+import { api, HydrateClient } from "@/trpc/server";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -81,7 +83,7 @@ const fontSans = Inter({
   variable: "--font-sans",
 });
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -92,7 +94,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TooltipProvider>
-            <TRPCReactProvider>{children}</TRPCReactProvider>
+            <TRPCReactProvider>
+              <AppLayout>{children}</AppLayout>
+            </TRPCReactProvider>
             <Toaster />
           </TooltipProvider>
         </ThemeProvider>
@@ -101,4 +105,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default Layout;
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
+  void api.auth.me.prefetch();
+  void api.team.getMyTeams.prefetch();
+
+  return <HydrateClient>{children}</HydrateClient>;
+};
+
+export default RootLayout;

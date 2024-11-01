@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Link from "next/link";
 
 import { AuthForm } from "@/app/(auth)/_components/auth-form";
@@ -26,9 +25,7 @@ const SignUpPage = async (props: SignupPageProps) => {
           Please sign up to continue
         </p>
       </div>
-      <Suspense>
-        <AuthForm type="signup" nextPath={searchParams.nextPath} />
-      </Suspense>
+      <AuthForm type="signup" nextPath={searchParams.nextPath} />
       <p className="px-8 text-center text-sm text-muted-foreground">
         By clicking continue, you agree to our{" "}
         <Link

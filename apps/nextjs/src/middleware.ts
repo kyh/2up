@@ -97,12 +97,6 @@ const getPatterns = () => [
   {
     pattern: new URLPattern({ pathname: "/admin/*?" }),
     handler: async (request: NextRequest, response: NextResponse) => {
-      const isAdminPath = request.nextUrl.pathname.startsWith("/admin");
-
-      if (!isAdminPath) {
-        return response;
-      }
-
       const {
         data: { user },
         error,
@@ -116,7 +110,7 @@ const getPatterns = () => [
         );
       }
 
-      const role = user.app_metadata.role;
+      const role = user.user_metadata.role;
 
       // If user is not an admin, redirect to 404 page.
       if (!role || role !== "super-admin") {

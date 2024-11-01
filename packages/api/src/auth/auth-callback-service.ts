@@ -187,5 +187,5 @@ const isVerifierError = (error: string) =>
 
 const getAuthErrorMessage = (error: string) =>
   isVerifierError(error)
-    ? `auth:errors.codeVerifierMismatch`
-    : `auth:authenticationErrorAlertBody`;
+    ? `It looks like you're trying to sign in using a different browser than the one you used to request the sign in link. Please try again using the same browser.`
+    : `Sorry, we could not authenticate you. Please try again.`;

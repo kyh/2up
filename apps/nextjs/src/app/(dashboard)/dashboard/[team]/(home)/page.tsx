@@ -1,32 +1,23 @@
-import { redirect } from "next/navigation";
-
 import type { GetTaskListInput } from "@init/api/task/task-schema";
 import { PageHeader } from "@/components/header";
-import { api } from "@/trpc/server";
-
-type Params = {
-  team: string;
-};
+import { api, HydrateClient } from "@/trpc/server";
+import { TasksTable } from "./_components/tasks-table";
 
 type SearchParams = GetTaskListInput;
 
-const Page = async (props: {
-  params: Promise<Params>;
-  searchParams: Promise<SearchParams>;
-}) => {
-  const params = await props.params;
-  const { account } = await api.account.teamWorkspace({
-    slug: params.team,
+const Page = async (props: { searchParams: Promise<SearchParams> }) => {
+  const searchParams = await props.searchParams;
+  void api.task.getTaskList.prefetch({
+    ...searchParams,
   });
 
-  if (!account) {
-    redirect("/dashboard");
-  }
-
   return (
-    <main className="flex flex-1 flex-col px-5">
-      <PageHeader showSearch>Welcome back {account.name}</PageHeader>
-    </main>
+    <HydrateClient>
+      <main className="flex flex-1 flex-col px-5">
+        <PageHeader>Welcome back</PageHeader>
+        <TasksTable searchParams={searchParams} />
+      </main>
+    </HydrateClient>
   );
 };
 

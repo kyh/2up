@@ -1,5 +1,6 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import "server-only";
+
+import type { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 import type { Database } from "./types/database.types";
@@ -19,14 +20,13 @@ export const createMiddlewareClient = <GenericSchema = Database>(
 
   return createServerClient<GenericSchema>(keys.url, keys.anonKey, {
     cookies: {
-      getAll: () => request.cookies.getAll(),
+      getAll: () => {
+        return request.cookies.getAll();
+      },
       setAll: (cookiesToSet) => {
         cookiesToSet.forEach(({ name, value }) =>
           request.cookies.set(name, value),
         );
-        response = NextResponse.next({
-          request,
-        });
         cookiesToSet.forEach(({ name, value, options }) =>
           response.cookies.set(name, value, options),
         );
