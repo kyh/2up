@@ -125,3 +125,66 @@ DO $$ BEGIN
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
+
+-- Handle new user
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+DECLARE
+    new_team_id UUID;
+    team_slug TEXT;
+BEGIN
+    -- Generate a URL-safe slug:
+    -- 1. Take email prefix before @
+    -- 2. Convert to lowercase
+    -- 3. Replace any non-alphanumeric characters with hyphens
+    -- 4. Remove multiple consecutive hyphens
+    -- 5. Remove leading and trailing hyphens
+    team_slug := lower(regexp_replace(NEW.email, '@.*$', '')); -- Get email prefix
+    team_slug := regexp_replace(team_slug, '[^a-z0-9]', '-', 'g'); -- Replace non-alphanumeric with hyphen
+    team_slug := regexp_replace(team_slug, '-+', '-', 'g'); -- Replace multiple hyphens with single hyphen
+    team_slug := regexp_replace(team_slug, '^-+|-+$', '', 'g'); -- Remove leading/trailing hyphens
+    
+    -- Append a random string if slug already exists
+    WHILE EXISTS (SELECT 1 FROM public.teams WHERE slug = team_slug) LOOP
+        team_slug := team_slug || '-' || substring(
+            regexp_replace(
+                encode(gen_random_bytes(6), 'base64'), 
+                '[^a-z0-9]', 
+                '', 
+                'g'
+            ) 
+            from 1 for 6
+        );
+    END LOOP;
+
+    -- Create a new team
+    BEGIN
+        INSERT INTO public.teams (name, slug)
+        VALUES (
+            'Personal Team',
+            team_slug
+        )
+        RETURNING id INTO new_team_id;
+    EXCEPTION WHEN OTHERS THEN
+        RAISE EXCEPTION 'Failed to create team: %', SQLERRM;
+    END;
+
+    -- Add the user as an owner to the team
+    BEGIN
+        INSERT INTO public.team_members (user_id, team_id, role)
+        VALUES (NEW.id, new_team_id, 'owner');
+    EXCEPTION WHEN OTHERS THEN
+        -- Cleanup the team if member creation fails
+        DELETE FROM public.teams WHERE id = new_team_id;
+        RAISE EXCEPTION 'Failed to create team member: %', SQLERRM;
+    END;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Create the trigger
+CREATE TRIGGER on_auth_user_created
+    AFTER INSERT ON auth.users
+    FOR EACH ROW
+    EXECUTE FUNCTION public.handle_new_user();

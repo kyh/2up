@@ -4,10 +4,10 @@ import Link from "next/link";
 import { buttonVariants } from "@init/ui/button";
 import { cn } from "@init/ui/utils";
 
-import { useUser } from "@/components/user-provider";
+import { api } from "@/trpc/react";
 
 export const Header = () => {
-  const { user } = useUser();
+  const [{ user }] = api.auth.me.useSuspenseQuery();
 
   return (
     <div className="mx-auto w-full justify-center">

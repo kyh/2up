@@ -10,7 +10,7 @@ export const usersRelations = relations(authUsers, ({ many }) => ({
 export const teams = pgTable("teams", (t) => ({
   id: t.uuid().notNull().primaryKey().defaultRandom(),
   name: t.varchar({ length: 255 }).notNull(),
-  slug: t.text().unique(),
+  slug: t.text().unique().notNull(),
   stripeCustomerId: t.text().unique(),
   stripeSubscriptionId: t.text().unique(),
   stripeProductId: t.text(),

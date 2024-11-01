@@ -1,4 +1,3 @@
-import { addMember, createTeam } from "../team/team-router";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import {
   requestPasswordResetInput,
@@ -36,16 +35,6 @@ export const authRouter = createTRPCRouter({
       if (!user) {
         throw new Error("Unable to create user");
       }
-
-      const team = await createTeam(ctx.db, {
-        name: "Personal Team",
-        slug: user.id,
-      });
-      await addMember(ctx.db, {
-        userId: user.id,
-        teamId: team.id,
-        role: "owner",
-      });
 
       return response.data;
     }),

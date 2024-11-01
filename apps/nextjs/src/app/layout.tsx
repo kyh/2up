@@ -5,13 +5,12 @@ import { Toaster } from "@init/ui/toast";
 import { TooltipProvider } from "@init/ui/tooltip";
 import { cn } from "@init/ui/utils";
 
-import { UserProvider } from "@/components/user-provider";
 import { siteConfig } from "@/lib/site-config";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import "./globals.css";
 
-import { api } from "@/trpc/server";
+import { api, HydrateClient } from "@/trpc/server";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -107,8 +106,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 };
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
-  const userPromise = api.auth.me();
-  return <UserProvider userPromise={userPromise}>{children}</UserProvider>;
+  void api.auth.me.prefetch();
+  void api.team.getMyTeams.prefetch();
+
+  return <HydrateClient>{children}</HydrateClient>;
 };
 
 export default RootLayout;

@@ -3,7 +3,7 @@ import { z } from "zod";
 // CREATE
 export const createTeamInput = z.object({
   name: z.string(),
-  slug: z.string().optional(),
+  slug: z.string(),
 });
 export type CreateTeamInput = z.infer<typeof createTeamInput>;
 

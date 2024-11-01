@@ -41,42 +41,42 @@ export const PageHeader = ({
       <h1 className="text-xl">{children}</h1>
       <div className="flex gap-1">
         {/* {showNotifications && <NotificationsButton />} */}
-        {showSearch && <SearchButton />}
+        {/* {showSearch && <SearchButton />} */}
       </div>
     </header>
   );
 };
 
-const SearchButton = () => {
-  const [open, setOpen] = useState(false);
+// const SearchButton = () => {
+//   const [open, setOpen] = useState(false);
 
-  const onClick = () => {
-    setOpen((prev) => !prev);
-  };
+//   const onClick = () => {
+//     setOpen((prev) => !prev);
+//   };
 
-  useHotkeys("cmd+k", onClick);
+//   useHotkeys("cmd+k", onClick);
 
-  return (
-    <>
-      <Button
-        className="rounded-full"
-        variant="ghost"
-        size="icon"
-        onClick={onClick}
-      >
-        <SearchIcon className="size-4" />
-        <span className="sr-only">Search</span>
-      </Button>
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Suggestions"></CommandGroup>
-        </CommandList>
-      </CommandDialog>
-    </>
-  );
-};
+//   return (
+//     <>
+//       <Button
+//         className="rounded-full"
+//         variant="ghost"
+//         size="icon"
+//         onClick={onClick}
+//       >
+//         <SearchIcon className="size-4" />
+//         <span className="sr-only">Search</span>
+//       </Button>
+//       <CommandDialog open={open} onOpenChange={setOpen}>
+//         <CommandInput placeholder="Type a command or search..." />
+//         <CommandList>
+//           <CommandEmpty>No results found.</CommandEmpty>
+//           <CommandGroup heading="Suggestions"></CommandGroup>
+//         </CommandList>
+//       </CommandDialog>
+//     </>
+//   );
+// };
 
 // export const NotificationsButton = () => {
 //   const [open, setOpen] = useState(false);
