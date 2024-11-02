@@ -83,7 +83,11 @@ const fontSans = Inter({
   variable: "--font-sans",
 });
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+type LayoutProps = {
+  children: React.ReactNode;
+};
+
+const RootLayout = (props: LayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -95,7 +99,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TooltipProvider>
             <TRPCReactProvider>
-              <AppLayout>{children}</AppLayout>
+              <AppLayout>{props.children}</AppLayout>
             </TRPCReactProvider>
             <Toaster />
           </TooltipProvider>
@@ -105,11 +109,11 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const AppLayout = ({ children }: { children: React.ReactNode }) => {
+const AppLayout = (props: LayoutProps) => {
   void api.auth.me.prefetch();
   void api.team.getMyTeams.prefetch();
 
-  return <HydrateClient>{children}</HydrateClient>;
+  return <HydrateClient>{props.children}</HydrateClient>;
 };
 
 export default RootLayout;

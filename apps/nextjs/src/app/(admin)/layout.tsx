@@ -12,17 +12,21 @@ const pageLinks = [
     exact: true,
   },
   {
-    id: "accounts",
-    href: "/admin/accounts",
-    label: "Accounts",
+    id: "teams",
+    href: "/admin/teams",
+    label: "Teams",
   },
 ];
 
-const Layout = ({ children }: React.PropsWithChildren) => {
+type LayoutProps = {
+  children: React.ReactNode;
+};
+
+const Layout = (props: LayoutProps) => {
   return (
     <div className="flex min-h-dvh">
       <Sidebar homeLink="/dashboard" pageLinks={pageLinks} />
-      {children}
+      {props.children}
     </div>
   );
 };

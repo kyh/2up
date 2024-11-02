@@ -60,6 +60,7 @@ type PageLink = {
   href: string;
   label: string;
   exact?: boolean;
+  icon?: React.ReactNode;
 };
 
 const icons = {

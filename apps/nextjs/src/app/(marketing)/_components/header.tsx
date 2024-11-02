@@ -8,6 +8,9 @@ import { api } from "@/trpc/react";
 
 export const Header = () => {
   const [{ user }] = api.auth.me.useSuspenseQuery();
+  const [teams] = api.team.getMyTeams.useSuspenseQuery();
+  const defaultTeamId =
+    (user?.user_metadata.defaultTeam as string | undefined) ?? teams[0]?.id;
 
   return (
     <div className="mx-auto w-full justify-center">
@@ -40,7 +43,7 @@ export const Header = () => {
                 }),
                 "ml-4 rounded-full px-5",
               )}
-              href="/dashboard"
+              href={`/dashboard/${defaultTeamId}`}
             >
               Dashboard
             </Link>

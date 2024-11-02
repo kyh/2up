@@ -2,14 +2,14 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Button } from "@init/ui/button";
 
-type Params = {
+type PageProps = {
   searchParams: Promise<{
     error: string;
     invite_token: string;
   }>;
 };
 
-const AuthCallbackErrorPage = async (props: Params) => {
+const Page = async (props: PageProps) => {
   const searchParams = await props.searchParams;
   const { error, invite_token } = searchParams;
   const queryParam = invite_token ? `?invite_token=${invite_token}` : "";
@@ -32,4 +32,4 @@ const AuthCallbackErrorPage = async (props: Params) => {
   );
 };
 
-export default AuthCallbackErrorPage;
+export default Page;

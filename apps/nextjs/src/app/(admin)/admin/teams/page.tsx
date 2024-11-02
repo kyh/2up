@@ -3,13 +3,18 @@ import { PageHeader } from "@/components/header";
 import { api, HydrateClient } from "@/trpc/server";
 import { AdminAccountsTable } from "./_components/admin-accounts-table";
 
-type SearchParams = GetAccountsInput;
+type PageProps = {
+  searchParams: Promise<{
+    error: string;
+    invite_token: string;
+  }>;
+};
 
 export const metadata = {
   title: `Accounts`,
 };
 
-const Page = async (props: { searchParams: Promise<SearchParams> }) => {
+const Page = async (props: PageProps) => {
   const searchParams = await props.searchParams;
   void api.admin.getAccounts.prefetch(searchParams);
 

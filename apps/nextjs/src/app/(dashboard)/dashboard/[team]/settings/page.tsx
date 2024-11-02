@@ -5,11 +5,13 @@ import { api } from "@/trpc/server";
 import { TeamDeleteForm } from "./_components/team-delete-form";
 import { TeamProfileForm } from "./_components/team-profile-form";
 
-type Params = {
-  team: string;
+type PageProps = {
+  params: Promise<{
+    team: string;
+  }>;
 };
 
-const Page = async (props: { params: Promise<Params> }) => {
+const Page = async (props: PageProps) => {
   const params = await props.params;
   const { account, user } = await api.account.teamWorkspace({
     slug: params.team,

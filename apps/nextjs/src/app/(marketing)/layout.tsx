@@ -1,11 +1,15 @@
 import { Footer } from "./_components/footer";
 import { Header } from "./_components/header";
 
-const Layout = async ({ children }: { children: React.ReactNode }) => {
+type LayoutProps = {
+  children: React.ReactNode;
+};
+
+const Layout = async (props: LayoutProps) => {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <main>{props.children}</main>
       <Footer />
     </>
   );

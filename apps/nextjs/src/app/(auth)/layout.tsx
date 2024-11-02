@@ -6,7 +6,11 @@ export const metadata: Metadata = {
   description: "Authentication forms built using the components.",
 };
 
-const Layout = ({ children }: { children: React.ReactNode }) => (
+type LayoutProps = {
+  children: React.ReactNode;
+};
+
+const Layout = (props: LayoutProps) => (
   <div className="container relative grid min-h-dvh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
     <div className="relative hidden h-full flex-col bg-muted px-8 py-4 text-white dark:border-r md:py-10 lg:flex">
       <div className="absolute inset-0 bg-zinc-900" />
@@ -25,7 +29,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
         </blockquote>
       </div>
     </div>
-    <div className="lg:p-8">{children}</div>
+    <div className="lg:p-8">{props.children}</div>
   </div>
 );
 

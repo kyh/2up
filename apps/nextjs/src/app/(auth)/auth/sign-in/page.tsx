@@ -8,14 +8,14 @@ export const generateMetadata = () => {
   };
 };
 
-type SignInPageProps = {
+type PageProps = {
   searchParams: Promise<{
     nextPath?: string;
     invite_token?: string;
   }>;
 };
 
-const SignInPage = async (props: SignInPageProps) => {
+const Page = async (props: PageProps) => {
   const searchParams = await props.searchParams;
 
   return (
@@ -34,4 +34,4 @@ const SignInPage = async (props: SignInPageProps) => {
   );
 };
 
-export default SignInPage;
+export default Page;

@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { api } from "@/trpc/server";
 import { BillingSessionStatus } from "../_components/billing-session-status";
 
-type SessionPageProps = {
+type PageProps = {
   searchParams: Promise<{
     session_id: string;
   }>;
@@ -23,7 +23,7 @@ const LazyEmbeddedCheckout = dynamic(
   },
 );
 
-const Page = async (props: SessionPageProps) => {
+const Page = async (props: PageProps) => {
   const searchParams = await props.searchParams;
   const sessionId = searchParams.session_id;
 

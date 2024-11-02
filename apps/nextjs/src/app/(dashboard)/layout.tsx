@@ -1,29 +1,44 @@
 import { Sidebar } from "@/components/sidebar";
 
-const pageLinks = [
-  {
-    id: "home",
-    href: "/dashboard",
-    label: "Home",
-    exact: true,
-  },
-  {
-    id: "billing",
-    href: "/dashboard/billing",
-    label: "Billing",
-  },
-  {
-    id: "settings",
-    href: "/dashboard/settings",
-    label: "Settings",
-  },
-];
+type LayoutProps = {
+  children: React.ReactNode;
+  params: Promise<{ team: string }>;
+};
 
-const Layout = ({ children }: React.PropsWithChildren) => {
+const Layout = async (props: LayoutProps) => {
+  const params = await props.params;
+  const teamSlug = params.team;
+  const rootUrl = `/dashboard/${teamSlug}`;
+  const pageLinks = [
+    {
+      id: "home",
+      href: rootUrl,
+      label: "Home",
+      exact: true,
+    },
+    {
+      id: "members",
+      href: `${rootUrl}/members`,
+      label: "Members",
+    },
+    {
+      id: "settings",
+      href: `${rootUrl}/settings`,
+      label: "Settings",
+    },
+    {
+      id: "billing",
+      href: `${rootUrl}/billing`,
+      label: "Billing",
+    },
+  ];
+
+  console.log("teamSlug", teamSlug);
+
   return (
     <div className="flex min-h-dvh">
       <Sidebar homeLink="/dashboard" pageLinks={pageLinks} />
-      {children}
+      {props.children}
     </div>
   );
 };

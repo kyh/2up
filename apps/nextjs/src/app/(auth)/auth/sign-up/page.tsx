@@ -8,14 +8,14 @@ export const generateMetadata = () => {
   };
 };
 
-type SignupPageProps = {
+type PageProps = {
   searchParams: Promise<{
     nextPath?: string;
     invite_token?: string;
   }>;
 };
 
-const SignUpPage = async (props: SignupPageProps) => {
+const Page = async (props: PageProps) => {
   const searchParams = await props.searchParams;
   return (
     <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
@@ -47,4 +47,4 @@ const SignUpPage = async (props: SignupPageProps) => {
   );
 };
 
-export default SignUpPage;
+export default Page;

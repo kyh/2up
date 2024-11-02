@@ -7,11 +7,13 @@ import { AccountInvitationsTable } from "./_components/invitations/account-invit
 import { AccountMembersTable } from "./_components/members/account-members-table";
 import { InviteMembersDialogContainer } from "./_components/members/invite-members-dialog-container";
 
-type Params = {
-  team: string;
+type PageProps = {
+  params: Promise<{
+    team: string;
+  }>;
 };
 
-const Page = async (props: { params: Promise<Params> }) => {
+const Page = async (props: PageProps) => {
   const params = await props.params;
   const { account, user } = await api.account.teamWorkspace({
     slug: params.team,

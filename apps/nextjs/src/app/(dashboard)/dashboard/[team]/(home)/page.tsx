@@ -1,13 +1,15 @@
-import type { GetTaskListInput } from "@init/api/task/task-schema";
+import type { GetTasksInput } from "@init/api/task/task-schema";
 import { PageHeader } from "@/components/header";
 import { api, HydrateClient } from "@/trpc/server";
 import { TasksTable } from "./_components/tasks-table";
 
-type SearchParams = GetTaskListInput;
+type PageProps = {
+  searchParams: Promise<GetTasksInput>;
+};
 
-const Page = async (props: { searchParams: Promise<SearchParams> }) => {
+const Page = async (props: PageProps) => {
   const searchParams = await props.searchParams;
-  void api.task.getTaskList.prefetch({
+  void api.task.getTasks.prefetch({
     ...searchParams,
   });
 

@@ -7,10 +7,14 @@ export const metadata: Metadata = {
   title: "Docs",
 };
 
-const Layout = ({ children }: { children: React.ReactNode }) => (
+type LayoutProps = {
+  children: React.ReactNode;
+};
+
+const Layout = (props: LayoutProps) => (
   <section className="flex min-h-dvh">
     <Sidebar />
-    <section className="flex-1 px-10 py-16">{children}</section>
+    <section className="flex-1 px-10 py-16">{props.children}</section>
   </section>
 );
 
