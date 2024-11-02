@@ -130,32 +130,30 @@ END $$;
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 DECLARE
+    base_slug TEXT;
+    counter INTEGER := 0;
     new_team_id UUID;
     team_slug TEXT;
     current_meta_data JSONB;
 BEGIN
-    -- Generate a URL-safe slug:
-    -- 1. Take email prefix before @
-    -- 2. Convert to lowercase
-    -- 3. Replace any non-alphanumeric characters with hyphens
-    -- 4. Remove multiple consecutive hyphens
-    -- 5. Remove leading and trailing hyphens
-    team_slug := lower(regexp_replace(NEW.email, '@.*$', '')); -- Get email prefix
-    team_slug := regexp_replace(team_slug, '[^a-z0-9]', '-', 'g'); -- Replace non-alphanumeric with hyphen
-    team_slug := regexp_replace(team_slug, '-+', '-', 'g'); -- Replace multiple hyphens with single hyphen
-    team_slug := regexp_replace(team_slug, '^-+|-+$', '', 'g'); -- Remove leading/trailing hyphens
+    -- Generate a URL-safe slug
+    base_slug := lower(regexp_replace(NEW.email, '@.*$', '')); -- Get email prefix
+    base_slug := regexp_replace(base_slug, '[^a-z0-9]', '-', 'g'); -- Replace non-alphanumeric with hyphen
+    base_slug := regexp_replace(base_slug, '-+', '-', 'g'); -- Replace multiple hyphens with single hyphen
+    base_slug := regexp_replace(base_slug, '^-+|-+$', '', 'g'); -- Remove leading/trailing hyphens
     
-    -- Append a random string if slug already exists
-    WHILE EXISTS (SELECT 1 FROM public.teams WHERE slug = team_slug) LOOP
-        team_slug := team_slug || '-' || substring(
-            regexp_replace(
-                encode(gen_random_bytes(6), 'base64'), 
-                '[^a-z0-9]', 
-                '', 
-                'g'
-            ) 
-            from 1 for 6
+    -- Set initial team_slug
+    team_slug := base_slug;
+    
+    -- Keep trying until we find a unique slug
+    LOOP
+        EXIT WHEN NOT EXISTS (
+            SELECT 1 
+            FROM public.teams 
+            WHERE teams.slug = team_slug
         );
+        counter := counter + 1;
+        team_slug := base_slug || '-' || counter::text;
     END LOOP;
 
     -- Create a new team
