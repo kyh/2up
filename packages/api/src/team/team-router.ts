@@ -1,17 +1,13 @@
 import { and, asc, desc, eq, sql } from "@init/db";
 import { invitations, teamMembers, teams } from "@init/db/schema";
 
-import type { SQL } from "@init/db";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import {
   createTeamInput,
   createTeamMemberInput,
   deleteTeamInput,
-  deleteTeamsInput,
   getTeamInput,
-  getTeamsInput,
   updateTeamInput,
-  updateTeamsInput,
 } from "./team-schema";
 
 export const teamRouter = createTRPCRouter({
@@ -34,7 +30,26 @@ export const teamRouter = createTRPCRouter({
   createTeam: protectedProcedure
     .input(createTeamInput)
     .mutation(async ({ ctx, input }) => {
-      const [created] = await ctx.db.insert(teams).values(input).returning();
+      let teamSlug = input.name.toLowerCase().replace(/\s/g, "-");
+      let counter = 1;
+
+      while (
+        await ctx.db.query.teams.findFirst({
+          where: (teams, { eq }) => eq(teams.slug, teamSlug),
+        })
+      ) {
+        teamSlug = `${input.name.toLowerCase().replace(/\s/g, "-")}-${counter}`;
+        counter++;
+      }
+
+      const [created] = await ctx.db
+        .insert(teams)
+        .values({
+          slug: teamSlug,
+          ...input,
+        })
+        .returning();
+
       return {
         team: created,
       };

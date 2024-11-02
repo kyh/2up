@@ -28,7 +28,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -54,14 +53,7 @@ import { api } from "@/trpc/react";
 
 export const Sidebar = () => {
   const params = useParams<{ team: string }>();
-  const [{ user }] = api.auth.me.useSuspenseQuery();
-  const [{ teams }] = api.team.getMyTeams.useSuspenseQuery();
-  const signOut = api.auth.signOut.useMutation();
   const [isCreateTeamDialogOpen, setIsCreateTeamDialogOpen] = useState(false);
-
-  const handleSignOut = async () => {
-    await signOut.mutateAsync();
-  };
 
   const teamSlug = params.team;
   const rootUrl = `/dashboard/${teamSlug}`;
@@ -113,86 +105,11 @@ export const Sidebar = () => {
           </NavLink>
         ))}
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger className="mt-auto">
-          <Avatar className="size-9">
-            <AvatarImage
-              src={user?.user_metadata.profile_url ?? ""}
-              alt={user?.email ?? ""}
-            />
-            <AvatarFallback>{getInitials(user?.email ?? "")}</AvatarFallback>
-          </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          className="w-56"
-          forceMount
-          alignOffset={8}
-          sideOffset={8}
-          collisionPadding={8}
-        >
-          <DropdownMenuLabel className="font-normal">
-            <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">{user?.email}</p>
-              <p className="text-xs leading-none text-muted-foreground">
-                {user?.email}
-              </p>
-            </div>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem asChild>
-              <Link href="/dashboard/profile">Profile</Link>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>Switch Teams</DropdownMenuSubTrigger>
-              <DropdownMenuSubContent>
-                {teams.map((team) => (
-                  <DropdownMenuItem key={team.id} asChild>
-                    <Link
-                      href={`/dashboard/${team.slug}`}
-                      className="inline-flex w-full items-center font-normal"
-                    >
-                      <Avatar className="size-4">
-                        <AvatarFallback className="group-hover:bg-background">
-                          {team.name ? getInitials(team.name) : ""}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="ml-2">{team.name}</span>
-                      <CheckCircleIcon
-                        className={cn(
-                          "ml-auto size-4",
-                          teamSlug === team.slug ? "opacity-100" : "opacity-0",
-                        )}
-                      />
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-                <DropdownMenuItem
-                  className="flex w-full gap-2"
-                  onSelect={() => setIsCreateTeamDialogOpen(true)}
-                  asChild
-                >
-                  <button type="button">
-                    <PlusIcon className="size-4" />
-                    Create a Team
-                  </button>
-                </DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuSub>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <button className="flex w-full gap-2" onClick={handleSignOut}>
-              <LogOutIcon className="size-4" />
-              Log out
-            </button>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <CreateTeamAccountDialog
+      <UserDropdown
+        teamSlug={teamSlug}
+        setIsCreateTeamDialogOpen={setIsCreateTeamDialogOpen}
+      />
+      <CreateTeamDialog
         open={isCreateTeamDialogOpen}
         onOpenChange={setIsCreateTeamDialogOpen}
       />
@@ -200,7 +117,113 @@ export const Sidebar = () => {
   );
 };
 
-const CreateTeamAccountDialog = ({
+export const UserDropdown = ({
+  teamSlug,
+  setIsCreateTeamDialogOpen,
+}: {
+  teamSlug?: string;
+  setIsCreateTeamDialogOpen: React.ComponentPropsWithoutRef<
+    typeof Dialog
+  >["onOpenChange"];
+}) => {
+  const [{ user }] = api.auth.me.useSuspenseQuery();
+  const [{ teams }] = api.team.getMyTeams.useSuspenseQuery();
+  const signOut = api.auth.signOut.useMutation();
+
+  const handleSignOut = async () => {
+    await signOut.mutateAsync();
+  };
+
+  if (!user) return null;
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="mt-auto">
+        <Avatar className="size-9">
+          <AvatarImage
+            src={user.user_metadata.profile_url ?? ""}
+            alt={user.email ?? ""}
+          />
+          <AvatarFallback>
+            {getInitials(user.user_metadata.displayName ?? "")}
+          </AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-56"
+        forceMount
+        alignOffset={8}
+        sideOffset={8}
+        collisionPadding={8}
+      >
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-1">
+            <p className="text-sm font-medium leading-none">
+              {user.user_metadata.displayName}
+            </p>
+            <p className="text-xs leading-none text-muted-foreground">
+              {user.email}
+            </p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/profile">Profile</Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Switch Teams</DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              {teams.map((team) => (
+                <DropdownMenuItem key={team.id} asChild>
+                  <Link
+                    href={`/dashboard/${team.slug}`}
+                    className="inline-flex w-full items-center font-normal"
+                  >
+                    <Avatar className="size-4">
+                      <AvatarFallback className="group-hover:bg-background">
+                        {team.name ? getInitials(team.name) : ""}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="ml-2">{team.name}</span>
+                    <CheckCircleIcon
+                      className={cn(
+                        "ml-auto size-4",
+                        teamSlug === team.slug ? "opacity-100" : "opacity-0",
+                      )}
+                    />
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuItem
+                className="flex w-full gap-2"
+                onSelect={() => setIsCreateTeamDialogOpen?.(true)}
+                asChild
+              >
+                <button type="button">
+                  <PlusIcon className="size-4" />
+                  Create a Team
+                </button>
+              </DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <button className="flex w-full gap-2" onClick={handleSignOut}>
+            <LogOutIcon className="size-4" />
+            Log out
+          </button>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+export const CreateTeamDialog = ({
   ...props
 }: React.ComponentPropsWithoutRef<typeof Dialog>) => {
   const router = useRouter();
@@ -255,9 +278,6 @@ const CreateTeamAccountDialog = ({
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>
-                        Your team name should be unique and descriptive
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   );
