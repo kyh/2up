@@ -2,13 +2,10 @@
 
 A comprehensive boilerplate to build, launch, and scale your next project.
 
-Built off [t3 turbo](https://github.com/t3-oss/create-t3-turbo) + [supabase](https://supabase.com).
-
 ## Features
 
 - [ ] Authentication
 - [ ] CRUD
-- [ ] CMS
 - [ ] User Profile
 - [ ] Multi Tenancy
 - [ ] Billing
@@ -26,9 +23,11 @@ Built off [t3 turbo](https://github.com/t3-oss/create-t3-turbo) + [supabase](htt
 ## Stack
 
 - Next.js
+- Expo
 - Tailwind CSS
+- TRPC
+- Drizzle
 - Supabase
-- TypeScript
 
 ## Running Locally
 

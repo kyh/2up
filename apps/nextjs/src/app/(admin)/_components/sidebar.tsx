@@ -1,20 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { Logo } from "@init/ui/logo";
 import { LayoutDashboardIcon, Users2Icon } from "lucide-react";
 
-import {
-  CreateTeamDialog,
-  UserDropdown,
-} from "@/app/(dashboard)/_components/sidebar";
+import { UserDropdown } from "@/app/(dashboard)/_components/sidebar";
 import { NavLink } from "@/components/nav";
 
 export const Sidebar = () => {
-  const [isCreateTeamDialogOpen, setIsCreateTeamDialogOpen] = useState(false);
-
   const rootUrl = `/admin`;
-
   const pageLinks = [
     {
       href: rootUrl,
@@ -52,11 +45,7 @@ export const Sidebar = () => {
           </NavLink>
         ))}
       </div>
-      <UserDropdown setIsCreateTeamDialogOpen={setIsCreateTeamDialogOpen} />
-      <CreateTeamDialog
-        open={isCreateTeamDialogOpen}
-        onOpenChange={setIsCreateTeamDialogOpen}
-      />
+      <UserDropdown />
     </nav>
   );
 };

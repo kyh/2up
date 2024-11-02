@@ -50,6 +50,16 @@ export const teamRouter = createTRPCRouter({
         })
         .returning();
 
+      if (!created) {
+        throw new Error("Failed to create team");
+      }
+
+      await ctx.db.insert(teamMembers).values({
+        teamId: created.id,
+        userId: ctx.user.id,
+        role: "owner",
+      });
+
       return {
         team: created,
       };
