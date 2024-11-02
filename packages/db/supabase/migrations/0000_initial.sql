@@ -132,6 +132,7 @@ RETURNS TRIGGER AS $$
 DECLARE
     new_team_id UUID;
     team_slug TEXT;
+    current_meta_data JSONB;
 BEGIN
     -- Generate a URL-safe slug:
     -- 1. Take email prefix before @
