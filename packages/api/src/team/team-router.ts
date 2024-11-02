@@ -16,7 +16,7 @@ import {
 
 export const teamRouter = createTRPCRouter({
   getMyTeams: publicProcedure.query(async ({ ctx }) => {
-    if (!ctx.user) return [];
+    if (!ctx.user) return { teams: [] };
 
     const teamMembers = await ctx.db.query.teamMembers.findMany({
       where: (teamMembers, { eq }) =>
@@ -26,42 +26,68 @@ export const teamRouter = createTRPCRouter({
       },
     });
 
-    return teamMembers.map((tm) => tm.team);
+    return {
+      teams: teamMembers.map((tm) => tm.team),
+    };
   }),
 
   createTeam: protectedProcedure
     .input(createTeamInput)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.insert(teams).values(input).returning();
+      const [created] = await ctx.db.insert(teams).values(input).returning();
+      return {
+        team: created,
+      };
     }),
 
   addMember: protectedProcedure
     .input(createTeamMemberInput)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.insert(teamMembers).values(input).returning();
+      const [created] = await ctx.db
+        .insert(teamMembers)
+        .values(input)
+        .returning();
+      return {
+        teamMember: created,
+      };
     }),
 
   getTeam: protectedProcedure
     .input(getTeamInput)
     .query(async ({ ctx, input }) => {
-      return ctx.db.query.teams.findFirst({
+      const team = await ctx.db.query.teams.findFirst({
         where: (teams, { eq }) => eq(teams.id, input.id),
       });
+
+      return {
+        team,
+      };
     }),
 
   updateTeam: protectedProcedure
     .input(updateTeamInput)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db
+      const [updated] = await ctx.db
         .update(teams)
         .set(input)
         .where(eq(teams.id, input.id))
         .returning();
+
+      return {
+        team: updated,
+      };
     }),
 
   deleteTeam: protectedProcedure
     .input(deleteTeamInput)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.delete(teams).where(eq(teams.id, input.id)).returning();
+      const [deleted] = await ctx.db
+        .delete(teams)
+        .where(eq(teams.id, input.id))
+        .returning();
+
+      return {
+        team: deleted,
+      };
     }),
 });

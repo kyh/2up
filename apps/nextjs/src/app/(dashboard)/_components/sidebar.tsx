@@ -1,8 +1,8 @@
 "use client";
 
-import { createElement, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { createTeamInput } from "@init/api/team/team-schema";
 import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
 import { Button } from "@init/ui/button";
@@ -47,43 +47,16 @@ import {
   LogOutIcon,
   PlusIcon,
   SettingsIcon,
-  UserIcon,
   Users2Icon,
-  UsersIcon,
 } from "lucide-react";
 
+import { NavLink } from "@/components/nav";
 import { api } from "@/trpc/react";
-import { NavLink } from "./nav";
 
-type PageLink = {
-  id: string;
-  href: string;
-  label: string;
-  exact?: boolean;
-  icon?: React.ReactNode;
-};
-
-const icons = {
-  home: HomeIcon,
-  accounts: Users2Icon,
-  billing: CreditCardIcon,
-  settings: SettingsIcon,
-  crud: LayoutDashboardIcon,
-  members: UsersIcon,
-};
-
-export const Sidebar = ({
-  homeLink,
-  pageLinks,
-  currentAccountSlug,
-}: {
-  homeLink: string;
-  pageLinks: PageLink[];
-  currentAccountSlug?: string;
-}) => {
+export const Sidebar = () => {
+  const params = useParams<{ team: string }>();
   const [{ user }] = api.auth.me.useSuspenseQuery();
-  const [teams] = api.team.getMyTeams.useSuspenseQuery();
-
+  const [{ teams }] = api.team.getMyTeams.useSuspenseQuery();
   const signOut = api.auth.signOut.useMutation();
   const [isCreateTeamDialogOpen, setIsCreateTeamDialogOpen] = useState(false);
 
@@ -91,26 +64,51 @@ export const Sidebar = ({
     await signOut.mutateAsync();
   };
 
+  const teamSlug = params.team;
+  const rootUrl = `/dashboard/${teamSlug}`;
+
+  const pageLinks = [
+    {
+      href: rootUrl,
+      label: "Tasks",
+      exact: true,
+      icon: HomeIcon,
+    },
+    {
+      href: `${rootUrl}/members`,
+      label: "Members",
+      icon: Users2Icon,
+    },
+    {
+      href: `${rootUrl}/settings`,
+      label: "Settings",
+      icon: SettingsIcon,
+    },
+    {
+      href: `${rootUrl}/billing`,
+      label: "Billing",
+      icon: CreditCardIcon,
+    },
+  ];
+
   return (
     <nav className="sticky top-0 flex h-dvh w-[80px] flex-col items-center overflow-y-auto overflow-x-hidden px-4 py-[26px]">
       <div className="flex flex-col">
         <div className="flex justify-center pb-2">
-          <NavLink href={homeLink}>
+          <NavLink href={rootUrl}>
             <Logo className="size-10 rounded-lg bg-muted text-primary" />
             <span className="sr-only">Init</span>
           </NavLink>
         </div>
         {pageLinks.map((link) => (
           <NavLink
-            key={link.id}
+            key={link.href}
             href={link.href}
             exact={link.exact}
             className="group flex flex-col items-center gap-1 p-2 text-xs"
           >
             <span className="flex size-9 items-center justify-center rounded-lg transition group-hover:bg-secondary group-data-[state=active]:bg-secondary">
-              {createElement(icons[link.id as keyof typeof icons], {
-                className: "size-4",
-              })}
+              <link.icon className="size-4" />
             </span>
             <span>{link.label}</span>
           </NavLink>
@@ -144,7 +142,7 @@ export const Sidebar = ({
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link href="/dashboard/settings">Settings</Link>
+              <Link href="/dashboard/profile">Profile</Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
@@ -167,9 +165,7 @@ export const Sidebar = ({
                       <CheckCircleIcon
                         className={cn(
                           "ml-auto size-4",
-                          currentAccountSlug === team.slug
-                            ? "opacity-100"
-                            : "opacity-0",
+                          teamSlug === team.slug ? "opacity-100" : "opacity-0",
                         )}
                       />
                     </Link>
@@ -211,11 +207,10 @@ const CreateTeamAccountDialog = ({
   const router = useRouter();
 
   const createTeamAccount = api.team.createTeam.useMutation({
-    onSuccess: (res) => {
-      const createdTeam = res[0];
-      if (!createdTeam) return;
+    onSuccess: ({ team }) => {
+      if (!team) return;
       toast.success("Team created successfully");
-      router.push(`/dashboard/${createdTeam.slug}`);
+      router.push(`/dashboard/${team.slug}`);
     },
     onError: () =>
       toast.error(

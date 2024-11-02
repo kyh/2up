@@ -174,6 +174,17 @@ const getPatterns = () => [
       if (requiresMultiFactorAuthentication) {
         return NextResponse.redirect(new URL("/auth/verify", origin).href);
       }
+
+      if (req.nextUrl.pathname === "/dashboard") {
+        if (user.user_metadata.defaultTeam) {
+          return NextResponse.redirect(
+            new URL(`/dashboard/${user.user_metadata.defaultTeam}`, origin)
+              .href,
+          );
+        } else {
+          return NextResponse.redirect(new URL("/", origin).href);
+        }
+      }
     },
   },
 ];

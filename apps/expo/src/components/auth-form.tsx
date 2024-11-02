@@ -11,17 +11,18 @@ type AuthFormProps = {
 
 export const AuthForm = ({ type }: AuthFormProps) => {
   const router = useRouter();
-  const nextPath = "/dashboard";
 
   const signInWithOAuth = api.auth.signInWithOAuth.useMutation({
     onError: (error) => Alert.alert(error.message),
   });
   const signInWithPassword = api.auth.signInWithPassword.useMutation({
-    onSuccess: () => router.push(nextPath),
+    onSuccess: ({ user }) =>
+      router.push(`/dashboard/${user.user_metadata.defaultTeam}`),
     onError: (error) => Alert.alert(error.message),
   });
   const signUp = api.auth.signUp.useMutation({
-    onSuccess: () => router.push(nextPath),
+    onSuccess: ({ user }) =>
+      router.push(`/dashboard/${user?.user_metadata.defaultTeam}`),
     onError: (error) => Alert.alert(error.message),
   });
 

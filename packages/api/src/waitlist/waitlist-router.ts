@@ -17,21 +17,29 @@ export const waitlistRouter = createTRPCRouter({
   join: publicProcedure
     .input(joinWaitlistInput)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db
+      const [created] = await ctx.db
         .insert(waitlist)
         .values({
           ...input,
           userId: ctx.user?.id,
         })
         .returning();
+
+      return {
+        waitlist: created,
+      };
     }),
 
   getWaitlist: superAdminProcedure
     .input(getWaitlistInput)
     .query(async ({ ctx, input }) => {
-      return ctx.db.query.waitlist.findFirst({
+      const waitlist = await ctx.db.query.waitlist.findFirst({
         where: (waitlist, { eq }) => eq(waitlist.id, input.id),
       });
+
+      return {
+        waitlist,
+      };
     }),
   getWaitlists: superAdminProcedure
     .input(getWaitlistsInput)

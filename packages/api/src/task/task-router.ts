@@ -18,13 +18,17 @@ export const taskRouter = createTRPCRouter({
   createTask: protectedProcedure
     .input(createTaskInput)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db
+      const [created] = await ctx.db
         .insert(tasks)
         .values({
           ...input,
           userId: ctx.user.id,
         })
         .returning();
+
+      return {
+        task: created,
+      };
     }),
   createTasks: protectedProcedure
     .input(createTasksInput)
@@ -33,9 +37,13 @@ export const taskRouter = createTRPCRouter({
   getTask: protectedProcedure
     .input(getTaskInput)
     .query(async ({ ctx, input }) => {
-      return ctx.db.query.tasks.findFirst({
+      const task = await ctx.db.query.tasks.findFirst({
         where: (tasks, { eq }) => eq(tasks.id, input.id),
       });
+
+      return {
+        task,
+      };
     }),
   getTasks: protectedProcedure
     .input(getTasksInput)
@@ -88,11 +96,15 @@ export const taskRouter = createTRPCRouter({
   updateTask: protectedProcedure
     .input(updateTaskInput)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db
+      const [updated] = await ctx.db
         .update(tasks)
         .set(input)
         .where(eq(tasks.id, input.id))
         .returning();
+
+      return {
+        task: updated,
+      };
     }),
   updateTasks: protectedProcedure
     .input(updateTasksInput)
@@ -101,7 +113,14 @@ export const taskRouter = createTRPCRouter({
   deleteTask: protectedProcedure
     .input(deleteTaskInput)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.delete(tasks).where(eq(tasks.id, input.id)).returning();
+      const [deleted] = await ctx.db
+        .delete(tasks)
+        .where(eq(tasks.id, input.id))
+        .returning();
+
+      return {
+        task: deleted,
+      };
     }),
   deleteTasks: protectedProcedure
     .input(deleteTasksInput)

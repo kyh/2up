@@ -180,14 +180,14 @@ BEGIN
         RAISE EXCEPTION 'Failed to create team member: %', SQLERRM;
     END;
 
-		-- Update user's raw_user_meta_data with defaultTeam
+    -- Update user's raw_user_meta_data with defaultTeam
     BEGIN
         -- Get current meta data or initialize empty object if null
         current_meta_data := COALESCE(NEW.raw_user_meta_data, '{}'::jsonb);
         
         -- Update auth.users with new meta data including defaultTeam
         UPDATE auth.users 
-        SET raw_user_meta_data = current_meta_data || jsonb_build_object('defaultTeam', new_team_id)
+        SET raw_user_meta_data = current_meta_data || jsonb_build_object('defaultTeam', team_slug)
         WHERE id = NEW.id;
     EXCEPTION WHEN OTHERS THEN
         -- Cleanup if metadata update fails

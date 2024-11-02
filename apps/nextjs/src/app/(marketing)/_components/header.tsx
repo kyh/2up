@@ -8,7 +8,7 @@ import { api } from "@/trpc/react";
 
 export const Header = () => {
   const [{ user }] = api.auth.me.useSuspenseQuery();
-  const [teams] = api.team.getMyTeams.useSuspenseQuery();
+  const [{ teams }] = api.team.getMyTeams.useSuspenseQuery();
   const defaultTeamId =
     (user?.user_metadata.defaultTeam as string | undefined) ?? teams[0]?.id;
 
