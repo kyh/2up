@@ -43,7 +43,6 @@ import {
   CheckCircleIcon,
   CreditCardIcon,
   HomeIcon,
-  LayoutDashboardIcon,
   LogOutIcon,
   PlusIcon,
   SettingsIcon,

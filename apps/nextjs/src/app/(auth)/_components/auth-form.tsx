@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { signInWithPasswordInput } from "@init/api/auth/auth-schema";
 import { Button } from "@init/ui/button";
 import {
@@ -21,26 +21,29 @@ import { api } from "@/trpc/react";
 
 type AuthFormProps = {
   type: "signin" | "signup";
-  nextPath?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export const AuthForm = ({
-  className,
-  type,
-  nextPath = "/dashboard",
-  ...props
-}: AuthFormProps) => {
+export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   const router = useRouter();
+  const params = useParams<{ nextPath?: string }>();
 
   const signInWithOAuth = api.auth.signInWithOAuth.useMutation({
     onError: (error) => toast.error(error.message),
   });
   const signInWithPassword = api.auth.signInWithPassword.useMutation({
-    onSuccess: () => router.replace(nextPath),
+    onSuccess: ({ user }) => {
+      router.replace(
+        params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeam}`,
+      );
+    },
     onError: (error) => toast.error(error.message),
   });
   const signUp = api.auth.signUp.useMutation({
-    onSuccess: () => router.replace(nextPath),
+    onSuccess: ({ user }) => {
+      router.replace(
+        params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeam}`,
+      );
+    },
     onError: (error) => toast.error(error.message),
   });
 

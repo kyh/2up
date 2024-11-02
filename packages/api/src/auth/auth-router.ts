@@ -36,7 +36,7 @@ export const authRouter = createTRPCRouter({
         throw new Error("Unable to create user");
       }
 
-      return response.data;
+      return { user };
     }),
   signInWithPassword: publicProcedure
     .input(signInWithPasswordInput)
