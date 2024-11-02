@@ -1,12 +1,14 @@
 {
-  "extends": "@kyh/tsconfig/react.json",
+  "extends": ["@kyh/tsconfig/base.json"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
     "jsx": "react-native",
-    "types": ["nativewind/types"]
+    "types": ["nativewind/types"],
+    "checkJs": false,
+    "moduleSuffixes": [".ios", ".android", ".native", ""]
   },
   "include": [
     "src",
