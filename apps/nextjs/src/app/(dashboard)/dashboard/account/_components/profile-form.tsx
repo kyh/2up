@@ -184,20 +184,13 @@ const removeFileFromPublicUrl = async (
   client: SupabaseClient,
   publicUrl: string,
 ) => {
-  // Extract the path from the URL
-  const url = new URL(publicUrl);
-  const path = url.pathname.split("/").slice(4).join("/");
-  // The split/slice removes '/storage/v1/object/public/avatars/' from the start
+  const pathSegments = publicUrl.split("/avatars/");
+  const filePath = pathSegments[1];
 
-  console.log("Removing file:", path);
+  if (!filePath) return;
 
-  const { data, error } = await client.storage.from("avatars").remove([path]);
-  console.log("Deleted file:", data, error);
-  if (error) {
-    console.error("Error deleting file:", error);
-  }
-
-  return data;
+  const { error } = await client.storage.from("avatars").remove([filePath]);
+  if (error) console.error("Error deleting file:", error);
 };
 
 const getPublicUrl = (client: SupabaseClient, uploadPath: string) => {
