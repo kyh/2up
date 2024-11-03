@@ -39,7 +39,7 @@ import { Logo } from "@init/ui/logo";
 import { toast } from "@init/ui/toast";
 import { cn, getInitials } from "@init/ui/utils";
 import {
-  CheckCircleIcon,
+  CheckIcon,
   CreditCardIcon,
   HomeIcon,
   LogOutIcon,
@@ -52,10 +52,11 @@ import { NavLink } from "@/components/nav";
 import { api } from "@/trpc/react";
 
 export const Sidebar = () => {
-  const params = useParams<{ team: string }>();
+  const [{ user }] = api.auth.me.useSuspenseQuery();
+  const params = useParams<{ team: string | undefined }>();
 
   const teamSlug = params.team;
-  const rootUrl = `/dashboard/${teamSlug}`;
+  const rootUrl = `/dashboard/${teamSlug ?? user?.user_metadata.defaultTeam}`;
   const pageLinks = [
     {
       href: rootUrl,
@@ -144,10 +145,12 @@ export const UserDropdown = ({ teamSlug }: { teamSlug?: string }) => {
       <DropdownMenu>
         <DropdownMenuTrigger className="mt-auto">
           <Avatar className="size-9">
-            <AvatarImage
-              src={(user.user_metadata.profile_url as string | undefined) ?? ""}
-              alt="Profile Picture"
-            />
+            {user.user_metadata.avatarUrl && (
+              <AvatarImage
+                src={user.user_metadata.avatarUrl as string}
+                alt="Profile Picture"
+              />
+            )}
             <AvatarFallback>
               {getInitials(
                 (user.user_metadata.displayName as string | undefined) ??
@@ -179,7 +182,7 @@ export const UserDropdown = ({ teamSlug }: { teamSlug?: string }) => {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link href="/dashboard/profile">Profile</Link>
+              <Link href="/dashboard/account">Account Settings</Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
@@ -199,7 +202,7 @@ export const UserDropdown = ({ teamSlug }: { teamSlug?: string }) => {
                         </AvatarFallback>
                       </Avatar>
                       <span className="ml-2">{team.name}</span>
-                      <CheckCircleIcon
+                      <CheckIcon
                         className={cn(
                           "ml-auto size-4",
                           teamSlug === team.slug ? "opacity-100" : "opacity-0",

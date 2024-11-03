@@ -30,6 +30,7 @@ export const waitlistRouter = createTRPCRouter({
       };
     }),
 
+  // ADMIN ACTIONS
   getWaitlist: superAdminProcedure
     .input(getWaitlistInput)
     .query(async ({ ctx, input }) => {

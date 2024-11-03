@@ -10,7 +10,7 @@ import {
 } from "./auth-schema";
 
 export const authRouter = createTRPCRouter({
-  me: publicProcedure.query(async ({ ctx }) => {
+  me: publicProcedure.query(({ ctx }) => {
     return { user: ctx.user };
   }),
   signUp: publicProcedure

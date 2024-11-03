@@ -23,7 +23,7 @@ export const AuthForm = ({ type }: AuthFormProps) => {
   });
   const signUp = api.auth.signUp.useMutation({
     onSuccess: ({ user }) => {
-      router.push(`/dashboard/${user?.user_metadata.defaultTeam}`);
+      router.push(`/dashboard/${user.user_metadata.defaultTeam}`);
     },
     onError: (error) => Alert.alert(error.message),
   });

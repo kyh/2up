@@ -1,28 +1,27 @@
-import { useMemo } from "react";
-
 type Condition<Value = unknown> = Value | false | null | undefined | 0 | "";
+
+type IfProps<Value = unknown> = {
+  condition: Condition<Value>;
+  children: React.ReactNode | ((value: Value) => React.ReactNode);
+  fallback?: React.ReactNode;
+};
 
 export const If = <Value = unknown,>({
   condition,
   children,
   fallback,
-}: React.PropsWithoutRef<{
-  condition: Condition<Value>;
-  children: React.ReactNode | ((value: Value) => React.ReactNode);
-  fallback?: React.ReactNode;
-}>) =>
-  useMemo(() => {
-    if (condition) {
-      if (typeof children === "function") {
-        return <>{children(condition)}</>;
-      }
-
-      return <>{children}</>;
+}: IfProps<Value>) => {
+  if (condition) {
+    if (typeof children === "function") {
+      return <>{children(condition)}</>;
     }
 
-    if (fallback) {
-      return <>{fallback}</>;
-    }
+    return <>{children}</>;
+  }
 
-    return null;
-  }, [condition, fallback, children]);
+  if (fallback) {
+    return <>{fallback}</>;
+  }
+
+  return null;
+};
