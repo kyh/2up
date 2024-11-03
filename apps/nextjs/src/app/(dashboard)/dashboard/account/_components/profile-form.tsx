@@ -16,6 +16,7 @@ import {
 } from "@init/ui/form";
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
+import { ImageIcon } from "lucide-react";
 
 import type { UpdateUserInput, UserMetadata } from "@init/api/user/user-schema";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -106,7 +107,7 @@ export const ProfileForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="col-span-full flex items-center gap-x-8">
-          <label className="relative cursor-pointer">
+          <label className="relative cursor-pointer bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80">
             <input
               className="invisible absolute inset-0"
               type="file"
@@ -116,12 +117,14 @@ export const ProfileForm = () => {
               <Image
                 src={metadata.avatarUrl}
                 alt="Profile picture"
-                className="h-24 w-24 flex-none rounded-lg bg-background object-cover"
+                className="h-24 w-24 flex-none rounded-lg object-cover"
                 width={96}
                 height={96}
               />
             ) : (
-              <div className="h-24 w-24 flex-none rounded-lg bg-muted" />
+              <div className="grid h-24 w-24 flex-none place-items-center rounded-lg">
+                <ImageIcon />
+              </div>
             )}
           </label>
           <div>
