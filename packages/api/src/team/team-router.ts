@@ -72,6 +72,7 @@ export const teamRouter = createTRPCRouter({
         .insert(teamMembers)
         .values(input)
         .returning();
+
       return {
         teamMember: created,
       };
@@ -80,8 +81,9 @@ export const teamRouter = createTRPCRouter({
   getTeam: protectedProcedure
     .input(getTeamInput)
     .query(async ({ ctx, input }) => {
+      const whereClause = whereIdOrSlug(input);
       const team = await ctx.db.query.teams.findFirst({
-        where: (teams, { eq }) => eq(teams.id, input.id),
+        where: whereClause,
       });
 
       return {
@@ -116,3 +118,17 @@ export const teamRouter = createTRPCRouter({
       };
     }),
 });
+
+const whereIdOrSlug = (input: { id?: string; slug?: string }) => {
+  const whereClause = input.id
+    ? eq(teams.id, input.id)
+    : input.slug
+      ? eq(teams.slug, input.slug)
+      : undefined;
+
+  if (!whereClause) {
+    throw new Error("Either ID or Slug must be provided");
+  }
+
+  return whereClause;
+};

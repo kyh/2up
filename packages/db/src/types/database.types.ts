@@ -82,7 +82,7 @@ export type Database = {
           id: string
           link: string | null
           type: Database["public"]["Enums"]["notification_type"]
-          updated_at: string | null
+          updated_at: string
           user_id: string | null
         }
         Insert: {
@@ -94,7 +94,7 @@ export type Database = {
           id?: string
           link?: string | null
           type?: Database["public"]["Enums"]["notification_type"]
-          updated_at?: string | null
+          updated_at?: string
           user_id?: string | null
         }
         Update: {
@@ -106,7 +106,7 @@ export type Database = {
           id?: string
           link?: string | null
           type?: Database["public"]["Enums"]["notification_type"]
-          updated_at?: string | null
+          updated_at?: string
           user_id?: string | null
         }
         Relationships: []
@@ -121,7 +121,7 @@ export type Database = {
           status: Database["public"]["Enums"]["task_status"]
           team_id: string
           title: string | null
-          updated_at: string | null
+          updated_at: string
           user_id: string | null
         }
         Insert: {
@@ -133,7 +133,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["task_status"]
           team_id: string
           title?: string | null
-          updated_at?: string | null
+          updated_at?: string
           user_id?: string | null
         }
         Update: {
@@ -145,7 +145,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["task_status"]
           team_id?: string
           title?: string | null
-          updated_at?: string | null
+          updated_at?: string
           user_id?: string | null
         }
         Relationships: [
@@ -193,36 +193,36 @@ export type Database = {
           id: string
           name: string
           plan_name: string | null
-          slug: string | null
+          slug: string
           stripe_customer_id: string | null
           stripe_product_id: string | null
           stripe_subscription_id: string | null
           subscription_status: string | null
-          updated_at: string | null
+          updated_at: string
         }
         Insert: {
           created_at?: string
           id?: string
           name: string
           plan_name?: string | null
-          slug?: string | null
+          slug: string
           stripe_customer_id?: string | null
           stripe_product_id?: string | null
           stripe_subscription_id?: string | null
           subscription_status?: string | null
-          updated_at?: string | null
+          updated_at?: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
           plan_name?: string | null
-          slug?: string | null
+          slug?: string
           stripe_customer_id?: string | null
           stripe_product_id?: string | null
           stripe_subscription_id?: string | null
           subscription_status?: string | null
-          updated_at?: string | null
+          updated_at?: string
         }
         Relationships: []
       }

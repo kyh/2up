@@ -40,12 +40,10 @@ import { toast } from "@init/ui/toast";
 import { cn, getInitials } from "@init/ui/utils";
 import {
   CheckIcon,
-  CreditCardIcon,
   HomeIcon,
   LogOutIcon,
   PlusIcon,
   SettingsIcon,
-  Users2Icon,
 } from "lucide-react";
 
 import { NavLink } from "@/components/nav";
@@ -65,19 +63,9 @@ export const Sidebar = () => {
       icon: HomeIcon,
     },
     {
-      href: `${rootUrl}/members`,
-      label: "Members",
-      icon: Users2Icon,
-    },
-    {
       href: `${rootUrl}/settings`,
       label: "Settings",
       icon: SettingsIcon,
-    },
-    {
-      href: `${rootUrl}/billing`,
-      label: "Billing",
-      icon: CreditCardIcon,
     },
   ];
 

@@ -2,8 +2,8 @@ import { redirect } from "next/navigation";
 
 import { PageHeader } from "@/components/header";
 import { api } from "@/trpc/server";
-import { TeamDeleteForm } from "./_components/team-delete-form";
-import { TeamProfileForm } from "./_components/team-profile-form";
+// import { TeamDeleteForm } from "../_components/team-delete-form";
+import { TeamProfileForm } from "../_components/team-profile-form";
 
 type PageProps = {
   params: Promise<{
@@ -13,17 +13,17 @@ type PageProps = {
 
 const Page = async (props: PageProps) => {
   const params = await props.params;
-  const { account, user } = await api.account.teamWorkspace({
+  const { team } = await api.team.getTeam({
     slug: params.team,
   });
 
-  if (!account) {
-    return redirect("/dashboard");
+  if (!team) {
+    return redirect("/dashboard/account");
   }
 
   return (
     <main className="flex flex-1 flex-col px-5">
-      <PageHeader>{account.name} Settings</PageHeader>
+      <PageHeader>{team.name} Settings</PageHeader>
       <section className="divide-y divide-border">
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 py-8 md:grid-cols-3">
           <div>
@@ -35,7 +35,7 @@ const Page = async (props: PageProps) => {
             </p>
           </div>
           <div className="md:col-span-2">
-            <TeamProfileForm account={account} />
+            <TeamProfileForm team={team} />
           </div>
         </div>
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 py-8 md:grid-cols-3">
@@ -48,7 +48,7 @@ const Page = async (props: PageProps) => {
             </p>
           </div>
           <div className="md:col-span-2">
-            <TeamDeleteForm user={user} account={account} />
+            {/* <TeamDeleteForm team={team} /> */}
           </div>
         </div>
       </section>

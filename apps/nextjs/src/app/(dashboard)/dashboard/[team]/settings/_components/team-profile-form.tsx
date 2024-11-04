@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { updateTeamAccountNameInput } from "@init/api/account/team-account-schema";
+import { updateTeamInput } from "@init/api/team/team-schema";
 import { Button } from "@init/ui/button";
 import {
   Form,
@@ -16,55 +16,44 @@ import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
 
 import type { RouterOutputs } from "@init/api";
-import type { UpdateTeamAccountNameInput } from "@init/api/account/team-account-schema";
+import type { UpdateTeamInput } from "@init/api/team/team-schema";
 import { api } from "@/trpc/react";
 
 export const TeamProfileForm = ({
-  account,
+  team,
 }: {
-  account: NonNullable<RouterOutputs["account"]["teamWorkspace"]["account"]>;
+  team: NonNullable<RouterOutputs["team"]["getTeam"]["team"]>;
 }) => {
   const router = useRouter();
-  const updateTeamAccountName = api.account.updateTeamAccountName.useMutation({
-    onSuccess: (data) => {
-      router.replace(`/dashboard/${data.slug}/settings`);
-    },
-  });
-  const form = useForm({
-    schema: updateTeamAccountNameInput,
-    defaultValues: {
-      name: account.name ?? "",
+
+  const updateTeam = api.team.updateTeam.useMutation({
+    onSuccess: ({ team }) => {
+      if (!team) return;
+      router.replace(`/dashboard/${team.slug}/settings`);
     },
   });
 
-  const onSubmit = (data: UpdateTeamAccountNameInput) => {
-    const promise = updateTeamAccountName.mutateAsync({
-      slug: account.slug,
-      name: data.name,
-    });
+  const form = useForm({
+    schema: updateTeamInput,
+    defaultValues: {
+      id: team.id,
+      name: team.name,
+      slug: team.slug,
+    },
+  });
+
+  const onSubmit = (data: UpdateTeamInput) => {
+    const promise = updateTeam.mutateAsync(data);
     toast.promise(promise, {
-      loading: "Updating Team name...",
-      success: "Team name successfully updated",
-      error: "Could not update Team name. Please try again.",
+      loading: "Updating team...",
+      success: "Team successfully updated",
+      error: "Could not update team. Please try again.",
     });
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="col-span-full flex items-center gap-x-8">
-          <img
-            src={account.pictureUrl ?? ""}
-            alt=""
-            className="h-24 w-24 flex-none rounded-lg bg-background object-cover"
-          />
-          <div>
-            <Button variant="secondary">Change avatar</Button>
-            <p className="mt-2 text-xs leading-5 text-muted-foreground">
-              JPG, GIF or PNG. 1MB max.
-            </p>
-          </div>
-        </div>
         <FormField
           control={form.control}
           name="name"
@@ -78,8 +67,30 @@ export const TeamProfileForm = ({
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="slug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Team URL</FormLabel>
+              <FormControl>
+                <div className="flex rounded-lg shadow-sm shadow-black/[.04]">
+                  <span className="-z-10 inline-flex items-center rounded-s-lg border border-input bg-background px-3 text-sm text-muted-foreground">
+                    https://init.kyh.io/dashboard/
+                  </span>
+                  <Input
+                    className="-ms-px rounded-s-none shadow-none"
+                    required
+                    {...field}
+                  />
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <footer className="flex justify-end">
-          <Button type="submit" loading={updateTeamAccountName.isPending}>
+          <Button type="submit" loading={updateTeam.isPending}>
             Update Team
           </Button>
         </footer>

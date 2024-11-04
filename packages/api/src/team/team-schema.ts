@@ -37,11 +37,10 @@ export type CreateTeamInvitationsInput = z.infer<
 >;
 
 // READ
-export const getTeamInput = z
-  .object({
-    id: z.string(),
-  })
-  .required();
+export const getTeamInput = z.object({
+  id: z.string().optional(),
+  slug: z.string().optional(),
+});
 export type GetTeamInput = z.infer<typeof getTeamInput>;
 
 export const getTeamsInput = z.object({
@@ -97,11 +96,9 @@ export type UpdateTeamInvitationsInput = z.infer<
 >;
 
 // DELETE
-export const deleteTeamInput = z
-  .object({
-    id: z.string(),
-  })
-  .required();
+export const deleteTeamInput = z.object({
+  id: z.string(),
+});
 export type DeleteTeamInput = z.infer<typeof deleteTeamInput>;
 
 export const deleteTeamsInput = z.array(deleteTeamInput);

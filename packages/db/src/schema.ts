@@ -22,7 +22,9 @@ export const teams = pgTable("teams", (t) => ({
     .notNull(),
   updatedAt: t
     .timestamp({ mode: "date", withTimezone: true })
-    .$onUpdateFn(() => sql`now()`),
+    .defaultNow()
+    .notNull()
+    .$onUpdateFn(() => new Date()),
 }));
 
 export const teamsRelations = relations(teams, ({ many }) => ({
@@ -130,7 +132,9 @@ export const tasks = pgTable("tasks", (t) => ({
     .notNull(),
   updatedAt: t
     .timestamp({ mode: "date", withTimezone: true })
-    .$onUpdateFn(() => sql`now()`),
+    .defaultNow()
+    .notNull()
+    .$onUpdateFn(() => new Date()),
 }));
 
 export const tasksRelations = relations(tasks, ({ one }) => ({
@@ -173,7 +177,9 @@ export const notifications = pgTable("notifications", (t) => ({
     .notNull(),
   updatedAt: t
     .timestamp({ mode: "date", withTimezone: true })
-    .$onUpdateFn(() => sql`now()`),
+    .defaultNow()
+    .notNull()
+    .$onUpdateFn(() => new Date()),
 }));
 
 export const notificationsRelations = relations(notifications, ({ one }) => ({
