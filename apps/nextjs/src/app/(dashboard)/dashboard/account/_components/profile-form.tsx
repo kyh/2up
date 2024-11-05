@@ -18,22 +18,22 @@ import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
 import { ImageIcon } from "lucide-react";
 
-import type { UpdateUserInput, UserMetadata } from "@init/api/user/user-schema";
+import type { UpdateUserInput } from "@init/api/user/user-schema";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { api } from "@/trpc/react";
 
 export const ProfileForm = () => {
   const client = getSupabaseBrowserClient();
-  const [{ user }] = api.auth.me.useSuspenseQuery();
+  const [{ user, userMetadata }] = api.auth.workspace.useSuspenseQuery();
   const updateUser = api.user.updateUser.useMutation();
-  const metadata = user?.user_metadata as UserMetadata | undefined;
+
   const form = useForm({
     schema: updateUserInput,
     defaultValues: {
       id: user?.id ?? "",
-      displayName: metadata?.displayName ?? "",
-      avatarUrl: metadata?.avatarUrl ?? "",
-      defaultTeam: metadata?.defaultTeam ?? "",
+      displayName: userMetadata?.displayName ?? "",
+      avatarUrl: userMetadata?.avatarUrl ?? "",
+      defaultTeam: userMetadata?.defaultTeam ?? "",
     },
   });
 
@@ -53,8 +53,8 @@ export const ProfileForm = () => {
     if (!file || !user) return;
     const id = toast.loading("Uploading profile image...");
 
-    if (metadata?.avatarUrl) {
-      await removeFileFromPublicUrl(client, metadata.avatarUrl);
+    if (userMetadata?.avatarUrl) {
+      await removeFileFromPublicUrl(client, userMetadata.avatarUrl);
     }
 
     const { data: uploadData, error } = await client.storage
@@ -91,8 +91,8 @@ export const ProfileForm = () => {
   };
 
   const removeProfileImage = async () => {
-    if (!metadata?.avatarUrl) return;
-    await removeFileFromPublicUrl(client, metadata.avatarUrl);
+    if (!userMetadata?.avatarUrl) return;
+    await removeFileFromPublicUrl(client, userMetadata.avatarUrl);
     updateUser.mutate({
       id: user?.id ?? "",
       avatarUrl: "",
@@ -113,9 +113,9 @@ export const ProfileForm = () => {
               type="file"
               onChange={onProfileImageChange}
             />
-            {metadata?.avatarUrl ? (
+            {userMetadata?.avatarUrl ? (
               <Image
-                src={metadata.avatarUrl}
+                src={userMetadata.avatarUrl}
                 alt="Profile picture"
                 className="h-24 w-24 flex-none rounded-lg object-cover"
                 width={96}
@@ -128,7 +128,7 @@ export const ProfileForm = () => {
             )}
           </label>
           <div>
-            {metadata?.avatarUrl ? (
+            {userMetadata?.avatarUrl ? (
               <Button variant="secondary" onClick={removeProfileImage}>
                 Remove Profile Image
               </Button>

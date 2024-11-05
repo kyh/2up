@@ -50,11 +50,11 @@ import { NavLink } from "@/components/nav";
 import { api } from "@/trpc/react";
 
 export const Sidebar = () => {
-  const [{ user }] = api.auth.me.useSuspenseQuery();
   const params = useParams<{ team: string | undefined }>();
+  const [{ defaultTeamSlug }] = api.auth.workspace.useSuspenseQuery();
 
   const teamSlug = params.team;
-  const rootUrl = `/dashboard/${teamSlug ?? user?.user_metadata.defaultTeam}`;
+  const rootUrl = `/dashboard/${teamSlug ?? defaultTeamSlug}`;
   const pageLinks = [
     {
       href: rootUrl,
@@ -99,8 +99,7 @@ export const Sidebar = () => {
 
 export const UserDropdown = ({ teamSlug }: { teamSlug?: string }) => {
   const router = useRouter();
-  const [{ user }] = api.auth.me.useSuspenseQuery();
-  const [{ teams }] = api.team.getMyTeams.useSuspenseQuery();
+  const [{ user, userMetadata, teams }] = api.auth.workspace.useSuspenseQuery();
 
   const signOut = api.auth.signOut.useMutation({
     onSuccess: () => {
@@ -133,18 +132,11 @@ export const UserDropdown = ({ teamSlug }: { teamSlug?: string }) => {
       <DropdownMenu>
         <DropdownMenuTrigger className="mt-auto">
           <Avatar className="size-9">
-            {user.user_metadata.avatarUrl && (
-              <AvatarImage
-                src={user.user_metadata.avatarUrl as string}
-                alt="Profile Picture"
-              />
+            {userMetadata?.avatarUrl && (
+              <AvatarImage src={userMetadata.avatarUrl} alt="Profile Picture" />
             )}
             <AvatarFallback>
-              {getInitials(
-                (user.user_metadata.displayName as string | undefined) ??
-                  user.email ??
-                  "",
-              )}
+              {getInitials(userMetadata?.displayName ?? user.email ?? "")}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
@@ -158,9 +150,9 @@ export const UserDropdown = ({ teamSlug }: { teamSlug?: string }) => {
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">
-                {user.user_metadata.displayName ?? user.email}
+                {userMetadata?.displayName ?? user.email}
               </p>
-              {user.user_metadata.displayName && (
+              {userMetadata?.displayName && (
                 <p className="text-xs leading-none text-muted-foreground">
                   {user.email}
                 </p>

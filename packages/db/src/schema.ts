@@ -44,17 +44,17 @@ export const teamMembers = pgTable(
       .uuid()
       .notNull()
       .references(() => teams.id),
-    role: t.varchar({ length: 50 }).notNull(),
+    role: t.varchar({ length: 50 }).notNull(), // owner, admin, member
     joinedAt: t
       .timestamp({ mode: "date", withTimezone: true })
       .notNull()
       .defaultNow(),
   }),
-  (t) => ({
-    compoundKey: primaryKey({
+  (t) => [
+    primaryKey({
       columns: [t.userId, t.teamId],
     }),
-  }),
+  ],
 );
 
 export const teamMembersRelations = relations(teamMembers, ({ one }) => ({

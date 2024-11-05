@@ -110,8 +110,7 @@ const RootLayout = (props: LayoutProps) => {
 };
 
 const AppLayout = (props: LayoutProps) => {
-  void api.auth.me.prefetch();
-  void api.team.getMyTeams.prefetch();
+  void api.auth.workspace.prefetch();
 
   return <HydrateClient>{props.children}</HydrateClient>;
 };

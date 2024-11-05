@@ -1,3 +1,4 @@
+import type { UserMetadata } from "../user/user-schema";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import {
   requestPasswordResetInput,
@@ -10,8 +11,25 @@ import {
 } from "./auth-schema";
 
 export const authRouter = createTRPCRouter({
-  me: publicProcedure.query(({ ctx }) => {
-    return { user: ctx.user };
+  workspace: publicProcedure.query(async ({ ctx }) => {
+    const teamMembers = ctx.user
+      ? await ctx.db.query.teamMembers.findMany({
+          where: (teamMembers, { eq }) =>
+            eq(teamMembers.userId, ctx.user?.id ?? ""),
+          with: {
+            team: true,
+          },
+        })
+      : [];
+
+    const userMetadata = ctx.user?.user_metadata as UserMetadata | undefined;
+
+    return {
+      user: ctx.user,
+      userMetadata,
+      defaultTeamSlug: userMetadata?.defaultTeam ?? teamMembers[0]?.team.id,
+      teams: teamMembers.map((tm) => ({ ...tm.team, userRole: tm.role })),
+    };
   }),
   signUp: publicProcedure
     .input(signUpInput)

@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { PageHeader } from "@/components/header";
 import { api } from "@/trpc/server";
-// import { TeamDeleteForm } from "../_components/team-delete-form";
+import { TeamDeleteForm } from "../_components/team-delete-form";
 import { TeamProfileForm } from "../_components/team-profile-form";
 
 type PageProps = {
@@ -48,7 +48,7 @@ const Page = async (props: PageProps) => {
             </p>
           </div>
           <div className="md:col-span-2">
-            {/* <TeamDeleteForm team={team} /> */}
+            <TeamDeleteForm team={team} />
           </div>
         </div>
       </section>

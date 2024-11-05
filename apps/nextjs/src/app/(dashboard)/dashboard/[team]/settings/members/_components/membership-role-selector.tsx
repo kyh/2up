@@ -23,7 +23,6 @@ export const MembershipRoleSelector = ({
     <SelectTrigger>
       <SelectValue />
     </SelectTrigger>
-
     <SelectContent>
       {roles.map((role) => {
         return (

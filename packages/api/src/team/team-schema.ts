@@ -76,7 +76,7 @@ export type UpdateTeamInput = z.infer<typeof updateTeamInput>;
 export const updateTeamsInput = z.array(updateTeamInput);
 export type UpdateTeamsInput = z.infer<typeof updateTeamsInput>;
 
-export const updateTeamMemberInput = createTeamMemberInput.pick({ role: true });
+export const updateTeamMemberInput = createTeamMemberInput;
 export type UpdateTeamMemberInput = z.infer<typeof updateTeamMemberInput>;
 
 export const updateTeamMembersInput = z.array(updateTeamMemberInput);

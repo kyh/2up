@@ -6,27 +6,13 @@ import {
   createTeamInput,
   createTeamMemberInput,
   deleteTeamInput,
+  deleteTeamMemberInput,
   getTeamInput,
   updateTeamInput,
+  updateTeamMemberInput,
 } from "./team-schema";
 
 export const teamRouter = createTRPCRouter({
-  getMyTeams: publicProcedure.query(async ({ ctx }) => {
-    if (!ctx.user) return { teams: [] };
-
-    const teamMembers = await ctx.db.query.teamMembers.findMany({
-      where: (teamMembers, { eq }) =>
-        eq(teamMembers.userId, ctx.user?.id ?? ""),
-      with: {
-        team: true,
-      },
-    });
-
-    return {
-      teams: teamMembers.map((tm) => tm.team),
-    };
-  }),
-
   createTeam: protectedProcedure
     .input(createTeamInput)
     .mutation(async ({ ctx, input }) => {
@@ -62,19 +48,6 @@ export const teamRouter = createTRPCRouter({
 
       return {
         team: created,
-      };
-    }),
-
-  addMember: protectedProcedure
-    .input(createTeamMemberInput)
-    .mutation(async ({ ctx, input }) => {
-      const [created] = await ctx.db
-        .insert(teamMembers)
-        .values(input)
-        .returning();
-
-      return {
-        teamMember: created,
       };
     }),
 
@@ -115,6 +88,56 @@ export const teamRouter = createTRPCRouter({
 
       return {
         team: deleted,
+      };
+    }),
+
+  addMember: protectedProcedure
+    .input(createTeamMemberInput)
+    .mutation(async ({ ctx, input }) => {
+      const [created] = await ctx.db
+        .insert(teamMembers)
+        .values(input)
+        .returning();
+
+      return {
+        teamMember: created,
+      };
+    }),
+
+  updateMember: protectedProcedure
+    .input(updateTeamMemberInput)
+    .mutation(async ({ ctx, input }) => {
+      const [updated] = await ctx.db
+        .update(teamMembers)
+        .set(input)
+        .where(
+          and(
+            eq(teamMembers.teamId, input.teamId),
+            eq(teamMembers.userId, input.userId),
+          ),
+        )
+        .returning();
+
+      return {
+        teamMember: updated,
+      };
+    }),
+
+  deleteMember: protectedProcedure
+    .input(deleteTeamMemberInput)
+    .mutation(async ({ ctx, input }) => {
+      const [deleted] = await ctx.db
+        .delete(teamMembers)
+        .where(
+          and(
+            eq(teamMembers.teamId, input.teamId),
+            eq(teamMembers.userId, input.userId),
+          ),
+        )
+        .returning();
+
+      return {
+        teamMember: deleted,
       };
     }),
 });

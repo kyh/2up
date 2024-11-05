@@ -19,11 +19,11 @@ import type { RouterOutputs } from "@init/api";
 import type { UpdateTeamInput } from "@init/api/team/team-schema";
 import { api } from "@/trpc/react";
 
-export const TeamProfileForm = ({
-  team,
-}: {
+type TeamProfileFormProps = {
   team: NonNullable<RouterOutputs["team"]["getTeam"]["team"]>;
-}) => {
+};
+
+export const TeamProfileForm = ({ team }: TeamProfileFormProps) => {
   const router = useRouter();
 
   const updateTeam = api.team.updateTeam.useMutation({
