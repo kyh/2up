@@ -52,7 +52,7 @@ export const TeamDeleteForm = ({ team }: TeamDeleteFormProps) => {
 };
 
 type DeleteProps = {
-  team: NonNullable<RouterOutputs["auth"]["workspace"]["teams"][0]>;
+  team: NonNullable<RouterOutputs["auth"]["workspace"]["teams"][number]>;
 };
 
 const Delete = ({ team }: DeleteProps) => {
@@ -160,7 +160,7 @@ const Delete = ({ team }: DeleteProps) => {
 
 type LeaveProps = {
   user: NonNullable<RouterOutputs["auth"]["workspace"]["user"]>;
-  team: NonNullable<RouterOutputs["auth"]["workspace"]["teams"][0]>;
+  team: NonNullable<RouterOutputs["auth"]["workspace"]["teams"][number]>;
 };
 
 const Leave = ({ user, team }: LeaveProps) => {
