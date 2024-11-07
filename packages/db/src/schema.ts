@@ -1,6 +1,14 @@
 import { relations, sql } from "drizzle-orm";
-import { pgEnum, pgTable, primaryKey } from "drizzle-orm/pg-core";
-import { authUsers } from "drizzle-orm/supabase";
+import { pgEnum, pgSchema, pgTable, primaryKey } from "drizzle-orm/pg-core";
+
+/* ------------------------------ auth schema; ------------------------------ */
+const auth = pgSchema("auth");
+
+export const authUsers = auth.table("users", (t) => ({
+  id: t.uuid().primaryKey().notNull(),
+  email: t.varchar({ length: 255 }),
+  rawUserMetaData: t.jsonb(),
+}));
 
 export const usersRelations = relations(authUsers, ({ many }) => ({
   teamMembers: many(teamMembers),
@@ -10,6 +18,7 @@ export const usersRelations = relations(authUsers, ({ many }) => ({
 export const teams = pgTable("teams", (t) => ({
   id: t.uuid().notNull().primaryKey().defaultRandom(),
   name: t.varchar({ length: 255 }).notNull(),
+  avatarUrl: t.text(),
   slug: t.text().unique().notNull(),
   stripeCustomerId: t.text().unique(),
   stripeSubscriptionId: t.text().unique(),

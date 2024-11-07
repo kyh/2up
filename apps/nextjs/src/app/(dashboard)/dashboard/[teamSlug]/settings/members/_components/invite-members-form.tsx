@@ -75,7 +75,7 @@ type InviteMembersFormProps = {
 };
 
 export const InviteMembersForm = ({ teamId }: InviteMembersFormProps) => {
-  const createInvitations = api.team.createInvitations.useMutation();
+  const createInvitations = api.team.createTeamInvitations.useMutation();
 
   const form = useForm({
     schema: createTeamInvitationsInput,

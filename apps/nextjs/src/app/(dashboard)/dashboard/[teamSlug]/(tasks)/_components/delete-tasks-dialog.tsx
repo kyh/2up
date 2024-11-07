@@ -59,7 +59,7 @@ export const DeleteTasksDialog = ({
             {tasks.length === 1 ? " task" : " tasks"} from our servers.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="gap-2 sm:space-x-0">
+        <DialogFooter className="gap-2 sm:gap-0">
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>

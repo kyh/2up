@@ -23,7 +23,7 @@ export const LineItemDetails = (
       if (item.description) {
         return (
           <div key={index} className={className}>
-            <span className="flex items-center space-x-1.5">
+            <span className="flex items-center gap-1.5">
               <PlusIcon className="w-4" />
               {item.description}
             </span>
@@ -33,9 +33,9 @@ export const LineItemDetails = (
 
       const FlatFee = () => (
         <div className="flex flex-col">
-          <div className={cn(className, "space-x-1")}>
-            <span className="flex items-center space-x-1">
-              <span className="flex items-center space-x-1.5">
+          <div className={cn(className, "gap-1")}>
+            <span className="flex items-center gap-1">
+              <span className="flex items-center gap-1.5">
                 <PlusIcon className="w-3" />
 
                 <span>Base Plan</span>
@@ -57,7 +57,7 @@ export const LineItemDetails = (
           </div>
 
           <If condition={item.tiers?.length}>
-            <span className="flex items-center space-x-1.5">
+            <span className="flex items-center gap-1.5">
               <PlusIcon className="w-3" />
 
               <span className="flex gap-1 text-sm">
@@ -73,7 +73,7 @@ export const LineItemDetails = (
       const PerSeat = () => (
         <div key={index} className="flex flex-col">
           <div className={className}>
-            <span className="flex items-center space-x-1.5">
+            <span className="flex items-center gap-1.5">
               <PlusIcon className="w-3" />
 
               <span>Per team member</span>
@@ -95,8 +95,8 @@ export const LineItemDetails = (
       const Metered = () => (
         <div key={index} className="flex flex-col">
           <div className={className}>
-            <span className="flex items-center space-x-1">
-              <span className="flex items-center space-x-1.5">
+            <span className="flex items-center gap-1">
+              <span className="flex items-center gap-1.5">
                 <PlusIcon className="w-3" />
 
                 <span className="flex gap-1">

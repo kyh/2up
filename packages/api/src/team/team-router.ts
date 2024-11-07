@@ -1,5 +1,5 @@
 import { and, eq } from "@init/db";
-import { invitations, teamMembers, teams } from "@init/db/schema";
+import { authUsers, invitations, teamMembers, teams } from "@init/db/schema";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import {
@@ -10,6 +10,7 @@ import {
   deleteTeamInvitationInput,
   deleteTeamMemberInput,
   getTeamInput,
+  getTeamMemberInput,
   updateTeamInput,
   updateTeamInvitationInput,
   updateTeamMemberInput,
@@ -61,7 +62,9 @@ export const teamRouter = createTRPCRouter({
       const team = await ctx.db.query.teams.findFirst({
         where: whereClause,
         with: {
-          teamMembers: true,
+          teamMembers: {
+            with: { user: true },
+          },
           invitations: true,
         },
       });
@@ -98,7 +101,7 @@ export const teamRouter = createTRPCRouter({
       };
     }),
 
-  createInvitations: protectedProcedure
+  createTeamInvitations: protectedProcedure
     .input(createTeamInvitationsInput)
     .mutation(async ({ ctx, input }) => {
       const createdInvitations = (
@@ -119,7 +122,7 @@ export const teamRouter = createTRPCRouter({
       };
     }),
 
-  updateInvitation: protectedProcedure
+  updateTeamInvitation: protectedProcedure
     .input(updateTeamInvitationInput)
     .mutation(async ({ ctx, input }) => {
       const [updated] = await ctx.db
@@ -133,7 +136,7 @@ export const teamRouter = createTRPCRouter({
       };
     }),
 
-  deleteInvitation: protectedProcedure
+  deleteTeamInvitation: protectedProcedure
     .input(deleteTeamInvitationInput)
     .mutation(async ({ ctx, input }) => {
       const [deleted] = await ctx.db
@@ -146,7 +149,23 @@ export const teamRouter = createTRPCRouter({
       };
     }),
 
-  createMember: protectedProcedure
+  getTeamMember: protectedProcedure
+    .input(getTeamMemberInput)
+    .query(async ({ ctx, input }) => {
+      const member = await ctx.db.query.teamMembers.findFirst({
+        where: and(
+          eq(teamMembers.teamId, input.teamId),
+          eq(teamMembers.userId, input.userId),
+        ),
+        with: { user: true },
+      });
+
+      return {
+        teamMember: member,
+      };
+    }),
+
+  createTeamMember: protectedProcedure
     .input(createTeamMemberInput)
     .mutation(async ({ ctx, input }) => {
       const [created] = await ctx.db
@@ -159,7 +178,7 @@ export const teamRouter = createTRPCRouter({
       };
     }),
 
-  updateMember: protectedProcedure
+  updateTeamMember: protectedProcedure
     .input(updateTeamMemberInput)
     .mutation(async ({ ctx, input }) => {
       const [updated] = await ctx.db
@@ -178,7 +197,7 @@ export const teamRouter = createTRPCRouter({
       };
     }),
 
-  deleteMember: protectedProcedure
+  deleteTeamMember: protectedProcedure
     .input(deleteTeamMemberInput)
     .mutation(async ({ ctx, input }) => {
       const [deleted] = await ctx.db

@@ -97,7 +97,7 @@ const Delete = ({ team }: DeleteProps) => {
               Delete Team
             </Button>
           </AlertDialogTrigger>
-          <AlertDialogContent onEscapeKeyDown={(e) => e.preventDefault()}>
+          <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Deleting team</AlertDialogTitle>
               <AlertDialogDescription>
@@ -162,7 +162,7 @@ type LeaveProps = {
 };
 
 const Leave = ({ user, team }: LeaveProps) => {
-  const leaveTeam = api.team.deleteMember.useMutation();
+  const leaveTeam = api.team.deleteTeamMember.useMutation();
 
   const form = useForm({
     schema: z.object({

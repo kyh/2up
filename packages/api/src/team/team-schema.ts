@@ -89,6 +89,14 @@ export const getTeamsInput = z.object({
 export type GetTeamsInput = z.infer<typeof getTeamsInput>;
 
 /**
+ * Read - members
+ */
+export const getTeamMemberInput = z.object({
+  teamId: z.string(),
+  userId: z.string(),
+});
+
+/**
  * Update
  */
 

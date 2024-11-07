@@ -47,3 +47,26 @@ const AvatarFallback = React.forwardRef<
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
 export { Avatar, AvatarImage, AvatarFallback };
+
+type ProfileAvatarProps = {
+  className?: string;
+  displayName?: string | null;
+  avatarUrl?: string | null;
+};
+
+export const ProfileAvatar = ({
+  className,
+  displayName,
+  avatarUrl,
+}: ProfileAvatarProps) => {
+  const initials = displayName?.slice(0, 1);
+
+  return (
+    <Avatar className={cn("size-9", className)}>
+      <AvatarImage src={avatarUrl ?? undefined} />
+      <AvatarFallback className="uppercase animate-in fade-in">
+        {initials}
+      </AvatarFallback>
+    </Avatar>
+  );
+};

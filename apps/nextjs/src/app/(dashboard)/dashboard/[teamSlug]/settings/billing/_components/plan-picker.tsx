@@ -101,7 +101,7 @@ export const PlanPicker = (
 
   return (
     <Form {...form}>
-      <div className="flex flex-col gap-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+      <div className="flex flex-col gap-4 lg:flex-row lg:gap-4 lg:space-y-0">
         <form
           className="flex w-full max-w-xl flex-col space-y-4"
           onSubmit={form.handleSubmit(props.onSubmit)}
@@ -132,7 +132,7 @@ export const PlanPicker = (
                                   htmlFor={interval}
                                   key={interval}
                                   className={cn(
-                                    "flex items-center space-x-2 rounded-md border border-transparent px-4 py-2 transition-colors",
+                                    "flex items-center gap-2 rounded-md border border-transparent px-4 py-2 transition-colors",
                                     {
                                       ["border-primary"]: selected,
                                       ["hover:border-primary"]: !selected,
@@ -250,7 +250,7 @@ export const PlanPicker = (
                               htmlFor={plan.id}
                               className="flex flex-col justify-center space-y-2"
                             >
-                              <div className="flex items-center space-x-2.5">
+                              <div className="flex items-center gap-2.5">
                                 <span className="font-semibold">
                                   {product.name}
                                 </span>
@@ -276,7 +276,7 @@ export const PlanPicker = (
                               </span>
                             </Label>
 
-                            <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:space-x-4 lg:space-y-0 lg:text-right">
+                            <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-4 lg:space-y-0 lg:text-right">
                               <div>
                                 <Price key={plan.id}>
                                   <span>
@@ -412,7 +412,7 @@ const PlanDetails = ({
 
         {selectedProduct.features.map((item) => {
           return (
-            <div key={item} className="flex items-center space-x-1 text-sm">
+            <div key={item} className="flex items-center gap-1 text-sm">
               <CircleCheckIcon className="h-4 text-green-500" />
 
               <span className="text-secondary-foreground">{item}</span>

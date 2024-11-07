@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS "team_members" (
 CREATE TABLE IF NOT EXISTS "teams" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(255) NOT NULL,
+    "avatar_url" text,
 	"slug" text NOT NULL,
 	"stripe_customer_id" text,
 	"stripe_subscription_id" text,

@@ -39,14 +39,7 @@ const Page = async (props: PageProps) => {
           <div className="md:col-span-2">
             <div className="space-y-4">
               <InviteMembersDialog teamId={team.id} />
-              {/* <MembersTable
-                slug={account.slug}
-                userRoleHierarchy={currentUserRoleHierarchy}
-                currentUserId={user.id}
-                currentAccountId={account.id}
-                isPrimaryOwner={isPrimaryOwner}
-                canManageRoles={canManageRoles}
-              /> */}
+              {/* <MembersTable teamId={team.id} /> */}
             </div>
           </div>
         </div>

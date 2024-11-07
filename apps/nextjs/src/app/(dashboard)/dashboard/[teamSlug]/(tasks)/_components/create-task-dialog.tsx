@@ -239,7 +239,7 @@ export const CreateTaskDialog = ({
                 </FormItem>
               )}
             />
-            <DialogFooter className="gap-2 pt-2 sm:space-x-0">
+            <DialogFooter className="gap-2 pt-2 sm:gap-0">
               <DialogClose asChild>
                 <Button type="button" variant="outline">
                   Cancel

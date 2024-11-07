@@ -91,7 +91,7 @@ const getColumns = (): ColumnDef<Members[0]>[] => [
       const name = row.original.name;
 
       return (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2">
           <div>
             <ProfileAvatar
               pictureUrl={row.original.pictureUrl}

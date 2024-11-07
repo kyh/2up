@@ -34,7 +34,7 @@ export const getColumns = (permissions: {
       const email = member.email;
 
       return (
-        <span className="flex items-center space-x-4 text-left">
+        <span className="flex items-center gap-4 text-left">
           <span>
             <ProfileAvatar text={email} />
           </span>

@@ -197,7 +197,7 @@ export const PageHeader = ({
 //                 )}
 //               >
 //                 <div className="flex w-full items-start justify-between">
-//                   <div className="flex items-start justify-start space-x-2 py-2">
+//                   <div className="flex items-start justify-start gap-2 py-2">
 //                     <div className="py-0.5">
 //                       <Icon />
 //                     </div>

@@ -79,8 +79,8 @@ const PersonalAccountPage = async (props: { account: Account }) => {
     <div className="flex flex-col gap-4">
       <header className="flex h-20 md:h-24">
         <div className="flex w-full items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2.5">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2.5">
               <ProfileAvatar
                 pictureUrl={props.account.pictureUrl}
                 displayName={props.account.name}
@@ -148,8 +148,8 @@ const TeamAccountPage = async (props: { account: Account }) => {
     <div className="flex flex-col gap-4">
       <header className="flex h-20 md:h-24">
         <div className="flex w-full items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2.5">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2.5">
               <ProfileAvatar
                 pictureUrl={props.account.pictureUrl}
                 displayName={props.account.name}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { createTeamInput } from "@init/api/team/team-schema";
-import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
+import { ProfileAvatar } from "@init/ui/avatar";
 import { Button } from "@init/ui/button";
 import {
   Dialog,
@@ -143,14 +143,10 @@ export const UserDropdown = ({ teamSlug }: { teamSlug?: string }) => {
     <Dialog>
       <DropdownMenu>
         <DropdownMenuTrigger className="mt-auto">
-          <Avatar className="size-9">
-            {userMetadata?.avatarUrl && (
-              <AvatarImage src={userMetadata.avatarUrl} alt="Profile Picture" />
-            )}
-            <AvatarFallback>
-              {getInitials(userMetadata?.displayName ?? user.email ?? "")}
-            </AvatarFallback>
-          </Avatar>
+          <ProfileAvatar
+            displayName={userMetadata?.displayName}
+            avatarUrl={userMetadata?.avatarUrl}
+          />
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-56"
@@ -188,11 +184,11 @@ export const UserDropdown = ({ teamSlug }: { teamSlug?: string }) => {
                       href={`/dashboard/${team.slug}`}
                       className="inline-flex w-full items-center font-normal"
                     >
-                      <Avatar className="size-4">
-                        <AvatarFallback className="group-hover:bg-background">
-                          {team.name ? getInitials(team.name) : ""}
-                        </AvatarFallback>
-                      </Avatar>
+                      <ProfileAvatar
+                        className="size-4"
+                        displayName={team.name}
+                        avatarUrl={team.avatarUrl}
+                      />
                       <span className="ml-2">{team.name}</span>
                       <CheckIcon
                         className={cn(
@@ -260,7 +256,7 @@ export const UserDropdown = ({ teamSlug }: { teamSlug?: string }) => {
                   );
                 }}
               />
-              <div className="flex justify-end space-x-2">
+              <div className="flex justify-end gap-2">
                 <Button loading={createTeamAccount.isPending}>
                   Create Team
                 </Button>

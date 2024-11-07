@@ -84,7 +84,7 @@ const AccountsTableFilters = (props: {
   };
 
   return (
-    <div className="flex items-center justify-between space-x-4">
+    <div className="flex items-center justify-between gap-4">
       <div className="flex gap-4">
         <Form {...form}>
           <form
