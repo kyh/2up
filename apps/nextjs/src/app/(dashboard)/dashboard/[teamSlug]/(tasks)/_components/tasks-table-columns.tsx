@@ -70,7 +70,7 @@ export const getColumns = (): ColumnDef<Task>[] => [
       );
 
       return (
-        <div className="flex space-x-2">
+        <div className="flex gap-2">
           {label && <Badge variant="outline">{label}</Badge>}
           <span className="max-w-[31.25rem] truncate font-medium">
             {row.getValue("title")}

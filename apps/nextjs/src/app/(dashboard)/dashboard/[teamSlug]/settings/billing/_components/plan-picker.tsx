@@ -101,7 +101,7 @@ export const PlanPicker = (
 
   return (
     <Form {...form}>
-      <div className="flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+      <div className="flex flex-col gap-4 lg:flex-row lg:space-x-4 lg:space-y-0">
         <form
           className="flex w-full max-w-xl flex-col space-y-4"
           onSubmit={form.handleSubmit(props.onSubmit)}
@@ -123,7 +123,7 @@ export const PlanPicker = (
 
                       <FormControl id="plan-picker-id">
                         <RadioGroup name={field.name} value={field.value}>
-                          <div className="flex space-x-2.5">
+                          <div className="flex gap-2.5">
                             {intervals.map((interval) => {
                               const selected = field.value === interval;
 
@@ -276,7 +276,7 @@ export const PlanPicker = (
                               </span>
                             </Label>
 
-                            <div className="flex flex-col space-y-2 lg:flex-row lg:items-center lg:space-x-4 lg:space-y-0 lg:text-right">
+                            <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:space-x-4 lg:space-y-0 lg:text-right">
                               <div>
                                 <Price key={plan.id}>
                                   <span>
@@ -375,7 +375,7 @@ const PlanDetails = ({
       key={key}
       className="flex w-full flex-col space-y-4 py-2 animate-in fade-in zoom-in-95 lg:px-8"
     >
-      <div className="flex flex-col space-y-0.5">
+      <div className="flex flex-col gap-0.5">
         <Heading level={5}>
           <b>{selectedProduct.name}</b>{" "}
           <If condition={isRecurring}>
@@ -394,7 +394,7 @@ const PlanDetails = ({
       <If condition={selectedPlan.lineItems.length > 0}>
         <Separator />
 
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col gap-2">
           <span className="text-sm font-semibold">Details</span>
 
           <LineItemDetails
@@ -407,7 +407,7 @@ const PlanDetails = ({
 
       <Separator />
 
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col gap-2">
         <span className="text-sm font-semibold">Features</span>
 
         {selectedProduct.features.map((item) => {

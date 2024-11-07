@@ -22,25 +22,23 @@ import {
 import { toast } from "@init/ui/toast";
 
 import { api } from "@/trpc/react";
+import { RolesDataProvider } from "../members/roles-data-provider";
 import { MembershipRoleSelector } from "../membership-role-selector";
-import { RolesDataProvider } from "./roles-data-provider";
 
 type Role = string;
 
-type UpdateMemberRoleDialogProps = {
-  teamAccountId: string;
-  userId: string;
+type UpdateInvitationDialogProps = {
+  invitationId: string;
   userRole: Role;
   userRoleHierarchy: number;
 } & React.ComponentPropsWithoutRef<typeof Dialog>;
 
-export const UpdateMemberRoleDialog = ({
-  userId,
-  teamAccountId,
+export const UpdateInvitationDialog = ({
+  invitationId,
   userRole,
   userRoleHierarchy,
   ...props
-}: UpdateMemberRoleDialogProps) => (
+}: UpdateInvitationDialogProps) => (
   <Dialog {...props}>
     <DialogContent>
       <DialogHeader>
@@ -50,58 +48,55 @@ export const UpdateMemberRoleDialog = ({
           permissions of the member.
         </DialogDescription>
       </DialogHeader>
-      <RolesDataProvider maxRoleHierarchy={userRoleHierarchy}>
-        {(data) => (
-          <UpdateMemberForm
-            userId={userId}
-            teamAccountId={teamAccountId}
-            userRole={userRole}
-            roles={data}
-            onSuccess={() => props.onOpenChange?.(false)}
-          />
-        )}
-      </RolesDataProvider>
+      <UpdateInvitationForm
+        invitationId={invitationId}
+        userRole={userRole}
+        userRoleHierarchy={userRoleHierarchy}
+        onSuccess={() => props.onOpenChange?.(false)}
+      />
     </DialogContent>
   </Dialog>
 );
 
-const UpdateMemberForm = ({
-  userId,
+const UpdateInvitationForm = ({
+  invitationId,
   userRole,
-  teamAccountId,
+  userRoleHierarchy,
   onSuccess,
-  roles,
 }: {
-  userId: string;
+  invitationId: string;
   userRole: Role;
-  teamAccountId: string;
-  roles: Role[];
+  userRoleHierarchy: number;
   onSuccess?: () => void;
 }) => {
-  const updateMemberRole = api.account.updateMemberRole.useMutation({
+  const updateInvitation = api.account.updateInvitation.useMutation({
     onSuccess: () => {
       onSuccess?.();
-      toast.success("Role updated successfully");
+      toast.success("Invite updated successfully");
     },
     onError: () =>
       toast.error(
-        "We encountered an error updating the role of the selected member. Please try again.",
+        "We encountered an error renewing the invitation. Please try again.",
       ),
   });
 
   const onSubmit = ({ role }: { role: Role }) => {
-    updateMemberRole.mutate({
-      accountId: teamAccountId,
-      userId,
+    updateInvitation.mutate({
+      invitationId,
       role,
     });
   };
 
   const form = useForm({
-    schema: role.refine((data) => data.role !== userRole, {
-      message: "Role must be different from the current one",
-      path: ["role"],
-    }),
+    schema: role.refine(
+      (data) => {
+        return data.role !== userRole;
+      },
+      {
+        message: "Role must be different from the current one",
+        path: ["role"],
+      },
+    ),
     reValidateMode: "onChange",
     mode: "onChange",
     defaultValues: {
@@ -113,7 +108,7 @@ const UpdateMemberForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col space-y-6"
+        className="flex flex-col gap-6"
       >
         <FormField
           name="role"
@@ -122,12 +117,18 @@ const UpdateMemberForm = ({
               <FormItem>
                 <FormLabel>Role</FormLabel>
                 <FormControl>
-                  <MembershipRoleSelector
-                    roles={roles}
-                    currentUserRole={userRole}
-                    value={field.value}
-                    onChange={(newRole) => form.setValue("role", newRole)}
-                  />
+                  <RolesDataProvider maxRoleHierarchy={userRoleHierarchy}>
+                    {(roles) => (
+                      <MembershipRoleSelector
+                        roles={roles}
+                        currentUserRole={userRole}
+                        value={field.value}
+                        onChange={(newRole) =>
+                          form.setValue(field.name, newRole)
+                        }
+                      />
+                    )}
+                  </RolesDataProvider>
                 </FormControl>
                 <FormDescription>Pick a role for this member.</FormDescription>
                 <FormMessage />
@@ -135,7 +136,9 @@ const UpdateMemberForm = ({
             );
           }}
         />
-        <Button loading={updateMemberRole.isPending}>Update Role</Button>
+        <Button type="submit" loading={updateInvitation.isPending}>
+          Update Role
+        </Button>
       </form>
     </Form>
   );

@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-// CREATE
+/**
+ * Create
+ */
 export const createTaskInput = z.object({
   title: z.string(),
   label: z.enum(["bug", "feature", "enhancement", "documentation"]),
@@ -10,10 +12,12 @@ export const createTaskInput = z.object({
 });
 export type CreateTaskInput = z.infer<typeof createTaskInput>;
 
-export const createTasksInput = z.array(createTaskInput);
+export const createTasksInput = z.object({ tasks: z.array(createTaskInput) });
 export type CreateTasksInput = z.infer<typeof createTasksInput>;
 
-// READ
+/**
+ * Read
+ */
 export const getTaskInput = z
   .object({
     id: z.string(),
@@ -43,7 +47,9 @@ export const getTasksInput = z.object({
 });
 export type GetTasksInput = z.infer<typeof getTasksInput>;
 
-// UPDATE
+/**
+ * Update
+ */
 export const updateTaskInput = z
   .object({
     id: z.string(),
@@ -51,10 +57,12 @@ export const updateTaskInput = z
   .merge(createTaskInput);
 export type UpdateTaskInput = z.infer<typeof updateTaskInput>;
 
-export const updateTasksInput = z.array(updateTaskInput);
+export const updateTasksInput = z.object({ tasks: z.array(updateTaskInput) });
 export type UpdateTasksInput = z.infer<typeof updateTasksInput>;
 
-// DELETE
+/**
+ * Delete
+ */
 export const deleteTaskInput = z
   .object({
     id: z.string(),
@@ -62,5 +70,5 @@ export const deleteTaskInput = z
   .required();
 export type DeleteTaskInput = z.infer<typeof deleteTaskInput>;
 
-export const deleteTasksInput = z.array(deleteTaskInput);
+export const deleteTasksInput = z.object({ tasks: z.array(deleteTaskInput) });
 export type DeleteTasksInput = z.infer<typeof deleteTasksInput>;

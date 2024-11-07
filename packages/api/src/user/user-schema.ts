@@ -7,7 +7,9 @@ export const userMetadata = z.object({
 });
 export type UserMetadata = z.infer<typeof userMetadata>;
 
-// CREATE
+/**
+ * Create
+ */
 export const createUserInput = z
   .object({
     email: z.string().email().optional(),
@@ -15,10 +17,12 @@ export const createUserInput = z
   .merge(userMetadata);
 export type CreateUserInput = z.infer<typeof createUserInput>;
 
-export const createUsersInput = z.array(createUserInput);
+export const createUsersInput = z.object({ users: z.array(createUserInput) });
 export type CreateUsersInput = z.infer<typeof createUsersInput>;
 
-// READ
+/**
+ * Read
+ */
 export const getUserInput = z
   .object({
     id: z.string(),
@@ -48,7 +52,9 @@ export const getUsersInput = z.object({
 });
 export type GetUsersInput = z.infer<typeof getUsersInput>;
 
-// UPDATE
+/**
+ * Update
+ */
 export const updateUserInput = z
   .object({
     id: z.string(),
@@ -56,10 +62,12 @@ export const updateUserInput = z
   .merge(createUserInput);
 export type UpdateUserInput = z.infer<typeof updateUserInput>;
 
-export const updateUsersInput = z.array(updateUserInput);
+export const updateUsersInput = z.object({ users: z.array(updateUserInput) });
 export type UpdateUsersInput = z.infer<typeof updateUsersInput>;
 
-// DELETE
+/**
+ * Delete
+ */
 export const deleteUserInput = z
   .object({
     id: z.string(),
@@ -67,10 +75,12 @@ export const deleteUserInput = z
   .required();
 export type DeleteUserInput = z.infer<typeof deleteUserInput>;
 
-export const deleteUsersInput = z.array(deleteUserInput);
+export const deleteUsersInput = z.object({ users: z.array(deleteUserInput) });
 export type DeleteUsersInput = z.infer<typeof deleteUsersInput>;
 
-// OTHER
+/**
+ * Other
+ */
 export const impersonateUserInput = z.object({
   id: z.string().uuid(),
 });

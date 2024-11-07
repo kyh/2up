@@ -88,7 +88,7 @@ const TransferOrganizationOwnershipForm = ({
   return (
     <Form {...form}>
       <form
-        className="flex flex-col space-y-4 text-sm"
+        className="flex flex-col gap-4 text-sm"
         onSubmit={form.handleSubmit((data) => {
           transferOwnership.mutate(data);
         })}

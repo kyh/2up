@@ -1,16 +1,22 @@
 import { z } from "zod";
 
-// CREATE
+/**
+ * Create
+ */
 export const joinWaitlistInput = z.object({
   email: z.string().email(),
   type: z.enum(["app"]).optional(),
 });
 export type JoinWaitlistInput = z.infer<typeof joinWaitlistInput>;
 
-export const joinWaitlistsInput = z.array(joinWaitlistInput);
+export const joinWaitlistsInput = z.object({
+  waitlists: z.array(joinWaitlistInput),
+});
 export type JoinWaitlistsInput = z.infer<typeof joinWaitlistsInput>;
 
-// READ
+/**
+ * Read
+ */
 export const getWaitlistInput = z
   .object({
     id: z.string(),
@@ -40,7 +46,9 @@ export const getWaitlistsInput = z.object({
 });
 export type GetWaitlistsInput = z.infer<typeof getWaitlistsInput>;
 
-// UPDATE
+/**
+ * Update
+ */
 export const updateWaitlistInput = z
   .object({
     id: z.string(),
@@ -48,10 +56,14 @@ export const updateWaitlistInput = z
   .merge(joinWaitlistInput);
 export type UpdateWaitlistInput = z.infer<typeof updateWaitlistInput>;
 
-export const updateWaitlistsInput = z.array(updateWaitlistInput);
+export const updateWaitlistsInput = z.object({
+  waitlists: z.array(updateWaitlistInput),
+});
 export type UpdateWaitlistsInput = z.infer<typeof updateWaitlistsInput>;
 
-// DELETE
+/**
+ * Delete
+ */
 export const deleteWaitlistInput = z
   .object({
     id: z.string(),
@@ -59,5 +71,7 @@ export const deleteWaitlistInput = z
   .required();
 export type DeleteWaitlistInput = z.infer<typeof deleteWaitlistInput>;
 
-export const deleteWaitlistsInput = z.array(deleteWaitlistInput);
+export const deleteWaitlistsInput = z.object({
+  waitlists: z.array(deleteWaitlistInput),
+});
 export type DeleteWaitlistsInput = z.infer<typeof deleteWaitlistsInput>;

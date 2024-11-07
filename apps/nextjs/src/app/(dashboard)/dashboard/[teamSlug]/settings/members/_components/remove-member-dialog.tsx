@@ -66,7 +66,7 @@ const RemoveMemberForm = ({
 
   return (
     <form action={onMemberRemoved}>
-      <div className="flex flex-col space-y-6">
+      <div className="flex flex-col gap-6">
         <p className="text-sm text-muted-foreground">
           Are you sure you want to continue?
         </p>

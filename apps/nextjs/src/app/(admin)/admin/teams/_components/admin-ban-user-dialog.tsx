@@ -65,7 +65,7 @@ export const AdminBanUserDialog = ({
         </AlertDialogHeader>
         <Form {...form}>
           <form
-            className="flex flex-col space-y-8"
+            className="flex flex-col gap-8"
             onSubmit={form.handleSubmit((data) => {
               return banUserAction.mutate(data);
             })}

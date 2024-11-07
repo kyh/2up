@@ -46,7 +46,7 @@ export const AdminAccountsTable = (
   });
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col gap-4">
       <AccountsTableFilters
         filters={{ type: props.searchParams.account_type ?? "all" }}
       />
@@ -85,10 +85,10 @@ const AccountsTableFilters = (props: {
 
   return (
     <div className="flex items-center justify-between space-x-4">
-      <div className="flex space-x-4">
+      <div className="flex gap-4">
         <Form {...form}>
           <form
-            className="flex space-x-4"
+            className="flex gap-4"
             onSubmit={form.handleSubmit((data) => onSubmit(data))}
           >
             <Select

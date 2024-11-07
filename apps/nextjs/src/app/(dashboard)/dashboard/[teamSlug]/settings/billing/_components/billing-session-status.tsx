@@ -34,7 +34,7 @@ export const BillingSessionStatus = ({
         🎉
       </Heading>
 
-      <div className="flex flex-col space-y-4 text-muted-foreground">
+      <div className="flex flex-col gap-4 text-muted-foreground">
         <p>
           Thank you for subscribing, we have successfully processed your
           subscription! A confirmation email will be sent to {customerEmail}.

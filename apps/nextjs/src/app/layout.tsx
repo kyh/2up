@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { GlobalAlertDialog } from "@init/ui/alert-dialog";
 import { ThemeProvider } from "@init/ui/theme";
-import { Toaster } from "@init/ui/toast";
+import { GlobalToaster } from "@init/ui/toast";
 import { TooltipProvider } from "@init/ui/tooltip";
 import { cn } from "@init/ui/utils";
 
@@ -101,7 +102,8 @@ const RootLayout = (props: LayoutProps) => {
             <TRPCReactProvider>
               <AppLayout>{props.children}</AppLayout>
             </TRPCReactProvider>
-            <Toaster />
+            <GlobalToaster />
+            <GlobalAlertDialog />
           </TooltipProvider>
         </ThemeProvider>
       </body>

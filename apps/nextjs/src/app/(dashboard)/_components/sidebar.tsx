@@ -40,10 +40,12 @@ import { toast } from "@init/ui/toast";
 import { cn, getInitials } from "@init/ui/utils";
 import {
   CheckIcon,
+  CreditCardIcon,
   HomeIcon,
   LogOutIcon,
   PlusIcon,
   SettingsIcon,
+  Users2Icon,
 } from "lucide-react";
 
 import { NavLink } from "@/components/nav";
@@ -61,6 +63,16 @@ export const Sidebar = () => {
       label: "Tasks",
       exact: true,
       icon: HomeIcon,
+    },
+    {
+      href: `${rootUrl}/settings/members`,
+      label: "Members",
+      icon: Users2Icon,
+    },
+    {
+      href: `${rootUrl}/settings/billing`,
+      label: "Billing",
+      icon: CreditCardIcon,
     },
     {
       href: `${rootUrl}/settings`,
@@ -148,7 +160,7 @@ export const UserDropdown = ({ teamSlug }: { teamSlug?: string }) => {
           collisionPadding={8}
         >
           <DropdownMenuLabel className="font-normal">
-            <div className="flex flex-col space-y-1">
+            <div className="flex flex-col gap-1">
               <p className="text-sm font-medium leading-none">
                 {userMetadata?.displayName ?? user.email}
               </p>
@@ -227,7 +239,7 @@ export const UserDropdown = ({ teamSlug }: { teamSlug?: string }) => {
               createTeamAccount.mutate(data);
             })}
           >
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col gap-4">
               <FormField
                 name="name"
                 render={({ field }) => {

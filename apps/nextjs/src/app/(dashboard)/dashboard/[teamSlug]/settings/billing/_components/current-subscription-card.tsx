@@ -59,7 +59,7 @@ export const CurrentSubscriptionCard = ({
       </div>
       <div className="md:col-span-2">
         <div className="space-y-4 text-sm">
-          <div className="flex flex-col space-y-1">
+          <div className="flex flex-col gap-1">
             <div className="flex items-center space-x-2 text-lg font-semibold">
               <CircleCheckIcon className="s-6 fill-green-500 text-black dark:fill-white dark:text-white" />
               <span>{product.name}</span>
@@ -82,7 +82,7 @@ export const CurrentSubscriptionCard = ({
           </If>
 
           <If condition={subscription.status === "trialing"}>
-            <div className="flex flex-col space-y-0.5">
+            <div className="flex flex-col gap-0.5">
               <span className="font-semibold">Your trial ends on</span>
 
               <div className="text-muted-foreground">
@@ -108,7 +108,7 @@ export const CurrentSubscriptionCard = ({
             </Alert>
           </If>
 
-          <div className="flex flex-col space-y-0.5">
+          <div className="flex flex-col gap-0.5">
             <span className="font-semibold">Details</span>
 
             <LineItemDetails

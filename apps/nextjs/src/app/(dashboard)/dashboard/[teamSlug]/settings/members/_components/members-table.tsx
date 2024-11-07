@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Input } from "@init/ui/input";
 import {
   Table,
@@ -17,53 +17,94 @@ import {
 } from "@tanstack/react-table";
 
 import { api } from "@/trpc/react";
-import { getColumns } from "./account-invitations-table-columns";
+import { getColumns } from "./account-members-table-columns";
 
-type AccountInvitationsTableProps = {
+type MembersTableProps = {
   slug: string;
-  permissions: {
-    canUpdateInvitation: boolean;
-    canRemoveInvitation: boolean;
-    currentUserRoleHierarchy: number;
-  };
+  currentUserId: string;
+  currentAccountId: string;
+  userRoleHierarchy: number;
+  isPrimaryOwner: boolean;
+  canManageRoles: boolean;
 };
 
-export const AccountInvitationsTable = ({
+export const MembersTable = ({
   slug,
-  permissions,
-}: AccountInvitationsTableProps) => {
+  currentUserId,
+  currentAccountId,
+  isPrimaryOwner,
+  userRoleHierarchy,
+  canManageRoles,
+}: MembersTableProps) => {
   const [search, setSearch] = useState("");
 
-  const [invitations] = api.account.invitations.useSuspenseQuery({ slug });
+  const [members] = api.account.members.useSuspenseQuery({
+    slug,
+  });
 
-  const columns = useMemo(() => getColumns(permissions), [permissions]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const permissions = {
+    canUpdateRole: (targetRole: number) => {
+      return (
+        isPrimaryOwner || (canManageRoles && userRoleHierarchy < targetRole)
+      );
+    },
+    canRemoveFromAccount: (targetRole: number) => {
+      return (
+        isPrimaryOwner || (canManageRoles && userRoleHierarchy < targetRole)
+      );
+    },
+    canTransferOwnership: isPrimaryOwner,
+  };
 
-  const filteredInvitations = useMemo(
+  const columns = React.useMemo(
     () =>
-      invitations.filter((member) => {
-        const searchString = search.toLowerCase();
-        const email = member.email.split("@")[0]?.toLowerCase() ?? "";
-
-        return (
-          email.includes(searchString) ||
-          member.role.toLowerCase().includes(searchString)
-        );
+      getColumns(permissions, {
+        currentUserId,
+        currentAccountId,
+        currentRoleHierarchy: userRoleHierarchy,
       }),
-    [search, invitations],
+    [permissions, currentUserId, currentAccountId, userRoleHierarchy],
+  );
+
+  const filteredMembers = React.useMemo(
+    () =>
+      members
+        .filter((member) => {
+          const searchString = search.toLowerCase();
+          const displayName = member.name ?? member.email.split("@")[0];
+
+          return (
+            displayName.includes(searchString) ||
+            member.role.toLowerCase().includes(searchString)
+          );
+        })
+        .sort((prev, next) => {
+          if (prev.primaryOwnerUserId === prev.userId) {
+            return -1;
+          }
+
+          if (prev.roleHierarchyLevel < next.roleHierarchyLevel) {
+            return -1;
+          }
+
+          return 1;
+        }),
+    [members],
   );
 
   const table = useReactTable({
-    data: filteredInvitations,
+    data: filteredMembers,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="flex flex-col gap-2">
       <Input
         value={search}
         onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
-        placeholder="Search Invitations"
+        placeholder="Search members"
       />
 
       <div className="rounded-md border">

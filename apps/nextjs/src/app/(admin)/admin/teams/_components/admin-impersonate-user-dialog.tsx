@@ -63,7 +63,7 @@ export const AdminImpersonateUserDialog = ({
         </AlertDialogHeader>
         <Form {...form}>
           <form
-            className="flex flex-col space-y-8"
+            className="flex flex-col gap-8"
             onSubmit={form.handleSubmit(async (data) => {
               await impersonateUserAction.mutateAsync(data).then((tokens) => {
                 setTokens(tokens);

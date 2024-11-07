@@ -2,19 +2,19 @@ import { redirect } from "next/navigation";
 
 import { PageHeader } from "@/components/header";
 import { api } from "@/trpc/server";
-import { TeamDeleteForm } from "../_components/team-delete-form";
-import { TeamProfileForm } from "../_components/team-profile-form";
+import { TeamDeleteForm } from "./_components/team-delete-form";
+import { TeamProfileForm } from "./_components/team-profile-form";
 
 type PageProps = {
   params: Promise<{
-    team: string;
+    teamSlug: string;
   }>;
 };
 
 const Page = async (props: PageProps) => {
   const params = await props.params;
   const { team } = await api.team.getTeam({
-    slug: params.team,
+    slug: params.teamSlug,
   });
 
   if (!team) {

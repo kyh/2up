@@ -15,7 +15,7 @@ export const LineItemDetails = (
     selectedInterval?: string | undefined;
   }>,
 ) => (
-  <div className="flex flex-col space-y-1">
+  <div className="flex flex-col gap-1">
     {props.lineItems.map((item, index) => {
       // If the item has a description, we render it as a simple text
       // and pass the item as values to the translation so we can use
@@ -60,7 +60,7 @@ export const LineItemDetails = (
             <span className="flex items-center space-x-1.5">
               <PlusIcon className="w-3" />
 
-              <span className="flex space-x-1 text-sm">
+              <span className="flex gap-1 text-sm">
                 <span>Per {item.unit} usage</span>
               </span>
             </span>
@@ -99,7 +99,7 @@ export const LineItemDetails = (
               <span className="flex items-center space-x-1.5">
                 <PlusIcon className="w-3" />
 
-                <span className="flex space-x-1">
+                <span className="flex gap-1">
                   <span>Per {item.unit} usage</span>
                 </span>
               </span>
@@ -161,7 +161,7 @@ const Tiers = ({
 
     return (
       <span
-        className="flex space-x-1 text-xs text-secondary-foreground"
+        className="flex gap-1 text-xs text-secondary-foreground"
         key={index}
       >
         <span>-</span>
@@ -203,5 +203,5 @@ const Tiers = ({
     );
   });
 
-  return <div className="my-1 flex flex-col space-y-1.5">{tiers}</div>;
+  return <div className="my-1 flex flex-col gap-1.5">{tiers}</div>;
 };

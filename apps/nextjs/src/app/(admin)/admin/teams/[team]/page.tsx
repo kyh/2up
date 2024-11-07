@@ -76,7 +76,7 @@ const PersonalAccountPage = async (props: { account: Account }) => {
     "banned_until" in data.user && data.user.banned_until !== "none";
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col gap-4">
       <header className="flex h-20 md:h-24">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -92,7 +92,7 @@ const PersonalAccountPage = async (props: { account: Account }) => {
               <Badge variant="destructive">Banned</Badge>
             </If>
           </div>
-          <div className="flex space-x-1">
+          <div className="flex gap-1">
             <If condition={isBanned}>
               <AdminReactivateUserDialog userId={props.account.id}>
                 <Button size="sm" variant="ghost">
@@ -124,9 +124,9 @@ const PersonalAccountPage = async (props: { account: Account }) => {
           </div>
         </div>
       </header>
-      <div className="flex flex-col space-y-8">
+      <div className="flex flex-col gap-8">
         <SubscriptionsTable accountId={props.account.id} />
-        <div className="divider-divider-x flex flex-col space-y-2.5">
+        <div className="divider-divider-x flex flex-col gap-2.5">
           <Heading className="font-bold" level={5}>
             Teams
           </Heading>
@@ -145,7 +145,7 @@ const TeamAccountPage = async (props: { account: Account }) => {
   });
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col gap-4">
       <header className="flex h-20 md:h-24">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -171,10 +171,10 @@ const TeamAccountPage = async (props: { account: Account }) => {
       </header>
 
       <div>
-        <div className="flex flex-col space-y-8">
+        <div className="flex flex-col gap-8">
           <SubscriptionsTable accountId={props.account.id} />
 
-          <div className="flex flex-col space-y-2.5">
+          <div className="flex flex-col gap-2.5">
             <Heading className="font-bold" level={5}>
               Team Members
             </Heading>
@@ -193,7 +193,7 @@ const SubscriptionsTable = async (props: { accountId: string }) => {
   });
 
   return (
-    <div className="flex flex-col space-y-2.5">
+    <div className="flex flex-col gap-2.5">
       <Heading className="font-bold" level={5}>
         Subscription
       </Heading>
@@ -210,7 +210,7 @@ const SubscriptionsTable = async (props: { accountId: string }) => {
       >
         {(subscription) => {
           return (
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col gap-4">
               <Table>
                 <TableHeader>
                   <TableHead>Subscription ID</TableHead>

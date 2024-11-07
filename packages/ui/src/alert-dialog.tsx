@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@init/ui/utils";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 
-import { buttonVariants } from "./button";
+import { Button, buttonVariants } from "./button";
 
 const AlertDialog = AlertDialogPrimitive.Root;
 
@@ -126,7 +126,147 @@ const AlertDialogCancel = React.forwardRef<
 ));
 AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
 
+/**
+ * We save the global alert dialog state outside of react so that we can follow the same api pattern
+ * as `toasts` and call `alert.open` from anywhere in the app.
+ */
+type AlertState = {
+  open: boolean;
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  action?: {
+    hidden?: boolean;
+    label?: React.ReactNode;
+    onClick?: () => void | Promise<any>;
+  };
+  cancel?: {
+    hidden?: boolean;
+    label?: React.ReactNode;
+    onClick?: () => void | Promise<any>;
+  };
+};
+
+type Listener = () => void;
+
+const alertDialogStore = {
+  state: {
+    open: false,
+    title: "",
+  } as AlertState,
+  listeners: [] as Listener[],
+  subscribe: (listener: Listener) => {
+    alertDialogStore.listeners.push(listener);
+    return () => {
+      alertDialogStore.listeners = alertDialogStore.listeners.filter(
+        (l) => l !== listener,
+      );
+    };
+  },
+  getSnapshot: () => {
+    return alertDialogStore.state;
+  },
+  emitChange: () => {
+    alertDialogStore.listeners.forEach((listener) => listener());
+  },
+};
+
+const alertDialog = {
+  open: (
+    title: React.ReactNode,
+    options: Omit<AlertState, "open" | "title">,
+  ) => {
+    alertDialogStore.state = {
+      ...alertDialogStore.state,
+      ...options,
+      open: true,
+      title,
+    };
+    alertDialogStore.emitChange();
+  },
+  close: () => {
+    alertDialogStore.state = {
+      ...alertDialogStore.state,
+      open: false,
+    };
+    alertDialogStore.emitChange();
+  },
+};
+
+const GlobalAlertDialog = () => {
+  const [pendingAction, setPendingAction] = React.useState(false);
+  const [pendingCancel, setPendingCancel] = React.useState(false);
+  const alertState = React.useSyncExternalStore(
+    alertDialogStore.subscribe,
+    alertDialogStore.getSnapshot,
+    alertDialogStore.getSnapshot,
+  );
+
+  const onOpenChange = (open: boolean) => {
+    if (pendingAction || pendingCancel) return;
+    if (!open) {
+      setPendingCancel(true);
+      const res = alertState.cancel?.onClick?.();
+      if (res instanceof Promise) {
+        void res.then(() => {
+          setPendingCancel(false);
+          alertDialog.close();
+        });
+      } else {
+        setPendingCancel(false);
+        alertDialog.close();
+      }
+    }
+  };
+
+  const onConfirm = () => {
+    setPendingAction(true);
+    const res = alertState.action?.onClick?.();
+    if (res instanceof Promise) {
+      void res.then(() => {
+        setPendingAction(false);
+        alertDialog.close();
+      });
+    } else {
+      setPendingAction(false);
+      alertDialog.close();
+    }
+  };
+
+  return (
+    <AlertDialog open={alertState.open} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{alertState.title}</AlertDialogTitle>
+        </AlertDialogHeader>
+        {alertState.description && (
+          <AlertDialogDescription>
+            {alertState.description}
+          </AlertDialogDescription>
+        )}
+        <AlertDialogFooter>
+          {!alertState.action?.hidden && (
+            <Button onClick={onConfirm} disabled={pendingAction}>
+              {alertState.action?.label ?? "Confirm"}
+            </Button>
+          )}
+          {!alertState.cancel?.hidden && (
+            <Button
+              variant="secondary"
+              onClick={() => onOpenChange(false)}
+              disabled={pendingCancel}
+            >
+              {alertState.cancel?.label ?? "Close"}
+            </Button>
+          )}
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
+
 export {
+  alertDialog,
+  GlobalAlertDialog,
   AlertDialog,
   AlertDialogPortal,
   AlertDialogOverlay,

@@ -82,8 +82,8 @@ const Delete = ({ team }: DeleteProps) => {
   };
 
   return (
-    <div className="flex flex-col space-y-4">
-      <div className="flex flex-col space-y-1">
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
         <span className="font-medium">Delete Team</span>
         <p className="text-sm text-muted-foreground">
           You are about to delete the team {team.name}. This action cannot be
@@ -106,9 +106,9 @@ const Delete = ({ team }: DeleteProps) => {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <Form {...form}>
-              <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
-                <div className="flex flex-col space-y-2">
-                  <div className="my-4 flex flex-col space-y-2 border-2 border-red-500 p-4 text-sm text-red-500">
+              <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+                <div className="flex flex-col gap-2">
+                  <div className="my-4 flex flex-col gap-2 border-2 border-red-500 p-4 text-sm text-red-500">
                     <div>
                       You are deleting the team {team.name}. This action cannot
                       be undone.
@@ -132,11 +132,9 @@ const Delete = ({ team }: DeleteProps) => {
                             {...field}
                           />
                         </FormControl>
-
                         <FormDescription>
                           Type the name of the team to confirm
                         </FormDescription>
-
                         <FormMessage />
                       </FormItem>
                     )}
@@ -188,7 +186,7 @@ const Leave = ({ user, team }: LeaveProps) => {
   };
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col gap-4">
       <p className="text-sm text-muted-foreground">
         Click the button below to leave the team. Remember, you will no longer
         have access to it and will need to be re-invited to join
@@ -208,7 +206,7 @@ const Leave = ({ user, team }: LeaveProps) => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <Form {...form}>
-            <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
+            <form className="flex flex-col gap-4" onSubmit={onSubmit}>
               <FormField
                 name="confirmation"
                 render={({ field }) => {
@@ -228,7 +226,6 @@ const Leave = ({ user, team }: LeaveProps) => {
                           {...field}
                         />
                       </FormControl>
-
                       <FormDescription>
                         By leaving the team, you will no longer have access to
                         it.
@@ -238,7 +235,6 @@ const Leave = ({ user, team }: LeaveProps) => {
                   );
                 }}
               />
-
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <Button loading={leaveTeam.isPending} variant="destructive">

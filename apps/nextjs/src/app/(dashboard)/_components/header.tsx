@@ -201,7 +201,7 @@ export const PageHeader = ({
 //                     <div className="py-0.5">
 //                       <Icon />
 //                     </div>
-//                     <div className="flex flex-col space-y-1">
+//                     <div className="flex flex-col gap-1">
 //                       <div className="text-sm">
 //                         <If condition={notification.link} fallback={body}>
 //                           {(link) => (
