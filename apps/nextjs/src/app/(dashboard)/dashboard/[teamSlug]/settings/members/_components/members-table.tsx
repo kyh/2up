@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { teamMemberRoles } from "@init/api/team/team-schema";
+import { alertDialog } from "@init/ui/alert-dialog";
 import { ProfileAvatar } from "@init/ui/avatar";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
@@ -8,10 +10,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
-import { If } from "@init/ui/if";
-import { Input } from "@init/ui/input";
 import {
   Table,
   TableBody,
@@ -28,19 +31,16 @@ import {
 import { MoreHorizontalIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
+import type { TeamMemberRole } from "@init/api/team/team-schema";
 import type { UserMetadata } from "@init/api/user/user-schema";
 import type { ColumnDef } from "@tanstack/react-table";
 import { api } from "@/trpc/react";
-import { RemoveMemberDialog } from "./remove-member-dialog";
-import { TransferOwnershipDialog } from "./transfer-ownership-dialog";
-import { UpdateMemberRoleDialog } from "./update-member-role-dialog";
 
 type MembersTableProps = {
   teamId: string;
 };
 
 export const MembersTable = ({ teamId }: MembersTableProps) => {
-  const [search, setSearch] = useState("");
   const [{ user }] = api.auth.workspace.useSuspenseQuery();
   const [{ team }] = api.team.getTeam.useSuspenseQuery({
     id: teamId,
@@ -48,11 +48,13 @@ export const MembersTable = ({ teamId }: MembersTableProps) => {
 
   const userId = user?.id;
   const members = team?.teamMembers ?? [];
+  const userRole = members.find((member) => member.userId === userId)
+    ?.role as TeamMemberRole;
 
   const columns = useMemo(() => {
     if (!userId) return [];
-    return getColumns({ userId, teamId });
-  }, [userId, teamId]);
+    return getColumns({ userId, userRole, teamId });
+  }, [userId, userRole, teamId]);
 
   const table = useReactTable({
     data: members,
@@ -61,63 +63,50 @@ export const MembersTable = ({ teamId }: MembersTableProps) => {
   });
 
   return (
-    <div className="flex flex-col gap-2">
-      <Input
-        value={search}
-        onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
-        placeholder="Search members"
-      />
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-row-id={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-row-id={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No data available
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No data available
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 };
@@ -128,10 +117,12 @@ type TeamMember = NonNullable<
 
 type getColumnsParams = {
   userId: string;
+  userRole: TeamMemberRole;
   teamId: string;
 };
 export const getColumns = ({
   userId,
+  userRole,
   teamId,
 }: getColumnsParams): ColumnDef<TeamMember>[] => [
   {
@@ -139,10 +130,7 @@ export const getColumns = ({
     cell: ({ row }) => {
       const member = row.original;
       const userMetadata = member.user.rawUserMetaData as UserMetadata;
-      const displayName =
-        userMetadata.displayName ??
-        member.user.email?.split("@")[0] ??
-        member.userId;
+      const displayName = getDisplayName(member);
       const isSelf = member.userId === userId;
 
       return (
@@ -163,7 +151,9 @@ export const getColumns = ({
   },
   {
     header: "Role",
-    cell: ({ row }) => <Badge>{row.original.role}</Badge>,
+    cell: ({ row }) => (
+      <Badge className="capitalize">{row.original.role}</Badge>
+    ),
   },
   {
     header: "Joined at",
@@ -173,7 +163,12 @@ export const getColumns = ({
     header: "",
     id: "actions",
     cell: ({ row }) => (
-      <ActionsDropdown member={row.original} userId={userId} teamId={teamId} />
+      <ActionsDropdown
+        member={row.original}
+        userId={userId}
+        userRole={userRole}
+        teamId={teamId}
+      />
     ),
   },
 ];
@@ -181,36 +176,63 @@ export const getColumns = ({
 const ActionsDropdown = ({
   member,
   userId,
+  userRole,
   teamId,
 }: {
   member: TeamMember;
   userId: string;
+  userRole: TeamMemberRole;
   teamId: string;
 }) => {
-  const [isRemoving, setIsRemoving] = useState(false);
-  const [isTransferring, setIsTransferring] = useState(false);
-  const [isUpdatingRole, setIsUpdatingRole] = useState(false);
+  const isSelfOwner = userRole === "owner";
+  const isMemberSelf = member.userId === userId;
+  const isMemberOwner = member.role === "owner";
 
-  const isCurrentUser = member.userId === userId;
-  const isPrimaryOwner = member.primaryOwnerUserId === member.userId;
+  const onChangeRole = (newRole: TeamMemberRole) => {
+    const displayName = getDisplayName(member);
+    alertDialog.open(`Change ${displayName}'s role?`, {
+      description: `You are about to change ${displayName}'s role to ${newRole}. This may affect their permissions.`,
+      action: {
+        label: "Change",
+        onClick: () => {
+          // updateMemberRole.mutate({
+          //   teamId: teamId,
+          //   userId: member.userId,
+          //   role: newRole,
+          // });
+        },
+      },
+    });
+  };
 
-  if (isCurrentUser || isPrimaryOwner) {
-    return null;
-  }
+  const onTransferOwnership = () => {
+    const displayName = getDisplayName(member);
+    alertDialog.open(`Transfer ownership to ${displayName}?`, {
+      description: `You are about to transfer ownership to ${displayName}. You will lose your ownership permissions.`,
+      action: {
+        label: "Transfer",
+        onClick: () => {
+          // transferOwnership.mutate({ accountId: teamId, userId: member.userId });
+        },
+      },
+    });
+  };
 
-  const memberRoleHierarchy = member.roleHierarchyLevel;
-  const canUpdateRole = permissions.canUpdateRole(memberRoleHierarchy);
+  const onRemoveFromTeam = () => {
+    const displayName = getDisplayName(member);
+    alertDialog.open(`Remove ${displayName} from the team?`, {
+      description: `You are about to remove ${displayName} from the team. They will lose access to this workspace.`,
+      action: {
+        label: "Remove",
+        onClick: () => {
+          // removeMember.mutate({ accountId: teamId, userId: member.userId });
+        },
+      },
+    });
+  };
 
-  const canRemoveFromAccount =
-    permissions.canRemoveFromAccount(memberRoleHierarchy);
-
-  // if has no permission to update role, transfer ownership or remove from account
-  // do not render the dropdown menu
-  if (
-    !canUpdateRole &&
-    !permissions.canTransferOwnership &&
-    !canRemoveFromAccount
-  ) {
+  // Members have no permissions to do any actions
+  if (userRole === "member") {
     return null;
   }
 
@@ -218,53 +240,45 @@ const ActionsDropdown = ({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            aria-label="Open menu"
-            variant="ghost"
-            className="flex size-8 p-0 data-[state=open]:bg-muted"
-          >
-            <MoreHorizontalIcon className="size-4" aria-hidden="true" />
+          <Button aria-label="Open menu" variant="ghost" size="icon">
+            <MoreHorizontalIcon />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <If condition={canUpdateRole}>
-            <DropdownMenuItem onSelect={() => setIsUpdatingRole(true)}>
-              Update Role
+          {!isMemberSelf && ( // Can't change own role
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Change Role</DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                {teamMemberRoles.map((role) => (
+                  <DropdownMenuItem onSelect={() => onChangeRole(role)}>
+                    {role}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+          )}
+          {isSelfOwner &&
+            !isMemberOwner && ( // Only owners can transfer ownership
+              <DropdownMenuItem onSelect={onTransferOwnership}>
+                Transfer Ownership
+              </DropdownMenuItem>
+            )}
+          {!isMemberOwner && ( // Cannot remove owner
+            <DropdownMenuItem onSelect={onRemoveFromTeam}>
+              Remove from Team
             </DropdownMenuItem>
-          </If>
-          <If condition={permissions.canTransferOwnership}>
-            <DropdownMenuItem onSelect={() => setIsTransferring(true)}>
-              Transfer Ownership
-            </DropdownMenuItem>
-          </If>
-          <If condition={canRemoveFromAccount}>
-            <DropdownMenuItem onSelect={() => setIsRemoving(true)}>
-              Remove from Account
-            </DropdownMenuItem>
-          </If>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
-      <RemoveMemberDialog
-        open={isRemoving}
-        onOpenChange={setIsRemoving}
-        teamAccountId={teamId}
-        userId={member.userId}
-      />
-      <UpdateMemberRoleDialog
-        open={isUpdatingRole}
-        onOpenChange={setIsUpdatingRole}
-        userId={member.userId}
-        userRole={member.role}
-        teamAccountId={teamId}
-        userRoleHierarchy={currentRoleHierarchy}
-      />
-      <TransferOwnershipDialog
-        open={isTransferring}
-        onOpenChange={setIsTransferring}
-        targetDisplayName={member.name ?? member.email}
-        accountId={member.accountId}
-        userId={member.userId}
-      />
     </>
+  );
+};
+
+const getDisplayName = (member: TeamMember) => {
+  const userMetadata = member.user.rawUserMetaData as UserMetadata;
+  return (
+    userMetadata.displayName ??
+    member.user.email?.split("@")[0] ??
+    member.userId
   );
 };

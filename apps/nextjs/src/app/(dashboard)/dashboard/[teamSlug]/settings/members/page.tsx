@@ -4,8 +4,7 @@ import { PageHeader } from "@/components/header";
 import { api } from "@/trpc/server";
 // import { InvitationsTable } from "./_components/invitations-table";
 import { InviteMembersDialog } from "./_components/invite-members-form";
-
-// import { MembersTable } from "./_components/members-table";
+import { MembersTable } from "./_components/members-table";
 
 type PageProps = {
   params: Promise<{
@@ -39,7 +38,7 @@ const Page = async (props: PageProps) => {
           <div className="md:col-span-2">
             <div className="space-y-4">
               <InviteMembersDialog teamId={team.id} />
-              {/* <MembersTable teamId={team.id} /> */}
+              <MembersTable teamId={team.id} />
             </div>
           </div>
         </div>
