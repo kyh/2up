@@ -1,12 +1,9 @@
 import { z } from "zod";
 
-/**
+/**********
  * Create
- */
-
-/**
- * Create - teams
- */
+ **********/
+// Create - teams
 export const createTeamInput = z.object({
   name: z.string(),
   slug: z.string().optional(),
@@ -16,9 +13,7 @@ export type CreateTeamInput = z.infer<typeof createTeamInput>;
 export const createTeamsInput = z.object({ teams: z.array(createTeamInput) });
 export type CreateTeamsInput = z.infer<typeof createTeamsInput>;
 
-/**
- * Create - members
- */
+// Create - members
 export const teamMemberRoles = ["owner", "admin", "member"] as const;
 export type TeamMemberRole = (typeof teamMemberRoles)[number];
 export const createTeamMemberInput = z.object({
@@ -33,9 +28,7 @@ export const createTeamMembersInput = z.object({
 });
 export type CreateTeamMembersInput = z.infer<typeof createTeamMembersInput>;
 
-/**
- * Create - invitations
- */
+// Create - invitations
 export const createTeamInvitationInput = z.object({
   teamId: z.string(),
   email: z.string().email(),
@@ -54,13 +47,10 @@ export type CreateTeamInvitationsInput = z.infer<
   typeof createTeamInvitationsInput
 >;
 
-/**
+/**********
  * Read
- */
-
-/**
- * Read - teams
- */
+ **********/
+// Read - teams
 export const getTeamInput = z.object({
   id: z.string().optional(),
   slug: z.string().optional(),
@@ -89,21 +79,23 @@ export const getTeamsInput = z.object({
 });
 export type GetTeamsInput = z.infer<typeof getTeamsInput>;
 
-/**
- * Read - members
- */
+// Read - members
 export const getTeamMemberInput = z.object({
   teamId: z.string(),
   userId: z.string(),
 });
+export type GetTeamMemberInput = z.infer<typeof getTeamMemberInput>;
 
-/**
+// Read - invitations
+export const getTeamInvitationInput = z.object({
+  id: z.string(),
+});
+export type GetTeamInvitationInput = z.infer<typeof getTeamInvitationInput>;
+
+/**********
  * Update
- */
-
-/**
- * Update - teams
- */
+ **********/
+// Update - teams
 export const updateTeamInput = z
   .object({
     id: z.string(),
@@ -114,9 +106,7 @@ export type UpdateTeamInput = z.infer<typeof updateTeamInput>;
 export const updateTeamsInput = z.object({ teams: z.array(updateTeamInput) });
 export type UpdateTeamsInput = z.infer<typeof updateTeamsInput>;
 
-/**
- * Update - members
- */
+// Update - members
 export const updateTeamMemberInput = createTeamMemberInput;
 export type UpdateTeamMemberInput = z.infer<typeof updateTeamMemberInput>;
 
@@ -125,9 +115,7 @@ export const updateTeamMembersInput = z.object({
 });
 export type UpdateTeamMembersInput = z.infer<typeof updateTeamMembersInput>;
 
-/**
- * Update - invitations
- */
+// Update - invitations
 export const updateTeamInvitationInput = z
   .object({
     id: z.string(),
@@ -144,13 +132,10 @@ export type UpdateTeamInvitationsInput = z.infer<
   typeof updateTeamInvitationsInput
 >;
 
-/**
+/**********
  * Delete
- */
-
-/**
- * Delete - teams
- */
+ **********/
+// Delete - teams
 export const deleteTeamInput = z.object({
   id: z.string(),
 });
@@ -159,9 +144,7 @@ export type DeleteTeamInput = z.infer<typeof deleteTeamInput>;
 export const deleteTeamsInput = z.object({ teams: z.array(deleteTeamInput) });
 export type DeleteTeamsInput = z.infer<typeof deleteTeamsInput>;
 
-/**
- * Delete - members
- */
+// Delete - members
 export const deleteTeamMemberInput = createTeamMemberInput.pick({
   teamId: true,
   userId: true,
@@ -173,9 +156,7 @@ export const deleteTeamMembersInput = z.object({
 });
 export type DeleteTeamMembersInput = z.infer<typeof deleteTeamMembersInput>;
 
-/**
- * Delete - invitations
- */
+// Delete - invitations
 export const deleteTeamInvitationInput = z.object({
   id: z.string(),
 });

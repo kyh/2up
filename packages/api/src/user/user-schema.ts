@@ -7,9 +7,9 @@ export const userMetadata = z.object({
 });
 export type UserMetadata = z.infer<typeof userMetadata>;
 
-/**
+/**********
  * Create
- */
+ **********/
 export const createUserInput = z
   .object({
     email: z.string().email().optional(),
@@ -20,9 +20,9 @@ export type CreateUserInput = z.infer<typeof createUserInput>;
 export const createUsersInput = z.object({ users: z.array(createUserInput) });
 export type CreateUsersInput = z.infer<typeof createUsersInput>;
 
-/**
+/**********
  * Read
- */
+ **********/
 export const getUserInput = z
   .object({
     id: z.string(),
@@ -52,9 +52,9 @@ export const getUsersInput = z.object({
 });
 export type GetUsersInput = z.infer<typeof getUsersInput>;
 
-/**
+/**********
  * Update
- */
+ **********/
 export const updateUserInput = z
   .object({
     id: z.string(),
@@ -65,9 +65,9 @@ export type UpdateUserInput = z.infer<typeof updateUserInput>;
 export const updateUsersInput = z.object({ users: z.array(updateUserInput) });
 export type UpdateUsersInput = z.infer<typeof updateUsersInput>;
 
-/**
+/**********
  * Delete
- */
+ **********/
 export const deleteUserInput = z
   .object({
     id: z.string(),

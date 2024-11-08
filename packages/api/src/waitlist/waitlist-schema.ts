@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-/**
+/**********
  * Create
- */
+ **********/
 export const joinWaitlistInput = z.object({
   email: z.string().email(),
   type: z.enum(["app"]).optional(),
@@ -14,9 +14,9 @@ export const joinWaitlistsInput = z.object({
 });
 export type JoinWaitlistsInput = z.infer<typeof joinWaitlistsInput>;
 
-/**
+/**********
  * Read
- */
+ **********/
 export const getWaitlistInput = z
   .object({
     id: z.string(),
@@ -46,9 +46,9 @@ export const getWaitlistsInput = z.object({
 });
 export type GetWaitlistsInput = z.infer<typeof getWaitlistsInput>;
 
-/**
+/**********
  * Update
- */
+ **********/
 export const updateWaitlistInput = z
   .object({
     id: z.string(),
@@ -61,9 +61,9 @@ export const updateWaitlistsInput = z.object({
 });
 export type UpdateWaitlistsInput = z.infer<typeof updateWaitlistsInput>;
 
-/**
+/**********
  * Delete
- */
+ **********/
 export const deleteWaitlistInput = z
   .object({
     id: z.string(),

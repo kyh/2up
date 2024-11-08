@@ -53,7 +53,7 @@ export const InviteMembersDialog = ({ teamId }: InviteMembersDialogProps) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button size="sm">
-          <PlusIcon className="mr-2 w-4" />
+          <PlusIcon className="mr-1 size-4" />
           <span>Invite Members</span>
         </Button>
       </DialogTrigger>

@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-/**
+/**********
  * Create
- */
+ **********/
 export const createTaskInput = z.object({
   title: z.string(),
   label: z.enum(["bug", "feature", "enhancement", "documentation"]),
@@ -15,9 +15,9 @@ export type CreateTaskInput = z.infer<typeof createTaskInput>;
 export const createTasksInput = z.object({ tasks: z.array(createTaskInput) });
 export type CreateTasksInput = z.infer<typeof createTasksInput>;
 
-/**
+/**********
  * Read
- */
+ **********/
 export const getTaskInput = z
   .object({
     id: z.string(),
@@ -47,9 +47,9 @@ export const getTasksInput = z.object({
 });
 export type GetTasksInput = z.infer<typeof getTasksInput>;
 
-/**
+/**********
  * Update
- */
+ **********/
 export const updateTaskInput = z
   .object({
     id: z.string(),
@@ -60,9 +60,9 @@ export type UpdateTaskInput = z.infer<typeof updateTaskInput>;
 export const updateTasksInput = z.object({ tasks: z.array(updateTaskInput) });
 export type UpdateTasksInput = z.infer<typeof updateTasksInput>;
 
-/**
+/**********
  * Delete
- */
+ **********/
 export const deleteTaskInput = z
   .object({
     id: z.string(),

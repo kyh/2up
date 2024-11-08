@@ -15,19 +15,8 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@init/ui/table";
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { AutoTable } from "@init/ui/table";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { MoreHorizontalIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@init/api";
@@ -37,14 +26,11 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { api } from "@/trpc/react";
 
 type MembersTableProps = {
-  teamId: string;
+  team: RouterOutputs["team"]["getTeam"]["team"];
 };
 
-export const MembersTable = ({ teamId }: MembersTableProps) => {
+export const MembersTable = ({ team }: MembersTableProps) => {
   const [{ user }] = api.auth.workspace.useSuspenseQuery();
-  const [{ team }] = api.team.getTeam.useSuspenseQuery({
-    id: teamId,
-  });
 
   const userId = user?.id;
   const members = team?.teamMembers ?? [];
@@ -52,9 +38,9 @@ export const MembersTable = ({ teamId }: MembersTableProps) => {
     ?.role as TeamMemberRole;
 
   const columns = useMemo(() => {
-    if (!userId) return [];
-    return getColumns({ userId, userRole, teamId });
-  }, [userId, userRole, teamId]);
+    if (!userId || !team) return [];
+    return getColumns({ userId, userRole, teamId: team.id });
+  }, [userId, userRole, team]);
 
   const table = useReactTable({
     data: members,
@@ -64,49 +50,7 @@ export const MembersTable = ({ teamId }: MembersTableProps) => {
 
   return (
     <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-row-id={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No data available
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <AutoTable table={table} />
     </div>
   );
 };
@@ -236,41 +180,49 @@ const ActionsDropdown = ({
     return null;
   }
 
-  return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button aria-label="Open menu" variant="ghost" size="icon">
-            <MoreHorizontalIcon />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          {!isMemberSelf && ( // Can't change own role
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>Change Role</DropdownMenuSubTrigger>
-              <DropdownMenuSubContent>
-                {teamMemberRoles.map((role) => (
-                  <DropdownMenuItem onSelect={() => onChangeRole(role)}>
-                    {role}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuSubContent>
-            </DropdownMenuSub>
-          )}
-          {isSelfOwner &&
-            !isMemberOwner && ( // Only owners can transfer ownership
-              <DropdownMenuItem onSelect={onTransferOwnership}>
-                Transfer Ownership
-              </DropdownMenuItem>
-            )}
-          {!isMemberOwner && ( // Cannot remove owner
-            <DropdownMenuItem onSelect={onRemoveFromTeam}>
-              Remove from Team
+  const actions = [
+    !isMemberSelf && ( // Can't change own role
+      <DropdownMenuSub>
+        <DropdownMenuSubTrigger>Change Role</DropdownMenuSubTrigger>
+        <DropdownMenuSubContent>
+          {teamMemberRoles.map((role) => (
+            <DropdownMenuItem onSelect={() => onChangeRole(role)}>
+              {role}
             </DropdownMenuItem>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+          ))}
+        </DropdownMenuSubContent>
+      </DropdownMenuSub>
+    ),
+    isSelfOwner &&
+      !isMemberOwner && ( // Only owners can transfer ownership
+        <DropdownMenuItem onSelect={onTransferOwnership}>
+          Transfer Ownership
+        </DropdownMenuItem>
+      ),
+    !isMemberOwner && ( // Cannot remove owner
+      <DropdownMenuItem onSelect={onRemoveFromTeam}>
+        Remove from Team
+      </DropdownMenuItem>
+    ),
+  ].filter((action) => !!action);
+
+  if (actions.length === 0) {
+    return null;
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button aria-label="Open menu" variant="ghost" size="icon">
+          <MoreHorizontalIcon />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {actions.map((action) => (
+          <>{action}</>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

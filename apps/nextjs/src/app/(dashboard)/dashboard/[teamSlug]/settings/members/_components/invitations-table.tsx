@@ -1,123 +1,169 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Input } from "@init/ui/input";
+import { useMemo } from "react";
+import { teamMemberRoles } from "@init/api/team/team-schema";
+import { alertDialog } from "@init/ui/alert-dialog";
+import { Badge } from "@init/ui/badge";
+import { Button } from "@init/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@init/ui/table";
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@init/ui/dropdown-menu";
+import { AutoTable } from "@init/ui/table";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { MoreHorizontalIcon } from "lucide-react";
 
+import type { RouterOutputs } from "@init/api";
+import type { TeamMemberRole } from "@init/api/team/team-schema";
+import type { ColumnDef } from "@tanstack/react-table";
 import { api } from "@/trpc/react";
-import { getColumns } from "./account-invitations-table-columns";
 
 type InvitationsTableProps = {
-  slug: string;
-  permissions: {
-    canUpdateInvitation: boolean;
-    canRemoveInvitation: boolean;
-    currentUserRoleHierarchy: number;
-  };
+  team: RouterOutputs["team"]["getTeam"]["team"];
 };
 
-export const InvitationsTable = ({
-  slug,
-  permissions,
-}: InvitationsTableProps) => {
-  const [search, setSearch] = useState("");
+export const InvitationsTable = ({ team }: InvitationsTableProps) => {
+  const [{ user }] = api.auth.workspace.useSuspenseQuery();
 
-  const [invitations] = api.account.invitations.useSuspenseQuery({ slug });
+  const userId = user?.id;
+  const invitations = team?.invitations ?? [];
+  const members = team?.teamMembers ?? [];
+  const userRole = members.find((member) => member.userId === userId)
+    ?.role as TeamMemberRole;
 
-  const columns = useMemo(() => getColumns(permissions), [permissions]);
-
-  const filteredInvitations = useMemo(
-    () =>
-      invitations.filter((member) => {
-        const searchString = search.toLowerCase();
-        const email = member.email.split("@")[0]?.toLowerCase() ?? "";
-
-        return (
-          email.includes(searchString) ||
-          member.role.toLowerCase().includes(searchString)
-        );
-      }),
-    [search, invitations],
-  );
+  const columns = useMemo(() => {
+    if (!userId || !team) return [];
+    return getColumns({ userId, userRole, teamId: team.id });
+  }, [userId, userRole, team]);
 
   const table = useReactTable({
-    data: filteredInvitations,
+    data: invitations,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
-    <div className="flex flex-col gap-2">
-      <Input
-        value={search}
-        onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
-        placeholder="Search Invitations"
-      />
-
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <TableBody>
-            {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-row-id={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No data available
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+    <div className="rounded-md border">
+      <AutoTable table={table} />
     </div>
+  );
+};
+
+type Invitation = NonNullable<
+  RouterOutputs["team"]["getTeamInvitation"]["invitation"]
+>;
+
+type getColumnsParams = {
+  userId: string;
+  userRole: TeamMemberRole;
+  teamId: string;
+};
+export const getColumns = ({
+  userId,
+  userRole,
+  teamId,
+}: getColumnsParams): ColumnDef<Invitation>[] => [
+  {
+    header: "Email",
+    cell: ({ row }) => row.original.email,
+  },
+  {
+    header: "Role",
+    cell: ({ row }) => (
+      <Badge className="capitalize">{row.original.role}</Badge>
+    ),
+  },
+  {
+    header: "Invited at",
+    cell: ({ row }) => {
+      return new Date(row.original.invitedAt).toLocaleDateString();
+    },
+  },
+  {
+    header: "",
+    id: "actions",
+    cell: ({ row }) => (
+      <ActionsDropdown
+        invitation={row.original}
+        userId={userId}
+        userRole={userRole}
+        teamId={teamId}
+      />
+    ),
+  },
+];
+
+const ActionsDropdown = ({
+  invitation,
+  userId,
+  userRole,
+  teamId,
+}: {
+  invitation: Invitation;
+  userId: string;
+  userRole: TeamMemberRole;
+  teamId: string;
+}) => {
+  const onChangeRole = (newRole: TeamMemberRole) => {
+    alertDialog.open(`Change ${invitation.email}'s role?`, {
+      description: `You are about to change ${invitation.email}'s role to ${newRole}. This may affect their permissions.`,
+      action: {
+        label: "Change",
+        onClick: () => {
+          // updateMemberRole.mutate({
+          //   teamId: teamId,
+          //   userId: member.userId,
+          //   role: newRole,
+          // });
+        },
+      },
+    });
+  };
+
+  const onRemoveInvitation = () => {
+    alertDialog.open(`Remove ${invitation.email}'s invite?`, {
+      description: `You are about to remove ${invitation.email}'s invite. This will revoke their access to the team.`,
+      action: {
+        label: "Remove",
+        onClick: () => {
+          // removeMember.mutate({ accountId: teamId, userId: member.userId });
+        },
+      },
+    });
+  };
+
+  // Members have no permissions to do any actions
+  if (userRole === "member") {
+    return null;
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button aria-label="Open menu" variant="ghost" size="icon">
+          <MoreHorizontalIcon />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>Change Role</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            {teamMemberRoles.map((role) => (
+              <DropdownMenuItem onSelect={() => onChangeRole(role)}>
+                {role}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+        <DropdownMenuItem onSelect={onRemoveInvitation}>
+          Remove Invitation
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

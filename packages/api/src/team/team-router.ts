@@ -10,6 +10,7 @@ import {
   deleteTeamInvitationInput,
   deleteTeamMemberInput,
   getTeamInput,
+  getTeamInvitationInput,
   getTeamMemberInput,
   updateTeamInput,
   updateTeamInvitationInput,
@@ -119,6 +120,18 @@ export const teamRouter = createTRPCRouter({
 
       return {
         invitations: createdInvitations,
+      };
+    }),
+
+  getTeamInvitation: protectedProcedure
+    .input(getTeamInvitationInput)
+    .query(async ({ ctx, input }) => {
+      const invitation = await ctx.db.query.invitations.findFirst({
+        where: eq(invitations.id, input.id),
+      });
+
+      return {
+        invitation,
       };
     }),
 

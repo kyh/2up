@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { PageHeader } from "@/components/header";
 import { api } from "@/trpc/server";
-// import { InvitationsTable } from "./_components/invitations-table";
+import { InvitationsTable } from "./_components/invitations-table";
 import { InviteMembersDialog } from "./_components/invite-members-form";
 import { MembersTable } from "./_components/members-table";
 
@@ -36,10 +36,7 @@ const Page = async (props: PageProps) => {
             </p>
           </div>
           <div className="md:col-span-2">
-            <div className="space-y-4">
-              <InviteMembersDialog teamId={team.id} />
-              <MembersTable teamId={team.id} />
-            </div>
+            <MembersTable team={team} />
           </div>
         </div>
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 py-8 md:grid-cols-3">
@@ -51,15 +48,11 @@ const Page = async (props: PageProps) => {
               Manage the pending invitations to your team.
             </p>
           </div>
-          <div className="md:col-span-2">
-            {/* <InvitationsTable
-              slug={account.slug}
-              permissions={{
-                canUpdateInvitation: canManageRoles,
-                canRemoveInvitation: canManageRoles,
-                currentUserRoleHierarchy,
-              }}
-            /> */}
+          <div className="space-y-3 md:col-span-2">
+            <div className="flex justify-end">
+              <InviteMembersDialog teamId={team.id} />
+            </div>
+            <InvitationsTable team={team} />
           </div>
         </div>
       </section>
