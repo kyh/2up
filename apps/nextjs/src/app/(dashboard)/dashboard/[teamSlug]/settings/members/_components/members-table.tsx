@@ -10,6 +10,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -132,7 +134,7 @@ const ActionsDropdown = ({
   const isMemberSelf = member.userId === userId;
   const isMemberOwner = member.role === "owner";
 
-  const onChangeRole = (newRole: TeamMemberRole) => {
+  const onChangeRole = (newRole: string) => {
     const displayName = getDisplayName(member);
     alertDialog.open(`Change ${displayName}'s role?`, {
       description: `You are about to change ${displayName}'s role to ${newRole}. This may affect their permissions.`,
@@ -185,11 +187,20 @@ const ActionsDropdown = ({
       <DropdownMenuSub>
         <DropdownMenuSubTrigger>Change Role</DropdownMenuSubTrigger>
         <DropdownMenuSubContent>
-          {teamMemberRoles.map((role) => (
-            <DropdownMenuItem onSelect={() => onChangeRole(role)}>
-              {role}
-            </DropdownMenuItem>
-          ))}
+          <DropdownMenuRadioGroup
+            value={member.role}
+            onValueChange={onChangeRole}
+          >
+            {teamMemberRoles.map((role) => (
+              <DropdownMenuRadioItem
+                key={role}
+                value={role}
+                className="capitalize"
+              >
+                {role}
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
         </DropdownMenuSubContent>
       </DropdownMenuSub>
     ),

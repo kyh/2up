@@ -130,8 +130,8 @@ export const tasks = pgTable("tasks", (t) => ({
     .notNull()
     .references(() => teams.id),
   userId: t.uuid().references(() => authUsers.id),
-  slug: t.text(),
-  title: t.text(),
+  slug: t.text().notNull().unique(),
+  title: t.text().notNull(),
   status: taskStatus().default("todo").notNull(),
   label: taskLabel().default("bug").notNull(),
   priority: taskPriority().default("low").notNull(),

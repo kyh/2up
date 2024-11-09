@@ -1,13 +1,32 @@
 import { z } from "zod";
 
+export const taskLabels = [
+  "bug",
+  "feature",
+  "enhancement",
+  "documentation",
+] as const;
+export type TaskLabel = (typeof taskLabels)[number];
+
+export const taskPriorities = ["low", "medium", "high"] as const;
+export type TaskPriority = (typeof taskPriorities)[number];
+
+export const taskStatuses = [
+  "todo",
+  "in-progress",
+  "done",
+  "canceled",
+] as const;
+export type TaskStatus = (typeof taskStatuses)[number];
+
 /**********
  * Create
  **********/
 export const createTaskInput = z.object({
   title: z.string(),
-  label: z.enum(["bug", "feature", "enhancement", "documentation"]),
-  priority: z.enum(["low", "medium", "high"]),
-  status: z.enum(["todo", "in-progress", "done", "canceled"]),
+  label: z.enum(taskLabels).default("bug"),
+  priority: z.enum(taskPriorities).default("low"),
+  status: z.enum(taskStatuses).default("todo"),
   teamId: z.string(),
 });
 export type CreateTaskInput = z.infer<typeof createTaskInput>;

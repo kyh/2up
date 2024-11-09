@@ -31,13 +31,14 @@ CREATE TABLE IF NOT EXISTS "tasks" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"team_id" uuid NOT NULL,
 	"user_id" uuid,
-	"slug" text,
-	"title" text,
+	"slug" text NOT NULL,
+	"title" text NOT NULL,
 	"status" "task_status" DEFAULT 'todo' NOT NULL,
 	"label" "task_label" DEFAULT 'bug' NOT NULL,
 	"priority" "task_priority" DEFAULT 'low' NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "tasks_slug_unique" UNIQUE("slug"),
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "team_members" (

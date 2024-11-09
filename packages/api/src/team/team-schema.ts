@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+export const teamMemberRoles = ["owner", "admin", "member"] as const;
+export type TeamMemberRole = (typeof teamMemberRoles)[number];
+
 /**********
  * Create
  **********/
@@ -14,8 +17,6 @@ export const createTeamsInput = z.object({ teams: z.array(createTeamInput) });
 export type CreateTeamsInput = z.infer<typeof createTeamsInput>;
 
 // Create - members
-export const teamMemberRoles = ["owner", "admin", "member"] as const;
-export type TeamMemberRole = (typeof teamMemberRoles)[number];
 export const createTeamMemberInput = z.object({
   teamId: z.string(),
   userId: z.string(),

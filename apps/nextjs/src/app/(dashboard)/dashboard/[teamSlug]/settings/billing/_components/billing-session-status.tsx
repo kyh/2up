@@ -1,5 +1,4 @@
 import { Button } from "@init/ui/button";
-import { Heading } from "@init/ui/heading";
 import { CheckIcon, ChevronRightIcon } from "lucide-react";
 
 /**
@@ -29,10 +28,10 @@ export const BillingSessionStatus = ({
         }
       />
 
-      <Heading level={3}>
+      <h1>
         <span className="mr-4 font-semibold">Done! You're all set.</span>
         🎉
-      </Heading>
+      </h1>
 
       <div className="flex flex-col gap-4 text-muted-foreground">
         <p>

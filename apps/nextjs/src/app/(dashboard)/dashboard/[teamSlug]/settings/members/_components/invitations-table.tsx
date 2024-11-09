@@ -9,6 +9,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -109,7 +111,7 @@ const ActionsDropdown = ({
   userRole: TeamMemberRole;
   teamId: string;
 }) => {
-  const onChangeRole = (newRole: TeamMemberRole) => {
+  const onChangeRole = (newRole: string) => {
     alertDialog.open(`Change ${invitation.email}'s role?`, {
       description: `You are about to change ${invitation.email}'s role to ${newRole}. This may affect their permissions.`,
       action: {
@@ -153,11 +155,20 @@ const ActionsDropdown = ({
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Change Role</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            {teamMemberRoles.map((role) => (
-              <DropdownMenuItem onSelect={() => onChangeRole(role)}>
-                {role}
-              </DropdownMenuItem>
-            ))}
+            <DropdownMenuRadioGroup
+              value={invitation.role}
+              onValueChange={onChangeRole}
+            >
+              {teamMemberRoles.map((role) => (
+                <DropdownMenuRadioItem
+                  key={role}
+                  value={role}
+                  className="capitalize"
+                >
+                  {role}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuItem onSelect={onRemoveInvitation}>

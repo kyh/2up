@@ -37,7 +37,7 @@ import {
 import { Input } from "@init/ui/input";
 import { Logo } from "@init/ui/logo";
 import { toast } from "@init/ui/toast";
-import { cn, getInitials } from "@init/ui/utils";
+import { cn } from "@init/ui/utils";
 import {
   CheckIcon,
   CreditCardIcon,

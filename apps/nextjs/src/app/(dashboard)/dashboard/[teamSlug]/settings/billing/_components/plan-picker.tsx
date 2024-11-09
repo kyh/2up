@@ -18,7 +18,6 @@ import {
   FormMessage,
   useForm,
 } from "@init/ui/form";
-import { Heading } from "@init/ui/heading";
 import { If } from "@init/ui/if";
 import { Label } from "@init/ui/label";
 import {
@@ -376,13 +375,13 @@ const PlanDetails = ({
       className="flex w-full flex-col space-y-4 py-2 animate-in fade-in zoom-in-95 lg:px-8"
     >
       <div className="flex flex-col gap-0.5">
-        <Heading level={5}>
+        <h1>
           <b>{selectedProduct.name}</b>{" "}
           <If condition={isRecurring}>
             {selectedInterval == "month" && "/ Billed monthly"}
             {selectedInterval == "year" && "/ Billed yearly"}
           </If>
-        </Heading>
+        </h1>
 
         <p>
           <span className="text-muted-foreground">

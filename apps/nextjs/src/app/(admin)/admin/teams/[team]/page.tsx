@@ -1,7 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from "@init/ui/alert";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
-import { Heading } from "@init/ui/heading";
 import { If } from "@init/ui/if";
 import { ProfileAvatar } from "@init/ui/profile-avatar";
 import {
@@ -127,9 +126,7 @@ const PersonalAccountPage = async (props: { account: Account }) => {
       <div className="flex flex-col gap-8">
         <SubscriptionsTable accountId={props.account.id} />
         <div className="divider-divider-x flex flex-col gap-2.5">
-          <Heading className="font-bold" level={5}>
-            Teams
-          </Heading>
+          <h1 className="font-bold">Teams</h1>
           <div>
             <AdminMembershipsTable memberships={memberships} />
           </div>
@@ -175,9 +172,7 @@ const TeamAccountPage = async (props: { account: Account }) => {
           <SubscriptionsTable accountId={props.account.id} />
 
           <div className="flex flex-col gap-2.5">
-            <Heading className="font-bold" level={5}>
-              Team Members
-            </Heading>
+            <h1 className="font-bold">Team Members</h1>
 
             <AdminMembersTable members={members} />
           </div>
@@ -194,9 +189,7 @@ const SubscriptionsTable = async (props: { accountId: string }) => {
 
   return (
     <div className="flex flex-col gap-2.5">
-      <Heading className="font-bold" level={5}>
-        Subscription
-      </Heading>
+      <h1 className="font-bold">Subscription</h1>
       <If
         condition={subscription}
         fallback={

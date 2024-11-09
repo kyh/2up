@@ -22,6 +22,7 @@ export const taskRouter = createTRPCRouter({
         .insert(tasks)
         .values({
           ...input,
+          slug: input.title.toLowerCase().replace(/\s/g, "-"),
           userId: ctx.user.id,
         })
         .returning();
