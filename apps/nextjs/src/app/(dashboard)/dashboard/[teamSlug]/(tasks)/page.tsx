@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import type { GetTasksInput } from "@init/api/task/task-schema";
 import { PageHeader } from "@/components/header";
 import { api, HydrateClient } from "@/trpc/server";
@@ -14,18 +16,26 @@ const Page = async (props: PageProps) => {
   const params = await props.params;
   const searchParams = await props.searchParams;
 
-  void api.team.getTeam.prefetch({
+  const { team } = await api.team.getTeam({
     slug: params.teamSlug,
   });
-  void api.task.getTasks.prefetch({
+
+  if (!team) {
+    redirect("/404");
+  }
+
+  const filters = searchParams.filter ?? [];
+  const getTasksInput: GetTasksInput = {
     ...searchParams,
-  });
+    filter: [...filters, { field: "teamId", value: team.id }],
+  };
+  void api.task.getTasks.prefetch(getTasksInput);
 
   return (
     <HydrateClient>
       <main className="flex flex-1 flex-col px-5">
         <PageHeader>Welcome back</PageHeader>
-        <TasksTable teamSlug={params.teamSlug} searchParams={searchParams} />
+        <TasksTable teamId={team.id} getTasksInput={getTasksInput} />
       </main>
     </HydrateClient>
   );

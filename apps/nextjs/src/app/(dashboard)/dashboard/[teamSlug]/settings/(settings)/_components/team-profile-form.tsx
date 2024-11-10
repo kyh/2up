@@ -15,16 +15,16 @@ import {
 import { Input } from "@init/ui/input";
 import { toast } from "@init/ui/toast";
 
-import type { RouterOutputs } from "@init/api";
 import type { UpdateTeamInput } from "@init/api/team/team-schema";
 import { api } from "@/trpc/react";
 
 type TeamProfileFormProps = {
-  team: NonNullable<RouterOutputs["team"]["getTeam"]["team"]>;
+  teamSlug: string;
 };
 
-export const TeamProfileForm = ({ team }: TeamProfileFormProps) => {
+export const TeamProfileForm = ({ teamSlug }: TeamProfileFormProps) => {
   const router = useRouter();
+  const [{ team }] = api.team.getTeam.useSuspenseQuery({ slug: teamSlug });
 
   const updateTeam = api.team.updateTeam.useMutation({
     onSuccess: ({ team }) => {
@@ -36,9 +36,9 @@ export const TeamProfileForm = ({ team }: TeamProfileFormProps) => {
   const form = useForm({
     schema: updateTeamInput,
     defaultValues: {
-      id: team.id,
-      name: team.name,
-      slug: team.slug,
+      id: team?.id,
+      name: team?.name,
+      slug: team?.slug,
     },
   });
 

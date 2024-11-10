@@ -38,49 +38,52 @@ import { MoreHorizontalIcon } from "lucide-react";
 
 import type { Task } from "./task-utils";
 import type { GetTasksInput, TaskLabel } from "@init/api/task/task-schema";
-import type { ColumnDef } from "@tanstack/react-table";
+import type {
+  ColumnDef,
+  ColumnOrderState,
+  ColumnSizingState,
+  RowSelectionState,
+  SortingState,
+  VisibilityState,
+} from "@tanstack/react-table";
 import { api } from "@/trpc/react";
 import { TaskForm } from "./task-form";
 import { formatDate, getPriorityIcon, getStatusIcon } from "./task-utils";
 import { TasksTableActionsBar } from "./tasks-table-actions-bar";
 
-// import { TasksTableToolbarActions } from "./tasks-table-toolbar-actions";
-
 type TasksTableProps = {
-  teamSlug: string;
-  searchParams: GetTasksInput;
+  teamId: string;
+  getTasksInput: GetTasksInput;
 };
 
-export const TasksTable = ({ teamSlug, searchParams }: TasksTableProps) => {
-  const { data: teamData } = api.team.getTeam.useQuery({
-    slug: teamSlug,
-  });
-  const filter = searchParams.filter ?? [];
-  const { data: tasksData } = api.task.getTasks.useQuery(
-    {
-      ...searchParams,
-      filter: [...filter, { field: "teamId", value: teamData?.team?.id ?? "" }],
-    },
-    {
-      enabled: !!teamData?.team,
-    },
-  );
+export const TasksTable = ({ teamId, getTasksInput }: TasksTableProps) => {
+  const [{ data }] = api.task.getTasks.useSuspenseQuery(getTasksInput);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([]);
+  const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const columns = useMemo(() => getColumns(), []);
-  const rows = tasksData?.data ?? [];
 
   const { table } = useDataTable({
-    data: rows,
+    data,
     columns,
+    sorting,
+    setSorting,
+    columnVisibility,
+    setColumnVisibility,
+    columnOrder,
+    setColumnOrder,
+    columnSizing,
+    setColumnSizing,
+    rowSelection,
+    setRowSelection,
   });
-
-  if (!teamData?.team) {
-    return null;
-  }
 
   return (
     <>
-      <TasksTableActionsBar teamId={teamData.team.id} table={table} />
+      <TasksTableActionsBar teamId={teamId} table={table} />
       <AutoTable table={table} />
     </>
   );
@@ -199,6 +202,7 @@ export const getColumns = (): ColumnDef<Task>[] => [
 const ActionsDropdown = ({ task }: { task: Task }) => {
   const [showUpdateTaskDialog, setShowUpdateTaskDialog] = useState(false);
   const updateTask = api.task.updateTask.useMutation();
+  const deleteTask = api.task.deleteTask.useMutation();
 
   const onChangeLabel = (newLabel: string) => {
     updateTask.mutate({ ...task, label: newLabel as TaskLabel });
@@ -210,7 +214,7 @@ const ActionsDropdown = ({ task }: { task: Task }) => {
       action: {
         label: "Remove",
         onClick: () => {
-          // removeMember.mutate({ accountId: teamId, userId: member.userId });
+          return deleteTask.mutateAsync({ id: task.id });
         },
       },
     });

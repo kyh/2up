@@ -29,12 +29,13 @@ import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 
 type TeamDeleteFormProps = {
-  team: NonNullable<RouterOutputs["team"]["getTeam"]["team"]>;
+  teamSlug: string;
 };
 
-export const TeamDeleteForm = ({ team }: TeamDeleteFormProps) => {
+export const TeamDeleteForm = ({ teamSlug }: TeamDeleteFormProps) => {
   const [{ user, teams }] = api.auth.workspace.useSuspenseQuery();
-  const currentTeam = teams.find((t) => t.id === team.id);
+  const [{ team }] = api.team.getTeam.useSuspenseQuery({ slug: teamSlug });
+  const currentTeam = teams.find((t) => t.id === team?.id);
 
   if (!currentTeam || !user) {
     return null;

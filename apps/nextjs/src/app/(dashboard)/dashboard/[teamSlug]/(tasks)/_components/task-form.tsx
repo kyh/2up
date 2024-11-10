@@ -56,7 +56,6 @@ export const TaskForm = ({ teamId, task, onSuccess }: TaskFormProps) => {
       teamId,
     },
   });
-  console.log(form.formState.errors);
 
   const onSubmit = (data: CreateTaskInput) => {
     if (task) {

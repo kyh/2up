@@ -26,10 +26,11 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { api } from "@/trpc/react";
 
 type InvitationsTableProps = {
-  team: RouterOutputs["team"]["getTeam"]["team"];
+  teamSlug: string;
 };
 
-export const InvitationsTable = ({ team }: InvitationsTableProps) => {
+export const InvitationsTable = ({ teamSlug }: InvitationsTableProps) => {
+  const [{ team }] = api.team.getTeam.useSuspenseQuery({ slug: teamSlug });
   const [{ user }] = api.auth.workspace.useSuspenseQuery();
 
   const userId = user?.id;

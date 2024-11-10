@@ -45,10 +45,16 @@ import { api } from "@/trpc/react";
 const MAX_INVITES = 5;
 
 type InviteMembersDialogProps = {
-  teamId: string;
+  teamSlug: string;
 };
 
-export const InviteMembersDialog = ({ teamId }: InviteMembersDialogProps) => {
+export const InviteMembersDialog = ({ teamSlug }: InviteMembersDialogProps) => {
+  const [{ team }] = api.team.getTeam.useSuspenseQuery({ slug: teamSlug });
+
+  if (!team) {
+    return null;
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -64,7 +70,7 @@ export const InviteMembersDialog = ({ teamId }: InviteMembersDialogProps) => {
             Invite members to your team by entering their email and role.
           </DialogDescription>
         </DialogHeader>
-        <InviteMembersForm teamId={teamId} />
+        <InviteMembersForm teamId={team.id} />
       </DialogContent>
     </Dialog>
   );
