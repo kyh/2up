@@ -28,7 +28,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.5.1",
+    "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.46.1",
     "drizzle-orm": "^0.36.1",
     "next": "catalog:",

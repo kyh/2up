@@ -11,12 +11,6 @@ export const config = {
   matcher: ["/((?!_next/static|_next/image|images|locales|assets|api/*).*)"],
 };
 
-const getUser = (request: NextRequest, response: NextResponse) => {
-  const supabase = createMiddlewareClient(request, response);
-
-  return supabase.auth.getUser();
-};
-
 export const middleware = async (request: NextRequest) => {
   const response = NextResponse.next({ request });
 
@@ -97,10 +91,11 @@ const getPatterns = () => [
   {
     pattern: new URLPattern({ pathname: "/admin/*?" }),
     handler: async (request: NextRequest, response: NextResponse) => {
+      const supabase = createMiddlewareClient(request, response);
       const {
         data: { user },
         error,
-      } = await getUser(request, response);
+      } = await supabase.auth.getUser();
 
       // If user is not logged in, redirect to sign in page.
       // This should never happen, but just in case.
@@ -125,47 +120,49 @@ const getPatterns = () => [
   },
   {
     pattern: new URLPattern({ pathname: "/auth/*?" }),
-    handler: async (req: NextRequest, res: NextResponse) => {
+    handler: async (request: NextRequest, response: NextResponse) => {
+      const supabase = createMiddlewareClient(request, response);
       const {
         data: { user },
-      } = await getUser(req, res);
+        error,
+      } = await supabase.auth.getUser();
 
       // the user is logged out, so we don't need to do anything
-      if (!user) {
+      if (!user || error) {
         return;
       }
 
       // check if we need to verify MFA (user is authenticated but needs to verify MFA)
-      const isVerifyMfa = req.nextUrl.pathname === "/auth/verify";
+      const isVerifyMfa = request.nextUrl.pathname === "/auth/verify";
 
       // If user is logged in and does not need to verify MFA,
       // redirect to home page.
       if (!isVerifyMfa) {
         return NextResponse.redirect(
-          new URL("/dashboard", req.nextUrl.origin).href,
+          new URL("/dashboard", request.nextUrl.origin).href,
         );
       }
     },
   },
   {
     pattern: new URLPattern({ pathname: "/dashboard/*?" }),
-    handler: async (req: NextRequest, res: NextResponse) => {
+    handler: async (request: NextRequest, response: NextResponse) => {
+      const supabase = createMiddlewareClient(request, response);
       const {
         data: { user },
-      } = await getUser(req, res);
+        error,
+      } = await supabase.auth.getUser();
 
-      const origin = req.nextUrl.origin;
-      const next = req.nextUrl.pathname;
+      const origin = request.nextUrl.origin;
+      const next = request.nextUrl.pathname;
 
       // If user is not logged in, redirect to sign in page.
-      if (!user) {
+      if (!user || error) {
         const signIn = "/auth/sign-in";
         const redirectPath = `${signIn}?next=${next}`;
 
         return NextResponse.redirect(new URL(redirectPath, origin).href);
       }
-
-      const supabase = createMiddlewareClient(req, res);
 
       const requiresMultiFactorAuthentication =
         await checkRequiresMultiFactorAuthentication(supabase);
@@ -175,7 +172,7 @@ const getPatterns = () => [
         return NextResponse.redirect(new URL("/auth/verify", origin).href);
       }
 
-      if (req.nextUrl.pathname === "/dashboard") {
+      if (request.nextUrl.pathname === "/dashboard") {
         if (user.user_metadata.defaultTeam) {
           return NextResponse.redirect(
             new URL(`/dashboard/${user.user_metadata.defaultTeam}`, origin)

@@ -19,7 +19,7 @@
     "@kyh/tsconfig": "catalog:",
     "@tailwindcss/typography": "^0.5.15",
     "eslint": "catalog:",
-    "postcss": "^8.4.47",
+    "postcss": "^8.4.48",
     "prettier": "catalog:",
     "tailwindcss": "catalog:",
     "tailwindcss-animate": "^1.0.7",

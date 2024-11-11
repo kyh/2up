@@ -205,7 +205,15 @@ const ActionsDropdown = ({ task }: { task: Task }) => {
   const deleteTask = api.task.deleteTask.useMutation();
 
   const onChangeLabel = (newLabel: string) => {
-    updateTask.mutate({ ...task, label: newLabel as TaskLabel });
+    const promise = updateTask.mutateAsync({
+      ...task,
+      label: newLabel as TaskLabel,
+    });
+    toast.promise(promise, {
+      loading: "Updating label...",
+      success: "Label updated successfully",
+      error: "Failed to update label",
+    });
   };
 
   const onDeleteTask = () => {
@@ -214,7 +222,13 @@ const ActionsDropdown = ({ task }: { task: Task }) => {
       action: {
         label: "Remove",
         onClick: () => {
-          return deleteTask.mutateAsync({ id: task.id });
+          const promise = deleteTask.mutateAsync({ id: task.id });
+          toast.promise(promise, {
+            loading: "Removing task...",
+            success: "Task removed successfully",
+            error: "Failed to remove task",
+          });
+          return promise;
         },
       },
     });

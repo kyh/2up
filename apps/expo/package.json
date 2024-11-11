@@ -31,7 +31,7 @@
     "nativewind": "^4.1.23",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "react-hook-form": "^7.53.1",
+    "react-hook-form": "^7.53.2",
     "react-native": "^0.76.1",
     "react-native-css-interop": "^0.0.34",
     "react-native-gesture-handler": "^2.20.2",
