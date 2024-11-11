@@ -11,23 +11,18 @@ import { EyeIcon } from "lucide-react";
 
 import type { Table } from "@tanstack/react-table";
 
-type DataTableViewOptionsProps<TData> = {
+type DataTableViewOptionsButton<TData> = {
   table: Table<TData>;
 };
 
-export const DataTableViewOptions = <TData,>({
+export const DataTableViewOptionsButton = <TData,>({
   table,
-}: DataTableViewOptionsProps<TData>) => (
+}: DataTableViewOptionsButton<TData>) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
-      <Button
-        aria-label="Toggle columns"
-        variant="outline"
-        size="sm"
-        className="ml-auto hidden h-8 lg:flex"
-      >
-        <EyeIcon className="mr-2 size-4" />
-        View
+      <Button variant="outline" size="sm">
+        <EyeIcon className="mr-1 size-4" />
+        Columns
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" className="w-40">

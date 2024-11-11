@@ -11,6 +11,7 @@ import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
 import { Checkbox } from "@init/ui/checkbox";
 import { DataTableColumnHeader } from "@init/ui/data-table/data-table-column-header";
+import { DataTablePagination } from "@init/ui/data-table/data-table-pagination";
 import { useDataTable } from "@init/ui/data-table/use-data-table";
 import {
   Dialog,
@@ -82,10 +83,11 @@ export const TasksTable = ({ teamId, getTasksInput }: TasksTableProps) => {
   });
 
   return (
-    <>
+    <div className="space-y-2">
       <TasksTableActionsBar teamId={teamId} table={table} />
       <AutoTable table={table} />
-    </>
+      <DataTablePagination table={table} />
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@init/ui/button";
-import { DataTableViewOptions } from "@init/ui/data-table/data-table-view-options";
+import { DataTableViewOptionsButton } from "@init/ui/data-table/data-table-view-options";
 import {
   Dialog,
   DialogContent,
@@ -26,10 +26,8 @@ export const TasksTableActionsBar = ({
   teamId,
   table,
 }: TasksTableActionsBarProps) => {
-  const [showCreateTaskDialog, setShowCreateTaskDialog] = useState(false);
-
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center justify-between gap-2">
       {/* {table.getFilteredSelectedRowModel().rows.length > 0 && (
         <DeleteTasksDialog
           tasks={table
@@ -38,30 +36,39 @@ export const TasksTableActionsBar = ({
           onSuccess={() => table.toggleAllRowsSelected(false)}
         />
       )} */}
-      <Dialog
-        open={showCreateTaskDialog}
-        onOpenChange={setShowCreateTaskDialog}
-      >
-        <DialogTrigger asChild>
-          <Button>
-            <PlusIcon className="size-4" />
-            Create Task
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create Task</DialogTitle>
-            <DialogDescription>
-              Fill in the details below to create a new task.
-            </DialogDescription>
-          </DialogHeader>
-          <TaskForm
-            teamId={teamId}
-            onSuccess={() => setShowCreateTaskDialog(false)}
-          />
-        </DialogContent>
-      </Dialog>
-      <DataTableViewOptions table={table} />
+      <div>
+        <DataTableViewOptionsButton table={table} />
+      </div>
+      <div>
+        <TasksTableAddTaskButton teamId={teamId} table={table} />
+      </div>
     </div>
+  );
+};
+
+const TasksTableAddTaskButton = ({ teamId }: TasksTableActionsBarProps) => {
+  const [showCreateTaskDialog, setShowCreateTaskDialog] = useState(false);
+
+  return (
+    <Dialog open={showCreateTaskDialog} onOpenChange={setShowCreateTaskDialog}>
+      <DialogTrigger asChild>
+        <Button size="sm">
+          <PlusIcon className="mr-1 size-4" />
+          Create Task
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create Task</DialogTitle>
+          <DialogDescription>
+            Fill in the details below to create a new task.
+          </DialogDescription>
+        </DialogHeader>
+        <TaskForm
+          teamId={teamId}
+          onSuccess={() => setShowCreateTaskDialog(false)}
+        />
+      </DialogContent>
+    </Dialog>
   );
 };
