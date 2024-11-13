@@ -5,7 +5,6 @@ import createMDX from "@next/mdx";
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const ENABLE_REACT_COMPILER = process.env.ENABLE_REACT_COMPILER === "true";
 
 const getRemotePatterns = () => {
   /** @type {import('next').NextConfig['remotePatterns']} */
@@ -44,7 +43,6 @@ const config = {
   },
   experimental: {
     mdxRs: true,
-    reactCompiler: ENABLE_REACT_COMPILER,
   },
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
