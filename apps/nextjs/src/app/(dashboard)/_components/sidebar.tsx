@@ -52,11 +52,10 @@ import { NavLink } from "@/components/nav";
 import { api } from "@/trpc/react";
 
 export const Sidebar = () => {
-  const params = useParams<{ team: string | undefined }>();
+  const params = useParams<{ teamSlug: string | undefined }>();
   const [{ defaultTeamSlug }] = api.auth.workspace.useSuspenseQuery();
 
-  const teamSlug = params.team;
-  const rootUrl = `/dashboard/${teamSlug ?? defaultTeamSlug}`;
+  const rootUrl = `/dashboard/${params.teamSlug ?? defaultTeamSlug}`;
   const pageLinks = [
     {
       href: rootUrl,
@@ -65,12 +64,12 @@ export const Sidebar = () => {
       icon: HomeIcon,
     },
     {
-      href: `${rootUrl}/settings/members`,
+      href: `${rootUrl}/members`,
       label: "Members",
       icon: Users2Icon,
     },
     {
-      href: `${rootUrl}/settings/billing`,
+      href: `${rootUrl}/billing`,
       label: "Billing",
       icon: CreditCardIcon,
     },
@@ -104,7 +103,7 @@ export const Sidebar = () => {
           </NavLink>
         ))}
       </div>
-      <UserDropdown teamSlug={teamSlug} />
+      <UserDropdown teamSlug={params.teamSlug} />
     </nav>
   );
 };
