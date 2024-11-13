@@ -5,7 +5,7 @@ type LayoutProps = {
   children: React.ReactNode;
 };
 
-const Layout = async (props: LayoutProps) => {
+const Layout = (props: LayoutProps) => {
   return (
     <>
       <Header />

@@ -1,8 +1,3 @@
-import { recmaPlugins } from "@init/mdx/plugins/recma.mjs";
-import { rehypePlugins } from "@init/mdx/plugins/rehype.mjs";
-import { remarkPlugins } from "@init/mdx/plugins/remark.mjs";
-import createMDX from "@next/mdx";
-
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
@@ -36,8 +31,7 @@ const getRemotePatterns = () => {
 /** @type {import("next").NextConfig} */
 const config = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
-  /** Enables hot reloading for local packages without a build step */
-  transpilePackages: ["@init/api", "@init/db", "@init/ui"],
+  transpilePackages: ["@init/api", "@init/db", "@init/mdx", "@init/ui"],
   images: {
     remotePatterns: getRemotePatterns(),
   },
@@ -49,12 +43,4 @@ const config = {
   typescript: { ignoreBuildErrors: true },
 };
 
-const withMDX = createMDX({
-  options: {
-    remarkPlugins,
-    rehypePlugins,
-    recmaPlugins,
-  },
-});
-
-export default withMDX(config);
+export default config;

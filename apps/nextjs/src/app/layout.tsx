@@ -11,8 +11,6 @@ import { TRPCReactProvider } from "@/trpc/react";
 
 import "./globals.css";
 
-import { api, HydrateClient } from "@/trpc/server";
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -99,9 +97,7 @@ const RootLayout = (props: LayoutProps) => {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TooltipProvider>
-            <TRPCReactProvider>
-              <AppLayout>{props.children}</AppLayout>
-            </TRPCReactProvider>
+            <TRPCReactProvider>{props.children}</TRPCReactProvider>
             <GlobalToaster />
             <GlobalAlertDialog />
           </TooltipProvider>
@@ -109,12 +105,6 @@ const RootLayout = (props: LayoutProps) => {
       </body>
     </html>
   );
-};
-
-const AppLayout = (props: LayoutProps) => {
-  void api.auth.workspace.prefetch();
-
-  return <HydrateClient>{props.children}</HydrateClient>;
 };
 
 export default RootLayout;

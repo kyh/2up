@@ -7,7 +7,10 @@ import { cn } from "@init/ui/utils";
 import { api } from "@/trpc/react";
 
 export const Header = () => {
-  const [{ user, defaultTeamSlug }] = api.auth.workspace.useSuspenseQuery();
+  const { data, isLoading } = api.auth.workspace.useQuery();
+
+  const user = data?.user;
+  const metaData = data?.userMetadata;
 
   return (
     <div className="mx-auto w-full justify-center">
@@ -31,26 +34,27 @@ export const Header = () => {
           >
             Github
           </Link>
-          {user ? (
+          {isLoading ? (
+            <span
+              className={cn(
+                buttonVariants({ variant: "secondary", size: "sm" }),
+                "ml-4 w-24 animate-pulse rounded-full px-5",
+              )}
+            />
+          ) : user ? (
             <Link
               className={cn(
-                buttonVariants({
-                  variant: "secondary",
-                  size: "sm",
-                }),
+                buttonVariants({ variant: "secondary", size: "sm" }),
                 "ml-4 rounded-full px-5",
               )}
-              href={`/dashboard/${defaultTeamSlug}`}
+              href={`/dashboard/${metaData?.defaultTeam}`}
             >
               Dashboard
             </Link>
           ) : (
             <Link
               className={cn(
-                buttonVariants({
-                  variant: "secondary",
-                  size: "sm",
-                }),
+                buttonVariants({ variant: "secondary", size: "sm" }),
                 "ml-4 rounded-full px-5",
               )}
               href="/auth/sign-in"
