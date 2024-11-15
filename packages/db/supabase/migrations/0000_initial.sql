@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS "tasks" (
 	"priority" "task_priority" DEFAULT 'low' NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
-    CONSTRAINT "tasks_slug_unique" UNIQUE("slug"),
+    CONSTRAINT "tasks_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "team_members" (
