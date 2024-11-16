@@ -76,7 +76,7 @@ export const TeamProfileForm = ({ teamSlug }: TeamProfileFormProps) => {
               <FormControl>
                 <div className="flex rounded-lg shadow-sm shadow-black/[.04]">
                   <span className="-z-10 inline-flex items-center rounded-s-lg border border-input bg-background px-3 text-sm text-muted-foreground">
-                    https://init.kyh.io/dashboard/
+                    dashboard/
                   </span>
                   <Input
                     className="-ms-px rounded-s-none shadow-none"

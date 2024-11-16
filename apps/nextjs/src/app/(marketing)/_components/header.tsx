@@ -45,7 +45,7 @@ export const Header = () => {
             <Link
               className={cn(
                 buttonVariants({ variant: "secondary", size: "sm" }),
-                "ml-4 rounded-full px-5",
+                "ml-4 w-24 rounded-full px-5",
               )}
               href={`/dashboard/${metaData?.defaultTeamSlug}`}
             >
@@ -55,7 +55,7 @@ export const Header = () => {
             <Link
               className={cn(
                 buttonVariants({ variant: "secondary", size: "sm" }),
-                "ml-4 rounded-full px-5",
+                "ml-4 w-24 rounded-full px-5",
               )}
               href="/auth/sign-in"
             >
