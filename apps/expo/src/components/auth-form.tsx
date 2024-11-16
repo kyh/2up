@@ -17,13 +17,13 @@ export const AuthForm = ({ type }: AuthFormProps) => {
   });
   const signInWithPassword = api.auth.signInWithPassword.useMutation({
     onSuccess: ({ user }) => {
-      router.push(`/dashboard/${user.user_metadata.defaultTeam}`);
+      router.push(`/dashboard/${user.user_metadata.defaultTeamSlug}`);
     },
     onError: (error) => Alert.alert(error.message),
   });
   const signUp = api.auth.signUp.useMutation({
     onSuccess: ({ user }) => {
-      router.push(`/dashboard/${user.user_metadata.defaultTeam}`);
+      router.push(`/dashboard/${user.user_metadata.defaultTeamSlug}`);
     },
     onError: (error) => Alert.alert(error.message),
   });

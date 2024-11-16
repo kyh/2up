@@ -33,7 +33,7 @@ export const ProfileForm = () => {
       id: user?.id ?? "",
       displayName: userMetadata?.displayName ?? "",
       avatarUrl: userMetadata?.avatarUrl ?? "",
-      defaultTeam: userMetadata?.defaultTeam ?? "",
+      defaultTeamSlug: userMetadata?.defaultTeamSlug ?? "",
     },
   });
 

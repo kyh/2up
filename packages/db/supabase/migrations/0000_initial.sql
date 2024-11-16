@@ -182,7 +182,9 @@ BEGIN
         
         -- Update auth.users with new meta data including defaultTeam
         UPDATE auth.users 
-        SET raw_user_meta_data = current_meta_data || jsonb_build_object('defaultTeam', team_slug)
+        SET raw_user_meta_data = current_meta_data || jsonb_build_object(
+            'defaultTeamSlug', team_slug
+        )
         WHERE id = NEW.id;
     EXCEPTION WHEN OTHERS THEN
         -- Cleanup if metadata update fails

@@ -47,7 +47,7 @@ export const Header = () => {
                 buttonVariants({ variant: "secondary", size: "sm" }),
                 "ml-4 rounded-full px-5",
               )}
-              href={`/dashboard/${metaData?.defaultTeam}`}
+              href={`/dashboard/${metaData?.defaultTeamSlug}`}
             >
               Dashboard
             </Link>

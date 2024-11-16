@@ -173,9 +173,9 @@ const getPatterns = () => [
       }
 
       if (request.nextUrl.pathname === "/dashboard") {
-        if (user.user_metadata.defaultTeam) {
+        if (user.user_metadata.defaultTeamSlug) {
           return NextResponse.redirect(
-            new URL(`/dashboard/${user.user_metadata.defaultTeam}`, origin)
+            new URL(`/dashboard/${user.user_metadata.defaultTeamSlug}`, origin)
               .href,
           );
         } else {

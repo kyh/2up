@@ -33,7 +33,7 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   const signInWithPassword = api.auth.signInWithPassword.useMutation({
     onSuccess: ({ user }) => {
       router.replace(
-        params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeam}`,
+        params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeamSlug}`,
       );
     },
     onError: (error) => toast.error(error.message),
@@ -41,7 +41,7 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   const signUp = api.auth.signUp.useMutation({
     onSuccess: ({ user }) => {
       router.replace(
-        params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeam}`,
+        params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeamSlug}`,
       );
     },
     onError: (error) => toast.error(error.message),

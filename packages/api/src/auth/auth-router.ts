@@ -27,7 +27,7 @@ export const authRouter = createTRPCRouter({
     return {
       user: ctx.user,
       userMetadata,
-      defaultTeamSlug: userMetadata?.defaultTeam ?? teamMembers[0]?.team.id,
+      defaultTeamSlug: userMetadata?.defaultTeamSlug ?? teamMembers[0]?.team.id,
       teams: teamMembers.map((tm) => ({ ...tm.team, userRole: tm.role })),
     };
   }),
