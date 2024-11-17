@@ -14,9 +14,9 @@ catalog:
   "@types/react": ^18.3.12
   "@types/react-dom": ^18.3.1
   "@types/node": ^22.9.0
-  "@kyh/eslint-config": ^1.0.11
-  "@kyh/prettier-config": ^1.0.11
-  "@kyh/tsconfig": ^1.0.11
+  "@kyh/eslint-config": ^1.1.0
+  "@kyh/prettier-config": ^1.1.0
+  "@kyh/tsconfig": ^1.1.0
   "@tanstack/react-query": ^5.60.5
   "@tanstack/react-query-devtools": ^5.60.5
   "@trpc/client": ^11.0.0-rc.593

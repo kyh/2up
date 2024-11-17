@@ -17,7 +17,6 @@
     "@edge-csrf/nextjs": "^2.5.2",
     "@init/api": "workspace:latest",
     "@init/db": "workspace:latest",
-    "@init/mdx": "workspace:latest",
     "@init/ui": "workspace:latest",
     "@stripe/react-stripe-js": "^2.9.0",
     "@stripe/stripe-js": "^4.10.0",

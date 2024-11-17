@@ -7,11 +7,13 @@
     "./*": "./src/*.tsx"
   },
   "scripts": {
+    "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
-    "ui:add": "pnpm dlx shadcn-ui add && prettier src --write --list-different"
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "gen:ui": "pnpm dlx shadcn@latest add && prettier src --write --list-different"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
