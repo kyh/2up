@@ -46,7 +46,7 @@
     "drizzle-kit": "^0.28.1",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "supabase": "^1.219.2",
+    "supabase": "^1.223.10",
     "typescript": "catalog:"
   },
   "prettier": "@kyh/prettier-config"
