@@ -1,9 +1,9 @@
 import type { MDXComponents } from "mdx/types";
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { cn } from "@init/ui/utils";
 
-import { MDXImage } from "./components/image";
-import { Link } from "./components/link";
 import { Preview } from "./components/preview";
 
 const customComponents: MDXComponents = {
@@ -11,17 +11,33 @@ const customComponents: MDXComponents = {
     <Preview codeblock={codeblock ? codeblock : undefined}>{children}</Preview>
   ),
   Image: ({ caption, alt, ...props }) => (
-    <MDXImage {...props} caption={caption} alt={alt} />
+    <Image
+      unoptimized
+      alt={alt}
+      width={1000}
+      height={1000}
+      sizes="100vw"
+      style={{
+        objectFit: "contain",
+        width: "100%",
+        height: "auto",
+        objectPosition: "center",
+        transition: "all 0.5s ease",
+      }}
+      {...props}
+    />
   ),
-  h2: ({ children, id }: React.HTMLAttributes<HTMLHeadingElement>) => {
-    return <h2 id={id}>{children}</h2>;
+  h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
+    return <h1 className={cn("text-3xl font-medium", className)} {...props} />;
+  },
+  h2: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
+    return <h2 className={cn("text-2xl font-medium", className)} {...props} />;
   },
   a: ({ children, href }) => {
     return (
       <Link
-        href={href}
+        href={href ?? ""}
         className="text-muted inline-flex items-center gap-1"
-        underline
       >
         {children}
       </Link>
@@ -34,9 +50,7 @@ const customComponents: MDXComponents = {
     />
   ),
   table: ({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) => (
-    <div className="my-6 w-full overflow-hidden overflow-y-auto">
-      <table className={cn("w-full overflow-hidden", className)} {...props} />
-    </div>
+    <table className={cn("w-full overflow-hidden", className)} {...props} />
   ),
   th: ({ className, ...props }: React.HTMLAttributes<HTMLTableCellElement>) => (
     <th

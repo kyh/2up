@@ -43,11 +43,13 @@ const navLinks = {
     label: "Architecture",
     children: [
       {
-        id: "architecture",
-        href: "/docs/architecture",
-        label: "Architecture and Folder Structure",
+        id: "folder-structure",
+        href: "/docs/folder-structure",
+        label: "Folder Structure",
       },
       { id: "auth", href: "/docs/auth", label: "Authentication" },
+      { id: "database", href: "/docs/database", label: "Database" },
+      { id: "api", href: "/docs/api", label: "API" },
     ],
   },
   development: {
@@ -56,15 +58,13 @@ const navLinks = {
       { id: "data-model", href: "/docs/data-model", label: "Data Modelling" },
       { id: "query", href: "/docs/queries", label: "Data Fetching" },
       { id: "mutations", href: "/docs/mutations", label: "Data Mutations" },
-      { id: "styling", href: "/docs/styling", label: "Styling" },
-      { id: "routes", href: "/docs/routes", label: "Routes" },
       { id: "markdown", href: "/docs/markdown", label: "Markdown" },
-      { id: "production", href: "/docs/production", label: "Launch Checklist" },
     ],
   },
   launch: {
     label: "Launch",
     children: [
+      { id: "production", href: "/docs/production", label: "Launch Checklist" },
       { id: "deployment", href: "/docs/deployment", label: "Deployment" },
       { id: "monitoring", href: "/docs/monitoring", label: "Monitoring" },
     ],
