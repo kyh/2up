@@ -29,7 +29,7 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-hotkeys-hook": "^4.6.1",
-    "superjson": "^2.2.1",
+    "superjson": "^2.2.2",
     "zod": "catalog:"
   },
   "devDependencies": {

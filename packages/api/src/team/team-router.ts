@@ -1,5 +1,5 @@
 import { and, eq } from "@init/db";
-import { authUsers, invitations, teamMembers, teams } from "@init/db/schema";
+import { invitations, teamMembers, teams } from "@init/db/schema";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import {

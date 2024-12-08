@@ -27,11 +27,11 @@
   },
   "devDependencies": {
     "@kyh/prettier-config": "catalog:",
-    "@turbo/gen": "^2.3.0",
-    "dotenv-cli": "^7.4.3",
+    "@turbo/gen": "^2.3.3",
+    "dotenv-cli": "^7.4.4",
     "prettier": "catalog:",
     "tsx": "^4.19.2",
-    "turbo": "^2.3.0",
+    "turbo": "^2.3.3",
     "typescript": "catalog:"
   },
   "prettier": "@kyh/prettier-config"
