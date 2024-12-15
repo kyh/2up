@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@init/db": "workspace:latest",
+    "@init/db": "workspace:^",
     "@trpc/server": "catalog:",
     "stripe": "^17.4.0",
     "superjson": "^2.2.2",

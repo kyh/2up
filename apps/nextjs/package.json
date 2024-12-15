@@ -14,13 +14,13 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@edge-csrf/nextjs": "^2.5.2",
-    "@init/api": "workspace:latest",
-    "@init/db": "workspace:latest",
-    "@init/mdx": "workspace:latest",
-    "@init/ui": "workspace:latest",
-    "@stripe/react-stripe-js": "^3.0.0",
-    "@stripe/stripe-js": "^5.2.0",
+    "@edge-csrf/nextjs": "2.5.3-cloudflare-rc1",
+    "@init/api": "workspace:^",
+    "@init/db": "workspace:^",
+    "@init/mdx": "workspace:^",
+    "@init/ui": "workspace:^",
+    "@stripe/react-stripe-js": "^3.1.1",
+    "@stripe/stripe-js": "^5.3.0",
     "@tanstack/react-query": "catalog:",
     "@trpc/client": "catalog:",
     "@trpc/react-query": "catalog:",
@@ -33,7 +33,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@init/tailwind-config": "workspace:latest",
+    "@init/tailwind-config": "workspace:^",
     "@kyh/eslint-config": "catalog:",
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",
