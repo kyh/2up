@@ -8,6 +8,7 @@ export default {
     ...baseConfig.content,
     "../../packages/ui/src/**/*.{ts,tsx}",
     "../../packages/mdx/src/**/*.{ts,tsx}",
+    "../../packages/data-table/src/**/*.{ts,tsx}",
   ],
   presets: [baseConfig],
 } satisfies Config;

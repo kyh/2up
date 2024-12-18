@@ -62,13 +62,7 @@ export const TasksTable = ({ teamId, getTasksInput }: TasksTableProps) => {
     data,
     columns,
     pageCount,
-    initialState: {
-      sorting: [{ id: "createdAt", desc: true }],
-      columnPinning: { right: ["actions"] },
-    },
     getRowId: (originalRow) => originalRow.id,
-    shallow: false,
-    clearOnDefault: true,
   });
 
   return (

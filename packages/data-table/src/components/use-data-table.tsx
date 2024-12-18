@@ -94,7 +94,7 @@ export function useDataTable<TData>({
   shallow = true,
   throttleMs = 50,
   debounceMs = 300,
-  clearOnDefault = false,
+  clearOnDefault = true,
   startTransition,
   initialState,
   ...props
