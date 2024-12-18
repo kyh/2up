@@ -68,7 +68,7 @@ type UseDataTableProps<TData> = {
   /**
    * Clear URL query key-value pair when state is set to default.
    * Keep URL meaning consistent when defaults change.
-   * @default false
+   * @default true
    */
   clearOnDefault?: boolean;
 

@@ -6,7 +6,6 @@ import {
   taskPriorities,
   taskStatuses,
 } from "@init/api/task/task-schema";
-import { AutoTable } from "@init/data-table/components/data-table";
 import { DataTableColumnHeader } from "@init/data-table/components/data-table-column-header";
 import { DataTableFilterList } from "@init/data-table/components/data-table-filter-list";
 import { DataTablePagination } from "@init/data-table/components/data-table-pagination";
@@ -37,6 +36,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
+import { AutoTable } from "@init/ui/table";
 import { toast } from "@init/ui/toast";
 import { MoreHorizontalIcon } from "lucide-react";
 
@@ -55,11 +55,11 @@ type TasksTableProps = {
 };
 
 export const TasksTable = ({ teamId, getTasksInput }: TasksTableProps) => {
-  const [{ data, pageCount }] =
+  const [{ tasks, pageCount }] =
     api.task.getTasks.useSuspenseQuery(getTasksInput);
 
   const { table } = useDataTable({
-    data,
+    data: tasks,
     columns,
     pageCount,
     getRowId: (originalRow) => originalRow.id,

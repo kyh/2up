@@ -49,53 +49,50 @@ export const taskRouter = createTRPCRouter({
   getTasks: protectedProcedure
     .input(getTasksInput)
     .query(async ({ ctx, input }) => {
-      try {
-        const offset = (input.page - 1) * input.perPage;
+      const offset = (input.page - 1) * input.perPage;
 
-        const where = filterColumns({
-          table: tasks,
-          // @ts-expect-error - TS doesn't understand that the filters are already validated
-          filters: input.filters,
-          joinOperator: input.joinOperator,
-        });
+      const where = filterColumns({
+        table: tasks,
+        // @ts-expect-error - id should be keyof Task table
+        filters: input.filters,
+        joinOperator: input.joinOperator,
+      });
 
-        const orderBy =
-          input.sort.length > 0
-            ? input.sort.map((item) =>
-                // @ts-expect-error - TS doesn't understand that the filters are already validated
-                item.desc ? desc(tasks[item.id]) : asc(tasks[item.id]),
-              )
-            : [asc(tasks.createdAt)];
+      const orderBy =
+        input.sort.length > 0
+          ? input.sort.map((item) =>
+              // @ts-expect-error - id should be keyof Task table
+              item.desc ? desc(tasks[item.id]) : asc(tasks[item.id]),
+            )
+          : [asc(tasks.createdAt)];
 
-        const { data, total } = await ctx.db.transaction(async (tx) => {
-          const data = await tx
-            .select()
-            .from(tasks)
-            .limit(input.perPage)
-            .offset(offset)
-            .where(where)
-            .orderBy(...orderBy);
+      const { data, total } = await ctx.db.transaction(async (tx) => {
+        const data = await tx
+          .select()
+          .from(tasks)
+          .limit(input.perPage)
+          .offset(offset)
+          .where(where)
+          .orderBy(...orderBy);
 
-          const total = await tx
-            .select({
-              count: count(),
-            })
-            .from(tasks)
-            .where(where)
-            .execute()
-            .then((res) => res[0]?.count ?? 0);
+        const total = await tx
+          .select({
+            count: count(),
+          })
+          .from(tasks)
+          .where(where)
+          .execute()
+          .then((res) => res[0]?.count ?? 0);
 
-          return {
-            data,
-            total,
-          };
-        });
+        return {
+          data,
+          total,
+        };
+      });
 
-        const pageCount = Math.ceil(total / input.perPage);
-        return { data, pageCount };
-      } catch (err) {
-        return { data: [], pageCount: 0 };
-      }
+      const pageCount = Math.ceil(total / input.perPage);
+
+      return { tasks: data, pageCount };
     }),
 
   updateTask: protectedProcedure
