@@ -1,7 +1,8 @@
 import type { SQL } from "drizzle-orm";
 import type { z } from "zod";
 
-import type { DataTableConfig, filterSchema } from "./parsers";
+import type { DataTableConfig } from "./config";
+import type { filterSchema } from "./parsers";
 import type { ColumnSort, Row } from "@tanstack/react-table";
 
 export type Prettify<T> = {
@@ -33,14 +34,11 @@ export type JoinOperator = DataTableConfig["joinOperators"][number]["value"];
 
 export type DataTableFilterField<TData> = {
   id: StringKeyOf<TData>;
+  type: ColumnType;
   label: string;
   placeholder?: string;
   options?: Option[];
 };
-
-export type DataTableAdvancedFilterField<TData> = {
-  type: ColumnType;
-} & DataTableFilterField<TData>;
 
 export type Filter<TData> = Prettify<
   Omit<z.infer<typeof filterSchema>, "id"> & {

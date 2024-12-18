@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 import { searchParamsCache } from "@init/api/task/task-schema";
+import { getValidFilters } from "@init/data-table/components/data-table-utils";
 
 import type { GetTasksInput } from "@init/api/task/task-schema";
-import type { SearchParams } from "@init/api/task/task-types";
+import type { SearchParams } from "@init/data-table/types";
 import { PageHeader } from "@/components/header";
 import { api, HydrateClient } from "@/trpc/server";
-import { getValidFilters } from "./_components/data-table-utils";
 import { TasksTable } from "./_components/tasks-table";
 
 type PageProps = {

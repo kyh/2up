@@ -2,7 +2,6 @@
 
 import type { UseQueryStateOptions } from "nuqs";
 import * as React from "react";
-import { getSortingStateParser } from "@init/api/task/parsers";
 import {
   getCoreRowModel,
   getPaginationRowModel,
@@ -11,7 +10,7 @@ import {
 } from "@tanstack/react-table";
 import { parseAsInteger, useQueryState } from "nuqs";
 
-import type { ExtendedSortingState } from "@init/api/task/task-types";
+import type { ExtendedSortingState } from "../types";
 import type {
   PaginationState,
   RowSelectionState,
@@ -21,6 +20,7 @@ import type {
   Updater,
   VisibilityState,
 } from "@tanstack/react-table";
+import { getSortingStateParser } from "../parsers";
 
 type UseDataTableProps<TData> = {
   /**

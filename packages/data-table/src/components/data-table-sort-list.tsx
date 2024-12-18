@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { dataTableConfig, getSortingStateParser } from "@init/api/task/parsers";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
 import {
@@ -35,19 +34,21 @@ import type {
   ExtendedColumnSort,
   ExtendedSortingState,
   StringKeyOf,
-} from "@init/api/task/task-types";
+} from "../types";
 import type { SortDirection, Table } from "@tanstack/react-table";
+import { dataTableConfig } from "../config";
+import { getSortingStateParser } from "../parsers";
 
 type DataTableSortListProps<TData> = {
   table: Table<TData>;
-  debounceMs: number;
+  debounceMs?: number;
   shallow?: boolean;
 };
 
 export const DataTableSortList = <TData,>({
   table,
-  debounceMs,
-  shallow,
+  debounceMs = 300,
+  shallow = true,
 }: DataTableSortListProps<TData>) => {
   const id = React.useId();
 
@@ -139,10 +140,10 @@ export const DataTableSortList = <TData,>({
       onValueChange={setSorting}
       overlay={
         <div className="flex items-center gap-2">
-          <div className="h-8 w-[11.25rem] rounded-sm bg-primary/10" />
-          <div className="h-8 w-24 rounded-sm bg-primary/10" />
-          <div className="size-8 shrink-0 rounded-sm bg-primary/10" />
-          <div className="size-8 shrink-0 rounded-sm bg-primary/10" />
+          <div className="bg-primary/10 h-8 w-[11.25rem] rounded-sm" />
+          <div className="bg-primary/10 h-8 w-24 rounded-sm" />
+          <div className="bg-primary/10 size-8 shrink-0 rounded-sm" />
+          <div className="bg-primary/10 size-8 shrink-0 rounded-sm" />
         </div>
       }
     >
@@ -181,7 +182,7 @@ export const DataTableSortList = <TData,>({
           ) : (
             <div className="flex flex-col gap-1">
               <h4 className="font-medium leading-none">No sorting applied</h4>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Add sorting to organize your results.
               </p>
             </div>
@@ -204,7 +205,7 @@ export const DataTableSortList = <TData,>({
                             variant="outline"
                             size="sm"
                             role="combobox"
-                            className="h-8 w-44 justify-between gap-2 rounded focus:outline-none focus:ring-1 focus:ring-ring"
+                            className="focus:ring-ring h-8 w-44 justify-between gap-2 rounded focus:outline-none focus:ring-1"
                             aria-controls={fieldListboxId}
                           >
                             <span className="truncate">{sort.id}</span>

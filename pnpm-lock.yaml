@@ -222,6 +222,9 @@ importers:
       '@init/api':
         specifier: workspace:^
         version: link:../../packages/api
+      '@init/data-table':
+        specifier: workspace:^
+        version: link:../../packages/data-table
       '@init/db':
         specifier: workspace:^
         version: link:../../packages/db
@@ -313,6 +316,9 @@ importers:
 
   packages/api:
     dependencies:
+      '@init/data-table':
+        specifier: workspace:^
+        version: link:../data-table
       '@init/db':
         specifier: workspace:^
         version: link:../db
@@ -331,6 +337,37 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 3.24.1
+    devDependencies:
+      '@kyh/eslint-config':
+        specifier: 'catalog:'
+        version: 1.1.3(@typescript-eslint/parser@8.18.1(eslint@9.17.0(jiti@1.21.7))(typescript@5.7.2))(eslint@9.17.0(jiti@1.21.7))(typescript@5.7.2)
+      '@kyh/prettier-config':
+        specifier: 'catalog:'
+        version: 1.1.3
+      '@kyh/tsconfig':
+        specifier: 'catalog:'
+        version: 1.1.3
+      eslint:
+        specifier: 'catalog:'
+        version: 9.17.0(jiti@1.21.7)
+      prettier:
+        specifier: 'catalog:'
+        version: 3.4.2
+      typescript:
+        specifier: 'catalog:'
+        version: 5.7.2
+
+  packages/data-table:
+    dependencies:
+      '@init/ui':
+        specifier: workspace:^
+        version: link:../ui
+      '@tanstack/react-table':
+        specifier: ^8.20.6
+        version: 8.20.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      nuqs:
+        specifier: 'catalog:'
+        version: 2.2.3(next@15.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
     devDependencies:
       '@kyh/eslint-config':
         specifier: 'catalog:'

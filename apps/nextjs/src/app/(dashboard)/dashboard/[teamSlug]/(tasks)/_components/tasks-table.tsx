@@ -1,17 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   taskLabels,
   taskPriorities,
   taskStatuses,
 } from "@init/api/task/task-schema";
+import { AutoTable } from "@init/data-table/components/data-table";
+import { DataTableColumnHeader } from "@init/data-table/components/data-table-column-header";
+import { DataTableFilterList } from "@init/data-table/components/data-table-filter-list";
+import { DataTablePagination } from "@init/data-table/components/data-table-pagination";
+import { DataTableSortList } from "@init/data-table/components/data-table-sort-list";
+import { DataTableViewOptionsButton } from "@init/data-table/components/data-table-view-options";
+import { useDataTable } from "@init/data-table/components/use-data-table";
 import { alertDialog } from "@init/ui/alert-dialog";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
 import { Checkbox } from "@init/ui/checkbox";
-import { DataTableColumnHeader } from "@init/ui/data-table/data-table-column-header";
-import { DataTablePagination } from "@init/ui/data-table/data-table-pagination";
 import {
   Dialog,
   DialogContent,
@@ -32,21 +37,17 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@init/ui/dropdown-menu";
-import { AutoTable } from "@init/ui/table";
 import { toast } from "@init/ui/toast";
 import { MoreHorizontalIcon } from "lucide-react";
 
 import type { Task } from "./task-utils";
 import type { GetTasksInput, TaskLabel } from "@init/api/task/task-schema";
-import type { DataTableAdvancedFilterField } from "@init/api/task/task-types";
+import type { DataTableFilterField } from "@init/data-table/types";
 import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableAdvancedToolbar } from "@/app/(dashboard)/dashboard/[teamSlug]/(tasks)/_components/data-table-advanced-toolbar";
 import { api } from "@/trpc/react";
-import { TaskForm } from "./task-form";
+import { TaskForm, TasksTableAddTaskButton } from "./task-form";
 import { formatDate, getPriorityIcon, getStatusIcon } from "./task-utils";
-import { TasksTableActionsBar } from "./tasks-table-actions-bar";
 import { TasksTableFloatingBar } from "./tasks-table-floating-bar";
-import { useDataTable } from "./use-tasks-data-table";
 
 type TasksTableProps = {
   teamId: string;
@@ -56,51 +57,6 @@ type TasksTableProps = {
 export const TasksTable = ({ teamId, getTasksInput }: TasksTableProps) => {
   const [{ data, pageCount }] =
     api.task.getTasks.useSuspenseQuery(getTasksInput);
-
-  const columns = useMemo(() => getColumns(), []);
-
-  /**
-   * Advanced filter fields for the data table.
-   * These fields provide more complex filtering options compared to the regular filterFields.
-   *
-   * Key differences from regular filterFields:
-   * 1. More field types: Includes 'text', 'multi-select', 'date', and 'boolean'.
-   * 2. Enhanced flexibility: Allows for more precise and varied filtering options.
-   * 3. Used with DataTableAdvancedToolbar: Enables a more sophisticated filtering UI.
-   * 4. Date and boolean types: Adds support for filtering by date ranges and boolean values.
-   */
-  const advancedFilterFields: DataTableAdvancedFilterField<Task>[] = [
-    {
-      id: "title",
-      label: "Title",
-      type: "text",
-    },
-    {
-      id: "status",
-      label: "Status",
-      type: "multi-select",
-      options: taskStatuses.map((status) => ({
-        label: status,
-        value: status,
-        icon: getStatusIcon(status),
-      })),
-    },
-    {
-      id: "priority",
-      label: "Priority",
-      type: "multi-select",
-      options: taskPriorities.map((priority) => ({
-        label: priority,
-        value: priority,
-        icon: getPriorityIcon(priority),
-      })),
-    },
-    {
-      id: "createdAt",
-      label: "Created at",
-      type: "date",
-    },
-  ];
 
   const { table } = useDataTable({
     data,
@@ -117,13 +73,16 @@ export const TasksTable = ({ teamId, getTasksInput }: TasksTableProps) => {
 
   return (
     <div className="space-y-2">
-      <DataTableAdvancedToolbar
-        table={table}
-        filterFields={advancedFilterFields}
-        shallow={false}
-      >
-        <TasksTableActionsBar teamId={teamId} table={table} />
-      </DataTableAdvancedToolbar>
+      <div className="flex w-full items-center justify-between gap-2 overflow-auto p-1">
+        <div className="flex items-center gap-2">
+          <DataTableFilterList table={table} filterFields={filters} />
+          <DataTableSortList table={table} />
+        </div>
+        <div className="flex items-center gap-2">
+          <DataTableViewOptionsButton table={table} />
+          <TasksTableAddTaskButton teamId={teamId} table={table} />
+        </div>
+      </div>
       <AutoTable table={table} />
       <DataTablePagination table={table} />
       <TasksTableFloatingBar table={table} />
@@ -131,7 +90,40 @@ export const TasksTable = ({ teamId, getTasksInput }: TasksTableProps) => {
   );
 };
 
-export const getColumns = (): ColumnDef<Task>[] => [
+const filters: DataTableFilterField<Task>[] = [
+  {
+    id: "title",
+    label: "Title",
+    type: "text",
+  },
+  {
+    id: "status",
+    label: "Status",
+    type: "multi-select",
+    options: taskStatuses.map((status) => ({
+      label: status,
+      value: status,
+      icon: getStatusIcon(status),
+    })),
+  },
+  {
+    id: "priority",
+    label: "Priority",
+    type: "multi-select",
+    options: taskPriorities.map((priority) => ({
+      label: priority,
+      value: priority,
+      icon: getPriorityIcon(priority),
+    })),
+  },
+  {
+    id: "createdAt",
+    label: "Created at",
+    type: "date",
+  },
+];
+
+const columns: ColumnDef<Task>[] = [
   {
     id: "select",
     header: ({ table }) => (

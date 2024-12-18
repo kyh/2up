@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { dataTableConfig, getFiltersStateParser } from "@init/api/task/parsers";
 import { Badge } from "@init/ui/badge";
 import { Button } from "@init/ui/button";
 import { Calendar } from "@init/ui/calendar";
@@ -46,13 +45,15 @@ import { customAlphabet } from "nanoid";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 
 import type {
-  DataTableAdvancedFilterField,
+  DataTableFilterField,
   Filter,
   FilterOperator,
   JoinOperator,
   StringKeyOf,
-} from "@init/api/task/task-types";
+} from "../types";
 import type { Table } from "@tanstack/react-table";
+import { dataTableConfig } from "../config";
+import { getFiltersStateParser } from "../parsers";
 import {
   getDefaultFilterOperator,
   getFilterOperators,
@@ -60,16 +61,16 @@ import {
 
 type DataTableFilterListProps<TData> = {
   table: Table<TData>;
-  filterFields: DataTableAdvancedFilterField<TData>[];
-  debounceMs: number;
+  filterFields: DataTableFilterField<TData>[];
+  debounceMs?: number;
   shallow?: boolean;
 };
 
 export const DataTableFilterList = <TData,>({
   table,
   filterFields,
-  debounceMs,
-  shallow,
+  debounceMs = 300,
+  shallow = true,
 }: DataTableFilterListProps<TData>) => {
   const id = React.useId();
   const [filters, setFilters] = useQueryState(
@@ -204,7 +205,7 @@ export const DataTableFilterList = <TData,>({
                 size="sm"
                 aria-label={`${filterField.label} filter value`}
                 aria-controls={`${inputId}-listbox`}
-                className="h-8 w-full justify-start gap-2 rounded px-1.5 text-left text-muted-foreground hover:text-muted-foreground"
+                className="text-muted-foreground hover:text-muted-foreground h-8 w-full justify-start gap-2 rounded px-1.5 text-left"
               >
                 {filter.value && typeof filter.value === "string" ? (
                   <Badge
@@ -248,7 +249,7 @@ export const DataTableFilterList = <TData,>({
                     >
                       {option.icon && (
                         <option.icon
-                          className="mr-2 size-4 text-muted-foreground"
+                          className="text-muted-foreground mr-2 size-4"
                           aria-hidden="true"
                         />
                       )}
@@ -279,7 +280,7 @@ export const DataTableFilterList = <TData,>({
                 size="sm"
                 aria-label={`${filterField.label} filter values`}
                 aria-controls={`${inputId}-listbox`}
-                className="h-8 w-full justify-start gap-2 rounded px-1.5 text-left text-muted-foreground hover:text-muted-foreground"
+                className="text-muted-foreground hover:text-muted-foreground h-8 w-full justify-start gap-2 rounded px-1.5 text-left"
               >
                 <>
                   {selectedValues.size === 0 && (
@@ -354,7 +355,7 @@ export const DataTableFilterList = <TData,>({
                     >
                       {option.icon && (
                         <option.icon
-                          className="mr-2 size-4 text-muted-foreground"
+                          className="text-muted-foreground mr-2 size-4"
                           aria-hidden="true"
                         />
                       )}
@@ -503,12 +504,12 @@ export const DataTableFilterList = <TData,>({
       }
       overlay={
         <div className="flex items-center gap-2">
-          <div className="h-8 min-w-[4.5rem] rounded-sm bg-primary/10" />
-          <div className="h-8 w-32 rounded-sm bg-primary/10" />
-          <div className="h-8 w-32 rounded-sm bg-primary/10" />
-          <div className="h-8 min-w-36 flex-1 rounded-sm bg-primary/10" />
-          <div className="size-8 shrink-0 rounded-sm bg-primary/10" />
-          <div className="size-8 shrink-0 rounded-sm bg-primary/10" />
+          <div className="bg-primary/10 h-8 min-w-[4.5rem] rounded-sm" />
+          <div className="bg-primary/10 h-8 w-32 rounded-sm" />
+          <div className="bg-primary/10 h-8 w-32 rounded-sm" />
+          <div className="bg-primary/10 h-8 min-w-36 flex-1 rounded-sm" />
+          <div className="bg-primary/10 size-8 shrink-0 rounded-sm" />
+          <div className="bg-primary/10 size-8 shrink-0 rounded-sm" />
         </div>
       }
     >
@@ -547,7 +548,7 @@ export const DataTableFilterList = <TData,>({
           ) : (
             <div className="flex flex-col gap-1">
               <h4 className="font-medium leading-none">No filters applied</h4>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Add filters to refine your results.
               </p>
             </div>
@@ -566,7 +567,7 @@ export const DataTableFilterList = <TData,>({
                   <div className="flex items-center gap-2">
                     <div className="min-w-[4.5rem] text-center">
                       {index === 0 ? (
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-muted-foreground text-sm">
                           Where
                         </span>
                       ) : index === 1 ? (
@@ -596,7 +597,7 @@ export const DataTableFilterList = <TData,>({
                           </SelectContent>
                         </Select>
                       ) : (
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-muted-foreground text-sm">
                           {joinOperator}
                         </span>
                       )}
@@ -610,7 +611,7 @@ export const DataTableFilterList = <TData,>({
                           role="combobox"
                           aria-label="Select filter field"
                           aria-controls={fieldListboxId}
-                          className="h-8 w-32 justify-between gap-2 rounded focus:outline-none focus:ring-1 focus:ring-ring focus-visible:ring-0"
+                          className="focus:ring-ring h-8 w-32 justify-between gap-2 rounded focus:outline-none focus:ring-1 focus-visible:ring-0"
                         >
                           <span className="truncate">
                             {filterFields.find(

@@ -16,6 +16,7 @@
   "dependencies": {
     "@edge-csrf/nextjs": "2.5.3-cloudflare-rc1",
     "@init/api": "workspace:^",
+    "@init/data-table": "workspace:^",
     "@init/db": "workspace:^",
     "@init/mdx": "workspace:^",
     "@init/ui": "workspace:^",

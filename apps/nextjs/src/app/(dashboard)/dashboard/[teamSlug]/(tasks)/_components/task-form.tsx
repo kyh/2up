@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   createTaskInput,
   taskLabels,
@@ -7,6 +8,14 @@ import {
   taskStatuses,
 } from "@init/api/task/task-schema";
 import { Button } from "@init/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@init/ui/dialog";
 import {
   Form,
   FormControl,
@@ -26,9 +35,11 @@ import {
 } from "@init/ui/select";
 import { Textarea } from "@init/ui/textarea";
 import { toast } from "@init/ui/toast";
+import { PlusIcon } from "lucide-react";
 
 import type { Task } from "./task-utils";
 import type { CreateTaskInput } from "@init/api/task/task-schema";
+import type { Table } from "@tanstack/table-core";
 import { api } from "@/trpc/react";
 
 type TaskFormProps = {
@@ -199,5 +210,39 @@ export const TaskForm = ({ teamId, task, onSuccess }: TaskFormProps) => {
         </footer>
       </form>
     </Form>
+  );
+};
+
+type TasksTableActionsBarProps = {
+  teamId: string;
+  table: Table<Task>;
+};
+
+export const TasksTableAddTaskButton = ({
+  teamId,
+}: TasksTableActionsBarProps) => {
+  const [showCreateTaskDialog, setShowCreateTaskDialog] = useState(false);
+
+  return (
+    <Dialog open={showCreateTaskDialog} onOpenChange={setShowCreateTaskDialog}>
+      <DialogTrigger asChild>
+        <Button size="sm">
+          <PlusIcon className="mr-1 size-4" />
+          Create Task
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create Task</DialogTitle>
+          <DialogDescription>
+            Fill in the details below to create a new task.
+          </DialogDescription>
+        </DialogHeader>
+        <TaskForm
+          teamId={teamId}
+          onSuccess={() => setShowCreateTaskDialog(false)}
+        />
+      </DialogContent>
+    </Dialog>
   );
 };

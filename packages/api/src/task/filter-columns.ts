@@ -16,7 +16,7 @@ import {
   or,
 } from "drizzle-orm";
 
-import type { Filter, JoinOperator } from "./task-types";
+import type { Filter, JoinOperator } from "@init/data-table/types";
 
 /**
  * Construct SQL conditions based on the provided filters for a specific table.
@@ -177,9 +177,6 @@ export function filterColumns<T extends Table>({
  * @param columnKey The key of the column to retrieve from the table.
  * @returns The column corresponding to the provided key.
  */
-export function getColumn<T extends Table>(
-  table: T,
-  columnKey: keyof T,
-): AnyColumn {
+function getColumn<T extends Table>(table: T, columnKey: keyof T): AnyColumn {
   return table[columnKey] as AnyColumn;
 }

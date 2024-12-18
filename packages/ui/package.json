@@ -35,7 +35,6 @@
     "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-tabs": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.6",
-    "@tanstack/react-table": "^8.20.6",
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.0.4",
     "date-fns": "^4.1.0",

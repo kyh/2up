@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
+    "@init/data-table": "workspace:^",
     "@init/db": "workspace:^",
     "@trpc/server": "catalog:",
     "nuqs": "catalog:",
