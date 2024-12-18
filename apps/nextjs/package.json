@@ -26,10 +26,11 @@
     "@trpc/react-query": "catalog:",
     "@trpc/server": "catalog:",
     "next": "catalog:",
+    "nuqs": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-hotkeys-hook": "^4.6.1",
-    "superjson": "^2.2.2",
+    "superjson": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

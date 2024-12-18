@@ -1,8 +1,8 @@
-import { and, asc, desc, eq, sql } from "@init/db";
+import { asc, count, desc, eq } from "@init/db";
 import { tasks } from "@init/db/schema";
 
-import type { SQL } from "@init/db";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { filterColumns } from "./filter-columns";
 import {
   createTaskInput,
   createTasksInput,
@@ -49,49 +49,53 @@ export const taskRouter = createTRPCRouter({
   getTasks: protectedProcedure
     .input(getTasksInput)
     .query(async ({ ctx, input }) => {
-      // Convert page and perPage to numbers
-      const pageNum = parseInt(input.page);
-      const perPageNum = parseInt(input.perPage);
-      const offset = (pageNum - 1) * perPageNum;
+      try {
+        const offset = (input.page - 1) * input.perPage;
 
-      // Build where conditions
-      const whereConditions: SQL[] = [];
-      input.filter?.forEach((filter) => {
-        whereConditions.push(eq(tasks[filter.field], filter.value));
-      });
+        const where = filterColumns({
+          table: tasks,
+          // @ts-expect-error - TS doesn't understand that the filters are already validated
+          filters: input.filters,
+          joinOperator: input.joinOperator,
+        });
 
-      // Build order by configuration
-      const orderBy = input.sort.map((sortItem) => {
-        const column = tasks[sortItem.field];
-        return sortItem.direction === "asc" ? asc(column) : desc(column);
-      });
+        const orderBy =
+          input.sort.length > 0
+            ? input.sort.map((item) =>
+                // @ts-expect-error - TS doesn't understand that the filters are already validated
+                item.desc ? desc(tasks[item.id]) : asc(tasks[item.id]),
+              )
+            : [asc(tasks.createdAt)];
 
-      // Execute query
-      const results = await ctx.db.query.tasks.findMany({
-        where: whereConditions.length > 0 ? and(...whereConditions) : undefined,
-        orderBy: orderBy,
-        limit: perPageNum,
-        offset: offset,
-      });
+        const { data, total } = await ctx.db.transaction(async (tx) => {
+          const data = await tx
+            .select()
+            .from(tasks)
+            .limit(input.perPage)
+            .offset(offset)
+            .where(where)
+            .orderBy(...orderBy);
 
-      // Get total count
-      const [total] = await ctx.db
-        .select({ count: sql<number>`count(*)` })
-        .from(tasks)
-        .where(
-          whereConditions.length > 0 ? and(...whereConditions) : undefined,
-        );
-      const count = total?.count ?? 0;
+          const total = await tx
+            .select({
+              count: count(),
+            })
+            .from(tasks)
+            .where(where)
+            .execute()
+            .then((res) => res[0]?.count ?? 0);
 
-      return {
-        data: results,
-        pagination: {
-          total: count,
-          page: pageNum,
-          perPage: perPageNum,
-          totalPages: Math.ceil(count / perPageNum),
-        },
-      };
+          return {
+            data,
+            total,
+          };
+        });
+
+        const pageCount = Math.ceil(total / input.perPage);
+        return { data, pageCount };
+      } catch (err) {
+        return { data: [], pageCount: 0 };
+      }
     }),
 
   updateTask: protectedProcedure

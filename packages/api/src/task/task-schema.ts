@@ -1,4 +1,21 @@
+import {
+  createSearchParamsCache,
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+} from "nuqs/server";
 import { z } from "zod";
+
+import type { tasks } from "@init/db/schema";
+import {
+  filterSchema,
+  getFiltersStateParser,
+  getSortingStateParser,
+  sortSchema,
+} from "./parsers";
+
+type Task = typeof tasks.$inferSelect;
 
 export const taskLabels = [
   "bug",
@@ -44,25 +61,32 @@ export const getTaskInput = z
   .required();
 export type GetTaskInput = z.infer<typeof getTaskInput>;
 
+export const searchParamsCache = createSearchParamsCache({
+  title: parseAsString.withDefault(""),
+  status: parseAsArrayOf(z.enum(taskStatuses)).withDefault([]),
+  priority: parseAsArrayOf(z.enum(taskPriorities)).withDefault([]),
+  from: parseAsString.withDefault(""),
+  to: parseAsString.withDefault(""),
+  joinOperator: parseAsStringEnum(["and", "or"]).withDefault("and"),
+  page: parseAsInteger.withDefault(1),
+  perPage: parseAsInteger.withDefault(10),
+  filters: getFiltersStateParser<Task>().withDefault([]),
+  sort: getSortingStateParser<Task>().withDefault([
+    { id: "createdAt", desc: true },
+  ]),
+});
+
 export const getTasksInput = z.object({
-  page: z.string().default("1"),
-  perPage: z.string().default("10"),
-  sort: z
-    .array(
-      z.object({
-        field: createTaskInput.extend({ id: z.string() }).keyof(),
-        direction: z.enum(["asc", "desc"]).default("asc"),
-      }),
-    )
-    .default([{ field: "id", direction: "asc" }]),
-  filter: z
-    .array(
-      z.object({
-        field: createTaskInput.extend({ id: z.string() }).keyof(),
-        value: z.string(),
-      }),
-    )
-    .optional(),
+  title: z.string(),
+  status: z.array(z.enum(taskStatuses)),
+  priority: z.array(z.enum(taskPriorities)),
+  from: z.string(),
+  to: z.string(),
+  joinOperator: z.enum(["and", "or"]),
+  page: z.number(),
+  perPage: z.number(),
+  filters: z.array(filterSchema),
+  sort: z.array(sortSchema),
 });
 export type GetTasksInput = z.infer<typeof getTasksInput>;
 

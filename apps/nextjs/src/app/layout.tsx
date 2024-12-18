@@ -5,6 +5,7 @@ import { ThemeProvider } from "@init/ui/theme";
 import { GlobalToaster } from "@init/ui/toast";
 import { TooltipProvider } from "@init/ui/tooltip";
 import { cn } from "@init/ui/utils";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { siteConfig } from "@/lib/site-config";
 import { TRPCReactProvider } from "@/trpc/react";
@@ -95,13 +96,15 @@ const RootLayout = (props: LayoutProps) => {
           fontSans.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TooltipProvider>
-            <TRPCReactProvider>{props.children}</TRPCReactProvider>
-            <GlobalToaster />
-            <GlobalAlertDialog />
-          </TooltipProvider>
-        </ThemeProvider>
+        <NuqsAdapter>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <TooltipProvider>
+              <TRPCReactProvider>{props.children}</TRPCReactProvider>
+              <GlobalToaster />
+              <GlobalAlertDialog />
+            </TooltipProvider>
+          </ThemeProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );

@@ -1,15 +1,18 @@
 import { redirect } from "next/navigation";
+import { searchParamsCache } from "@init/api/task/task-schema";
 
 import type { GetTasksInput } from "@init/api/task/task-schema";
+import type { SearchParams } from "@init/api/task/task-types";
 import { PageHeader } from "@/components/header";
 import { api, HydrateClient } from "@/trpc/server";
+import { getValidFilters } from "./_components/data-table-utils";
 import { TasksTable } from "./_components/tasks-table";
 
 type PageProps = {
   params: Promise<{
     teamSlug: string;
   }>;
-  searchParams: Promise<GetTasksInput>;
+  searchParams: Promise<SearchParams>;
 };
 
 const Page = async (props: PageProps) => {
@@ -24,10 +27,11 @@ const Page = async (props: PageProps) => {
     redirect("/404");
   }
 
-  const filters = searchParams.filter ?? [];
+  const search = searchParamsCache.parse(searchParams);
+  const validFilters = getValidFilters(search.filters);
   const getTasksInput: GetTasksInput = {
-    ...searchParams,
-    filter: [...filters, { field: "teamId", value: team.id }],
+    ...search,
+    filters: validFilters,
   };
   void api.task.getTasks.prefetch(getTasksInput);
 

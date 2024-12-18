@@ -61,7 +61,7 @@ const buttonVariants = cva(
   },
 );
 
-type ButtonProps = {
+export type ButtonProps = {
   asChild?: boolean;
   loading?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement> &

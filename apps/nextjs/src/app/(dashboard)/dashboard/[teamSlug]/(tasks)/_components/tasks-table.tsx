@@ -12,7 +12,6 @@ import { Button } from "@init/ui/button";
 import { Checkbox } from "@init/ui/checkbox";
 import { DataTableColumnHeader } from "@init/ui/data-table/data-table-column-header";
 import { DataTablePagination } from "@init/ui/data-table/data-table-pagination";
-import { useDataTable } from "@init/ui/data-table/use-data-table";
 import {
   Dialog,
   DialogContent,
@@ -39,18 +38,15 @@ import { MoreHorizontalIcon } from "lucide-react";
 
 import type { Task } from "./task-utils";
 import type { GetTasksInput, TaskLabel } from "@init/api/task/task-schema";
-import type {
-  ColumnDef,
-  ColumnOrderState,
-  ColumnSizingState,
-  RowSelectionState,
-  SortingState,
-  VisibilityState,
-} from "@tanstack/react-table";
+import type { DataTableAdvancedFilterField } from "@init/api/task/task-types";
+import type { ColumnDef } from "@tanstack/react-table";
+import { DataTableAdvancedToolbar } from "@/app/(dashboard)/dashboard/[teamSlug]/(tasks)/_components/data-table-advanced-toolbar";
 import { api } from "@/trpc/react";
 import { TaskForm } from "./task-form";
 import { formatDate, getPriorityIcon, getStatusIcon } from "./task-utils";
 import { TasksTableActionsBar } from "./tasks-table-actions-bar";
+import { TasksTableFloatingBar } from "./tasks-table-floating-bar";
+import { useDataTable } from "./use-tasks-data-table";
 
 type TasksTableProps = {
   teamId: string;
@@ -58,35 +54,79 @@ type TasksTableProps = {
 };
 
 export const TasksTable = ({ teamId, getTasksInput }: TasksTableProps) => {
-  const [{ data }] = api.task.getTasks.useSuspenseQuery(getTasksInput);
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([]);
-  const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [{ data, pageCount }] =
+    api.task.getTasks.useSuspenseQuery(getTasksInput);
 
   const columns = useMemo(() => getColumns(), []);
+
+  /**
+   * Advanced filter fields for the data table.
+   * These fields provide more complex filtering options compared to the regular filterFields.
+   *
+   * Key differences from regular filterFields:
+   * 1. More field types: Includes 'text', 'multi-select', 'date', and 'boolean'.
+   * 2. Enhanced flexibility: Allows for more precise and varied filtering options.
+   * 3. Used with DataTableAdvancedToolbar: Enables a more sophisticated filtering UI.
+   * 4. Date and boolean types: Adds support for filtering by date ranges and boolean values.
+   */
+  const advancedFilterFields: DataTableAdvancedFilterField<Task>[] = [
+    {
+      id: "title",
+      label: "Title",
+      type: "text",
+    },
+    {
+      id: "status",
+      label: "Status",
+      type: "multi-select",
+      options: taskStatuses.map((status) => ({
+        label: status,
+        value: status,
+        icon: getStatusIcon(status),
+      })),
+    },
+    {
+      id: "priority",
+      label: "Priority",
+      type: "multi-select",
+      options: taskPriorities.map((priority) => ({
+        label: priority,
+        value: priority,
+        icon: getPriorityIcon(priority),
+      })),
+    },
+    {
+      id: "createdAt",
+      label: "Created at",
+      type: "date",
+    },
+  ];
 
   const { table } = useDataTable({
     data,
     columns,
-    sorting,
-    setSorting,
-    columnVisibility,
-    setColumnVisibility,
-    columnOrder,
-    setColumnOrder,
-    columnSizing,
-    setColumnSizing,
-    rowSelection,
-    setRowSelection,
+    pageCount,
+    initialState: {
+      sorting: [{ id: "createdAt", desc: true }],
+      columnPinning: { right: ["actions"] },
+    },
+    getRowId: (originalRow) => originalRow.id,
+    shallow: false,
+    clearOnDefault: true,
   });
 
   return (
     <div className="space-y-2">
-      <TasksTableActionsBar teamId={teamId} table={table} />
+      <DataTableAdvancedToolbar
+        table={table}
+        filterFields={advancedFilterFields}
+        shallow={false}
+      >
+        <TasksTableActionsBar teamId={teamId} table={table} />
+      </DataTableAdvancedToolbar>
       <AutoTable table={table} />
       <DataTablePagination table={table} />
+      <TasksTableFloatingBar table={table} />
     </div>
   );
 };

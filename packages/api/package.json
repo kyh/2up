@@ -18,8 +18,9 @@
   "dependencies": {
     "@init/db": "workspace:^",
     "@trpc/server": "catalog:",
+    "nuqs": "catalog:",
     "stripe": "^17.4.0",
-    "superjson": "^2.2.2",
+    "superjson": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
