@@ -28,6 +28,9 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   const params = useParams<{ nextPath?: string }>();
 
   const signInWithOAuth = api.auth.signInWithOAuth.useMutation({
+    onSuccess: ({ url }) => {
+      router.replace(url);
+    },
     onError: (error) => toast.error(error.message),
   });
   const signInWithPassword = api.auth.signInWithPassword.useMutation({
@@ -50,8 +53,8 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   const form = useForm({
     schema: signInWithPasswordInput,
     defaultValues: {
-      email: "",
-      password: "",
+      email: "im.kaiyu@gmail.com",
+      password: "testing123",
     },
   });
 
