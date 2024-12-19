@@ -47,7 +47,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { api } from "@/trpc/react";
 import { TaskForm, TasksTableAddTaskButton } from "./task-form";
 import { formatDate, getPriorityIcon, getStatusIcon } from "./task-utils";
-import { TasksTableFloatingBar } from "./tasks-table-floating-bar";
+import { TasksTableActionBar } from "./tasks-table-action-bar";
 
 type TasksTableProps = {
   teamId: string;
@@ -79,7 +79,7 @@ export const TasksTable = ({ teamId, getTasksInput }: TasksTableProps) => {
       </div>
       <AutoTable table={table} />
       <DataTablePagination table={table} />
-      <TasksTableFloatingBar table={table} />
+      <TasksTableActionBar table={table} />
     </div>
   );
 };
