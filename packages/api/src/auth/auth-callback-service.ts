@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { EmailOtpType, SupabaseClient } from "@supabase/supabase-js";
 
 /**

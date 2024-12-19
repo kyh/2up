@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";

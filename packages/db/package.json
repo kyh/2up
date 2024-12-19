@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "supabase": "pnpm with-env supabase",
     "drizzle-kit": "pnpm with-env drizzle-kit",
+    "seed": "pnpm with-env tsx src/seed/initial.ts",
     "start": "supabase status || supabase start",
     "stop": "supabase stop",
     "reset": "supabase db reset",
@@ -39,6 +40,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.3.0",
     "@kyh/eslint-config": "catalog:",
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",
