@@ -48,7 +48,7 @@ type DataTableSortListProps<TData> = {
 export const DataTableSortList = <TData,>({
   table,
   debounceMs = 300,
-  shallow = true,
+  shallow = false,
 }: DataTableSortListProps<TData>) => {
   const id = React.useId();
 

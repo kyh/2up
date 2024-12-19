@@ -70,7 +70,7 @@ export const DataTableFilterList = <TData,>({
   table,
   filterFields,
   debounceMs = 300,
-  shallow = true,
+  shallow = false,
 }: DataTableFilterListProps<TData>) => {
   const id = React.useId();
   const [filters, setFilters] = useQueryState(

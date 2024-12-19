@@ -68,7 +68,7 @@ type UseDataTableProps<TData> = {
   /**
    * Clear URL query key-value pair when state is set to default.
    * Keep URL meaning consistent when defaults change.
-   * @default true
+   * @default false
    */
   clearOnDefault?: boolean;
 
@@ -91,7 +91,7 @@ export function useDataTable<TData>({
   pageCount = -1,
   history = "replace",
   scroll = false,
-  shallow = true,
+  shallow = false,
   throttleMs = 50,
   debounceMs = 300,
   clearOnDefault = true,
