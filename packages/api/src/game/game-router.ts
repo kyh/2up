@@ -6,7 +6,7 @@ import { checkInput, createInput } from "./game-schema";
 
 export const gameRouter = createTRPCRouter({
   check: publicProcedure.input(checkInput).mutation(async ({ ctx, input }) => {
-    const response = await ctx.adminSupabase
+    const response = await ctx.supabase
       .from("Games")
       .select()
       .eq("code", input.gameCode)
@@ -23,7 +23,7 @@ export const gameRouter = createTRPCRouter({
   create: publicProcedure
     .input(createInput)
     .mutation(async ({ ctx, input }) => {
-      const packsResponse = await ctx.adminSupabase
+      const packsResponse = await ctx.supabase
         .from("Packs")
         .select(
           `
@@ -54,7 +54,7 @@ export const gameRouter = createTRPCRouter({
         throw packsResponse.error;
       }
 
-      const gamesResponse = await ctx.adminSupabase
+      const gamesResponse = await ctx.supabase
         .from("Games")
         .insert({
           code: generateGameCode(),

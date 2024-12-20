@@ -1,8 +1,3 @@
-import createMDX from "@next/mdx";
-import rehypePrettyCode from "rehype-pretty-code";
-import rehypeSlug from "rehype-slug";
-import remarkGfm from "remark-gfm";
-
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
@@ -33,11 +28,7 @@ const getRemotePatterns = () => {
       ];
 };
 
-const transpilePackages = [
-  "@init/api",
-  "@init/db",
-  "@init/ui",
-];
+const transpilePackages = ["@init/api", "@init/db", "@init/ui"];
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -51,24 +42,4 @@ const config = {
   typescript: { ignoreBuildErrors: true },
 };
 
-const withMDX = createMDX({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [
-      rehypeSlug,
-      [
-        rehypePrettyCode,
-        {
-          theme: {
-            dark: "github-dark",
-            light: "github-light",
-          },
-          defaultLang: "tsx",
-        },
-      ],
-    ],
-  },
-});
-
-export default withMDX(config);
+export default config;

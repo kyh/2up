@@ -18,6 +18,7 @@
   "dependencies": {
     "@init/db": "workspace:^",
     "@trpc/server": "catalog:",
+    "lodash": "^4.17.21",
     "nuqs": "catalog:",
     "stripe": "^17.4.0",
     "superjson": "catalog:",
@@ -27,6 +28,7 @@
     "@kyh/eslint-config": "catalog:",
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",
+    "@types/lodash": "^4.17.13",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
