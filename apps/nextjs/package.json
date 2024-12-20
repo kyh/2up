@@ -13,12 +13,12 @@
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
+  "prettier": "@kyh/prettier-config",
   "dependencies": {
     "@edge-csrf/nextjs": "2.5.3-cloudflare-rc1",
     "@init/api": "workspace:^",
-    "@init/data-table": "workspace:^",
     "@init/db": "workspace:^",
-    "@init/mdx": "workspace:^",
+    "@init/game": "workspace:^",
     "@init/ui": "workspace:^",
     "@stripe/react-stripe-js": "^3.1.1",
     "@stripe/stripe-js": "^5.3.0",
@@ -26,10 +26,10 @@
     "@trpc/client": "catalog:",
     "@trpc/react-query": "catalog:",
     "@trpc/server": "catalog:",
-    "partysocket": "1.0.1",
-    "next": "^14.2.6",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "next": "catalog:",
+    "partysocket": "1.0.3",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "react-hotkeys-hook": "^4.5.0",
     "superjson": "^2.2.1",
     "zod": "^3.23.8"
@@ -48,6 +48,5 @@
     "prettier": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
-  },
-  "prettier": "@kyh/prettier-config"
+  }
 }

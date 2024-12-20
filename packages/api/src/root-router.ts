@@ -1,8 +1,8 @@
 import { authRouter } from "./auth/auth-router";
 import { billingRouter } from "./billing/billing-router";
-// import { notificationsRouter } from "./notifications/notifications-router";
-import { taskRouter } from "./task/task-router";
-import { teamRouter } from "./team/team-router";
+import { gameRouter } from "./game/game-router";
+import { packRouter } from "./pack/pack-router";
+import { sceneRouter } from "./scene/scene-router";
 import { createTRPCRouter } from "./trpc";
 import { userRouter } from "./user/user-router";
 import { waitlistRouter } from "./waitlist/waitlist-router";
@@ -10,9 +10,9 @@ import { waitlistRouter } from "./waitlist/waitlist-router";
 export const appRouter = createTRPCRouter({
   auth: authRouter,
   billing: billingRouter,
-  // notifications: notificationsRouter,
-  task: taskRouter,
-  team: teamRouter,
+  game: gameRouter,
+  pack: packRouter,
+  scene: sceneRouter,
   user: userRouter,
   waitlist: waitlistRouter,
 });

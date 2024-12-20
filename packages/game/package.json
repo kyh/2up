@@ -2,34 +2,34 @@
   "name": "@init/game",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "license": "MIT",
+  "type": "module",
   "exports": {
     ".": "./src/index.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint .",
     "format": "prettier --check \"**/*.{mjs,ts,md,json}\"",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@init/db": "workspace:*",
-    "@init/api": "workspace:*"
-  },
-  "devDependencies": {
-    "@kyh/eslint-config": "latest",
-    "@kyh/prettier-config": "latest",
-    "@kyh/tsconfig": "latest",
-    "eslint": "^8.56.0",
-    "prettier": "^3.1.1",
-    "typescript": "^5.3.3"
-  },
+  "prettier": "@kyh/prettier-config",
   "eslintConfig": {
-    "root": true,
     "extends": [
       "@kyh/eslint-config/base"
-    ]
+    ],
+    "root": true
   },
-  "prettier": "@kyh/prettier-config"
+  "dependencies": {
+    "@init/api": "workspace:^",
+    "@init/db": "workspace:^"
+  },
+  "devDependencies": {
+    "@kyh/eslint-config": "catalog:",
+    "@kyh/prettier-config": "catalog:",
+    "@kyh/tsconfig": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
+  }
 }

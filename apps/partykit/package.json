@@ -12,25 +12,19 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@init/api": "workspace:*",
-    "@init/db": "workspace:*",
-    "@init/game": "workspace:*"
+    "@init/api": "workspace:^",
+    "@init/db": "workspace:^",
+    "@init/game": "workspace:^"
   },
   "devDependencies": {
-    "@init/tailwind-config": "workspace:*",
-    "@kyh/eslint-config": "latest",
-    "@kyh/prettier-config": "latest",
-    "@kyh/tsconfig": "latest",
-    "eslint": "^8.56.0",
-    "partykit": "^0.0.66",
-    "prettier": "^3.1.1",
-    "typescript": "^5.3.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@kyh/eslint-config/base"
-    ]
+    "@init/tailwind-config": "workspace:^",
+    "@kyh/eslint-config": "catalog:",
+    "@kyh/prettier-config": "catalog:",
+    "@kyh/tsconfig": "catalog:",
+    "eslint": "catalog:",
+    "partykit": "^0.0.111",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
   },
   "prettier": "@kyh/prettier-config"
 }
