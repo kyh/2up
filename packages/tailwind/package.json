@@ -1,9 +1,10 @@
 {
-  "name": "@2up/tailwind-config",
+  "name": "@init/tailwind-config",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "exports": {
+    ".": "./src/index.ts",
     "./*": "./src/*.ts"
   },
   "scripts": {
@@ -16,9 +17,9 @@
     "@kyh/eslint-config": "catalog:",
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",
-    "@tailwindcss/typography": "^0.5.14",
+    "@tailwindcss/typography": "^0.5.15",
     "eslint": "catalog:",
-    "postcss": "^8.4.41",
+    "postcss": "^8.4.49",
     "prettier": "catalog:",
     "tailwindcss": "catalog:",
     "tailwindcss-animate": "^1.0.7",

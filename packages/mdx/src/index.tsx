@@ -1,42 +1,89 @@
+import type { MDXComponents } from "mdx/types";
+import React from "react";
+import Image from "next/image";
 import Link from "next/link";
-import clsx from "clsx";
+import { cn } from "@init/ui/utils";
 
-import { Feedback } from "./components/feedback";
+import { Preview } from "./components/preview";
 
-export { Code as code, Pre as pre } from "./components/code";
-export { Properties, Property } from "./components/properties";
-export { Note } from "./components/note";
+const customComponents: MDXComponents = {
+  Preview: ({ children, codeblock }) => (
+    <Preview codeblock={codeblock ? codeblock : undefined}>{children}</Preview>
+  ),
+  Image: ({ caption, alt, ...props }) => (
+    <Image
+      unoptimized
+      alt={alt}
+      width={1000}
+      height={1000}
+      sizes="100vw"
+      style={{
+        objectFit: "contain",
+        width: "100%",
+        height: "auto",
+        objectPosition: "center",
+        transition: "all 0.5s ease",
+      }}
+      {...props}
+    />
+  ),
+  h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
+    return <h1 className={cn("text-3xl font-medium", className)} {...props} />;
+  },
+  h2: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
+    return <h2 className={cn("text-2xl font-medium", className)} {...props} />;
+  },
+  a: ({ children, href }) => {
+    return (
+      <Link
+        href={href ?? ""}
+        className="text-muted inline-flex items-center gap-1"
+      >
+        {children}
+      </Link>
+    );
+  },
+  blockquote: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
+    <blockquote
+      className={cn("border-gray-4 text-muted mt-6 border-l-2 pl-6", className)}
+      {...props}
+    />
+  ),
+  table: ({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) => (
+    <table className={cn("w-full overflow-hidden", className)} {...props} />
+  ),
+  th: ({ className, ...props }: React.HTMLAttributes<HTMLTableCellElement>) => (
+    <th
+      className={cn(
+        "border-border border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right",
+        className,
+      )}
+      {...props}
+    />
+  ),
+  td: ({ className, ...props }: React.HTMLAttributes<HTMLTableCellElement>) => (
+    <td
+      className={cn(
+        "border-border border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right",
+        className,
+      )}
+      {...props}
+    />
+  ),
+  ol: ({ className, ...props }: React.HTMLAttributes<HTMLOListElement>) => (
+    <ol className={cn("ml-2 mt-2 list-decimal", className)} {...props} />
+  ),
+  ul: ({ className, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
+    <ul className={cn("ml-2 mt-2 list-disc", className)} {...props} />
+  ),
+  li: ({ className, ...props }: React.HTMLAttributes<HTMLLIElement>) => (
+    <li className={cn("ml-2 mt-2 list-item", className)} {...props} />
+  ),
+};
 
-export const a = Link;
-
-export const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <>
-    <article className="prose prose-zinc dark:prose-invert">{children}</article>
-    <footer className="mt-16">
-      <Feedback />
-    </footer>
-  </>
-);
-
-export const Row = ({ children }: { children: React.ReactNode }) => (
-  <div className="grid grid-cols-1 items-start gap-x-16 gap-y-10 xl:max-w-none xl:grid-cols-2">
-    {children}
-  </div>
-);
-
-export const Col = ({
-  children,
-  sticky = false,
-}: {
-  children: React.ReactNode;
-  sticky?: boolean;
-}) => (
-  <div
-    className={clsx(
-      "[&>:first-child]:mt-0 [&>:last-child]:mb-0",
-      sticky && "xl:sticky xl:top-24",
-    )}
-  >
-    {children}
-  </div>
-);
+export function useMDXComponents(mdxComponents: MDXComponents): MDXComponents {
+  return {
+    ...mdxComponents,
+    ...customComponents,
+  };
+}

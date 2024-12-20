@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { appRouter, createTRPCContext } from "@2up/api";
+import { appRouter, createTRPCContext } from "@init/api";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 // export const runtime = "edge";

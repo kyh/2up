@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Button } from "@2up/ui/button";
+import { Button } from "@init/ui/button";
 
-type Params = {
-  searchParams: {
+type PageProps = {
+  searchParams: Promise<{
     error: string;
     invite_token: string;
-  };
+  }>;
 };
 
-const AuthCallbackErrorPage = ({ searchParams }: Params) => {
+const Page = async (props: PageProps) => {
+  const searchParams = await props.searchParams;
   const { error, invite_token } = searchParams;
   const queryParam = invite_token ? `?invite_token=${invite_token}` : "";
   const signInPath = "/auth/sign-in" + queryParam;
@@ -20,7 +21,7 @@ const AuthCallbackErrorPage = ({ searchParams }: Params) => {
   }
 
   return (
-    <div className="flex flex-col space-y-4 py-4">
+    <div className="flex flex-col gap-4 py-4">
       <h1>
         An error occurred: <strong>{error}</strong>
       </h1>
@@ -31,4 +32,4 @@ const AuthCallbackErrorPage = ({ searchParams }: Params) => {
   );
 };
 
-export default AuthCallbackErrorPage;
+export default Page;

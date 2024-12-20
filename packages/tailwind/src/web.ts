@@ -3,7 +3,6 @@ import typography from "@tailwindcss/typography";
 import animate from "tailwindcss-animate";
 
 import base from "./base";
-import { proseStyles } from "./prose";
 
 export default {
   content: base.content,
@@ -16,7 +15,6 @@ export default {
         "2xl": "1400px",
       },
     },
-    typography: proseStyles,
     extend: {
       borderRadius: {
         lg: "var(--radius)",
@@ -44,7 +42,8 @@ export default {
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out"
+        "accordion-up": "accordion-up 0.2s ease-out",
+        meteor: "meteor 5s linear infinite",
       },
     },
   },

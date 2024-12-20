@@ -6,8 +6,8 @@ export const generateMetadata = () => {
   };
 };
 
-const VerifyPage = () => {
+const Page = () => {
   return <MultiFactorAuthForm />;
 };
 
-export default VerifyPage;
+export default Page;

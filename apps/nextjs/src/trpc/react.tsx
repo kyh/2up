@@ -12,7 +12,7 @@ import {
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 
-import type { AppRouter } from "@2up/api";
+import type { AppRouter } from "@init/api";
 import type { QueryClient } from "@tanstack/react-query";
 import { createQueryClient } from "./query-client";
 
@@ -62,14 +62,14 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
             (op.direction === "down" && op.result instanceof Error),
         }),
         splitLink({
-          condition: (op) => {
+          condition: (_op) => {
             // return op.path.startsWith("auth.");
             return true;
           },
           true: httpBatchLink({
             transformer: SuperJSON,
             url: `${getBaseUrl()}/api/trpc`,
-            headers: async () => {
+            headers: () => {
               const headers = new Headers();
               headers.set("x-trpc-source", "nextjs-client");
               return headers;
@@ -78,7 +78,7 @@ export const TRPCReactProvider = (props: { children: React.ReactNode }) => {
           false: unstable_httpBatchStreamLink({
             transformer: SuperJSON,
             url: `${getBaseUrl()}/api/trpc`,
-            headers: async () => {
+            headers: () => {
               const headers = new Headers();
               headers.set("x-trpc-source", "nextjs-client-batch-stream");
               return headers;

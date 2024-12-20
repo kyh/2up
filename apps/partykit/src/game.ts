@@ -1,15 +1,15 @@
 import type * as Party from "partykit/server";
-import { addPlayer, createGame, removePlayer, updateGame } from "@2up/game";
+import { addPlayer, createGame, removePlayer, updateGame } from "@init/game";
 import { createClient } from "@supabase/supabase-js";
 
-import type { SceneSchema } from "@2up/api/scene/scene-schema";
-import type { Database } from "@2up/db/database.types";
+import type { SceneSchema } from "@init/api/scene/scene-schema";
+import type { Database } from "@init/db/database.types";
 import type {
   GameState,
   LivePlayer,
   PlayerAction,
   ServerAction,
-} from "@2up/game";
+} from "@init/game";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export default class Server implements Party.Server {

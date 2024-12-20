@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import usePartySocket from "partysocket/react";
 
-import type { GameState, PlayerAction } from "@2up/game";
+import type { GameState, PlayerAction } from "@init/game";
 
 export const Game = ({ code }: { code: string }) => {
   const { gameState, dispatch } = useGameRoom(code);

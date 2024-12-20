@@ -1,70 +1,29 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "globalDependencies": ["**/.env"],
-  "globalEnv": [
-    "STRIPE_SECRET_KEY",
-    "STRIPE_WEBHOOK_SECRET",
-    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
-    "NEXT_PUBLIC_PRODUCT_NAME",
-    "NEXT_PUBLIC_SITE_URL",
-    "NEXT_PUBLIC_MONITORING_PROVIDER",
-    "EMAIL_SENDER",
-    "EMAIL_PORT",
-    "EMAIL_HOST",
-    "EMAIL_TLS",
-    "EMAIL_USER",
-    "EMAIL_PASSWORD",
-    "CMS_CLIENT",
-    "LOGGER",
-    "LEMON_SQUEEZY_SECRET_KEY",
-    "LEMON_SQUEEZY_SIGNING_SECRET",
-    "LEMON_SQUEEZY_STORE_ID",
-    "KEYSTATIC_STORAGE_KIND",
-    "KEYSTATIC_STORAGE_PROJECT",
-    "KEYSTATIC_STORAGE_REPO",
-    "KEYSTATIC_STORAGE_BRANCH_PREFIX",
-    "KEYSTATIC_PATH_PREFIX",
-    "KEYSTATIC_GITHUB_TOKEN",
-    "NEXT_PUBLIC_KEYSTATIC_CONTENT_PATH",
-    "WORDPRESS_API_URL",
-    "SUPABASE_DB_WEBHOOK_SECRET",
-    "INSTRUMENTATION_SERVICE_NAME",
-    "NEXT_PUBLIC_SENTRY_DSN",
-    "CAPTCHA_SECRET_TOKEN",
-    "NEXT_PUBLIC_BASELIME_KEY",
-    "NEXT_PUBLIC_SUPABASE_URL",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-    "SUPABASE_SERVICE_ROLE_KEY"
-  ],
+  "ui": "tui",
   "tasks": {
     "topo": {
       "dependsOn": ["^topo"]
     },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "next-env.d.ts",
-        ".expo/**",
-        ".output/**",
-        ".vercel/output/**"
-      ]
+      "outputs": [".cache/tsbuildinfo.json", "dist/**"]
     },
     "dev": {
-      "persistent": true,
-      "cache": false
+      "dependsOn": ["^dev"],
+      "cache": false,
+      "persistent": false
     },
     "format": {
       "outputs": [".cache/.prettiercache"],
       "outputLogs": "new-only"
     },
     "lint": {
-      "dependsOn": ["^topo"],
+      "dependsOn": ["^topo", "^build"],
       "outputs": [".cache/.eslintcache"]
     },
     "typecheck": {
-      "dependsOn": ["^topo"],
+      "dependsOn": ["^topo", "^build"],
       "outputs": [".cache/tsbuildinfo.json"]
     },
     "clean": {
@@ -72,10 +31,24 @@
     },
     "//#clean": {
       "cache": false
-    },
-    "storybook": {
-      "persistent": true,
-      "cache": false
     }
-  }
+  },
+  "globalEnv": [
+    "POSTGRES_URL",
+    "STRIPE_SECRET_KEY",
+    "STRIPE_WEBHOOK_SECRET",
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "PORT"
+  ],
+  "globalPassThroughEnv": [
+    "NODE_ENV",
+    "CI",
+    "VERCEL",
+    "VERCEL_ENV",
+    "VERCEL_URL",
+    "npm_lifecycle_event"
+  ]
 }

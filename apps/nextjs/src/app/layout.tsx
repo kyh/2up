@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "@2up/ui/theme";
-import { Toaster } from "@2up/ui/toast";
-import { TooltipProvider } from "@2up/ui/tooltip";
-import { cn } from "@2up/ui/utils";
+import { GlobalAlertDialog } from "@init/ui/alert-dialog";
+import { ThemeProvider } from "@init/ui/theme";
+import { GlobalToaster } from "@init/ui/toast";
+import { TooltipProvider } from "@init/ui/tooltip";
+import { cn } from "@init/ui/utils";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/lib/site-config";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import "./globals.css";
@@ -81,7 +83,11 @@ const fontSans = Inter({
   variable: "--font-sans",
 });
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+type LayoutProps = {
+  children: React.ReactNode;
+};
+
+const RootLayout = (props: LayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -90,15 +96,18 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           fontSans.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TooltipProvider>
-            <TRPCReactProvider>{children}</TRPCReactProvider>
-            <Toaster />
-          </TooltipProvider>
-        </ThemeProvider>
+        <NuqsAdapter>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <TooltipProvider>
+              <TRPCReactProvider>{props.children}</TRPCReactProvider>
+              <GlobalToaster />
+              <GlobalAlertDialog />
+            </TooltipProvider>
+          </ThemeProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );
 };
 
-export default Layout;
+export default RootLayout;

@@ -1,5 +1,5 @@
 {
-  "name": "@2up/partykit",
+  "name": "@init/partykit",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,12 +12,12 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@2up/api": "workspace:*",
-    "@2up/db": "workspace:*",
-    "@2up/game": "workspace:*"
+    "@init/api": "workspace:*",
+    "@init/db": "workspace:*",
+    "@init/game": "workspace:*"
   },
   "devDependencies": {
-    "@2up/tailwind-config": "workspace:*",
+    "@init/tailwind-config": "workspace:*",
     "@kyh/eslint-config": "latest",
     "@kyh/prettier-config": "latest",
     "@kyh/tsconfig": "latest",

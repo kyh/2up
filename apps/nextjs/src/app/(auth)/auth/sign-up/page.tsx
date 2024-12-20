@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Link from "next/link";
 
 import { AuthForm } from "@/app/(auth)/_components/auth-form";
@@ -9,14 +8,7 @@ export const generateMetadata = () => {
   };
 };
 
-type SignupPageProps = {
-  searchParams: {
-    nextPath?: string;
-    invite_token?: string;
-  };
-};
-
-const SignUpPage = ({ searchParams }: SignupPageProps) => {
+const Page = () => {
   return (
     <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
       <div className="flex flex-col text-center">
@@ -25,9 +17,7 @@ const SignUpPage = ({ searchParams }: SignupPageProps) => {
           Please sign up to continue
         </p>
       </div>
-      <Suspense>
-        <AuthForm type="signup" nextPath={searchParams.nextPath} />
-      </Suspense>
+      <AuthForm type="signup" />
       <p className="px-8 text-center text-sm text-muted-foreground">
         By clicking continue, you agree to our{" "}
         <Link
@@ -49,4 +39,4 @@ const SignUpPage = ({ searchParams }: SignupPageProps) => {
   );
 };
 
-export default SignUpPage;
+export default Page;

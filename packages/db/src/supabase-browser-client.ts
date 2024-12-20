@@ -1,7 +1,7 @@
 import { createBrowserClient } from "@supabase/ssr";
 
-import type { Database } from "./database.types";
-import { getSupabaseClientKeys } from "./get-supabase-client-keys";
+import type { Database } from "./types/database.types";
+import { getSupabaseClientKeys } from "./env/get-supabase-client-keys";
 
 /**
  * @name getSupabaseBrowserClient

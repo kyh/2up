@@ -11,13 +11,13 @@ interface PackageJson {
 
 export default function generator(plop: PlopTypes.NodePlopAPI): void {
   plop.setGenerator("package", {
-    description: "Generate a new package for the 2up Monorepo",
+    description: "Generate a new package for the Init Monorepo",
     prompts: [
       {
         type: "input",
         name: "name",
         message:
-          "What is the name of the package? (You can skip the `@2up/` prefix)",
+          "What is the name of the package? (You can skip the `@init/` prefix)",
       },
       {
         type: "input",
@@ -29,8 +29,8 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
     actions: [
       (answers) => {
         if ("name" in answers && typeof answers.name === "string") {
-          if (answers.name.startsWith("@2up/")) {
-            answers.name = answers.name.replace("@2up/", "");
+          if (answers.name.startsWith("@init/")) {
+            answers.name = answers.name.replace("@init/", "");
           }
         }
         return "Config sanitized";

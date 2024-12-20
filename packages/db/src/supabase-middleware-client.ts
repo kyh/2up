@@ -2,8 +2,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-import type { Database } from "./database.types";
-import { getSupabaseClientKeys } from "./get-supabase-client-keys";
+import type { Database } from "./types/database.types";
+import { getSupabaseClientKeys } from "./env/get-supabase-client-keys";
 
 /**
  * Creates a middleware client for Supabase.
@@ -19,12 +19,14 @@ export const createMiddlewareClient = <GenericSchema = Database>(
 
   return createServerClient<GenericSchema>(keys.url, keys.anonKey, {
     cookies: {
-      getAll: () => request.cookies.getAll(),
+      getAll: () => {
+        return request.cookies.getAll();
+      },
       setAll: (cookiesToSet) => {
         cookiesToSet.forEach(({ name, value }) =>
           request.cookies.set(name, value),
         );
-        response = NextResponse.next({
+        NextResponse.next({
           request,
         });
         cookiesToSet.forEach(({ name, value, options }) =>

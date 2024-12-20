@@ -1,5 +1,5 @@
 {
-  "name": "@2up/api",
+  "name": "@init/api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -8,22 +8,23 @@
     "./*": "./src/*.ts"
   },
   "scripts": {
+    "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@2up/db": "workspace:latest",
+    "@init/data-table": "workspace:^",
+    "@init/db": "workspace:^",
     "@trpc/server": "catalog:",
-    "stripe": "^16.8.0",
-    "superjson": "^2.2.1",
-    "zod": "^3.23.8",
-    "lodash": "^4.17.21",
-    "zod-form-data": "^2.0.2"
+    "nuqs": "catalog:",
+    "stripe": "^17.4.0",
+    "superjson": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.5",
     "@kyh/eslint-config": "catalog:",
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",

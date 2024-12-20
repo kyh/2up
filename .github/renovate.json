@@ -3,7 +3,7 @@
   "extends": ["config:base"],
   "packageRules": [
     {
-      "matchPackagePatterns": ["^@2up/"],
+      "matchPackagePatterns": ["^@init/"],
       "enabled": false
     }
   ],

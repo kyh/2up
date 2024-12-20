@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { getSupabaseBrowserClient } from "@2up/db/supabase-browser-client";
+import { getSupabaseBrowserClient } from "@init/db/supabase-browser-client";
 import { useQuery } from "@tanstack/react-query";
 
 import { api } from "@/trpc/react";
