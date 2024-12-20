@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@2up/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
 
 type SessionProps = {
   displayName: string | null;

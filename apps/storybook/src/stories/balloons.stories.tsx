@@ -1,5 +1,5 @@
-import { Balloon } from "@2up/ui/ui/balloon";
-import { Container } from "@2up/ui/ui/container";
+import { Balloon } from "@init/ui/ui/balloon";
+import { Container } from "@init/ui/ui/container";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

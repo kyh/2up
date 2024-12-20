@@ -1,4 +1,4 @@
-import { cn } from "@2up/ui/utils";
+import { cn } from "@init/ui/utils";
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
 

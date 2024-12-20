@@ -1,4 +1,4 @@
-import { Input } from "@2up/ui/ui/input";
+import { Input } from "@init/ui/ui/input";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

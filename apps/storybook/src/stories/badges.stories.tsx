@@ -1,4 +1,4 @@
-import { Badge } from "@2up/ui/ui/badge";
+import { Badge } from "@init/ui/ui/badge";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

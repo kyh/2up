@@ -1,5 +1,5 @@
 {
-  "name": "@2up/game",
+  "name": "@init/game",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -14,8 +14,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@2up/db": "workspace:*",
-    "@2up/api": "workspace:*"
+    "@init/db": "workspace:*",
+    "@init/api": "workspace:*"
   },
   "devDependencies": {
     "@kyh/eslint-config": "latest",

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import type { RouterOutputs } from "@2up/api";
+import type { RouterOutputs } from "@init/api";
 import { api } from "@/trpc/react";
 
 type PackSection = RouterOutputs["pack"]["discover"][number];

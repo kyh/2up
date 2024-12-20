@@ -1,4 +1,4 @@
-import { Button } from "@2up/ui/ui/button";
+import { Button } from "@init/ui/ui/button";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

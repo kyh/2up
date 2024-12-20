@@ -1,7 +1,7 @@
 import type Stripe from "stripe";
 
 import type { BillingConfig } from "../billing-schema";
-import type { Database } from "@2up/db/database.types";
+import type { Database } from "@init/db/database.types";
 import { getLineItemTypeById } from "../billing-util";
 import { stripeServerEnvSchema } from "./stripe-schema";
 import { createStripeClient } from "./stripe-sdk";

@@ -1,4 +1,4 @@
-import { Radio } from "@2up/ui/ui/radio";
+import { Radio } from "@init/ui/ui/radio";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

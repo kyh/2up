@@ -1,4 +1,4 @@
-import { Progress } from "@2up/ui/ui/progress";
+import { Progress } from "@init/ui/ui/progress";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

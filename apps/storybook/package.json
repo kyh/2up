@@ -1,5 +1,5 @@
 {
-  "name": "@2up/storybook",
+  "name": "@init/storybook",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -8,7 +8,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@2up/ui": "workspace:latest",
+    "@init/ui": "workspace:latest",
     "next": "^14.2.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
@@ -23,7 +23,7 @@
     "@storybook/nextjs": "^8.3.5",
     "@storybook/react": "^8.3.5",
     "@storybook/test": "^8.3.5",
-    "@2up/tailwind-config": "workspace:latest",
+    "@init/tailwind-config": "workspace:latest",
     "@kyh/eslint-config": "catalog:",
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",

@@ -1,4 +1,4 @@
-import { List } from "@2up/ui/ui/list";
+import { List } from "@init/ui/ui/list";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

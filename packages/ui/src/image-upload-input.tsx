@@ -3,10 +3,10 @@
 import type { FormEvent, MouseEventHandler } from "react";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Button } from "@2up/ui/button";
-import { If } from "@2up/ui/if";
-import { Label } from "@2up/ui/label";
-import { cn } from "@2up/ui/utils";
+import { Button } from "@init/ui/button";
+import { If } from "@init/ui/if";
+import { Label } from "@init/ui/label";
+import { cn } from "@init/ui/utils";
 import { UploadIcon, XIcon } from "lucide-react";
 
 type Props = Omit<React.InputHTMLAttributes<unknown>, "value"> & {

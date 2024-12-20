@@ -8,7 +8,7 @@ import type {
 } from "react-hook-form";
 import type { ZodType, ZodTypeDef } from "zod";
 import * as React from "react";
-import { cn } from "@2up/ui/utils";
+import { cn } from "@init/ui/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Slot } from "@radix-ui/react-slot";
 import {

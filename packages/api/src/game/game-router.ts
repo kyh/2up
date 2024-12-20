@@ -1,4 +1,4 @@
-import { generateGameCode } from "@2up/db/uuid";
+import { generateGameCode } from "@init/db/uuid";
 import { sampleSize } from "lodash";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";

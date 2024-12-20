@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { Button } from "@2up/ui/button";
+import { Button } from "@init/ui/button";
 import { ImageIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 

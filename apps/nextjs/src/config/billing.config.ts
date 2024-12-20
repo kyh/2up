@@ -1,4 +1,4 @@
-import { createBillingSchema } from "@2up/api/billing/billing-schema";
+import { createBillingSchema } from "@init/api/billing/billing-schema";
 
 export const billingConfig = createBillingSchema({
   products: [
