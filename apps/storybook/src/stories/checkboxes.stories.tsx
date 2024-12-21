@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox } from "@init/ui/ui/checkbox";
+import { Checkbox } from "@init/ui/checkbox";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

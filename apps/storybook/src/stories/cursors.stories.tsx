@@ -1,4 +1,4 @@
-import { Cursor } from "@init/ui/ui/cursor";
+import { Cursor } from "@init/ui/cursor";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

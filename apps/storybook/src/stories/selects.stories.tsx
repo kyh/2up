@@ -1,4 +1,4 @@
-import { Select } from "@init/ui/ui/select";
+import { Select } from "@init/ui/select";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

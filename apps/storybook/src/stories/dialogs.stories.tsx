@@ -1,4 +1,4 @@
-import { Button } from "@init/ui/ui/button";
+import { Button } from "@init/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@init/ui/ui/dialog";
+} from "@init/ui/dialog";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Textarea } from "@init/ui/ui/textarea";
+import { Textarea } from "@init/ui/textarea";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

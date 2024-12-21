@@ -1,4 +1,4 @@
-import { Table } from "@init/ui/ui/table";
+import { Table } from "@init/ui/table";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

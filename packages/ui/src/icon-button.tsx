@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes } from "react";
 import React from "react";
 import { cva } from "class-variance-authority";
 
-import { cn } from "../utils";
+import { cn } from "./utils";
 
 const iconButtonStyles = cva(
   "relative flex items-center justify-center rounded-full",

@@ -1,4 +1,4 @@
-import { Avatar } from "@init/ui/ui/avatar";
+import { Avatar } from "@init/ui/avatar";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

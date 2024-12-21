@@ -1,119 +1,110 @@
-import * as React from "react";
-import { cn } from "@init/ui/utils";
+import type { VariantProps } from "class-variance-authority";
+import React from "react";
+import { cva } from "class-variance-authority";
+import clsx from "clsx";
 
-const Table = React.forwardRef<
-  HTMLTableElement,
-  React.HTMLAttributes<HTMLTableElement>
->(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
-    <table
-      ref={ref}
-      className={cn("w-full caption-bottom text-sm", className)}
-      {...props}
-    />
-  </div>
-));
-Table.displayName = "Table";
+import { Borders } from "./borders";
 
-const TableHeader = React.forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
-));
-TableHeader.displayName = "TableHeader";
+const tableContainerStyles = cva(
+  "relative max-w-[100%] overflow-auto p-2 text-base",
+  {
+    variants: {
+      variant: {
+        normal: "bg-light",
+        dark: "bg-dark",
+      },
+    },
+    defaultVariants: {
+      variant: "normal",
+    },
+  },
+);
 
-const TableBody = React.forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(({ className, ...props }, ref) => (
-  <tbody
-    ref={ref}
-    className={cn("[&_tr:last-child]:border-0", className)}
-    {...props}
-  />
-));
-TableBody.displayName = "TableBody";
+const tableStyles = cva("relative table-fixed border-collapse border-0", {
+  variants: {
+    variant: {
+      normal: "bg-light",
+      dark: "bg-dark",
+    },
+  },
+  defaultVariants: {
+    variant: "normal",
+  },
+});
 
-const TableFooter = React.forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(({ className, ...props }, ref) => (
-  <tfoot
-    ref={ref}
-    className={cn(
-      "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
-      className,
-    )}
-    {...props}
-  />
-));
-TableFooter.displayName = "TableFooter";
+const tableCellStyles = cva("h-10", {
+  variants: {
+    variant: {
+      normal: "text-dark",
+      dark: "text-light",
+    },
+    bordered: {
+      true: "border-dark border-b-4 border-r-4 last:border-r-0",
+      false: "",
+    },
+    centered: {
+      true: "text-center",
+      false: "text-left",
+    },
+  },
+  compoundVariants: [
+    { variant: "dark", bordered: true, className: "border-light" },
+  ],
+  defaultVariants: {
+    variant: "normal",
+    bordered: false,
+    centered: false,
+  },
+});
 
-const TableRow = React.forwardRef<
-  HTMLTableRowElement,
-  React.HTMLAttributes<HTMLTableRowElement>
->(({ className, ...props }, ref) => (
-  <tr
-    ref={ref}
-    className={cn(
-      "border-b transition-colors data-[state=selected]:bg-muted",
-      className,
-    )}
-    {...props}
-  />
-));
-TableRow.displayName = "TableRow";
+export type TableData = {
+  head: string[];
+  body: string[][];
+};
 
-const TableHead = React.forwardRef<
-  HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
-  <th
-    ref={ref}
-    className={cn(
-      "h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-      className,
-    )}
-    {...props}
-  />
-));
-TableHead.displayName = "TableHead";
+type TableProps = VariantProps<typeof tableCellStyles> &
+  React.HTMLAttributes<HTMLDivElement> & {
+    data: TableData;
+  };
 
-const TableCell = React.forwardRef<
-  HTMLTableCellElement,
-  React.TdHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
-  <td
-    ref={ref}
-    className={cn(
-      "p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-      className,
-    )}
-    {...props}
-  />
-));
-TableCell.displayName = "TableCell";
+export const Table = ({
+  variant,
+  data,
+  bordered,
+  centered,
+  ...props
+}: TableProps) => {
+  const tableContainerClasses = tableContainerStyles({ variant });
+  const tableClasses = tableStyles({ variant });
+  const tableCellClasses = tableCellStyles({ variant, bordered, centered });
 
-const TableCaption = React.forwardRef<
-  HTMLTableCaptionElement,
-  React.HTMLAttributes<HTMLTableCaptionElement>
->(({ className, ...props }, ref) => (
-  <caption
-    ref={ref}
-    className={cn("mt-4 text-sm text-muted-foreground", className)}
-    {...props}
-  />
-));
-TableCaption.displayName = "TableCaption";
-
-export {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCaption,
+  return (
+    <div {...props} className={tableContainerClasses}>
+      <table className={tableClasses}>
+        {bordered && (
+          <Borders variant={variant === "dark" ? "light" : "normal"} />
+        )}
+        <thead className={clsx(tableCellClasses)}>
+          <tr>
+            {data.head.map((th, i) => (
+              <th key={i} className={clsx("p-3", tableCellClasses)}>
+                {th}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.body.map((tr, i) => (
+            <tr key={i} className={clsx("p-3", tableCellClasses)}>
+              {tr.map((td, j) => (
+                <td key={j} className={clsx("p-2", tableCellClasses)}>
+                  {td}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 };

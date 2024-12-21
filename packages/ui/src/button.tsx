@@ -1,102 +1,119 @@
 import type { VariantProps } from "class-variance-authority";
-import * as React from "react";
-import { cn } from "@init/ui/utils";
-import { Slot, Slottable } from "@radix-ui/react-slot";
+import type { ButtonHTMLAttributes } from "react";
+import React from "react";
 import { cva } from "class-variance-authority";
 
-import { Spinner } from "./spinner";
+type ButtonProps = {
+  block?: boolean;
+  className?: string;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+} & ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonStyles>;
 
-const buttonVariants = cva(
-  "relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+const buttonStyles = cva(
+  "capitalize' relative m-2 flex gap-2 px-3 py-3 text-base",
   {
     variants: {
       variant: {
+        normal:
+          "border-normal-border bg-normal text-normal-text shadow-normal-shadow hover:bg-normal-hover hover:shadow-normal-shadow focus:outline-normal-outline active:shadow-normal-shadow",
+        success:
+          "border-success-border bg-success text-success-text shadow-success-shadow hover:bg-success-hover hover:shadow-success-shadow focus:outline-success-outline active:shadow-success-shadow",
         primary:
-          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+          "border-primary-border text-primary-text shadow-primary-shadow hover:bg-primary-hover hover:shadow-primary-shadow focus:outline-primary-outline active:shadow-primary-shadow bg-primary",
+        error:
+          "border-error-border bg-error text-error-text shadow-error-shadow hover:bg-error-hover hover:shadow-error-shadow focus:outline-error-outline active:shadow-error-shadow",
+        disabled:
+          "border-disabled-border bg-disabled text-disabled-text shadow-disabled-shadow cursor-not-allowed",
+        warning:
+          "border-warning-border bg-warning text-warning-text shadow-warning-shadow hover:bg-warning-hover hover:shadow-warning-shadow focus:outline-warning-outline active:shadow-warning-shadow",
+        file: "border-normal-border bg-normal text-normal-text shadow-normal-shadow hover:bg-normal-hover hover:shadow-normal-shadow focus:outline-normal-outline active:shadow-normal-shadow",
+        ghost:
+          "m-0 !shadow-none hover:rounded-lg hover:bg-gray-100 hover:opacity-80 hover:shadow-none",
+        link: "m-0 !shadow-none hover:rounded-lg hover:bg-gray-100 hover:opacity-80 hover:shadow-none",
       },
-      size: {
-        sm: "h-8 rounded-md px-3 text-xs",
-        md: "h-9 rounded-md px-4",
-        lg: "h-10 rounded-md px-8",
-        icon: "size-9",
-      },
-      loading: {
-        true: "[&>:first-child]:opacity-100",
+      block: {
+        true: "mb-6 block whitespace-break-spaces break-words",
+        false: "",
       },
     },
-    compoundVariants: [
-      {
-        variant: "primary",
-        loading: true,
-        className: "[&>:first-child]:bg-primary",
-      },
-      {
-        variant: "destructive",
-        loading: true,
-        className: "[&>:first-child]:bg-destructive",
-      },
-      {
-        variant: "outline",
-        loading: true,
-        className: "[&>:first-child]:bg-background",
-      },
-      {
-        variant: "secondary",
-        loading: true,
-        className: "[&>:first-child]:bg-secondary",
-      },
-    ],
     defaultVariants: {
-      variant: "primary",
-      size: "md",
+      variant: "normal",
+      block: false,
     },
   },
 );
 
-type ButtonProps = {
-  asChild?: boolean;
-  loading?: boolean;
-} & React.ButtonHTMLAttributes<HTMLButtonElement> &
-  VariantProps<typeof buttonVariants>;
-
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      className,
-      variant,
-      size,
-      asChild = false,
-      children,
-      loading,
-      disabled,
-      ...props
+const spanStyles = cva("pointer-events-none absolute", {
+  variants: {
+    variant: {
+      normal: "border-normal-border",
+      success: "border-success-border",
+      primary: "border-primary-border",
+      error: "border-error-border",
+      disabled: "border-disabled-border",
+      warning: "border-warning-border",
+      file: "border-normal-border",
+      ghost: "border-none",
+      link: "border-none",
     },
-    ref,
-  ) => {
-    const Comp = asChild ? Slot : "button";
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, loading, className }))}
-        ref={ref}
-        disabled={disabled ?? loading}
-        {...props}
-      >
-        <span className="pointer-events-none absolute inset-0 grid place-items-center opacity-0 transition">
-          <Spinner className="size-4" />
-        </span>
-        <Slottable>{children}</Slottable>
-      </Comp>
-    );
   },
-);
-Button.displayName = "Button";
+  defaultVariants: {
+    variant: "normal",
+  },
+});
 
-export { Button, buttonVariants };
+export const Button = ({
+  block,
+  variant,
+  className,
+  children,
+  leftIcon,
+  rightIcon,
+  ...props
+}: ButtonProps) => {
+  const commonProps = {
+    className:
+      buttonStyles({ variant, block }) + (className ? ` ${className}` : ""),
+    ...props,
+  };
+
+  const renderSpan = (variant: VariantProps<typeof spanStyles>["variant"]) => (
+    <>
+      <span
+        className={
+          spanStyles({ variant }) +
+          " left-[0rem] top-[-0.25rem] h-[calc(100%+.5rem)] w-[100%] border-y-4"
+        }
+      ></span>
+      <span
+        className={
+          spanStyles({ variant }) +
+          " left-[-0.25rem] top-[0rem] h-[100%] w-[calc(100%+.5rem)] border-x-4"
+        }
+      ></span>
+    </>
+  );
+
+  return variant === "file" ? (
+    <label
+      className={`${commonProps.className} shadow-[inset_-0.25rem_-0.25rem] hover:shadow-[inset_-0.375rem_-0.375rem] focus:outline focus:outline-[.375rem] active:shadow-[inset_.375rem_.375rem]`}
+    >
+      {renderSpan(variant)}
+      <input type="file" className="pointer-events-none absolute opacity-0" />
+      {children}
+    </label>
+  ) : (
+    <button
+      type="button"
+      {...commonProps}
+      className={`shadow-[inset_-0.25rem_-0.25rem] ${variant !== "disabled" && "hover:shadow-[inset_-0.375rem_-0.375rem] focus:outline focus:outline-[.375rem] active:shadow-[inset_.375rem_.375rem]"} ${commonProps.className}`}
+    >
+      {renderSpan(variant)}
+      {leftIcon && leftIcon}
+      {children}
+      {rightIcon && rightIcon}
+    </button>
+  );
+};

@@ -1,38 +1,132 @@
+import React from "react";
 import type { VariantProps } from "class-variance-authority";
-import * as React from "react";
-import { cn } from "@init/ui/utils";
 import { cva } from "class-variance-authority";
+import clsx from "clsx";
 
-const badgeVariants = cva(
-  "focus:ring-ring inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2",
+const badgeVariantStyles = cva("relative cursor-pointer p-1 text-center", {
+  variants: {
+    variant: {
+      dark: "bg-dark text-light",
+      primary: "bg-primary text-primary-text",
+      success: "bg-success text-success-text",
+      warning: "bg-warning text-warning-text",
+      error: "bg-error text-error-text",
+    },
+  },
+  defaultVariants: {
+    variant: "primary",
+  },
+});
+
+const badgeSizeStyles = cva("", {
+  variants: {
+    size: {
+      small: "text-[9px]",
+      medium: "text-sm",
+      normal: "text-base",
+    },
+  },
+  defaultVariants: {
+    size: "normal",
+  },
+});
+
+const borderStyles = cva(
+  "absolute top-1/2 box-content h-1/2 w-full -translate-y-1/2",
   {
     variants: {
       variant: {
-        default:
-          "bg-primary text-primary-foreground hover:bg-primary/80 border-transparent shadow",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 border-transparent",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent shadow",
-        outline: "text-foreground",
-        success:
-          "border-transparent bg-green-50 text-green-500 hover:bg-green-50 dark:bg-green-500/20 dark:hover:bg-green-500/20",
-        warning:
-          "border-transparent bg-orange-50 text-orange-500 hover:bg-orange-50 dark:bg-orange-500/20 dark:hover:bg-orange-500/20",
-        info: "border-transparent bg-blue-50 text-blue-500 hover:bg-blue-50 dark:bg-blue-500/20 dark:hover:bg-blue-500/20",
+        dark: "border-dark",
+        primary: "border-primary",
+        success: "border-success",
+        warning: "border-warning",
+        error: "border-error",
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "primary",
     },
   },
 );
 
-export type BadgeProps = {} & React.HTMLAttributes<HTMLDivElement> &
-  VariantProps<typeof badgeVariants>;
+export type BadgeStyleProps = VariantProps<typeof badgeVariantStyles> &
+  VariantProps<typeof badgeSizeStyles>;
 
-const Badge = ({ className, variant, ...props }: BadgeProps) => (
-  <div className={cn(badgeVariants({ variant }), className)} {...props} />
-);
+export type BadgeProps = {
+  label: React.ReactNode;
+  label2?: React.ReactNode;
+  variant2?: BadgeStyleProps["variant"];
+} & BadgeStyleProps
 
-export { Badge, badgeVariants };
+export const Badge = ({
+  size,
+  variant,
+  variant2,
+  label,
+  label2,
+}: BadgeProps) => {
+  const variantClasses = badgeVariantStyles({ variant });
+  const variantClasses2 = badgeVariantStyles({ variant: variant2 });
+  const sizeClasses = badgeSizeStyles({ size });
+  const borderClass = borderStyles({ variant });
+  const borderClass2 = borderStyles({ variant: variant2 });
+
+  return (
+    <div className={sizeClasses}>
+      {!label2 ? (
+        <div
+          className={clsx(
+            variantClasses,
+            size === "normal" || !size
+              ? "mx-2 min-w-[10em]"
+              : "x-1 min-h-[20px] w-fit min-w-[20px]",
+          )}
+        >
+          <span
+            className={clsx(
+              borderClass,
+              size === "normal" || !size
+                ? "-left-2 border-x-8"
+                : "-left-1 border-x-4",
+              "absolute top-1/2 box-content h-1/2 w-full -translate-y-1/2 border-dark",
+            )}
+          />
+          {label}
+        </div>
+      ) : (
+        <div
+          className={clsx(
+            size === "normal" || !size ? "mx-2 min-w-[5em]" : "mx-1 w-fit",
+            "flex",
+          )}
+        >
+          <div className={clsx(variantClasses, "flex-1")}>
+            <span
+              className={clsx(
+                borderClass,
+                size === "normal" || !size
+                  ? "-left-2 border-l-8"
+                  : "-left-1 border-l-4",
+                "absolute top-1/2 box-content h-1/2 w-full -translate-y-1/2 border-dark",
+              )}
+            />
+            {label}
+          </div>
+
+          <div className={clsx(variantClasses2, "flex-1")}>
+            <span
+              className={clsx(
+                borderClass2,
+                size === "normal" || !size
+                  ? "-right-2 border-r-8"
+                  : "-right-1 border-r-4",
+                "absolute top-1/2 box-content h-1/2 w-full -translate-y-1/2 border-dark",
+              )}
+            />
+            {label2}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};

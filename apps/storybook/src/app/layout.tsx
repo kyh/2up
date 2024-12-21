@@ -9,7 +9,7 @@ import PlayIcon from "@/public/icons/play.svg";
 
 import "./globals.css";
 
-import { IconButton } from "@init/ui/ui/icon-button";
+import { IconButton } from "@init/ui/icon-button";
 
 const carbonFont = localFont({
   src: "./fonts/carbon.woff2",

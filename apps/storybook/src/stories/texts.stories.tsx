@@ -1,4 +1,4 @@
-import { Text } from "@init/ui/ui/text";
+import { Text } from "@init/ui/text";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

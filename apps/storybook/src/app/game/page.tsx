@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "@init/ui/ui/container";
+import { Container } from "@init/ui/container";
 
 export default function GamePage() {
   return (

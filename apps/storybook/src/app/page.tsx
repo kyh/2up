@@ -1,8 +1,8 @@
 import React from "react";
-import { Button } from "@init/ui/ui/button";
-import { Container } from "@init/ui/ui/container";
-import { IconButton } from "@init/ui/ui/icon-button";
-import { Input } from "@init/ui/ui/input";
+import { Button } from "@init/ui/button";
+import { Container } from "@init/ui/container";
+import { IconButton } from "@init/ui/icon-button";
+import { Input } from "@init/ui/input";
 
 import ArrowRightIcon from "@/public/icons/arrow-right.svg";
 import ChevronLeft from "@/public/icons/chevron-left.svg";

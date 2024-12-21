@@ -45,7 +45,7 @@ export const Radio = ({
     ) {
       const logoDiv = specificDivRef.current.querySelector(
         ".animate-custom",
-      )!;
+      ) as HTMLDivElement;
 
       if (!logoDiv) return;
 
@@ -77,7 +77,7 @@ export const Radio = ({
       const blinkIntervalOut = setInterval(() => {
         const logoDiv = specificDivRef.current?.querySelector(
           ".animate-custom",
-        )!;
+        ) as HTMLDivElement;
         if (!logoDiv) return;
 
         logoDiv.style.opacity = "0";
@@ -86,7 +86,7 @@ export const Radio = ({
       const blinkIntervalIn = setInterval(() => {
         const logoDiv = specificDivRef.current?.querySelector(
           ".animate-custom",
-        )!;
+        )  as HTMLDivElement;
         if (!logoDiv) return;
 
         logoDiv.style.opacity = "1";

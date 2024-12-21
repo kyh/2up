@@ -1,4 +1,4 @@
-import { Container } from "@init/ui/ui/container";
+import { Container } from "@init/ui/container";
 
 import type { Meta, StoryObj } from "@storybook/react";
 
