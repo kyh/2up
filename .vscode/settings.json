@@ -18,11 +18,12 @@
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
   ],
-  "tailwindCSS.experimental.configFile": "./packages/tailwind/src/web.ts",
+  "tailwindCSS.experimental.configFile": "./apps/nextjs/src/app/styles/globals.css",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.preferences.autoImportFileExcludePatterns": [
     "next/router.d.ts",
     "next/dist/client/router.d.ts"
   ],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "docwriter.hotkey.mac": "⌥ + ."
 }

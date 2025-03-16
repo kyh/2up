@@ -1,3 +1,5 @@
+import { TRPCError } from "@trpc/server";
+
 import type { UserMetadata } from "../user/user-schema";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import {
@@ -47,11 +49,17 @@ export const authRouter = createTRPCRouter({
 
       // if the user has no identities, it means that the email is taken
       if (identities.length === 0) {
-        throw new Error("User already registered");
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "User already registered",
+        });
       }
 
       if (!user) {
-        throw new Error("Unable to create user");
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Unable to create user",
+        });
       }
 
       return { user };

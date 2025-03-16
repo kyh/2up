@@ -1,172 +1,137 @@
 "use client";
 
-import type { VariantProps } from "class-variance-authority";
-import React, { useState } from "react";
-import { cva } from "class-variance-authority";
-import clsx from "clsx";
+import * as React from "react";
+import { cn } from "@init/ui/utils";
+import * as SelectPrimitive from "@radix-ui/react-select";
+import {
+  ArrowUpDownIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "lucide-react";
 
-import { cn } from "./utils";
-import { Borders } from "./borders";
+export const Select = SelectPrimitive.Root;
+export const SelectGroup = SelectPrimitive.Group;
+export const SelectValue = SelectPrimitive.Value;
 
-const selectContainerStyles = cva("", {
-  variants: {
-    variant: {
-      normal: "text-dark-999",
-      light: "text-light",
-      success: "text-dark-999",
-      primary: "text-dark-999",
-      error: "text-dark-999",
-      disabled: "text-dark-999",
-      warning: "text-dark-999",
-      dark: "text-light",
-    },
-  },
-  defaultVariants: {
-    variant: "normal",
-  },
-});
-
-const selectLabelStyles = cva("", {
-  variants: {
-    variant: {
-      normal: "text-normal-text",
-      light: "text-normal-text",
-      success: "text-normal-text",
-      primary: "text-normal-text",
-      error: "text-normal-text",
-      disabled: "text-normal-text",
-      warning: "text-normal-text",
-      dark: "text-light",
-    },
-    isInline: {
-      true: "mb-2 text-left sm:mb-0 sm:text-right",
-      false: "mb-4 text-left",
-    },
-  },
-  defaultVariants: {
-    variant: "normal",
-  },
-});
-
-const selectIconStyles = cva(
-  "logo absolute right-9 top-1/3 h-[3px] w-[3px] -translate-y-1/2 transform shadow-[3px_3px,6px_3px,9px_3px,12px_3px,15px_3px,18px_3px,21px_3px,3px_6px,6px_6px,9px_6px,12px_6px,15px_6px,18px_6px,21px_6px,6px_9px,9px_9px,12px_9px,15px_9px,18px_9px,6px_12px,9px_12px,12px_12px,15px_12px,18px_12px,9px_15px,12px_15px,15px_15px,12px_18px]",
-  {
-    variants: {
-      variant: {
-        normal: "text-dark",
-        light: "text-light",
-        success: "text-success",
-        primary: "text-primary",
-        error: "text-error",
-        disabled: "text-disabled",
-        warning: "text-warning",
-        dark: "text-light",
-      },
-    },
-    defaultVariants: {
-      variant: "normal",
-    },
-  },
-);
-
-const selectStyles = cva(
-  "w-full cursor-pointer appearance-none border-none px-5 py-3 -outline-offset-2 placeholder-shown:underline",
-  {
-    variants: {
-      variant: {
-        normal: "focus:outline-dark",
-        light: "focus:outline-light",
-        success: "focus:ring-blue-500",
-        primary: "focus:outline-primary",
-        error: "focus:outline-error",
-        disabled: "focus:outline-disabled",
-        warning: "focus:outline-warning",
-        dark: "bg-dark focus:outline-light",
-      },
-    },
-    defaultVariants: {
-      variant: "normal",
-    },
-  },
-);
-
-type SelectProps = VariantProps<typeof selectStyles> &
-  React.HTMLAttributes<HTMLDivElement> & {
-    name?: string;
-    label?: string;
-    isInline?: boolean;
-    required?: boolean;
-    placeholder?: string;
-    value?: string;
-    onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  };
-
-export const Select = ({
-  name,
-  label,
-  isInline,
-  variant,
-  required,
-  children,
-  placeholder,
+export const SelectTrigger = ({
   className,
-  value,
-  onChange,
+  children,
   ...props
-}: SelectProps) => {
-  const [internalValue, setInternalValue] = useState<string>();
-  const selectClasses = selectStyles({ variant });
+}: React.ComponentProps<typeof SelectPrimitive.Trigger>) => (
+  <SelectPrimitive.Trigger
+    className={cn(
+      "border-border ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-9 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs focus:ring-1 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      className,
+    )}
+    {...props}
+  >
+    {children}
+    <SelectPrimitive.Icon asChild>
+      <ArrowUpDownIcon className="h-4 w-4 opacity-50" />
+    </SelectPrimitive.Icon>
+  </SelectPrimitive.Trigger>
+);
 
-  const isControlled = value !== undefined;
-  const parsedValue = isControlled ? value : internalValue;
-  const isSelected = !!parsedValue;
+export const SelectScrollUpButton = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) => (
+  <SelectPrimitive.ScrollUpButton
+    className={cn(
+      "flex cursor-default items-center justify-center py-1",
+      className,
+    )}
+    {...props}
+  >
+    <ChevronUpIcon />
+  </SelectPrimitive.ScrollUpButton>
+);
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!isControlled) {
-      setInternalValue(event.target.value);
-    }
-    if (onChange) {
-      onChange(event);
-    }
-  };
+export const SelectScrollDownButton = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) => (
+  <SelectPrimitive.ScrollDownButton
+    className={cn(
+      "flex cursor-default items-center justify-center py-1",
+      className,
+    )}
+    {...props}
+  >
+    <ChevronDownIcon />
+  </SelectPrimitive.ScrollDownButton>
+);
 
-  return (
-    <div
+export const SelectContent = ({
+  className,
+  children,
+  position = "popper",
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Content>) => (
+  <SelectPrimitive.Portal>
+    <SelectPrimitive.Content
+      className={cn(
+        "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border shadow-md",
+        position === "popper" &&
+          "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+        className,
+      )}
+      position={position}
       {...props}
-      className={
-        isSelected
-          ? selectLabelStyles({ variant })
-          : selectContainerStyles({ variant })
-      }
     >
-      <label
-        htmlFor={name}
-        className={clsx(
-          "flex-grow-1 mr-6 basis-0 text-base",
-          selectLabelStyles({ variant, isInline }),
+      <SelectScrollUpButton />
+      <SelectPrimitive.Viewport
+        className={cn(
+          "p-1",
+          position === "popper" &&
+            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
         )}
       >
-        {label}
-      </label>
+        {children}
+      </SelectPrimitive.Viewport>
+      <SelectScrollDownButton />
+    </SelectPrimitive.Content>
+  </SelectPrimitive.Portal>
+);
 
-      <div className="relative flex-grow-[5] basis-0">
-        <select
-          id={name}
-          name={name}
-          required={required}
-          value={parsedValue}
-          onChange={handleChange}
-          className={cn(selectClasses, className)}
-        >
-          <option value="" disabled selected hidden>
-            {placeholder}
-          </option>
-          {children}
-        </select>
+export const SelectLabel = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Label>) => (
+  <SelectPrimitive.Label
+    className={cn("px-2 py-1.5 text-sm font-semibold", className)}
+    {...props}
+  />
+);
 
-        <div className={selectIconStyles({ variant })} />
-        <Borders variant={variant === "dark" ? "light" : variant} />
-      </div>
-    </div>
-  );
-};
+export const SelectItem = ({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Item>) => (
+  <SelectPrimitive.Item
+    className={cn(
+      "focus:bg-accent focus:text-accent-foreground relative flex w-full cursor-default items-center rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50",
+      className,
+    )}
+    {...props}
+  >
+    <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
+      <SelectPrimitive.ItemIndicator>
+        <CheckIcon className="h-4 w-4" />
+      </SelectPrimitive.ItemIndicator>
+    </span>
+    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+  </SelectPrimitive.Item>
+);
+
+export const SelectSeparator = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Separator>) => (
+  <SelectPrimitive.Separator
+    className={cn("bg-muted -mx-1 my-1 h-px", className)}
+    {...props}
+  />
+);

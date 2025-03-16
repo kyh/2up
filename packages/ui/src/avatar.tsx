@@ -1,53 +1,66 @@
 "use client";
 
 import * as React from "react";
+import { cn } from "@init/ui/utils";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 
-import { cn } from "./utils";
+type AvatarProps = React.ComponentProps<typeof AvatarPrimitive.Root>;
 
-const Avatar = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
->(({ className, ...props }, ref) => (
+export const Avatar = ({ className, ...props }: AvatarProps) => (
   <AvatarPrimitive.Root
-    ref={ref}
     className={cn(
       "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
       className,
     )}
     {...props}
   />
-));
-Avatar.displayName = AvatarPrimitive.Root.displayName;
+);
 
-const AvatarImage = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Image>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ className, ...props }, ref) => (
+type AvatarImageProps = React.ComponentProps<typeof AvatarPrimitive.Image>;
+
+export const AvatarImage = ({ className, ...props }: AvatarImageProps) => (
   <AvatarPrimitive.Image
-    ref={ref}
-    className={cn(
-      "aspect-square h-full w-full [image-rendering:pixelated]",
-      className,
-    )}
+    className={cn("aspect-square h-full w-full", className)}
     {...props}
   />
-));
-AvatarImage.displayName = AvatarPrimitive.Image.displayName;
+);
 
-const AvatarFallback = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Fallback>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
->(({ className, ...props }, ref) => (
+type AvatarFallbackProps = React.ComponentProps<
+  typeof AvatarPrimitive.Fallback
+>;
+
+export const AvatarFallback = ({
+  className,
+  ...props
+}: AvatarFallbackProps) => (
   <AvatarPrimitive.Fallback
-    ref={ref}
     className={cn(
-      "flex h-full w-full items-center justify-center rounded-full bg-muted",
+      "bg-muted flex h-full w-full items-center justify-center rounded-full",
       className,
     )}
     {...props}
   />
-));
-AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
+);
 
-export { Avatar, AvatarImage, AvatarFallback };
+type ProfileAvatarProps = {
+  className?: string;
+  displayName?: string | null;
+  avatarUrl?: string | null;
+};
+
+export const ProfileAvatar = ({
+  className,
+  displayName,
+  avatarUrl,
+}: ProfileAvatarProps) => {
+  const initials = displayName?.slice(0, 1);
+
+  return (
+    <Avatar className={cn("size-9", className)}>
+      <AvatarImage src={avatarUrl ?? undefined} />
+      <AvatarFallback className="animate-in fade-in uppercase">
+        {initials}
+      </AvatarFallback>
+    </Avatar>
+  );
+};

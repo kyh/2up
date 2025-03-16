@@ -1,4 +1,5 @@
 import { getSupabaseAdminClient } from "@init/db/supabase-admin-client";
+import { TRPCError } from "@trpc/server";
 
 import {
   createTRPCRouter,
@@ -28,7 +29,6 @@ export const userRouter = createTRPCRouter({
       return response.data;
     }),
 
-  // ADMIN ACTIONS
   createUser: superAdminProcedure
     .input(createUserInput)
     .mutation(async ({ input }) => {
@@ -65,9 +65,11 @@ export const userRouter = createTRPCRouter({
     .input(impersonateUserInput)
     .mutation(async ({ ctx, input }) => {
       if (ctx.user.id === input.id) {
-        throw new Error(
-          `You cannot perform a destructive action on your own account as a Super Admin`,
-        );
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "You cannot perform a destructive action on your own account as a Super Admin",
+        });
       }
       const client = getSupabaseAdminClient();
 
@@ -77,25 +79,34 @@ export const userRouter = createTRPCRouter({
       } = await client.auth.admin.getUserById(input.id);
 
       if (error ?? !user) {
-        throw new Error(`Error fetching user`);
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Error fetching user",
+        });
       }
 
       const email = user.email;
 
       if (!email) {
-        throw new Error(`User has no email. Cannot impersonate`);
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "User has no email. Cannot impersonate",
+        });
       }
 
       const { error: linkError, data } = await client.auth.admin.generateLink({
         type: "magiclink",
         email,
         options: {
-          redirectTo: `/`,
+          redirectTo: "/",
         },
       });
 
       if (linkError ?? !data) {
-        throw new Error(`Error generating magic link`);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error generating magic link",
+        });
       }
 
       const response = await fetch(data.properties.action_link, {
@@ -106,9 +117,11 @@ export const userRouter = createTRPCRouter({
       const location = response.headers.get("Location");
 
       if (!location) {
-        throw new Error(
-          `Error generating magic link. Location header not found`,
-        );
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "You cannot perform a destructive action on your own account as a Super Admin",
+        });
       }
 
       const hash = new URL(location).hash.substring(1);
@@ -117,9 +130,10 @@ export const userRouter = createTRPCRouter({
       const refreshToken = query.get("refresh_token");
 
       if (!accessToken || !refreshToken) {
-        throw new Error(
-          `Error generating magic link. Tokens not found in URL hash.`,
-        );
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Error generating magic link. Tokens not found in URL hash.",
+        });
       }
 
       return {

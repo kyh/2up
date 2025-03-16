@@ -1,16 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import { GlobalAlertDialog } from "@init/ui/alert-dialog";
 import { ThemeProvider } from "@init/ui/theme";
 import { GlobalToaster } from "@init/ui/toast";
 import { TooltipProvider } from "@init/ui/tooltip";
-import { cn } from "@init/ui/utils";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { siteConfig } from "@/lib/site-config";
 import { TRPCReactProvider } from "@/trpc/react";
 
-import "./globals.css";
+import "./styles/globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -78,11 +75,6 @@ export const viewport: Viewport = {
   ],
 };
 
-const fontSans = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
 type LayoutProps = {
   children: React.ReactNode;
 };
@@ -90,21 +82,14 @@ type LayoutProps = {
 const RootLayout = (props: LayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "bg-background font-sans text-foreground antialiased",
-          fontSans.variable,
-        )}
-      >
-        <NuqsAdapter>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <TooltipProvider>
-              <TRPCReactProvider>{props.children}</TRPCReactProvider>
-              <GlobalToaster />
-              <GlobalAlertDialog />
-            </TooltipProvider>
-          </ThemeProvider>
-        </NuqsAdapter>
+      <body className="bg-background text-foreground font-sans antialiased">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <TooltipProvider>
+            <TRPCReactProvider>{props.children}</TRPCReactProvider>
+            <GlobalToaster />
+            <GlobalAlertDialog />
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

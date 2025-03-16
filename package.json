@@ -1,7 +1,7 @@
 {
   "name": "init",
   "private": true,
-  "packageManager": "pnpm@9.12.3",
+  "packageManager": "pnpm@10.6.1",
   "scripts": {
     "build": "turbo run build",
     "clean": "git clean -xdf node_modules",
@@ -11,8 +11,7 @@
     "db:stop": "pnpm -F db stop",
     "db:reset": "pnpm -F db reset",
     "db:push": "pnpm -F db push",
-    "db:generate": "pnpm -F db generate",
-    "db:migrate": "pnpm -F db migrate",
+    "db:push-remote": "pnpm -F db push-remote",
     "dev": "turbo watch dev --continue",
     "dev:nextjs": "turbo watch dev -F @init/nextjs...",
     "dev:expo": "turbo watch dev -F @init/expo...",
@@ -27,12 +26,19 @@
   },
   "devDependencies": {
     "@kyh/prettier-config": "catalog:",
-    "@turbo/gen": "^2.3.3",
+    "@turbo/gen": "^2.4.4",
     "dotenv-cli": "^8.0.0",
     "prettier": "catalog:",
-    "tsx": "^4.19.2",
-    "turbo": "^2.3.3",
+    "tsx": "^4.19.3",
+    "turbo": "^2.4.4",
     "typescript": "catalog:"
   },
-  "prettier": "@kyh/prettier-config"
+  "prettier": "@kyh/prettier-config",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "supabase"
+    ]
+  }
 }
