@@ -8,7 +8,6 @@ import "@tensorflow/tfjs-backend-cpu";
 import "@tensorflow/tfjs-backend-webgl";
 
 import { Button } from "@init/ui/button";
-import { cn } from "@init/ui/utils";
 
 // Define app states as a type for better type safety
 type AppState =

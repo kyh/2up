@@ -13,6 +13,9 @@ const PIPE_SPEED = 2;
 const BIRD_WIDTH = 34;
 const BIRD_HEIGHT = 24;
 
+// Define a type for game state
+type GameState = "initial" | "playing" | "gameover";
+
 type Bird = {
   y: number;
   velocity: number;
@@ -31,8 +34,7 @@ export const FlappyBird = () => {
   const birdRef = useRef<Bird>({ y: 200, velocity: 0, frame: 0 });
   const pipesRef = useRef<Pipe[]>([]);
   const scoreRef = useRef<number>(0);
-  const gameOverRef = useRef<boolean>(false);
-  const gameStartedRef = useRef<boolean>(false);
+  const gameStateRef = useRef<GameState>("initial");
   const assetsLoadedRef = useRef<boolean>(false);
 
   // Force render when assets are loaded
@@ -51,7 +53,7 @@ export const FlappyBird = () => {
   const wingSound = useRef<HTMLAudioElement | null>(null);
 
   const playSound = (sound: HTMLAudioElement | null) => {
-    if (sound && !gameOverRef.current) {
+    if (sound && gameStateRef.current !== "gameover") {
       sound.currentTime = 0;
       sound
         .play()
@@ -60,21 +62,24 @@ export const FlappyBird = () => {
   };
 
   const jump = () => {
-    console.log("jump", gameOverRef.current, gameStartedRef.current);
-    if (!gameOverRef.current && gameStartedRef.current) {
+    if (gameStateRef.current === "playing") {
       birdRef.current.velocity = -JUMP_STRENGTH;
       playSound(wingSound.current);
-    } else if (!gameStartedRef.current) {
-      gameStartedRef.current = true;
+      return;
     }
+    if (gameStateRef.current === "initial") {
+      gameStateRef.current = "playing";
+      return;
+    }
+    // gameStateRef.current === "gameover"
+    restartGame();
   };
 
   const restartGame = () => {
     birdRef.current = { y: 200, velocity: 0, frame: 0 };
     pipesRef.current = [];
     scoreRef.current = 0;
-    gameOverRef.current = false;
-    gameStartedRef.current = true;
+    gameStateRef.current = "playing";
     // Force a re-render
     setAssetsLoaded(!assetsLoaded);
   };
@@ -87,8 +92,7 @@ export const FlappyBird = () => {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    if (gameOverRef.current) {
-      console.log("here?", x, y);
+    if (gameStateRef.current === "gameover") {
       // Check if click is within Restart button area
       if (
         x >= canvas.width / 2 - 50 &&
@@ -189,7 +193,7 @@ export const FlappyBird = () => {
         );
       }
 
-      if (!gameStartedRef.current) {
+      if (gameStateRef.current === "initial") {
         // Draw message
         if (messageImage.current) {
           const messageWidth = 184;
@@ -255,7 +259,7 @@ export const FlappyBird = () => {
           birdRect.y < topPipeRect.y + topPipeRect.height &&
           birdRect.y + birdRect.height > topPipeRect.y
         ) {
-          gameOverRef.current = true;
+          gameStateRef.current = "gameover";
           playSound(hitSound.current);
         }
 
@@ -265,14 +269,14 @@ export const FlappyBird = () => {
           birdRect.y < bottomPipeRect.y + bottomPipeRect.height &&
           birdRect.y + birdRect.height > bottomPipeRect.y
         ) {
-          gameOverRef.current = true;
+          gameStateRef.current = "gameover";
           playSound(hitSound.current);
         }
       }
 
       // Update score
       if (
-        !gameOverRef.current &&
+        gameStateRef.current === "playing" &&
         pipes.some(
           (pipe) => pipe.x + PIPE_WIDTH < 50 && pipe.x + PIPE_WIDTH >= 48,
         )
@@ -344,11 +348,11 @@ export const FlappyBird = () => {
       });
 
       if (bird.y > canvas.height || bird.y < 0) {
-        gameOverRef.current = true;
+        gameStateRef.current = "gameover";
         playSound(hitSound.current);
       }
 
-      if (gameOverRef.current) {
+      if (gameStateRef.current === "gameover") {
         clearInterval(gameLoop);
         if (gameOverImage.current) {
           const gameOverWidth = 192;
