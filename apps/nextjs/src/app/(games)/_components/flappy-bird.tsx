@@ -1,7 +1,9 @@
 "use client";
 
 import type React from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { JumpDetection } from "./jump-detection";
 
 const GRAVITY = 0.5;
 const JUMP_STRENGTH = 10;
@@ -24,11 +26,17 @@ type Pipe = {
 
 export const FlappyBird = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [bird, setBird] = useState<Bird>({ y: 200, velocity: 0, frame: 0 });
-  const [pipes, setPipes] = useState<Pipe[]>([]);
-  const [score, setScore] = useState(0);
-  const [gameOver, setGameOver] = useState(false);
-  const [gameStarted, setGameStarted] = useState(false);
+
+  // Convert state to refs
+  const birdRef = useRef<Bird>({ y: 200, velocity: 0, frame: 0 });
+  const pipesRef = useRef<Pipe[]>([]);
+  const scoreRef = useRef<number>(0);
+  const gameOverRef = useRef<boolean>(false);
+  const gameStartedRef = useRef<boolean>(false);
+  const assetsLoadedRef = useRef<boolean>(false);
+
+  // Force render when assets are loaded
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
 
   const birdSprites = useRef<HTMLImageElement[]>([]);
   const backgroundImage = useRef<HTMLImageElement | null>(null);
@@ -36,12 +44,64 @@ export const FlappyBird = () => {
   const gameOverImage = useRef<HTMLImageElement | null>(null);
   const messageImage = useRef<HTMLImageElement | null>(null);
   const pipeImage = useRef<HTMLImageElement | null>(null);
-  const [assetsLoaded, setAssetsLoaded] = useState(false);
 
   // Audio refs
   const pointSound = useRef<HTMLAudioElement | null>(null);
   const hitSound = useRef<HTMLAudioElement | null>(null);
   const wingSound = useRef<HTMLAudioElement | null>(null);
+
+  const playSound = (sound: HTMLAudioElement | null) => {
+    if (sound && !gameOverRef.current) {
+      sound.currentTime = 0;
+      sound
+        .play()
+        .catch((error) => console.error("Error playing sound:", error));
+    }
+  };
+
+  const jump = () => {
+    console.log("jump", gameOverRef.current, gameStartedRef.current);
+    if (!gameOverRef.current && gameStartedRef.current) {
+      birdRef.current.velocity = -JUMP_STRENGTH;
+      playSound(wingSound.current);
+    } else if (!gameStartedRef.current) {
+      gameStartedRef.current = true;
+    }
+  };
+
+  const restartGame = () => {
+    birdRef.current = { y: 200, velocity: 0, frame: 0 };
+    pipesRef.current = [];
+    scoreRef.current = 0;
+    gameOverRef.current = false;
+    gameStartedRef.current = true;
+    // Force a re-render
+    setAssetsLoaded(!assetsLoaded);
+  };
+
+  const handleCanvasClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    if (gameOverRef.current) {
+      console.log("here?", x, y);
+      // Check if click is within Restart button area
+      if (
+        x >= canvas.width / 2 - 50 &&
+        x <= canvas.width / 2 + 50 &&
+        y >= canvas.height / 2 + 50 &&
+        y <= canvas.height / 2 + 90
+      ) {
+        restartGame();
+      }
+    } else {
+      jump();
+    }
+  };
 
   useEffect(() => {
     const birdUrls = [
@@ -102,55 +162,13 @@ export const FlappyBird = () => {
       pointSound.current = loadedAssets[17] as HTMLAudioElement;
       hitSound.current = loadedAssets[18] as HTMLAudioElement;
       wingSound.current = loadedAssets[19] as HTMLAudioElement;
-      setAssetsLoaded(true);
+      assetsLoadedRef.current = true;
+      setAssetsLoaded(true); // We still need this to trigger a render
     });
   }, []);
 
-  const playSound = useCallback(
-    (sound: HTMLAudioElement | null) => {
-      if (sound && !gameOver) {
-        sound.currentTime = 0;
-        sound
-          .play()
-          .catch((error) => console.error("Error playing sound:", error));
-      }
-    },
-    [gameOver],
-  );
-
-  const jump = useCallback(() => {
-    if (!gameOver && gameStarted) {
-      setBird((prevBird) => ({ ...prevBird, velocity: -JUMP_STRENGTH }));
-      playSound(wingSound.current);
-    } else if (!gameStarted) {
-      setGameStarted(true);
-    }
-  }, [gameOver, gameStarted, playSound]);
-
-  const restartGame = useCallback(() => {
-    setBird({ y: 200, velocity: 0, frame: 0 });
-    setPipes([]);
-    setScore(0);
-    setGameOver(false);
-    setGameStarted(true);
-  }, []);
-
   useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.code === "Space") {
-        if (!gameStarted) {
-          setGameStarted(true);
-        } else if (!gameOver) {
-          jump();
-        }
-      }
-    };
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [jump, gameStarted, gameOver]);
-
-  useEffect(() => {
-    if (!assetsLoaded) return;
+    if (!assetsLoadedRef.current) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
@@ -171,7 +189,7 @@ export const FlappyBird = () => {
         );
       }
 
-      if (!gameStarted) {
+      if (!gameStartedRef.current) {
         // Draw message
         if (messageImage.current) {
           const messageWidth = 184;
@@ -190,28 +208,24 @@ export const FlappyBird = () => {
       }
 
       // Update bird position and animation frame
-      setBird((prevBird) => ({
-        y: prevBird.y + prevBird.velocity,
-        velocity: prevBird.velocity + GRAVITY,
-        frame: (prevBird.frame + 1) % 3,
-      }));
+      const bird = birdRef.current;
+      bird.y += bird.velocity;
+      bird.velocity += GRAVITY;
+      bird.frame = (bird.frame + 1) % 3;
 
       // Move pipes
-      setPipes((prevPipes) =>
-        prevPipes.map((pipe) => ({ ...pipe, x: pipe.x - PIPE_SPEED })),
-      );
+      const pipes = pipesRef.current;
+      pipes.forEach((pipe) => (pipe.x -= PIPE_SPEED));
 
       // Generate new pipes
       const lastPipe = pipes[pipes.length - 1];
       if (pipes.length === 0 || (lastPipe && lastPipe.x < canvas.width - 200)) {
         const topHeight = Math.random() * (canvas.height - PIPE_GAP - 100) + 50;
-        setPipes((prevPipes) => [...prevPipes, { x: canvas.width, topHeight }]);
+        pipes.push({ x: canvas.width, topHeight });
       }
 
       // Remove off-screen pipes
-      setPipes((prevPipes) =>
-        prevPipes.filter((pipe) => pipe.x + PIPE_WIDTH > 0),
-      );
+      pipesRef.current = pipes.filter((pipe) => pipe.x + PIPE_WIDTH > 0);
 
       // Check collisions
       const birdRect = {
@@ -220,6 +234,7 @@ export const FlappyBird = () => {
         width: BIRD_WIDTH,
         height: BIRD_HEIGHT,
       };
+
       for (const pipe of pipes) {
         const topPipeRect = {
           x: pipe.x,
@@ -240,7 +255,7 @@ export const FlappyBird = () => {
           birdRect.y < topPipeRect.y + topPipeRect.height &&
           birdRect.y + birdRect.height > topPipeRect.y
         ) {
-          setGameOver(true);
+          gameOverRef.current = true;
           playSound(hitSound.current);
         }
 
@@ -250,19 +265,19 @@ export const FlappyBird = () => {
           birdRect.y < bottomPipeRect.y + bottomPipeRect.height &&
           birdRect.y + birdRect.height > bottomPipeRect.y
         ) {
-          setGameOver(true);
+          gameOverRef.current = true;
           playSound(hitSound.current);
         }
       }
 
       // Update score
       if (
-        !gameOver &&
+        !gameOverRef.current &&
         pipes.some(
           (pipe) => pipe.x + PIPE_WIDTH < 50 && pipe.x + PIPE_WIDTH >= 48,
         )
       ) {
-        setScore((prevScore) => prevScore + 1);
+        scoreRef.current += 1;
         playSound(pointSound.current);
       }
 
@@ -311,7 +326,7 @@ export const FlappyBird = () => {
       ctx.restore();
 
       // Draw score
-      const scoreString = score.toString();
+      const scoreString = scoreRef.current.toString();
       const digitWidth = 24;
       const totalWidth = scoreString.length * digitWidth;
       const startX = (canvas.width - totalWidth) / 2;
@@ -329,11 +344,11 @@ export const FlappyBird = () => {
       });
 
       if (bird.y > canvas.height || bird.y < 0) {
-        setGameOver(true);
+        gameOverRef.current = true;
         playSound(hitSound.current);
       }
 
-      if (gameOver) {
+      if (gameOverRef.current) {
         clearInterval(gameLoop);
         if (gameOverImage.current) {
           const gameOverWidth = 192;
@@ -363,66 +378,18 @@ export const FlappyBird = () => {
     }, 1000 / 60); // 60 FPS
 
     return () => clearInterval(gameLoop);
-  }, [
-    bird,
-    pipes,
-    gameOver,
-    score,
-    jump,
-    gameStarted,
-    assetsLoaded,
-    restartGame,
-    playSound,
-  ]);
-
-  const handleCanvasClick = useCallback(
-    (event: React.MouseEvent<HTMLCanvasElement>) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-
-      const rect = canvas.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      if (gameOver) {
-        // Check if click is within Restart button area
-        if (
-          x >= canvas.width / 2 - 50 &&
-          x <= canvas.width / 2 + 50 &&
-          y >= canvas.height / 2 + 50 &&
-          y <= canvas.height / 2 + 90
-        ) {
-          restartGame();
-        }
-      } else {
-        jump();
-      }
-    },
-    [gameOver, jump, restartGame],
-  );
-
-  useEffect(() => {
-    const handleResize = () => {
-      const canvas = canvasRef.current;
-      if (canvas) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize(); // Initial sizing
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [assetsLoaded]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={window.innerWidth}
-      height={window.innerHeight}
-      onClick={handleCanvasClick}
-    />
+    <>
+      <JumpDetection onJump={jump} />
+      <canvas
+        ref={canvasRef}
+        width={window.innerWidth}
+        height={window.innerHeight}
+        onClick={handleCanvasClick}
+      />
+    </>
   );
 };
 
