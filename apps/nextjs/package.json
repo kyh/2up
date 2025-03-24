@@ -18,6 +18,8 @@
     "@init/api": "workspace:^",
     "@init/db": "workspace:^",
     "@init/ui": "workspace:^",
+    "@react-three/drei": "^10.0.4",
+    "@react-three/fiber": "^9.1.0",
     "@stripe/react-stripe-js": "^3.3.0",
     "@stripe/stripe-js": "^5.10.0",
     "@tanstack/react-query": "catalog:",
@@ -32,6 +34,7 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "superjson": "catalog:",
+    "three": "^0.174.0",
     "zod": "catalog:"
   },
   "devDependencies": {
