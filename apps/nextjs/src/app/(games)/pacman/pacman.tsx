@@ -218,7 +218,7 @@ const Ghost = ({ position, color, scared }: GhostProps) => {
 };
 
 // Game component
-const Game = () => {
+const Game = ({ isFirstPerson = true }) => {
   const { scene } = useThree();
   const [pacmanPosition, setPacmanPosition] = useState<Vector3>(
     new Vector3(1, 0, 1), // Top-left corner
@@ -266,6 +266,15 @@ const Game = () => {
   const GHOST_COLLISION_RADIUS = 0.9; // Increased collision radius for ghosts
   const PELLET_COLLECTION_RADIUS = 0.6; // Increased pickup radius for pellets
 
+  // Reference to store current direction for keyboard handling
+  // This allows us to access the latest direction without recreating the effect
+  const directionRef = useRef(DIRECTIONS.RIGHT);
+
+  // Update direction ref when the state changes
+  useEffect(() => {
+    directionRef.current = direction;
+  }, [direction]);
+
   // Initialize game
   useEffect(() => {
     const newPellets: PelletData[] = [];
@@ -292,34 +301,86 @@ const Game = () => {
     setPellets(newPellets);
     setWalls(newWalls);
 
-    // Handle keyboard input
+    // Handle keyboard input - now with relative controls in first person mode
     const handleKeyDown = (e: KeyboardEvent): void => {
-      switch (e.key) {
-        case "ArrowUp":
-          setNextDirection(DIRECTIONS.UP);
-          break;
-        case "ArrowDown":
-          setNextDirection(DIRECTIONS.DOWN);
-          break;
-        case "ArrowLeft":
-          setNextDirection(DIRECTIONS.LEFT);
-          break;
-        case "ArrowRight":
-          setNextDirection(DIRECTIONS.RIGHT);
-          break;
+      // Always use the latest direction from the ref
+      const currentDirection = directionRef.current;
+
+      if (isFirstPerson) {
+        // First-person mode: controls are relative to Pacman's current direction
+        switch (e.key) {
+          case "ArrowUp": // Forward in current direction
+            setNextDirection(currentDirection);
+            break;
+          case "ArrowDown": // Backward/reverse current direction
+            // Calculate opposite direction
+            setNextDirection(currentDirection.clone().negate());
+            break;
+          case "ArrowLeft": // Turn left relative to current direction
+            if (currentDirection.equals(DIRECTIONS.UP)) {
+              setNextDirection(DIRECTIONS.LEFT);
+            } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
+              setNextDirection(DIRECTIONS.RIGHT);
+            } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
+              setNextDirection(DIRECTIONS.DOWN);
+            } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
+              setNextDirection(DIRECTIONS.UP);
+            }
+            break;
+          case "ArrowRight": // Turn right relative to current direction
+            if (currentDirection.equals(DIRECTIONS.UP)) {
+              setNextDirection(DIRECTIONS.RIGHT);
+            } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
+              setNextDirection(DIRECTIONS.LEFT);
+            } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
+              setNextDirection(DIRECTIONS.UP);
+            } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
+              setNextDirection(DIRECTIONS.DOWN);
+            }
+            break;
+        }
+      } else {
+        // Top-down mode: controls are absolute (WASD or arrows)
+        switch (e.key) {
+          case "ArrowUp":
+          case "w":
+          case "W":
+            setNextDirection(DIRECTIONS.UP);
+            break;
+          case "ArrowDown":
+          case "s":
+          case "S":
+            setNextDirection(DIRECTIONS.DOWN);
+            break;
+          case "ArrowLeft":
+          case "a":
+          case "A":
+            setNextDirection(DIRECTIONS.LEFT);
+            break;
+          case "ArrowRight":
+          case "d":
+          case "D":
+            setNextDirection(DIRECTIONS.RIGHT);
+            break;
+        }
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
 
-    // Start Pacman moving right from the corner
-    setDirection(DIRECTIONS.RIGHT);
-    setPacmanPosition(new Vector3(1, 0, 1));
+    // Only set initial position and direction if it's the first render
+    if (
+      pacmanPosition.equals(new Vector3(1, 0, 1)) &&
+      direction.equals(DIRECTIONS.RIGHT)
+    ) {
+      setDirection(DIRECTIONS.RIGHT);
+      setPacmanPosition(new Vector3(1, 0, 1));
+    }
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [isFirstPerson]); // Remove direction from dependencies, we use ref instead
 
   // Animate pacman's mouth
   useEffect(() => {
@@ -559,6 +620,7 @@ const Game = () => {
     });
   };
 
+  // Return game state for camera positioning
   return (
     <>
       {/* Lighting for top-down view */}
@@ -611,39 +673,179 @@ const Game = () => {
           />
         ))}
       </group>
+
+      {/* Export the current state for the parent component */}
+      <PacmanCamera
+        position={pacmanPosition}
+        direction={direction}
+        mapOffset={[-MAP[0].length / 2, 0, -MAP.length / 2]}
+        enabled={isFirstPerson} // Only enable first-person camera when in first-person mode
+      />
     </>
   );
 };
 
-// Main Pacman component with fixed camera
+// Third-person camera component with smooth transitions
+type PacmanCameraProps = {
+  position: Vector3;
+  direction: Direction;
+  mapOffset: [number, number, number];
+  enabled: boolean;
+};
+
+const PacmanCamera = ({
+  position,
+  direction,
+  mapOffset,
+  enabled,
+}: PacmanCameraProps) => {
+  const { camera } = useThree();
+
+  // Create refs to track and smoothly interpolate camera position and target
+  const currentCameraPos = useRef(new Vector3());
+  const targetCameraPos = useRef(new Vector3());
+  const currentLookAt = useRef(new Vector3());
+  const targetLookAt = useRef(new Vector3());
+
+  // Camera smoothing factor (0-1): lower = smoother but slower
+  const CAMERA_SMOOTHING = 0.1;
+
+  useFrame(() => {
+    // Only update camera if the third-person view is enabled
+    if (!enabled || !position || !direction) return;
+
+    // Calculate offset position (Pacman's position in the world)
+    const worldPos = position.clone().add(new Vector3(...mapOffset));
+
+    // Calculate target camera position:
+    // 1. Start from Pacman's position
+    // 2. Move backward (opposite of direction)
+    // 3. Raise the camera for a better view
+    const cameraOffset = direction.clone().multiplyScalar(-2.5);
+    cameraOffset.y = 2; // Raise the camera 2 units above the ground
+
+    // Update our target position
+    targetCameraPos.current.copy(worldPos).add(cameraOffset);
+
+    // Calculate target look-at point (slightly ahead of Pacman)
+    const lookAtOffset = direction.clone().multiplyScalar(2);
+    targetLookAt.current.copy(worldPos).add(lookAtOffset);
+
+    // On first frame, initialize current positions to targets to avoid jumps
+    if (currentCameraPos.current.length() === 0) {
+      currentCameraPos.current.copy(targetCameraPos.current);
+      currentLookAt.current.copy(targetLookAt.current);
+    }
+
+    // Smoothly interpolate between current and target positions
+    currentCameraPos.current.lerp(targetCameraPos.current, CAMERA_SMOOTHING);
+    currentLookAt.current.lerp(targetLookAt.current, CAMERA_SMOOTHING);
+
+    // Apply the smoothed camera position
+    camera.position.copy(currentCameraPos.current);
+
+    // Make the camera look at the smoothed target
+    camera.lookAt(currentLookAt.current);
+  });
+
+  return null;
+};
+
+// Main Pacman component with camera controls and additional settings
 const Pacman = () => {
   const [showControls, setShowControls] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [lives, setLives] = useState<number>(3);
   const [gameOver, setGameOver] = useState<boolean>(false);
+  const [isFirstPerson, setIsFirstPerson] = useState<boolean>(true);
+  const [cameraSmoothness, setCameraSmoothness] = useState<number>(0.1);
+
+  const toggleCameraView = () => {
+    setIsFirstPerson(!isFirstPerson);
+  };
 
   return (
-    <div className="h-dvh w-dvw">
-      <Canvas
-        shadows
-        camera={{
-          position: [0, 20, 0], // Fixed position high above the map
-          fov: 50,
-          near: 0.1,
-          far: 1000,
-          // Remove the lookAt property which causes the error
-          up: [0, 0, -1], // Adjust up vector for proper orientation
-        }}
-      >
-        {/* Add OrthographicCamera component to properly look at the scene */}
-        <OrbitControls
-          enableRotate={false}
-          enablePan={false}
-          enableZoom={false}
-          target={[0, 0, 0]}
-        />
-        <Game />
+    <div className="relative h-dvh w-dvw">
+      <Canvas shadows>
+        {/* Top-down camera setup - make it conditional */}
+        {!isFirstPerson && (
+          <>
+            <PerspectiveCamera
+              makeDefault
+              position={[0, 20, 0]}
+              fov={50}
+              near={0.1}
+              far={1000}
+              up={[0, 0, -1]}
+            />
+            <OrbitControls
+              enableRotate={false}
+              enablePan={false}
+              enableZoom={false}
+              target={[0, 0, 0]}
+            />
+          </>
+        )}
+
+        {/* Main game with isFirstPerson prop */}
+        <Game isFirstPerson={isFirstPerson} />
       </Canvas>
+
+      {/* UI overlay */}
+      <div className="absolute top-4 right-4 rounded bg-black/70 p-2 text-white">
+        <button
+          onClick={toggleCameraView}
+          className="rounded bg-blue-600 px-3 py-1 transition-colors hover:bg-blue-700"
+        >
+          {isFirstPerson ? "Switch to Top View" : "Switch to Third Person"}
+        </button>
+      </div>
+
+      {/* Game stats */}
+      <div className="absolute bottom-4 left-4 rounded bg-black/70 p-2 text-white">
+        <div>Score: {score}</div>
+        <div>Lives: {lives}</div>
+        {gameOver && <div className="font-bold text-red-400">Game Over!</div>}
+      </div>
+
+      {/* Enhanced controls panel with camera smoothness slider */}
+      <div className="absolute right-4 bottom-4 rounded bg-black/70 p-3 text-white">
+        <h3 className="text-sm font-bold">Controls:</h3>
+        {isFirstPerson ? (
+          <div className="space-y-1 text-xs">
+            <p>↑ - Move forward</p>
+            <p>↓ - Move backward</p>
+            <p>← - Turn left</p>
+            <p>→ - Turn right</p>
+
+            {/* Camera smoothness slider */}
+            <div className="mt-2 border-t border-gray-600 pt-2">
+              <label htmlFor="smoothness" className="mb-1 block text-xs">
+                Camera Smoothness: {cameraSmoothness.toFixed(2)}
+              </label>
+              <input
+                id="smoothness"
+                type="range"
+                min="0.01"
+                max="0.2"
+                step="0.01"
+                value={cameraSmoothness}
+                onChange={(e) =>
+                  setCameraSmoothness(parseFloat(e.target.value))
+                }
+                className="w-full"
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="text-xs">
+            <p>↑/W - Move up</p>
+            <p>↓/S - Move down</p>
+            <p>←/A - Move left</p>
+            <p>→/D - Move right</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
