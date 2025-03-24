@@ -70,8 +70,8 @@ const Wall = ({ position }: WallProps) => {
       castShadow
       receiveShadow
     >
-      <boxGeometry args={[0.95, 1, 0.95]} />{" "}
-      {/* Slightly smaller visually to prevent clipping */}
+      <boxGeometry args={[1, 1, 1]} />{" "}
+      {/* Exact 1x1x1 size for grid alignment */}
       <meshStandardMaterial color="#1d4ed8" transparent opacity={0.7} />{" "}
       {/* Added transparency */}
     </mesh>
@@ -118,52 +118,68 @@ type PacManProps = {
 const PacMan = ({ position, direction, mouthOpen }: PacManProps) => {
   const ref = useRef<Group>(null);
 
+  // Create a ref for mouth position and rotation
+  const mouthRef = useRef<Group>(null);
+
   useEffect(() => {
     // Rotate Pacman based on direction
-    if (!ref.current) return;
+    if (!ref.current || !mouthRef.current) return;
 
     // Reset rotation first
     ref.current.rotation.set(0, 0, 0);
 
+    // Set proper mouth orientation based on direction
     if (direction.equals(DIRECTIONS.UP)) {
       ref.current.rotation.x = -Math.PI / 2;
+      mouthRef.current.rotation.set(0, 0, 0); // Reset rotation
+      mouthRef.current.rotation.z = Math.PI / 2; // Rotate mouth to face up
     } else if (direction.equals(DIRECTIONS.DOWN)) {
       ref.current.rotation.x = Math.PI / 2;
+      mouthRef.current.rotation.set(0, 0, 0); // Reset rotation
+      mouthRef.current.rotation.z = Math.PI / 2; // Rotate mouth to face down
     } else if (direction.equals(DIRECTIONS.LEFT)) {
       ref.current.rotation.y = Math.PI;
+      mouthRef.current.rotation.set(0, 0, 0); // Reset rotation
     } else if (direction.equals(DIRECTIONS.RIGHT)) {
       // Right is the default orientation
+      mouthRef.current.rotation.set(0, 0, 0); // Reset rotation
     }
   }, [direction]);
 
-  // Convert mouthOpen from 0-1 to an angle between 0 and PI/4
-  const angle = (Math.PI / 4) * mouthOpen;
+  // Convert mouthOpen from 0-1 to an angle between 0 and PI/3
+  const angle = (Math.PI / 3) * mouthOpen;
 
   return (
     <group ref={ref} position={position} name="pacman">
-      {/* Single mesh for Pacman with cutout mouth */}
+      {/* Main Pacman sphere */}
       <mesh>
-        {/* Use a complete sphere */}
         <sphereGeometry args={[0.5, 32, 32]} />
         <meshStandardMaterial color="#facc15" />
       </mesh>
 
-      {/* Black mouth wedge that creates the appearance of an opening */}
-      <mesh position={[0.25, 0, 0]}>
-        <cylinderGeometry
-          args={[
-            0.52, // Top radius (slightly larger than sphere)
-            0.52, // Bottom radius
-            1.1, // Height
-            32, // Radial segments
-            1, // Height segments
-            false, // Open ended
-            0, // Start angle
-            angle, // End angle - varies with mouthOpen
-          ]}
-        />
-        <meshBasicMaterial color="black" />
-      </mesh>
+      {/* Mouth - now using a group to position it properly */}
+      <group ref={mouthRef} position={[0, 0, 0]}>
+        {/* 
+          The mouth is now positioned at the origin, but will appear at the 
+          front of the sphere because the cylinder extends forward.
+          This allows it to rotate properly with the Pacman sphere.
+        */}
+        <mesh position={[0, -0.15, 0.25]}>
+          <cylinderGeometry
+            args={[
+              0.25, // Top radius (half of the Pacman radius)
+              0.25, // Bottom radius
+              0.5, // Height (enough to cut through the sphere)
+              32, // Radial segments
+              1, // Height segments
+              false, // Open ended
+              0, // Start angle
+              angle, // End angle - varies with mouthOpen
+            ]}
+          />
+          <meshBasicMaterial color="black" />
+        </mesh>
+      </group>
     </group>
   );
 };
@@ -265,6 +281,53 @@ const Game = ({ isFirstPerson = true }) => {
   const WALL_COLLISION_THRESHOLD = 0.4; // Increased collision margin for walls
   const GHOST_COLLISION_RADIUS = 0.9; // Increased collision radius for ghosts
   const PELLET_COLLECTION_RADIUS = 0.6; // Increased pickup radius for pellets
+
+  // Constants for grid-based movement
+  const GRID_CELL_SIZE = 1; // Each cell is 1 unit
+  const MOVEMENT_SPEED = 4; // Units per second
+  const GHOST_SPEED = 3; // Units per second
+  const SCARED_GHOST_SPEED = 1.5; // Units per second when scared
+
+  // Snap an arbitrary position to the nearest grid cell center
+  const snapToGrid = (position: Vector3): Vector3 => {
+    return new Vector3(
+      Math.round(position.x),
+      position.y,
+      Math.round(position.z),
+    );
+  };
+
+  // Check if we're at a grid cell center (or very close to it)
+  const isAtGridCenter = (position: Vector3, threshold = 0.1): boolean => {
+    const distX = Math.abs(position.x - Math.round(position.x));
+    const distZ = Math.abs(position.z - Math.round(position.z));
+    return distX <= threshold && distZ <= threshold;
+  };
+
+  // Check if a grid cell is a valid move (not a wall)
+  const isValidMove = (x: number, z: number): boolean => {
+    // Check if the position is within the map bounds
+    if (x < 0 || z < 0 || x >= MAP[0].length || z >= MAP.length) return false;
+    // Check if the position is not a wall
+    return MAP[z][x] !== 1;
+  };
+
+  // Get valid directions from current grid position
+  const getValidDirections = (position: Vector3): Direction[] => {
+    // Ensure we're working with rounded grid coordinates
+    const gridX = Math.round(position.x);
+    const gridZ = Math.round(position.z);
+
+    const validDirections: Direction[] = [];
+
+    // Check each of the four possible directions
+    if (isValidMove(gridX, gridZ - 1)) validDirections.push(DIRECTIONS.UP);
+    if (isValidMove(gridX, gridZ + 1)) validDirections.push(DIRECTIONS.DOWN);
+    if (isValidMove(gridX - 1, gridZ)) validDirections.push(DIRECTIONS.LEFT);
+    if (isValidMove(gridX + 1, gridZ)) validDirections.push(DIRECTIONS.RIGHT);
+
+    return validDirections;
+  };
 
   // Reference to store current direction for keyboard handling
   // This allows us to access the latest direction without recreating the effect
@@ -368,13 +431,13 @@ const Game = ({ isFirstPerson = true }) => {
 
     window.addEventListener("keydown", handleKeyDown);
 
-    // Only set initial position and direction if it's the first render
+    // Snap initial position to grid
     if (
       pacmanPosition.equals(new Vector3(1, 0, 1)) &&
       direction.equals(DIRECTIONS.RIGHT)
     ) {
       setDirection(DIRECTIONS.RIGHT);
-      setPacmanPosition(new Vector3(1, 0, 1));
+      setPacmanPosition(snapToGrid(new Vector3(1, 0, 1)));
     }
 
     return () => {
@@ -410,108 +473,181 @@ const Game = ({ isFirstPerson = true }) => {
     };
   }, [ghostsScared]);
 
-  // Game loop
+  // Game loop - revised to fix ghost freezing when Pacman hits a wall
   useFrame((_, delta) => {
     if (gameOver) return;
 
-    // Check if we can change to the next direction
-    const nextPos = pacmanPosition.clone().add(nextDirection);
-    const canChangeDirection = !checkWallCollision(
-      nextPos.x,
-      nextPos.z,
-      WALL_COLLISION_THRESHOLD,
-    );
+    // Clamp delta to prevent jumps on frame drops
+    const clampedDelta = Math.min(delta, 0.1);
 
-    if (canChangeDirection && !nextDirection.equals(DIRECTIONS.NONE)) {
-      setDirection(nextDirection);
-      setNextDirection(DIRECTIONS.NONE);
-    }
+    // PACMAN MOVEMENT
+    let pacmanIsMoving = true; // Flag to track if Pacman is moving
 
-    // Move Pacman
-    if (!direction.equals(DIRECTIONS.NONE)) {
-      // Clamp delta to prevent jumps on frame drops
-      const clampedDelta = Math.min(delta, 0.1);
-      const speed = 3.5; // Slightly faster for better responsiveness
+    // Check if we're at a grid intersection (or very close)
+    if (isAtGridCenter(pacmanPosition)) {
+      // At grid center, we can change direction if requested
+      if (!nextDirection.equals(DIRECTIONS.NONE)) {
+        // Calculate the next cell position in the requested direction
+        const nextPos = pacmanPosition.clone().add(nextDirection);
+        const nextGridX = Math.round(nextPos.x);
+        const nextGridZ = Math.round(nextPos.z);
 
-      const newPosition = pacmanPosition
-        .clone()
-        .add(direction.clone().multiplyScalar(speed * clampedDelta));
+        // Check if the move is valid (not a wall)
+        if (isValidMove(nextGridX, nextGridZ)) {
+          setDirection(nextDirection);
+          setNextDirection(DIRECTIONS.NONE);
+        }
+      }
 
-      // Check for collision with walls using improved collision detection
-      if (
-        !checkWallCollision(
-          newPosition.x,
-          newPosition.z,
-          WALL_COLLISION_THRESHOLD,
-        )
-      ) {
-        setPacmanPosition(newPosition);
+      // Calculate the next cell position in the current direction
+      const nextPos = pacmanPosition.clone().add(direction);
+      const nextGridX = Math.round(nextPos.x);
+      const nextGridZ = Math.round(nextPos.z);
 
-        // Check for pellet collection with improved radius
-        checkPelletCollection(newPosition, PELLET_COLLECTION_RADIUS);
-
-        // Check for ghost collisions with improved radius
-        checkGhostCollisions(newPosition, GHOST_COLLISION_RADIUS);
+      // Check if we can continue in the current direction
+      if (!isValidMove(nextGridX, nextGridZ)) {
+        // We've hit a wall, stop Pacman but continue with ghost movement
+        pacmanIsMoving = false;
       }
     }
 
-    // Move ghosts with improved collision detection
-    moveGhosts(delta, WALL_COLLISION_THRESHOLD);
+    // Move Pacman in the current direction
+    if (pacmanIsMoving && !direction.equals(DIRECTIONS.NONE)) {
+      const moveDistance = MOVEMENT_SPEED * clampedDelta;
+      const newPosition = pacmanPosition
+        .clone()
+        .add(direction.clone().multiplyScalar(moveDistance));
+
+      // Check if we'd overshoot the next grid cell
+      const targetGridPos = snapToGrid(pacmanPosition.clone().add(direction));
+      const distToTarget = pacmanPosition.distanceTo(targetGridPos);
+
+      if (moveDistance > distToTarget) {
+        // We're overshooting, snap to the grid cell
+        setPacmanPosition(targetGridPos);
+      } else {
+        // Regular movement
+        setPacmanPosition(newPosition);
+      }
+
+      // Check for pellet collection
+      checkPelletCollection(newPosition, PELLET_COLLECTION_RADIUS);
+
+      // Check for ghost collisions
+      checkGhostCollisions(newPosition, GHOST_COLLISION_RADIUS);
+    }
+
+    // GHOST MOVEMENT - Always run, regardless of Pacman's state
+    moveGhostsOnGrid(clampedDelta);
   });
 
-  // Enhanced wall collision detection with adjustable threshold
-  const checkWallCollision = (
-    x: number,
-    z: number,
-    threshold = 0.5,
-  ): boolean => {
-    // Check the cell the entity is currently in
-    const centerX = Math.round(x);
-    const centerZ = Math.round(z);
+  // Move ghosts with grid-based movement
+  const moveGhostsOnGrid = (delta: number): void => {
+    setGhosts((prevGhosts) => {
+      return prevGhosts.map((ghost) => {
+        // Check if ghost is at a grid intersection
+        if (isAtGridCenter(ghost.position)) {
+          // Get valid directions from current position
+          const validDirections = getValidDirections(ghost.position);
 
-    // Calculate distance from center of current cell
-    const distX = Math.abs(x - centerX);
-    const distZ = Math.abs(z - centerZ);
+          // Ghost AI: prefer to move toward Pacman, but with some randomness
+          let newDirection = ghost.direction;
 
-    // Check if we're close to a wall in the current position or in adjacent cells
-    if (isWall(centerX, centerZ)) return true;
+          // Don't allow ghosts to reverse direction unless it's the only option
+          const nonReverseDirections = validDirections.filter(
+            (dir) => !dir.equals(ghost.direction.clone().negate()),
+          );
 
-    // Check adjacent cells only if we're close enough to their boundaries
-    if (distX > 1 - threshold) {
-      const adjX = x > centerX ? centerX + 1 : centerX - 1;
-      if (isWall(adjX, centerZ)) return true;
-    }
+          const availableDirections =
+            nonReverseDirections.length > 0
+              ? nonReverseDirections
+              : validDirections;
 
-    if (distZ > 1 - threshold) {
-      const adjZ = z > centerZ ? centerZ + 1 : centerZ - 1;
-      if (isWall(centerX, adjZ)) return true;
-    }
+          if (availableDirections.length > 0) {
+            if (ghostsScared) {
+              // When scared, move randomly
+              newDirection =
+                availableDirections[
+                  Math.floor(Math.random() * availableDirections.length)
+                ]!;
+            } else {
+              // Simple chase algorithm: 70% chance to move toward Pacman, 30% random
+              if (Math.random() < 0.7) {
+                // Calculate direction that gets us closer to Pacman
+                const ghostGrid = snapToGrid(ghost.position);
+                const pacmanGrid = snapToGrid(pacmanPosition);
 
-    // Check diagonal cells if we're close to corners
-    if (distX > 1 - threshold && distZ > 1 - threshold) {
-      const adjX = x > centerX ? centerX + 1 : centerX - 1;
-      const adjZ = z > centerZ ? centerZ + 1 : centerZ - 1;
-      if (isWall(adjX, adjZ)) return true;
-    }
+                // Calculate which directions reduce distance to Pacman
+                const goodDirections = availableDirections.filter((dir) => {
+                  const nextPos = ghostGrid.clone().add(dir);
+                  const currentDist = ghostGrid.distanceTo(pacmanGrid);
+                  const nextDist = nextPos.distanceTo(pacmanGrid);
+                  return nextDist < currentDist;
+                });
 
-    return false;
+                // Choose from good directions, or any available if none are good
+                if (goodDirections.length > 0) {
+                  newDirection =
+                    goodDirections[
+                      Math.floor(Math.random() * goodDirections.length)
+                    ]!;
+                } else {
+                  newDirection =
+                    availableDirections[
+                      Math.floor(Math.random() * availableDirections.length)
+                    ]!;
+                }
+              } else {
+                // Random movement for unpredictability
+                newDirection =
+                  availableDirections[
+                    Math.floor(Math.random() * availableDirections.length)
+                  ]!;
+              }
+            }
+          }
+
+          // Update ghost direction
+          ghost = { ...ghost, direction: newDirection };
+        }
+
+        // Move ghost in its current direction
+        const speed = ghostsScared ? SCARED_GHOST_SPEED : GHOST_SPEED;
+        const moveDistance = speed * delta;
+        const newPosition = ghost.position
+          .clone()
+          .add(ghost.direction.clone().multiplyScalar(moveDistance));
+
+        // Check if we'd overshoot the next grid cell
+        const targetGridPos = snapToGrid(
+          ghost.position.clone().add(ghost.direction),
+        );
+        const distToTarget = ghost.position.distanceTo(targetGridPos);
+
+        if (moveDistance > distToTarget) {
+          // Snap to the grid cell if we'd overshoot
+          return { ...ghost, position: targetGridPos };
+        } else {
+          // Regular movement
+          return { ...ghost, position: newPosition };
+        }
+      });
+    });
   };
 
-  // Check if a position contains a wall (basic lookup)
-  const isWall = (x: number, z: number): boolean => {
-    if (x < 0 || z < 0 || x >= MAP[0].length || z >= MAP.length) return true;
-    return MAP[z][x] === 1;
-  };
-
-  // Check if Pacman collected any pellets with improved radius
+  // Check if Pacman collected any pellets - now using grid coordinates
   const checkPelletCollection = (position: Vector3, radius = 0.5): void => {
+    // Use grid position for more precise collection
+    const gridPos = snapToGrid(position);
+
     setPellets((prevPellets) => {
       const newPellets = [...prevPellets];
       const pelletIndex = newPellets.findIndex(
-        (p) => !p.collected && position.distanceTo(p.position) < radius,
+        (p) => !p.collected && p.position.distanceTo(gridPos) < radius,
       );
 
       if (pelletIndex !== -1) {
+        // Update the game state when collecting a pellet
         newPellets[pelletIndex].collected = true;
 
         if (newPellets[pelletIndex].isPowerPellet) {
@@ -532,68 +668,13 @@ const Game = ({ isFirstPerson = true }) => {
     });
   };
 
-  // Move ghosts with improved collision detection
-  const moveGhosts = (delta: number, wallThreshold = 0.5): void => {
-    setGhosts((prevGhosts) => {
-      return prevGhosts.map((ghost) => {
-        // Simple ghost AI: change direction randomly or when hitting a wall
-        let newDirection = ghost.direction;
-        const shouldChangeDirection =
-          Math.random() < 0.01 ||
-          checkWallCollision(
-            ghost.position.x + ghost.direction.x * wallThreshold,
-            ghost.position.z + ghost.direction.z * wallThreshold,
-            wallThreshold,
-          );
-
-        if (shouldChangeDirection) {
-          // Find possible directions
-          const possibleDirections = [
-            DIRECTIONS.UP,
-            DIRECTIONS.DOWN,
-            DIRECTIONS.LEFT,
-            DIRECTIONS.RIGHT,
-          ].filter((dir) => {
-            const newPos = ghost.position
-              .clone()
-              .add(dir.clone().multiplyScalar(wallThreshold));
-            return !checkWallCollision(newPos.x, newPos.z, wallThreshold);
-          });
-
-          if (possibleDirections.length > 0) {
-            newDirection =
-              possibleDirections[
-                Math.floor(Math.random() * possibleDirections.length)
-              ]!;
-          }
-        }
-
-        // Calculate new position
-        const speed = ghostsScared ? 1.0 : 1.5;
-        const newPosition = ghost.position
-          .clone()
-          .add(newDirection.clone().multiplyScalar(speed * delta));
-
-        // Check for wall collision with improved detection
-        if (!checkWallCollision(newPosition.x, newPosition.z, wallThreshold)) {
-          return {
-            ...ghost,
-            position: newPosition,
-            direction: newDirection,
-          };
-        }
-
-        return ghost;
-      });
-    });
-  };
-
-  // Check for collisions with ghosts using improved radius
+  // Check for collisions with ghosts - using grid coordinates
   const checkGhostCollisions = (position: Vector3, radius = 0.8): void => {
-    ghosts.forEach((ghost) => {
-      const distance = position.distanceTo(ghost.position);
+    const gridPos = snapToGrid(position);
 
-      if (distance < radius) {
+    ghosts.forEach((ghost) => {
+      const ghostGridPos = snapToGrid(ghost.position);
+      if (gridPos.equals(ghostGridPos)) {
         if (ghostsScared) {
           // Ghost is scared, send it back to the center
           setGhosts((prevGhosts) =>
@@ -610,9 +691,9 @@ const Game = ({ isFirstPerson = true }) => {
           if (lives <= 1) {
             setGameOver(true);
           } else {
-            // Reset Pacman position
-            setPacmanPosition(new Vector3(1, 0, 1)); // Reset to starting position
-            setDirection(DIRECTIONS.RIGHT); // Reset direction
+            // Reset Pacman position and direction
+            setPacmanPosition(snapToGrid(new Vector3(1, 0, 1)));
+            setDirection(DIRECTIONS.RIGHT);
             setNextDirection(DIRECTIONS.NONE);
           }
         }
@@ -753,12 +834,7 @@ const PacmanCamera = ({
 
 // Main Pacman component with camera controls and additional settings
 const Pacman = () => {
-  const [showControls, setShowControls] = useState<boolean>(false);
-  const [score, setScore] = useState<number>(0);
-  const [lives, setLives] = useState<number>(3);
-  const [gameOver, setGameOver] = useState<boolean>(false);
   const [isFirstPerson, setIsFirstPerson] = useState<boolean>(true);
-  const [cameraSmoothness, setCameraSmoothness] = useState<number>(0.1);
 
   const toggleCameraView = () => {
     setIsFirstPerson(!isFirstPerson);
@@ -799,52 +875,6 @@ const Pacman = () => {
         >
           {isFirstPerson ? "Switch to Top View" : "Switch to Third Person"}
         </button>
-      </div>
-
-      {/* Game stats */}
-      <div className="absolute bottom-4 left-4 rounded bg-black/70 p-2 text-white">
-        <div>Score: {score}</div>
-        <div>Lives: {lives}</div>
-        {gameOver && <div className="font-bold text-red-400">Game Over!</div>}
-      </div>
-
-      {/* Enhanced controls panel with camera smoothness slider */}
-      <div className="absolute right-4 bottom-4 rounded bg-black/70 p-3 text-white">
-        <h3 className="text-sm font-bold">Controls:</h3>
-        {isFirstPerson ? (
-          <div className="space-y-1 text-xs">
-            <p>↑ - Move forward</p>
-            <p>↓ - Move backward</p>
-            <p>← - Turn left</p>
-            <p>→ - Turn right</p>
-
-            {/* Camera smoothness slider */}
-            <div className="mt-2 border-t border-gray-600 pt-2">
-              <label htmlFor="smoothness" className="mb-1 block text-xs">
-                Camera Smoothness: {cameraSmoothness.toFixed(2)}
-              </label>
-              <input
-                id="smoothness"
-                type="range"
-                min="0.01"
-                max="0.2"
-                step="0.01"
-                value={cameraSmoothness}
-                onChange={(e) =>
-                  setCameraSmoothness(parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-          </div>
-        ) : (
-          <div className="text-xs">
-            <p>↑/W - Move up</p>
-            <p>↓/S - Move down</p>
-            <p>←/A - Move left</p>
-            <p>→/D - Move right</p>
-          </div>
-        )}
       </div>
     </div>
   );
