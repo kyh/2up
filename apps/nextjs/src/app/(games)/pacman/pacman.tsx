@@ -1,12 +1,15 @@
 "use client";
 
-import type { Group, Side } from "three";
-import { useEffect, useRef, useState } from "react";
+import type { FC } from "react";
+import type { Group } from "three";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Vector3 } from "three";
 
-// Type definitions
+/**
+ * Type definitions for the Pacman game
+ */
 type CellType = 0 | 1 | 2 | 3; // 0 = empty, 1 = wall, 2 = pellet, 3 = power pellet
 type GameMap = CellType[][];
 type Direction = Vector3;
@@ -26,7 +29,21 @@ type GhostData = {
   direction: Direction;
 };
 
-// Game map layout: 0 = empty, 1 = wall, 2 = pellet, 3 = power pellet
+type GameState = {
+  score: number;
+  lives: number;
+  gameOver: boolean;
+  ghostsScared: boolean;
+  scaredTimer?: NodeJS.Timeout;
+};
+
+/**
+ * Game map layout:
+ * 0 = empty
+ * 1 = wall
+ * 2 = pellet
+ * 3 = power pellet
+ */
 const MAP: GameMap = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1],
@@ -49,7 +66,9 @@ const MAP: GameMap = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-// Direction constants
+/**
+ * Movement direction vectors
+ */
 const DIRECTIONS = {
   UP: new Vector3(0, 0, -1),
   DOWN: new Vector3(0, 0, 1),
@@ -58,37 +77,56 @@ const DIRECTIONS = {
   NONE: new Vector3(0, 0, 0),
 };
 
+/**
+ * Game constants
+ */
+const CONSTANTS = {
+  GRID_CELL_SIZE: 1,
+  MOVEMENT_SPEED: 4,
+  GHOST_SPEED: 3,
+  SCARED_GHOST_SPEED: 1.5,
+  WALL_COLLISION_THRESHOLD: 0.4,
+  GHOST_COLLISION_RADIUS: 0.9,
+  PELLET_COLLECTION_RADIUS: 0.6,
+  CAMERA_SMOOTHING: 0.1,
+  POWER_PELLET_DURATION: 10000,
+  MOUTH_ANIMATION_INTERVAL: 100,
+};
+
+/**
+ * Wall component
+ */
 type WallProps = {
   position: [number, number, number];
 };
 
-// Wall component with transparency
-const Wall = ({ position }: WallProps) => {
+const Wall: FC<WallProps> = ({ position }) => {
   return (
     <mesh
       position={[position[0], position[1] + 0.5, position[2]]}
       castShadow
       receiveShadow
     >
-      <boxGeometry args={[1, 1, 1]} />{" "}
-      {/* Exact 1x1x1 size for grid alignment */}
-      <meshStandardMaterial color="#1d4ed8" transparent opacity={0.7} />{" "}
-      {/* Added transparency */}
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="#1d4ed8" transparent opacity={0.7} />
     </mesh>
   );
 };
 
+/**
+ * Pellet component
+ */
 type PelletProps = {
   position: Vector3;
   isPowerPellet?: boolean;
   onCollect?: () => void;
 };
 
-const Pellet = ({
+const Pellet: FC<PelletProps> = ({
   position,
   isPowerPellet = false,
   onCollect,
-}: PelletProps) => {
+}) => {
   const ref = useRef<Group>(null);
 
   useFrame(() => {
@@ -109,20 +147,23 @@ const Pellet = ({
   );
 };
 
+/**
+ * PacMan character component
+ */
 type PacManProps = {
   position: Vector3;
   direction: Direction;
   mouthOpen: number;
 };
 
-const PacMan = ({ position, direction, mouthOpen }: PacManProps) => {
+const PacMan: FC<PacManProps> = ({ position, direction, mouthOpen }) => {
   const ref = useRef<Group>(null);
-
-  // Create a ref for mouth position and rotation
   const mouthRef = useRef<Group>(null);
 
-  useEffect(() => {
-    // Rotate Pacman based on direction
+  // Angle for mouth animation (0 to PI/3)
+  const angle = (Math.PI / 3) * mouthOpen;
+
+  useFrame(() => {
     if (!ref.current || !mouthRef.current) return;
 
     // Reset rotation first
@@ -131,23 +172,20 @@ const PacMan = ({ position, direction, mouthOpen }: PacManProps) => {
     // Set proper mouth orientation based on direction
     if (direction.equals(DIRECTIONS.UP)) {
       ref.current.rotation.x = -Math.PI / 2;
-      mouthRef.current.rotation.set(0, 0, 0); // Reset rotation
-      mouthRef.current.rotation.z = Math.PI / 2; // Rotate mouth to face up
+      mouthRef.current.rotation.set(0, 0, 0);
+      mouthRef.current.rotation.z = Math.PI / 2;
     } else if (direction.equals(DIRECTIONS.DOWN)) {
       ref.current.rotation.x = Math.PI / 2;
-      mouthRef.current.rotation.set(0, 0, 0); // Reset rotation
-      mouthRef.current.rotation.z = Math.PI / 2; // Rotate mouth to face down
+      mouthRef.current.rotation.set(0, 0, 0);
+      mouthRef.current.rotation.z = Math.PI / 2;
     } else if (direction.equals(DIRECTIONS.LEFT)) {
       ref.current.rotation.y = Math.PI;
-      mouthRef.current.rotation.set(0, 0, 0); // Reset rotation
+      mouthRef.current.rotation.set(0, 0, 0);
     } else if (direction.equals(DIRECTIONS.RIGHT)) {
       // Right is the default orientation
-      mouthRef.current.rotation.set(0, 0, 0); // Reset rotation
+      mouthRef.current.rotation.set(0, 0, 0);
     }
-  }, [direction]);
-
-  // Convert mouthOpen from 0-1 to an angle between 0 and PI/3
-  const angle = (Math.PI / 3) * mouthOpen;
+  });
 
   return (
     <group ref={ref} position={position} name="pacman">
@@ -157,13 +195,8 @@ const PacMan = ({ position, direction, mouthOpen }: PacManProps) => {
         <meshStandardMaterial color="#facc15" />
       </mesh>
 
-      {/* Mouth - now using a group to position it properly */}
+      {/* Mouth - using a group to position it properly */}
       <group ref={mouthRef} position={[0, 0, 0]}>
-        {/* 
-          The mouth is now positioned at the origin, but will appear at the 
-          front of the sphere because the cylinder extends forward.
-          This allows it to rotate properly with the Pacman sphere.
-        */}
         <mesh position={[0, -0.15, 0.25]}>
           <cylinderGeometry
             args={[
@@ -184,13 +217,16 @@ const PacMan = ({ position, direction, mouthOpen }: PacManProps) => {
   );
 };
 
+/**
+ * Ghost enemy component
+ */
 type GhostProps = {
   position: Vector3;
   color: string;
   scared: boolean;
 };
 
-const Ghost = ({ position, color, scared }: GhostProps) => {
+const Ghost: FC<GhostProps> = ({ position, color, scared }) => {
   const ref = useRef<Group>(null);
 
   useFrame(() => {
@@ -208,7 +244,7 @@ const Ghost = ({ position, color, scared }: GhostProps) => {
           <meshStandardMaterial color={scared ? "#6b7280" : color} />
         </mesh>
         {/* Eyes */}
-        <group position={[0.2, 0.1, -0.3]} rotation={[0, 0, 0]}>
+        <group position={[0.2, 0.1, -0.3]}>
           <mesh>
             <sphereGeometry args={[0.15, 16, 16]} />
             <meshStandardMaterial color="white" />
@@ -218,7 +254,7 @@ const Ghost = ({ position, color, scared }: GhostProps) => {
             <meshStandardMaterial color="black" />
           </mesh>
         </group>
-        <group position={[-0.2, 0.1, -0.3]} rotation={[0, 0, 0]}>
+        <group position={[-0.2, 0.1, -0.3]}>
           <mesh>
             <sphereGeometry args={[0.15, 16, 16]} />
             <meshStandardMaterial color="white" />
@@ -233,21 +269,157 @@ const Ghost = ({ position, color, scared }: GhostProps) => {
   );
 };
 
-// Game component
-const Game = ({ isFirstPerson = true }) => {
+/**
+ * Utility functions for game logic
+ */
+const GameUtils = {
+  /**
+   * Snaps an arbitrary position to the nearest grid cell center
+   */
+  snapToGrid: (position: Vector3): Vector3 => {
+    return new Vector3(
+      Math.round(position.x),
+      position.y,
+      Math.round(position.z),
+    );
+  },
+
+  /**
+   * Checks if a position is at a grid cell center (or very close to it)
+   */
+  isAtGridCenter: (position: Vector3, threshold = 0.1): boolean => {
+    const distX = Math.abs(position.x - Math.round(position.x));
+    const distZ = Math.abs(position.z - Math.round(position.z));
+    return distX <= threshold && distZ <= threshold;
+  },
+
+  /**
+   * Checks if a grid cell is a valid move (not a wall)
+   */
+  isValidMove: (x: number, z: number): boolean => {
+    // Check if the position is within the map bounds
+    if (x < 0 || z < 0 || x >= MAP[0].length || z >= MAP.length) return false;
+    // Check if the position is not a wall
+    return MAP[z][x] !== 1;
+  },
+
+  /**
+   * Gets valid directions from current grid position
+   */
+  getValidDirections: (position: Vector3): Direction[] => {
+    // Ensure we're working with rounded grid coordinates
+    const gridX = Math.round(position.x);
+    const gridZ = Math.round(position.z);
+
+    const validDirections: Direction[] = [];
+
+    // Check each of the four possible directions
+    if (GameUtils.isValidMove(gridX, gridZ - 1))
+      validDirections.push(DIRECTIONS.UP);
+    if (GameUtils.isValidMove(gridX, gridZ + 1))
+      validDirections.push(DIRECTIONS.DOWN);
+    if (GameUtils.isValidMove(gridX - 1, gridZ))
+      validDirections.push(DIRECTIONS.LEFT);
+    if (GameUtils.isValidMove(gridX + 1, gridZ))
+      validDirections.push(DIRECTIONS.RIGHT);
+
+    return validDirections;
+  },
+};
+
+/**
+ * First-person camera component with smooth transitions
+ */
+type PacmanCameraProps = {
+  position: Vector3;
+  direction: Direction;
+  mapOffset: [number, number, number];
+  enabled: boolean;
+};
+
+const PacmanCamera: FC<PacmanCameraProps> = ({
+  position,
+  direction,
+  mapOffset,
+  enabled,
+}) => {
+  const { camera } = useThree();
+
+  // Create refs to track and smoothly interpolate camera position and target
+  const currentCameraPos = useRef(new Vector3());
+  const targetCameraPos = useRef(new Vector3());
+  const currentLookAt = useRef(new Vector3());
+  const targetLookAt = useRef(new Vector3());
+
+  useFrame(() => {
+    // Only update camera if the first-person view is enabled
+    if (!enabled || !position || !direction) return;
+
+    // Calculate offset position (Pacman's position in the world)
+    const worldPos = position.clone().add(new Vector3(...mapOffset));
+
+    // Calculate target camera position
+    const cameraOffset = direction.clone().multiplyScalar(-2.5);
+    cameraOffset.y = 2; // Raise the camera 2 units above the ground
+    targetCameraPos.current.copy(worldPos).add(cameraOffset);
+
+    // Calculate target look-at point (slightly ahead of Pacman)
+    const lookAtOffset = direction.clone().multiplyScalar(2);
+    targetLookAt.current.copy(worldPos).add(lookAtOffset);
+
+    // On first frame, initialize current positions to targets to avoid jumps
+    if (currentCameraPos.current.length() === 0) {
+      currentCameraPos.current.copy(targetCameraPos.current);
+      currentLookAt.current.copy(targetLookAt.current);
+    }
+
+    // Smoothly interpolate between current and target positions
+    currentCameraPos.current.lerp(
+      targetCameraPos.current,
+      CONSTANTS.CAMERA_SMOOTHING,
+    );
+    currentLookAt.current.lerp(
+      targetLookAt.current,
+      CONSTANTS.CAMERA_SMOOTHING,
+    );
+
+    // Apply the smoothed camera position
+    camera.position.copy(currentCameraPos.current);
+    camera.lookAt(currentLookAt.current);
+  });
+
+  return null;
+};
+
+/**
+ * Main game component
+ */
+type GameProps = {
+  isFirstPerson: boolean;
+};
+
+const Game: FC<GameProps> = ({ isFirstPerson }) => {
   const { scene } = useThree();
+
+  // Game state
+  const [gameState, setGameState] = useState<GameState>({
+    score: 0,
+    lives: 3,
+    gameOver: false,
+    ghostsScared: false,
+  });
+
+  // Player state
   const [pacmanPosition, setPacmanPosition] = useState<Vector3>(
-    new Vector3(1, 0, 1), // Top-left corner
+    new Vector3(1, 0, 1), // Starting position
   );
-  const [direction, setDirection] = useState<Direction>(DIRECTIONS.RIGHT); // Initially facing right
+  const [direction, setDirection] = useState<Direction>(DIRECTIONS.RIGHT);
   const [nextDirection, setNextDirection] = useState<Direction>(
     DIRECTIONS.NONE,
   );
-  const [score, setScore] = useState<number>(0);
-  const [lives, setLives] = useState<number>(3);
-  const [gameOver, setGameOver] = useState<boolean>(false);
-  const [ghostsScared, setGhostsScared] = useState<boolean>(false);
   const [mouthOpen, setMouthOpen] = useState<number>(1);
+
+  // Game elements
   const [pellets, setPellets] = useState<PelletData[]>([]);
   const [walls, setWalls] = useState<[number, number, number][]>([]);
   const [ghosts, setGhosts] = useState<GhostData[]>([
@@ -277,69 +449,18 @@ const Game = ({ isFirstPerson = true }) => {
     },
   ]);
 
-  // Constants for collision detection
-  const WALL_COLLISION_THRESHOLD = 0.4; // Increased collision margin for walls
-  const GHOST_COLLISION_RADIUS = 0.9; // Increased collision radius for ghosts
-  const PELLET_COLLECTION_RADIUS = 0.6; // Increased pickup radius for pellets
+  // Direction ref for keyboard handling
+  const directionRef = useRef<Direction>(DIRECTIONS.RIGHT);
 
-  // Constants for grid-based movement
-  const GRID_CELL_SIZE = 1; // Each cell is 1 unit
-  const MOVEMENT_SPEED = 4; // Units per second
-  const GHOST_SPEED = 3; // Units per second
-  const SCARED_GHOST_SPEED = 1.5; // Units per second when scared
-
-  // Snap an arbitrary position to the nearest grid cell center
-  const snapToGrid = (position: Vector3): Vector3 => {
-    return new Vector3(
-      Math.round(position.x),
-      position.y,
-      Math.round(position.z),
-    );
-  };
-
-  // Check if we're at a grid cell center (or very close to it)
-  const isAtGridCenter = (position: Vector3, threshold = 0.1): boolean => {
-    const distX = Math.abs(position.x - Math.round(position.x));
-    const distZ = Math.abs(position.z - Math.round(position.z));
-    return distX <= threshold && distZ <= threshold;
-  };
-
-  // Check if a grid cell is a valid move (not a wall)
-  const isValidMove = (x: number, z: number): boolean => {
-    // Check if the position is within the map bounds
-    if (x < 0 || z < 0 || x >= MAP[0].length || z >= MAP.length) return false;
-    // Check if the position is not a wall
-    return MAP[z][x] !== 1;
-  };
-
-  // Get valid directions from current grid position
-  const getValidDirections = (position: Vector3): Direction[] => {
-    // Ensure we're working with rounded grid coordinates
-    const gridX = Math.round(position.x);
-    const gridZ = Math.round(position.z);
-
-    const validDirections: Direction[] = [];
-
-    // Check each of the four possible directions
-    if (isValidMove(gridX, gridZ - 1)) validDirections.push(DIRECTIONS.UP);
-    if (isValidMove(gridX, gridZ + 1)) validDirections.push(DIRECTIONS.DOWN);
-    if (isValidMove(gridX - 1, gridZ)) validDirections.push(DIRECTIONS.LEFT);
-    if (isValidMove(gridX + 1, gridZ)) validDirections.push(DIRECTIONS.RIGHT);
-
-    return validDirections;
-  };
-
-  // Reference to store current direction for keyboard handling
-  // This allows us to access the latest direction without recreating the effect
-  const directionRef = useRef(DIRECTIONS.RIGHT);
-
-  // Update direction ref when the state changes
-  useEffect(() => {
+  // Update direction ref when state changes
+  if (!direction.equals(directionRef.current)) {
     directionRef.current = direction;
-  }, [direction]);
+  }
 
-  // Initialize game
-  useEffect(() => {
+  /**
+   * Initialize the game elements (walls and pellets)
+   */
+  useMemo(() => {
     const newPellets: PelletData[] = [];
     const newWalls: [number, number, number][] = [];
 
@@ -347,7 +468,7 @@ const Game = ({ isFirstPerson = true }) => {
     for (let z = 0; z < MAP.length; z++) {
       for (let x = 0; x < MAP[0].length; x++) {
         if (MAP[z][x] === 1) {
-          // Wall - just store the position, we'll render it with JSX
+          // Wall
           newWalls.push([x, 0, z]);
         } else if (MAP[z][x] === 2 || MAP[z][x] === 3) {
           // Pellet or Power Pellet
@@ -364,9 +485,22 @@ const Game = ({ isFirstPerson = true }) => {
     setPellets(newPellets);
     setWalls(newWalls);
 
-    // Handle keyboard input - now with relative controls in first person mode
-    const handleKeyDown = (e: KeyboardEvent): void => {
-      // Always use the latest direction from the ref
+    // Snap initial position to grid
+    setPacmanPosition(GameUtils.snapToGrid(new Vector3(1, 0, 1)));
+
+    return () => {
+      // Clear any timers when unmounting
+      if (gameState.scaredTimer) {
+        clearTimeout(gameState.scaredTimer);
+      }
+    };
+  }, []);
+
+  /**
+   * Handle keyboard input
+   */
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent): void => {
       const currentDirection = directionRef.current;
 
       if (isFirstPerson) {
@@ -376,7 +510,6 @@ const Game = ({ isFirstPerson = true }) => {
             setNextDirection(currentDirection);
             break;
           case "ArrowDown": // Backward/reverse current direction
-            // Calculate opposite direction
             setNextDirection(currentDirection.clone().negate());
             break;
           case "ArrowLeft": // Turn left relative to current direction
@@ -403,7 +536,7 @@ const Game = ({ isFirstPerson = true }) => {
             break;
         }
       } else {
-        // Top-down mode: controls are absolute (WASD or arrows)
+        // Top-down mode: controls are absolute
         switch (e.key) {
           case "ArrowUp":
           case "w":
@@ -427,55 +560,231 @@ const Game = ({ isFirstPerson = true }) => {
             break;
         }
       }
-    };
+    },
+    [isFirstPerson],
+  );
 
+  // Setup event listeners
+  useMemo(() => {
     window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
 
-    // Snap initial position to grid
-    if (
-      pacmanPosition.equals(new Vector3(1, 0, 1)) &&
-      direction.equals(DIRECTIONS.RIGHT)
-    ) {
-      setDirection(DIRECTIONS.RIGHT);
-      setPacmanPosition(snapToGrid(new Vector3(1, 0, 1)));
-    }
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isFirstPerson]); // Remove direction from dependencies, we use ref instead
-
-  // Animate pacman's mouth
-  useEffect(() => {
-    let mouthAnimation: NodeJS.Timeout;
-    if (!gameOver) {
-      mouthAnimation = setInterval(() => {
-        setMouthOpen((prev) => (prev > 0 ? prev - 0.2 : 1));
-      }, 100);
-    }
-
-    return () => {
-      clearInterval(mouthAnimation);
-    };
-  }, [gameOver]);
-
-  // Handle ghost scared mode
-  useEffect(() => {
-    let scaredTimer: NodeJS.Timeout;
-    if (ghostsScared) {
-      scaredTimer = setTimeout(() => {
-        setGhostsScared(false);
-      }, 10000);
-    }
-
-    return () => {
-      clearTimeout(scaredTimer);
-    };
-  }, [ghostsScared]);
-
-  // Game loop - revised to fix ghost freezing when Pacman hits a wall
+  /**
+   * Animate pacman's mouth
+   */
   useFrame((_, delta) => {
-    if (gameOver) return;
+    // Animate mouth if game is active
+    if (!gameState.gameOver) {
+      setMouthOpen((prev) => (prev <= 0 ? 1 : prev - delta * 2));
+    }
+  });
+
+  /**
+   * End ghost scared mode after a timeout
+   */
+  useMemo(() => {
+    if (gameState.ghostsScared) {
+      const timer = setTimeout(() => {
+        setGameState((prev) => ({ ...prev, ghostsScared: false }));
+      }, CONSTANTS.POWER_PELLET_DURATION);
+
+      // Store timer reference for cleanup
+      setGameState((prev) => ({ ...prev, scaredTimer: timer }));
+
+      return () => clearTimeout(timer);
+    }
+  }, [gameState.ghostsScared]);
+
+  /**
+   * Check if Pacman collected any pellets
+   */
+  const checkPelletCollection = useCallback(
+    (position: Vector3, radius = 0.5): void => {
+      // Use grid position for more precise collection
+      const gridPos = GameUtils.snapToGrid(position);
+
+      setPellets((prevPellets) => {
+        const newPellets = [...prevPellets];
+        const pelletIndex = newPellets.findIndex(
+          (p) => !p.collected && p.position.distanceTo(gridPos) < radius,
+        );
+
+        if (pelletIndex !== -1) {
+          // Update the game state when collecting a pellet
+          newPellets[pelletIndex].collected = true;
+
+          if (newPellets[pelletIndex].isPowerPellet) {
+            setGameState((prev) => ({
+              ...prev,
+              ghostsScared: true,
+              score: prev.score + 50,
+            }));
+          } else {
+            setGameState((prev) => ({ ...prev, score: prev.score + 10 }));
+          }
+
+          // Check if all pellets are collected
+          if (newPellets.every((p) => p.collected)) {
+            setGameState((prev) => ({ ...prev, gameOver: true }));
+          }
+        }
+
+        return newPellets;
+      });
+    },
+    [],
+  );
+
+  /**
+   * Check for collisions with ghosts
+   */
+  const checkGhostCollisions = useCallback(
+    (position: Vector3, radius = 0.8): void => {
+      const gridPos = GameUtils.snapToGrid(position);
+
+      ghosts.forEach((ghost) => {
+        const ghostGridPos = GameUtils.snapToGrid(ghost.position);
+        if (gridPos.equals(ghostGridPos)) {
+          if (gameState.ghostsScared) {
+            // Ghost is scared, send it back to the center
+            setGhosts((prevGhosts) =>
+              prevGhosts.map((g) =>
+                g.id === ghost.id
+                  ? { ...g, position: new Vector3(9, 0, 9) }
+                  : g,
+              ),
+            );
+
+            setGameState((prev) => ({ ...prev, score: prev.score + 200 }));
+          } else {
+            // Pacman got caught
+            const newLives = gameState.lives - 1;
+
+            if (newLives <= 0) {
+              setGameState((prev) => ({ ...prev, lives: 0, gameOver: true }));
+            } else {
+              // Reset Pacman position and direction
+              setPacmanPosition(GameUtils.snapToGrid(new Vector3(1, 0, 1)));
+              setDirection(DIRECTIONS.RIGHT);
+              setNextDirection(DIRECTIONS.NONE);
+              setGameState((prev) => ({ ...prev, lives: newLives }));
+            }
+          }
+        }
+      });
+    },
+    [ghosts, gameState.ghostsScared, gameState.lives],
+  );
+
+  /**
+   * Move ghosts with grid-based movement
+   */
+  const moveGhostsOnGrid = useCallback(
+    (delta: number): void => {
+      setGhosts((prevGhosts) => {
+        return prevGhosts.map((ghost) => {
+          // Check if ghost is at a grid intersection
+          if (GameUtils.isAtGridCenter(ghost.position)) {
+            // Get valid directions from current position
+            const validDirections = GameUtils.getValidDirections(
+              ghost.position,
+            );
+
+            // Ghost AI: prefer to move toward Pacman, but with some randomness
+            let newDirection = ghost.direction;
+
+            // Don't allow ghosts to reverse direction unless it's the only option
+            const nonReverseDirections = validDirections.filter(
+              (dir) => !dir.equals(ghost.direction.clone().negate()),
+            );
+
+            const availableDirections =
+              nonReverseDirections.length > 0
+                ? nonReverseDirections
+                : validDirections;
+
+            if (availableDirections.length > 0) {
+              if (gameState.ghostsScared) {
+                // When scared, move randomly
+                newDirection =
+                  availableDirections[
+                    Math.floor(Math.random() * availableDirections.length)
+                  ]!;
+              } else {
+                // Simple chase algorithm: 70% chance to move toward Pacman, 30% random
+                if (Math.random() < 0.7) {
+                  // Calculate direction that gets us closer to Pacman
+                  const ghostGrid = GameUtils.snapToGrid(ghost.position);
+                  const pacmanGrid = GameUtils.snapToGrid(pacmanPosition);
+
+                  // Calculate which directions reduce distance to Pacman
+                  const goodDirections = availableDirections.filter((dir) => {
+                    const nextPos = ghostGrid.clone().add(dir);
+                    const currentDist = ghostGrid.distanceTo(pacmanGrid);
+                    const nextDist = nextPos.distanceTo(pacmanGrid);
+                    return nextDist < currentDist;
+                  });
+
+                  // Choose from good directions, or any available if none are good
+                  if (goodDirections.length > 0) {
+                    newDirection =
+                      goodDirections[
+                        Math.floor(Math.random() * goodDirections.length)
+                      ]!;
+                  } else {
+                    newDirection =
+                      availableDirections[
+                        Math.floor(Math.random() * availableDirections.length)
+                      ]!;
+                  }
+                } else {
+                  // Random movement for unpredictability
+                  newDirection =
+                    availableDirections[
+                      Math.floor(Math.random() * availableDirections.length)
+                    ]!;
+                }
+              }
+            }
+
+            // Update ghost direction
+            ghost = { ...ghost, direction: newDirection };
+          }
+
+          // Move ghost in its current direction
+          const speed = gameState.ghostsScared
+            ? CONSTANTS.SCARED_GHOST_SPEED
+            : CONSTANTS.GHOST_SPEED;
+          const moveDistance = speed * delta;
+          const newPosition = ghost.position
+            .clone()
+            .add(ghost.direction.clone().multiplyScalar(moveDistance));
+
+          // Check if we'd overshoot the next grid cell
+          const targetGridPos = GameUtils.snapToGrid(
+            ghost.position.clone().add(ghost.direction),
+          );
+          const distToTarget = ghost.position.distanceTo(targetGridPos);
+
+          if (moveDistance > distToTarget) {
+            // Snap to the grid cell if we'd overshoot
+            return { ...ghost, position: targetGridPos };
+          } else {
+            // Regular movement
+            return { ...ghost, position: newPosition };
+          }
+        });
+      });
+    },
+    [pacmanPosition, gameState.ghostsScared],
+  );
+
+  /**
+   * Game loop - handles Pacman movement and ghost behavior
+   */
+  useFrame((_, delta) => {
+    if (gameState.gameOver) return;
 
     // Clamp delta to prevent jumps on frame drops
     const clampedDelta = Math.min(delta, 0.1);
@@ -484,7 +793,7 @@ const Game = ({ isFirstPerson = true }) => {
     let pacmanIsMoving = true; // Flag to track if Pacman is moving
 
     // Check if we're at a grid intersection (or very close)
-    if (isAtGridCenter(pacmanPosition)) {
+    if (GameUtils.isAtGridCenter(pacmanPosition)) {
       // At grid center, we can change direction if requested
       if (!nextDirection.equals(DIRECTIONS.NONE)) {
         // Calculate the next cell position in the requested direction
@@ -493,7 +802,7 @@ const Game = ({ isFirstPerson = true }) => {
         const nextGridZ = Math.round(nextPos.z);
 
         // Check if the move is valid (not a wall)
-        if (isValidMove(nextGridX, nextGridZ)) {
+        if (GameUtils.isValidMove(nextGridX, nextGridZ)) {
           setDirection(nextDirection);
           setNextDirection(DIRECTIONS.NONE);
         }
@@ -505,7 +814,7 @@ const Game = ({ isFirstPerson = true }) => {
       const nextGridZ = Math.round(nextPos.z);
 
       // Check if we can continue in the current direction
-      if (!isValidMove(nextGridX, nextGridZ)) {
+      if (!GameUtils.isValidMove(nextGridX, nextGridZ)) {
         // We've hit a wall, stop Pacman but continue with ghost movement
         pacmanIsMoving = false;
       }
@@ -513,13 +822,15 @@ const Game = ({ isFirstPerson = true }) => {
 
     // Move Pacman in the current direction
     if (pacmanIsMoving && !direction.equals(DIRECTIONS.NONE)) {
-      const moveDistance = MOVEMENT_SPEED * clampedDelta;
+      const moveDistance = CONSTANTS.MOVEMENT_SPEED * clampedDelta;
       const newPosition = pacmanPosition
         .clone()
         .add(direction.clone().multiplyScalar(moveDistance));
 
       // Check if we'd overshoot the next grid cell
-      const targetGridPos = snapToGrid(pacmanPosition.clone().add(direction));
+      const targetGridPos = GameUtils.snapToGrid(
+        pacmanPosition.clone().add(direction),
+      );
       const distToTarget = pacmanPosition.distanceTo(targetGridPos);
 
       if (moveDistance > distToTarget) {
@@ -530,186 +841,29 @@ const Game = ({ isFirstPerson = true }) => {
         setPacmanPosition(newPosition);
       }
 
-      // Check for pellet collection
-      checkPelletCollection(newPosition, PELLET_COLLECTION_RADIUS);
-
-      // Check for ghost collisions
-      checkGhostCollisions(newPosition, GHOST_COLLISION_RADIUS);
+      // Check for pellet collection and ghost collisions
+      checkPelletCollection(newPosition, CONSTANTS.PELLET_COLLECTION_RADIUS);
+      checkGhostCollisions(newPosition, CONSTANTS.GHOST_COLLISION_RADIUS);
     }
 
     // GHOST MOVEMENT - Always run, regardless of Pacman's state
     moveGhostsOnGrid(clampedDelta);
   });
 
-  // Move ghosts with grid-based movement
-  const moveGhostsOnGrid = (delta: number): void => {
-    setGhosts((prevGhosts) => {
-      return prevGhosts.map((ghost) => {
-        // Check if ghost is at a grid intersection
-        if (isAtGridCenter(ghost.position)) {
-          // Get valid directions from current position
-          const validDirections = getValidDirections(ghost.position);
+  // Calculate map offset for camera positioning
+  const mapOffset: [number, number, number] = [
+    -MAP[0].length / 2,
+    0,
+    -MAP.length / 2,
+  ];
 
-          // Ghost AI: prefer to move toward Pacman, but with some randomness
-          let newDirection = ghost.direction;
-
-          // Don't allow ghosts to reverse direction unless it's the only option
-          const nonReverseDirections = validDirections.filter(
-            (dir) => !dir.equals(ghost.direction.clone().negate()),
-          );
-
-          const availableDirections =
-            nonReverseDirections.length > 0
-              ? nonReverseDirections
-              : validDirections;
-
-          if (availableDirections.length > 0) {
-            if (ghostsScared) {
-              // When scared, move randomly
-              newDirection =
-                availableDirections[
-                  Math.floor(Math.random() * availableDirections.length)
-                ]!;
-            } else {
-              // Simple chase algorithm: 70% chance to move toward Pacman, 30% random
-              if (Math.random() < 0.7) {
-                // Calculate direction that gets us closer to Pacman
-                const ghostGrid = snapToGrid(ghost.position);
-                const pacmanGrid = snapToGrid(pacmanPosition);
-
-                // Calculate which directions reduce distance to Pacman
-                const goodDirections = availableDirections.filter((dir) => {
-                  const nextPos = ghostGrid.clone().add(dir);
-                  const currentDist = ghostGrid.distanceTo(pacmanGrid);
-                  const nextDist = nextPos.distanceTo(pacmanGrid);
-                  return nextDist < currentDist;
-                });
-
-                // Choose from good directions, or any available if none are good
-                if (goodDirections.length > 0) {
-                  newDirection =
-                    goodDirections[
-                      Math.floor(Math.random() * goodDirections.length)
-                    ]!;
-                } else {
-                  newDirection =
-                    availableDirections[
-                      Math.floor(Math.random() * availableDirections.length)
-                    ]!;
-                }
-              } else {
-                // Random movement for unpredictability
-                newDirection =
-                  availableDirections[
-                    Math.floor(Math.random() * availableDirections.length)
-                  ]!;
-              }
-            }
-          }
-
-          // Update ghost direction
-          ghost = { ...ghost, direction: newDirection };
-        }
-
-        // Move ghost in its current direction
-        const speed = ghostsScared ? SCARED_GHOST_SPEED : GHOST_SPEED;
-        const moveDistance = speed * delta;
-        const newPosition = ghost.position
-          .clone()
-          .add(ghost.direction.clone().multiplyScalar(moveDistance));
-
-        // Check if we'd overshoot the next grid cell
-        const targetGridPos = snapToGrid(
-          ghost.position.clone().add(ghost.direction),
-        );
-        const distToTarget = ghost.position.distanceTo(targetGridPos);
-
-        if (moveDistance > distToTarget) {
-          // Snap to the grid cell if we'd overshoot
-          return { ...ghost, position: targetGridPos };
-        } else {
-          // Regular movement
-          return { ...ghost, position: newPosition };
-        }
-      });
-    });
-  };
-
-  // Check if Pacman collected any pellets - now using grid coordinates
-  const checkPelletCollection = (position: Vector3, radius = 0.5): void => {
-    // Use grid position for more precise collection
-    const gridPos = snapToGrid(position);
-
-    setPellets((prevPellets) => {
-      const newPellets = [...prevPellets];
-      const pelletIndex = newPellets.findIndex(
-        (p) => !p.collected && p.position.distanceTo(gridPos) < radius,
-      );
-
-      if (pelletIndex !== -1) {
-        // Update the game state when collecting a pellet
-        newPellets[pelletIndex].collected = true;
-
-        if (newPellets[pelletIndex].isPowerPellet) {
-          setGhostsScared(true);
-        }
-
-        setScore(
-          (prev) => prev + (newPellets[pelletIndex].isPowerPellet ? 50 : 10),
-        );
-
-        // Check if all pellets are collected
-        if (newPellets.every((p) => p.collected)) {
-          setGameOver(true);
-        }
-      }
-
-      return newPellets;
-    });
-  };
-
-  // Check for collisions with ghosts - using grid coordinates
-  const checkGhostCollisions = (position: Vector3, radius = 0.8): void => {
-    const gridPos = snapToGrid(position);
-
-    ghosts.forEach((ghost) => {
-      const ghostGridPos = snapToGrid(ghost.position);
-      if (gridPos.equals(ghostGridPos)) {
-        if (ghostsScared) {
-          // Ghost is scared, send it back to the center
-          setGhosts((prevGhosts) =>
-            prevGhosts.map((g) =>
-              g.id === ghost.id ? { ...g, position: new Vector3(9, 0, 9) } : g,
-            ),
-          );
-
-          setScore((prev) => prev + 200);
-        } else {
-          // Pacman got caught
-          setLives((prev) => prev - 1);
-
-          if (lives <= 1) {
-            setGameOver(true);
-          } else {
-            // Reset Pacman position and direction
-            setPacmanPosition(snapToGrid(new Vector3(1, 0, 1)));
-            setDirection(DIRECTIONS.RIGHT);
-            setNextDirection(DIRECTIONS.NONE);
-          }
-        }
-      }
-    });
-  };
-
-  // Return game state for camera positioning
   return (
     <>
-      {/* Lighting for top-down view */}
+      {/* Lighting */}
       <ambientLight intensity={1.0} />
-      {/* <directionalLight position={[0, 10, 0]} intensity={0.8} castShadow /> */}
 
       {/* Game board */}
-      <group position={[-MAP[0].length / 2, 0, -MAP.length / 2]}>
+      <group position={mapOffset}>
         {/* Walls */}
         {walls.map((position, index) => (
           <Wall key={`wall-${index}`} position={position} />
@@ -750,100 +904,32 @@ const Game = ({ isFirstPerson = true }) => {
             key={ghost.id}
             position={ghost.position}
             color={ghost.color}
-            scared={ghostsScared}
+            scared={gameState.ghostsScared}
           />
         ))}
       </group>
 
-      {/* Export the current state for the parent component */}
+      {/* Camera for first-person view */}
       <PacmanCamera
         position={pacmanPosition}
         direction={direction}
-        mapOffset={[-MAP[0].length / 2, 0, -MAP.length / 2]}
-        enabled={isFirstPerson} // Only enable first-person camera when in first-person mode
+        mapOffset={mapOffset}
+        enabled={isFirstPerson}
       />
     </>
   );
 };
 
-// Third-person camera component with smooth transitions
-type PacmanCameraProps = {
-  position: Vector3;
-  direction: Direction;
-  mapOffset: [number, number, number];
-  enabled: boolean;
-};
-
-const PacmanCamera = ({
-  position,
-  direction,
-  mapOffset,
-  enabled,
-}: PacmanCameraProps) => {
-  const { camera } = useThree();
-
-  // Create refs to track and smoothly interpolate camera position and target
-  const currentCameraPos = useRef(new Vector3());
-  const targetCameraPos = useRef(new Vector3());
-  const currentLookAt = useRef(new Vector3());
-  const targetLookAt = useRef(new Vector3());
-
-  // Camera smoothing factor (0-1): lower = smoother but slower
-  const CAMERA_SMOOTHING = 0.1;
-
-  useFrame(() => {
-    // Only update camera if the third-person view is enabled
-    if (!enabled || !position || !direction) return;
-
-    // Calculate offset position (Pacman's position in the world)
-    const worldPos = position.clone().add(new Vector3(...mapOffset));
-
-    // Calculate target camera position:
-    // 1. Start from Pacman's position
-    // 2. Move backward (opposite of direction)
-    // 3. Raise the camera for a better view
-    const cameraOffset = direction.clone().multiplyScalar(-2.5);
-    cameraOffset.y = 2; // Raise the camera 2 units above the ground
-
-    // Update our target position
-    targetCameraPos.current.copy(worldPos).add(cameraOffset);
-
-    // Calculate target look-at point (slightly ahead of Pacman)
-    const lookAtOffset = direction.clone().multiplyScalar(2);
-    targetLookAt.current.copy(worldPos).add(lookAtOffset);
-
-    // On first frame, initialize current positions to targets to avoid jumps
-    if (currentCameraPos.current.length() === 0) {
-      currentCameraPos.current.copy(targetCameraPos.current);
-      currentLookAt.current.copy(targetLookAt.current);
-    }
-
-    // Smoothly interpolate between current and target positions
-    currentCameraPos.current.lerp(targetCameraPos.current, CAMERA_SMOOTHING);
-    currentLookAt.current.lerp(targetLookAt.current, CAMERA_SMOOTHING);
-
-    // Apply the smoothed camera position
-    camera.position.copy(currentCameraPos.current);
-
-    // Make the camera look at the smoothed target
-    camera.lookAt(currentLookAt.current);
-  });
-
-  return null;
-};
-
-// Main Pacman component with camera controls and additional settings
-const Pacman = () => {
+/**
+ * Main Pacman component with camera control
+ */
+const Pacman: FC = () => {
   const [isFirstPerson, setIsFirstPerson] = useState<boolean>(true);
-
-  const toggleCameraView = () => {
-    setIsFirstPerson(!isFirstPerson);
-  };
 
   return (
     <div className="relative h-dvh w-dvw">
       <Canvas shadows>
-        {/* Top-down camera setup - make it conditional */}
+        {/* Top-down camera setup - only when not in first person */}
         {!isFirstPerson && (
           <>
             <PerspectiveCamera
@@ -855,22 +941,22 @@ const Pacman = () => {
               up={[0, 0, -1]}
             />
             <OrbitControls
-              enableRotate={false}
-              enablePan={false}
-              enableZoom={false}
               target={[0, 0, 0]}
+              enableRotate
+              enablePan
+              enableZoom
             />
           </>
         )}
 
-        {/* Main game with isFirstPerson prop */}
+        {/* Main game component */}
         <Game isFirstPerson={isFirstPerson} />
       </Canvas>
 
-      {/* UI overlay */}
+      {/* UI controls */}
       <div className="absolute top-4 right-4 rounded bg-black/70 p-2 text-white">
         <button
-          onClick={toggleCameraView}
+          onClick={() => setIsFirstPerson(!isFirstPerson)}
           className="rounded bg-blue-600 px-3 py-1 transition-colors hover:bg-blue-700"
         >
           {isFirstPerson ? "Switch to Top View" : "Switch to Third Person"}
