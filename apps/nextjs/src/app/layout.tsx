@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { GlobalAlertDialog } from "@init/ui/alert-dialog";
-import { ThemeProvider } from "@init/ui/theme";
 import { GlobalToaster } from "@init/ui/toast";
 import { TooltipProvider } from "@init/ui/tooltip";
 
@@ -82,14 +81,12 @@ type LayoutProps = {
 const RootLayout = (props: LayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="bg-background text-foreground font-sans antialiased">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <TooltipProvider>
-            <TRPCReactProvider>{props.children}</TRPCReactProvider>
-            <GlobalToaster />
-            <GlobalAlertDialog />
-          </TooltipProvider>
-        </ThemeProvider>
+      <body className="bg-background text-foreground bg-[url('/home/bg.png')] bg-[size:10px] font-sans antialiased">
+        <TooltipProvider>
+          <TRPCReactProvider>{props.children}</TRPCReactProvider>
+          <GlobalToaster />
+          <GlobalAlertDialog />
+        </TooltipProvider>
       </body>
     </html>
   );

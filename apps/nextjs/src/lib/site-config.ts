@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "VibedGames",
   shortName: "VibedGames",
-  description: "Roblox for vibe game developers",
+  description: "Games made with vibes 🎮",
   url:
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
