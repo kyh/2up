@@ -1,0 +1,39 @@
+{
+  "name": "@init/pacman",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "dev": "vite",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@init/ui": "workspace:^",
+    "@mediapipe/tasks-vision": "^0.10.22-rc.20250304",
+    "@react-three/drei": "^10.0.4",
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-backend-cpu": "^4.22.0",
+    "@tensorflow/tfjs-backend-webgl": "^4.22.0",
+    "@tensorflow/tfjs-core": "^4.22.0",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "three": "^0.174.0"
+  },
+  "devDependencies": {
+    "@kyh/eslint-config": "catalog:",
+    "@kyh/prettier-config": "catalog:",
+    "@kyh/tsconfig": "catalog:",
+    "@tailwindcss/vite": "^4.0.16",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react-swc": "^3.8.0",
+    "eslint": "catalog:",
+    "globals": "^15.15.0",
+    "prettier": "catalog:",
+    "tailwindcss": "^4.0.12",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}
