@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef } from "react";
 
-import { JumpDetection } from "./components/jump-detection";
-import { useGameState } from "./hooks/use-game-state";
+import { JumpDetection } from "./jump-detection";
+import { useGameState } from "./use-game-state";
 
 export const FlappyBird = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

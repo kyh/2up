@@ -7,6 +7,8 @@ import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Vector3 } from "three";
 
+import { MouthDetection } from "./mouth-detection";
+
 /**
  * Type definitions for the Pacman game
  */
@@ -90,7 +92,6 @@ const CONSTANTS = {
   PELLET_COLLECTION_RADIUS: 0.6,
   CAMERA_SMOOTHING: 0.1,
   POWER_PELLET_DURATION: 10000,
-  MOUTH_ANIMATION_INTERVAL: 100,
 };
 
 /**
@@ -153,64 +154,62 @@ const Pellet: FC<PelletProps> = ({
 type PacManProps = {
   position: Vector3;
   direction: Direction;
-  mouthOpen: number;
+  isMoving: boolean;
 };
 
-const PacMan: FC<PacManProps> = ({ position, direction, mouthOpen }) => {
+const PacMan: FC<PacManProps> = ({ position, direction, isMoving }) => {
   const ref = useRef<Group>(null);
   const mouthRef = useRef<Group>(null);
+  const mouthOpenAngle = useRef(0);
 
-  // Angle for mouth animation (0 to PI/3)
-  const angle = (Math.PI / 3) * mouthOpen;
-
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!ref.current || !mouthRef.current) return;
 
     // Reset rotation first
     ref.current.rotation.set(0, 0, 0);
 
-    // Set proper mouth orientation based on direction
+    // Set proper orientation based on direction
     if (direction.equals(DIRECTIONS.UP)) {
       ref.current.rotation.x = -Math.PI / 2;
-      mouthRef.current.rotation.set(0, 0, 0);
-      mouthRef.current.rotation.z = Math.PI / 2;
     } else if (direction.equals(DIRECTIONS.DOWN)) {
       ref.current.rotation.x = Math.PI / 2;
-      mouthRef.current.rotation.set(0, 0, 0);
-      mouthRef.current.rotation.z = Math.PI / 2;
     } else if (direction.equals(DIRECTIONS.LEFT)) {
       ref.current.rotation.y = Math.PI;
-      mouthRef.current.rotation.set(0, 0, 0);
-    } else if (direction.equals(DIRECTIONS.RIGHT)) {
-      // Right is the default orientation
-      mouthRef.current.rotation.set(0, 0, 0);
+    }
+    // Right is the default orientation
+
+    // Animate mouth opening/closing
+    const targetAngle = isMoving ? Math.PI / 4 : 0;
+    mouthOpenAngle.current +=
+      (targetAngle - mouthOpenAngle.current) * Math.min(delta * 10, 1);
+
+    // Apply mouth animation to the mouth parts
+    if (mouthRef.current.children.length >= 2) {
+      const upperMouth = mouthRef.current.children[0] as THREE.Mesh;
+      const lowerMouth = mouthRef.current.children[1] as THREE.Mesh;
+
+      upperMouth.rotation.x = mouthOpenAngle.current;
+      lowerMouth.rotation.x = -mouthOpenAngle.current;
     }
   });
 
   return (
     <group ref={ref} position={position} name="pacman">
-      {/* Main Pacman sphere */}
-      <mesh>
-        <sphereGeometry args={[0.5, 32, 32]} />
-        <meshStandardMaterial color="#facc15" />
-      </mesh>
-
-      {/* Mouth - using a group to position it properly */}
-      <group ref={mouthRef} position={[0, 0, 0]}>
-        <mesh position={[0, -0.15, 0.25]}>
-          <cylinderGeometry
-            args={[
-              0.25, // Top radius (half of the Pacman radius)
-              0.25, // Bottom radius
-              0.5, // Height (enough to cut through the sphere)
-              32, // Radial segments
-              1, // Height segments
-              false, // Open ended
-              0, // Start angle
-              angle, // End angle - varies with mouthOpen
-            ]}
+      {/* Pacman body with animated mouth */}
+      <group ref={mouthRef}>
+        {/* Upper half */}
+        <mesh position={[0, 0, 0]}>
+          <sphereGeometry
+            args={[0.5, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]}
           />
-          <meshBasicMaterial color="black" />
+          <meshStandardMaterial color="#facc15" />
+        </mesh>
+        {/* Lower half */}
+        <mesh position={[0, 0, 0]}>
+          <sphereGeometry
+            args={[0.5, 32, 32, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2]}
+          />
+          <meshStandardMaterial color="#facc15" />
         </mesh>
       </group>
     </group>
@@ -396,11 +395,10 @@ const PacmanCamera: FC<PacmanCameraProps> = ({
  */
 type GameProps = {
   isFirstPerson: boolean;
+  requestStepRef: React.MutableRefObject<boolean>;
 };
 
-const Game: FC<GameProps> = ({ isFirstPerson }) => {
-  const { scene } = useThree();
-
+const Game: FC<GameProps> = ({ isFirstPerson, requestStepRef }) => {
   // Game state
   const [gameState, setGameState] = useState<GameState>({
     score: 0,
@@ -417,7 +415,13 @@ const Game: FC<GameProps> = ({ isFirstPerson }) => {
   const [nextDirection, setNextDirection] = useState<Direction>(
     DIRECTIONS.NONE,
   );
-  const [mouthOpen, setMouthOpen] = useState<number>(1);
+
+  // Add state for Pacman's target position and animation
+  const [targetPosition, setTargetPosition] = useState<Vector3>(
+    new Vector3(1, 0, 1),
+  );
+  const [isMoving, setIsMoving] = useState<boolean>(false);
+  const animationSpeed = useRef(5); // Speed of movement animation
 
   // Game elements
   const [pellets, setPellets] = useState<PelletData[]>([]);
@@ -569,16 +573,6 @@ const Game: FC<GameProps> = ({ isFirstPerson }) => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
-
-  /**
-   * Animate pacman's mouth
-   */
-  useFrame((_, delta) => {
-    // Animate mouth if game is active
-    if (!gameState.gameOver) {
-      setMouthOpen((prev) => (prev <= 0 ? 1 : prev - delta * 2));
-    }
-  });
 
   /**
    * End ghost scared mode after a timeout
@@ -781,18 +775,14 @@ const Game: FC<GameProps> = ({ isFirstPerson }) => {
   );
 
   /**
-   * Game loop - handles Pacman movement and ghost behavior
+   * Take a single step in the current direction
    */
-  useFrame((_, delta) => {
-    if (gameState.gameOver) return;
+  const takeStep = useCallback(() => {
+    if (gameState.gameOver || isMoving) return;
 
-    // Clamp delta to prevent jumps on frame drops
-    const clampedDelta = Math.min(delta, 0.1);
+    let pacmanIsMoving = true;
 
-    // PACMAN MOVEMENT
-    let pacmanIsMoving = true; // Flag to track if Pacman is moving
-
-    // Check if we're at a grid intersection (or very close)
+    // Check if we're at a grid intersection
     if (GameUtils.isAtGridCenter(pacmanPosition)) {
       // At grid center, we can change direction if requested
       if (!nextDirection.equals(DIRECTIONS.NONE)) {
@@ -815,36 +805,77 @@ const Game: FC<GameProps> = ({ isFirstPerson }) => {
 
       // Check if we can continue in the current direction
       if (!GameUtils.isValidMove(nextGridX, nextGridZ)) {
-        // We've hit a wall, stop Pacman but continue with ghost movement
         pacmanIsMoving = false;
       }
     }
 
-    // Move Pacman in the current direction
+    // Start movement animation to the next grid cell
     if (pacmanIsMoving && !direction.equals(DIRECTIONS.NONE)) {
-      const moveDistance = CONSTANTS.MOVEMENT_SPEED * clampedDelta;
-      const newPosition = pacmanPosition
-        .clone()
-        .add(direction.clone().multiplyScalar(moveDistance));
-
-      // Check if we'd overshoot the next grid cell
-      const targetGridPos = GameUtils.snapToGrid(
+      // Set target position to the next grid cell
+      const nextGridPos = GameUtils.snapToGrid(
         pacmanPosition.clone().add(direction),
       );
-      const distToTarget = pacmanPosition.distanceTo(targetGridPos);
 
-      if (moveDistance > distToTarget) {
-        // We're overshooting, snap to the grid cell
-        setPacmanPosition(targetGridPos);
-      } else {
-        // Regular movement
-        setPacmanPosition(newPosition);
-      }
-
-      // Check for pellet collection and ghost collisions
-      checkPelletCollection(newPosition, CONSTANTS.PELLET_COLLECTION_RADIUS);
-      checkGhostCollisions(newPosition, CONSTANTS.GHOST_COLLISION_RADIUS);
+      setTargetPosition(nextGridPos);
+      setIsMoving(true);
     }
+  }, [pacmanPosition, direction, nextDirection, gameState.gameOver, isMoving]);
+
+  /**
+   * Animation and game loop
+   */
+  useFrame((_, delta) => {
+    if (gameState.gameOver) return;
+
+    // Check if we need to take a step based on mouth change
+    if (requestStepRef.current) {
+      requestStepRef.current = false;
+      takeStep();
+    }
+
+    // Handle smooth movement animation
+    if (isMoving) {
+      // Calculate how much to move this frame
+      const step = animationSpeed.current * delta;
+
+      // Get direction to target
+      const moveDirection = targetPosition
+        .clone()
+        .sub(pacmanPosition)
+        .normalize();
+
+      // Calculate new position
+      const newPosition = pacmanPosition
+        .clone()
+        .add(moveDirection.multiplyScalar(step));
+
+      // Check if we've reached or passed the target
+      const distanceToTarget = pacmanPosition.distanceTo(targetPosition);
+      const distanceMoved = pacmanPosition.distanceTo(newPosition);
+
+      if (distanceMoved >= distanceToTarget) {
+        // We've reached the target, snap to it exactly
+        setPacmanPosition(targetPosition.clone());
+        setIsMoving(false);
+
+        // Check for pellet collection and ghost collisions at the target position
+        checkPelletCollection(
+          targetPosition,
+          CONSTANTS.PELLET_COLLECTION_RADIUS,
+        );
+        checkGhostCollisions(targetPosition, CONSTANTS.GHOST_COLLISION_RADIUS);
+      } else {
+        // Continue moving toward target
+        setPacmanPosition(newPosition);
+
+        // Check for pellet collection and ghost collisions during movement
+        checkPelletCollection(newPosition, CONSTANTS.PELLET_COLLECTION_RADIUS);
+        checkGhostCollisions(newPosition, CONSTANTS.GHOST_COLLISION_RADIUS);
+      }
+    }
+
+    // Clamp delta to prevent jumps on frame drops
+    const clampedDelta = Math.min(delta, 0.1);
 
     // GHOST MOVEMENT - Always run, regardless of Pacman's state
     moveGhostsOnGrid(clampedDelta);
@@ -895,7 +926,7 @@ const Game: FC<GameProps> = ({ isFirstPerson }) => {
         <PacMan
           position={pacmanPosition}
           direction={direction}
-          mouthOpen={mouthOpen}
+          isMoving={isMoving}
         />
 
         {/* Ghosts */}
@@ -925,9 +956,30 @@ const Game: FC<GameProps> = ({ isFirstPerson }) => {
  */
 const Pacman: FC = () => {
   const [isFirstPerson, setIsFirstPerson] = useState<boolean>(true);
+  const [isMouthOpen, setIsMouthOpen] = useState<boolean>(false);
+  const previousMouthStateRef = useRef<boolean>(false);
+  const requestStepRef = useRef<boolean>(false);
+
+  // Handle mouth state changes
+  const handleMouthChange = useCallback((open: boolean) => {
+    // Store current mouth state to detect transitions
+    const wasMouthOpen = previousMouthStateRef.current;
+
+    // Update previous state for next comparison
+    previousMouthStateRef.current = open;
+
+    // Request a step when mouth state changes from closed to open
+    if (open && !wasMouthOpen) {
+      requestStepRef.current = true;
+    }
+
+    // Update state
+    setIsMouthOpen(open);
+  }, []); // Removed isMouthOpen dependency since we're using refs for comparison
 
   return (
     <div className="relative h-dvh w-dvw">
+      <MouthDetection onMouthChange={handleMouthChange} />
       <Canvas shadows>
         {/* Top-down camera setup - only when not in first person */}
         {!isFirstPerson && (
@@ -950,7 +1002,7 @@ const Pacman: FC = () => {
         )}
 
         {/* Main game component */}
-        <Game isFirstPerson={isFirstPerson} />
+        <Game isFirstPerson={isFirstPerson} requestStepRef={requestStepRef} />
       </Canvas>
 
       {/* UI controls */}
@@ -961,6 +1013,12 @@ const Pacman: FC = () => {
         >
           {isFirstPerson ? "Switch to Top View" : "Switch to Third Person"}
         </button>
+        <div className="mt-2 text-sm">
+          Mouth Status: {isMouthOpen ? "Open" : "Closed"}
+        </div>
+        <div className="mt-1 text-xs opacity-80">
+          Open and close your mouth to move Pacman forward
+        </div>
       </div>
     </div>
   );
