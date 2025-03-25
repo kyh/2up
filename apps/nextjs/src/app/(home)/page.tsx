@@ -49,8 +49,8 @@ const Page = () => {
           {pluginData.map((data) => {
             return (
               <Link
-                href={data.slug}
                 key={data.id}
+                href={`https://${data.slug}.vibedgames.com`}
                 className="flex justify-center"
               >
                 <Card {...data} />
