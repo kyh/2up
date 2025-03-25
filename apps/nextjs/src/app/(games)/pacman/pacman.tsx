@@ -2,7 +2,7 @@
 
 import type { FC } from "react";
 import type { Group } from "three";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Vector3 } from "three";
@@ -182,34 +182,32 @@ const PacMan: FC<PacManProps> = ({ position, direction, isMoving }) => {
     const targetAngle = isMoving ? Math.PI / 4 : 0;
     mouthOpenAngle.current +=
       (targetAngle - mouthOpenAngle.current) * Math.min(delta * 10, 1);
-
-    // Apply mouth animation to the mouth parts
-    if (mouthRef.current.children.length >= 2) {
-      const upperMouth = mouthRef.current.children[0] as THREE.Mesh;
-      const lowerMouth = mouthRef.current.children[1] as THREE.Mesh;
-
-      upperMouth.rotation.x = mouthOpenAngle.current;
-      lowerMouth.rotation.x = -mouthOpenAngle.current;
-    }
   });
 
   return (
     <group ref={ref} position={position} name="pacman">
       {/* Pacman body with animated mouth */}
       <group ref={mouthRef}>
-        {/* Upper half */}
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry
-            args={[0.5, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]}
-          />
+        {/* Main sphere */}
+        <mesh>
+          <sphereGeometry args={[0.5, 32, 32]} />
           <meshStandardMaterial color="#facc15" />
         </mesh>
-        {/* Lower half */}
-        <mesh position={[0, 0, 0]}>
+
+        {/* Mouth cutout (black wedge facing forward) */}
+        <mesh position={[0, 0, 0]} rotation={[0, 0, 0]}>
           <sphereGeometry
-            args={[0.5, 32, 32, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2]}
+            args={[
+              0.51,
+              32,
+              32,
+              (Math.PI * 7) / 4, // phi start (slightly offset from PI*3/2 for better appearance)
+              Math.PI / 2, // phi length (half circle)
+              0, // theta start
+              isMoving ? mouthOpenAngle.current : 0,
+            ]} // theta length - animated
           />
-          <meshStandardMaterial color="#facc15" />
+          <meshStandardMaterial color="#000000" side={1} />
         </mesh>
       </group>
     </group>
@@ -334,6 +332,7 @@ type PacmanCameraProps = {
   direction: Direction;
   mapOffset: [number, number, number];
   enabled: boolean;
+  shifKeyPressed: boolean; // Add new prop to track shift key state
 };
 
 const PacmanCamera: FC<PacmanCameraProps> = ({
@@ -341,6 +340,7 @@ const PacmanCamera: FC<PacmanCameraProps> = ({
   direction,
   mapOffset,
   enabled,
+  shifKeyPressed, // New prop
 }) => {
   const { camera } = useThree();
 
@@ -358,12 +358,26 @@ const PacmanCamera: FC<PacmanCameraProps> = ({
     const worldPos = position.clone().add(new Vector3(...mapOffset));
 
     // Calculate target camera position
-    const cameraOffset = direction.clone().multiplyScalar(-2.5);
-    cameraOffset.y = 2; // Raise the camera 2 units above the ground
+    let cameraOffset;
+
+    if (shifKeyPressed) {
+      // When shift is pressed, position camera in front of Pacman to see his front
+      cameraOffset = direction.clone().multiplyScalar(2.5);
+      cameraOffset.y = 2; // Raise the camera 2 units above the ground
+    } else {
+      // Normal position behind Pacman
+      cameraOffset = direction.clone().multiplyScalar(-2.5);
+      cameraOffset.y = 2; // Raise the camera 2 units above the ground
+    }
+
     targetCameraPos.current.copy(worldPos).add(cameraOffset);
 
-    // Calculate target look-at point (slightly ahead of Pacman)
-    const lookAtOffset = direction.clone().multiplyScalar(2);
+    // Calculate target look-at point
+    // When shift is pressed, look back at Pacman, otherwise look ahead
+    const lookAtOffset = shifKeyPressed
+      ? direction.clone().multiplyScalar(-1)
+      : direction.clone().multiplyScalar(2);
+
     targetLookAt.current.copy(worldPos).add(lookAtOffset);
 
     // On first frame, initialize current positions to targets to avoid jumps
@@ -396,9 +410,14 @@ const PacmanCamera: FC<PacmanCameraProps> = ({
 type GameProps = {
   isFirstPerson: boolean;
   requestStepRef: React.MutableRefObject<boolean>;
+  shiftKeyPressed: boolean; // Add new prop
 };
 
-const Game: FC<GameProps> = ({ isFirstPerson, requestStepRef }) => {
+const Game: FC<GameProps> = ({
+  isFirstPerson,
+  requestStepRef,
+  shiftKeyPressed,
+}) => {
   // Game state
   const [gameState, setGameState] = useState<GameState>({
     score: 0,
@@ -512,31 +531,39 @@ const Game: FC<GameProps> = ({ isFirstPerson, requestStepRef }) => {
         switch (e.key) {
           case "ArrowUp": // Forward in current direction
             setNextDirection(currentDirection);
+            tryTurnImmediately(currentDirection); // Try to turn immediately
             break;
           case "ArrowDown": // Backward/reverse current direction
             setNextDirection(currentDirection.clone().negate());
+            tryTurnImmediately(currentDirection.clone().negate()); // Try to turn immediately
             break;
           case "ArrowLeft": // Turn left relative to current direction
+            let leftDirection;
             if (currentDirection.equals(DIRECTIONS.UP)) {
-              setNextDirection(DIRECTIONS.LEFT);
+              leftDirection = DIRECTIONS.LEFT;
             } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
-              setNextDirection(DIRECTIONS.RIGHT);
+              leftDirection = DIRECTIONS.RIGHT;
             } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
-              setNextDirection(DIRECTIONS.DOWN);
+              leftDirection = DIRECTIONS.DOWN;
             } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
-              setNextDirection(DIRECTIONS.UP);
+              leftDirection = DIRECTIONS.UP;
             }
+            setNextDirection(leftDirection);
+            tryTurnImmediately(leftDirection); // Try to turn immediately
             break;
           case "ArrowRight": // Turn right relative to current direction
+            let rightDirection;
             if (currentDirection.equals(DIRECTIONS.UP)) {
-              setNextDirection(DIRECTIONS.RIGHT);
+              rightDirection = DIRECTIONS.RIGHT;
             } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
-              setNextDirection(DIRECTIONS.LEFT);
+              rightDirection = DIRECTIONS.LEFT;
             } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
-              setNextDirection(DIRECTIONS.UP);
+              rightDirection = DIRECTIONS.UP;
             } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
-              setNextDirection(DIRECTIONS.DOWN);
+              rightDirection = DIRECTIONS.DOWN;
             }
+            setNextDirection(rightDirection);
+            tryTurnImmediately(rightDirection); // Try to turn immediately
             break;
         }
       } else {
@@ -546,26 +573,57 @@ const Game: FC<GameProps> = ({ isFirstPerson, requestStepRef }) => {
           case "w":
           case "W":
             setNextDirection(DIRECTIONS.UP);
+            tryTurnImmediately(DIRECTIONS.UP); // Try to turn immediately
             break;
           case "ArrowDown":
           case "s":
           case "S":
             setNextDirection(DIRECTIONS.DOWN);
+            tryTurnImmediately(DIRECTIONS.DOWN); // Try to turn immediately
             break;
           case "ArrowLeft":
           case "a":
           case "A":
             setNextDirection(DIRECTIONS.LEFT);
+            tryTurnImmediately(DIRECTIONS.LEFT); // Try to turn immediately
             break;
           case "ArrowRight":
           case "d":
           case "D":
             setNextDirection(DIRECTIONS.RIGHT);
+            tryTurnImmediately(DIRECTIONS.RIGHT); // Try to turn immediately
             break;
         }
       }
     },
     [isFirstPerson],
+  );
+
+  /**
+   * Try to turn immediately if at a grid center and the move is valid
+   */
+  const tryTurnImmediately = useCallback(
+    (newDirection: Direction) => {
+      // Only try to turn if we're at a grid intersection
+      if (GameUtils.isAtGridCenter(pacmanPosition)) {
+        // Calculate the next cell position in the requested direction
+        const nextPos = pacmanPosition.clone().add(newDirection);
+        const nextGridX = Math.round(nextPos.x);
+        const nextGridZ = Math.round(nextPos.z);
+
+        // Check if the move is valid (not a wall)
+        if (GameUtils.isValidMove(nextGridX, nextGridZ)) {
+          setDirection(newDirection);
+
+          // If we're not currently moving, we might need to start movement
+          if (!isMoving && !newDirection.equals(DIRECTIONS.NONE)) {
+            // The turning itself doesn't trigger forward movement
+            // The movement will still be triggered by mouth open/close
+          }
+        }
+      }
+    },
+    [pacmanPosition, isMoving],
   );
 
   // Setup event listeners
@@ -946,6 +1004,7 @@ const Game: FC<GameProps> = ({ isFirstPerson, requestStepRef }) => {
         direction={direction}
         mapOffset={mapOffset}
         enabled={isFirstPerson}
+        shifKeyPressed={shiftKeyPressed}
       />
     </>
   );
@@ -957,6 +1016,7 @@ const Game: FC<GameProps> = ({ isFirstPerson, requestStepRef }) => {
 const Pacman: FC = () => {
   const [isFirstPerson, setIsFirstPerson] = useState<boolean>(true);
   const [isMouthOpen, setIsMouthOpen] = useState<boolean>(false);
+  const [shiftKeyPressed, setShiftKeyPressed] = useState<boolean>(false); // Add shift key state
   const previousMouthStateRef = useRef<boolean>(false);
   const requestStepRef = useRef<boolean>(false);
 
@@ -976,6 +1036,29 @@ const Pacman: FC = () => {
     // Update state
     setIsMouthOpen(open);
   }, []); // Removed isMouthOpen dependency since we're using refs for comparison
+
+  // Handle shift key press for camera flip
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Shift") {
+        setShiftKeyPressed(true);
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === "Shift") {
+        setShiftKeyPressed(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
 
   return (
     <div className="relative h-dvh w-dvw">
@@ -1002,7 +1085,11 @@ const Pacman: FC = () => {
         )}
 
         {/* Main game component */}
-        <Game isFirstPerson={isFirstPerson} requestStepRef={requestStepRef} />
+        <Game
+          isFirstPerson={isFirstPerson}
+          requestStepRef={requestStepRef}
+          shiftKeyPressed={shiftKeyPressed}
+        />
       </Canvas>
 
       {/* UI controls */}
@@ -1018,6 +1105,10 @@ const Pacman: FC = () => {
         </div>
         <div className="mt-1 text-xs opacity-80">
           Open and close your mouth to move Pacman forward
+        </div>
+        <div className="mt-1 text-xs opacity-80">
+          Hold <kbd className="rounded bg-gray-700 px-1">Shift</kbd> to see
+          Pacman's front side
         </div>
       </div>
     </div>
