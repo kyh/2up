@@ -59,7 +59,7 @@ export const useGameState = () => {
   const scoreRef = useRef<number>(0);
   const gameStateRef = useRef<GameState>("initial");
   const gameLoopRef = useRef<number | null>(null);
-  const [forceRender, setForceRender] = useState(false);
+  const [_forceRender, setForceRender] = useState(false);
 
   // Reference to store the latest game loop params
   const gameLoopParamsRef = useRef<GameLoopParams | null>(null);
