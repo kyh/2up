@@ -1153,29 +1153,6 @@ const Pacman: FC = () => {
           shiftKeyPressed={shiftKeyPressed}
         />
       </Canvas>
-
-      {/* UI controls */}
-      <div className="absolute top-4 right-4 rounded bg-black/70 p-2 text-white">
-        <button
-          onClick={() => setIsFirstPerson(!isFirstPerson)}
-          className="rounded bg-blue-600 px-3 py-1 transition-colors hover:bg-blue-700"
-        >
-          {isFirstPerson ? "Switch to Top View" : "Switch to Third Person"}
-        </button>
-        <div className="mt-2 text-sm">
-          Mouth Status: {isMouthOpen ? "Open" : "Closed"}
-        </div>
-        <div className="mt-1 text-xs opacity-80">
-          Open and close your mouth to move Pacman forward
-        </div>
-        <div className="mt-1 text-xs opacity-80">
-          Hold <kbd className="rounded bg-gray-700 px-1">Shift</kbd> to see
-          Pacman's front side
-        </div>
-        <div className="mt-1 text-xs opacity-80">
-          Use arrow keys to change direction immediately
-        </div>
-      </div>
     </div>
   );
 };
