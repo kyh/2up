@@ -7,7 +7,7 @@ import {
   FilesetResolver,
 } from "@mediapipe/tasks-vision";
 
-const threshold = 0.1; // Default threshold value
+const THRESHOLD = 0.07; // Default threshold value
 
 type MouthDetectionProps = {
   onMouthChange?: (open: boolean) => void;
@@ -112,7 +112,7 @@ export const MouthDetection = memo(function MouthDetection({
 
     const mouthOpenRatio = mouthOpenDistance / faceHeight;
 
-    return mouthOpenRatio > threshold;
+    return mouthOpenRatio > THRESHOLD;
   };
 
   const predictWebcam = async () => {

@@ -85,8 +85,8 @@ const DIRECTIONS = {
 const CONSTANTS = {
   GRID_CELL_SIZE: 1,
   MOVEMENT_SPEED: 4,
-  GHOST_SPEED: 3,
-  SCARED_GHOST_SPEED: 1.5,
+  GHOST_SPEED: 1.5,
+  SCARED_GHOST_SPEED: 0.75,
   WALL_COLLISION_THRESHOLD: 0.4,
   GHOST_COLLISION_RADIUS: 0.9,
   PELLET_COLLECTION_RADIUS: 0.6,
@@ -284,10 +284,24 @@ const GameUtils = {
   /**
    * Checks if a position is at a grid cell center (or very close to it)
    */
-  isAtGridCenter: (position: Vector3, threshold = 0.1): boolean => {
+  isAtGridCenter: (position: Vector3, threshold = 0.15): boolean => {
     const distX = Math.abs(position.x - Math.round(position.x));
     const distZ = Math.abs(position.z - Math.round(position.z));
     return distX <= threshold && distZ <= threshold;
+  },
+
+  /**
+   * Checks if a position is approaching a grid cell center
+   */
+  isApproachingGridCenter: (
+    position: Vector3,
+    direction: Direction,
+  ): boolean => {
+    const targetGridX = Math.round(position.x + direction.x * 0.5);
+    const targetGridZ = Math.round(position.z + direction.z * 0.5);
+    const distToGrid =
+      Math.abs(position.x - targetGridX) + Math.abs(position.z - targetGridZ);
+    return distToGrid < 0.5;
   },
 
   /**
@@ -480,6 +494,9 @@ const Game: FC<GameProps> = ({
     directionRef.current = direction;
   }
 
+  // Add a ref to track pending turns
+  const pendingTurnRef = useRef<Direction | null>(null);
+
   /**
    * Initialize the game elements (walls and pellets)
    */
@@ -520,91 +537,11 @@ const Game: FC<GameProps> = ({
   }, []);
 
   /**
-   * Handle keyboard input
-   */
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent): void => {
-      const currentDirection = directionRef.current;
-
-      if (isFirstPerson) {
-        // First-person mode: controls are relative to Pacman's current direction
-        switch (e.key) {
-          case "ArrowUp": // Forward in current direction
-            setNextDirection(currentDirection);
-            tryTurnImmediately(currentDirection); // Try to turn immediately
-            break;
-          case "ArrowDown": // Backward/reverse current direction
-            setNextDirection(currentDirection.clone().negate());
-            tryTurnImmediately(currentDirection.clone().negate()); // Try to turn immediately
-            break;
-          case "ArrowLeft": // Turn left relative to current direction
-            let leftDirection;
-            if (currentDirection.equals(DIRECTIONS.UP)) {
-              leftDirection = DIRECTIONS.LEFT;
-            } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
-              leftDirection = DIRECTIONS.RIGHT;
-            } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
-              leftDirection = DIRECTIONS.DOWN;
-            } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
-              leftDirection = DIRECTIONS.UP;
-            }
-            setNextDirection(leftDirection);
-            tryTurnImmediately(leftDirection); // Try to turn immediately
-            break;
-          case "ArrowRight": // Turn right relative to current direction
-            let rightDirection;
-            if (currentDirection.equals(DIRECTIONS.UP)) {
-              rightDirection = DIRECTIONS.RIGHT;
-            } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
-              rightDirection = DIRECTIONS.LEFT;
-            } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
-              rightDirection = DIRECTIONS.UP;
-            } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
-              rightDirection = DIRECTIONS.DOWN;
-            }
-            setNextDirection(rightDirection);
-            tryTurnImmediately(rightDirection); // Try to turn immediately
-            break;
-        }
-      } else {
-        // Top-down mode: controls are absolute
-        switch (e.key) {
-          case "ArrowUp":
-          case "w":
-          case "W":
-            setNextDirection(DIRECTIONS.UP);
-            tryTurnImmediately(DIRECTIONS.UP); // Try to turn immediately
-            break;
-          case "ArrowDown":
-          case "s":
-          case "S":
-            setNextDirection(DIRECTIONS.DOWN);
-            tryTurnImmediately(DIRECTIONS.DOWN); // Try to turn immediately
-            break;
-          case "ArrowLeft":
-          case "a":
-          case "A":
-            setNextDirection(DIRECTIONS.LEFT);
-            tryTurnImmediately(DIRECTIONS.LEFT); // Try to turn immediately
-            break;
-          case "ArrowRight":
-          case "d":
-          case "D":
-            setNextDirection(DIRECTIONS.RIGHT);
-            tryTurnImmediately(DIRECTIONS.RIGHT); // Try to turn immediately
-            break;
-        }
-      }
-    },
-    [isFirstPerson],
-  );
-
-  /**
    * Try to turn immediately if at a grid center and the move is valid
    */
   const tryTurnImmediately = useCallback(
     (newDirection: Direction) => {
-      // Only try to turn if we're at a grid intersection
+      // If we're at or very close to a grid intersection, try to turn immediately
       if (GameUtils.isAtGridCenter(pacmanPosition)) {
         // Calculate the next cell position in the requested direction
         const nextPos = pacmanPosition.clone().add(newDirection);
@@ -620,10 +557,103 @@ const Game: FC<GameProps> = ({
             // The turning itself doesn't trigger forward movement
             // The movement will still be triggered by mouth open/close
           }
+
+          // Clear pending turn since we executed it
+          pendingTurnRef.current = null;
+          return true;
+        }
+      } else if (GameUtils.isApproachingGridCenter(pacmanPosition, direction)) {
+        // If we're approaching a grid center but not there yet, queue the turn
+        pendingTurnRef.current = newDirection;
+      }
+
+      return false;
+    },
+    [pacmanPosition, direction, isMoving],
+  );
+
+  /**
+   * Handle keyboard input
+   */
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent): void => {
+      const currentDirection = directionRef.current;
+      let newDirection: Direction;
+
+      if (isFirstPerson) {
+        // First-person mode: controls are relative to Pacman's current direction
+        switch (e.key) {
+          case "ArrowUp": // Forward in current direction
+            newDirection = currentDirection;
+            break;
+          case "ArrowDown": // Backward/reverse current direction
+            newDirection = currentDirection.clone().negate();
+            break;
+          case "ArrowLeft": // Turn left relative to current direction
+            if (currentDirection.equals(DIRECTIONS.UP)) {
+              newDirection = DIRECTIONS.LEFT;
+            } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
+              newDirection = DIRECTIONS.RIGHT;
+            } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
+              newDirection = DIRECTIONS.DOWN;
+            } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
+              newDirection = DIRECTIONS.UP;
+            } else {
+              newDirection = DIRECTIONS.NONE;
+            }
+            break;
+          case "ArrowRight": // Turn right relative to current direction
+            if (currentDirection.equals(DIRECTIONS.UP)) {
+              newDirection = DIRECTIONS.RIGHT;
+            } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
+              newDirection = DIRECTIONS.LEFT;
+            } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
+              newDirection = DIRECTIONS.UP;
+            } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
+              newDirection = DIRECTIONS.DOWN;
+            } else {
+              newDirection = DIRECTIONS.NONE;
+            }
+            break;
+          default:
+            return; // Ignore other keys
+        }
+      } else {
+        // Top-down mode: controls are absolute
+        switch (e.key) {
+          case "ArrowUp":
+          case "w":
+          case "W":
+            newDirection = DIRECTIONS.UP;
+            break;
+          case "ArrowDown":
+          case "s":
+          case "S":
+            newDirection = DIRECTIONS.DOWN;
+            break;
+          case "ArrowLeft":
+          case "a":
+          case "A":
+            newDirection = DIRECTIONS.LEFT;
+            break;
+          case "ArrowRight":
+          case "d":
+          case "D":
+            newDirection = DIRECTIONS.RIGHT;
+            break;
+          default:
+            return; // Ignore other keys
         }
       }
+
+      // Always store the next direction for future reference
+      setNextDirection(newDirection);
+
+      // Try to turn immediately, and if that doesn't work,
+      // the direction will be queued as a pending turn
+      tryTurnImmediately(newDirection);
     },
-    [pacmanPosition, isMoving],
+    [isFirstPerson, tryTurnImmediately],
   );
 
   // Setup event listeners
@@ -842,8 +872,20 @@ const Game: FC<GameProps> = ({
 
     // Check if we're at a grid intersection
     if (GameUtils.isAtGridCenter(pacmanPosition)) {
-      // At grid center, we can change direction if requested
-      if (!nextDirection.equals(DIRECTIONS.NONE)) {
+      // First check for any pending turns
+      if (pendingTurnRef.current) {
+        const pendingDir = pendingTurnRef.current;
+        const nextPos = pacmanPosition.clone().add(pendingDir);
+        const nextGridX = Math.round(nextPos.x);
+        const nextGridZ = Math.round(nextPos.z);
+
+        if (GameUtils.isValidMove(nextGridX, nextGridZ)) {
+          setDirection(pendingDir);
+          pendingTurnRef.current = null;
+        }
+      }
+      // Then handle normal next direction logic
+      else if (!nextDirection.equals(DIRECTIONS.NONE)) {
         // Calculate the next cell position in the requested direction
         const nextPos = pacmanPosition.clone().add(nextDirection);
         const nextGridX = Math.round(nextPos.x);
@@ -885,6 +927,21 @@ const Game: FC<GameProps> = ({
   useFrame((_, delta) => {
     if (gameState.gameOver) return;
 
+    // Check for pending turns as we approach grid centers
+    if (pendingTurnRef.current && GameUtils.isAtGridCenter(pacmanPosition)) {
+      const pendingDirection = pendingTurnRef.current;
+
+      // Try to execute the pending turn
+      const nextPos = pacmanPosition.clone().add(pendingDirection);
+      const nextGridX = Math.round(nextPos.x);
+      const nextGridZ = Math.round(nextPos.z);
+
+      if (GameUtils.isValidMove(nextGridX, nextGridZ)) {
+        setDirection(pendingDirection);
+        pendingTurnRef.current = null;
+      }
+    }
+
     // Check if we need to take a step based on mouth change
     if (requestStepRef.current) {
       requestStepRef.current = false;
@@ -922,6 +979,11 @@ const Game: FC<GameProps> = ({
           CONSTANTS.PELLET_COLLECTION_RADIUS,
         );
         checkGhostCollisions(targetPosition, CONSTANTS.GHOST_COLLISION_RADIUS);
+
+        // Check for pending turns again after reaching the target
+        if (pendingTurnRef.current) {
+          tryTurnImmediately(pendingTurnRef.current);
+        }
       } else {
         // Continue moving toward target
         setPacmanPosition(newPosition);
@@ -1109,6 +1171,9 @@ const Pacman: FC = () => {
         <div className="mt-1 text-xs opacity-80">
           Hold <kbd className="rounded bg-gray-700 px-1">Shift</kbd> to see
           Pacman's front side
+        </div>
+        <div className="mt-1 text-xs opacity-80">
+          Use arrow keys to change direction immediately
         </div>
       </div>
     </div>
