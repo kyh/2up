@@ -12,69 +12,122 @@ export type VgArtifact = {
   actions: VgAction[];
 };
 
-type ParsedMessage = {
+export type ParsedMessage = {
   textContent: string;
   artifact: VgArtifact | null;
   isComplete: boolean;
+  currentFilePath: string | null;
 };
 
 export function parseMessage(message: string): ParsedMessage {
-  // Check if the message contains a complete artifact
+  // Initialize return values
+  let artifact: VgArtifact | null = null;
+  let isComplete = true;
+  let currentFilePath: string | null = null;
+  let textContent = "";
+
+  // Check for complete artifact
   const artifactRegex =
     /<vgArtifact\s+id="([^"]+)"\s+title="([^"]+)">([\s\S]*?)<\/vgArtifact>/;
   const artifactMatch = artifactRegex.exec(message);
 
-  let artifact: VgArtifact | null = null;
-  let isComplete = true;
-
   if (artifactMatch) {
+    // Complete artifact found
     const [fullMatch, id, title, artifactContent] = artifactMatch;
 
-    // Extract all actions from the artifact
-    const actionRegex =
-      /<vgAction\s+type="([^"]+)"\s+filePath="([^"]+)">([\s\S]*?)<\/vgAction>/g;
-    const actions: VgAction[] = [];
-
-    let actionMatch;
-    while ((actionMatch = actionRegex.exec(artifactContent ?? "")) !== null) {
-      const [__, type, filePath, content] = actionMatch;
-      if (!type || !filePath || !content) continue;
-      actions.push({
-        type,
-        filePath,
-        content,
-      });
-    }
+    // Extract actions
+    const actions = extractActions(artifactContent ?? "");
 
     if (id && title) {
-      artifact = {
-        id,
-        title,
-        actions,
-      };
+      artifact = { id, title, actions };
     }
-  } else {
-    // Check if we have a partial artifact (for streaming)
-    const hasOpeningTag = /<vgArtifact\s+id="[^"]*"\s+title="[^"]*">/.test(
-      message,
-    );
-    const hasClosingTag = message.includes("</vgArtifact>");
 
-    if (hasOpeningTag && !hasClosingTag) {
+    // Extract text content by removing the complete artifact block
+    textContent = message.replace(fullMatch, "").trim();
+  } else {
+    // Check for partial artifact (streaming)
+    const artifactStartIndex = message.indexOf("<vgArtifact");
+
+    if (artifactStartIndex !== -1 && !message.includes("</vgArtifact>")) {
       isComplete = false;
+
+      // Extract only the text content before the artifact tag
+      textContent =
+        artifactStartIndex > 0
+          ? message.substring(0, artifactStartIndex).trim()
+          : "";
+
+      // Find current file being generated
+      currentFilePath = extractCurrentFilePath(message);
+    } else {
+      // No artifact at all, just text
+      textContent = message.trim();
     }
   }
 
-  // Extract text content by removing the artifact block
-  const textContent = message
-    .replace(/<vgArtifact[\s\S]*?<\/vgArtifact>/g, "")
-    .trim();
-
   return {
     textContent,
-    artifact,
+    artifact: isComplete ? artifact : null,
     isComplete,
+    currentFilePath,
   };
+}
+
+/**
+ * Extract actions from artifact content
+ */
+function extractActions(artifactContent: string): VgAction[] {
+  const actionRegex =
+    /<vgAction\s+type="([^"]+)"\s+filePath="([^"]+)">([\s\S]*?)<\/vgAction>/g;
+  const actions: VgAction[] = [];
+
+  let actionMatch;
+  while ((actionMatch = actionRegex.exec(artifactContent ?? "")) !== null) {
+    const [_, type, filePath, content] = actionMatch;
+    if (!type || !filePath || !content) continue;
+
+    actions.push({ type, filePath, content });
+  }
+
+  return actions;
+}
+
+/**
+ * Extract the current file path being generated during streaming
+ */
+function extractCurrentFilePath(message: string): string | null {
+  // First check for a complete action followed by an incomplete one
+  const lastActionEndIndex = message.lastIndexOf("</vgAction>");
+
+  if (lastActionEndIndex !== -1) {
+    // Look for the next action start after the last complete action
+    const nextActionStartIndex = message.indexOf(
+      "<vgAction",
+      lastActionEndIndex,
+    );
+
+    if (nextActionStartIndex !== -1) {
+      // Extract the file path from the partial action
+      const filePathMatch =
+        /<vgAction\s+type="[^"]+"\s+filePath="([^"]+)">/.exec(
+          message.substring(nextActionStartIndex),
+        );
+
+      if (filePathMatch?.[1]) {
+        return filePathMatch[1];
+      }
+    }
+  } else {
+    // No complete actions yet, check if we're on the first action
+    const firstActionMatch =
+      /<vgAction\s+type="[^"]+"\s+filePath="([^"]+)">/.exec(message);
+
+    if (firstActionMatch?.[1]) {
+      return firstActionMatch[1];
+    }
+  }
+
+  return null;
 }
 
 export function convertToSandpackFiles(

@@ -44,7 +44,7 @@ const Page = () => {
     onError: (error) => {
       toast.error(`An error occurred, ${error.message}`);
     },
-    initialMessages: dummy,
+    // initialMessages: dummy,
   });
 
   const handleSubmit = () => {
@@ -109,7 +109,11 @@ const Page = () => {
                           View Game
                         </Button>
                       )}
-                      {!parsedMessage.isComplete && <Spinner />}
+                      {!parsedMessage.isComplete && (
+                        <div className="flex gap-1">
+                          <Spinner /> Generating {parsedMessage.currentFilePath}
+                        </div>
+                      )}
                     </>
                   ) : (
                     <MessageContent className="bg-primary text-primary-foreground">
