@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { Button } from "@init/ui/button";
+import { Spinner } from "@init/ui/spinner";
 import { toast } from "@init/ui/toast";
 import { ArrowUp, Square } from "lucide-react";
 
@@ -19,10 +20,10 @@ import {
   MessageContent,
   MessagesContainer,
 } from "./_components/ai-chat-message";
+import { dummy } from "./_components/dummy";
 import {
   convertToSandpackFiles,
-  extractArtifact,
-  extractTextContent,
+  parseMessage,
 } from "./_components/message-parser";
 import { ReactRenderer } from "./_components/react-renderer";
 
@@ -31,9 +32,19 @@ const Page = () => {
     null,
   );
   const { messages, append, status, stop, input, setInput } = useChat({
+    onFinish: (message) => {
+      const isAssistant = message.role === "assistant";
+      if (isAssistant) {
+        const parsedMessage = parseMessage(message.content);
+        if (parsedMessage.artifact) {
+          setSelectedArtifact(parsedMessage.artifact);
+        }
+      }
+    },
     onError: (error) => {
       toast.error(`An error occurred, ${error.message}`);
     },
+    initialMessages: dummy,
   });
 
   const handleSubmit = () => {
@@ -62,11 +73,8 @@ const Page = () => {
         <MessagesContainer className="m-auto w-full max-w-(--breakpoint-md) flex-1 space-y-4 p-4">
           {messages.map((message) => {
             const isAssistant = message.role === "assistant";
-            const content = isAssistant
-              ? extractTextContent(message.content)
-              : message.content;
-            const artifact = isAssistant
-              ? extractArtifact(message.content)
+            const parsedMessage = isAssistant
+              ? parseMessage(message.content)
               : null;
 
             return (
@@ -84,23 +92,28 @@ const Page = () => {
                   />
                 )}
                 <div className="max-w-[85%] flex-1 sm:max-w-[75%]">
-                  {isAssistant ? (
+                  {isAssistant && parsedMessage ? (
                     <>
                       <MessageContent
                         className="bg-secondary text-secondary-foreground"
                         markdown
                       >
-                        {content}
+                        {parsedMessage.textContent}
                       </MessageContent>
-                      {!!artifact && (
-                        <Button onClick={() => setSelectedArtifact(artifact)}>
+                      {!!parsedMessage.artifact && (
+                        <Button
+                          onClick={() =>
+                            setSelectedArtifact(parsedMessage.artifact)
+                          }
+                        >
                           View Game
                         </Button>
                       )}
+                      {!parsedMessage.isComplete && <Spinner />}
                     </>
                   ) : (
                     <MessageContent className="bg-primary text-primary-foreground">
-                      {content}
+                      {message.content}
                     </MessageContent>
                   )}
                 </div>

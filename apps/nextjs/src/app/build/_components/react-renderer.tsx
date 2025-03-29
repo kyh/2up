@@ -1,12 +1,12 @@
 import { useState } from "react";
 import {
   SandpackCodeEditor,
-  SandpackFileExplorer,
   SandpackLayout,
   SandpackPreview,
   SandpackProvider,
   useSandpack,
 } from "@codesandbox/sandpack-react";
+import { cyberpunk } from "@codesandbox/sandpack-themes";
 // import {
 //   SandpackPreview,
 //   SandpackProvider,
@@ -23,20 +23,22 @@ export const ReactRenderer = ({
   files: Record<string, SandpackFile>;
   onRequestFix?: (e: string) => void;
 }) => {
-  console.log("ReactRenderer", files);
   return (
     <SandpackProvider
       template="vite-react"
+      theme={cyberpunk}
       files={files}
-      customSetup={{
-        dependencies,
+      customSetup={{ dependencies }}
+      options={{
+        classes: {
+          "sp-wrapper": "h-full!",
+          "sp-preview": "h-full!",
+          "sp-preview-container": "h-full!",
+        },
       }}
     >
-      <SandpackLayout>
-        <SandpackFileExplorer />
-        <SandpackCodeEditor showLineNumbers showInlineErrors />
-        <SandpackPreview />
-      </SandpackLayout>
+      {/* <SandpackCodeEditor showLineNumbers showInlineErrors /> */}
+      <SandpackPreview />
     </SandpackProvider>
   );
 };

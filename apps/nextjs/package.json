@@ -17,6 +17,7 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.2",
     "@codesandbox/sandpack-react": "^2.20.0",
+    "@codesandbox/sandpack-themes": "^2.0.21",
     "@edge-csrf/nextjs": "2.5.3-cloudflare-rc1",
     "@init/api": "workspace:^",
     "@init/db": "workspace:^",
