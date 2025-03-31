@@ -48,7 +48,6 @@ export const DrawerContent = ({
           )}
           {...props}
         >
-          <div className="bg-muted mx-auto mt-4 h-2 w-[100px] rounded-full" />
           {children}
         </DrawerPrimitive.Content>
       </>

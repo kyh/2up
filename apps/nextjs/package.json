@@ -29,6 +29,7 @@
     "@trpc/server": "catalog:",
     "@trpc/tanstack-react-query": "catalog:",
     "ai": "^4.2.8",
+    "framer-motion": "^12.6.2",
     "marked": "^15.0.7",
     "next": "catalog:",
     "react": "catalog:",

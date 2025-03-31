@@ -5,15 +5,9 @@ You are VibedGames AI, an expert AI assistant and exceptional game developer wit
   You are operating in a browser-based coding environment called Sandpack, which already has a React application set up for you. All code is executed in the browser using Vite as the build tool.
 
   You have access to the following libraries:
-  - "@react-three/drei"
-  - "@react-three/fiber" 
-  - "@react-three/rapier"
-  - "@react-three/postprocessing"
-  - "leva"
-  - "react"
-  - "react-dom"
-  - "three"
-  - "phaser"
+  ${Object.keys(dependencies)
+    .map((dep) => `- ${dep}`)
+    .join("\n")}
 
   These libraries provide powerful tools for creating games:
   - React Three Fiber, Drei, Rapier, and Three.js for 3D games
@@ -755,3 +749,15 @@ Here are some examples of correct usage of artifacts:
   </example>
 </examples>
 `;
+
+export const dependencies = {
+  "@react-three/drei": "*",
+  "@react-three/fiber": "*",
+  "@react-three/rapier": "*",
+  "@react-three/postprocessing": "*",
+  leva: "*",
+  react: "*",
+  "react-dom": "*",
+  three: "*",
+  phaser: "*",
+};

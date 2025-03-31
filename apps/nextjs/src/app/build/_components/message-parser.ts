@@ -17,6 +17,7 @@ export type ParsedMessage = {
   artifact: VgArtifact | null;
   isComplete: boolean;
   currentFilePath: string | null;
+  currentActionContent: string | null; // Added for streaming partial content
 };
 
 export function parseMessage(message: string): ParsedMessage {
@@ -24,6 +25,7 @@ export function parseMessage(message: string): ParsedMessage {
   let artifact: VgArtifact | null = null;
   let isComplete = true;
   let currentFilePath: string | null = null;
+  let currentActionContent: string | null = null;
   let textContent = "";
 
   // Check for complete artifact
@@ -57,8 +59,10 @@ export function parseMessage(message: string): ParsedMessage {
           ? message.substring(0, artifactStartIndex).trim()
           : "";
 
-      // Find current file being generated
-      currentFilePath = extractCurrentFilePath(message);
+      // Find current file being generated and its partial content
+      const { filePath, content } = extractCurrentFileInfo(message);
+      currentFilePath = filePath;
+      currentActionContent = content;
     } else {
       // No artifact at all, just text
       textContent = message.trim();
@@ -70,6 +74,7 @@ export function parseMessage(message: string): ParsedMessage {
     artifact: isComplete ? artifact : null,
     isComplete,
     currentFilePath,
+    currentActionContent,
   };
 }
 
@@ -93,9 +98,12 @@ function extractActions(artifactContent: string): VgAction[] {
 }
 
 /**
- * Extract the current file path being generated during streaming
+ * Extract the current file path and content being generated during streaming
  */
-function extractCurrentFilePath(message: string): string | null {
+function extractCurrentFileInfo(message: string): {
+  filePath: string | null;
+  content: string | null;
+} {
   // First check for a complete action followed by an incomplete one
   const lastActionEndIndex = message.lastIndexOf("</vgAction>");
 
@@ -108,26 +116,40 @@ function extractCurrentFilePath(message: string): string | null {
 
     if (nextActionStartIndex !== -1) {
       // Extract the file path from the partial action
-      const filePathMatch =
-        /<vgAction\s+type="[^"]+"\s+filePath="([^"]+)">/.exec(
-          message.substring(nextActionStartIndex),
-        );
+      const filePathRegex = /<vgAction\s+type="[^"]+"\s+filePath="([^"]+)">/;
+      const filePathMatch = filePathRegex.exec(
+        message.substring(nextActionStartIndex),
+      );
 
       if (filePathMatch?.[1]) {
-        return filePathMatch[1];
+        // Get the content after the file path declaration
+        const filePathEndIndex =
+          nextActionStartIndex +
+          message.substring(nextActionStartIndex).indexOf(">") +
+          1;
+        const content = message.substring(filePathEndIndex).trim();
+        return {
+          filePath: filePathMatch[1],
+          content: content.length > 0 ? content : null,
+        };
       }
     }
   } else {
     // No complete actions yet, check if we're on the first action
     const firstActionMatch =
-      /<vgAction\s+type="[^"]+"\s+filePath="([^"]+)">/.exec(message);
+      /<vgAction\s+type="[^"]+"\s+filePath="([^"]+)">([\s\S]*)$/;
+    const match = firstActionMatch.exec(message);
 
-    if (firstActionMatch?.[1]) {
-      return firstActionMatch[1];
+    if (match?.[1]) {
+      return {
+        filePath: match[1],
+        content:
+          match[2] && match[2].trim().length > 0 ? match[2].trim() : null,
+      };
     }
   }
 
-  return null;
+  return { filePath: null, content: null };
 }
 
 export function convertToSandpackFiles(

@@ -8,12 +8,7 @@ import React, {
   useState,
 } from "react";
 import { Textarea } from "@init/ui/textarea";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@init/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@init/ui/tooltip";
 import { cn } from "@init/ui/utils";
 
 type PromptInputContextType = {
@@ -69,26 +64,19 @@ const PromptInput = ({
   };
 
   return (
-    <TooltipProvider>
-      <PromptInputContext.Provider
-        value={{
-          isLoading,
-          value: value ?? internalValue,
-          setValue: onValueChange ?? handleChange,
-          maxHeight,
-          onSubmit,
-        }}
-      >
-        <div
-          className={cn(
-            "border-input bg-background rounded-3xl border p-2 shadow-xs",
-            className,
-          )}
-        >
-          {children}
-        </div>
-      </PromptInputContext.Provider>
-    </TooltipProvider>
+    <PromptInputContext.Provider
+      value={{
+        isLoading,
+        value: value ?? internalValue,
+        setValue: onValueChange ?? handleChange,
+        maxHeight,
+        onSubmit,
+      }}
+    >
+      <div className={cn("bg-background rounded-t-xl p-3", className)}>
+        {children}
+      </div>
+    </PromptInputContext.Provider>
   );
 };
 
