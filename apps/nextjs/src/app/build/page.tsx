@@ -17,12 +17,15 @@ import { toast } from "@init/ui/toast";
 
 import type { ParsedMessage, VgArtifact } from "./_components/message-parser";
 import type { SandpackFile } from "@codesandbox/sandpack-react";
+import { ShootingStars } from "../(home)/_components/shooting-stars";
+import { StarBackground } from "../(home)/_components/star-background";
 import {
   Message,
   MessageAvatar,
   MessageContent,
   MessagesContainer,
 } from "./_components/ai-chat-message";
+import { ChatHistory } from "./_components/chat-history";
 import { CodeEditor } from "./_components/code-editor";
 import { Composer } from "./_components/composer";
 import {
@@ -34,11 +37,11 @@ import { Preview } from "./_components/preview";
 const Page = () => {
   const [composerOpen, setComposerOpen] = useState(true);
   const [codeEditorOpen, setCodeEditorOpen] = useState(false);
+  const [chatHistoryOpen, setChatHistoryOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const { refresh } = useSandpackNavigation();
-  const { sandpack, listen } = useSandpack();
+  const { sandpack } = useSandpack();
 
-  const { messages, append, status, stop, input, setInput } = useChat({
+  const { messages, append, status, input, setInput } = useChat({
     onResponse: () => {
       setComposerOpen(false);
     },
@@ -58,14 +61,8 @@ const Page = () => {
     },
   });
 
-  const isGeneratingResponse = ["streaming", "submitted"].includes(status);
   const handleSubmit = useCallback(() => {
     if (input === "") return;
-
-    if (isGeneratingResponse) {
-      stop();
-      return;
-    }
 
     setInput("");
     void append({
@@ -73,39 +70,64 @@ const Page = () => {
       content: input,
       createdAt: new Date(),
     });
-  }, [input, isGeneratingResponse, setInput, append, stop]);
+  }, [input, setInput, append]);
 
+  const isGeneratingResponse = ["streaming", "submitted"].includes(status);
   const lastMessage = messages.at(-1);
-  let parsedMessage: ParsedMessage | undefined;
-  if (lastMessage && lastMessage.role === "assistant") {
-    parsedMessage = parseMessage(lastMessage.content);
-  }
+  useEffect(() => {
+    if (lastMessage && lastMessage.role === "assistant") {
+      const parsedMessage = parseMessage(lastMessage.content);
+      if (parsedMessage.isComplete) {
+        toast.dismiss("generating");
+        return;
+      }
+      if (!parsedMessage.currentFilePath) {
+        toast.loading(parsedMessage.textContent, {
+          id: "generating",
+        });
+        return;
+      }
+      if (parsedMessage.currentFilePath) {
+        toast.loading(parsedMessage.textContent, {
+          id: "generating",
+          description: `Updating ${parsedMessage.currentFilePath}`,
+        });
+        return;
+      }
+    }
+  }, [lastMessage]);
+
+  console.log("sandpack", sandpack);
 
   return (
     <main className="h-dvh w-dvw overflow-hidden">
-      {isGeneratingResponse && (
-        <div className="flex gap-3">
-          <Spinner />
-          <p className="text-muted-foreground text-sm">
-            {parsedMessage?.textContent}
-            {parsedMessage?.currentFilePath}
-          </p>
+      {!showPreview && (
+        <div className="pointer-events-none fixed inset-0 h-screen w-full">
+          <StarBackground />
+          <ShootingStars />
         </div>
       )}
       {showPreview && <Preview />}
-      <CodeEditor
-        codeEditorOpen={codeEditorOpen}
-        setCodeEditorOpen={setCodeEditorOpen}
-      />
       <Composer
         composerOpen={composerOpen}
         setComposerOpen={setComposerOpen}
         codeEditorOpen={codeEditorOpen}
         setCodeEditorOpen={setCodeEditorOpen}
+        chatHistoryOpen={chatHistoryOpen}
+        setChatHistoryOpen={setChatHistoryOpen}
         value={input}
         onValueChange={setInput}
         onSubmit={handleSubmit}
         isGeneratingResponse={isGeneratingResponse}
+      />
+      <CodeEditor
+        codeEditorOpen={codeEditorOpen}
+        setCodeEditorOpen={setCodeEditorOpen}
+      />
+      <ChatHistory
+        messages={messages}
+        chatHistoryOpen={chatHistoryOpen}
+        setChatHistoryOpen={setChatHistoryOpen}
       />
     </main>
   );
@@ -133,39 +155,3 @@ const PageContainer = () => {
 };
 
 export default PageContainer;
-
-/* <MessagesContainer className="m-auto w-full max-w-(--breakpoint-md) flex-1 space-y-4 p-4">
-        {messages.map((message) => {
-          const isAssistant = message.role === "assistant";
-          return (
-            <Message
-              key={message.id}
-              className={
-                message.role === "user" ? "justify-end" : "justify-start"
-              }
-            >
-              {isAssistant && (
-                <MessageAvatar
-                  src="/avatars/ai.png"
-                  alt="AI Assistant"
-                  fallback="AI"
-                />
-              )}
-              <div className="max-w-[85%] flex-1 sm:max-w-[75%]">
-                {isAssistant ? (
-                  <MessageContent
-                    className="bg-secondary text-secondary-foreground"
-                    markdown
-                  >
-                    {message.content}
-                  </MessageContent>
-                ) : (
-                  <MessageContent className="bg-primary text-primary-foreground">
-                    {message.content}
-                  </MessageContent>
-                )}
-              </div>
-            </Message>
-          );
-        })}
-      </MessagesContainer> */

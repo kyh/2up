@@ -9,6 +9,7 @@ import {
   ChevronDown,
   ChevronUp,
   CodeIcon,
+  MessageCircleIcon,
   RefreshCwIcon,
 } from "lucide-react";
 
@@ -23,6 +24,8 @@ type ComposerProps = {
   setComposerOpen?: (open: boolean) => void;
   codeEditorOpen?: boolean;
   setCodeEditorOpen?: (open: boolean) => void;
+  chatHistoryOpen?: boolean;
+  setChatHistoryOpen?: (open: boolean) => void;
   value?: string;
   onValueChange?: (value: string) => void;
   onSubmit?: () => void;
@@ -35,6 +38,8 @@ export const Composer = memo(
     setComposerOpen,
     codeEditorOpen,
     setCodeEditorOpen,
+    chatHistoryOpen,
+    setChatHistoryOpen,
     value = "",
     onValueChange,
     onSubmit,
@@ -58,6 +63,13 @@ export const Composer = memo(
                 onClick={() => setCodeEditorOpen?.(!codeEditorOpen)}
               >
                 <CodeIcon className="size-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                className="size-5 p-0"
+                onClick={() => setChatHistoryOpen?.(!chatHistoryOpen)}
+              >
+                <MessageCircleIcon className="size-4" />
               </Button>
               <Button
                 variant="ghost"
