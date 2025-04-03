@@ -5,6 +5,7 @@ import { Spinner } from "@init/ui/spinner";
 import { cn } from "@init/ui/utils";
 import { CircleCheckIcon } from "lucide-react";
 
+import type { VgActionData } from "./message-parser";
 import { isFileAction, parseMessage } from "./message-parser";
 
 type ChatHistoryProps = {
@@ -29,28 +30,34 @@ const ParsedMessageContent = memo(({ message }: { message: UIMessage }) => {
   return (
     <>
       {parsedMessage.contentBeforeArtifact}
-      {parsedMessage.actions.map((action, index) => {
-        if (!isFileAction(action)) return null;
-        return (
-          <div key={index} className="my-2 flex items-center gap-1">
-            {action.isParsed ? (
-              <>
-                <CircleCheckIcon className="size-4" />
-                <span>{action.filePath}</span>
-              </>
-            ) : (
-              <>
-                <Spinner />
-                <span>Generating {action.filePath}</span>
-              </>
-            )}
-          </div>
-        );
-      })}
+      {parsedMessage.actions.map((action, index) => (
+        <MessageAction key={index} action={action} />
+      ))}
       {parsedMessage.contentAfterArtifact}
     </>
   );
 });
+
+const MessageAction = memo(
+  ({ action }: { action: VgActionData }) => {
+    if (!isFileAction(action)) return null;
+    const actionContent = action.isParsed ? (
+      <>
+        <CircleCheckIcon className="size-4" />
+        <span>{action.filePath}</span>
+      </>
+    ) : (
+      <>
+        <Spinner />
+        <span>Generating {action.filePath}</span>
+      </>
+    );
+    return <div className="my-2 flex items-center gap-1">{actionContent}</div>;
+  },
+  (prevProps, nextProps) => {
+    return prevProps.action.isParsed === nextProps.action.isParsed;
+  },
+);
 
 export const ChatHistory = memo(
   function ChatHistory({ composerOpen, messages }: ChatHistoryProps) {
