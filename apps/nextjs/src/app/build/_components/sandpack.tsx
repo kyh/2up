@@ -1,5 +1,3 @@
-"use client";
-
 import { memo } from "react";
 import {
   SandpackLayout,
@@ -58,6 +56,7 @@ html, body {
   height: 100%;
   background: #000;
   background-image: url('https://vibedgames.com/home/bg.png');
+  background-size: 10px;
 }
 
 .background {

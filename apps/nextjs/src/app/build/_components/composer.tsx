@@ -1,5 +1,3 @@
-"use client";
-
 import { memo } from "react";
 import { useSandpackNavigation } from "@codesandbox/sandpack-react";
 import { Button } from "@init/ui/button";
