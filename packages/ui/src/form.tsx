@@ -9,7 +9,6 @@ import type {
 import type { ZodType, ZodTypeDef } from "zod";
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@init/ui/utils";
 import { Slot } from "@radix-ui/react-slot";
 import {
   useForm as __useForm,
@@ -20,6 +19,7 @@ import {
 
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Label } from "./label";
+import { cn } from "./utils";
 
 const useForm = <
   TOut extends FieldValues,

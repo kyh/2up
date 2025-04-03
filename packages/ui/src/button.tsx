@@ -1,10 +1,10 @@
 import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
-import { cn } from "@init/ui/utils";
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 
 import { Spinner } from "./spinner";
+import { cn } from "./utils";
 
 export const buttonVariants = cva(
   "focus-visible:ring-ring relative inline-flex cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition focus-visible:ring-1 focus-visible:outline-hidden disabled:pointer-events-none",

@@ -30,13 +30,9 @@
     "@trpc/tanstack-react-query": "catalog:",
     "ai": "^4.2.8",
     "framer-motion": "^12.6.2",
-    "marked": "^15.0.7",
     "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "react-markdown": "^10.1.0",
-    "remark-gfm": "^4.0.1",
-    "shiki": "^2.5.0",
     "superjson": "catalog:",
     "zod": "catalog:"
   },

@@ -2,7 +2,6 @@ import { memo } from "react";
 import {
   SandpackCodeEditor,
   SandpackFileExplorer,
-  SandpackLayout,
 } from "@codesandbox/sandpack-react";
 import {
   Drawer,
@@ -18,7 +17,7 @@ type CodeEditorProps = {
 };
 
 export const CodeEditor = memo(
-  ({ codeEditorOpen, setCodeEditorOpen }: CodeEditorProps) => {
+  function CodeEditor({ codeEditorOpen, setCodeEditorOpen }: CodeEditorProps) {
     return (
       <Drawer open={codeEditorOpen} onOpenChange={setCodeEditorOpen}>
         <DrawerContent noPortal>
@@ -28,10 +27,14 @@ export const CodeEditor = memo(
               You can edit the code for your game directly
             </DrawerDescription>
           </DrawerHeader>
-          <SandpackLayout>
-            <SandpackFileExplorer />
-            <SandpackCodeEditor showLineNumbers showInlineErrors />
-          </SandpackLayout>
+          <div className="flex h-[90dvh] overflow-auto">
+            <SandpackFileExplorer className="w-48! border-r border-[var(--sp-colors-surface2)]" />
+            <SandpackCodeEditor
+              className="flex-1"
+              showLineNumbers
+              showInlineErrors
+            />
+          </div>
         </DrawerContent>
       </Drawer>
     );

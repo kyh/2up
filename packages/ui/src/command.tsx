@@ -1,12 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@init/ui/utils";
 import { Command as CommandPrimitive } from "cmdk";
 import { SearchIcon } from "lucide-react";
 
 import type { DialogProps } from "@radix-ui/react-dialog";
 import { Dialog, DialogContent } from "./dialog";
+import { cn } from "./utils";
 
 export const Command = ({
   className,

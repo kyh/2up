@@ -2,9 +2,8 @@ import Link from "next/link";
 import { Logo } from "@init/ui/logo";
 
 import type { CardProps } from "./_components/card";
+import { Background } from "./_components/background";
 import { Card } from "./_components/card";
-import { ShootingStars } from "./_components/shooting-stars";
-import { StarBackground } from "./_components/star-background";
 
 const pluginData: CardProps[] = [
   {
@@ -37,10 +36,7 @@ const pluginData: CardProps[] = [
 const Page = () => {
   return (
     <>
-      <div className="pointer-events-none fixed inset-0 h-screen w-full">
-        <StarBackground />
-        <ShootingStars />
-      </div>
+      <Background />
       <main className="flex min-h-dvh flex-col">
         <header className="mx-auto max-w-3xl px-5 py-10">
           <Logo className="text-muted-foreground size-10 opacity-50" />

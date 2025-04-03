@@ -1,174 +1,322 @@
-import type { SandpackFile } from "@codesandbox/sandpack-react";
+import { useRef } from "react";
 
-export type VgAction = {
-  type: string;
-  filePath: string;
+const ARTIFACT_TAG_OPEN = "<vgArtifact";
+const ARTIFACT_TAG_CLOSE = "</vgArtifact>";
+const ARTIFACT_ACTION_TAG_OPEN = "<vgAction";
+const ARTIFACT_ACTION_TAG_CLOSE = "</vgAction>";
+
+export type VgArtifactData = {
+  id: string;
+  title: string;
+};
+
+export type ActionType = "file";
+
+export type BaseAction = {
   content: string;
 };
 
-export type VgArtifact = {
-  id: string;
-  title: string;
-  actions: VgAction[];
+export type FileAction = {
+  type: "file";
+  filePath: string;
+} & BaseAction;
+
+export type VgAction = FileAction;
+
+export type VgActionData = VgAction | BaseAction;
+
+export type ParserCallbacks = {
+  onArtifactOpen?: (state: MessageState, parsedMessage: ParsedMessage) => void;
+  onArtifactClose?: (state: MessageState, parsedMessage: ParsedMessage) => void;
+  onActionOpen?: (state: MessageState, parsedMessage: ParsedMessage) => void;
+  onActionClose?: (state: MessageState, parsedMessage: ParsedMessage) => void;
+};
+
+export type StreamingMessageParserOptions = {
+  callbacks?: ParserCallbacks;
+};
+
+export type MessageState = {
+  position: number;
+  insideArtifact: boolean;
+  insideAction: boolean;
+  currentArtifact?: VgArtifactData;
+  currentAction: VgActionData;
+  actionId: number;
 };
 
 export type ParsedMessage = {
-  textContent: string;
-  artifact: VgArtifact | null;
-  isComplete: boolean;
-  currentFilePath: string | null;
-  currentActionContent: string | null; // Added for streaming partial content
+  messageId: string;
+  contentBeforeArtifact: string;
+  artifact?: VgArtifactData;
+  actions: VgAction[];
+  contentAfterArtifact: string;
 };
 
-export function parseMessage(message: string): ParsedMessage {
-  // Initialize return values
-  let artifact: VgArtifact | null = null;
-  let isComplete = true;
-  let currentFilePath: string | null = null;
-  let currentActionContent: string | null = null;
-  let textContent = "";
+export class StreamingMessageParser {
+  #messages = new Map<string, MessageState>();
+  #parsedMessages = new Map<string, ParsedMessage>();
 
-  // Check for complete artifact
-  const artifactRegex =
-    /<vgArtifact\s+id="([^"]+)"\s+title="([^"]+)">([\s\S]*?)<\/vgArtifact>/;
-  const artifactMatch = artifactRegex.exec(message);
+  constructor(private _options: StreamingMessageParserOptions = {}) {}
 
-  if (artifactMatch) {
-    // Complete artifact found
-    const [fullMatch, id, title, artifactContent] = artifactMatch;
+  parse(messageId: string, input: string): ParsedMessage {
+    let state = this.#messages.get(messageId);
+    let parsedMessage = this.#parsedMessages.get(messageId);
 
-    // Extract actions
-    const actions = extractActions(artifactContent ?? "");
-
-    if (id && title) {
-      artifact = { id, title, actions };
+    // Initialize state if it doesn't exist
+    if (!state) {
+      state = {
+        position: 0,
+        insideAction: false,
+        insideArtifact: false,
+        currentAction: { content: "" },
+        actionId: 0,
+      };
+      this.#messages.set(messageId, state);
     }
 
-    // Extract text content by removing the complete artifact block
-    textContent = message.replace(fullMatch, "").trim();
-  } else {
-    // Check for partial artifact (streaming)
-    const artifactStartIndex = message.indexOf("<vgArtifact");
-
-    if (artifactStartIndex !== -1 && !message.includes("</vgArtifact>")) {
-      isComplete = false;
-
-      // Extract only the text content before the artifact tag
-      textContent =
-        artifactStartIndex > 0
-          ? message.substring(0, artifactStartIndex).trim()
-          : "";
-
-      // Find current file being generated and its partial content
-      const { filePath, content } = extractCurrentFileInfo(message);
-      currentFilePath = filePath;
-      currentActionContent = content;
-    } else {
-      // No artifact at all, just text
-      textContent = message.trim();
+    // Initialize parsed message if it doesn't exist
+    if (!parsedMessage) {
+      parsedMessage = {
+        messageId,
+        contentBeforeArtifact: "",
+        actions: [],
+        contentAfterArtifact: "",
+      };
+      this.#parsedMessages.set(messageId, parsedMessage);
     }
-  }
 
-  return {
-    textContent,
-    artifact: isComplete ? artifact : null,
-    isComplete,
-    currentFilePath,
-    currentActionContent,
-  };
-}
+    let output = "";
+    let i = state.position;
+    let earlyBreak = false;
 
-/**
- * Extract actions from artifact content
- */
-function extractActions(artifactContent: string): VgAction[] {
-  const actionRegex =
-    /<vgAction\s+type="([^"]+)"\s+filePath="([^"]+)">([\s\S]*?)<\/vgAction>/g;
-  const actions: VgAction[] = [];
+    while (i < input.length) {
+      if (state.insideArtifact) {
+        const currentArtifact = state.currentArtifact;
 
-  let actionMatch;
-  while ((actionMatch = actionRegex.exec(artifactContent ?? "")) !== null) {
-    const [_, type, filePath, content] = actionMatch;
-    if (!type || !filePath || !content) continue;
+        if (currentArtifact === undefined) {
+          console.error("Artifact not initialized");
+          return parsedMessage;
+        }
 
-    actions.push({ type, filePath, content });
-  }
+        if (state.insideAction) {
+          const closeIndex = input.indexOf(ARTIFACT_ACTION_TAG_CLOSE, i);
 
-  return actions;
-}
+          const currentAction = state.currentAction;
 
-/**
- * Extract the current file path and content being generated during streaming
- */
-function extractCurrentFileInfo(message: string): {
-  filePath: string | null;
-  content: string | null;
-} {
-  // First check for a complete action followed by an incomplete one
-  const lastActionEndIndex = message.lastIndexOf("</vgAction>");
+          if (closeIndex !== -1) {
+            currentAction.content += input.slice(i, closeIndex);
 
-  if (lastActionEndIndex !== -1) {
-    // Look for the next action start after the last complete action
-    const nextActionStartIndex = message.indexOf(
-      "<vgAction",
-      lastActionEndIndex,
-    );
+            let content = currentAction.content.trim();
 
-    if (nextActionStartIndex !== -1) {
-      // Extract the file path from the partial action
-      const filePathRegex = /<vgAction\s+type="[^"]+"\s+filePath="([^"]+)">/;
-      const filePathMatch = filePathRegex.exec(
-        message.substring(nextActionStartIndex),
-      );
+            if ("type" in currentAction && currentAction.type === "file") {
+              content += "\n";
+            }
 
-      if (filePathMatch?.[1]) {
-        // Get the content after the file path declaration
-        const filePathEndIndex =
-          nextActionStartIndex +
-          message.substring(nextActionStartIndex).indexOf(">") +
-          1;
-        const content = message.substring(filePathEndIndex).trim();
-        return {
-          filePath: filePathMatch[1],
-          content: content.length > 0 ? content : null,
-        };
+            currentAction.content = content;
+
+            // Add the action to the parsedMessage actions array
+            parsedMessage.actions.push(currentAction as VgAction);
+
+            this._options.callbacks?.onActionClose?.(state, parsedMessage);
+
+            state.insideAction = false;
+            state.currentAction = { content: "" };
+
+            i = closeIndex + ARTIFACT_ACTION_TAG_CLOSE.length;
+          } else {
+            break;
+          }
+        } else {
+          const actionOpenIndex = input.indexOf(ARTIFACT_ACTION_TAG_OPEN, i);
+          const artifactCloseIndex = input.indexOf(ARTIFACT_TAG_CLOSE, i);
+
+          if (
+            actionOpenIndex !== -1 &&
+            (artifactCloseIndex === -1 || actionOpenIndex < artifactCloseIndex)
+          ) {
+            const actionEndIndex = input.indexOf(">", actionOpenIndex);
+
+            if (actionEndIndex !== -1) {
+              state.insideAction = true;
+
+              state.currentAction = this.#parseActionTag(
+                input,
+                actionOpenIndex,
+                actionEndIndex,
+              );
+
+              this._options.callbacks?.onActionOpen?.(state, parsedMessage);
+
+              i = actionEndIndex + 1;
+            } else {
+              break;
+            }
+          } else if (artifactCloseIndex !== -1) {
+            this._options.callbacks?.onArtifactClose?.(state, parsedMessage);
+
+            state.insideArtifact = false;
+            state.currentArtifact = undefined;
+
+            i = artifactCloseIndex + ARTIFACT_TAG_CLOSE.length;
+          } else {
+            break;
+          }
+        }
+      } else if (input[i] === "<" && input[i + 1] !== "/") {
+        let j = i;
+        let potentialTag = "";
+
+        while (
+          j < input.length &&
+          potentialTag.length < ARTIFACT_TAG_OPEN.length
+        ) {
+          potentialTag += input[j];
+
+          if (potentialTag === ARTIFACT_TAG_OPEN) {
+            const nextChar = input[j + 1];
+
+            if (nextChar && nextChar !== ">" && nextChar !== " ") {
+              output += input.slice(i, j + 1);
+              i = j + 1;
+              break;
+            }
+
+            const openTagEnd = input.indexOf(">", j);
+
+            if (openTagEnd !== -1) {
+              const artifactTag = input.slice(i, openTagEnd + 1);
+
+              const artifactTitle = this.#extractAttribute(
+                artifactTag,
+                "title",
+              );
+              const artifactId = this.#extractAttribute(artifactTag, "id");
+
+              if (!artifactTitle) {
+                console.warn("Artifact title missing");
+              }
+
+              if (!artifactId) {
+                console.warn("Artifact id missing");
+              }
+
+              state.insideArtifact = true;
+
+              const currentArtifact = {
+                id: artifactId ?? "",
+                title: artifactTitle ?? "",
+              } satisfies VgArtifactData;
+
+              state.currentArtifact = currentArtifact;
+
+              // Set the artifact in parsedMessage when we enter an artifact
+              parsedMessage.artifact = currentArtifact;
+
+              this._options.callbacks?.onArtifactOpen?.(state, parsedMessage);
+
+              i = openTagEnd + 1;
+            } else {
+              earlyBreak = true;
+            }
+
+            break;
+          } else if (!ARTIFACT_TAG_OPEN.startsWith(potentialTag)) {
+            output += input.slice(i, j + 1);
+            i = j + 1;
+            break;
+          }
+
+          j++;
+        }
+
+        if (j === input.length && ARTIFACT_TAG_OPEN.startsWith(potentialTag)) {
+          break;
+        }
+      } else {
+        output += input[i];
+        i++;
+      }
+
+      if (earlyBreak) {
+        break;
       }
     }
-  } else {
-    // No complete actions yet, check if we're on the first action
-    const firstActionMatch =
-      /<vgAction\s+type="[^"]+"\s+filePath="([^"]+)">([\s\S]*)$/;
-    const match = firstActionMatch.exec(message);
 
-    if (match?.[1]) {
-      return {
-        filePath: match[1],
-        content:
-          match[2] && match[2].trim().length > 0 ? match[2].trim() : null,
-      };
+    state.position = i;
+
+    // Update the parsed message based on parsing results
+    if (!state.insideArtifact && !parsedMessage.artifact) {
+      // If we're not inside an artifact and no artifact has been found yet,
+      // add content to the "before" section
+      parsedMessage.contentBeforeArtifact += output;
+    } else {
+      // If we're inside an artifact or we've already parsed an artifact,
+      // add content to the "after" section
+      parsedMessage.contentAfterArtifact += output;
+    }
+
+    // Return the current state of the parsed message
+    return { ...parsedMessage };
+  }
+
+  getParsedMessage(messageId: string): ParsedMessage | undefined {
+    return this.#parsedMessages.get(messageId);
+  }
+
+  getAllParsedMessages(): ParsedMessage[] {
+    return Array.from(this.#parsedMessages.values());
+  }
+
+  reset(messageId?: string) {
+    if (messageId) {
+      this.#messages.delete(messageId);
+      this.#parsedMessages.delete(messageId);
+    } else {
+      this.#messages.clear();
+      this.#parsedMessages.clear();
     }
   }
 
-  return { filePath: null, content: null };
+  #parseActionTag(
+    input: string,
+    actionOpenIndex: number,
+    actionEndIndex: number,
+  ) {
+    const actionTag = input.slice(actionOpenIndex, actionEndIndex + 1);
+
+    const actionType = this.#extractAttribute(actionTag, "type") as ActionType;
+
+    const actionAttributes = {
+      type: actionType,
+      content: "",
+    };
+
+    if (actionType === "file") {
+      const filePath = this.#extractAttribute(actionTag, "filePath")!;
+
+      if (!filePath) {
+        console.debug("File path not specified");
+      }
+
+      (actionAttributes as FileAction).filePath = filePath;
+    } else {
+      console.warn(`Unknown action type '${actionType}'`);
+    }
+
+    return actionAttributes as VgAction;
+  }
+
+  #extractAttribute(tag: string, attributeName: string): string | undefined {
+    const match = new RegExp(`${attributeName}="([^"]*)"`, "i").exec(tag);
+    return match ? match[1] : undefined;
+  }
 }
 
-export function convertToSandpackFiles(
-  actions: VgAction[],
-): Record<string, SandpackFile> {
-  const files: Record<string, SandpackFile> = {};
+export function useMessageParser(props?: StreamingMessageParserOptions) {
+  const messageParserRef = useRef(new StreamingMessageParser(props));
 
-  actions.forEach((action) => {
-    if (action.type === "file") {
-      files[action.filePath] = {
-        code: action.content,
-        active: false,
-      };
-    }
-  });
-
-  if (files["src/App.jsx"]) {
-    files["src/App.jsx"].active = true;
-  }
-
-  return files;
+  return {
+    messageParser: messageParserRef.current,
+  };
 }

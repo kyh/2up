@@ -3,9 +3,9 @@
 import { memo } from "react";
 import { useSandpackNavigation } from "@codesandbox/sandpack-react";
 import { Button } from "@init/ui/button";
+import { ChatTextarea } from "@init/ui/chat";
 import { cn } from "@init/ui/utils";
 import {
-  ArrowUp,
   ChevronDown,
   ChevronUp,
   CodeIcon,
@@ -13,38 +13,32 @@ import {
   RefreshCwIcon,
 } from "lucide-react";
 
-import {
-  PromptInput,
-  PromptInputActions,
-  PromptInputTextarea,
-} from "./ai-chat-input";
-
 type ComposerProps = {
-  composerOpen?: boolean;
-  setComposerOpen?: (open: boolean) => void;
-  codeEditorOpen?: boolean;
-  setCodeEditorOpen?: (open: boolean) => void;
-  chatHistoryOpen?: boolean;
-  setChatHistoryOpen?: (open: boolean) => void;
-  value?: string;
-  onValueChange?: (value: string) => void;
-  onSubmit?: () => void;
-  isGeneratingResponse?: boolean;
+  composerOpen: boolean;
+  setComposerOpen: (open: boolean) => void;
+  codeEditorOpen: boolean;
+  setCodeEditorOpen: (open: boolean) => void;
+  chatHistoryOpen: boolean;
+  setChatHistoryOpen: (open: boolean) => void;
+  input: string;
+  setInput: (input: string) => void;
+  onSubmit: () => void;
+  isGeneratingResponse: boolean;
 };
 
 export const Composer = memo(
-  ({
-    composerOpen = true,
+  function Composer({
+    composerOpen,
     setComposerOpen,
     codeEditorOpen,
     setCodeEditorOpen,
     chatHistoryOpen,
     setChatHistoryOpen,
-    value = "",
-    onValueChange,
+    input,
+    setInput,
     onSubmit,
     isGeneratingResponse,
-  }: ComposerProps) => {
+  }: ComposerProps) {
     const { refresh } = useSandpackNavigation();
 
     return (
@@ -54,20 +48,20 @@ export const Composer = memo(
           composerOpen ? "" : "translate-y-[calc(100%-32px)]",
         )}
       >
-        <div className="bg-muted/50 pointer-events-auto w-full max-w-lg rounded-t-2xl px-2 backdrop-blur-sm">
+        <div className="bg-muted/40 pointer-events-auto w-full max-w-lg rounded-t-2xl px-3 shadow-lg backdrop-blur-xs">
           <div className="flex h-8 items-center justify-between gap-3 px-2">
             <div className="flex gap-2">
               <Button
                 variant="ghost"
                 className="size-5 p-0"
-                onClick={() => setCodeEditorOpen?.(!codeEditorOpen)}
+                onClick={() => setCodeEditorOpen(!codeEditorOpen)}
               >
                 <CodeIcon className="size-4" />
               </Button>
               <Button
                 variant="ghost"
                 className="size-5 p-0"
-                onClick={() => setChatHistoryOpen?.(!chatHistoryOpen)}
+                onClick={() => setChatHistoryOpen(!chatHistoryOpen)}
               >
                 <MessageCircleIcon className="size-4" />
               </Button>
@@ -82,7 +76,7 @@ export const Composer = memo(
             <Button
               variant="ghost"
               className="size-5 p-0"
-              onClick={() => setComposerOpen?.(!composerOpen)}
+              onClick={() => setComposerOpen(!composerOpen)}
             >
               {composerOpen ? (
                 <>
@@ -97,23 +91,12 @@ export const Composer = memo(
               )}
             </Button>
           </div>
-          <PromptInput
-            value={value}
-            onValueChange={onValueChange}
+          <ChatTextarea
+            input={input}
+            setInput={setInput}
             onSubmit={onSubmit}
-          >
-            <PromptInputTextarea placeholder="Build a 3d platformer..." />
-            <PromptInputActions className="pt-2">
-              <Button
-                size="icon"
-                className="ml-auto h-8 w-8 rounded-full"
-                onClick={onSubmit}
-                loading={isGeneratingResponse}
-              >
-                <ArrowUp className="size-5" />
-              </Button>
-            </PromptInputActions>
-          </PromptInput>
+            isGeneratingResponse={isGeneratingResponse}
+          />
         </div>
       </div>
     );
@@ -122,7 +105,8 @@ export const Composer = memo(
     return (
       prevProps.composerOpen === nextProps.composerOpen &&
       prevProps.codeEditorOpen === nextProps.codeEditorOpen &&
-      prevProps.value === nextProps.value &&
+      prevProps.chatHistoryOpen === nextProps.chatHistoryOpen &&
+      prevProps.input === nextProps.input &&
       prevProps.isGeneratingResponse === nextProps.isGeneratingResponse
     );
   },

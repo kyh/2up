@@ -1,6 +1,13 @@
 import type { UIMessage } from "ai";
 import { memo } from "react";
 import {
+  ChatTextarea,
+  Message,
+  MessageAvatar,
+  MessageContent,
+  MessagesContainer,
+} from "@init/ui/chat";
+import {
   Drawer,
   DrawerContent,
   DrawerDescription,
@@ -8,21 +15,30 @@ import {
   DrawerTitle,
 } from "@init/ui/drawer";
 
-import {
-  Message,
-  MessageAvatar,
-  MessageContent,
-  MessagesContainer,
-} from "./ai-chat-message";
+import type { StreamingMessageParser } from "./message-parser";
 
 type ChatHistoryProps = {
-  messages: UIMessage[];
   chatHistoryOpen: boolean;
   setChatHistoryOpen: (open: boolean) => void;
+  messages: UIMessage[];
+  messageParser: StreamingMessageParser;
+  input: string;
+  setInput: (input: string) => void;
+  onSubmit: () => void;
+  isGeneratingResponse: boolean;
 };
 
 export const ChatHistory = memo(
-  ({ messages, chatHistoryOpen, setChatHistoryOpen }: ChatHistoryProps) => {
+  function ChatHistory({
+    chatHistoryOpen,
+    setChatHistoryOpen,
+    messages,
+    messageParser,
+    input,
+    setInput,
+    onSubmit,
+    isGeneratingResponse,
+  }: ChatHistoryProps) {
     return (
       <Drawer open={chatHistoryOpen} onOpenChange={setChatHistoryOpen}>
         <DrawerContent className="max-h-[90dvh]">
@@ -40,6 +56,7 @@ export const ChatHistory = memo(
             )}
             {messages.map((message) => {
               const isAssistant = message.role === "assistant";
+
               return (
                 <Message
                   key={message.id}
@@ -56,11 +73,24 @@ export const ChatHistory = memo(
                   )}
                   <div className="max-w-[85%] flex-1 sm:max-w-[75%]">
                     {isAssistant ? (
-                      <MessageContent
-                        className="bg-secondary text-secondary-foreground"
-                        markdown
-                      >
-                        {message.content}
+                      <MessageContent className="bg-secondary text-secondary-foreground">
+                        {
+                          messageParser.getParsedMessage(message.id)
+                            ?.contentBeforeArtifact
+                        }
+                        {messageParser
+                          .getParsedMessage(message.id)
+                          ?.actions.map((action) => {
+                            return (
+                              <div key={action.filePath} className="flex gap-1">
+                                <span>{action.filePath}</span>
+                              </div>
+                            );
+                          })}
+                        {
+                          messageParser.getParsedMessage(message.id)
+                            ?.contentAfterArtifact
+                        }
                       </MessageContent>
                     ) : (
                       <MessageContent className="bg-primary text-primary-foreground">
@@ -72,6 +102,15 @@ export const ChatHistory = memo(
               );
             })}
           </MessagesContainer>
+          <div className="m-auto w-full max-w-(--breakpoint-md) p-4">
+            <ChatTextarea
+              className="border-border rounded-b-xl border"
+              input={input}
+              setInput={setInput}
+              onSubmit={onSubmit}
+              isGeneratingResponse={isGeneratingResponse}
+            />
+          </div>
         </DrawerContent>
       </Drawer>
     );
@@ -79,7 +118,12 @@ export const ChatHistory = memo(
   (prevProps, nextProps) => {
     return (
       prevProps.chatHistoryOpen === nextProps.chatHistoryOpen &&
-      prevProps.messages === nextProps.messages
+      prevProps.messages.length === nextProps.messages.length &&
+      prevProps.input === nextProps.input &&
+      prevProps.isGeneratingResponse === nextProps.isGeneratingResponse &&
+      prevProps.messageParser === nextProps.messageParser &&
+      prevProps.setInput === nextProps.setInput &&
+      prevProps.onSubmit === nextProps.onSubmit
     );
   },
 );

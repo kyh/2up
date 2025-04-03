@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@init/ui/avatar";
-import { cn } from "@init/ui/utils";
+import { ArrowUp } from "lucide-react";
 
-import { Markdown } from "./ai-chat-markdown";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { Button } from "./button";
+import { Textarea } from "./textarea";
+import { cn } from "./utils";
 
 export type MessageProps = {
   children: React.ReactNode;
@@ -42,14 +44,11 @@ const MessageAvatar = ({
 
 export type MessageContentProps = {
   children: React.ReactNode;
-  markdown?: boolean;
   className?: string;
-} & React.ComponentProps<typeof Markdown> &
-  React.HTMLProps<HTMLDivElement>;
+} & React.HTMLProps<HTMLDivElement>;
 
 const MessageContent = ({
   children,
-  markdown = false,
   className,
   ...props
 }: MessageContentProps) => {
@@ -58,11 +57,7 @@ const MessageContent = ({
     className,
   );
 
-  return markdown ? (
-    <div className={classNames}>
-      <Markdown {...props}>{children as string}</Markdown>
-    </div>
-  ) : (
+  return (
     <div className={classNames} {...props}>
       {children}
     </div>
@@ -253,4 +248,47 @@ const MessagesContainer = ({
   );
 };
 
-export { Message, MessageAvatar, MessageContent, MessagesContainer };
+type ChatTextareaProps = {
+  input: string;
+  setInput: (input: string) => void;
+  onSubmit: () => void;
+  isGeneratingResponse: boolean;
+  className?: string;
+};
+
+const ChatTextarea = ({
+  className,
+  input,
+  setInput,
+  onSubmit,
+  isGeneratingResponse,
+}: ChatTextareaProps) => {
+  return (
+    <div className={cn("bg-background rounded-t-xl p-3", className)}>
+      <Textarea
+        placeholder="Build a 3d platformer..."
+        className="text-primary min-h-[44px] w-full resize-none border-none bg-transparent shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        onChange={(e) => setInput(e.target.value)}
+        value={input}
+      />
+      <div className="flex items-center gap-2 pt-2">
+        <Button
+          size="icon"
+          className="ml-auto h-8 w-8 rounded-full"
+          onClick={onSubmit}
+          loading={isGeneratingResponse}
+        >
+          <ArrowUp className="size-5" />
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export {
+  Message,
+  MessageAvatar,
+  MessageContent,
+  MessagesContainer,
+  ChatTextarea,
+};
