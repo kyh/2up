@@ -275,7 +275,7 @@ export const FaceDetection = memo(function FaceDetection({
   };
 
   return (
-    <div className="absolute right-1 bottom-1 z-1 aspect-video h-[288px] w-sm rounded-lg bg-black/10">
+    <div className="absolute right-1 bottom-1 z-1 aspect-video h-[144px] w-[192px] rounded-lg bg-black/10 md:h-[288px] md:w-[384px]">
       <video ref={videoRef} className="rounded-lg" playsInline />
       <canvas ref={canvasRef} className="absolute top-0 left-0 h-full w-full" />
     </div>
