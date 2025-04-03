@@ -5,21 +5,13 @@ import { useSandpackNavigation } from "@codesandbox/sandpack-react";
 import { Button } from "@init/ui/button";
 import { ChatTextarea } from "@init/ui/chat";
 import { cn } from "@init/ui/utils";
-import {
-  ChevronDown,
-  ChevronUp,
-  CodeIcon,
-  MessageCircleIcon,
-  RefreshCwIcon,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, CodeIcon, RefreshCwIcon } from "lucide-react";
 
 type ComposerProps = {
   composerOpen: boolean;
   setComposerOpen: (open: boolean) => void;
   codeEditorOpen: boolean;
   setCodeEditorOpen: (open: boolean) => void;
-  chatHistoryOpen: boolean;
-  setChatHistoryOpen: (open: boolean) => void;
   input: string;
   setInput: (input: string) => void;
   onSubmit: () => void;
@@ -32,8 +24,6 @@ export const Composer = memo(
     setComposerOpen,
     codeEditorOpen,
     setCodeEditorOpen,
-    chatHistoryOpen,
-    setChatHistoryOpen,
     input,
     setInput,
     onSubmit,
@@ -57,13 +47,6 @@ export const Composer = memo(
                 onClick={() => setCodeEditorOpen(!codeEditorOpen)}
               >
                 <CodeIcon className="size-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="size-5 p-0"
-                onClick={() => setChatHistoryOpen(!chatHistoryOpen)}
-              >
-                <MessageCircleIcon className="size-4" />
               </Button>
               <Button
                 variant="ghost"
@@ -105,7 +88,6 @@ export const Composer = memo(
     return (
       prevProps.composerOpen === nextProps.composerOpen &&
       prevProps.codeEditorOpen === nextProps.codeEditorOpen &&
-      prevProps.chatHistoryOpen === nextProps.chatHistoryOpen &&
       prevProps.input === nextProps.input &&
       prevProps.isGeneratingResponse === nextProps.isGeneratingResponse
     );

@@ -12,7 +12,7 @@ export type MessageProps = {
 } & React.HTMLProps<HTMLDivElement>;
 
 const Message = ({ children, className, ...props }: MessageProps) => (
-  <div className={cn("flex gap-3", className)} {...props}>
+  <div className={cn("flex justify-start gap-3", className)} {...props}>
     {children}
   </div>
 );
@@ -53,7 +53,7 @@ const MessageContent = ({
   ...props
 }: MessageContentProps) => {
   const classNames = cn(
-    "text-foreground bg-secondary prose dark:prose-invert rounded-lg p-2 break-words whitespace-normal",
+    "text-muted-foreground bg-muted/40 max-w-[85%] flex-1 rounded-lg p-2 break-words whitespace-normal shadow-lg backdrop-blur-xs sm:max-w-[75%]",
     className,
   );
 

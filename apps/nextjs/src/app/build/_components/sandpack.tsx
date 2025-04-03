@@ -6,8 +6,10 @@ import {
   SandpackPreview,
   SandpackProvider as SandpackProviderPrimitive,
 } from "@codesandbox/sandpack-react";
-import { cyberpunk } from "@codesandbox/sandpack-themes";
+import { sandpackDark } from "@codesandbox/sandpack-themes";
 import { dependencies } from "@init/api/build/prompt";
+
+import type { SandpackFile } from "@codesandbox/sandpack-react";
 
 export const Preview = memo(function Preview() {
   return (
@@ -20,14 +22,16 @@ export const Preview = memo(function Preview() {
 });
 
 export const SandpackProvider = ({
+  files = defaultFiles,
   children,
 }: {
+  files?: Record<string, SandpackFile>;
   children: React.ReactNode;
 }) => {
   return (
     <SandpackProviderPrimitive
       template="react"
-      theme={cyberpunk}
+      theme={sandpackDark}
       files={files}
       customSetup={{ dependencies }}
       options={{
@@ -43,7 +47,9 @@ export const SandpackProvider = ({
   );
 };
 
-const files = {
+export type SandpackFiles = Record<string, SandpackFile>;
+
+export const defaultFiles: SandpackFiles = {
   "/styles.css": {
     code: `
 html, body {
