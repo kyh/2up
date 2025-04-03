@@ -1,11 +1,10 @@
 import type { UIMessage } from "ai";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Message, MessageContent, MessagesContainer } from "@init/ui/chat";
 import { Spinner } from "@init/ui/spinner";
 import { cn } from "@init/ui/utils";
 import { CircleCheckIcon } from "lucide-react";
 
-import type { ParsedMessage } from "./message-parser";
 import { isFileAction, parseMessage } from "./message-parser";
 
 type ChatHistoryProps = {
@@ -13,6 +12,45 @@ type ChatHistoryProps = {
   messages: UIMessage[];
   isGeneratingResponse: boolean;
 };
+
+const ParsedMessageContent = memo(({ message }: { message: UIMessage }) => {
+  const parsedMessage = useMemo(
+    () =>
+      message.role === "assistant"
+        ? parseMessage(message.id, message.content)
+        : undefined,
+    [message.id, message.content, message.role],
+  );
+
+  if (!parsedMessage) {
+    return <>{message.content}</>;
+  }
+
+  return (
+    <>
+      {parsedMessage.contentBeforeArtifact}
+      {parsedMessage.actions.map((action, index) => {
+        if (!isFileAction(action)) return null;
+        return (
+          <div key={index} className="my-2 flex items-center gap-1">
+            {action.isParsed ? (
+              <>
+                <CircleCheckIcon className="size-4" />
+                <span>{action.filePath}</span>
+              </>
+            ) : (
+              <>
+                <Spinner />
+                <span>Generating {action.filePath}</span>
+              </>
+            )}
+          </div>
+        );
+      })}
+      {parsedMessage.contentAfterArtifact}
+    </>
+  );
+});
 
 export const ChatHistory = memo(
   function ChatHistory({ composerOpen, messages }: ChatHistoryProps) {
@@ -25,10 +63,6 @@ export const ChatHistory = memo(
         <MessagesContainer className="pointer-events-auto m-auto max-h-[80dvh] w-full max-w-lg flex-1 space-y-4 p-4">
           {messages.map((message) => {
             const isAssistant = message.role === "assistant";
-            let parsedMessage: ParsedMessage | undefined;
-            if (isAssistant) {
-              parsedMessage = parseMessage(message.id, message.content);
-            }
 
             return (
               <Message
@@ -36,35 +70,7 @@ export const ChatHistory = memo(
                 className={cn(!isAssistant && "justify-end")}
               >
                 <MessageContent className={cn(!isAssistant && "bg-primary/10")}>
-                  {parsedMessage ? (
-                    <>
-                      {parsedMessage.contentBeforeArtifact}
-                      {parsedMessage.actions.map((action, index) => {
-                        if (!isFileAction(action)) return null;
-                        return (
-                          <div
-                            key={index}
-                            className="my-2 flex items-center gap-1"
-                          >
-                            {action.isParsed ? (
-                              <>
-                                <CircleCheckIcon className="size-4" />
-                                <span>{action.filePath}</span>
-                              </>
-                            ) : (
-                              <>
-                                <Spinner />
-                                <span>Generating {action.filePath}</span>
-                              </>
-                            )}
-                          </div>
-                        );
-                      })}
-                      {parsedMessage.contentAfterArtifact}
-                    </>
-                  ) : (
-                    message.content
-                  )}
+                  <ParsedMessageContent message={message} />
                 </MessageContent>
               </Message>
             );
@@ -74,9 +80,26 @@ export const ChatHistory = memo(
     );
   },
   (prevProps, nextProps) => {
+    // Deep compare messages to prevent unnecessary renders
+    if (prevProps.messages.length !== nextProps.messages.length) {
+      return false;
+    }
+
+    // Only re-render if the last message changed (e.g., for streaming)
+    const prevLastMsg = prevProps.messages[prevProps.messages.length - 1];
+    const nextLastMsg = nextProps.messages[nextProps.messages.length - 1];
+
+    if (!prevLastMsg || !nextLastMsg) {
+      return prevProps.composerOpen === nextProps.composerOpen;
+    }
+
+    const lastMessageChanged =
+      prevLastMsg.id !== nextLastMsg.id ||
+      prevLastMsg.content !== nextLastMsg.content;
+
     return (
       prevProps.composerOpen === nextProps.composerOpen &&
-      prevProps.messages === nextProps.messages &&
+      !lastMessageChanged &&
       prevProps.isGeneratingResponse === nextProps.isGeneratingResponse
     );
   },
