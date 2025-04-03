@@ -7,7 +7,7 @@ import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Vector3 } from "three";
 
-import { MouthDetection } from "./mouth-detection";
+import { FaceDetection } from "./face-detection";
 
 /**
  * Type definitions for the Pacman game
@@ -537,40 +537,16 @@ const Game: FC<GameProps> = ({
   }, []);
 
   /**
-   * Try to turn immediately if at a grid center and the move is valid
+   * Try to turn immediately without checking if the move is valid
    */
-  const tryTurnImmediately = useCallback(
-    (newDirection: Direction) => {
-      // If we're at or very close to a grid intersection, try to turn immediately
-      if (GameUtils.isAtGridCenter(pacmanPosition)) {
-        // Calculate the next cell position in the requested direction
-        const nextPos = pacmanPosition.clone().add(newDirection);
-        const nextGridX = Math.round(nextPos.x);
-        const nextGridZ = Math.round(nextPos.z);
+  const tryTurnImmediately = useCallback((newDirection: Direction) => {
+    // Always set the direction immediately without validation
+    setDirection(newDirection);
 
-        // Check if the move is valid (not a wall)
-        if (GameUtils.isValidMove(nextGridX, nextGridZ)) {
-          setDirection(newDirection);
-
-          // If we're not currently moving, we might need to start movement
-          if (!isMoving && !newDirection.equals(DIRECTIONS.NONE)) {
-            // The turning itself doesn't trigger forward movement
-            // The movement will still be triggered by mouth open/close
-          }
-
-          // Clear pending turn since we executed it
-          pendingTurnRef.current = null;
-          return true;
-        }
-      } else if (GameUtils.isApproachingGridCenter(pacmanPosition, direction)) {
-        // If we're approaching a grid center but not there yet, queue the turn
-        pendingTurnRef.current = newDirection;
-      }
-
-      return false;
-    },
-    [pacmanPosition, direction, isMoving],
-  );
+    // Clear pending turn since we executed it
+    pendingTurnRef.current = null;
+    return true;
+  }, []);
 
   /**
    * Handle keyboard input
@@ -646,14 +622,16 @@ const Game: FC<GameProps> = ({
         }
       }
 
-      // Always store the next direction for future reference
+      // Store the next direction for future reference
       setNextDirection(newDirection);
 
-      // Try to turn immediately, and if that doesn't work,
-      // the direction will be queued as a pending turn
-      tryTurnImmediately(newDirection);
+      // Set the direction immediately without validation
+      setDirection(newDirection);
+
+      // Clear any pending turns
+      pendingTurnRef.current = null;
     },
-    [isFirstPerson, tryTurnImmediately],
+    [isFirstPerson],
   );
 
   // Setup event listeners
@@ -870,43 +848,14 @@ const Game: FC<GameProps> = ({
 
     let pacmanIsMoving = true;
 
-    // Check if we're at a grid intersection
-    if (GameUtils.isAtGridCenter(pacmanPosition)) {
-      // First check for any pending turns
-      if (pendingTurnRef.current) {
-        const pendingDir = pendingTurnRef.current;
-        const nextPos = pacmanPosition.clone().add(pendingDir);
-        const nextGridX = Math.round(nextPos.x);
-        const nextGridZ = Math.round(nextPos.z);
+    // Calculate the next cell position in the current direction
+    const nextPos = pacmanPosition.clone().add(direction);
+    const nextGridX = Math.round(nextPos.x);
+    const nextGridZ = Math.round(nextPos.z);
 
-        if (GameUtils.isValidMove(nextGridX, nextGridZ)) {
-          setDirection(pendingDir);
-          pendingTurnRef.current = null;
-        }
-      }
-      // Then handle normal next direction logic
-      else if (!nextDirection.equals(DIRECTIONS.NONE)) {
-        // Calculate the next cell position in the requested direction
-        const nextPos = pacmanPosition.clone().add(nextDirection);
-        const nextGridX = Math.round(nextPos.x);
-        const nextGridZ = Math.round(nextPos.z);
-
-        // Check if the move is valid (not a wall)
-        if (GameUtils.isValidMove(nextGridX, nextGridZ)) {
-          setDirection(nextDirection);
-          setNextDirection(DIRECTIONS.NONE);
-        }
-      }
-
-      // Calculate the next cell position in the current direction
-      const nextPos = pacmanPosition.clone().add(direction);
-      const nextGridX = Math.round(nextPos.x);
-      const nextGridZ = Math.round(nextPos.z);
-
-      // Check if we can continue in the current direction
-      if (!GameUtils.isValidMove(nextGridX, nextGridZ)) {
-        pacmanIsMoving = false;
-      }
+    // Check if we can continue in the current direction
+    if (!GameUtils.isValidMove(nextGridX, nextGridZ)) {
+      pacmanIsMoving = false;
     }
 
     // Start movement animation to the next grid cell
@@ -919,28 +868,13 @@ const Game: FC<GameProps> = ({
       setTargetPosition(nextGridPos);
       setIsMoving(true);
     }
-  }, [pacmanPosition, direction, nextDirection, gameState.gameOver, isMoving]);
+  }, [pacmanPosition, direction, gameState.gameOver, isMoving]);
 
   /**
    * Animation and game loop
    */
   useFrame((_, delta) => {
     if (gameState.gameOver) return;
-
-    // Check for pending turns as we approach grid centers
-    if (pendingTurnRef.current && GameUtils.isAtGridCenter(pacmanPosition)) {
-      const pendingDirection = pendingTurnRef.current;
-
-      // Try to execute the pending turn
-      const nextPos = pacmanPosition.clone().add(pendingDirection);
-      const nextGridX = Math.round(nextPos.x);
-      const nextGridZ = Math.round(nextPos.z);
-
-      if (GameUtils.isValidMove(nextGridX, nextGridZ)) {
-        setDirection(pendingDirection);
-        pendingTurnRef.current = null;
-      }
-    }
 
     // Check if we need to take a step based on mouth change
     if (requestStepRef.current) {
@@ -979,11 +913,6 @@ const Game: FC<GameProps> = ({
           CONSTANTS.PELLET_COLLECTION_RADIUS,
         );
         checkGhostCollisions(targetPosition, CONSTANTS.GHOST_COLLISION_RADIUS);
-
-        // Check for pending turns again after reaching the target
-        if (pendingTurnRef.current) {
-          tryTurnImmediately(pendingTurnRef.current);
-        }
       } else {
         // Continue moving toward target
         setPacmanPosition(newPosition);
@@ -1124,7 +1053,7 @@ const Pacman: FC = () => {
 
   return (
     <div className="bg-background text-foreground relative h-dvh w-dvw bg-[url('/bg.png')] bg-[size:10px] font-sans antialiased">
-      <MouthDetection onMouthChange={handleMouthChange} />
+      <FaceDetection onMouthChange={handleMouthChange} />
       <Canvas shadows>
         {/* Top-down camera setup - only when not in first person */}
         {!isFirstPerson && (

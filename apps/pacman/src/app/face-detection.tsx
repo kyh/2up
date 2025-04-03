@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import {
   DrawingUtils,
   FaceLandmarker,
@@ -8,14 +8,21 @@ import {
 } from "@mediapipe/tasks-vision";
 
 const THRESHOLD = 0.07; // Default threshold value
+const HEAD_TURN_THRESHOLD = 0.25; // Threshold for detecting head turns
 
-type MouthDetectionProps = {
+type FaceDetectionProps = {
   onMouthChange?: (open: boolean) => void;
+  onHeadTurnLeft?: () => void;
+  onHeadTurnRight?: () => void;
+  onHeadCenter?: () => void;
 };
 
-export const MouthDetection = memo(function MouthDetection({
+export const FaceDetection = memo(function FaceDetection({
   onMouthChange,
-}: MouthDetectionProps) {
+  onHeadTurnLeft,
+  onHeadTurnRight,
+  onHeadCenter,
+}: FaceDetectionProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const faceLandmarkerRef = useRef<FaceLandmarker | null>(null);
@@ -23,6 +30,9 @@ export const MouthDetection = memo(function MouthDetection({
   const resultsRef = useRef<any>(undefined);
   const drawingUtilsRef = useRef<DrawingUtils | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const [headPosition, setHeadPosition] = useState<"center" | "left" | "right">(
+    "center",
+  );
 
   // Combined useEffect for setup and cleanup
   useEffect(() => {
@@ -115,6 +125,35 @@ export const MouthDetection = memo(function MouthDetection({
     return mouthOpenRatio > THRESHOLD;
   };
 
+  // Helper function to detect head turning left or right
+  const detectHeadTurn = (landmarks: any) => {
+    if (!landmarks) return "center";
+
+    // Get points on left and right side of face
+    const leftCheek = landmarks[234]; // Left cheek point
+    const rightCheek = landmarks[454]; // Right cheek point
+    const noseTip = landmarks[4]; // Nose tip
+
+    if (!leftCheek || !rightCheek || !noseTip) return "center";
+
+    // Calculate horizontal distances from nose to cheeks
+    const leftDistance = Math.abs(noseTip.x - leftCheek.x);
+    const rightDistance = Math.abs(noseTip.x - rightCheek.x);
+
+    // Calculate the asymmetry ratio
+    const asymmetryRatio =
+      (leftDistance - rightDistance) / (leftDistance + rightDistance);
+
+    // Determine head position based on asymmetry
+    if (asymmetryRatio > HEAD_TURN_THRESHOLD) {
+      return "right"; // Head turned to the right
+    } else if (asymmetryRatio < -HEAD_TURN_THRESHOLD) {
+      return "left"; // Head turned to the left
+    } else {
+      return "center"; // Head centered
+    }
+  };
+
   const predictWebcam = async () => {
     if (
       !videoRef.current ||
@@ -196,6 +235,23 @@ export const MouthDetection = memo(function MouthDetection({
         // Check if mouth is open
         const mouthOpen = detectMouthOpen(landmarks);
         onMouthChange?.(mouthOpen);
+
+        // Detect head turn direction
+        const newHeadPosition = detectHeadTurn(landmarks);
+
+        // Only call callbacks when head position changes
+        if (newHeadPosition !== headPosition) {
+          setHeadPosition(newHeadPosition);
+
+          // Trigger appropriate callback based on head position
+          if (newHeadPosition === "left") {
+            onHeadTurnLeft?.();
+          } else if (newHeadPosition === "right") {
+            onHeadTurnRight?.();
+          } else if (newHeadPosition === "center") {
+            onHeadCenter?.();
+          }
+        }
       }
     }
 
@@ -208,6 +264,9 @@ export const MouthDetection = memo(function MouthDetection({
     <div className="absolute right-1 bottom-1 z-1 aspect-video h-[288px] w-sm rounded-lg bg-black/10">
       <video ref={videoRef} className="rounded-lg" playsInline />
       <canvas ref={canvasRef} className="absolute top-0 left-0 h-full w-full" />
+      <div className="absolute top-1 left-1 rounded bg-black/40 px-2 py-1 text-xs text-white">
+        Head: {headPosition}
+      </div>
     </div>
   );
 });
