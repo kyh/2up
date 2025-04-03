@@ -424,13 +424,17 @@ const PacmanCamera: FC<PacmanCameraProps> = ({
 type GameProps = {
   isFirstPerson: boolean;
   requestStepRef: React.MutableRefObject<boolean>;
-  shiftKeyPressed: boolean; // Add new prop
+  shiftKeyPressed: boolean;
+  gameRef: React.MutableRefObject<{
+    handleKeyDown?: (e: KeyboardEvent | { key: string }) => void;
+  }>;
 };
 
 const Game: FC<GameProps> = ({
   isFirstPerson,
   requestStepRef,
   shiftKeyPressed,
+  gameRef,
 }) => {
   // Game state
   const [gameState, setGameState] = useState<GameState>({
@@ -552,7 +556,7 @@ const Game: FC<GameProps> = ({
    * Handle keyboard input
    */
   const handleKeyDown = useCallback(
-    (e: KeyboardEvent): void => {
+    (e: KeyboardEvent | { key: string }): void => {
       const currentDirection = directionRef.current;
       let newDirection: Direction;
 
@@ -637,6 +641,9 @@ const Game: FC<GameProps> = ({
   // Setup event listeners
   useMemo(() => {
     window.addEventListener("keydown", handleKeyDown);
+    gameRef.current = {
+      handleKeyDown,
+    };
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
@@ -997,6 +1004,20 @@ const Game: FC<GameProps> = ({
         enabled={isFirstPerson}
         shifKeyPressed={shiftKeyPressed}
       />
+
+      {!isFirstPerson && (
+        <>
+          <PerspectiveCamera
+            makeDefault
+            position={[0, 20, 0]}
+            fov={50}
+            near={0.1}
+            far={1000}
+            up={[0, 0, -1]}
+          />
+          <OrbitControls target={[0, 0, 0]} enableRotate enablePan enableZoom />
+        </>
+      )}
     </>
   );
 };
@@ -1005,6 +1026,9 @@ const Game: FC<GameProps> = ({
  * Main Pacman component with camera control
  */
 const Pacman: FC = () => {
+  const gameRef = useRef<{
+    handleKeyDown?: (e: KeyboardEvent | { key: string }) => void;
+  }>({});
   const [isFirstPerson, setIsFirstPerson] = useState<boolean>(true);
   const [isMouthOpen, setIsMouthOpen] = useState<boolean>(false);
   const [shiftKeyPressed, setShiftKeyPressed] = useState<boolean>(false); // Add shift key state
@@ -1051,32 +1075,24 @@ const Pacman: FC = () => {
     };
   }, []);
 
+  const onHeadTurnLeft = useCallback(() => {
+    gameRef.current.handleKeyDown?.({ key: "ArrowLeft" });
+  }, []);
+
+  const onHeadTurnRight = useCallback(() => {
+    gameRef.current.handleKeyDown?.({ key: "ArrowRight" });
+  }, []);
+
   return (
     <div className="bg-background text-foreground relative h-dvh w-dvw bg-[url('/bg.png')] bg-[size:10px] font-sans antialiased">
-      <FaceDetection onMouthChange={handleMouthChange} />
+      <FaceDetection
+        onMouthChange={handleMouthChange}
+        onHeadTurnLeft={onHeadTurnLeft}
+        onHeadTurnRight={onHeadTurnRight}
+      />
       <Canvas shadows>
-        {/* Top-down camera setup - only when not in first person */}
-        {!isFirstPerson && (
-          <>
-            <PerspectiveCamera
-              makeDefault
-              position={[0, 20, 0]}
-              fov={50}
-              near={0.1}
-              far={1000}
-              up={[0, 0, -1]}
-            />
-            <OrbitControls
-              target={[0, 0, 0]}
-              enableRotate
-              enablePan
-              enableZoom
-            />
-          </>
-        )}
-
-        {/* Main game component */}
         <Game
+          gameRef={gameRef}
           isFirstPerson={isFirstPerson}
           requestStepRef={requestStepRef}
           shiftKeyPressed={shiftKeyPressed}

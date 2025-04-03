@@ -8,7 +8,8 @@ import {
 } from "@mediapipe/tasks-vision";
 
 const THRESHOLD = 0.07; // Default threshold value
-const HEAD_TURN_THRESHOLD = 0.25; // Threshold for detecting head turns
+const HEAD_TURN_THRESHOLD = 0.3; // Increased threshold for detecting head turns
+const HEAD_CENTER_THRESHOLD = 0.15; // Smaller threshold for detecting centered head
 
 type FaceDetectionProps = {
   onMouthChange?: (open: boolean) => void;
@@ -33,6 +34,8 @@ export const FaceDetection = memo(function FaceDetection({
   const [headPosition, setHeadPosition] = useState<"center" | "left" | "right">(
     "center",
   );
+  const lastHeadChangeRef = useRef<number>(0);
+  const headChangeDebounceMs = 1000; // Debounce time in milliseconds
 
   // Combined useEffect for setup and cleanup
   useEffect(() => {
@@ -146,12 +149,18 @@ export const FaceDetection = memo(function FaceDetection({
 
     // Determine head position based on asymmetry
     if (asymmetryRatio > HEAD_TURN_THRESHOLD) {
-      return "right"; // Head turned to the right
+      return "left"; // Head turned to the left (flipped from right to left)
     } else if (asymmetryRatio < -HEAD_TURN_THRESHOLD) {
-      return "left"; // Head turned to the left
-    } else {
-      return "center"; // Head centered
+      return "right"; // Head turned to the right (flipped from left to right)
+    } else if (
+      asymmetryRatio < HEAD_CENTER_THRESHOLD &&
+      asymmetryRatio > -HEAD_CENTER_THRESHOLD
+    ) {
+      return "center"; // Head centered - using a narrower threshold
     }
+
+    // If we're between thresholds, maintain current position to reduce oscillation
+    return headPosition;
   };
 
   const predictWebcam = async () => {
@@ -238,10 +247,15 @@ export const FaceDetection = memo(function FaceDetection({
 
         // Detect head turn direction
         const newHeadPosition = detectHeadTurn(landmarks);
+        const currentTime = performance.now();
 
-        // Only call callbacks when head position changes
-        if (newHeadPosition !== headPosition) {
+        // Only call callbacks when head position changes and after debounce period
+        if (
+          newHeadPosition !== headPosition &&
+          currentTime - lastHeadChangeRef.current > headChangeDebounceMs
+        ) {
           setHeadPosition(newHeadPosition);
+          lastHeadChangeRef.current = currentTime;
 
           // Trigger appropriate callback based on head position
           if (newHeadPosition === "left") {
@@ -264,9 +278,6 @@ export const FaceDetection = memo(function FaceDetection({
     <div className="absolute right-1 bottom-1 z-1 aspect-video h-[288px] w-sm rounded-lg bg-black/10">
       <video ref={videoRef} className="rounded-lg" playsInline />
       <canvas ref={canvasRef} className="absolute top-0 left-0 h-full w-full" />
-      <div className="absolute top-1 left-1 rounded bg-black/40 px-2 py-1 text-xs text-white">
-        Head: {headPosition}
-      </div>
     </div>
   );
 });
