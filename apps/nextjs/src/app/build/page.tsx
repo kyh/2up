@@ -1,5 +1,6 @@
 "use client";
 
+import type { Dispatch, SetStateAction } from "react";
 import { useCallback, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { toast } from "@init/ui/toast";
@@ -15,7 +16,11 @@ import {
   SandpackProvider,
 } from "./_components/sandpack";
 
-const Page = ({ setFiles }: { setFiles: (files: SandpackFiles) => void }) => {
+const Page = ({
+  setFiles,
+}: {
+  setFiles: Dispatch<SetStateAction<SandpackFiles>>;
+}) => {
   const [composerOpen, setComposerOpen] = useState(true);
   const [codeEditorOpen, setCodeEditorOpen] = useState(false);
 
@@ -23,14 +28,15 @@ const Page = ({ setFiles }: { setFiles: (files: SandpackFiles) => void }) => {
     onFinish: (message) => {
       if (message.role === "assistant") {
         const parsedMessage = parseMessage(message.id, message.content);
-        setFiles(
-          parsedMessage.actions.reduce((acc, action) => {
+        setFiles((prevFiles) => {
+          const updatedFiles = parsedMessage.actions.reduce((acc, action) => {
             if (isFileAction(action)) {
               acc[action.filePath] = { code: action.content };
             }
             return acc;
-          }, {} as SandpackFiles),
-        );
+          }, {} as SandpackFiles);
+          return { ...prevFiles, ...updatedFiles };
+        });
         setComposerOpen(false);
       }
     },
