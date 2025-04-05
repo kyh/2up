@@ -1,73 +1,115 @@
-import Link from "next/link";
-import { Logo } from "@init/ui/logo";
+"use client";
 
-import type { CardProps } from "./_components/card";
-import { Background } from "./_components/background";
-import { Card } from "./_components/card";
+import type { Dispatch, SetStateAction } from "react";
+import { useCallback, useState } from "react";
+import dynamic from "next/dynamic";
+import { useChat } from "@ai-sdk/react";
+import { toast } from "@init/ui/toast";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-const pluginData: CardProps[] = [
-  {
-    id: 1,
-    name: "Flappy Bird",
-    description: "Flap your bird by jumping (literally) through pipes",
-    slug: "flappy-bird",
-    type: "movement",
-    plays: 1300,
-  },
-  {
-    id: 2,
-    name: "Pacman",
-    slug: "pacman",
-    description:
-      "Navigate your way through mazes, eat (literally) pellets, and avoid ghosts",
-    type: "movement",
-    plays: 200,
-  },
-  // {
-  //   id: 3,
-  //   name: "Space Invaders",
-  //   slug: "space-invaders",
-  //   description: "Laser down alien invaders before they reach Earth, pew pew",
-  //   type: "sound",
-  //   plays: 0,
-  // },
-];
+import type { SandpackFiles } from "./_components/sandpack";
+import { useTRPC } from "@/trpc/react";
+import { ChatHistory } from "./_components/chat-history";
+import { CodeEditor } from "./_components/code-editor";
+import { Composer } from "./_components/composer";
+import { isFileAction, parseMessage } from "./_components/message-parser";
+import {
+  defaultFiles,
+  Preview,
+  SandpackProvider,
+} from "./_components/sandpack";
+import { WaitlistDailog } from "./_components/waitlist-form";
 
-const Page = () => {
+const Page = ({
+  setFiles,
+}: {
+  setFiles: Dispatch<SetStateAction<SandpackFiles>>;
+}) => {
+  const trpc = useTRPC();
+  const {
+    data: { user },
+  } = useSuspenseQuery(trpc.auth.workspace.queryOptions());
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+  const [composerOpen, setComposerOpen] = useState(true);
+  const [codeEditorOpen, setCodeEditorOpen] = useState(false);
+
+  const { messages, append, status, input, setInput } = useChat({
+    onFinish: (message) => {
+      if (message.role === "assistant") {
+        const parsedMessage = parseMessage(message.id, message.content);
+        setFiles((prevFiles) => {
+          const updatedFiles = parsedMessage.actions.reduce((acc, action) => {
+            if (isFileAction(action)) {
+              acc[action.filePath] = { code: action.content };
+            }
+            return acc;
+          }, {} as SandpackFiles);
+          return { ...prevFiles, ...updatedFiles };
+        });
+        setComposerOpen(false);
+      }
+    },
+    onError: (error) => {
+      toast.error(`An error occurred, ${error.message}`);
+    },
+  });
+
+  const handleSubmit = useCallback(() => {
+    if (input === "") return;
+    if (!user) {
+      setWaitlistOpen(true);
+      return;
+    }
+    setInput("");
+    void append({
+      role: "user",
+      content: input,
+      createdAt: new Date(),
+    });
+  }, [input, setInput, append, user]);
+
+  const isGeneratingResponse = ["streaming", "submitted"].includes(status);
+
   return (
     <>
-      <Background />
-      <main className="flex min-h-dvh flex-col">
-        <header className="mx-auto max-w-3xl px-5 py-10">
-          <Logo className="text-muted-foreground size-10 opacity-50" />
-        </header>
-        <section className="mx-auto grid max-w-3xl grid-cols-1 gap-10 px-5 py-10 md:grid-cols-2">
-          {pluginData.map((data) => {
-            return (
-              <Link
-                key={data.id}
-                href={`https://${data.slug}.vibedgames.com`}
-                className="flex justify-center"
-              >
-                <Card {...data} />
-              </Link>
-            );
-          })}
-        </section>
-        <footer className="text-muted-foreground relative mt-auto overflow-hidden pt-20 pb-10 text-center text-sm font-medium tracking-[-0.2px]">
-          made with vibes by{" "}
-          <a
-            className="text-white"
-            href="https://x.com/kaiyuhsu"
-            target="_blank"
-          >
-            @kaiyuhsu
-          </a>
-          <div className="pointer-events-none absolute bottom-0 h-[300px] w-full translate-y-full rounded-full bg-gradient-to-tr from-[rgba(47,0,255,0.2)] to-[rgba(255,0,0,1)] blur-[62px]" />
-        </footer>
-      </main>
+      <Preview />
+      <Composer
+        composerOpen={composerOpen}
+        setComposerOpen={setComposerOpen}
+        codeEditorOpen={codeEditorOpen}
+        setCodeEditorOpen={setCodeEditorOpen}
+        input={input}
+        setInput={setInput}
+        onSubmit={handleSubmit}
+        isGeneratingResponse={isGeneratingResponse}
+      />
+      <CodeEditor
+        codeEditorOpen={codeEditorOpen}
+        setCodeEditorOpen={setCodeEditorOpen}
+      />
+      <ChatHistory
+        composerOpen={composerOpen}
+        messages={messages}
+        isGeneratingResponse={isGeneratingResponse}
+      />
+      <WaitlistDailog
+        waitlistOpen={waitlistOpen}
+        setWaitlistOpen={setWaitlistOpen}
+      />
     </>
   );
 };
 
-export default Page;
+const PageContainer = () => {
+  const [files, setFiles] = useState<SandpackFiles>(defaultFiles);
+
+  return (
+    <SandpackProvider files={files}>
+      <Page setFiles={setFiles} />
+    </SandpackProvider>
+  );
+};
+
+export default dynamic(() => Promise.resolve(PageContainer), {
+  ssr: false,
+});

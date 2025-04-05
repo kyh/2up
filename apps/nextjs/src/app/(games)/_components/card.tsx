@@ -44,7 +44,7 @@ export const Card = ({ name, description, slug, type, plays }: CardProps) => {
           <div
             className={cn(
               "rounded-sm bg-[rgba(95,95,95,0.2)] px-1.5 py-0.5 text-[10px] tracking-wider uppercase",
-              type === "movement" ? "text-[#68ff32]" : "text-[#fffa6d]",
+              type === "published" ? "text-[#68ff32]" : "text-[#fffa6d]",
             )}
           >
             {type}
