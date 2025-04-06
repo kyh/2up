@@ -68,6 +68,13 @@ const Page = ({
     });
   }, [input, setInput, append, user]);
 
+  const handleFocus = useCallback(() => {
+    if (!user) {
+      setWaitlistOpen(true);
+      return;
+    }
+  }, [user]);
+
   const isGeneratingResponse = ["streaming", "submitted"].includes(status);
 
   return (
@@ -82,6 +89,7 @@ const Page = ({
         setInput={setInput}
         onSubmit={handleSubmit}
         isGeneratingResponse={isGeneratingResponse}
+        onFocus={handleFocus}
       />
       <CodeEditor
         codeEditorOpen={codeEditorOpen}

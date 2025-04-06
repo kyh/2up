@@ -249,11 +249,13 @@ const MessagesContainer = ({
 };
 
 type ChatTextareaProps = {
+  className?: string;
   input: string;
   setInput: (input: string) => void;
   onSubmit: () => void;
   isGeneratingResponse: boolean;
-  className?: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
 };
 
 const ChatTextarea = ({
@@ -262,6 +264,8 @@ const ChatTextarea = ({
   setInput,
   onSubmit,
   isGeneratingResponse,
+  onFocus,
+  onBlur,
 }: ChatTextareaProps) => {
   return (
     <div className={cn("bg-background rounded-t-xl p-3", className)}>
@@ -270,6 +274,8 @@ const ChatTextarea = ({
         className="text-primary min-h-[44px] w-full resize-none border-none bg-transparent shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         onChange={(e) => setInput(e.target.value)}
         value={input}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
       <div className="flex items-center gap-2 pt-2">
         <Button

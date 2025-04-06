@@ -165,4 +165,5 @@ export const dependencies = {
   "react-dom": "*",
   three: "*",
   phaser: "*",
+  partysocket: "^1.0.3",
 };

@@ -14,6 +14,8 @@ type ComposerProps = {
   setInput: (input: string) => void;
   onSubmit: () => void;
   isGeneratingResponse: boolean;
+  onFocus?: () => void;
+  onBlur?: () => void;
 };
 
 export const Composer = memo(
@@ -26,6 +28,8 @@ export const Composer = memo(
     setInput,
     onSubmit,
     isGeneratingResponse,
+    onFocus,
+    onBlur,
   }: ComposerProps) {
     const { refresh } = useSandpackNavigation();
 
@@ -77,6 +81,8 @@ export const Composer = memo(
             setInput={setInput}
             onSubmit={onSubmit}
             isGeneratingResponse={isGeneratingResponse}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
         </div>
       </div>
