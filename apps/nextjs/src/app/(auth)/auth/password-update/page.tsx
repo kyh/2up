@@ -1,9 +1,9 @@
+import type { Metadata } from "next";
+
 import { UpdatePasswordForm } from "@/app/(auth)/_components/auth-form";
 
-export const generateMetadata = () => {
-  return {
-    title: "Update Password",
-  };
+export const metadata: Metadata = {
+  title: "Update Password",
 };
 
 const Page = () => (

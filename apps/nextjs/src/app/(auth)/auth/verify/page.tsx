@@ -1,9 +1,9 @@
+import type { Metadata } from "next";
+
 import { MultiFactorAuthForm } from "@/app/(auth)/_components/auth-form";
 
-export const generateMetadata = () => {
-  return {
-    title: "Verify Authentication",
-  };
+export const metadata: Metadata = {
+  title: "Verify Authentication",
 };
 
 const Page = () => {

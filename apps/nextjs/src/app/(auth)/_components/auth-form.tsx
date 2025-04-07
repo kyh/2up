@@ -39,20 +39,16 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   );
   const signInWithPassword = useMutation(
     trpc.auth.signInWithPassword.mutationOptions({
-      onSuccess: ({ user }) => {
-        router.replace(
-          params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeamSlug}`,
-        );
+      onSuccess: () => {
+        router.replace(params.nextPath ?? `/`);
       },
       onError: (error) => toast.error(error.message),
     }),
   );
   const signUp = useMutation(
     trpc.auth.signUp.mutationOptions({
-      onSuccess: ({ user }) => {
-        router.replace(
-          params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeamSlug}`,
-        );
+      onSuccess: () => {
+        router.replace(params.nextPath ?? `/`);
       },
       onError: (error) => toast.error(error.message),
     }),
@@ -61,20 +57,28 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   const form = useForm({
     schema: signInWithPasswordInput,
     defaultValues: {
-      email: "im.kaiyu@gmail.com",
-      password: "testing123",
+      email: "",
+      password: "",
     },
   });
 
   const handleAuthWithGithub = () => {
-    signInWithOAuth.mutate({
-      provider: "github",
-    });
+    toast.error(
+      "We're still in closed beta, so signing up is not available yet",
+    );
+    return;
+    // signInWithOAuth.mutate({
+    //   provider: "github",
+    // });
   };
 
   const handleAuthWithPassword = (credentials: SignInWithPasswordInput) => {
     if (type === "signup") {
-      signUp.mutate(credentials);
+      toast.error(
+        "We're still in closed beta, so signing up is not available yet",
+      );
+      return;
+      // signUp.mutate(credentials);
     }
     if (type === "signin") {
       signInWithPassword.mutate(credentials);

@@ -107,13 +107,12 @@ export const WaitlistDailog = ({
     <Dialog open={waitlistOpen} onOpenChange={setWaitlistOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-foreground mx-auto text-center text-2xl font-semibold tracking-tight sm:text-4xl">
-            Join the waitlist
+          <DialogTitle className="text-foreground mx-auto text-center text-xl font-semibold tracking-tight sm:text-2xl">
+            Join the waitlist for early access
           </DialogTitle>
         </DialogHeader>
         <p className="text-muted-foreground mx-auto max-w-lg text-center">
-          I'll launch eventually, I promise. In the meantime <br />
-          you can{" "}
+          Working through the last bit of features. In the meantime you can{" "}
           <a
             className="underline"
             href="https://x.com/kaiyuhsu"
