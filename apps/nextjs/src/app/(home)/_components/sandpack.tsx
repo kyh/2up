@@ -459,9 +459,9 @@ const PI = Math.PI;
 const DEG_TO_RAD = PI / 180;
 const FPS = 60;
 
-const HOST = "https://kyh-partyserver.kyh.workers.dev";
-const PARTY = "kyh-server";
-const ROOM = "kyh";
+const HOST = "https://vg-partyserver.kyh.workers.dev";
+const PARTY = "vg-server";
+const ROOM = "home";
 
 export function Game() {
   const canvasRef = useRef(null);

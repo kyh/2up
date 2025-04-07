@@ -1,6 +1,6 @@
-# Init
+# Vibedgames
 
-An AI native starter kit to build, launch, and scale your next project.
+Vibedgames is an open source "Lovable" for web games.
 
 ## Stack
 

@@ -1,0 +1,11 @@
+name = "vg-partyserver"
+main = 'src/server.ts'
+compatibility_date = "2024-07-25"
+
+[[durable_objects.bindings]]
+name = "VgServer"
+class_name = "VgServer"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["VgServer"]

@@ -12,10 +12,10 @@ import type {
 import { getColorById } from "./color";
 
 type Env = {
-  KyhServer: DurableObjectNamespace<KyhServer>;
+  VgServer: DurableObjectNamespace<VgServer>;
 };
 
-export class KyhServer extends Server {
+export class VgServer extends Server {
   onConnect(connection: Connection<Player>) {
     const color = getColorById(connection.id);
 

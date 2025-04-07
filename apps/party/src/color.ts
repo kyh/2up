@@ -1,39 +1,39 @@
 const colors = {
   tomato: {
-    color: "var(--colors-tomato9)",
-    hue: "var(--colors-tomato7)",
+    color: "hsl(10, 78%, 54%)",
+    hue: "hsl(10, 77.3%, 79.5%)",
   },
   crimson: {
-    color: "var(--colors-crimson9)",
-    hue: "var(--colors-crimson7)",
+    color: "hsl(336, 80%, 57.8%)",
+    hue: "hsl(335, 63.5%, 80.4%)",
   },
   pink: {
-    color: "var(--colors-pink9)",
-    hue: "var(--colors-pink7)",
+    color: "hsl(322, 65%, 54.5%)",
+    hue: "hsl(323, 62%, 80.1%)",
   },
   plum: {
-    color: "var(--colors-plum9)",
-    hue: "var(--colors-plum7)",
+    color: "hsl(292, 45%, 51%)",
+    hue: "hsl(295, 48.2%, 78.9%)",
   },
   indigo: {
-    color: "var(--colors-indigo9)",
-    hue: "var(--colors-indigo7)",
+    color: "hsl(226, 70%, 55.5%)",
+    hue: "hsl(225, 77.4%, 82.1%)",
   },
   blue: {
-    color: "var(--colors-blue9)",
-    hue: "var(--colors-blue7)",
+    color: "hsl(206, 100%, 50%)",
+    hue: "hsl(208, 77.5%, 76.9%)",
   },
   cyan: {
-    color: "var(--colors-cyan9)",
-    hue: "var(--colors-cyan7)",
+    color: "hsl(190, 95%, 39%)",
+    hue: "hsl(189, 60.3%, 52.5%)",
   },
   green: {
-    color: "var(--colors-green9)",
-    hue: "var(--colors-green7)",
+    color: "hsl(151, 55%, 41.5%)",
+    hue: "hsl(146, 38.5%, 69%)",
   },
   orange: {
-    color: "var(--colors-orange9)",
-    hue: "var(--colors-orange7)",
+    color: "hsl(24, 94%, 50%)",
+    hue: "hsl(24, 100%, 75.3%)",
   },
 };
 

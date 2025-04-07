@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: "VibedGames",
-  shortName: "VibedGames",
+  name: "Vibedgames",
+  shortName: "Vibedgames",
   description: "Games made with vibes 🎮",
   url:
     process.env.NODE_ENV === "development"
