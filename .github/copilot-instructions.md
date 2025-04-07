@@ -165,7 +165,7 @@ Follow the example below to create all forms:
 
 ```tsx
 // apps/nextjs/src/app/notes/_components/create-note-form.tsx
-import { createNoteInput } from "@init/api/note/note-schema";
+import { createNoteInput } from "@kyh/api/note/note-schema";
 import {
   Form,
   FormControl,
@@ -174,7 +174,7 @@ import {
   FormLabel,
   FormMessage,
   useForm,
-} from "@init/ui/form";
+} from "@kyhui/form";
 import { useMutation } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/react";
@@ -229,20 +229,20 @@ export const CreateNoteForm = () => {
 
 # UI Components
 
-- Reusable UI components are defined in the "packages/ui" package named "@init/ui".
-- By exporting the component from the "exports" field, we can import it using the "@init/ui/{component-name}" format.
+- Reusable UI components are defined in the "packages/ui" package named "@kyhui".
+- By exporting the component from the "exports" field, we can import it using the "@kyhui/{component-name}" format.
 
 ## Styling
 
-- Styling is done using Tailwind CSS. We use the "cn" function from the "@init/ui/utils" package to generate class names.
+- Styling is done using Tailwind CSS. We use the "cn" function from the "@kyhui/utils" package to generate class names.
 - Avoid fixed classes such as "bg-gray-500". Instead, use Shadcn classes such as "bg-background", "text-secondary-foreground", "text-muted-foreground", etc.
 
 ## Importing Components
 
 ```tsx
 // Import UI components
-import { Button } from "@init/ui/button";
-import { Card } from "@init/ui/card";
+import { Button } from "@kyhui/button";
+import { Card } from "@kyhui/card";
 ```
 
 # Database Rules

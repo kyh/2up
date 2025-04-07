@@ -1,5 +1,5 @@
-import { and, eq } from "@init/db";
-import { invitations, teamMembers, teams } from "@init/db/schema";
+import { and, eq } from "@kyh/db";
+import { invitations, teamMembers, teams } from "@kyh/db/schema";
 import { TRPCError } from "@trpc/server";
 
 import type { TRPCContext } from "../trpc";

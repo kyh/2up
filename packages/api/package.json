@@ -1,5 +1,5 @@
 {
-  "name": "@init/api",
+  "name": "@kyh/api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@init/db": "workspace:^",
+    "@kyh/db": "workspace:^",
     "@trpc/server": "catalog:",
     "stripe": "^17.7.0",
     "superjson": "catalog:",

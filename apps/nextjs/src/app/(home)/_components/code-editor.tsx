@@ -9,7 +9,7 @@ import {
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from "@init/ui/drawer";
+} from "@kyh/ui/drawer";
 
 type CodeEditorProps = {
   codeEditorOpen: boolean;

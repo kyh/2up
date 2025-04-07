@@ -12,7 +12,7 @@ import {
 import { createTRPCContext } from "@trpc/tanstack-react-query";
 import SuperJSON from "superjson";
 
-import type { AppRouter } from "@init/api";
+import type { AppRouter } from "@kyh/api";
 import type { QueryClient } from "@tanstack/react-query";
 import { createQueryClient } from "./query-client";
 

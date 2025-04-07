@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Button } from "@init/ui/button";
+import { Button } from "@kyh/ui/button";
 
 type PageProps = {
   searchParams: Promise<{

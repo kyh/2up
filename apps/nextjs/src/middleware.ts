@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse, URLPattern } from "next/server";
 import { createCsrfProtect, CsrfError } from "@edge-csrf/nextjs";
-import { checkRequiresMultiFactorAuthentication } from "@init/api/auth/check-requires-mfa";
-import { createMiddlewareClient } from "@init/db/supabase-middleware-client";
+import { checkRequiresMultiFactorAuthentication } from "@kyh/api/auth/check-requires-mfa";
+import { createMiddlewareClient } from "@kyh/db/supabase-middleware-client";
 
 const CSRF_SECRET_COOKIE = "csrfSecret";
 const NEXT_ACTION_HEADER = "next-action";

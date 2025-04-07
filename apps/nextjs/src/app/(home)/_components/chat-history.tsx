@@ -1,8 +1,8 @@
 import type { UIMessage } from "ai";
 import { memo, useMemo } from "react";
-import { Message, MessageContent, MessagesContainer } from "@init/ui/chat";
-import { Spinner } from "@init/ui/spinner";
-import { cn } from "@init/ui/utils";
+import { Message, MessageContent, MessagesContainer } from "@kyh/ui/chat";
+import { Spinner } from "@kyh/ui/spinner";
+import { cn } from "@kyh/ui/utils";
 import { CircleCheckIcon } from "lucide-react";
 
 import type { VgActionData } from "./message-parser";

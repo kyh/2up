@@ -1,6 +1,6 @@
 # Vibedgames
 
-Vibedgames is an open source "Lovable" for web games.
+Vibedgames is an open source Lovable for multiplayer web games.
 
 ## Stack
 
@@ -39,4 +39,4 @@ pnpm dev
 
 ## License
 
-Licensed under the [MIT license](https://github.com/kyh/init/blob/main/LICENSE).
+Licensed under the [MIT license](https://github.com/kyh/vibedgames/blob/main/LICENSE).

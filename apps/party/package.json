@@ -1,5 +1,5 @@
 {
-  "name": "@init/party",
+  "name": "@kyh/party",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,8 +12,8 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@init/api": "workspace:^",
-    "@init/db": "workspace:^"
+    "@kyh/api": "workspace:^",
+    "@kyh/db": "workspace:^"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250406.0",

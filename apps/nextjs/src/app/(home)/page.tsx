@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import { useChat } from "@ai-sdk/react";
-import { toast } from "@init/ui/toast";
+import { toast } from "@kyh/ui/toast";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import type { SandpackFiles } from "./_components/sandpack";

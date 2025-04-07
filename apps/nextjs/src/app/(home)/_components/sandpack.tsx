@@ -5,7 +5,7 @@ import {
   SandpackProvider as SandpackProviderPrimitive,
 } from "@codesandbox/sandpack-react";
 import { sandpackDark } from "@codesandbox/sandpack-themes";
-import { dependencies } from "@init/api/build/prompt";
+import { dependencies } from "@kyh/api/build/prompt";
 
 import type { SandpackFile } from "@codesandbox/sandpack-react";
 
@@ -146,11 +146,10 @@ export const Background = memo(
         scale: 1,
         speed: Math.random() * 5 + 8,
         distance: 0,
-        trail: [], // Empty trail initially
+        trail: [],
       };
     }, [getRandomStartPoint]);
 
-    // Initialize background stars
     const initBackgroundStars = useCallback(() => {
       if (!canvasRef.current) return;
 

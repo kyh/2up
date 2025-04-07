@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo } from "@init/ui/logo";
+import { Logo } from "@kyh/ui/logo";
 
 type LayoutProps = {
   children: React.ReactNode;
