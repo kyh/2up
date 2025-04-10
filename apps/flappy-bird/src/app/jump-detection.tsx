@@ -207,14 +207,18 @@ export const JumpDetection = memo(function JumpDetection({
             videoRef.current,
           );
 
-          if (poses.length > 0 && poses[0]) {
-            const pose = poses[0];
+          // Process all detected poses
+          if (poses.length > 0) {
+            // Draw skeletons for all detected people
+            poses.forEach((pose) => {
+              drawSkeleton(pose, canvasRef);
+            });
 
-            // Draw skeleton
-            drawSkeleton(pose, canvasRef);
+            // Find the most visible person (highest confidence score)
+            const bestPose = findMostVisiblePerson(poses);
 
-            // Get nose keypoint (most reliable for jump detection)
-            const nose = pose.keypoints.find((kp) => kp.name === "nose");
+            // Get nose keypoint from the most visible person
+            const nose = bestPose.keypoints.find((kp) => kp.name === "nose");
             if (nose && (nose.score ?? 0) > 0.3) {
               // Add to recent positions for smoothing
               yPositionsRef.current.unshift(nose.y);
@@ -416,4 +420,19 @@ const getButtonText = (state: AppState) => {
     default:
       return "Start";
   }
+};
+
+// Find the most visible person (highest confidence score)
+const findMostVisiblePerson = (poses: poseDetection.Pose[]) => {
+  return poses.reduce((bestPose, currentPose) => {
+    const bestScore = bestPose.keypoints.reduce(
+      (sum, kp) => sum + (kp.score ?? 0),
+      0,
+    );
+    const currentScore = currentPose.keypoints.reduce(
+      (sum, kp) => sum + (kp.score ?? 0),
+      0,
+    );
+    return currentScore > bestScore ? currentPose : bestPose;
+  });
 };
