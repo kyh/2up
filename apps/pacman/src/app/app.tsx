@@ -725,18 +725,24 @@ const Game: FC<GameProps> = ({
 
             setGameState((prev) => ({ ...prev, score: prev.score + 200 }));
           } else {
-            // Pacman got caught
-            const newLives = gameState.lives - 1;
+            // Reset Pacman position and direction
+            setPacmanPosition(GameUtils.snapToGrid(new Vector3(1, 0, 1)));
+            setDirection(DIRECTIONS.RIGHT);
+            setNextDirection(DIRECTIONS.NONE);
+            setGameState((prev) => ({ ...prev }));
 
-            if (newLives <= 0) {
-              setGameState((prev) => ({ ...prev, lives: 0, gameOver: true }));
-            } else {
-              // Reset Pacman position and direction
-              setPacmanPosition(GameUtils.snapToGrid(new Vector3(1, 0, 1)));
-              setDirection(DIRECTIONS.RIGHT);
-              setNextDirection(DIRECTIONS.NONE);
-              setGameState((prev) => ({ ...prev, lives: newLives }));
-            }
+            // // Pacman got caught
+            // const newLives = gameState.lives - 1;
+
+            // if (newLives <= 0) {
+            //   setGameState((prev) => ({ ...prev, lives: 0, gameOver: true }));
+            // } else {
+            //   // Reset Pacman position and direction
+            //   setPacmanPosition(GameUtils.snapToGrid(new Vector3(1, 0, 1)));
+            //   setDirection(DIRECTIONS.RIGHT);
+            //   setNextDirection(DIRECTIONS.NONE);
+            //   setGameState((prev) => ({ ...prev, lives: newLives }));
+            // }
           }
         }
       });
