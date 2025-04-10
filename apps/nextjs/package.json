@@ -15,7 +15,7 @@
   },
   "prettier": "@kyh/prettier-config",
   "dependencies": {
-    "@ai-sdk/anthropic": "^1.2.6",
+    "@ai-sdk/anthropic": "^1.2.9",
     "@codesandbox/sandpack-react": "^2.20.0",
     "@codesandbox/sandpack-themes": "^2.0.21",
     "@edge-csrf/nextjs": "2.5.3-cloudflare-rc1",
@@ -28,7 +28,7 @@
     "@trpc/client": "catalog:",
     "@trpc/server": "catalog:",
     "@trpc/tanstack-react-query": "catalog:",
-    "ai": "^4.3.2",
+    "ai": "^4.3.4",
     "framer-motion": "^12.6.3",
     "next": "catalog:",
     "react": "catalog:",
