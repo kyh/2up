@@ -344,7 +344,6 @@ type PacmanCameraProps = {
   position: Vector3;
   direction: Direction;
   mapOffset: [number, number, number];
-  enabled: boolean;
   shifKeyPressed: boolean; // Add new prop to track shift key state
 };
 
@@ -352,7 +351,6 @@ const PacmanCamera: FC<PacmanCameraProps> = ({
   position,
   direction,
   mapOffset,
-  enabled,
   shifKeyPressed, // New prop
 }) => {
   const { camera } = useThree();
@@ -365,7 +363,7 @@ const PacmanCamera: FC<PacmanCameraProps> = ({
 
   useFrame(() => {
     // Only update camera if the first-person view is enabled
-    if (!enabled || !position || !direction) return;
+    if (!position || !direction) return;
 
     // Calculate offset position (Pacman's position in the world)
     const worldPos = position.clone().add(new Vector3(...mapOffset));
@@ -421,7 +419,6 @@ const PacmanCamera: FC<PacmanCameraProps> = ({
  * Main game component
  */
 type GameProps = {
-  isFirstPerson: boolean;
   requestStepRef: React.MutableRefObject<boolean>;
   shiftKeyPressed: boolean;
   gameRef: React.MutableRefObject<{
@@ -429,12 +426,7 @@ type GameProps = {
   }>;
 };
 
-const Game: FC<GameProps> = ({
-  isFirstPerson,
-  requestStepRef,
-  shiftKeyPressed,
-  gameRef,
-}) => {
+const Game: FC<GameProps> = ({ requestStepRef, shiftKeyPressed, gameRef }) => {
   // Game state
   const [gameState, setGameState] = useState<GameState>({
     score: 0,
@@ -558,70 +550,41 @@ const Game: FC<GameProps> = ({
       const currentDirection = directionRef.current;
       let newDirection: Direction;
 
-      if (isFirstPerson) {
-        // First-person mode: controls are relative to Pacman's current direction
-        switch (e.key) {
-          case "ArrowUp": // Forward in current direction
-            newDirection = currentDirection;
-            break;
-          case "ArrowDown": // Backward/reverse current direction
-            newDirection = currentDirection.clone().negate();
-            break;
-          case "ArrowLeft": // Turn left relative to current direction
-            if (currentDirection.equals(DIRECTIONS.UP)) {
-              newDirection = DIRECTIONS.LEFT;
-            } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
-              newDirection = DIRECTIONS.RIGHT;
-            } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
-              newDirection = DIRECTIONS.DOWN;
-            } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
-              newDirection = DIRECTIONS.UP;
-            } else {
-              newDirection = DIRECTIONS.NONE;
-            }
-            break;
-          case "ArrowRight": // Turn right relative to current direction
-            if (currentDirection.equals(DIRECTIONS.UP)) {
-              newDirection = DIRECTIONS.RIGHT;
-            } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
-              newDirection = DIRECTIONS.LEFT;
-            } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
-              newDirection = DIRECTIONS.UP;
-            } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
-              newDirection = DIRECTIONS.DOWN;
-            } else {
-              newDirection = DIRECTIONS.NONE;
-            }
-            break;
-          default:
-            return; // Ignore other keys
-        }
-      } else {
-        // Top-down mode: controls are absolute
-        switch (e.key) {
-          case "ArrowUp":
-          case "w":
-          case "W":
-            newDirection = DIRECTIONS.UP;
-            break;
-          case "ArrowDown":
-          case "s":
-          case "S":
-            newDirection = DIRECTIONS.DOWN;
-            break;
-          case "ArrowLeft":
-          case "a":
-          case "A":
+      switch (e.key) {
+        case "ArrowUp": // Forward in current direction
+          newDirection = currentDirection;
+          break;
+        case "ArrowDown": // Backward/reverse current direction
+          newDirection = currentDirection.clone().negate();
+          break;
+        case "ArrowLeft": // Turn left relative to current direction
+          if (currentDirection.equals(DIRECTIONS.UP)) {
             newDirection = DIRECTIONS.LEFT;
-            break;
-          case "ArrowRight":
-          case "d":
-          case "D":
+          } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
             newDirection = DIRECTIONS.RIGHT;
-            break;
-          default:
-            return; // Ignore other keys
-        }
+          } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
+            newDirection = DIRECTIONS.DOWN;
+          } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
+            newDirection = DIRECTIONS.UP;
+          } else {
+            newDirection = DIRECTIONS.NONE;
+          }
+          break;
+        case "ArrowRight": // Turn right relative to current direction
+          if (currentDirection.equals(DIRECTIONS.UP)) {
+            newDirection = DIRECTIONS.RIGHT;
+          } else if (currentDirection.equals(DIRECTIONS.DOWN)) {
+            newDirection = DIRECTIONS.LEFT;
+          } else if (currentDirection.equals(DIRECTIONS.LEFT)) {
+            newDirection = DIRECTIONS.UP;
+          } else if (currentDirection.equals(DIRECTIONS.RIGHT)) {
+            newDirection = DIRECTIONS.DOWN;
+          } else {
+            newDirection = DIRECTIONS.NONE;
+          }
+          break;
+        default:
+          return; // Ignore other keys
       }
 
       // Store the next direction for future reference
@@ -633,7 +596,7 @@ const Game: FC<GameProps> = ({
       // Clear any pending turns
       pendingTurnRef.current = null;
     },
-    [isFirstPerson],
+    [directionRef],
   );
 
   // Setup event listeners
@@ -994,23 +957,8 @@ const Game: FC<GameProps> = ({
         position={pacmanPosition}
         direction={direction}
         mapOffset={mapOffset}
-        enabled={isFirstPerson}
         shifKeyPressed={shiftKeyPressed}
       />
-
-      {!isFirstPerson && (
-        <>
-          <PerspectiveCamera
-            makeDefault
-            position={[0, 20, 0]}
-            fov={50}
-            near={0.1}
-            far={1000}
-            up={[0, 0, -1]}
-          />
-          <OrbitControls target={[0, 0, 0]} enableRotate enablePan enableZoom />
-        </>
-      )}
     </>
   );
 };
@@ -1022,9 +970,8 @@ const Pacman: FC = () => {
   const gameRef = useRef<{
     handleKeyDown?: (e: KeyboardEvent | { key: string }) => void;
   }>({});
-  const [isFirstPerson, setIsFirstPerson] = useState<boolean>(true);
   const [isMouthOpen, setIsMouthOpen] = useState<boolean>(false);
-  const [shiftKeyPressed, setShiftKeyPressed] = useState<boolean>(false); // Add shift key state
+  const [shiftKeyPressed, setShiftKeyPressed] = useState<boolean>(false);
   const previousMouthStateRef = useRef<boolean>(false);
   const requestStepRef = useRef<boolean>(false);
 
@@ -1086,7 +1033,6 @@ const Pacman: FC = () => {
       <Canvas shadows>
         <Game
           gameRef={gameRef}
-          isFirstPerson={isFirstPerson}
           requestStepRef={requestStepRef}
           shiftKeyPressed={shiftKeyPressed}
         />
