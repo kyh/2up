@@ -3,7 +3,6 @@
 import type { FC } from "react";
 import type { Group } from "three";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Vector3 } from "three";
 
@@ -528,18 +527,6 @@ const Game: FC<GameProps> = ({ requestStepRef, shiftKeyPressed, gameRef }) => {
         clearTimeout(gameState.scaredTimer);
       }
     };
-  }, []);
-
-  /**
-   * Try to turn immediately without checking if the move is valid
-   */
-  const tryTurnImmediately = useCallback((newDirection: Direction) => {
-    // Always set the direction immediately without validation
-    setDirection(newDirection);
-
-    // Clear pending turn since we executed it
-    pendingTurnRef.current = null;
-    return true;
   }, []);
 
   /**
