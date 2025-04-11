@@ -33,7 +33,6 @@ type GhostData = {
 
 type GameState = {
   score: number;
-  lives: number;
   gameOver: boolean;
   ghostsScared: boolean;
   scaredTimer?: NodeJS.Timeout;
@@ -439,7 +438,6 @@ const Game: FC<GameProps> = ({
   // Game state
   const [gameState, setGameState] = useState<GameState>({
     score: 0,
-    lives: 3,
     gameOver: false,
     ghostsScared: false,
   });
@@ -729,25 +727,14 @@ const Game: FC<GameProps> = ({
             setPacmanPosition(GameUtils.snapToGrid(new Vector3(1, 0, 1)));
             setDirection(DIRECTIONS.RIGHT);
             setNextDirection(DIRECTIONS.NONE);
+            setIsMoving(false); // Reset animation state
+            setTargetPosition(GameUtils.snapToGrid(new Vector3(1, 0, 1))); // Reset target position
             setGameState((prev) => ({ ...prev }));
-
-            // // Pacman got caught
-            // const newLives = gameState.lives - 1;
-
-            // if (newLives <= 0) {
-            //   setGameState((prev) => ({ ...prev, lives: 0, gameOver: true }));
-            // } else {
-            //   // Reset Pacman position and direction
-            //   setPacmanPosition(GameUtils.snapToGrid(new Vector3(1, 0, 1)));
-            //   setDirection(DIRECTIONS.RIGHT);
-            //   setNextDirection(DIRECTIONS.NONE);
-            //   setGameState((prev) => ({ ...prev, lives: newLives }));
-            // }
           }
         }
       });
     },
-    [ghosts, gameState.ghostsScared, gameState.lives],
+    [ghosts, gameState.ghostsScared],
   );
 
   /**
