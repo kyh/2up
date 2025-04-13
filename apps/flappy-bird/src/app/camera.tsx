@@ -24,14 +24,11 @@ const JUMP_THRESHOLD = 0.1; // 10% of baseline height
 const SMOOTHING_WINDOW = 5; // Number of frames to average
 const MAX_JUMP_HEIGHT_FACTOR = 2; // Maximum jump height multiplier
 
-type JumpDetectionProps = {
+type CameraProps = {
   onJump?: (jumpStrength: number) => void; // Updated to include jump strength
 };
 
-// Use memo to prevent re-renders when parent component changes
-export const JumpDetection = memo(function JumpDetection({
-  onJump,
-}: JumpDetectionProps) {
+export const Camera = memo(function Camera({ onJump }: CameraProps) {
   // Refs
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);

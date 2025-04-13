@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 
-import { JumpDetection } from "./jump-detection";
+import { Camera } from "./camera";
 import { useGameState } from "./use-game-state";
 
 export const App = () => {
@@ -36,13 +36,13 @@ export const App = () => {
 
   return (
     <>
-      <JumpDetection onJump={handleJump} />
       <canvas
         ref={canvasRef}
         width={window.innerWidth}
         height={window.innerHeight}
         onClick={() => handleJump()}
       />
+      <Camera onJump={handleJump} />
     </>
   );
 };

@@ -9,7 +9,11 @@ import "@tensorflow/tfjs-backend-cpu";
 // Import WebGL backend for better performance
 import "@tensorflow/tfjs-backend-webgl";
 
-export const SkeletonViewer = memo(function SkeletonViewer() {
+export const Camera = memo(function Camera({
+  onPoseDetected,
+}: {
+  onPoseDetected?: (pose: poseDetection.Pose) => void;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafIdRef = useRef<number | null>(null);
@@ -78,6 +82,7 @@ export const SkeletonViewer = memo(function SkeletonViewer() {
 
           if (poses.length > 0 && poses[0]) {
             drawSkeleton(poses[0], canvasRef);
+            onPoseDetected?.(poses[0]);
           }
         } catch (error) {
           console.error("Error detecting pose:", error);
@@ -101,7 +106,7 @@ export const SkeletonViewer = memo(function SkeletonViewer() {
         tracks.forEach((track) => track.stop());
       }
     };
-  }, []);
+  }, [onPoseDetected]);
 
   return (
     <div className="absolute right-1 bottom-1 aspect-video h-[288px] w-sm rounded-lg bg-black/10">
