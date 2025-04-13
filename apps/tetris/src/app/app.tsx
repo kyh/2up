@@ -247,11 +247,9 @@ export const App = () => {
     // Check for rotation by measuring distance between shoulders
     const shoulderDistance = Math.abs(kp.leftShoulder.x - kp.rightShoulder.x);
     const isRotating =
-      shoulderDistance < 100 && Date.now() - lastRotationTime.current > 600;
+      shoulderDistance < 50 && Date.now() - lastRotationTime.current > 600;
 
     if (isRotating) {
-      console.log("Spin detected! Shoulder distance:", shoulderDistance);
-
       const rotatedShape = rotateShape(shapeRef.current);
       const newX = positionRef.current.x;
       const newY = positionRef.current.y;
@@ -296,14 +294,16 @@ export const App = () => {
       Math.abs(kp.leftWrist.x - kp.leftShoulder.x) < 30 && // Arms not extended
       Math.abs(kp.rightWrist.x - kp.rightShoulder.x) < 30;
 
-    // O shape: Hands between torso
+    // O shape: Hands between torso forming an X
     const isMakingCircle =
       kp.leftWrist.x > kp.leftShoulder.x && // Left hand to the right of left shoulder
       kp.leftWrist.x < kp.rightShoulder.x && // Left hand to the left of right shoulder
       kp.rightWrist.x > kp.leftShoulder.x && // Right hand to the right of left shoulder
       kp.rightWrist.x < kp.rightShoulder.x && // Right hand to the left of right shoulder
-      Math.abs(kp.leftWrist.y - kp.rightWrist.y) < 100 && // Hands at similar height
-      Math.abs(kp.leftWrist.x - kp.rightWrist.x) < 100; // Hands close together
+      Math.abs(kp.leftWrist.y - kp.rightWrist.y) < 50 && // Hands at similar height
+      Math.abs(kp.leftWrist.x - kp.rightWrist.x) < 50 && // Hands close together horizontally
+      Math.abs(kp.leftWrist.y - kp.leftShoulder.y) < 100 && // Hands not too far below shoulders
+      Math.abs(kp.rightWrist.y - kp.rightShoulder.y) < 100; // Hands not too far below shoulders
 
     // T shape: Extend arms straight out to sides
     const isTShape =
@@ -340,21 +340,21 @@ export const App = () => {
       Math.abs(kp.leftWrist.x - kp.leftShoulder.x) < 30 && // Left arm at side
       Math.abs(kp.rightWrist.x - kp.rightShoulder.x) < 30; // Right arm at side
 
-    // Determine shape based on pose
+    // Determine next shape based on pose
     if (isStandingUpright) {
-      shapeRef.current = shapes[0].map((row) => [...row]); // I shape
+      nextShapeRef.current = shapes[0].map((row) => [...row]); // I shape
     } else if (isMakingCircle) {
-      shapeRef.current = shapes[1].map((row) => [...row]); // O shape
+      nextShapeRef.current = shapes[1].map((row) => [...row]); // O shape
     } else if (isTShape) {
-      shapeRef.current = shapes[2].map((row) => [...row]); // T shape
+      nextShapeRef.current = shapes[2].map((row) => [...row]); // T shape
     } else if (isSShape) {
-      shapeRef.current = shapes[3].map((row) => [...row]); // S shape
+      nextShapeRef.current = shapes[3].map((row) => [...row]); // S shape
     } else if (isZShape) {
-      shapeRef.current = shapes[4].map((row) => [...row]); // Z shape
+      nextShapeRef.current = shapes[4].map((row) => [...row]); // Z shape
     } else if (isLShape) {
-      shapeRef.current = shapes[5].map((row) => [...row]); // L shape
+      nextShapeRef.current = shapes[5].map((row) => [...row]); // L shape
     } else if (isJShape) {
-      shapeRef.current = shapes[6].map((row) => [...row]); // J shape
+      nextShapeRef.current = shapes[6].map((row) => [...row]); // J shape
     }
   }, []);
 
