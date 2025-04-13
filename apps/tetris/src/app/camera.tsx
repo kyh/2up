@@ -12,10 +12,13 @@ import "@tensorflow/tfjs-backend-webgl";
 export const Camera = memo(function Camera({
   onPoseDetected,
 }: {
-  onPoseDetected?: (pose: poseDetection.Pose) => void;
+  onPoseDetected?: (
+    pose: poseDetection.Pose,
+    canvasRef: React.RefObject<HTMLCanvasElement | null>,
+  ) => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafIdRef = useRef<number | null>(null);
   const detectorRef = useRef<poseDetection.PoseDetector | null>(null);
 
@@ -82,7 +85,7 @@ export const Camera = memo(function Camera({
 
           if (poses.length > 0 && poses[0]) {
             drawSkeleton(poses[0], canvasRef);
-            onPoseDetected?.(poses[0]);
+            onPoseDetected?.(poses[0], canvasRef);
           }
         } catch (error) {
           console.error("Error detecting pose:", error);
@@ -127,6 +130,7 @@ const drawSkeleton = (
 
   ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
+  // Draw keypoints
   pose.keypoints.forEach((keypoint) => {
     if ((keypoint.score ?? 0) > 0.5) {
       ctx.beginPath();
@@ -136,6 +140,7 @@ const drawSkeleton = (
     }
   });
 
+  // Draw connections
   const connections = [
     ["nose", "left_eye"],
     ["nose", "right_eye"],
