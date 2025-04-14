@@ -222,12 +222,16 @@ export const App = () => {
       const keypoints = {
         leftWrist: pose.keypoints.find((kp) => kp.name === "left_wrist"),
         rightWrist: pose.keypoints.find((kp) => kp.name === "right_wrist"),
-        leftElbow: pose.keypoints.find((kp) => kp.name === "left_elbow"),
-        rightElbow: pose.keypoints.find((kp) => kp.name === "right_elbow"),
         leftShoulder: pose.keypoints.find((kp) => kp.name === "left_shoulder"),
         rightShoulder: pose.keypoints.find(
           (kp) => kp.name === "right_shoulder",
         ),
+        leftHip: pose.keypoints.find((kp) => kp.name === "left_hip"),
+        rightHip: pose.keypoints.find((kp) => kp.name === "right_hip"),
+        leftEye: pose.keypoints.find((kp) => kp.name === "left_eye"),
+        rightEye: pose.keypoints.find((kp) => kp.name === "right_eye"),
+        leftEar: pose.keypoints.find((kp) => kp.name === "left_ear"),
+        rightEar: pose.keypoints.find((kp) => kp.name === "right_ear"),
         nose: pose.keypoints.find((kp) => kp.name === "nose"),
       };
 
@@ -236,275 +240,268 @@ export const App = () => {
         [K in keyof typeof keypoints]: poseDetection.Keypoint;
       };
 
-      // Always draw guides and check for shape detection if we have shoulder positions
-      if (poseCanvasRef.current && kp.leftShoulder && kp.rightShoulder) {
-        const ctx = poseCanvasRef.current.getContext("2d");
-        if (ctx) {
-          const shoulderWidth = Math.abs(
-            kp.rightShoulder.x - kp.leftShoulder.x,
-          );
-          const centerX = (kp.leftShoulder.x + kp.rightShoulder.x) / 2;
-          const centerY = (kp.leftShoulder.y + kp.rightShoulder.y) / 2;
+      if (!poseCanvasRef.current) return;
+      const ctx = poseCanvasRef.current.getContext("2d");
+      if (!ctx) return;
 
-          // I shape: Both arms straight up
-          const iShapeBox = {
-            x: centerX - shoulderWidth * 0.25, // Narrower width centered between shoulders
-            y: 0, // Start at top of canvas
-            width: shoulderWidth * 0.5, // Narrower width
-            height: kp.nose.y - shoulderWidth * 0.2, // Extend down to just above eyes
-          };
-          drawShapeGuide(
-            ctx,
-            iShapeBox.x,
-            iShapeBox.y,
-            iShapeBox.width,
-            iShapeBox.height,
-            "rgba(255, 0, 0, 0.5)",
-          );
-          if (
-            kp.leftWrist.x > iShapeBox.x &&
-            kp.leftWrist.x < iShapeBox.x + iShapeBox.width &&
-            kp.rightWrist.x > iShapeBox.x &&
-            kp.rightWrist.x < iShapeBox.x + iShapeBox.width &&
-            kp.leftWrist.y > iShapeBox.y &&
-            kp.leftWrist.y < iShapeBox.y + iShapeBox.height &&
-            kp.rightWrist.y > iShapeBox.y &&
-            kp.rightWrist.y < iShapeBox.y + iShapeBox.height
-          ) {
-            nextShapeRef.current = shapes[0].map((row) => [...row]);
-          }
+      const shoulderWidth = Math.abs(kp.rightShoulder.x - kp.leftShoulder.x);
+      const centerX = (kp.leftShoulder.x + kp.rightShoulder.x) / 2;
+      const centerY = (kp.leftShoulder.y + kp.rightShoulder.y) / 2;
 
-          // O shape: Hands between torso forming an X
-          const oShapeBox = {
-            x: centerX - shoulderWidth * 0.25, // Center between shoulders, width is half of shoulder width
-            y: kp.leftShoulder.y, // Start at shoulder level
-            width: shoulderWidth * 0.5, // Width is half of shoulder width
-            height: shoulderWidth * 0.75, // Height extends down from shoulders
-          };
-          drawShapeGuide(
-            ctx,
-            oShapeBox.x,
-            oShapeBox.y,
-            oShapeBox.width,
-            oShapeBox.height,
-            "rgba(0, 255, 0, 0.5)",
-          );
-          if (
-            kp.leftWrist.x > oShapeBox.x &&
-            kp.leftWrist.x < oShapeBox.x + oShapeBox.width &&
-            kp.rightWrist.x > oShapeBox.x &&
-            kp.rightWrist.x < oShapeBox.x + oShapeBox.width &&
-            kp.leftWrist.y > oShapeBox.y &&
-            kp.leftWrist.y < oShapeBox.y + oShapeBox.height &&
-            kp.rightWrist.y > oShapeBox.y &&
-            kp.rightWrist.y < oShapeBox.y + oShapeBox.height
-          ) {
-            nextShapeRef.current = shapes[1].map((row) => [...row]);
-          }
+      // I shape: Both arms straight up
+      const iShapeBox = {
+        x: kp.leftEar.x, // Start at left ear
+        y: 0, // Start at top of canvas
+        width: kp.rightEar.x - kp.leftEar.x, // Width spans between ears
+        height: kp.leftEar.y, // Extend down to ear level
+      };
+      drawShapeGuide(
+        ctx,
+        iShapeBox.x,
+        iShapeBox.y,
+        iShapeBox.width,
+        iShapeBox.height,
+        "rgba(255, 0, 0, 0.5)",
+      );
+      if (
+        kp.leftWrist.x > iShapeBox.x &&
+        kp.leftWrist.x < iShapeBox.x + iShapeBox.width &&
+        kp.rightWrist.x > iShapeBox.x &&
+        kp.rightWrist.x < iShapeBox.x + iShapeBox.width &&
+        kp.leftWrist.y > iShapeBox.y &&
+        kp.leftWrist.y < iShapeBox.y + iShapeBox.height &&
+        kp.rightWrist.y > iShapeBox.y &&
+        kp.rightWrist.y < iShapeBox.y + iShapeBox.height
+      ) {
+        nextShapeRef.current = shapes[0].map((row) => [...row]);
+      }
 
-          // T shape: Extend arms straight out to sides
-          const tShapeBox = {
-            x: 0, // Start at left edge of canvas
-            y: kp.leftShoulder.y - shoulderWidth * 0.3, // Center the box on shoulders
-            width: canvasWidth.current, // Extend full width of canvas
-            height: shoulderWidth * 0.6, // Height centered on shoulders
-          };
-          drawShapeGuide(
-            ctx,
-            tShapeBox.x,
-            tShapeBox.y,
-            tShapeBox.width,
-            tShapeBox.height,
-            "rgba(0, 0, 255, 0.5)",
-          );
-          if (
-            kp.leftWrist.x > tShapeBox.x &&
-            kp.leftWrist.x < tShapeBox.x + tShapeBox.width &&
-            kp.rightWrist.x > tShapeBox.x &&
-            kp.rightWrist.x < tShapeBox.x + tShapeBox.width &&
-            kp.leftWrist.y > tShapeBox.y &&
-            kp.leftWrist.y < tShapeBox.y + tShapeBox.height &&
-            kp.rightWrist.y > tShapeBox.y &&
-            kp.rightWrist.y < tShapeBox.y + tShapeBox.height
-          ) {
-            nextShapeRef.current = shapes[2].map((row) => [...row]);
-          }
+      // T shape: Extend arms straight out to sides
+      const tShapeBox = {
+        x: 0, // Start at left edge of canvas
+        y: kp.leftShoulder.y - shoulderWidth * 0.3, // Center the box on shoulders
+        width: canvasWidth.current, // Extend full width of canvas
+        height: shoulderWidth * 0.6, // Height centered on shoulders
+      };
+      drawShapeGuide(
+        ctx,
+        tShapeBox.x,
+        tShapeBox.y,
+        tShapeBox.width,
+        tShapeBox.height,
+        "rgba(0, 0, 255, 0.5)",
+      );
+      if (
+        kp.leftWrist.x > tShapeBox.x &&
+        kp.leftWrist.x < tShapeBox.x + tShapeBox.width &&
+        kp.rightWrist.x > tShapeBox.x &&
+        kp.rightWrist.x < tShapeBox.x + tShapeBox.width &&
+        kp.leftWrist.y > tShapeBox.y &&
+        kp.leftWrist.y < tShapeBox.y + tShapeBox.height &&
+        kp.rightWrist.y > tShapeBox.y &&
+        kp.rightWrist.y < tShapeBox.y + tShapeBox.height
+      ) {
+        nextShapeRef.current = shapes[2].map((row) => [...row]);
+      }
 
-          // S shape: Right wrist above right shoulder, left wrist near left waist
-          const eyeToShoulderDistance = Math.abs(
-            kp.nose.y - kp.rightShoulder.y,
-          );
-          const sShapeBox1 = {
-            x: kp.rightShoulder.x, // Start at right shoulder
-            y: kp.rightShoulder.y - eyeToShoulderDistance * 3.5, // Extend up to twice eye level
-            width: canvasWidth.current - kp.rightShoulder.x, // Extend to right edge
-            height: eyeToShoulderDistance * 2, // Twice the height from shoulder to eyes
-          };
-          const sShapeBox2 = {
-            x: 0, // Start at left edge
-            y: kp.leftShoulder.y + shoulderWidth * 0.5, // Start below shoulder
-            width: kp.leftShoulder.x, // Extend to left shoulder
-            height: shoulderWidth, // Twice the height (was 0.5)
-          };
-          drawShapeGuide(
-            ctx,
-            sShapeBox1.x,
-            sShapeBox1.y,
-            sShapeBox1.width,
-            sShapeBox1.height,
-            "rgba(255, 255, 0, 0.5)",
-          );
-          drawShapeGuide(
-            ctx,
-            sShapeBox2.x,
-            sShapeBox2.y,
-            sShapeBox2.width,
-            sShapeBox2.height,
-            "rgba(255, 255, 0, 0.5)",
-          );
-          if (
-            // Right wrist above right shoulder
-            kp.rightWrist.x > sShapeBox1.x &&
-            kp.rightWrist.x < sShapeBox1.x + sShapeBox1.width &&
-            kp.rightWrist.y > sShapeBox1.y &&
-            kp.rightWrist.y < sShapeBox1.y + sShapeBox1.height &&
-            // Left wrist near left waist
-            kp.leftWrist.x > sShapeBox2.x &&
-            kp.leftWrist.x < sShapeBox2.x + sShapeBox2.width &&
-            kp.leftWrist.y > sShapeBox2.y &&
-            kp.leftWrist.y < sShapeBox2.y + sShapeBox2.height
-          ) {
-            nextShapeRef.current = shapes[3].map((row) => [...row]);
-          }
+      // O shape: Hands between torso forming an X
+      const oShapeBox = {
+        x: centerX - shoulderWidth * 0.25, // Center between shoulders, width is half of shoulder width
+        y: kp.leftShoulder.y, // Start at shoulder level
+        width: shoulderWidth * 0.5, // Width is half of shoulder width
+        height: shoulderWidth * 0.75, // Height extends down from shoulders
+      };
+      drawShapeGuide(
+        ctx,
+        oShapeBox.x,
+        oShapeBox.y,
+        oShapeBox.width,
+        oShapeBox.height,
+        "rgba(0, 255, 0, 0.5)",
+      );
+      if (
+        kp.leftWrist.x > oShapeBox.x &&
+        kp.leftWrist.x < oShapeBox.x + oShapeBox.width &&
+        kp.rightWrist.x > oShapeBox.x &&
+        kp.rightWrist.x < oShapeBox.x + oShapeBox.width &&
+        kp.leftWrist.y > oShapeBox.y &&
+        kp.leftWrist.y < oShapeBox.y + oShapeBox.height &&
+        kp.rightWrist.y > oShapeBox.y &&
+        kp.rightWrist.y < oShapeBox.y + oShapeBox.height
+      ) {
+        nextShapeRef.current = shapes[1].map((row) => [...row]);
+      }
 
-          // Z shape: Left wrist above left shoulder, right wrist near right waist
-          const zShapeBox1 = {
-            x: 0, // Start at left edge
-            y: kp.leftShoulder.y - eyeToShoulderDistance * 3.5, // Extend up to twice eye level
-            width: kp.leftShoulder.x, // Extend to left shoulder
-            height: eyeToShoulderDistance * 2, // Twice the height from shoulder to eyes
-          };
-          const zShapeBox2 = {
-            x: kp.rightShoulder.x, // Start at right shoulder
-            y: kp.rightShoulder.y + shoulderWidth * 0.5, // Start below shoulder
-            width: canvasWidth.current - kp.rightShoulder.x, // Extend to right edge
-            height: shoulderWidth, // Twice the height (was 0.5)
-          };
-          drawShapeGuide(
-            ctx,
-            zShapeBox1.x,
-            zShapeBox1.y,
-            zShapeBox1.width,
-            zShapeBox1.height,
-            "rgba(255, 0, 255, 0.5)",
-          );
-          drawShapeGuide(
-            ctx,
-            zShapeBox2.x,
-            zShapeBox2.y,
-            zShapeBox2.width,
-            zShapeBox2.height,
-            "rgba(255, 0, 255, 0.5)",
-          );
-          if (
-            // Left wrist above left shoulder
-            kp.leftWrist.x > zShapeBox1.x &&
-            kp.leftWrist.x < zShapeBox1.x + zShapeBox1.width &&
-            kp.leftWrist.y > zShapeBox1.y &&
-            kp.leftWrist.y < zShapeBox1.y + zShapeBox1.height &&
-            // Right wrist near right waist
-            kp.rightWrist.x > zShapeBox2.x &&
-            kp.rightWrist.x < zShapeBox2.x + zShapeBox2.width &&
-            kp.rightWrist.y > zShapeBox2.y &&
-            kp.rightWrist.y < zShapeBox2.y + zShapeBox2.height
-          ) {
-            nextShapeRef.current = shapes[4].map((row) => [...row]);
-          }
+      // S shape: Right wrist above right shoulder, left wrist near left waist
+      const sShapeBox1 = {
+        x: 0, // Start at left edge of canvas
+        y: 0, // Start at top of canvas
+        width: kp.rightEye.x * 0.75, // Extend from left edge to right shoulder
+        height: kp.rightEye.y * 0.75, // Extend down to shoulder
+      };
+      const sShapeBox2 = {
+        x: kp.leftHip.x, // Start at left hip
+        y: kp.leftHip.y * 0.8, // Start at hip level
+        width: canvasWidth.current - kp.leftHip.x, // Extend to right edge of canvas
+        height: canvasHeight.current - kp.leftHip.y, // Extend to bottom of canvas
+      };
+      drawShapeGuide(
+        ctx,
+        sShapeBox1.x,
+        sShapeBox1.y,
+        sShapeBox1.width,
+        sShapeBox1.height,
+        "rgba(255, 255, 0, 0.5)",
+      );
+      drawShapeGuide(
+        ctx,
+        sShapeBox2.x,
+        sShapeBox2.y,
+        sShapeBox2.width,
+        sShapeBox2.height,
+        "rgba(255, 255, 0, 0.5)",
+      );
+      if (
+        // Right wrist above right shoulder
+        kp.rightWrist.x > sShapeBox1.x &&
+        kp.rightWrist.x < sShapeBox1.x + sShapeBox1.width &&
+        kp.rightWrist.y > sShapeBox1.y &&
+        kp.rightWrist.y < sShapeBox1.y + sShapeBox1.height &&
+        // Left wrist near left waist
+        kp.leftWrist.x > sShapeBox2.x &&
+        kp.leftWrist.x < sShapeBox2.x + sShapeBox2.width &&
+        kp.leftWrist.y > sShapeBox2.y &&
+        kp.leftWrist.y < sShapeBox2.y + sShapeBox2.height
+      ) {
+        nextShapeRef.current = shapes[3].map((row) => [...row]);
+      }
 
-          // L shape: Left arm up and right arm out
-          const lShapeBox1 = {
-            x: kp.leftShoulder.x - shoulderWidth * 0.25, // Left side box
-            y: 0, // Start at top of canvas
-            width: shoulderWidth * 0.5, // Width similar to I shape
-            height: kp.leftShoulder.y, // Extend down to shoulder height
-          };
-          const lShapeBox2 = {
-            x: 0, // Start at left edge of canvas
-            y: kp.rightShoulder.y - shoulderWidth * 0.3, // Same height as T shape
-            width: kp.rightShoulder.x, // Extend to right shoulder
-            height: shoulderWidth * 0.6, // Same height as T shape
-          };
-          drawShapeGuide(
-            ctx,
-            lShapeBox1.x,
-            lShapeBox1.y,
-            lShapeBox1.width,
-            lShapeBox1.height,
-            "rgba(0, 255, 255, 0.5)",
-          );
-          drawShapeGuide(
-            ctx,
-            lShapeBox2.x,
-            lShapeBox2.y,
-            lShapeBox2.width,
-            lShapeBox2.height,
-            "rgba(0, 255, 255, 0.5)",
-          );
-          if (
-            kp.leftWrist.x > lShapeBox1.x &&
-            kp.leftWrist.x < lShapeBox1.x + lShapeBox1.width &&
-            kp.leftWrist.y > lShapeBox1.y &&
-            kp.leftWrist.y < lShapeBox1.y + lShapeBox1.height &&
-            kp.rightWrist.x > lShapeBox2.x &&
-            kp.rightWrist.x < lShapeBox2.x + lShapeBox2.width &&
-            kp.rightWrist.y > lShapeBox2.y &&
-            kp.rightWrist.y < lShapeBox2.y + lShapeBox2.height
-          ) {
-            nextShapeRef.current = shapes[5].map((row) => [...row]);
-          }
+      // Z shape: Left wrist above left shoulder, right wrist near right waist
+      const zShapeBox1 = {
+        x: canvasWidth.current - (canvasWidth.current - kp.leftEye.x) * 0.75, // Start 0.75 distance from right edge
+        y: 0, // Start at top of canvas
+        width: (canvasWidth.current - kp.leftEye.x) * 0.75, // Width is 0.75 of distance to left eye
+        height: kp.leftEye.y * 0.75, // Extend down to eye level
+      };
+      const zShapeBox2 = {
+        x: 0, // Start at left edge of canvas
+        y: kp.rightHip.y * 0.8, // Start at right hip level
+        width: kp.rightHip.x, // Extend from right hip to left edge
+        height: canvasHeight.current - kp.rightHip.y, // Extend to bottom of canvas
+      };
+      drawShapeGuide(
+        ctx,
+        zShapeBox1.x,
+        zShapeBox1.y,
+        zShapeBox1.width,
+        zShapeBox1.height,
+        "rgba(255, 0, 255, 0.5)",
+      );
+      drawShapeGuide(
+        ctx,
+        zShapeBox2.x,
+        zShapeBox2.y,
+        zShapeBox2.width,
+        zShapeBox2.height,
+        "rgba(255, 0, 255, 0.5)",
+      );
+      if (
+        // Left wrist above left shoulder
+        kp.leftWrist.x > zShapeBox1.x &&
+        kp.leftWrist.x < zShapeBox1.x + zShapeBox1.width &&
+        kp.leftWrist.y > zShapeBox1.y &&
+        kp.leftWrist.y < zShapeBox1.y + zShapeBox1.height &&
+        // Right wrist near right waist
+        kp.rightWrist.x > zShapeBox2.x &&
+        kp.rightWrist.x < zShapeBox2.x + zShapeBox2.width &&
+        kp.rightWrist.y > zShapeBox2.y &&
+        kp.rightWrist.y < zShapeBox2.y + zShapeBox2.height
+      ) {
+        nextShapeRef.current = shapes[4].map((row) => [...row]);
+      }
 
-          // J shape: Right arm up and left arm out
-          const jShapeBox1 = {
-            x: kp.rightShoulder.x - shoulderWidth * 0.25, // Right side box
-            y: 0, // Start at top of canvas
-            width: shoulderWidth * 0.5, // Width similar to I shape
-            height: kp.rightShoulder.y, // Extend down to shoulder height
-          };
-          const jShapeBox2 = {
-            x: kp.leftShoulder.x, // Start at left shoulder
-            y: kp.leftShoulder.y - shoulderWidth * 0.3, // Same height as T shape
-            width: canvasWidth.current - kp.leftShoulder.x, // Extend to right edge
-            height: shoulderWidth * 0.6, // Same height as T shape
-          };
-          drawShapeGuide(
-            ctx,
-            jShapeBox1.x,
-            jShapeBox1.y,
-            jShapeBox1.width,
-            jShapeBox1.height,
-            "rgba(255, 165, 0, 0.5)",
-          );
-          drawShapeGuide(
-            ctx,
-            jShapeBox2.x,
-            jShapeBox2.y,
-            jShapeBox2.width,
-            jShapeBox2.height,
-            "rgba(255, 165, 0, 0.5)",
-          );
-          if (
-            kp.rightWrist.x > jShapeBox1.x &&
-            kp.rightWrist.x < jShapeBox1.x + jShapeBox1.width &&
-            kp.rightWrist.y > jShapeBox1.y &&
-            kp.rightWrist.y < jShapeBox1.y + jShapeBox1.height &&
-            kp.leftWrist.x > jShapeBox2.x &&
-            kp.leftWrist.x < jShapeBox2.x + jShapeBox2.width &&
-            kp.leftWrist.y > jShapeBox2.y &&
-            kp.leftWrist.y < jShapeBox2.y + jShapeBox2.height
-          ) {
-            nextShapeRef.current = shapes[6].map((row) => [...row]);
-          }
-        }
+      // L shape: Left arm up and right arm out
+      const lShapeBox1 = {
+        x: kp.leftShoulder.x - shoulderWidth * 0.25, // Left side box
+        y: 0, // Start at top of canvas
+        width: shoulderWidth * 0.5, // Width similar to I shape
+        height: kp.leftShoulder.y, // Extend down to shoulder height
+      };
+      const lShapeBox2 = {
+        x: 0, // Start at left edge of canvas
+        y: kp.rightShoulder.y - shoulderWidth * 0.3, // Same height as T shape
+        width: kp.rightShoulder.x, // Extend to right shoulder
+        height: shoulderWidth * 0.6, // Same height as T shape
+      };
+      drawShapeGuide(
+        ctx,
+        lShapeBox1.x,
+        lShapeBox1.y,
+        lShapeBox1.width,
+        lShapeBox1.height,
+        "rgba(0, 255, 255, 0.5)",
+      );
+      drawShapeGuide(
+        ctx,
+        lShapeBox2.x,
+        lShapeBox2.y,
+        lShapeBox2.width,
+        lShapeBox2.height,
+        "rgba(0, 255, 255, 0.5)",
+      );
+      if (
+        kp.leftWrist.x > lShapeBox1.x &&
+        kp.leftWrist.x < lShapeBox1.x + lShapeBox1.width &&
+        kp.leftWrist.y > lShapeBox1.y &&
+        kp.leftWrist.y < lShapeBox1.y + lShapeBox1.height &&
+        kp.rightWrist.x > lShapeBox2.x &&
+        kp.rightWrist.x < lShapeBox2.x + lShapeBox2.width &&
+        kp.rightWrist.y > lShapeBox2.y &&
+        kp.rightWrist.y < lShapeBox2.y + lShapeBox2.height
+      ) {
+        nextShapeRef.current = shapes[5].map((row) => [...row]);
+      }
+
+      // J shape: Right arm up and left arm out
+      const jShapeBox1 = {
+        x: kp.rightShoulder.x - shoulderWidth * 0.25, // Right side box
+        y: 0, // Start at top of canvas
+        width: shoulderWidth * 0.5, // Width similar to I shape
+        height: kp.rightShoulder.y, // Extend down to shoulder height
+      };
+      const jShapeBox2 = {
+        x: kp.leftShoulder.x, // Start at left shoulder
+        y: kp.leftShoulder.y - shoulderWidth * 0.3, // Same height as T shape
+        width: canvasWidth.current - kp.leftShoulder.x, // Extend to right edge
+        height: shoulderWidth * 0.6, // Same height as T shape
+      };
+      drawShapeGuide(
+        ctx,
+        jShapeBox1.x,
+        jShapeBox1.y,
+        jShapeBox1.width,
+        jShapeBox1.height,
+        "rgba(255, 165, 0, 0.5)",
+      );
+      drawShapeGuide(
+        ctx,
+        jShapeBox2.x,
+        jShapeBox2.y,
+        jShapeBox2.width,
+        jShapeBox2.height,
+        "rgba(255, 165, 0, 0.5)",
+      );
+      if (
+        kp.rightWrist.x > jShapeBox1.x &&
+        kp.rightWrist.x < jShapeBox1.x + jShapeBox1.width &&
+        kp.rightWrist.y > jShapeBox1.y &&
+        kp.rightWrist.y < jShapeBox1.y + jShapeBox1.height &&
+        kp.leftWrist.x > jShapeBox2.x &&
+        kp.leftWrist.x < jShapeBox2.x + jShapeBox2.width &&
+        kp.leftWrist.y > jShapeBox2.y &&
+        kp.leftWrist.y < jShapeBox2.y + jShapeBox2.height
+      ) {
+        nextShapeRef.current = shapes[6].map((row) => [...row]);
       }
 
       // Check for rotation by measuring distance between shoulders
