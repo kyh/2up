@@ -22,6 +22,14 @@ const pluginData: CardProps[] = [
     type: "wip",
     plays: 2000,
   },
+  {
+    id: 3,
+    name: "Tetris",
+    slug: "tetris",
+    description: "block block block block block block block block",
+    type: "wip",
+    plays: 1000,
+  },
 ];
 
 const Page = () => {

@@ -5,7 +5,7 @@ import {
   SandpackProvider as SandpackProviderPrimitive,
 } from "@codesandbox/sandpack-react";
 import { sandpackDark } from "@codesandbox/sandpack-themes";
-import { dependencies } from "@kyh/api/build/prompt";
+import { dependencies } from "@kyh/api/ai/prompt";
 
 import type { SandpackFile } from "@codesandbox/sandpack-react";
 

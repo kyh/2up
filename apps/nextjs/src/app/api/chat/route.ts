@@ -1,7 +1,7 @@
 import type { Message } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
-import { mockData } from "@kyh/api/build/mock-data";
-import { getSystemPrompt } from "@kyh/api/build/prompt";
+import { mockData } from "@kyh/api/ai/mock-data";
+import { getSystemPrompt } from "@kyh/api/ai/prompt";
 import { convertToCoreMessages, simulateReadableStream, streamText } from "ai";
 import { MockLanguageModelV1 } from "ai/test";
 
