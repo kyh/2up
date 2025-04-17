@@ -1,63 +1,67 @@
 import type { UIMessage } from "ai";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { Message, MessageContent, MessagesContainer } from "@kyh/ui/chat";
 import { Spinner } from "@kyh/ui/spinner";
 import { cn } from "@kyh/ui/utils";
 import { CircleCheckIcon } from "lucide-react";
 
-import type { VgActionData } from "./message-parser";
-import { isFileAction, parseMessage } from "./message-parser";
+import type { CreateFileSchema } from "@kyh/api/ai/tools";
+
+type MessagePartProps = {
+  part: UIMessage["parts"][number];
+};
+
+const MessagePart = memo(
+  ({ part }: MessagePartProps) => {
+    if (part.type === "text") {
+      return <>{part.text}</>;
+    }
+
+    if (part.type === "tool-invocation") {
+      const toolArgs = part.toolInvocation.args as CreateFileSchema | undefined;
+      if (part.toolInvocation.state === "partial-call") {
+        return (
+          <div className="mt-1 flex items-center gap-1">
+            <Spinner className="size-5" />
+            <span>Generating {toolArgs?.filePath}</span>
+          </div>
+        );
+      }
+
+      return (
+        <div className="mt-1 flex items-center gap-1">
+          <CircleCheckIcon className="size-5" />
+          <span>{toolArgs?.filePath}</span>
+        </div>
+      );
+    }
+
+    return null;
+  },
+  (prevProps, nextProps) => {
+    if (prevProps.part.type === "text" && nextProps.part.type === "text") {
+      return prevProps.part.text === nextProps.part.text;
+    }
+
+    if (
+      prevProps.part.type === "tool-invocation" &&
+      nextProps.part.type === "tool-invocation"
+    ) {
+      return (
+        prevProps.part.toolInvocation.state ===
+        nextProps.part.toolInvocation.state
+      );
+    }
+
+    return false;
+  },
+);
 
 type ChatHistoryProps = {
   composerOpen: boolean;
   messages: UIMessage[];
   isGeneratingResponse: boolean;
 };
-
-const ParsedMessageContent = memo(({ message }: { message: UIMessage }) => {
-  const parsedMessage = useMemo(
-    () =>
-      message.role === "assistant"
-        ? parseMessage(message.id, message.content)
-        : undefined,
-    [message.id, message.content, message.role],
-  );
-
-  if (!parsedMessage) {
-    return <>{message.content}</>;
-  }
-
-  return (
-    <>
-      {parsedMessage.contentBeforeArtifact}
-      {parsedMessage.actions.map((action, index) => (
-        <MessageAction key={index} action={action} />
-      ))}
-      {parsedMessage.contentAfterArtifact}
-    </>
-  );
-});
-
-const MessageAction = memo(
-  ({ action }: { action: VgActionData }) => {
-    if (!isFileAction(action)) return null;
-    const actionContent = action.isParsed ? (
-      <>
-        <CircleCheckIcon className="size-4" />
-        <span>{action.filePath}</span>
-      </>
-    ) : (
-      <>
-        <Spinner />
-        <span>Generating {action.filePath}</span>
-      </>
-    );
-    return <div className="my-2 flex items-center gap-1">{actionContent}</div>;
-  },
-  (prevProps, nextProps) => {
-    return prevProps.action.isParsed === nextProps.action.isParsed;
-  },
-);
 
 export const ChatHistory = memo(
   function ChatHistory({ composerOpen, messages }: ChatHistoryProps) {
@@ -67,7 +71,7 @@ export const ChatHistory = memo(
 
     return (
       <div className="pointer-events-none fixed top-0 right-0 left-0 z-10 flex items-center justify-center transition">
-        <MessagesContainer className="pointer-events-auto m-auto max-h-[80dvh] w-full max-w-lg flex-1 space-y-4 p-4">
+        <MessagesContainer className="pointer-events-auto mx-auto max-h-[80dvh] w-full max-w-lg flex-1 space-y-4 p-4">
           {messages.map((message) => {
             const isAssistant = message.role === "assistant";
 
@@ -77,7 +81,9 @@ export const ChatHistory = memo(
                 className={cn(!isAssistant && "justify-end")}
               >
                 <MessageContent className={cn(!isAssistant && "bg-primary/10")}>
-                  <ParsedMessageContent message={message} />
+                  {message.parts.map((part, index) => (
+                    <MessagePart key={index} part={part} />
+                  ))}
                 </MessageContent>
               </Message>
             );
@@ -102,7 +108,7 @@ export const ChatHistory = memo(
 
     const lastMessageChanged =
       prevLastMsg.id !== nextLastMsg.id ||
-      prevLastMsg.content !== nextLastMsg.content;
+      prevLastMsg.parts !== nextLastMsg.parts;
 
     return (
       prevProps.composerOpen === nextProps.composerOpen &&

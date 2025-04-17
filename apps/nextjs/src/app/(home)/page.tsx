@@ -8,11 +8,11 @@ import { toast } from "@kyh/ui/toast";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import type { SandpackFiles } from "./_components/sandpack";
+import type { CreateFileSchema, DeleteFileSchema } from "@kyh/api/ai/tools";
 import { useTRPC } from "@/trpc/react";
 import { ChatHistory } from "./_components/chat-history";
 import { CodeEditor } from "./_components/code-editor";
 import { Composer } from "./_components/composer";
-import { isFileAction, parseMessage } from "./_components/message-parser";
 import {
   defaultFiles,
   Preview,
@@ -36,15 +36,29 @@ const Page = ({
   const { messages, append, status, input, setInput } = useChat({
     onFinish: (message) => {
       if (message.role === "assistant") {
-        const parsedMessage = parseMessage(message.id, message.content);
         setFiles((prevFiles) => {
-          const updatedFiles = parsedMessage.actions.reduce((acc, action) => {
-            if (isFileAction(action)) {
-              acc[action.filePath] = { code: action.content };
+          const updatedFiles = message.parts?.reduce((acc, part) => {
+            if (part.type === "tool-invocation") {
+              if (
+                part.toolInvocation.toolName === "createFile" ||
+                part.toolInvocation.toolName === "updateFile"
+              ) {
+                const { filePath, content } = part.toolInvocation
+                  .args as CreateFileSchema;
+                acc[filePath] = { code: content };
+              }
+
+              if (part.toolInvocation.toolName === "deleteFile") {
+                const { filePath } = part.toolInvocation
+                  .args as DeleteFileSchema;
+                delete acc[filePath];
+              }
             }
+
             return acc;
-          }, {} as SandpackFiles);
-          return { ...prevFiles, ...updatedFiles };
+          }, prevFiles);
+
+          return { ...updatedFiles };
         });
         setComposerOpen(false);
       }
@@ -110,7 +124,7 @@ const Page = ({
 
 const PageContainer = () => {
   const [files, setFiles] = useState<SandpackFiles>(defaultFiles);
-
+  console.log("files", files);
   return (
     <SandpackProvider files={files}>
       <Page setFiles={setFiles} />
