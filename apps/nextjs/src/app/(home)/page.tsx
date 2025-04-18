@@ -21,8 +21,10 @@ import {
 import { WaitlistDailog } from "./_components/waitlist-form";
 
 const Page = ({
+  files,
   setFiles,
 }: {
+  files: SandpackFiles;
   setFiles: Dispatch<SetStateAction<SandpackFiles>>;
 }) => {
   const trpc = useTRPC();
@@ -34,6 +36,17 @@ const Page = ({
   const [codeEditorOpen, setCodeEditorOpen] = useState(false);
 
   const { messages, append, status, input, setInput } = useChat({
+    maxSteps: 10,
+    body: {
+      // Convert the files object to Record<filePath, code>
+      existingFiles: Object.entries(files).reduce(
+        (acc, [key, value]) => {
+          acc[key] = value.code;
+          return acc;
+        },
+        {} as Record<string, string>,
+      ),
+    },
     onFinish: (message) => {
       if (message.role === "assistant") {
         setFiles((prevFiles) => {
@@ -124,10 +137,10 @@ const Page = ({
 
 const PageContainer = () => {
   const [files, setFiles] = useState<SandpackFiles>(defaultFiles);
-  console.log("files", files);
+
   return (
     <SandpackProvider files={files}>
-      <Page setFiles={setFiles} />
+      <Page files={files} setFiles={setFiles} />
     </SandpackProvider>
   );
 };

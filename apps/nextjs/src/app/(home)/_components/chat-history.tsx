@@ -3,6 +3,7 @@ import { memo } from "react";
 import { Message, MessageContent, MessagesContainer } from "@kyh/ui/chat";
 import { Spinner } from "@kyh/ui/spinner";
 import { cn } from "@kyh/ui/utils";
+import equal from "fast-deep-equal";
 import { CircleCheckIcon } from "lucide-react";
 
 import type { CreateFileSchema } from "@kyh/api/ai/tools";
@@ -38,23 +39,7 @@ const MessagePart = memo(
 
     return null;
   },
-  (prevProps, nextProps) => {
-    if (prevProps.part.type === "text" && nextProps.part.type === "text") {
-      return prevProps.part.text === nextProps.part.text;
-    }
-
-    if (
-      prevProps.part.type === "tool-invocation" &&
-      nextProps.part.type === "tool-invocation"
-    ) {
-      return (
-        prevProps.part.toolInvocation.state ===
-        nextProps.part.toolInvocation.state
-      );
-    }
-
-    return false;
-  },
+  (prevProps, nextProps) => equal(prevProps, nextProps),
 );
 
 type ChatHistoryProps = {
@@ -92,28 +77,5 @@ export const ChatHistory = memo(
       </div>
     );
   },
-  (prevProps, nextProps) => {
-    // Deep compare messages to prevent unnecessary renders
-    if (prevProps.messages.length !== nextProps.messages.length) {
-      return false;
-    }
-
-    // Only re-render if the last message changed (e.g., for streaming)
-    const prevLastMsg = prevProps.messages[prevProps.messages.length - 1];
-    const nextLastMsg = nextProps.messages[nextProps.messages.length - 1];
-
-    if (!prevLastMsg || !nextLastMsg) {
-      return prevProps.composerOpen === nextProps.composerOpen;
-    }
-
-    const lastMessageChanged =
-      prevLastMsg.id !== nextLastMsg.id ||
-      prevLastMsg.parts !== nextLastMsg.parts;
-
-    return (
-      prevProps.composerOpen === nextProps.composerOpen &&
-      !lastMessageChanged &&
-      prevProps.isGeneratingResponse === nextProps.isGeneratingResponse
-    );
-  },
+  (prevProps, nextProps) => equal(prevProps, nextProps),
 );

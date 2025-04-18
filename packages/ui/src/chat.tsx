@@ -276,6 +276,12 @@ const ChatTextarea = ({
         value={input}
         onFocus={onFocus}
         onBlur={onBlur}
+        onKeyDown={(e) => {
+          if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+            e.preventDefault();
+            onSubmit();
+          }
+        }}
       />
       <div className="flex items-center gap-2 pt-2">
         <Button
