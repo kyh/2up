@@ -1,13 +1,13 @@
 "use client";
 
 import type { Dispatch, SetStateAction } from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useChat } from "@ai-sdk/react";
 import { toast } from "@kyh/ui/toast";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import type { SandpackFiles } from "./_components/sandpack";
+import type { SandpackFiles, SandpackPreviewRef } from "./_components/sandpack";
 import type { CreateFileSchema, DeleteFileSchema } from "@kyh/api/ai/tools";
 import { useTRPC } from "@/trpc/react";
 import { ChatHistory } from "./_components/chat-history";
@@ -34,6 +34,7 @@ const Page = ({
   const [waitlistOpen, setWaitlistOpen] = useState(false);
   const [composerOpen, setComposerOpen] = useState(true);
   const [codeEditorOpen, setCodeEditorOpen] = useState(false);
+  const previewRef = useRef<SandpackPreviewRef>(null);
 
   const { messages, append, status, input, setInput } = useChat({
     maxSteps: 10,
@@ -106,7 +107,7 @@ const Page = ({
 
   return (
     <>
-      <Preview />
+      <Preview previewRef={previewRef} />
       <Composer
         composerOpen={composerOpen}
         setComposerOpen={setComposerOpen}
@@ -119,6 +120,7 @@ const Page = ({
         onFocus={handleFocus}
       />
       <CodeEditor
+        clientId={previewRef.current?.clientId}
         codeEditorOpen={codeEditorOpen}
         setCodeEditorOpen={setCodeEditorOpen}
       />

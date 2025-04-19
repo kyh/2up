@@ -7,11 +7,19 @@ import {
 import { sandpackDark } from "@codesandbox/sandpack-themes";
 import { dependencies } from "@kyh/api/ai/prompt";
 
-import type { SandpackFile } from "@codesandbox/sandpack-react";
+import type {
+  SandpackFile,
+  SandpackPreviewRef,
+} from "@codesandbox/sandpack-react";
 
-export const Preview = memo(function Preview() {
+export const Preview = memo(function Preview({
+  previewRef,
+}: {
+  previewRef: React.RefObject<SandpackPreviewRef | null>;
+}) {
   return (
     <SandpackPreview
+      ref={previewRef}
       showOpenInCodeSandbox={false}
       showRefreshButton={false}
       showRestartButton={false}
@@ -45,7 +53,7 @@ export const SandpackProvider = ({
   );
 };
 
-export type SandpackFiles = Record<string, SandpackFile>;
+type SandpackFiles = Record<string, SandpackFile>;
 
 export const defaultFiles: SandpackFiles = {
   "/styles.css": {
@@ -879,3 +887,5 @@ export default App;
 `,
   },
 };
+
+export type { SandpackFiles, SandpackPreviewRef };
