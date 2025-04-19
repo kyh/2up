@@ -31,7 +31,7 @@
   "dependencies": {
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.4",
-    "drizzle-orm": "^0.41.0",
+    "drizzle-orm": "^0.42.0",
     "next": "catalog:",
     "postgres": "^3.4.5",
     "react": "catalog:",
@@ -43,7 +43,7 @@
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",
     "@types/react": "catalog:",
-    "drizzle-kit": "^0.30.6",
+    "drizzle-kit": "^0.31.0",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "supabase": "^2.20.12",
