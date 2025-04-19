@@ -1,8 +1,8 @@
 import { memo } from "react";
 import {
   SandpackCodeEditor,
-  SandpackConsole,
   SandpackFileExplorer,
+  useSandpackConsole,
 } from "@codesandbox/sandpack-react";
 import {
   Drawer,
@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@kyh/ui/tabs";
 type CodeEditorProps = {
   codeEditorOpen: boolean;
   setCodeEditorOpen: (open: boolean) => void;
-  clientId?: string;
+  clientId: string;
 };
 
 export const CodeEditor = memo(
@@ -25,6 +25,11 @@ export const CodeEditor = memo(
     codeEditorOpen,
     setCodeEditorOpen,
   }: CodeEditorProps) {
+    const { logs } = useSandpackConsole({
+      clientId,
+      resetOnPreviewRestart: true,
+    });
+
     return (
       <Drawer open={codeEditorOpen} onOpenChange={setCodeEditorOpen}>
         <DrawerContent noPortal className="bg-[#151515]">
@@ -50,7 +55,13 @@ export const CodeEditor = memo(
               />
             </TabsContent>
             <TabsContent className="h-[85dvh] overflow-auto" value="console">
-              <SandpackConsole clientId={clientId} />
+              <ul className="flex flex-col">
+                {logs.map((log) => (
+                  <li key={log.id} className="border-b px-4 py-2">
+                    {log.data?.join()}
+                  </li>
+                ))}
+              </ul>
             </TabsContent>
           </Tabs>
         </DrawerContent>

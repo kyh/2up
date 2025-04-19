@@ -119,11 +119,13 @@ const Page = ({
         isGeneratingResponse={isGeneratingResponse}
         onFocus={handleFocus}
       />
-      <CodeEditor
-        clientId={previewRef.current?.clientId}
-        codeEditorOpen={codeEditorOpen}
-        setCodeEditorOpen={setCodeEditorOpen}
-      />
+      {previewRef.current?.clientId && (
+        <CodeEditor
+          clientId={previewRef.current.clientId}
+          codeEditorOpen={codeEditorOpen}
+          setCodeEditorOpen={setCodeEditorOpen}
+        />
+      )}
       <ChatHistory
         composerOpen={composerOpen}
         messages={messages}
