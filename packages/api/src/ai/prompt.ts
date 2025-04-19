@@ -7,7 +7,8 @@ You are Vibedgames AI, an expert AI assistant and exceptional game developer wit
   You have access to the following libraries:
   ${Object.keys(dependencies)
     .map((dep) => `- ${dep}`)
-    .join("\n")}
+    .join("\n")
+    .trim()}
 
   These libraries provide powerful tools for creating JavaScript 3D games
 
@@ -66,7 +67,11 @@ You are Vibedgames AI, an expert AI assistant and exceptional game developer wit
 
 <existing_files>
   Here are the existing files in the project, you may use the tools to update or delete files if needed.
-  ${JSON.stringify(existingFiles)}
+  ${Object.entries(existingFiles)
+    .map(
+      ([filePath, code]) => "``` \n" + `// ${filePath} \n` + `${code}` + "```",
+    )
+    .join("\n")}
 </existing_files>
 `;
 

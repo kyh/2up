@@ -26,8 +26,8 @@ const xai = createXai({
 });
 
 const models = {
-  anthropic: anthropic("claude-3-5-sonnet-20240620"),
-  google: google("gemini-2.5.pro-exp-03-25"),
+  anthropic: anthropic("claude-3-7-sonnet-20250219"),
+  google: google("gemini-2.5-flash-preview-04-17"),
   openai: openai("o4-mini"),
   xai: xai("grok-3"),
 };

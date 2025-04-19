@@ -13,6 +13,7 @@ export type CreateFileSchema = z.infer<typeof createFileSchema>;
 export const createFile = tool({
   description: "Create a new file with the specified content in the codebase.",
   parameters: createFileSchema,
+  execute: async (props) => props,
 });
 
 export const updateFileSchema = z.object({
@@ -24,6 +25,7 @@ export type UpdateFileSchema = z.infer<typeof updateFileSchema>;
 export const updateFile = tool({
   description: "Update a specified file with the specified content.",
   parameters: updateFileSchema,
+  execute: async (props) => props,
 });
 
 export const deleteFileSchema = z.object({
@@ -34,6 +36,7 @@ export type DeleteFileSchema = z.infer<typeof deleteFileSchema>;
 export const deleteFile = tool({
   description: "Delete a specified file from the codebase.",
   parameters: deleteFileSchema,
+  execute: async (props) => props,
 });
 
 export const aiDeveloperTools = {
