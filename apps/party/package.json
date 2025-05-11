@@ -16,15 +16,15 @@
     "@kyh/db": "workspace:^"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250418.0",
+    "@cloudflare/workers-types": "^4.20250510.0",
     "@kyh/eslint-config": "catalog:",
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",
     "eslint": "catalog:",
-    "partyserver": "^0.0.66",
+    "partyserver": "^0.0.71",
     "prettier": "catalog:",
     "typescript": "catalog:",
-    "wrangler": "^4.12.0"
+    "wrangler": "^4.14.4"
   },
   "prettier": "@kyh/prettier-config"
 }

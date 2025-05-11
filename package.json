@@ -1,7 +1,7 @@
 {
   "name": "vibedgames",
   "private": true,
-  "packageManager": "pnpm@10.8.1",
+  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
   "scripts": {
     "build": "turbo run build",
     "clean": "git clean -xdf node_modules",
@@ -29,11 +29,11 @@
   },
   "devDependencies": {
     "@kyh/prettier-config": "catalog:",
-    "@turbo/gen": "^2.5.0",
+    "@turbo/gen": "^2.5.3",
     "dotenv-cli": "^8.0.0",
     "prettier": "catalog:",
-    "tsx": "^4.19.3",
-    "turbo": "^2.5.0",
+    "tsx": "^4.19.4",
+    "turbo": "^2.5.3",
     "typescript": "catalog:"
   },
   "prettier": "@kyh/prettier-config",
