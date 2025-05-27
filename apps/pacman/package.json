@@ -12,7 +12,7 @@
   "dependencies": {
     "@kyh/ui": "workspace:^",
     "@mediapipe/tasks-vision": "0.10.22-rc.20250304",
-    "@react-three/drei": "^10.0.7",
+    "@react-three/drei": "^10.0.8",
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-backend-cpu": "^4.22.0",
     "@tensorflow/tfjs-backend-webgl": "^4.22.0",
@@ -25,14 +25,14 @@
     "@kyh/eslint-config": "catalog:",
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",
-    "@tailwindcss/vite": "^4.1.6",
+    "@tailwindcss/vite": "^4.1.7",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@vitejs/plugin-react-swc": "^3.9.0",
+    "@vitejs/plugin-react-swc": "^3.10.0",
     "eslint": "catalog:",
-    "globals": "^16.1.0",
+    "globals": "^16.2.0",
     "prettier": "catalog:",
-    "tailwindcss": "^4.1.6",
+    "tailwindcss": "^4.1.7",
     "typescript": "catalog:",
     "vite": "catalog:"
   }
