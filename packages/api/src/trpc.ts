@@ -6,8 +6,8 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
-import { db } from "@kyh/db/drizzle-client";
-import { getSupabaseServerClient } from "@kyh/db/supabase-server-client";
+import { db } from "@repo/db/drizzle-client";
+import { getSupabaseServerClient } from "@repo/db/supabase-server-client";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";

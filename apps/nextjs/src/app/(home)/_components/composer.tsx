@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { useSandpackNavigation } from "@codesandbox/sandpack-react";
-import { Button } from "@kyh/ui/button";
-import { ChatTextarea } from "@kyh/ui/chat";
-import { cn } from "@kyh/ui/utils";
+import { Button } from "@repo/ui/button";
+import { ChatTextarea } from "@repo/ui/chat";
+import { cn } from "@repo/ui/utils";
 import { ChevronDown, ChevronUp, CodeIcon, RefreshCwIcon } from "lucide-react";
 
 type ComposerProps = {

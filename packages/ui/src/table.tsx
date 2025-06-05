@@ -1,8 +1,8 @@
 import * as React from "react";
+import { cn } from "@repo/ui/utils";
 import { flexRender } from "@tanstack/react-table";
 
 import type { Table as UseReactTable } from "@tanstack/react-table";
-import { cn } from "./utils";
 
 export const Table = ({
   className,

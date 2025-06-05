@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import { cn } from "@repo/ui/utils";
 import { CheckIcon } from "lucide-react";
-
-import { cn } from "./utils";
+import { Checkbox as CheckboxPrimitive } from "radix-ui";
 
 export const Checkbox = ({
   className,

@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse, URLPattern } from "next/server";
-import { createMiddlewareClient } from "@kyh/db/supabase-middleware-client";
+import { createMiddlewareClient } from "@repo/db/supabase-middleware-client";
 
 const NEXT_ACTION_HEADER = "next-action";
 

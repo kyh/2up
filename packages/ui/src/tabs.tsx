@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
-import * as TabsPrimitive from "@radix-ui/react-tabs";
-
-import { cn } from "./utils";
+import { cn } from "@repo/ui/utils";
+import { Tabs as TabsPrimitive } from "radix-ui";
 
 export const Tabs = TabsPrimitive.Root;
 

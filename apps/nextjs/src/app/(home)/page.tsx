@@ -4,11 +4,11 @@ import type { Dispatch, SetStateAction } from "react";
 import { useCallback, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useChat } from "@ai-sdk/react";
-import { toast } from "@kyh/ui/toast";
+import { toast } from "@repo/ui/toast";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import type { SandpackFiles, SandpackPreviewRef } from "./_components/sandpack";
-import type { CreateFileSchema, DeleteFileSchema } from "@kyh/api/ai/tools";
+import type { CreateFileSchema, DeleteFileSchema } from "@repo/api/ai/tools";
 import { useTRPC } from "@/trpc/react";
 import { ChatHistory } from "./_components/chat-history";
 import { CodeEditor } from "./_components/code-editor";

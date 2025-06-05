@@ -10,8 +10,8 @@ import {
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from "@kyh/ui/drawer";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@kyh/ui/tabs";
+} from "@repo/ui/drawer";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/tabs";
 
 type CodeEditorProps = {
   codeEditorOpen: boolean;

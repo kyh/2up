@@ -2,11 +2,10 @@
 
 import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+import { cn } from "@repo/ui/utils";
 import { cva } from "class-variance-authority";
 import { CheckIcon, ChevronRightIcon } from "lucide-react";
-
-import { cn } from "./utils";
+import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 
 export const DropdownMenu = DropdownMenuPrimitive.Root;
 export const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;

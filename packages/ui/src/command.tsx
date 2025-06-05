@@ -1,12 +1,12 @@
 "use client";
 
+import type { Dialog as DialogPrimitive } from "radix-ui";
 import * as React from "react";
+import { cn } from "@repo/ui/utils";
 import { Command as CommandPrimitive } from "cmdk";
 import { SearchIcon } from "lucide-react";
 
-import type { DialogProps } from "@radix-ui/react-dialog";
 import { Dialog, DialogContent } from "./dialog";
-import { cn } from "./utils";
 
 export const Command = ({
   className,
@@ -21,7 +21,7 @@ export const Command = ({
   />
 );
 
-export type CommandDialogProps = {} & DialogProps;
+export type CommandDialogProps = {} & DialogPrimitive.DialogProps;
 
 export const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
@@ -56,7 +56,7 @@ export const CommandList = ({
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.List>) => (
   <CommandPrimitive.List
-    className={cn("max-h-[300px] overflow-x-hidden overflow-y-auto", className)}
+    className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
     {...props}
   />
 );

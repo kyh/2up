@@ -3,17 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm with-env wrangler dev",
-    "deploy": "wrangler deploy",
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint .",
+    "deploy": "wrangler deploy",
+    "dev": "pnpm with-env wrangler dev",
     "format": "prettier --check \"**/*.{mjs,ts,md,json}\"",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
+  "prettier": "@kyh/prettier-config",
   "dependencies": {
-    "@kyh/api": "workspace:^",
-    "@kyh/db": "workspace:^"
+    "@repo/api": "workspace:^",
+    "@repo/db": "workspace:^"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250605.0",
@@ -25,6 +26,5 @@
     "prettier": "catalog:",
     "typescript": "catalog:",
     "wrangler": "^4.19.1"
-  },
-  "prettier": "@kyh/prettier-config"
+  }
 }

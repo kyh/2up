@@ -1,15 +1,14 @@
 "use client";
 
 import * as React from "react";
-import * as SelectPrimitive from "@radix-ui/react-select";
+import { cn } from "@repo/ui/utils";
 import {
   ArrowUpDownIcon,
   CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
 } from "lucide-react";
-
-import { cn } from "./utils";
+import { Select as SelectPrimitive } from "radix-ui";
 
 export const Select = SelectPrimitive.Root;
 export const SelectGroup = SelectPrimitive.Group;

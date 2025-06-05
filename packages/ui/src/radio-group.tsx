@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import { cn } from "@repo/ui/utils";
 import { CheckIcon } from "lucide-react";
-
-import { cn } from "./utils";
+import { RadioGroup as RadioGroupPrimitive } from "radix-ui";
 
 export const RadioGroup = ({
   className,

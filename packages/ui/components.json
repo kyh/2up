@@ -10,7 +10,7 @@
     "cssVariables": true
   },
   "aliases": {
-    "utils": "@kyh/ui/utils",
+    "utils": "@repo/ui/utils",
     "components": "src/",
     "ui": "src/"
   }

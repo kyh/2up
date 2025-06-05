@@ -1,5 +1,5 @@
 {
-  "name": "@kyh/api",
+  "name": "@repo/api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -19,7 +19,7 @@
     "@ai-sdk/google": "^1.2.19",
     "@ai-sdk/openai": "^1.3.22",
     "@ai-sdk/xai": "^1.2.16",
-    "@kyh/db": "workspace:^",
+    "@repo/db": "workspace:^",
     "@trpc/server": "catalog:",
     "superjson": "catalog:",
     "zod": "catalog:"

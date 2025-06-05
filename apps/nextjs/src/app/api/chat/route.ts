@@ -1,5 +1,5 @@
 import type { Message } from "ai";
-import { createGame } from "@kyh/api/ai/ai-service";
+import { createGame } from "@repo/api/ai/ai-service";
 
 export const maxDuration = 60;
 

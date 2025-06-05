@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useEffect, useRef, useState } from "react";
-import { Button } from "@kyh/ui/button";
+import { Button } from "@repo/ui/button";
 import * as poseDetection from "@tensorflow-models/pose-detection";
 import * as tf from "@tensorflow/tfjs";
 

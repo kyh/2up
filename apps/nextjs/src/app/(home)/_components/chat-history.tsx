@@ -1,12 +1,12 @@
 import type { UIMessage } from "ai";
 import { memo } from "react";
-import { Message, MessageContent, MessagesContainer } from "@kyh/ui/chat";
-import { Spinner } from "@kyh/ui/spinner";
-import { cn } from "@kyh/ui/utils";
+import { Message, MessageContent, MessagesContainer } from "@repo/ui/chat";
+import { Spinner } from "@repo/ui/spinner";
+import { cn } from "@repo/ui/utils";
 import equal from "fast-deep-equal";
 import { CircleCheckIcon } from "lucide-react";
 
-import type { CreateFileSchema } from "@kyh/api/ai/tools";
+import type { CreateFileSchema } from "@repo/api/ai/tools";
 
 type MessagePartProps = {
   part: UIMessage["parts"][number];

@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { joinWaitlistInput } from "@kyh/api/waitlist/waitlist-schema";
-import { Button } from "@kyh/ui/button";
+import { joinWaitlistInput } from "@repo/api/waitlist/waitlist-schema";
+import { Button } from "@repo/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@kyh/ui/dialog";
+} from "@repo/ui/dialog";
 import {
   Form,
   FormControl,
@@ -17,12 +17,12 @@ import {
   FormLabel,
   FormMessage,
   useForm,
-} from "@kyh/ui/form";
-import { toast } from "@kyh/ui/toast";
-import { cn } from "@kyh/ui/utils";
+} from "@repo/ui/form";
+import { toast } from "@repo/ui/toast";
+import { cn } from "@repo/ui/utils";
 import { useMutation } from "@tanstack/react-query";
 
-import type { JoinWaitlistInput } from "@kyh/api/waitlist/waitlist-schema";
+import type { JoinWaitlistInput } from "@repo/api/waitlist/waitlist-schema";
 import { useTRPC } from "@/trpc/react";
 
 export const WaitlistForm = () => {

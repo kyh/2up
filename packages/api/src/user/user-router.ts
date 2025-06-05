@@ -1,4 +1,4 @@
-import { getSupabaseAdminClient } from "@kyh/db/supabase-admin-client";
+import { getSupabaseAdminClient } from "@repo/db/supabase-admin-client";
 import { TRPCError } from "@trpc/server";
 
 import {

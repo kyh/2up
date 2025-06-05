@@ -1,10 +1,10 @@
 import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
-import { Slot, Slottable } from "@radix-ui/react-slot";
+import { cn } from "@repo/ui/utils";
 import { cva } from "class-variance-authority";
+import { Slot } from "radix-ui";
 
 import { Spinner } from "./spinner";
-import { cn } from "./utils";
 
 export const buttonVariants = cva(
   "focus-visible:ring-ring relative inline-flex cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition focus-visible:ring-1 focus-visible:outline-hidden disabled:pointer-events-none",
@@ -16,7 +16,7 @@ export const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/80 shadow-xs",
         outline:
-          "border-border bg-background hover:bg-accent hover:text-accent-foreground border shadow-xs",
+          "border-border bg-background hover:bg-accent hover:text-accent-foreground shadow-xs border",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-xs",
         ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -77,7 +77,7 @@ export const Button = ({
   disabled,
   ...props
 }: ButtonProps) => {
-  const Comp = asChild ? Slot : "button";
+  const Comp = asChild ? Slot.Root : "button";
   return (
     <Comp
       className={cn(buttonVariants({ variant, size, loading, className }))}
@@ -87,7 +87,7 @@ export const Button = ({
       <span className="pointer-events-none absolute inset-0 grid place-items-center rounded-full opacity-0 transition">
         <Spinner className="size-4" />
       </span>
-      <Slottable>{children}</Slottable>
+      <Slot.Slottable>{children}</Slot.Slottable>
     </Comp>
   );
 };

@@ -1,7 +1,7 @@
-import { and, asc, desc, eq, sql } from "@kyh/db";
-import { waitlist } from "@kyh/db/schema";
+import { and, asc, desc, eq, sql } from "@repo/db";
+import { waitlist } from "@repo/db/schema";
 
-import type { SQL } from "@kyh/db";
+import type { SQL } from "@repo/db";
 import {
   createTRPCRouter,
   publicProcedure,

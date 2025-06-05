@@ -165,7 +165,6 @@ Follow the example below to create all forms:
 
 ```tsx
 // apps/nextjs/src/app/notes/_components/create-note-form.tsx
-import { createNoteInput } from "@kyh/api/note/note-schema";
 import {
   Form,
   FormControl,
@@ -175,6 +174,7 @@ import {
   FormMessage,
   useForm,
 } from "@kyhui/form";
+import { createNoteInput } from "@repo/api/note/note-schema";
 import { useMutation } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/react";

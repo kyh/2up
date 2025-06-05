@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { GlobalAlertDialog } from "@kyh/ui/alert-dialog";
-import { GlobalToaster } from "@kyh/ui/toast";
-import { TooltipProvider } from "@kyh/ui/tooltip";
+import { GlobalAlertDialog } from "@repo/ui/alert-dialog";
+import { GlobalToaster } from "@repo/ui/toast";
+import { TooltipProvider } from "@repo/ui/tooltip";
 
 import { siteConfig } from "@/lib/site-config";
 import { TRPCReactProvider } from "@/trpc/react";
