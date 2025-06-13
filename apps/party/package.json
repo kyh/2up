@@ -17,7 +17,7 @@
     "@repo/db": "workspace:^"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250605.0",
+    "@cloudflare/workers-types": "^4.20250613.0",
     "@kyh/eslint-config": "catalog:",
     "@kyh/prettier-config": "catalog:",
     "@kyh/tsconfig": "catalog:",
@@ -25,6 +25,6 @@
     "partyserver": "^0.0.71",
     "prettier": "catalog:",
     "typescript": "catalog:",
-    "wrangler": "^4.19.1"
+    "wrangler": "^4.20.0"
   }
 }
