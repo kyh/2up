@@ -14,18 +14,19 @@ const getRemotePatterns = () => {
     });
   }
 
-  return IS_PRODUCTION
-    ? remotePatterns
-    : [
-        {
-          protocol: "http",
-          hostname: "127.0.0.1",
-        },
-        {
-          protocol: "http",
-          hostname: "localhost",
-        },
-      ];
+  if (!IS_PRODUCTION) {
+    remotePatterns.push({
+      protocol: "http",
+      hostname: "127.0.0.1",
+    });
+
+    remotePatterns.push({
+      protocol: "http",
+      hostname: "localhost",
+    });
+  }
+
+  return remotePatterns;
 };
 
 const transpilePackages = ["@repo/api", "@repo/db", "@repo/ui"];
