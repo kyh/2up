@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "0.10.22-rc.20250304",
-    "@react-three/drei": "^10.2.0",
+    "@react-three/drei": "^10.3.0",
     "@repo/ui": "workspace:^",
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-backend-cpu": "^4.22.0",
@@ -19,7 +19,7 @@
     "@tensorflow/tfjs-core": "^4.22.0",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "three": "^0.176.0"
+    "three": "^0.177.0"
   },
   "devDependencies": {
     "@kyh/eslint-config": "catalog:",
