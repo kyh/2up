@@ -85,5 +85,5 @@ export const dependencies = {
   react: "*",
   "react-dom": "*",
   three: "*",
-  partysocket: "^1.0.3",
+  partysocket: "*",
 };

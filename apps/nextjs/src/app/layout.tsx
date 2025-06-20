@@ -45,26 +45,33 @@ export const metadata: Metadata = {
   },
   icons: [
     {
+      rel: "icon",
+      type: "image/png",
+      sizes: "96x96",
+      url: `${siteConfig.url}/favicon-96x96.png`,
+    },
+    {
+      rel: "icon",
+      type: "image/svg+xml",
+      url: `${siteConfig.url}/favicon.svg`,
+    },
+    {
+      rel: "shortcut icon",
+      url: `${siteConfig.url}/favicon.ico`,
+    },
+    {
       rel: "apple-touch-icon",
       sizes: "180x180",
-      url: `${siteConfig.url}/favicon/apple-touch-icon.png`,
+      url: `${siteConfig.url}/apple-touch-icon.png`,
     },
     {
-      rel: "icon",
-      sizes: "32x32",
-      url: `${siteConfig.url}/favicon/favicon-32x32.png`,
-    },
-    {
-      rel: "icon",
-      sizes: "16x16",
-      url: `${siteConfig.url}/favicon/favicon-16x16.png`,
-    },
-    {
-      rel: "mask-icon",
-      color: "#000000",
-      url: `${siteConfig.url}/favicon/safari-pinned-tab.svg`,
+      rel: "manifest",
+      url: `${siteConfig.url}/site.webmanifest`,
     },
   ],
+  other: {
+    "apple-mobile-web-app-title": "VibedGames",
+  },
 };
 
 export const viewport: Viewport = {
