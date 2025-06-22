@@ -1,7 +1,12 @@
 "use client";
 
 import React, { Suspense, useEffect, useRef, useState } from "react";
-import { OrbitControls, PerspectiveCamera, Text } from "@react-three/drei";
+import {
+  Circle,
+  OrbitControls,
+  PerspectiveCamera,
+  Text,
+} from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -46,6 +51,7 @@ const Game = () => {
   const playerPaddleRef = useRef<THREE.Group>(null!);
   const aiPaddleRef = useRef<THREE.Group>(null!);
   const ballRef = useRef<THREE.Mesh>(null!);
+  const bounceCount = useRef(0);
 
   const [gameState, setGameState] = useState({
     playerScore: 0,
@@ -53,7 +59,7 @@ const Game = () => {
     gameStarted: false,
   });
 
-  const [ballVelocity, setBallVelocity] = useState(new THREE.Vector3(0, 0, 0));
+  const ballVelocity = useRef(new THREE.Vector3(0, 0, 0));
 
   const resetGame = () => {
     if (ballRef.current) {
@@ -61,8 +67,10 @@ const Game = () => {
     }
     const speed = 0.1;
     const angle = Math.random() * Math.PI * 2;
-    setBallVelocity(
-      new THREE.Vector3(Math.cos(angle) * speed, Math.sin(angle) * speed, 0),
+    ballVelocity.current.set(
+      Math.cos(angle) * speed,
+      Math.sin(angle) * speed,
+      0,
     );
     setGameState((prev) => ({ ...prev, gameStarted: false }));
   };
@@ -73,12 +81,10 @@ const Game = () => {
         setGameState((prev) => ({ ...prev, gameStarted: true }));
         const speed = 0.1;
         const angle = -Math.PI / 2 + (Math.random() * 0.2 - 0.1);
-        setBallVelocity(
-          new THREE.Vector3(
-            Math.cos(angle) * speed,
-            Math.sin(angle) * speed,
-            0,
-          ),
+        ballVelocity.current.set(
+          Math.cos(angle) * speed,
+          Math.sin(angle) * speed,
+          0,
         );
       }
     };
@@ -95,13 +101,33 @@ const Game = () => {
     )
       return;
 
+    // Ball physics
+    const gravity = 0.004;
+    const isBouncing =
+      ballRef.current.position.z > 0 || ballVelocity.current.z !== 0;
+
+    if (isBouncing) {
+      ballVelocity.current.z -= gravity;
+    }
+
     // Move ball
-    ballRef.current.position.add(ballVelocity);
-    const { x, y } = ballRef.current.position;
+    ballRef.current.position.add(ballVelocity.current);
+    const { x, y, z } = ballRef.current.position;
+
+    // Floor bounce
+    if (z < 0) {
+      ballRef.current.position.z = 0;
+      if (bounceCount.current < 1) {
+        bounceCount.current++;
+        ballVelocity.current.z *= -0.7; // 70% energy retention
+      } else {
+        ballVelocity.current.z = 0;
+      }
+    }
 
     // Side walls collision
     if (x >= 4.9 || x <= -4.9) {
-      setBallVelocity((v) => new THREE.Vector3(-v.x, v.y, v.z));
+      ballVelocity.current.x *= -1;
     }
 
     // Player paddle collision
@@ -110,17 +136,17 @@ const Game = () => {
       y < playerPaddlePos.y + 0.5 &&
       y > playerPaddlePos.y - 0.5 &&
       x > playerPaddlePos.x - 0.7 &&
-      x < playerPaddlePos.x + 0.7
+      x < playerPaddlePos.x + 0.7 &&
+      ballVelocity.current.y < 0
     ) {
-      const speed = ballVelocity.length();
+      const speed = ballVelocity.current.length();
       const angle = Math.atan2(y - playerPaddlePos.y, x - playerPaddlePos.x);
-      setBallVelocity(
-        new THREE.Vector3(
-          Math.cos(angle) * speed * 1.1,
-          Math.abs(Math.sin(angle)) * speed * 1.1,
-          0,
-        ),
+      ballVelocity.current.set(
+        Math.cos(angle) * speed * 1.1,
+        Math.abs(Math.sin(angle)) * speed * 1.1,
+        0.15,
       );
+      bounceCount.current = 0;
     }
 
     // AI paddle collision
@@ -129,17 +155,17 @@ const Game = () => {
       y > aiPaddlePos.y - 0.5 &&
       y < aiPaddlePos.y + 0.5 &&
       x > aiPaddlePos.x - 0.7 &&
-      x < aiPaddlePos.x + 0.7
+      x < aiPaddlePos.x + 0.7 &&
+      ballVelocity.current.y > 0
     ) {
-      const speed = ballVelocity.length();
+      const speed = ballVelocity.current.length();
       const angle = Math.atan2(y - aiPaddlePos.y, x - aiPaddlePos.x);
-      setBallVelocity(
-        new THREE.Vector3(
-          Math.cos(angle) * speed * 1.1,
-          -Math.abs(Math.sin(angle)) * speed * 1.1,
-          0,
-        ),
+      ballVelocity.current.set(
+        Math.cos(angle) * speed * 1.1,
+        -Math.abs(Math.sin(angle)) * speed * 1.1,
+        0.15,
       );
+      bounceCount.current = 0;
     }
 
     // AI movement
@@ -187,6 +213,24 @@ const Game = () => {
       <ambientLight intensity={1} />
       <Table />
       <Ball ref={ballRef} />
+
+      {ballRef.current && (
+        <Circle
+          args={[0.2, 16]}
+          position={[
+            ballRef.current.position.x,
+            ballRef.current.position.y,
+            -0.01,
+          ]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <meshBasicMaterial
+            color="black"
+            transparent
+            opacity={0.3 - ballRef.current.position.z * 0.2}
+          />
+        </Circle>
+      )}
 
       <Paddle ref={aiPaddleRef} position={[0, 8, 0]} />
 
