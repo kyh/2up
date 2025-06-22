@@ -65,7 +65,10 @@ const Game = () => {
 
   const ballVelocity = useRef(new THREE.Vector3(0, 0, 0));
   const BALL_SPEED = 0.1;
-  const BOUNCE_VERTICAL_VELOCITY = 0.15;
+  const isArcing = useRef(false);
+  const arcStartY = useRef(0);
+  const arcTotalDistY = useRef(0);
+  const MAX_BOUNCE_HEIGHT = 2;
 
   const resetGame = () => {
     if (ballRef.current) {
@@ -79,6 +82,7 @@ const Game = () => {
       0,
     );
     setGameState((prev) => ({ ...prev, gameStarted: false }));
+    isArcing.current = false;
   };
 
   useEffect(() => {
@@ -111,36 +115,29 @@ const Game = () => {
     )
       return;
 
-    // Ball physics
-    const gravity = 0.004;
-    const isBouncing =
-      ballRef.current.position.z > 0 || ballVelocity.current.z !== 0;
+    ballRef.current.position.x += ballVelocity.current.x;
+    ballRef.current.position.y += ballVelocity.current.y;
 
-    if (isBouncing) {
-      ballVelocity.current.z -= gravity;
-    }
+    if (isArcing.current) {
+      const distY = Math.abs(ballRef.current.position.y - arcStartY.current);
+      const progress = Math.min(distY / arcTotalDistY.current, 1);
 
-    // Move ball
-    ballRef.current.position.add(ballVelocity.current);
-    const { x, y, z } = ballRef.current.position;
+      ballRef.current.position.z =
+        MAX_BOUNCE_HEIGHT * 4 * progress * (1 - progress);
 
-    // Floor bounce
-    if (z < 0) {
-      ballRef.current.position.z = 0;
-      if (bounceCount.current < 1) {
-        bounceCount.current++;
-        ballVelocity.current.z *= -0.7; // 70% energy retention
-      } else {
-        ballVelocity.current.z = 0;
+      if (progress >= 1) {
+        isArcing.current = false;
       }
+    } else {
+      ballRef.current.position.z = 0;
     }
 
-    // Side walls collision
+    const { x, y } = ballRef.current.position;
+
     if (x >= 4.9 || x <= -4.9) {
       ballVelocity.current.x *= -1;
     }
 
-    // Player paddle collision
     const playerPaddlePos = playerPaddleRef.current.position;
     if (
       y < playerPaddlePos.y + 0.5 &&
@@ -153,12 +150,15 @@ const Game = () => {
       ballVelocity.current.set(
         Math.cos(angle) * BALL_SPEED,
         Math.abs(Math.sin(angle)) * BALL_SPEED,
-        BOUNCE_VERTICAL_VELOCITY,
+        0,
       );
-      bounceCount.current = 0;
+
+      isArcing.current = true;
+      arcStartY.current = ballRef.current.position.y;
+      const targetY = 4 + Math.random() * 3;
+      arcTotalDistY.current = Math.abs(targetY - arcStartY.current);
     }
 
-    // AI paddle collision
     const aiPaddlePos = aiPaddleRef.current.position;
     if (
       y > aiPaddlePos.y - 0.5 &&
@@ -171,12 +171,15 @@ const Game = () => {
       ballVelocity.current.set(
         Math.cos(angle) * BALL_SPEED,
         -Math.abs(Math.sin(angle)) * BALL_SPEED,
-        BOUNCE_VERTICAL_VELOCITY,
+        0,
       );
-      bounceCount.current = 0;
+
+      isArcing.current = true;
+      arcStartY.current = ballRef.current.position.y;
+      const targetY = -4 - Math.random() * 3;
+      arcTotalDistY.current = Math.abs(targetY - arcStartY.current);
     }
 
-    // AI movement
     const aiSpeed = 0.08;
     if (ballRef.current.position.x > aiPaddleRef.current.position.x) {
       aiPaddleRef.current.position.x = Math.min(
@@ -195,7 +198,6 @@ const Game = () => {
       4.5,
     );
 
-    // Scoring
     if (y > 10) {
       setGameState((prev) => ({ ...prev, playerScore: prev.playerScore + 1 }));
       resetGame();
