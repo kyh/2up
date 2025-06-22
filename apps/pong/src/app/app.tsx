@@ -48,11 +48,11 @@ const Ball = React.forwardRef<THREE.Mesh, React.ComponentProps<"mesh">>(
 Ball.displayName = "Ball";
 
 const Game = () => {
-  const playerPaddleRef = useRef<THREE.Group>(null!);
-  const aiPaddleRef = useRef<THREE.Group>(null!);
-  const ballRef = useRef<THREE.Mesh>(null!);
-  const bounceCount = useRef(0);
-  const cameraRef = useRef<THREE.PerspectiveCamera>(null!);
+  const playerPaddleRef = useRef<THREE.Group>(null);
+  const aiPaddleRef = useRef<THREE.Group>(null);
+  const ballRef = useRef<THREE.Mesh>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera>(null);
+  const shadowRef = useRef<THREE.Mesh>(null);
   const isDragging = useRef(false);
   const lastPointerPosition = useRef({ x: 0, y: 0 });
   const initialCameraPosition = useRef(new THREE.Vector3(0, -13, 12));
@@ -105,6 +105,13 @@ const Game = () => {
   useFrame(() => {
     if (cameraRef.current && !isDragging.current) {
       cameraRef.current.position.lerp(initialCameraPosition.current, 0.1);
+    }
+
+    if (ballRef.current && shadowRef.current) {
+      shadowRef.current.position.x = ballRef.current.position.x;
+      shadowRef.current.position.y = ballRef.current.position.y;
+      (shadowRef.current.material as THREE.MeshBasicMaterial).opacity =
+        0.3 * (1 - ballRef.current.position.z / MAX_BOUNCE_HEIGHT);
     }
 
     if (
@@ -248,23 +255,14 @@ const Game = () => {
       <Table />
       <Ball ref={ballRef} />
 
-      {ballRef.current && (
-        <Circle
-          args={[0.2, 16]}
-          position={[
-            ballRef.current.position.x,
-            ballRef.current.position.y,
-            -0.01,
-          ]}
-          rotation={[-Math.PI / 2, 0, 0]}
-        >
-          <meshBasicMaterial
-            color="black"
-            transparent
-            opacity={0.3 - ballRef.current.position.z * 0.2}
-          />
-        </Circle>
-      )}
+      <Circle
+        ref={shadowRef}
+        args={[0.2, 16]}
+        position={[0, 0, 0.01]}
+        renderOrder={1}
+      >
+        <meshBasicMaterial color="black" transparent opacity={0.3} />
+      </Circle>
 
       <Paddle ref={aiPaddleRef} position={[0, 8, 0]} />
 
