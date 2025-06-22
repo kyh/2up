@@ -57,6 +57,7 @@ const Game = ({ handPosition }: { handPosition: number | null }) => {
   const isDragging = useRef(false);
   const lastPointerPosition = useRef({ x: 0, y: 0 });
   const initialCameraPosition = useRef(new THREE.Vector3(0, -13, 12));
+  const lastHandPosition = useRef<number | null>(null);
 
   const [gameState, setGameState] = useState({
     playerScore: 0,
@@ -109,9 +110,30 @@ const Game = ({ handPosition }: { handPosition: number | null }) => {
     }
 
     if (handPosition && playerPaddleRef.current) {
-      const newX = (1 - handPosition) * 9 - 4.5;
-      const clampedX = THREE.MathUtils.clamp(newX, -4.5, 4.5);
-      playerPaddleRef.current.position.x = clampedX;
+      const targetX = (1 - handPosition) * 9 - 4.5;
+      const clampedTargetX = THREE.MathUtils.clamp(targetX, -4.5, 4.5);
+
+      let speed = 0;
+      if (lastHandPosition.current !== null) {
+        speed = Math.abs(handPosition - lastHandPosition.current);
+      }
+      lastHandPosition.current = handPosition;
+
+      const baseSpeed = 0.2;
+      const accelerationFactor = 10;
+      const lerpFactor = THREE.MathUtils.clamp(
+        baseSpeed + speed * accelerationFactor,
+        0,
+        1,
+      );
+
+      playerPaddleRef.current.position.x = THREE.MathUtils.lerp(
+        playerPaddleRef.current.position.x,
+        clampedTargetX,
+        lerpFactor,
+      );
+    } else {
+      lastHandPosition.current = null;
     }
 
     if (ballRef.current && shadowRef.current) {
