@@ -52,6 +52,10 @@ const Game = () => {
   const aiPaddleRef = useRef<THREE.Group>(null!);
   const ballRef = useRef<THREE.Mesh>(null!);
   const bounceCount = useRef(0);
+  const cameraRef = useRef<THREE.PerspectiveCamera>(null!);
+  const isDragging = useRef(false);
+  const lastPointerPosition = useRef({ x: 0, y: 0 });
+  const initialCameraPosition = useRef(new THREE.Vector3(0, -13, 12));
 
   const [gameState, setGameState] = useState({
     playerScore: 0,
@@ -95,6 +99,10 @@ const Game = () => {
   }, [gameState.gameStarted]);
 
   useFrame(() => {
+    if (cameraRef.current && !isDragging.current) {
+      cameraRef.current.position.lerp(initialCameraPosition.current, 0.1);
+    }
+
     if (
       !gameState.gameStarted ||
       !ballRef.current ||
@@ -197,8 +205,27 @@ const Game = () => {
     }
   });
 
-  const handleMouseMove = (event: ThreeEvent<PointerEvent>) => {
-    if (playerPaddleRef.current) {
+  const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
+    isDragging.current = true;
+    lastPointerPosition.current = { x: event.clientX, y: event.clientY };
+  };
+
+  const handlePointerUp = () => {
+    isDragging.current = false;
+  };
+
+  const handlePointerMove = (event: ThreeEvent<PointerEvent>) => {
+    if (isDragging.current) {
+      const deltaX = event.clientX - lastPointerPosition.current.x;
+      const deltaY = event.clientY - lastPointerPosition.current.y;
+
+      if (cameraRef.current) {
+        cameraRef.current.position.x -= deltaX * 0.02;
+        cameraRef.current.position.y += deltaY * 0.02;
+      }
+
+      lastPointerPosition.current = { x: event.clientX, y: event.clientY };
+    } else if (playerPaddleRef.current) {
       const { x } = event.point;
       const clampedX = THREE.MathUtils.clamp(x, -4.5, 4.5);
       playerPaddleRef.current.position.x = clampedX;
@@ -208,7 +235,12 @@ const Game = () => {
 
   return (
     <>
-      <PerspectiveCamera makeDefault position={[0, -13, 12]} fov={50} />
+      <PerspectiveCamera
+        ref={cameraRef}
+        makeDefault
+        position={[0, -13, 12]}
+        fov={50}
+      />
       <OrbitControls enabled={false} target={[0, 0, 0]} />
       <ambientLight intensity={1} />
       <Table />
@@ -236,7 +268,13 @@ const Game = () => {
 
       <Paddle ref={playerPaddleRef} position={[0, -8, 0]} />
 
-      <mesh onPointerMove={handleMouseMove} visible={false}>
+      <mesh
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
+        onPointerMove={handlePointerMove}
+        visible={false}
+      >
         <planeGeometry args={[100, 100]} />
       </mesh>
 
