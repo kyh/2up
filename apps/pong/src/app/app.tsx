@@ -11,6 +11,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 import type { ThreeEvent } from "@react-three/fiber";
+import { Camera } from "./camera";
 
 const Table = () => (
   <group>
@@ -47,7 +48,7 @@ const Ball = React.forwardRef<THREE.Mesh, React.ComponentProps<"mesh">>(
 );
 Ball.displayName = "Ball";
 
-const Game = () => {
+const Game = ({ handPosition }: { handPosition: number | null }) => {
   const playerPaddleRef = useRef<THREE.Group>(null);
   const aiPaddleRef = useRef<THREE.Group>(null);
   const ballRef = useRef<THREE.Mesh>(null);
@@ -105,6 +106,12 @@ const Game = () => {
   useFrame(() => {
     if (cameraRef.current && !isDragging.current) {
       cameraRef.current.position.lerp(initialCameraPosition.current, 0.1);
+    }
+
+    if (handPosition && playerPaddleRef.current) {
+      const newX = (1 - handPosition) * 9 - 4.5;
+      const clampedX = THREE.MathUtils.clamp(newX, -4.5, 4.5);
+      playerPaddleRef.current.position.x = clampedX;
     }
 
     if (ballRef.current && shadowRef.current) {
@@ -234,7 +241,7 @@ const Game = () => {
       }
 
       lastPointerPosition.current = { x: event.clientX, y: event.clientY };
-    } else if (playerPaddleRef.current) {
+    } else if (playerPaddleRef.current && handPosition === null) {
       const { x } = event.point;
       const clampedX = THREE.MathUtils.clamp(x, -4.5, 4.5);
       playerPaddleRef.current.position.x = clampedX;
@@ -295,11 +302,14 @@ const Game = () => {
 };
 
 const Pong = () => {
+  const [handPosition, setHandPosition] = useState<number | null>(null);
+
   return (
-    <div className="h-dvh w-dvw" style={{ backgroundColor: "#cccccc" }}>
+    <div className="h-dvh w-dvw bg-neutral-300">
       <Canvas>
-        <Game />
+        <Game handPosition={handPosition} />
       </Canvas>
+      <Camera onPositionChange={setHandPosition} />
     </div>
   );
 };
