@@ -60,12 +60,14 @@ const Game = () => {
   });
 
   const ballVelocity = useRef(new THREE.Vector3(0, 0, 0));
+  const BALL_SPEED = 0.1;
+  const BOUNCE_VERTICAL_VELOCITY = 0.15;
 
   const resetGame = () => {
     if (ballRef.current) {
       ballRef.current.position.set(0, 0, 0);
     }
-    const speed = 0.1;
+    const speed = BALL_SPEED;
     const angle = Math.random() * Math.PI * 2;
     ballVelocity.current.set(
       Math.cos(angle) * speed,
@@ -79,7 +81,7 @@ const Game = () => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code === "Space" && !gameState.gameStarted) {
         setGameState((prev) => ({ ...prev, gameStarted: true }));
-        const speed = 0.1;
+        const speed = BALL_SPEED;
         const angle = -Math.PI / 2 + (Math.random() * 0.2 - 0.1);
         ballVelocity.current.set(
           Math.cos(angle) * speed,
@@ -139,12 +141,11 @@ const Game = () => {
       x < playerPaddlePos.x + 0.7 &&
       ballVelocity.current.y < 0
     ) {
-      const speed = ballVelocity.current.length();
       const angle = Math.atan2(y - playerPaddlePos.y, x - playerPaddlePos.x);
       ballVelocity.current.set(
-        Math.cos(angle) * speed * 1.1,
-        Math.abs(Math.sin(angle)) * speed * 1.1,
-        0.15,
+        Math.cos(angle) * BALL_SPEED,
+        Math.abs(Math.sin(angle)) * BALL_SPEED,
+        BOUNCE_VERTICAL_VELOCITY,
       );
       bounceCount.current = 0;
     }
@@ -158,12 +159,11 @@ const Game = () => {
       x < aiPaddlePos.x + 0.7 &&
       ballVelocity.current.y > 0
     ) {
-      const speed = ballVelocity.current.length();
       const angle = Math.atan2(y - aiPaddlePos.y, x - aiPaddlePos.x);
       ballVelocity.current.set(
-        Math.cos(angle) * speed * 1.1,
-        -Math.abs(Math.sin(angle)) * speed * 1.1,
-        0.15,
+        Math.cos(angle) * BALL_SPEED,
+        -Math.abs(Math.sin(angle)) * BALL_SPEED,
+        BOUNCE_VERTICAL_VELOCITY,
       );
       bounceCount.current = 0;
     }
