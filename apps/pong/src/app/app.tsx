@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Circle,
   OrbitControls,
@@ -247,7 +247,7 @@ const Game = () => {
       <PerspectiveCamera
         ref={cameraRef}
         makeDefault
-        position={[0, -13, 12]}
+        position={[0, -12, 12]}
         fov={50}
       />
       <OrbitControls enabled={false} target={[0, 0, 0]} />
@@ -298,9 +298,7 @@ const Pong = () => {
   return (
     <div className="h-dvh w-dvw" style={{ backgroundColor: "#cccccc" }}>
       <Canvas>
-        <Suspense fallback={null}>
-          <Game />
-        </Suspense>
+        <Game />
       </Canvas>
     </div>
   );
