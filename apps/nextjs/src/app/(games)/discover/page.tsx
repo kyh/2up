@@ -30,6 +30,14 @@ const pluginData: CardProps[] = [
     type: "wip",
     plays: 1000,
   },
+  {
+    id: 4,
+    name: "Pong",
+    slug: "pong",
+    description: "pong pong pong pong pong pong pong pong",
+    type: "wip",
+    plays: 1000,
+  },
 ];
 
 const Page = () => {
