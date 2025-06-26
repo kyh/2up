@@ -43,8 +43,8 @@ catalogs:
       specifier: ^15.3.4
       version: 15.3.4
     prettier:
-      specifier: ^3.6.0
-      version: 3.6.0
+      specifier: ^3.6.1
+      version: 3.6.1
     react:
       specifier: ^19.1.0
       version: 19.1.0
@@ -79,7 +79,7 @@ importers:
         version: 8.0.0
       prettier:
         specifier: 'catalog:'
-        version: 3.6.0
+        version: 3.6.1
       tsx:
         specifier: ^4.20.3
         version: 4.20.3
@@ -146,7 +146,7 @@ importers:
         version: 16.2.0
       prettier:
         specifier: 'catalog:'
-        version: 3.6.0
+        version: 3.6.1
       tailwindcss:
         specifier: ^4.1.10
         version: 4.1.10
@@ -246,7 +246,7 @@ importers:
         version: 8.5.6
       prettier:
         specifier: 'catalog:'
-        version: 3.6.0
+        version: 3.6.1
       tailwindcss:
         specifier: ^4.1.10
         version: 4.1.10
@@ -316,7 +316,7 @@ importers:
         version: 16.2.0
       prettier:
         specifier: 'catalog:'
-        version: 3.6.0
+        version: 3.6.1
       tailwindcss:
         specifier: ^4.1.10
         version: 4.1.10
@@ -356,7 +356,7 @@ importers:
         version: 0.0.72(@cloudflare/workers-types@4.20250620.0)
       prettier:
         specifier: 'catalog:'
-        version: 3.6.0
+        version: 3.6.1
       typescript:
         specifier: 'catalog:'
         version: 5.8.3
@@ -417,7 +417,7 @@ importers:
         version: 16.2.0
       prettier:
         specifier: 'catalog:'
-        version: 3.6.0
+        version: 3.6.1
       tailwindcss:
         specifier: ^4.1.10
         version: 4.1.10
@@ -484,7 +484,7 @@ importers:
         version: 16.2.0
       prettier:
         specifier: 'catalog:'
-        version: 3.6.0
+        version: 3.6.1
       tailwindcss:
         specifier: ^4.1.10
         version: 4.1.10
@@ -533,7 +533,7 @@ importers:
         version: 9.29.0(jiti@2.4.2)
       prettier:
         specifier: 'catalog:'
-        version: 3.6.0
+        version: 3.6.1
       typescript:
         specifier: 'catalog:'
         version: 5.8.3
@@ -542,10 +542,10 @@ importers:
     dependencies:
       '@supabase/ssr':
         specifier: ^0.6.1
-        version: 0.6.1(@supabase/supabase-js@2.50.1(ws@8.18.2))
+        version: 0.6.1(@supabase/supabase-js@2.50.2)
       '@supabase/supabase-js':
-        specifier: ^2.50.1
-        version: 2.50.1(ws@8.18.2)
+        specifier: ^2.50.2
+        version: 2.50.2
       drizzle-orm:
         specifier: ^0.44.2
         version: 0.44.2(@cloudflare/workers-types@4.20250620.0)(@opentelemetry/api@1.9.0)(gel@2.0.2)(postgres@3.4.7)
@@ -585,7 +585,7 @@ importers:
         version: 9.29.0(jiti@2.4.2)
       prettier:
         specifier: 'catalog:'
-        version: 3.6.0
+        version: 3.6.1
       supabase:
         specifier: ^2.26.9
         version: 2.26.9
@@ -658,7 +658,7 @@ importers:
         version: 9.29.0(jiti@2.4.2)
       prettier:
         specifier: 'catalog:'
-        version: 3.6.0
+        version: 3.6.1
       typescript:
         specifier: 'catalog:'
         version: 5.8.3
@@ -2646,8 +2646,8 @@ packages:
   '@supabase/postgrest-js@1.19.4':
     resolution: {integrity: sha512-O4soKqKtZIW3olqmbXXbKugUtByD2jPa8kL2m2c1oozAO11uCcGrRhkZL0kVxjBLrXHE0mdSkFsMj7jDSfyNpw==}
 
-  '@supabase/realtime-js@2.11.13':
-    resolution: {integrity: sha512-X2Gs+f0qjLr/60UTCidxRj+FCI/ABNar93aeMQj+v/7sm4RYOWlKNw46xmwWXL8zAL30wsHG2jD7ZvCH6zDv1A==}
+  '@supabase/realtime-js@2.11.15':
+    resolution: {integrity: sha512-HQKRnwAqdVqJW/P9TjKVK+/ETpW4yQ8tyDPPtRMKOH4Uh3vQD74vmj353CYs8+YwVBKubeUOOEpI9CT8mT4obw==}
 
   '@supabase/ssr@0.6.1':
     resolution: {integrity: sha512-QtQgEMvaDzr77Mk3vZ3jWg2/y+D8tExYF7vcJT+wQ8ysuvOeGGjYbZlvj5bHYsj/SpC0bihcisnwPrM4Gp5G4g==}
@@ -2657,8 +2657,8 @@ packages:
   '@supabase/storage-js@2.7.1':
     resolution: {integrity: sha512-asYHcyDR1fKqrMpytAS1zjyEfvxuOIp1CIXX7ji4lHHcJKqyk+sLl/Vxgm4sN6u8zvuUtae9e4kDxQP2qrwWBA==}
 
-  '@supabase/supabase-js@2.50.1':
-    resolution: {integrity: sha512-X4vniGZ57wJ0QF20GIX6DgLYKynwYAtq/JHqF3GEXzABKpSziLggaKL1aTfMQ2cFkVrzoEuZha5VhilO9F87Lw==}
+  '@supabase/supabase-js@2.50.2':
+    resolution: {integrity: sha512-+27xlGgw7VyfwXXe+OiDJQosJNS+PPtjj1EnLR4uk+PKKZ91RA0/8NbIQybe6AGPanAaPtgOFFMMCArC6fZ++Q==}
 
   '@swc/core-darwin-arm64@1.12.3':
     resolution: {integrity: sha512-QCV9vQ/s27AMxm8j8MTDL/nDoiEMrANiENRrWnb0Fxvz/O39CajPVShp/W7HlOkzt1GYtUXPdQJpSKylugfrWw==}
@@ -3036,6 +3036,9 @@ packages:
 
   '@types/webxr@0.5.22':
     resolution: {integrity: sha512-Vr6Stjv5jPRqH690f5I5GLjVk8GSsoQSYJ2FVd/3jJF7KaqfwPi3ehfBS96mlQ2kPCwZaX6U0rG2+NGHBKkA/A==}
+
+  '@types/ws@8.18.1':
+    resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
 
   '@typescript-eslint/eslint-plugin@8.34.1':
     resolution: {integrity: sha512-STXcN6ebF6li4PxwNeFnqF8/2BNDvBupf2OPx2yWNzr6mKNGF7q49VM00Pz5FaomJyqvbXpY6PhO+T9w139YEQ==}
@@ -5018,8 +5021,8 @@ packages:
       prettier-plugin-svelte:
         optional: true
 
-  prettier@3.6.0:
-    resolution: {integrity: sha512-ujSB9uXHJKzM/2GBuE0hBOUgC77CN3Bnpqa+g80bkv3T3A93wL/xlzDATHhnhkzifz/UE2SNOvmbTz5hSkDlHw==}
+  prettier@3.6.1:
+    resolution: {integrity: sha512-5xGWRa90Sp2+x1dQtNpIpeOQpTDBs9cZDmA/qs2vDNN2i18PdapqY7CmBeyLlMuGqXJRIOPaCaVZTLNQRWUH/A==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -6574,13 +6577,13 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@ianvs/prettier-plugin-sort-imports@4.4.2(prettier@3.6.0)':
+  '@ianvs/prettier-plugin-sort-imports@4.4.2(prettier@3.6.1)':
     dependencies:
       '@babel/generator': 7.27.5
       '@babel/parser': 7.27.5
       '@babel/traverse': 7.27.4
       '@babel/types': 7.27.6
-      prettier: 3.6.0
+      prettier: 3.6.1
       semver: 7.7.2
     transitivePeerDependencies:
       - supports-color
@@ -6788,9 +6791,9 @@ snapshots:
 
   '@kyh/prettier-config@1.1.6':
     dependencies:
-      '@ianvs/prettier-plugin-sort-imports': 4.4.2(prettier@3.6.0)
-      prettier: 3.6.0
-      prettier-plugin-tailwindcss: 0.6.13(@ianvs/prettier-plugin-sort-imports@4.4.2(prettier@3.6.0))(prettier@3.6.0)
+      '@ianvs/prettier-plugin-sort-imports': 4.4.2(prettier@3.6.1)
+      prettier: 3.6.1
+      prettier-plugin-tailwindcss: 0.6.13(@ianvs/prettier-plugin-sort-imports@4.4.2(prettier@3.6.1))(prettier@3.6.1)
     transitivePeerDependencies:
       - '@prettier/plugin-pug'
       - '@shopify/prettier-plugin-liquid'
@@ -7798,33 +7801,37 @@ snapshots:
     dependencies:
       '@supabase/node-fetch': 2.6.15
 
-  '@supabase/realtime-js@2.11.13(ws@8.18.2)':
+  '@supabase/realtime-js@2.11.15':
     dependencies:
       '@supabase/node-fetch': 2.6.15
       '@types/phoenix': 1.6.6
+      '@types/ws': 8.18.1
       isows: 1.0.7(ws@8.18.2)
+      ws: 8.18.2
     transitivePeerDependencies:
-      - ws
+      - bufferutil
+      - utf-8-validate
 
-  '@supabase/ssr@0.6.1(@supabase/supabase-js@2.50.1(ws@8.18.2))':
+  '@supabase/ssr@0.6.1(@supabase/supabase-js@2.50.2)':
     dependencies:
-      '@supabase/supabase-js': 2.50.1(ws@8.18.2)
+      '@supabase/supabase-js': 2.50.2
       cookie: 1.0.2
 
   '@supabase/storage-js@2.7.1':
     dependencies:
       '@supabase/node-fetch': 2.6.15
 
-  '@supabase/supabase-js@2.50.1(ws@8.18.2)':
+  '@supabase/supabase-js@2.50.2':
     dependencies:
       '@supabase/auth-js': 2.70.0
       '@supabase/functions-js': 2.4.4
       '@supabase/node-fetch': 2.6.15
       '@supabase/postgrest-js': 1.19.4
-      '@supabase/realtime-js': 2.11.13(ws@8.18.2)
+      '@supabase/realtime-js': 2.11.15
       '@supabase/storage-js': 2.7.1
     transitivePeerDependencies:
-      - ws
+      - bufferutil
+      - utf-8-validate
 
   '@swc/core-darwin-arm64@1.12.3':
     optional: true
@@ -8208,6 +8215,10 @@ snapshots:
   '@types/tinycolor2@1.4.6': {}
 
   '@types/webxr@0.5.22': {}
+
+  '@types/ws@8.18.1':
+    dependencies:
+      '@types/node': 24.0.4
 
   '@typescript-eslint/eslint-plugin@8.34.1(@typescript-eslint/parser@8.34.1(eslint@9.29.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.29.0(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:
@@ -10339,13 +10350,13 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-tailwindcss@0.6.13(@ianvs/prettier-plugin-sort-imports@4.4.2(prettier@3.6.0))(prettier@3.6.0):
+  prettier-plugin-tailwindcss@0.6.13(@ianvs/prettier-plugin-sort-imports@4.4.2(prettier@3.6.1))(prettier@3.6.1):
     dependencies:
-      prettier: 3.6.0
+      prettier: 3.6.1
     optionalDependencies:
-      '@ianvs/prettier-plugin-sort-imports': 4.4.2(prettier@3.6.0)
+      '@ianvs/prettier-plugin-sort-imports': 4.4.2(prettier@3.6.1)
 
-  prettier@3.6.0: {}
+  prettier@3.6.1: {}
 
   printable-characters@1.0.42: {}
 
