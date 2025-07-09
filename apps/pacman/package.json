@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "0.10.22-rc.20250304",
-    "@react-three/drei": "^10.4.4",
+    "@react-three/drei": "^10.5.0",
     "@repo/ui": "workspace:^",
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-backend-cpu": "^4.22.0",
