@@ -1,14 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 
-import type { Database } from "./types/database.types";
-import { getServiceRoleKey } from "./env/get-service-role-key";
-import { getSupabaseClientKeys } from "./env/get-supabase-client-keys";
+import type { Database } from "./database.types";
 
-const keys = getSupabaseClientKeys();
-const serviceRoleKey = getServiceRoleKey();
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
 
 export const getSupabaseAdminClient = <GenericSchema = Database>() => {
-  return createClient<GenericSchema>(keys.url, serviceRoleKey, {
+  return createClient<GenericSchema>(url, serviceRoleKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,

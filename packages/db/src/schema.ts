@@ -15,6 +15,7 @@ export const usersRelations = relations(authUsers, ({ many }) => ({
   invitationsSent: many(invitations),
 }));
 
+/* ------------------------------ app schema; ------------------------------ */
 export const teams = pgTable("teams", (t) => ({
   id: t.uuid().notNull().primaryKey().defaultRandom(),
   name: t.varchar({ length: 255 }).notNull(),
