@@ -16,7 +16,7 @@
     "@repo/ui": "workspace:^",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "three": "^0.177.0"
+    "three": "^0.178.0"
   },
   "devDependencies": {
     "@kyh/eslint-config": "catalog:",
