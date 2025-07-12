@@ -113,6 +113,7 @@ export const waitlist = pgTable("waitlist", (t) => ({
   id: t.uuid().notNull().primaryKey().defaultRandom(),
   userId: t.uuid().references(() => authUsers.id),
   type: waitlistType().default("app").notNull(),
+  source: t.text(),
   email: t.text().unique(),
 }));
 

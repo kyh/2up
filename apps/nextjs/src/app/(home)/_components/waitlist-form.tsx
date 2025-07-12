@@ -33,6 +33,7 @@ export const WaitlistForm = () => {
     schema: joinWaitlistInput,
     defaultValues: {
       email: "",
+      source: window.location.href,
     },
   });
 
