@@ -114,7 +114,7 @@ export const waitlist = pgTable("waitlist", (t) => ({
   userId: t.uuid().references(() => authUsers.id),
   type: waitlistType().default("app").notNull(),
   source: t.text(),
-  email: t.text().unique(),
+  email: t.text(),
 }));
 
 export const waitlistRelations = relations(waitlist, ({ one }) => ({
