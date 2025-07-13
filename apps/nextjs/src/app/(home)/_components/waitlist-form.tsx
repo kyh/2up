@@ -33,17 +33,15 @@ export const WaitlistForm = () => {
     schema: joinWaitlistInput,
     defaultValues: {
       email: "",
-      source: typeof window !== "undefined" ? window.location.href : "",
+      source: process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "",
     },
   });
 
   const handleJoinWaitlist = (values: JoinWaitlistInput) => {
     toast.promise(
-      joinWaitlist
-        .mutateAsync({ type: "app", email: values.email })
-        .then(() => {
-          form.reset({ email: "" });
-        }),
+      joinWaitlist.mutateAsync({ email: values.email }).then(() => {
+        form.reset({ email: "" });
+      }),
       {
         loading: "Submitting...",
         success: "Waitlist joined!",

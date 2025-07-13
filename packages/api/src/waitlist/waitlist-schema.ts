@@ -5,7 +5,6 @@ import { z } from "zod";
  */
 export const joinWaitlistInput = z.object({
   email: z.string().email(),
-  type: z.enum(["app"]).optional(),
   source: z.string().optional(),
 });
 export type JoinWaitlistInput = z.infer<typeof joinWaitlistInput>;
