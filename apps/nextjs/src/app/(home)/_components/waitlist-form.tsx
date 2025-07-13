@@ -33,7 +33,6 @@ export const WaitlistForm = () => {
     schema: joinWaitlistInput,
     defaultValues: {
       email: "",
-      source: process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "",
     },
   });
 

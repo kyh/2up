@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgEnum, pgSchema, pgTable, primaryKey } from "drizzle-orm/pg-core";
+import { pgSchema, pgTable, primaryKey } from "drizzle-orm/pg-core";
 
 /* ------------------------------ auth schema; ------------------------------ */
 const auth = pgSchema("auth");
