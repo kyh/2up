@@ -4,7 +4,7 @@ import Link from "next/link";
 import { RequestPasswordResetForm } from "@/app/(auth)/_components/auth-form";
 
 export const metadata: Metadata = {
-  title: "Password Reset",
+  title: "Reset Password",
 };
 
 const Page = () => (
@@ -15,8 +15,8 @@ const Page = () => (
     <RequestPasswordResetForm />
     <p className="text-muted-foreground px-8 text-center text-sm">
       Back to{" "}
-      <Link href="/auth/sign-in" className="underline">
-        sign in
+      <Link href="/auth/login" className="underline">
+        Login
       </Link>
     </p>
   </div>

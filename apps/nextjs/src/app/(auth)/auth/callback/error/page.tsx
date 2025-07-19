@@ -13,9 +13,9 @@ const Page = async (props: PageProps) => {
   const searchParams = await props.searchParams;
   const { error, invite_token } = searchParams;
   const queryParam = invite_token ? `?invite_token=${invite_token}` : "";
-  const signInPath = "/auth/sign-in" + queryParam;
+  const signInPath = "/auth/login" + queryParam;
 
-  // if there is no error, redirect the user to the sign-in page
+  // if there is no error, redirect the user to the login page
   if (!error) {
     redirect(signInPath);
   }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { signInWithPasswordInput } from "@repo/api/auth/auth-schema";
 import { Button } from "@repo/ui/button";
@@ -16,12 +17,13 @@ import { Input } from "@repo/ui/input";
 import { toast } from "@repo/ui/toast";
 import { cn } from "@repo/ui/utils";
 import { useMutation } from "@tanstack/react-query";
+import { z } from "zod";
 
 import type { SignInWithPasswordInput } from "@repo/api/auth/auth-schema";
 import { useTRPC } from "@/trpc/react";
 
 type AuthFormProps = {
-  type: "signin" | "signup";
+  type: "login" | "register";
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
@@ -39,16 +41,20 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   );
   const signInWithPassword = useMutation(
     trpc.auth.signInWithPassword.mutationOptions({
-      onSuccess: () => {
-        router.replace(params.nextPath ?? `/`);
+      onSuccess: ({ user }) => {
+        router.replace(
+          params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeamSlug}`,
+        );
       },
       onError: (error) => toast.error(error.message),
     }),
   );
   const signUp = useMutation(
     trpc.auth.signUp.mutationOptions({
-      onSuccess: () => {
-        router.replace(params.nextPath ?? `/`);
+      onSuccess: ({ user }) => {
+        router.replace(
+          params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeamSlug}`,
+        );
       },
       onError: (error) => toast.error(error.message),
     }),
@@ -63,24 +69,16 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   });
 
   const handleAuthWithGithub = () => {
-    toast.error(
-      "We're still in closed beta, so signing up is not available yet",
-    );
-    return;
-    // signInWithOAuth.mutate({
-    //   provider: "github",
-    // });
+    signInWithOAuth.mutate({
+      provider: "github",
+    });
   };
 
   const handleAuthWithPassword = (credentials: SignInWithPasswordInput) => {
-    if (type === "signup") {
-      toast.error(
-        "We're still in closed beta, so signing up is not available yet",
-      );
-      return;
-      // signUp.mutate(credentials);
+    if (type === "register") {
+      signUp.mutate(credentials);
     }
-    if (type === "signin") {
+    if (type === "login") {
       signInWithPassword.mutate(credentials);
     }
   };
@@ -153,7 +151,7 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
             )}
           />
           <Button loading={signUp.isPending || signInWithPassword.isPending}>
-            {type === "signin" ? "Login" : "Sign Up"}
+            {type === "login" ? "Login" : "Register"}
           </Button>
         </form>
       </Form>
@@ -162,11 +160,169 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
 };
 
 export const RequestPasswordResetForm = () => {
-  return null;
+  const trpc = useTRPC();
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const requestPasswordReset = useMutation(
+    trpc.auth.requestPasswordReset.mutationOptions({
+      onSuccess: () => {
+        setIsSuccess(true);
+        toast.success("Password reset email sent successfully!");
+      },
+      onError: (error) => toast.error(error.message),
+    }),
+  );
+
+  const form = useForm({
+    schema: z.object({
+      email: z.string().email(),
+    }),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const handlePasswordReset = (data: { email: string }) => {
+    requestPasswordReset.mutate(data);
+  };
+
+  if (isSuccess) {
+    return (
+      <div className="space-y-4 text-center">
+        <div className="rounded-md bg-green-50 p-4 dark:bg-green-900/20">
+          <p className="text-sm text-green-800 dark:text-green-200">
+            Password reset email sent! Check your inbox and follow the
+            instructions to reset your password.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <Form {...form}>
+      <form
+        className="grid gap-4"
+        onSubmit={form.handleSubmit(handlePasswordReset)}
+      >
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem className="grid gap-1 space-y-0">
+              <FormLabel className="sr-only">Email</FormLabel>
+              <FormControl>
+                <Input
+                  required
+                  type="email"
+                  placeholder="name@example.com"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  autoCorrect="off"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button loading={requestPasswordReset.isPending}>
+          Request Password Reset
+        </Button>
+      </form>
+    </Form>
+  );
 };
 
 export const UpdatePasswordForm = () => {
-  return null;
+  const trpc = useTRPC();
+  const router = useRouter();
+
+  const updatePassword = useMutation(
+    trpc.auth.updatePassword.mutationOptions({
+      onSuccess: () => {
+        toast.success("Password updated successfully!");
+        router.push("/dashboard");
+      },
+      onError: (error) => toast.error(error.message),
+    }),
+  );
+
+  const form = useForm({
+    schema: z
+      .object({
+        password: z.string().min(8, "Password must be at least 8 characters"),
+        confirmPassword: z.string(),
+      })
+      .refine((data) => data.password === data.confirmPassword, {
+        message: "Passwords don't match",
+        path: ["confirmPassword"],
+      }),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const handleUpdatePassword = (data: {
+    password: string;
+    confirmPassword: string;
+  }) => {
+    updatePassword.mutate({ password: data.password });
+  };
+
+  return (
+    <Form {...form}>
+      <form
+        className="grid gap-4"
+        onSubmit={form.handleSubmit(handleUpdatePassword)}
+      >
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem className="grid gap-1 space-y-0">
+              <FormLabel className="sr-only">New Password</FormLabel>
+              <FormControl>
+                <Input
+                  required
+                  type="password"
+                  placeholder="Enter new password"
+                  autoCapitalize="none"
+                  autoComplete="new-password"
+                  autoCorrect="off"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem className="grid gap-1 space-y-0">
+              <FormLabel className="sr-only">Confirm New Password</FormLabel>
+              <FormControl>
+                <Input
+                  required
+                  type="password"
+                  placeholder="Confirm new password"
+                  autoCapitalize="none"
+                  autoComplete="new-password"
+                  autoCorrect="off"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button loading={updatePassword.isPending}>Update Password</Button>
+      </form>
+    </Form>
+  );
 };
 
 export const MultiFactorAuthForm = () => {
