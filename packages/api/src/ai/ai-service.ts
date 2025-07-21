@@ -1,62 +1,35 @@
-import type { Message } from "ai";
-import { createAnthropic } from "@ai-sdk/anthropic";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { createOpenAI } from "@ai-sdk/openai";
-import { createXai } from "@ai-sdk/xai";
-import { convertToCoreMessages, streamText } from "ai";
+import type { UIMessage } from "ai";
+import {
+  convertToModelMessages,
+  smoothStream,
+  stepCountIs,
+  streamText,
+} from "ai";
 
-import { cached } from "./ai-middleware";
 import { getSystemPrompt } from "./prompt";
 import { aiDeveloperTools } from "./tools";
 
-const anthropic = createAnthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
-
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GOOGLE_API_KEY,
-});
-
-const openai = createOpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-const xai = createXai({
-  apiKey: process.env.XAI_API_KEY,
-});
-
-const models = {
-  anthropic: anthropic("claude-3-5-sonnet-20241022"),
-  google: google("gemini-2.5-flash-preview-04-17"),
-  openai: openai("o4-mini"),
-  xai: xai("grok-3"),
-};
-
 export const createGame = (
   existingFiles: Record<string, string>,
-  messages: Message[],
+  messages: UIMessage[],
 ) => {
   const systemPrompt = getSystemPrompt(existingFiles);
 
   console.log("systemPrompt", systemPrompt);
 
   const result = streamText({
-    model: models.anthropic,
+    model: "anthropic/claude-4-sonnet",
     system: systemPrompt,
-    messages: convertToCoreMessages(messages),
+    messages: convertToModelMessages(messages),
     tools: aiDeveloperTools,
-    toolCallStreaming: true,
-    maxSteps: 10,
+    stopWhen: stepCountIs(5),
+    experimental_transform: smoothStream({ chunking: "word" }),
     onChunk: (chunk) => {
       console.log("chunk", chunk);
     },
   });
 
-  return result.toDataStreamResponse({
+  return result.toUIMessageStreamResponse({
     sendReasoning: true,
-    getErrorMessage: (error) => {
-      console.error(error);
-      return "An error occurred while processing the messages";
-    },
   });
 };

@@ -4,9 +4,13 @@ import { Message, MessageContent, MessagesContainer } from "@repo/ui/chat";
 import { Spinner } from "@repo/ui/spinner";
 import { cn } from "@repo/ui/utils";
 import equal from "fast-deep-equal";
-import { CircleCheckIcon } from "lucide-react";
+import { CircleCheckIcon, CircleDotIcon, CircleMinusIcon } from "lucide-react";
 
-import type { CreateFileSchema } from "@repo/api/ai/tools";
+import type {
+  CreateFileSchema,
+  DeleteFileSchema,
+  UpdateFileSchema,
+} from "@repo/api/ai/tools";
 
 type MessagePartProps = {
   part: UIMessage["parts"][number];
@@ -18,21 +22,53 @@ const MessagePart = memo(
       return <>{part.text}</>;
     }
 
-    if (part.type === "tool-invocation") {
-      const toolArgs = part.toolInvocation.args as CreateFileSchema | undefined;
-      if (part.toolInvocation.state === "partial-call") {
-        return (
-          <div className="mt-1 flex items-center gap-1">
-            <Spinner className="size-5" />
-            <span>Generating {toolArgs?.filePath}</span>
-          </div>
-        );
-      }
-
+    if (part.type === "tool-createFile") {
       return (
         <div className="mt-1 flex items-center gap-1">
-          <CircleCheckIcon className="size-5" />
-          <span>{toolArgs?.filePath}</span>
+          {part.state === "output-available" ? (
+            <CircleCheckIcon className="size-5" />
+          ) : (
+            <Spinner className="size-5" />
+          )}
+          <span>
+            {part.output
+              ? (part.output as CreateFileSchema).filePath
+              : "Creating..."}
+          </span>
+        </div>
+      );
+    }
+
+    if (part.type === "tool-updateFile") {
+      return (
+        <div className="mt-1 flex items-center gap-1">
+          {part.state === "output-available" ? (
+            <CircleDotIcon className="size-5" />
+          ) : (
+            <Spinner className="size-5" />
+          )}
+          <span>
+            {part.output
+              ? (part.output as UpdateFileSchema).filePath
+              : "Updating..."}
+          </span>
+        </div>
+      );
+    }
+
+    if (part.type === "tool-deleteFile") {
+      return (
+        <div className="mt-1 flex items-center gap-1">
+          {part.state === "output-available" ? (
+            <CircleMinusIcon className="size-5" />
+          ) : (
+            <Spinner className="size-5" />
+          )}
+          <span>
+            {part.output
+              ? (part.output as DeleteFileSchema).filePath
+              : "Deleting..."}
+          </span>
         </div>
       );
     }

@@ -6,9 +6,14 @@ import dynamic from "next/dynamic";
 import { useChat } from "@ai-sdk/react";
 import { toast } from "@repo/ui/toast";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { DefaultChatTransport } from "ai";
 
 import type { SandpackFiles, SandpackPreviewRef } from "./_components/sandpack";
-import type { CreateFileSchema, DeleteFileSchema } from "@repo/api/ai/tools";
+import type {
+  CreateFileSchema,
+  DeleteFileSchema,
+  UpdateFileSchema,
+} from "@repo/api/ai/tools";
 import { useTRPC } from "@/trpc/react";
 import { ChatHistory } from "./_components/chat-history";
 import { CodeEditor } from "./_components/code-editor";
@@ -34,39 +39,54 @@ const Page = ({
   const [waitlistOpen, setWaitlistOpen] = useState(false);
   const [composerOpen, setComposerOpen] = useState(true);
   const [codeEditorOpen, setCodeEditorOpen] = useState(false);
+  const [input, setInput] = useState("");
   const previewRef = useRef<SandpackPreviewRef>(null);
 
-  const { messages, append, status, input, setInput } = useChat({
-    maxSteps: 10,
-    body: {
-      // Convert the files object to Record<filePath, code>
-      existingFiles: Object.entries(files).reduce(
-        (acc, [key, value]) => {
-          acc[key] = value.code;
-          return acc;
-        },
-        {} as Record<string, string>,
-      ),
-    },
-    onFinish: (message) => {
+  const { messages, sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+      prepareSendMessagesRequest({ messages, id, body }) {
+        return {
+          body: {
+            id,
+            messages,
+            existingFiles: Object.entries(files).reduce(
+              (acc, [key, value]) => {
+                acc[key] = value.code;
+                return acc;
+              },
+              {} as Record<string, string>,
+            ),
+            ...body,
+          },
+        };
+      },
+    }),
+    onFinish: ({ message }) => {
+      console.log("onFinish", message);
       if (message.role === "assistant") {
         setFiles((prevFiles) => {
-          const updatedFiles = message.parts?.reduce((acc, part) => {
-            if (part.type === "tool-invocation") {
-              if (
-                part.toolInvocation.toolName === "createFile" ||
-                part.toolInvocation.toolName === "updateFile"
-              ) {
-                const { filePath, content } = part.toolInvocation
-                  .args as CreateFileSchema;
-                acc[filePath] = { code: content };
-              }
-
-              if (part.toolInvocation.toolName === "deleteFile") {
-                const { filePath } = part.toolInvocation
-                  .args as DeleteFileSchema;
-                delete acc[filePath];
-              }
+          const updatedFiles = message.parts.reduce((acc, part) => {
+            if (
+              part.type === "tool-createFile" &&
+              part.state === "output-available"
+            ) {
+              const { filePath, content } = part.output as CreateFileSchema;
+              acc[filePath] = { code: content };
+            }
+            if (
+              part.type === "tool-updateFile" &&
+              part.state === "output-available"
+            ) {
+              const { filePath, content } = part.output as UpdateFileSchema;
+              acc[filePath] = { code: content };
+            }
+            if (
+              part.type === "tool-deleteFile" &&
+              part.state === "output-available"
+            ) {
+              const { filePath } = part.output as DeleteFileSchema;
+              delete acc[filePath];
             }
 
             return acc;
@@ -88,13 +108,11 @@ const Page = ({
       setWaitlistOpen(true);
       return;
     }
-    setInput("");
-    void append({
-      role: "user",
-      content: input,
-      createdAt: new Date(),
+    void sendMessage({
+      text: input,
     });
-  }, [input, setInput, append, user]);
+    setInput("");
+  }, [input, setInput, sendMessage, user]);
 
   const handleFocus = useCallback(() => {
     if (!user) {
@@ -104,6 +122,7 @@ const Page = ({
   }, [user]);
 
   const isGeneratingResponse = ["streaming", "submitted"].includes(status);
+  console.log("messages", messages);
 
   return (
     <>

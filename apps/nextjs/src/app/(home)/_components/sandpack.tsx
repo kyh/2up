@@ -36,7 +36,7 @@ export const SandpackProvider = ({
 }) => {
   return (
     <SandpackProviderPrimitive
-      template="react"
+      template="react-ts"
       theme={sandpackDark}
       files={files}
       customSetup={{ dependencies }}
@@ -91,7 +91,7 @@ html, body {
 }
 `,
   },
-  "/Background.js": {
+  "/Background.tsx": {
     code: `
 import { memo, useCallback, useEffect, useRef } from "react";
 
@@ -456,7 +456,7 @@ export const Background = memo(
 );
 `,
   },
-  "/Game.js": {
+  "/Game.tsx": {
     code: `
 import { useEffect, useRef } from "react";
 import usePartySocket from "partysocket/react";
@@ -869,7 +869,7 @@ export function Game() {
 }
 `,
   },
-  "/App.js": {
+  "/App.tsx": {
     code: `
 import { Background } from "./Background";
 import { Game } from "./Game";

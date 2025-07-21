@@ -41,20 +41,16 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   );
   const signInWithPassword = useMutation(
     trpc.auth.signInWithPassword.mutationOptions({
-      onSuccess: ({ user }) => {
-        router.replace(
-          params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeamSlug}`,
-        );
+      onSuccess: () => {
+        router.replace(params.nextPath ?? `/`);
       },
       onError: (error) => toast.error(error.message),
     }),
   );
   const signUp = useMutation(
     trpc.auth.signUp.mutationOptions({
-      onSuccess: ({ user }) => {
-        router.replace(
-          params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeamSlug}`,
-        );
+      onSuccess: () => {
+        router.replace(params.nextPath ?? `/`);
       },
       onError: (error) => toast.error(error.message),
     }),
