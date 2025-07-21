@@ -122,7 +122,6 @@ const Page = ({
   }, [user]);
 
   const isGeneratingResponse = ["streaming", "submitted"].includes(status);
-  console.log("messages", messages);
 
   return (
     <>

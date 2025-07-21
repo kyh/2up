@@ -5,7 +5,6 @@ export const createFileSchema = z.object({
   filePath: z
     .string()
     .describe("The path where the new file should be created."),
-  type: z.string().describe("The type of file (js, html, css, asset, etc.)."),
   content: z.string().describe("The content to be written to the new file."),
 });
 export type CreateFileSchema = z.infer<typeof createFileSchema>;
