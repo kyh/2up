@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "0.10.22-rc.20250304",
-    "@react-three/drei": "^10.5.1",
+    "@react-three/drei": "^10.5.2",
     "@react-three/fiber": "^9.2.0",
     "@repo/ui": "workspace:^",
     "react": "catalog:",
@@ -25,7 +25,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@vitejs/plugin-react-swc": "^3.10.2",
+    "@vitejs/plugin-react-swc": "^3.11.0",
     "eslint": "catalog:",
     "globals": "^16.3.0",
     "prettier": "catalog:",
