@@ -1,44 +1,8 @@
 import Link from "next/link";
 
-import type { CardProps } from "../_components/card";
-import { Background } from "@/components/background";
-import { Card } from "../_components/card";
-
-const pluginData: CardProps[] = [
-  {
-    id: 1,
-    name: "Flappy Bird",
-    description:
-      "flap flap flap flap flap flap flap flap flap flap flap flap flap",
-    slug: "flappy-bird",
-    type: "wip",
-    plays: 1300,
-  },
-  {
-    id: 2,
-    name: "Pacman",
-    slug: "pacman",
-    description: "chomp chomp chomp chomp chomp chomp chomp",
-    type: "wip",
-    plays: 2000,
-  },
-  {
-    id: 3,
-    name: "Tetris",
-    slug: "tetris",
-    description: "block block block block block block block block",
-    type: "wip",
-    plays: 1000,
-  },
-  {
-    id: 4,
-    name: "Pong",
-    slug: "pong",
-    description: "pong pong pong pong pong pong pong pong",
-    type: "wip",
-    plays: 1000,
-  },
-];
+import { Background } from "@/app/(home)/_components/background";
+import { Card } from "@/app/(home)/_components/card";
+import { featuredGames } from "@/app/(home)/_components/data";
 
 const Page = () => {
   return (
@@ -46,7 +10,7 @@ const Page = () => {
       <Background />
       <main className="flex min-h-dvh flex-col">
         <section className="mx-auto grid max-w-3xl grid-cols-1 gap-10 px-5 pt-30 pb-10 md:grid-cols-2">
-          {pluginData.map((data) => {
+          {featuredGames.map((data) => {
             return (
               <Link
                 key={data.id}

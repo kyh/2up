@@ -35,9 +35,10 @@ const Page = () => {
   );
 
   const isGenerating =
-    getChatPending ||
-    !chatData?.chat.demo ||
-    chatData.chat.latestVersion?.status === "pending";
+    !!chatId &&
+    (getChatPending ||
+      !chatData?.chat.demo ||
+      chatData.chat.latestVersion?.status === "pending");
 
   const iframeSrc =
     chatData?.chat.latestVersion?.status === "completed" && chatData.chat.demo
