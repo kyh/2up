@@ -253,7 +253,7 @@ type ChatTextareaProps = {
   input: string;
   setInput: (input: string) => void;
   onSubmit: () => void;
-  isGeneratingResponse: boolean;
+  loading: boolean;
   onFocus?: () => void;
   onBlur?: () => void;
 };
@@ -263,7 +263,7 @@ const ChatTextarea = ({
   input,
   setInput,
   onSubmit,
-  isGeneratingResponse,
+  loading,
   onFocus,
   onBlur,
 }: ChatTextareaProps) => {
@@ -288,7 +288,7 @@ const ChatTextarea = ({
           size="icon"
           className="ml-auto h-8 w-8 rounded-full"
           onClick={onSubmit}
-          loading={isGeneratingResponse}
+          loading={loading}
         >
           <ArrowUp className="size-5" />
         </Button>

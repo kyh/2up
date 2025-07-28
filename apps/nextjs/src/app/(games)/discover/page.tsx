@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import type { CardProps } from "../_components/card";
-import { Background } from "../_components/background";
+import { Background } from "@/components/background";
 import { Card } from "../_components/card";
 
 const pluginData: CardProps[] = [

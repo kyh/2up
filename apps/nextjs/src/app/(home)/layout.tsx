@@ -11,7 +11,7 @@ const Layout = (props: LayoutProps) => {
 
   return (
     <HydrateClient>
-      <main className="h-dvh w-dvw overflow-hidden">{props.children}</main>
+      <main className="grid h-dvh w-dvw overflow-hidden">{props.children}</main>
     </HydrateClient>
   );
 };

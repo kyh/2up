@@ -19,6 +19,7 @@
     "@repo/db": "workspace:^",
     "@trpc/server": "catalog:",
     "superjson": "catalog:",
+    "v0-sdk": "^0.4.1",
     "zod": "catalog:"
   },
   "devDependencies": {
