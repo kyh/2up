@@ -1,7 +1,6 @@
 "use client";
 
 import { memo, useEffect, useRef, useState } from "react";
-import { Button } from "@repo/ui/button";
 import * as poseDetection from "@tensorflow-models/pose-detection";
 import * as tf from "@tensorflow/tfjs";
 
@@ -318,12 +317,15 @@ export const Camera = memo(function Camera({ onJump }: CameraProps) {
       <video ref={videoRef} className="rounded-lg" playsInline />
       <canvas ref={canvasRef} className="absolute top-0 left-0 h-full w-full" />
       <div className="absolute bottom-2 left-2 flex items-center gap-2 text-xs">
-        <Button
+        <button
+          className="rounded-md bg-white px-2 py-1 text-xs"
           onClick={handleMainAction}
-          loading={currentState === "loading" || currentState === "calibrating"}
+          disabled={
+            currentState === "loading" || currentState === "calibrating"
+          }
         >
           {getButtonText(currentState)}
-        </Button>
+        </button>
         <span>{status}</span>
       </div>
     </div>
