@@ -4,9 +4,11 @@ import type { LucideIcon } from "lucide-react";
 import * as React from "react";
 import { AnimatePresence, motion } from "motion/react";
 
+import { buttonVariants } from "./button";
 import { cn } from "./utils";
 
 type Tab = {
+  id: string;
   title: string;
   icon: LucideIcon;
   type?: never;
@@ -14,6 +16,7 @@ type Tab = {
 
 type Separator = {
   type: "separator";
+  id?: never;
   title?: never;
   icon?: never;
 };
@@ -22,21 +25,21 @@ type TabItem = Tab | Separator;
 
 type ExpandedTabsProps = {
   tabs: TabItem[];
+  selected?: string;
+  setSelected?: (selected: string) => void;
   className?: string;
-  activeColor?: string;
-  onChange?: (index: number | null) => void;
 };
 
-const buttonVariants = {
+const animationVariants = {
   initial: {
     gap: 0,
-    paddingLeft: ".5rem",
-    paddingRight: ".5rem",
+    paddingLeft: "4px",
+    paddingRight: "4px",
   },
   animate: (isSelected: boolean) => ({
-    gap: isSelected ? ".5rem" : 0,
-    paddingLeft: isSelected ? "1rem" : ".5rem",
-    paddingRight: isSelected ? "1rem" : ".5rem",
+    gap: isSelected ? "4px" : 0,
+    paddingLeft: isSelected ? "8px" : "4px",
+    paddingRight: isSelected ? "8px" : "4px",
   }),
 };
 
@@ -56,63 +59,48 @@ const transition = {
 export const ExpandTabs = ({
   tabs,
   className,
-  activeColor = "text-primary",
-  onChange,
+  selected,
+  setSelected,
 }: ExpandedTabsProps) => {
-  const [selected, setSelected] = React.useState<number | null>(null);
-  const outsideClickRef = React.useRef<HTMLDivElement>(
-    null as unknown as HTMLDivElement,
-  );
-
-  const handleSelect = (index: number) => {
-    setSelected(index);
-    onChange?.(index);
-  };
-
-  const Separator = () => (
-    <div className="bg-border h-[24px] w-[1.2px]" aria-hidden="true" />
-  );
-
   return (
-    <div
-      ref={outsideClickRef}
-      className={cn(
-        "bg-background flex gap-2 rounded-2xl border p-1 shadow-sm",
-        className,
-      )}
-    >
+    <div className={cn("flex gap-2", className)}>
       {tabs.map((tab, index) => {
         if (tab.type === "separator") {
-          return <Separator key={`separator-${index}`} />;
+          return (
+            <div
+              className="bg-border h-[24px] w-[1.2px]"
+              aria-hidden="true"
+              key={`separator-${index}`}
+            />
+          );
         }
 
         const Icon = tab.icon;
         return (
           <motion.button
-            key={tab.title}
-            variants={buttonVariants}
+            key={tab.id}
+            variants={animationVariants}
             initial={false}
             animate="animate"
-            custom={selected === index}
-            onClick={() => handleSelect(index)}
+            custom={selected === tab.id}
+            onClick={() => setSelected?.(tab.id)}
             transition={transition}
-            className={cn(
-              "relative flex items-center rounded-xl px-4 py-2 text-sm font-medium transition-colors duration-300",
-              selected === index
-                ? cn("bg-muted", activeColor)
-                : "text-muted-foreground hover:bg-muted hover:text-foreground",
-            )}
+            className={buttonVariants({
+              className: "h-5 w-auto p-0",
+              variant: selected === tab.id ? "secondary" : "ghost",
+              size: "icon",
+            })}
           >
-            <Icon size={20} />
+            <Icon size={12} />
             <AnimatePresence initial={false}>
-              {selected === index && (
+              {selected === tab.id && (
                 <motion.span
                   variants={spanVariants}
                   initial="initial"
                   animate="animate"
                   exit="exit"
                   transition={transition}
-                  className="overflow-hidden"
+                  className="overflow-hidden text-xs"
                 >
                   {tab.title}
                 </motion.span>

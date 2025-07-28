@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@repo/ui/button";
 import { ChatTextarea } from "@repo/ui/chat";
+import { ExpandTabs } from "@repo/ui/expand-tabs";
 import { cn } from "@repo/ui/utils";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { ChevronDown, ChevronUp, CodeIcon, RefreshCwIcon } from "lucide-react";
+import { BlocksIcon, ChevronDown, ChevronUp, PlayIcon } from "lucide-react";
+import { motion } from "motion/react";
 
 import { useTRPC } from "@/trpc/react";
 import { Card } from "./card";
@@ -71,24 +73,19 @@ export const Composer = () => {
           composerOpen ? "" : "translate-y-[calc(100%-32px)]",
         )}
       >
-        <div className="bg-muted/40 pointer-events-auto rounded-t-2xl px-3 shadow-lg backdrop-blur-xs">
+        <div className="pointer-events-auto relative px-3">
           <div className="flex h-8 items-center justify-between gap-3 px-2">
-            <div className="flex gap-2">
-              <Button
-                variant="ghost"
-                className="size-5 p-0"
-                onClick={() => setView("play")}
-              >
-                <CodeIcon className="size-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="size-5 p-0"
-                onClick={() => setView("build")}
-              >
-                <RefreshCwIcon className="size-4" />
-              </Button>
-            </div>
+            <ExpandTabs
+              selected={view}
+              setSelected={(selected) => {
+                setView(selected as "play" | "build");
+                setComposerOpen(true);
+              }}
+              tabs={[
+                { id: "play", title: "Play", icon: PlayIcon },
+                { id: "build", title: "Build", icon: BlocksIcon },
+              ]}
+            />
             <Button
               variant="ghost"
               className="size-5 p-0"
@@ -107,16 +104,49 @@ export const Composer = () => {
               )}
             </Button>
           </div>
-          {view === "build" && (
-            <BuildView
-              input={input}
-              setInput={setInput}
-              onSubmit={handleSubmit}
-              loading={createChatPending || updateChatPending}
-              onFocus={handleFocus}
-            />
-          )}
-          {view === "play" && <PlayView />}
+          <motion.div
+            transition={{
+              type: "spring",
+              bounce: 0.1,
+            }}
+            initial={{
+              scale: 0.9,
+              opacity: 0,
+              filter: "blur(5px)",
+              originX: 0.5,
+              originY: 0.5,
+            }}
+            animate={{
+              scale: 1,
+              opacity: 1,
+              filter: "blur(0px)",
+              originX: 0.5,
+              originY: 0.5,
+              transition: {
+                delay: 0.05,
+              },
+            }}
+            key={view}
+          >
+            {view === "build" && (
+              <BuildView
+                input={input}
+                setInput={setInput}
+                onSubmit={handleSubmit}
+                loading={createChatPending || updateChatPending}
+                onFocus={handleFocus}
+              />
+            )}
+            {view === "play" && <PlayView />}
+          </motion.div>
+          <motion.div
+            className="bg-muted/60 absolute inset-0 -z-10 rounded-t-2xl px-3 shadow-lg backdrop-blur-sm"
+            layout
+            transition={{
+              type: "spring",
+              bounce: 0.1,
+            }}
+          />
         </div>
       </div>
       <WaitlistDailog
@@ -154,7 +184,7 @@ const BuildView = ({
 
 const PlayView = () => {
   return (
-    <section className="grid h-100 grid-cols-1 gap-10 overflow-auto pb-3 md:grid-cols-2">
+    <section className="grid h-[80dvh] grid-cols-1 gap-10 overflow-auto p-3 md:grid-cols-2">
       {featuredGames.map((data) => {
         return (
           <Link
