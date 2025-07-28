@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",
-    "@supabase/supabase-js": "^2.52.0",
+    "@supabase/supabase-js": "^2.53.0",
     "drizzle-orm": "^0.44.3",
     "next": "catalog:",
     "postgres": "^3.4.7",
