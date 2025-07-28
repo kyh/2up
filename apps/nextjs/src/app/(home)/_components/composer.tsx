@@ -184,7 +184,7 @@ const BuildView = ({
 
 const PlayView = () => {
   return (
-    <section className="grid h-[80dvh] grid-cols-1 gap-10 overflow-auto p-3 md:grid-cols-2">
+    <section className="[&::-webkit-scrollbar-thumb]:bg-secondary/80 grid h-[80dvh] grid-cols-1 gap-10 overflow-auto px-3 py-5 md:grid-cols-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full">
       {featuredGames.map((data) => {
         return (
           <Link
