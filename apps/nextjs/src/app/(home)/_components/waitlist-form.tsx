@@ -6,6 +6,7 @@ import { Button } from "@repo/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@repo/ui/dialog";
@@ -106,24 +107,20 @@ export const WaitlistDailog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-foreground mx-auto text-center text-xl font-semibold tracking-tight sm:text-2xl">
-            Join the waitlist for early access
+            Join the waitlist
           </DialogTitle>
+          <DialogDescription className="text-center text-balance">
+            Vibedgames is currently in private beta. Join the waitlist to get
+            early access.
+          </DialogDescription>
         </DialogHeader>
-        <p className="text-muted-foreground mx-auto max-w-lg text-center">
-          Working through the last bit of features. In the meantime you can{" "}
-          <a
-            className="underline"
-            href="https://x.com/kaiyuhsu"
-            target="_blank"
-          >
-            follow me
-          </a>{" "}
-          to see updates.
-        </p>
         <div className="mx-auto mt-3">
           <WaitlistForm />
         </div>
-        <Link className="mx-auto text-xs underline" href="/discover">
+        <Link
+          className="mx-auto text-xs underline decoration-dotted"
+          href="/discover"
+        >
           Play existing games
         </Link>
         <svg
