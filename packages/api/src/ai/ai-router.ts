@@ -10,16 +10,19 @@ import {
   updateChatInput,
 } from "./ai-schema";
 
+type ChatsGetByIdResponse = Awaited<ReturnType<typeof v0.chats.getById>>;
+type ChatsSendMessageResponse = Awaited<
+  ReturnType<typeof v0.chats.sendMessage>
+>;
+type ChatsDeleteResponse = Awaited<ReturnType<typeof v0.chats.delete>>;
+
 export const aiRouter = createTRPCRouter({
   getChats: protectedProcedure.query(async () => {
     const project = await v0.projects.getById({
       projectId,
     });
 
-    return {
-      project: { ...project },
-      chats: project.chats,
-    };
+    return { project, chats: project.chats };
   }),
 
   getChat: protectedProcedure.input(getChatInput).query(async ({ input }) => {
@@ -27,15 +30,13 @@ export const aiRouter = createTRPCRouter({
       chatId: input.chatId,
     });
 
-    return {
-      chat: { ...chat },
-    };
+    return { chat } as { chat: ChatsGetByIdResponse };
   }),
 
   createChat: protectedProcedure
     .input(createChatInput)
     .mutation(async ({ input }) => {
-      const created = await v0.chats.create({
+      const chat = await v0.chats.create({
         system: systemPrompt,
         message: input.message,
         chatPrivacy: "private",
@@ -43,34 +44,28 @@ export const aiRouter = createTRPCRouter({
         responseMode: "async",
       });
 
-      return {
-        chat: { ...created },
-      };
+      return { chat };
     }),
 
   updateChat: protectedProcedure
     .input(updateChatInput)
     .mutation(async ({ input }) => {
-      const created = await v0.chats.sendMessage({
+      const message = await v0.chats.sendMessage({
         chatId: input.chatId,
         message: input.message,
         responseMode: "async",
       });
 
-      return {
-        message: { ...created },
-      };
+      return { message } as { message: ChatsSendMessageResponse };
     }),
 
   deleteChat: protectedProcedure
     .input(deleteChatInput)
     .mutation(async ({ input }) => {
-      const deleted = await v0.chats.delete({
+      const chat = await v0.chats.delete({
         chatId: input.chatId,
       });
 
-      return {
-        chat: { ...deleted },
-      };
+      return { chat } as { chat: ChatsDeleteResponse };
     }),
 });
