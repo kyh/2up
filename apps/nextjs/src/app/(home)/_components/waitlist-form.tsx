@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { joinWaitlistInput } from "@repo/api/waitlist/waitlist-schema";
 import { Button } from "@repo/ui/button";
 import {
@@ -17,11 +18,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  useForm,
 } from "@repo/ui/form";
 import { toast } from "@repo/ui/toast";
 import { cn } from "@repo/ui/utils";
 import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 
 import type { JoinWaitlistInput } from "@repo/api/waitlist/waitlist-schema";
 import { useTRPC } from "@/trpc/react";
@@ -31,7 +32,7 @@ export const WaitlistForm = () => {
   const joinWaitlist = useMutation(trpc.waitlist.join.mutationOptions());
 
   const form = useForm({
-    schema: joinWaitlistInput,
+    resolver: zodResolver(joinWaitlistInput),
     defaultValues: {
       email: "",
     },

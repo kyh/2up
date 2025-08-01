@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signInWithPasswordInput } from "@repo/api/auth/auth-schema";
 import { Button } from "@repo/ui/button";
 import {
@@ -11,12 +12,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  useForm,
 } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { toast } from "@repo/ui/toast";
 import { cn } from "@repo/ui/utils";
 import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import type { SignInWithPasswordInput } from "@repo/api/auth/auth-schema";
@@ -41,23 +42,27 @@ export const AuthForm = ({ className, type, ...props }: AuthFormProps) => {
   );
   const signInWithPassword = useMutation(
     trpc.auth.signInWithPassword.mutationOptions({
-      onSuccess: () => {
-        router.replace(params.nextPath ?? `/`);
+      onSuccess: ({ user }) => {
+        router.replace(
+          params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeamSlug}`,
+        );
       },
       onError: (error) => toast.error(error.message),
     }),
   );
   const signUp = useMutation(
     trpc.auth.signUp.mutationOptions({
-      onSuccess: () => {
-        router.replace(params.nextPath ?? `/`);
+      onSuccess: ({ user }) => {
+        router.replace(
+          params.nextPath ?? `/dashboard/${user.user_metadata.defaultTeamSlug}`,
+        );
       },
       onError: (error) => toast.error(error.message),
     }),
   );
 
   const form = useForm({
-    schema: signInWithPasswordInput,
+    resolver: zodResolver(signInWithPasswordInput),
     defaultValues: {
       email: "",
       password: "",
@@ -170,9 +175,11 @@ export const RequestPasswordResetForm = () => {
   );
 
   const form = useForm({
-    schema: z.object({
-      email: z.string().email(),
-    }),
+    resolver: zodResolver(
+      z.object({
+        email: z.string().email(),
+      }),
+    ),
     defaultValues: {
       email: "",
     },
@@ -245,15 +252,17 @@ export const UpdatePasswordForm = () => {
   );
 
   const form = useForm({
-    schema: z
-      .object({
-        password: z.string().min(8, "Password must be at least 8 characters"),
-        confirmPassword: z.string(),
-      })
-      .refine((data) => data.password === data.confirmPassword, {
-        message: "Passwords don't match",
-        path: ["confirmPassword"],
-      }),
+    resolver: zodResolver(
+      z
+        .object({
+          password: z.string().min(8, "Password must be at least 8 characters"),
+          confirmPassword: z.string(),
+        })
+        .refine((data) => data.password === data.confirmPassword, {
+          message: "Passwords don't match",
+          path: ["confirmPassword"],
+        }),
+    ),
     defaultValues: {
       password: "",
       confirmPassword: "",

@@ -1,42 +1,18 @@
 "use client";
 
-import type { Label as LabelPrimitive } from "radix-ui";
-import type {
-  ControllerProps,
-  FieldPath,
-  FieldValues,
-  UseFormProps,
-} from "react-hook-form";
-import type { ZodType, ZodTypeDef } from "zod";
+import type { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 import * as React from "react";
-import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { cn } from "@repo/ui/utils";
-import { Slot } from "radix-ui";
+import { Slot } from "@radix-ui/react-slot";
 import {
-  useForm as __useForm,
   Controller,
   FormProvider,
   useFormContext,
+  useFormState,
 } from "react-hook-form";
 
+import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Label } from "./label";
-
-const useForm = <
-  TOut extends FieldValues,
-  TDef extends ZodTypeDef,
-  TIn extends FieldValues,
->(
-  props: Omit<UseFormProps<TIn>, "resolver"> & {
-    schema: ZodType<TOut, TDef, TIn>;
-  },
-) => {
-  const form = __useForm<TIn, unknown, any>({
-    ...props,
-    resolver: standardSchemaResolver(props.schema, undefined),
-  });
-
-  return form;
-};
+import { cn } from "./utils";
 
 const Form = FormProvider;
 
@@ -67,9 +43,13 @@ const FormField = <
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext);
   const itemContext = React.useContext(FormItemContext);
-  const { getFieldState, formState } = useFormContext();
-
+  const { getFieldState } = useFormContext();
+  const formState = useFormState({ name: fieldContext.name });
   const fieldState = getFieldState(fieldContext.name, formState);
+
+  if (!fieldContext) {
+    throw new Error("useFormField should be used within <FormField>");
+  }
 
   const { id } = itemContext;
 
@@ -91,20 +71,21 @@ const FormItemContext = React.createContext<FormItemContextValue>(
   {} as FormItemContextValue,
 );
 
-export const FormItem = ({
-  className,
-  ...props
-}: React.ComponentProps<"div"> & { noStyles?: boolean }) => {
+const FormItem = ({ className, ...props }: React.ComponentProps<"div">) => {
   const id = React.useId();
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div className={cn("space-y-2", className)} {...props} />
+      <div
+        data-slot="form-item"
+        className={cn("grid gap-2", className)}
+        {...props}
+      />
     </FormItemContext.Provider>
   );
 };
 
-export const FormLabel = ({
+const FormLabel = ({
   className,
   ...props
 }: React.ComponentProps<typeof LabelPrimitive.Root>) => {
@@ -112,21 +93,22 @@ export const FormLabel = ({
 
   return (
     <Label
-      className={cn(error && "text-destructive", className)}
+      data-slot="form-label"
+      data-error={!!error}
+      className={cn("data-[error=true]:text-destructive", className)}
       htmlFor={formItemId}
       {...props}
     />
   );
 };
 
-export const FormControl = ({
-  ...props
-}: React.ComponentProps<typeof Slot.Root>) => {
+const FormControl = ({ ...props }: React.ComponentProps<typeof Slot>) => {
   const { error, formItemId, formDescriptionId, formMessageId } =
     useFormField();
 
   return (
-    <Slot.Root
+    <Slot
+      data-slot="form-control"
       id={formItemId}
       aria-describedby={
         !error
@@ -139,7 +121,7 @@ export const FormControl = ({
   );
 };
 
-export const FormDescription = ({
+const FormDescription = ({
   className,
   ...props
 }: React.ComponentProps<"p">) => {
@@ -147,20 +129,17 @@ export const FormDescription = ({
 
   return (
     <p
+      data-slot="form-description"
       id={formDescriptionId}
-      className={cn("text-muted-foreground text-[0.8rem]", className)}
+      className={cn("text-muted-foreground text-sm", className)}
       {...props}
     />
   );
 };
 
-export const FormMessage = ({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<"p">) => {
+const FormMessage = ({ className, ...props }: React.ComponentProps<"p">) => {
   const { error, formMessageId } = useFormField();
-  const body = error ? String(error.message) : children;
+  const body = error ? String(error?.message ?? "") : props.children;
 
   if (!body) {
     return null;
@@ -168,8 +147,9 @@ export const FormMessage = ({
 
   return (
     <p
+      data-slot="form-message"
       id={formMessageId}
-      className={cn("text-destructive text-[0.8rem]", className)}
+      className={cn("text-destructive text-sm", className)}
       {...props}
     >
       {body}
@@ -177,6 +157,13 @@ export const FormMessage = ({
   );
 };
 
-export { useForm, useFormField, Form, FormField };
-
-export { useFieldArray } from "react-hook-form";
+export {
+  useFormField,
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  FormField,
+};

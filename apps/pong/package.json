@@ -15,7 +15,7 @@
     "@react-three/fiber": "^9.3.0",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "three": "^0.178.0"
+    "three": "^0.179.0"
   },
   "devDependencies": {
     "@kyh/eslint-config": "catalog:",
