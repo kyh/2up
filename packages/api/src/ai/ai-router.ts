@@ -1,5 +1,12 @@
 import { v0 } from "v0-sdk";
 
+import type {
+  ChatDetail,
+  ChatsDeleteResponse,
+  ChatsGetByIdResponse,
+  ChatsSendMessageResponse,
+  ProjectDetail,
+} from "./v0-types";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { systemPrompt } from "./ai-prompt";
 import {
@@ -10,32 +17,33 @@ import {
   updateChatInput,
 } from "./ai-schema";
 
-type ChatsGetByIdResponse = Awaited<ReturnType<typeof v0.chats.getById>>;
-type ChatsSendMessageResponse = Awaited<
-  ReturnType<typeof v0.chats.sendMessage>
->;
-type ChatsDeleteResponse = Awaited<ReturnType<typeof v0.chats.delete>>;
-
 export const aiRouter = createTRPCRouter({
-  getChats: protectedProcedure.query(async () => {
-    const project = await v0.projects.getById({
-      projectId,
-    });
+  getChats: protectedProcedure.query(
+    async (): Promise<{
+      project: ProjectDetail;
+      chats: ProjectDetail["chats"];
+    }> => {
+      const project = await v0.projects.getById({
+        projectId,
+      });
 
-    return { project, chats: project.chats };
-  }),
+      return { project, chats: project.chats };
+    },
+  ),
 
-  getChat: protectedProcedure.input(getChatInput).query(async ({ input }) => {
-    const chat = await v0.chats.getById({
-      chatId: input.chatId,
-    });
+  getChat: protectedProcedure
+    .input(getChatInput)
+    .query(async ({ input }): Promise<{ chat: ChatsGetByIdResponse }> => {
+      const chat = await v0.chats.getById({
+        chatId: input.chatId,
+      });
 
-    return { chat } as { chat: ChatsGetByIdResponse };
-  }),
+      return { chat };
+    }),
 
   createChat: protectedProcedure
     .input(createChatInput)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input }): Promise<{ chat: ChatDetail }> => {
       const chat = await v0.chats.create({
         system: systemPrompt,
         message: input.message,
@@ -49,23 +57,25 @@ export const aiRouter = createTRPCRouter({
 
   updateChat: protectedProcedure
     .input(updateChatInput)
-    .mutation(async ({ input }) => {
-      const message = await v0.chats.sendMessage({
-        chatId: input.chatId,
-        message: input.message,
-        responseMode: "async",
-      });
+    .mutation(
+      async ({ input }): Promise<{ message: ChatsSendMessageResponse }> => {
+        const message = await v0.chats.sendMessage({
+          chatId: input.chatId,
+          message: input.message,
+          responseMode: "async",
+        });
 
-      return { message } as { message: ChatsSendMessageResponse };
-    }),
+        return { message };
+      },
+    ),
 
   deleteChat: protectedProcedure
     .input(deleteChatInput)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input }): Promise<{ chat: ChatsDeleteResponse }> => {
       const chat = await v0.chats.delete({
         chatId: input.chatId,
       });
 
-      return { chat } as { chat: ChatsDeleteResponse };
+      return { chat };
     }),
 });
