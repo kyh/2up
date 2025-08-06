@@ -18,7 +18,7 @@
     "@tensorflow/tfjs-core": "^4.22.0",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "three": "^0.179.0"
+    "three": "^0.179.1"
   },
   "devDependencies": {
     "@kyh/eslint-config": "catalog:",

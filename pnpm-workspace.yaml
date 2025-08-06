@@ -7,10 +7,10 @@ catalog:
   "@kyh/prettier-config": ^1.1.7
   "@kyh/tsconfig": ^1.1.7
   "@tanstack/react-query": ^5.84.1
-  "@trpc/client": ^11.4.3
-  "@trpc/server": ^11.4.3
-  "@trpc/tanstack-react-query": ^11.4.3
-  "@types/node": ^24.1.0
+  "@trpc/client": ^11.4.4
+  "@trpc/server": ^11.4.4
+  "@trpc/tanstack-react-query": ^11.4.4
+  "@types/node": ^24.2.0
   "@types/react": ^19.1.9
   "@types/react-dom": ^19.1.7
   eslint: ^9.32.0
@@ -21,4 +21,4 @@ catalog:
   superjson: ^2.2.2
   typescript: ^5.9.2
   vite: ^7.0.6
-  zod: ^4.0.14
+  zod: ^4.0.15

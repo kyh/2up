@@ -17,7 +17,7 @@
   },
   "prettier": "@kyh/prettier-config",
   "dependencies": {
-    "partysocket": "^1.1.4",
+    "partysocket": "^1.1.5",
     "react": "catalog:"
   },
   "peerDependencies": {
