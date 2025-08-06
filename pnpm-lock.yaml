@@ -159,6 +159,9 @@ importers:
       '@repo/db':
         specifier: workspace:^
         version: link:../../packages/db
+      '@repo/multiplayer':
+        specifier: workspace:^
+        version: link:../../packages/multiplayer
       '@repo/ui':
         specifier: workspace:^
         version: link:../../packages/ui
@@ -177,9 +180,6 @@ importers:
       next:
         specifier: 'catalog:'
         version: 15.4.5(@opentelemetry/api@1.9.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      partysocket:
-        specifier: ^1.1.4
-        version: 1.1.4
       react:
         specifier: 'catalog:'
         version: 19.1.1
@@ -311,6 +311,9 @@ importers:
       '@repo/db':
         specifier: workspace:^
         version: link:../../packages/db
+      '@repo/multiplayer':
+        specifier: workspace:^
+        version: link:../../packages/multiplayer
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20250801.0
@@ -553,6 +556,34 @@ importers:
       supabase:
         specifier: ^2.33.7
         version: 2.33.7
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.2
+
+  packages/multiplayer:
+    dependencies:
+      partysocket:
+        specifier: ^1.1.4
+        version: 1.1.4
+      react:
+        specifier: 'catalog:'
+        version: 19.1.1
+    devDependencies:
+      '@kyh/eslint-config':
+        specifier: 'catalog:'
+        version: 1.1.7(@typescript-eslint/parser@8.36.0(eslint@9.32.0(jiti@2.4.2))(typescript@5.9.2))(eslint@9.32.0(jiti@2.4.2))(turbo@2.5.5)(typescript@5.9.2)
+      '@kyh/prettier-config':
+        specifier: 'catalog:'
+        version: 1.1.7
+      '@kyh/tsconfig':
+        specifier: 'catalog:'
+        version: 1.1.7
+      eslint:
+        specifier: 'catalog:'
+        version: 9.32.0(jiti@2.4.2)
+      prettier:
+        specifier: 'catalog:'
+        version: 3.6.2
       typescript:
         specifier: 'catalog:'
         version: 5.9.2

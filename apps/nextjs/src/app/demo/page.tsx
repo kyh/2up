@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import usePartySocket from "partysocket/react";
+import { useRealtimeGame } from "@repo/multiplayer";
 
 import { Background } from "@/app/(home)/_components/background";
 
@@ -33,155 +33,136 @@ type Ship = {
   targetPosition: Point;
 };
 
-type GameState = {
-  context: CanvasRenderingContext2D | null;
-  mouse: Point;
-  myShip: Ship | null;
-  otherShips: Record<string, Ship>;
-  playerId: string | null;
-  animationFrameId: number | null;
-  lastUpdateTime: number;
+type PlayerGameState = {
+  position: Point;
+  pointer?: "mouse" | "touch";
 };
 
-type Player = {
+type PlayerActionPayload = {
+  action: string;
+  data: unknown;
+};
+
+type DemoPlayer = {
   id: string;
   position: Point;
   color?: string;
   hue?: string;
 };
 
-type ServerMessage = {
-  type: string;
-  data: any;
-};
-
 const SHIP_SPEED = 2;
 const PI = Math.PI;
 const DEG_TO_RAD = PI / 180;
 
-const HOST = "https://vg-partyserver.kyh.workers.dev";
+const HOST = "http://localhost:8787";
+// const HOST = "https://vg-partyserver.kyh.workers.dev";
 const PARTY = "vg-server";
 const ROOM = "home";
 
 const DemoGame = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const gameStateRef = useRef<GameState>({
-    context: null,
-    mouse: { x: 0, y: 0 },
-    myShip: null,
-    otherShips: {},
-    playerId: null,
-    animationFrameId: null,
-    lastUpdateTime: 0,
-  });
+  const shipsRef = useRef<Record<string, Ship>>({});
+  const myShipRef = useRef<Ship | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
 
-  // Connect to your PartySocket server
-  const socket = usePartySocket({
+  // Use the realtime game hook with cursor tracking
+  const game = useRealtimeGame<PlayerGameState, PlayerActionPayload>({
     host: HOST,
     party: PARTY,
     room: ROOM,
+    autoTrackCursor: true, // Automatically track cursor movement
+    tickRate: 20, // Smooth cursor updates
+    interpolation: false, // Direct cursor positioning
+    onPlayerMoved: (playerId, position) => {
+      // Update ship position when player moves
+      if (shipsRef.current[playerId]) {
+        const ship = shipsRef.current[playerId];
+        ship.targetPosition = position;
+
+        // Calculate direction for ship rotation
+        const dx = position.x - ship.position.x;
+        const dy = position.y - ship.position.y;
+        if (dx !== 0 || dy !== 0) {
+          ship.angle = Math.atan2(dy, dx);
+        }
+      }
+    },
+    onPlayerJoined: (player) => {
+      const position = (player.state as any)?.position;
+      
+      // Create ship for new player even if they don't have a position yet
+      if (!shipsRef.current[player.id]) {
+        const defaultPosition = position || {
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+        };
+        
+        shipsRef.current[player.id] = createShipFromPlayer({
+          id: player.id,
+          position: defaultPosition,
+          color: player.color,
+          hue: player.hue,
+        });
+      }
+      updatePlayerCounter();
+    },
+    onPlayerLeft: (playerId) => {
+      delete shipsRef.current[playerId];
+      updatePlayerCounter();
+    },
+    onPlayersSync: (positions) => {
+
+      // Initialize ships for all existing players with positions
+      Object.entries(positions).forEach(([id, position]) => {
+        if (position && !shipsRef.current[id]) {
+          const player = game.getPlayerById(id);
+          if (player) {
+            shipsRef.current[id] = createShipFromPlayer({
+              id: player.id,
+              position,
+              color: player.color,
+              hue: player.hue,
+            });
+          } else {
+          }
+        }
+      });
+
+      // Also create ships for players without positions (they might not have moved yet)
+      Object.entries(game.players).forEach(([id, player]) => {
+        if (!shipsRef.current[id] && id !== game.playerId) {
+          const defaultPosition = {
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+          };
+          
+          shipsRef.current[id] = createShipFromPlayer({
+            id: player.id,
+            position: defaultPosition,
+            color: player.color,
+            hue: player.hue,
+          });
+        }
+      });
+
+      updatePlayerCounter();
+    },
   });
 
+  // Initialize my ship
   useEffect(() => {
-    const state = gameStateRef.current;
-    state.myShip = createShip(window.innerWidth / 2, window.innerHeight / 2, 8);
-
-    const onOpen = () => {
-      console.log("Connected to server");
-
-      // Set player ID if available from socket
-      if (socket.id && !state.playerId) {
-        state.playerId = socket.id;
-        updatePlayerCounter();
-      }
-    };
-
-    const onMessage = (evt: MessageEvent) => {
-      const message: ServerMessage = JSON.parse(evt.data);
-      const state = gameStateRef.current;
-
-      switch (message.type) {
-        case "sync":
-          // Initial sync of all players
-          state.otherShips = {};
-
-          // Process all players from sync data
-          Object.entries(message.data).forEach(([id, playerData]) => {
-            const player = playerData as Player;
-            if (
-              player.position?.x !== undefined &&
-              player.position.y !== undefined
-            ) {
-              // Create ships for other players
-              state.otherShips[id] = createShipFromPlayer(player);
-            }
-          });
-
-          // Set my player ID based on socket connection if not already set
-          if (!state.playerId && socket.id) {
-            state.playerId = socket.id;
-          }
-
-          updatePlayerCounter();
-          break;
-
-        case "update":
-          // Update a single player
-          const player: Player = message.data;
-          if (
-            player.id &&
-            player.position?.x !== undefined &&
-            player.position.y !== undefined
-          ) {
-            // If we already have this ship, update its target position
-            if (state.otherShips[player.id]) {
-              const ship = state.otherShips[player.id];
-              if (ship) {
-                ship.targetPosition = {
-                  x: player.position.x,
-                  y: player.position.y,
-                };
-
-                // Calculate direction vector for the ship to face
-                if (
-                  ship.position.x !== player.position.x ||
-                  ship.position.y !== player.position.y
-                ) {
-                  const dx = player.position.x - ship.position.x;
-                  const dy = player.position.y - ship.position.y;
-                  ship.angle = Math.atan2(dy, dx);
-                }
-              }
-            } else {
-              // Create a new ship
-              state.otherShips[player.id] = createShipFromPlayer(player);
-            }
-          }
-
-          updatePlayerCounter();
-          break;
-
-        case "remove":
-          // Remove a player
-          if (message.data?.id && state.otherShips[message.data.id as string]) {
-            delete state.otherShips[message.data.id as string];
-            updatePlayerCounter();
-          }
-          break;
-      }
-    };
-
-    socket.addEventListener("open", onOpen);
-    socket.addEventListener("message", onMessage);
-
-    return () => {
-      socket.removeEventListener("open", onOpen);
-      socket.removeEventListener("message", onMessage);
-    };
-  }, [socket]);
+    if (game.isConnected && !myShipRef.current) {
+      myShipRef.current = createShip(
+        window.innerWidth / 2,
+        window.innerHeight / 2,
+        8,
+        game.playerId,
+      );
+    }
+  }, [game.isConnected, game.playerId]);
 
   // Create a ship from player data received from server
-  const createShipFromPlayer = (player: Player): Ship => {
+  const createShipFromPlayer = (player: DemoPlayer): Ship => {
     const ship = createShip(player.position.x, player.position.y, 8, player.id);
 
     // Add color information from the server
@@ -337,18 +318,15 @@ const DemoGame = () => {
   };
 
   const updatePlayerCounter = () => {
-    const state = gameStateRef.current;
     const playerCountElement = document.getElementById("player-count");
     const playerIdElement = document.getElementById("player-id");
 
     if (playerCountElement) {
-      const count =
-        Object.keys(state.otherShips).length + (state.myShip ? 1 : 0);
-      playerCountElement.textContent = count.toString();
+      playerCountElement.textContent = game.getPlayerCount().toString();
     }
 
-    if (playerIdElement && state.playerId) {
-      playerIdElement.textContent = state.playerId;
+    if (playerIdElement && game.playerId) {
+      playerIdElement.textContent = game.playerId;
     }
   };
 
@@ -357,12 +335,8 @@ const DemoGame = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const state = gameStateRef.current;
-
     const context = canvas.getContext("2d");
     if (!context) return;
-
-    state.context = context;
 
     // Set initial canvas dimensions
     canvas.width = window.innerWidth;
@@ -374,98 +348,53 @@ const DemoGame = () => {
       canvas.height = window.innerHeight;
     };
 
-    // Handle mouse movement
-    const handleMouseMove = (e: MouseEvent) => {
-      state.mouse = { x: e.clientX, y: e.clientY };
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      e.preventDefault();
-      state.mouse = {
-        x: e.touches[0]?.clientX ?? 0,
-        y: e.touches[0]?.clientY ?? 0,
-      };
-    };
+    // Mouse/touch handling is now done by the hook automatically
+    // No need for manual event listeners since autoTrackCursor is enabled
 
     // Game loop
     const gameLoop = () => {
-      if (!state.context) return;
-      const { context, myShip, otherShips, mouse, lastUpdateTime } = state;
-      const now = Date.now();
+      if (!context) return;
 
       // Clear canvas
-      context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      context.clearRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw my ship
-      if (myShip) {
-        // Update ship position based on mouse position
-        const updatedShip = updateShipPosition(myShip, mouse);
-
-        // Update ship's path based on new position and angle
-        state.myShip = updateShipPath(updatedShip);
-
-        // Draw the ship
-        drawShip(context, state.myShip);
-
-        // Send position to server (throttle to every 50ms to match server expectations)
-        if (socket.readyState === WebSocket.OPEN && now - lastUpdateTime > 50) {
-          socket.send(
-            JSON.stringify({
-              type: "position",
-              data: {
-                x: state.myShip.position.x,
-                y: state.myShip.position.y,
-                pointer: "mouse",
-                pathname: window.location.pathname,
-              },
-            }),
-          );
-
-          state.lastUpdateTime = now;
-        }
+      if (myShipRef.current) {
+        const currentPos = game.getCurrentPosition();
+        const updatedShip = updateShipPosition(myShipRef.current, currentPos);
+        myShipRef.current = updateShipPath(updatedShip);
+        drawShip(context, myShipRef.current);
       }
 
       // Update and draw other ships
-      Object.values(otherShips).forEach((ship) => {
-        // Smoothly move other ships toward their target positions
+      Object.values(shipsRef.current).forEach((ship) => {
         const updatedShip = updateShipPosition(
           ship,
           ship.targetPosition,
           SHIP_SPEED * 0.8,
         );
-
-        // Update ship's path based on new position and angle
         const finalShip = updateShipPath(updatedShip);
-
-        // Update the ship in state
-        state.otherShips[ship.id!] = finalShip;
-
-        // Draw the ship
+        shipsRef.current[ship.id!] = finalShip;
         drawShip(context, finalShip);
       });
 
-      // Continue animation loop
-      state.animationFrameId = requestAnimationFrame(gameLoop);
+      animationFrameRef.current = requestAnimationFrame(gameLoop);
     };
 
     // Add event listeners
     window.addEventListener("resize", handleResize);
-    canvas.addEventListener("mousemove", handleMouseMove);
-    canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
 
     // Start game loop
-    state.animationFrameId = requestAnimationFrame(gameLoop);
+    animationFrameRef.current = requestAnimationFrame(gameLoop);
 
     // Cleanup function
     return () => {
       window.removeEventListener("resize", handleResize);
-      canvas.removeEventListener("mousemove", handleMouseMove);
-      canvas.removeEventListener("touchmove", handleTouchMove);
-      if (state.animationFrameId) {
-        cancelAnimationFrame(state.animationFrameId);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [socket]);
+  }, [game]);
 
   return <canvas ref={canvasRef} className="game" />;
 };
