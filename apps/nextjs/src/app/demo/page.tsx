@@ -54,8 +54,10 @@ const SHIP_SPEED = 2;
 const PI = Math.PI;
 const DEG_TO_RAD = PI / 180;
 
-const HOST = "http://localhost:8787";
-// const HOST = "https://vg-partyserver.kyh.workers.dev";
+const HOST =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:8787"
+    : "https://vg-partyserver.kyh.workers.dev";
 const PARTY = "vg-server";
 const ROOM = "home";
 
@@ -89,14 +91,14 @@ const DemoGame = () => {
     },
     onPlayerJoined: (player) => {
       const position = (player.state as any)?.position;
-      
+
       // Create ship for new player even if they don't have a position yet
       if (!shipsRef.current[player.id]) {
         const defaultPosition = position || {
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
         };
-        
+
         shipsRef.current[player.id] = createShipFromPlayer({
           id: player.id,
           position: defaultPosition,
@@ -111,7 +113,6 @@ const DemoGame = () => {
       updatePlayerCounter();
     },
     onPlayersSync: (positions) => {
-
       // Initialize ships for all existing players with positions
       Object.entries(positions).forEach(([id, position]) => {
         if (position && !shipsRef.current[id]) {
@@ -135,7 +136,7 @@ const DemoGame = () => {
             x: Math.random() * window.innerWidth,
             y: Math.random() * window.innerHeight,
           };
-          
+
           shipsRef.current[id] = createShipFromPlayer({
             id: player.id,
             position: defaultPosition,
