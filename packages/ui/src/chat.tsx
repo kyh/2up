@@ -268,7 +268,7 @@ const ChatTextarea = ({
   onBlur,
 }: ChatTextareaProps) => {
   return (
-    <div className={cn("bg-background rounded-t-xl p-3", className)}>
+    <div className={cn("bg-muted/50 rounded-xl p-3", className)}>
       <Textarea
         placeholder="Build a 3d platformer..."
         className="text-primary min-h-[44px] w-full resize-none border-none bg-transparent shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"

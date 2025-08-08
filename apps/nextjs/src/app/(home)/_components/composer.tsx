@@ -1,14 +1,13 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@repo/ui/button";
 import { ChatTextarea } from "@repo/ui/chat";
-import { ExpandTabs } from "@repo/ui/expand-tabs";
-import { cn } from "@repo/ui/utils";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { BlocksIcon, ChevronDown, ChevronUp, PlayIcon } from "lucide-react";
+import { BlocksIcon, PlayIcon } from "lucide-react";
 import { motion } from "motion/react";
 
 import { useTRPC } from "@/trpc/react";
@@ -37,10 +36,9 @@ export const Composer = () => {
     trpc.ai.updateChat.mutationOptions(),
   );
 
-  const [view, setView] = useState<"play" | "build">("build");
+  const [view, setView] = useState<"play" | "build" | "idle">("idle");
   const [input, setInput] = useState("");
   const [waitlistOpen, setWaitlistOpen] = useState(false);
-  const [composerOpen, setComposerOpen] = useState(true);
 
   const handleSubmit = useCallback(() => {
     if (input === "") {
@@ -65,95 +63,119 @@ export const Composer = () => {
     }
   }, [userData.user]);
 
+  const content = useMemo(() => {
+    switch (view) {
+      case "play":
+        return <PlayView />;
+      case "build":
+        return (
+          <BuildView
+            input={input}
+            setInput={setInput}
+            onSubmit={handleSubmit}
+            loading={createChatPending || updateChatPending}
+            onFocus={handleFocus}
+          />
+        );
+      case "idle":
+        return <IdleView setView={setView} />;
+    }
+  }, [
+    createChatPending,
+    handleFocus,
+    handleSubmit,
+    input,
+    updateChatPending,
+    view,
+  ]);
+
   return (
     <>
-      <div
-        className={cn(
-          "pointer-events-none fixed right-0 bottom-0 left-0 z-10 flex items-center justify-center transition",
-          composerOpen ? "" : "translate-y-[calc(100%-32px)]",
-        )}
-      >
-        <div className="pointer-events-auto relative px-3">
-          <div className="flex h-8 items-center justify-between gap-3 px-2">
-            <ExpandTabs
-              selected={view}
-              setSelected={(selected) => {
-                setView(selected as "play" | "build");
-                setComposerOpen(true);
-              }}
-              tabs={[
-                { id: "play", title: "Play", icon: PlayIcon },
-                { id: "build", title: "Build", icon: BlocksIcon },
-              ]}
-            />
-            <Button
-              variant="ghost"
-              className="size-5 p-0"
-              onClick={() => setComposerOpen(!composerOpen)}
-            >
-              {composerOpen ? (
-                <>
-                  <ChevronDown className="size-4" />
-                  <span className="sr-only">Collapse composer</span>
-                </>
-              ) : (
-                <>
-                  <ChevronUp className="size-4" />
-                  <span className="sr-only">Expand composer</span>
-                </>
-              )}
-            </Button>
-          </div>
-          <motion.div
-            transition={{
-              type: "spring",
-              bounce: 0.1,
-            }}
-            initial={{
-              scale: 0.9,
-              opacity: 0,
-              filter: "blur(5px)",
-              originX: 0.5,
-              originY: 0.5,
-            }}
-            animate={{
-              scale: 1,
-              opacity: 1,
-              filter: "blur(0px)",
-              originX: 0.5,
-              originY: 0.5,
-              transition: {
-                delay: 0.05,
-              },
-            }}
-            key={view}
-          >
-            {view === "build" && (
-              <BuildView
-                input={input}
-                setInput={setInput}
-                onSubmit={handleSubmit}
-                loading={createChatPending || updateChatPending}
-                onFocus={handleFocus}
-              />
-            )}
-            {view === "play" && <PlayView />}
-          </motion.div>
-          <motion.div
-            className="bg-muted/60 absolute inset-0 -z-10 rounded-t-2xl px-3 shadow-lg backdrop-blur-sm"
-            layout
-            transition={{
-              type: "spring",
-              bounce: 0.1,
-            }}
-          />
-        </div>
+      <div className="fixed bottom-5 left-1/2 z-10 -translate-x-1/2 md:bottom-10 md:left-10 md:translate-0">
+        <motion.div
+          transition={{
+            type: "spring",
+            bounce: 0.1,
+          }}
+          initial={{
+            scale: 0.9,
+            opacity: 0,
+            filter: "blur(5px)",
+            originX: 0.5,
+            originY: 0.5,
+          }}
+          animate={{
+            scale: 1,
+            opacity: 1,
+            filter: "blur(0px)",
+            originX: 0.5,
+            originY: 0.5,
+            transition: {
+              delay: 0.05,
+            },
+          }}
+          key={view}
+        >
+          {content}
+        </motion.div>
+        <motion.div
+          className="bg-muted/60 absolute inset-0 -z-10 shadow-lg backdrop-blur-sm"
+          style={{ borderRadius: 20 }}
+          layout
+          transition={{
+            type: "spring",
+            stiffness: 550,
+            damping: 45,
+            mass: 0.7,
+            delay: 0.08,
+          }}
+        />
       </div>
+      {view !== "idle" && (
+        <div className="fixed inset-0" onClick={() => setView("idle")} />
+      )}
       <WaitlistDailog
         waitlistOpen={waitlistOpen}
         setWaitlistOpen={setWaitlistOpen}
       />
     </>
+  );
+};
+
+const IdleView = ({
+  setView,
+}: {
+  setView: Dispatch<SetStateAction<"play" | "idle" | "build">>;
+}) => {
+  return (
+    <div className="flex gap-1 p-1">
+      <Button
+        className="text-muted-foreground gap-1 rounded-full"
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          setView((prev) => {
+            if (prev === "build") return "idle";
+            return "build";
+          });
+        }}
+      >
+        <BlocksIcon width="12" height="12" /> Build
+      </Button>
+      <Button
+        className="text-muted-foreground gap-1 rounded-full"
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          setView((view) => {
+            if (view === "play") return "idle";
+            return "play";
+          });
+        }}
+      >
+        <PlayIcon width="12" height="12" /> Play
+      </Button>
+    </div>
   );
 };
 
@@ -171,20 +193,22 @@ const BuildView = ({
   onFocus: () => void;
 }) => {
   return (
-    <ChatTextarea
-      className="w-[calc(100dvw-12px)] md:w-lg"
-      input={input}
-      setInput={setInput}
-      onSubmit={onSubmit}
-      loading={loading}
-      onFocus={onFocus}
-    />
+    <div className="px-1.5 pt-1.5 pb-1">
+      <ChatTextarea
+        className="w-[calc(100dvw-24px)] md:w-lg"
+        input={input}
+        setInput={setInput}
+        onSubmit={onSubmit}
+        loading={loading}
+        onFocus={onFocus}
+      />
+    </div>
   );
 };
 
 const PlayView = () => {
   return (
-    <section className="[&::-webkit-scrollbar-thumb]:bg-secondary/80 h-[80dvh] space-y-10 overflow-auto px-6 pt-5 md:grid md:grid-cols-2 md:gap-10 md:space-y-0 md:px-3 md:pb-5 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full">
+    <div className="[&::-webkit-scrollbar-thumb]:bg-secondary/80 h-[80dvh] space-y-10 overflow-auto px-6 pt-5 md:grid md:grid-cols-2 md:gap-10 md:space-y-0 md:px-3 md:pb-5 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full">
       {featuredGames.map((data) => {
         return (
           <Link
@@ -197,7 +221,7 @@ const PlayView = () => {
         );
       })}
       <PlayViewFooter />
-    </section>
+    </div>
   );
 };
 
