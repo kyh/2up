@@ -127,7 +127,7 @@ export const WaitlistDailog = ({
         <svg
           viewBox="0 0 1024 1024"
           aria-hidden="true"
-          className="absolute top-1/2 left-1/2 -z-10 size-[64rem] -translate-x-1/2"
+          className="pointer-events-none absolute top-1/2 left-1/2 -z-10 size-[64rem] -translate-x-1/2"
         >
           <circle
             r={512}

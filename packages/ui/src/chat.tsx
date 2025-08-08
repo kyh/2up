@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { ArrowUp } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { delay, wrap } from "motion";
+import { Typewriter } from "motion-plus/react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Button } from "./button";
@@ -258,6 +259,13 @@ type ChatTextareaProps = {
   onBlur?: () => void;
 };
 
+const text = [
+  "Build a 3D platformer where players navigate through a vibrant world",
+  "Create a top-down shooter game with fast-paced action and unique weapons",
+  "Develop a racing game with customizable vehicles and dynamic tracks",
+  "Make a flight simulation game set in the city of San Francisco",
+];
+
 const ChatTextarea = ({
   className,
   input,
@@ -267,15 +275,37 @@ const ChatTextarea = ({
   onFocus,
   onBlur,
 }: ChatTextareaProps) => {
+  const [focused, setFocused] = useState(false);
+  const [index, setIndex] = useState(0);
+
+  const handleFocus = useCallback(() => {
+    setFocused(true);
+    if (onFocus) onFocus();
+  }, [onFocus]);
+  const handleBlur = useCallback(() => {
+    setFocused(false);
+    if (onBlur) onBlur();
+  }, [onBlur]);
+
   return (
-    <div className={cn("bg-muted/50 rounded-xl p-3", className)}>
+    <div className={cn("bg-muted/50 rounded-[20px] p-3", className)}>
+      {!focused && !input && (
+        <Typewriter
+          as="div"
+          className="text-muted-foreground pointer-events-none absolute text-sm"
+          onComplete={() =>
+            delay(() => setIndex(wrap(0, text.length, index + 1)), 1)
+          }
+        >
+          {text[index]}
+        </Typewriter>
+      )}
       <Textarea
-        placeholder="Build a 3d platformer..."
         className="text-primary min-h-[44px] w-full resize-none border-none bg-transparent shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         onChange={(e) => setInput(e.target.value)}
         value={input}
-        onFocus={onFocus}
-        onBlur={onBlur}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         onKeyDown={(e) => {
           if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
             e.preventDefault();
@@ -285,12 +315,14 @@ const ChatTextarea = ({
       />
       <div className="flex items-center gap-2 pt-2">
         <Button
-          size="icon"
-          className="ml-auto h-8 w-8 rounded-full"
+          variant="secondary"
+          size="sm"
+          className="ml-auto h-7 gap-1 px-2 text-xs"
           onClick={onSubmit}
           loading={loading}
         >
-          <ArrowUp className="size-5" />
+          <span>⌘</span>
+          <kbd>Enter</kbd>
         </Button>
       </div>
     </div>

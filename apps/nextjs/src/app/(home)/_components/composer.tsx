@@ -120,7 +120,7 @@ export const Composer = () => {
         </motion.div>
         <motion.div
           className="bg-muted/60 absolute inset-0 -z-10 shadow-lg backdrop-blur-sm"
-          style={{ borderRadius: 20 }}
+          style={{ borderRadius: 24 }}
           layout
           transition={{
             type: "spring",
@@ -193,7 +193,7 @@ const BuildView = ({
   onFocus: () => void;
 }) => {
   return (
-    <div className="px-1.5 pt-1.5 pb-1">
+    <div className="p-1.5">
       <ChatTextarea
         className="w-[calc(100dvw-24px)] md:w-lg"
         input={input}
