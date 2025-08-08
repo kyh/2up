@@ -112,11 +112,11 @@ const DemoGame = () => {
       delete shipsRef.current[playerId];
       updatePlayerCounter();
     },
-    onPlayersSync: (positions) => {
+    onPlayersSync: (positions, allPlayers) => {
       // Initialize ships for all existing players with positions
       Object.entries(positions).forEach(([id, position]) => {
         if (position && !shipsRef.current[id]) {
-          const player = game.getPlayerById(id);
+          const player = allPlayers?.[id] || game.getPlayerById(id);
           if (player) {
             shipsRef.current[id] = createShipFromPlayer({
               id: player.id,
@@ -124,28 +124,28 @@ const DemoGame = () => {
               color: player.color,
               hue: player.hue,
             });
-          } else {
           }
         }
       });
 
-      // Also create ships for players without positions (they might not have moved yet)
-      Object.entries(game.players).forEach(([id, player]) => {
-        if (!shipsRef.current[id] && id !== game.playerId) {
-          const defaultPosition = {
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
-          };
+      // Create ships for ALL players that we don't have ships for yet (including those without positions)
+      if (allPlayers) {
+        Object.entries(allPlayers).forEach(([id, player]) => {
+          if (!shipsRef.current[id] && id !== game.playerId) {
+            const defaultPosition = {
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+            };
 
-          shipsRef.current[id] = createShipFromPlayer({
-            id: player.id,
-            position: defaultPosition,
-            color: player.color,
-            hue: player.hue,
-          });
-        }
-      });
-
+            shipsRef.current[id] = createShipFromPlayer({
+              id: player.id,
+              position: defaultPosition,
+              color: player.color,
+              hue: player.hue,
+            });
+          }
+        });
+      }
       updatePlayerCounter();
     },
   });

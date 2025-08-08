@@ -23,7 +23,10 @@ export type RealtimeGameConfig<
   onPlayerAction?: (playerId: string, action: string, data: TPayload) => void;
   onGameStateChange?: (newState: TGameState) => void;
   onPlayerMoved?: (playerId: string, position: Position) => void;
-  onPlayersSync?: (players: Record<string, Position>) => void;
+  onPlayersSync?: (
+    positions: Record<string, Position>,
+    allPlayers?: Record<string, any>,
+  ) => void;
 } & Omit<
   MultiplayerGameConfig<TGameState, TPayload, TSettings>,
   "onGameEvent" | "onPlayerUpdated" | "onGameSync"
@@ -80,7 +83,8 @@ export function useRealtimeGame<
           positions[id] = position;
         }
       });
-      config.onPlayersSync?.(positions);
+      // Call onPlayersSync with positions and all players data
+      config.onPlayersSync?.(positions, players);
     },
     onGameEvent: (event, payload, from) => {
       switch (event) {
