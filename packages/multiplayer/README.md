@@ -1,243 +1,225 @@
-# @repo/multiplayer-hooks
+# @repo/multiplayer
 
-React hooks for building multiplayer games with real-time synchronization. Designed for LLM-generated games in game builder platforms.
+React hooks for building multiplayer games with PlayroomKit-style API. Simple, ergonomic multiplayer development.
 
 ## Features
 
-- **Real-time games**: Hook supporting position tracking, entity management, and real-time synchronization
-- **Turn-based games**: Specialized hook for turn management and game phases  
-- **Generic multiplayer**: Base hook for custom multiplayer functionality
-- **Full TypeScript support**: Complete type safety for generated code
+- **PlayroomKit-inspired API**: Familiar hooks following established conventions
+- **Global state sync**: `useMultiplayerState` for game-wide state
+- **Player state**: `usePlayerState` for individual player data
+- **Host detection**: Built-in host assignment and management
+- **Real-time sync**: Automatic state synchronization across clients
+- **Full TypeScript support**: Complete type safety
 
 ## Installation
 
 This package is already installed as a workspace dependency. Import hooks directly:
 
 ```typescript
-import { useRealtimeGame, useTurnBasedGame, useMultiplayerGame } from '@repo/multiplayer-hooks';
+import { 
+  usePlayroomRoot, 
+  useMultiplayerState, 
+  usePlayersList, 
+  usePlayerState,
+  useIsHost 
+} from '@repo/multiplayer';
 ```
 
-## Available Hooks
+## Quick Start
 
-### `useRealtimeGame` - Real-time Games
-Use for games requiring real-time synchronization like cursor tracking, action games, or any game with moving entities.
+### 1. Initialize Playroom Connection
 
-**Best for:** Drawing apps, shooters, racing games, platformers, real-time strategy games
-
-### `useTurnBasedGame` - Turn-Based Games  
-Use for games with distinct turns and phases where players take actions in sequence.
-
-**Best for:** Board games, card games, chess, tic-tac-toe, strategy games
-
-### `useMultiplayerGame` - Custom Implementation
-Base hook for building custom multiplayer functionality when the above hooks don't fit your needs.
-
-**Best for:** Custom game mechanics, hybrid games, or when you need full control
-
-## Examples
-
-### Real-time Game with Cursor Tracking
+Use `usePlayroomRoot` at your app root to establish the multiplayer connection:
 
 ```tsx
-import { useRealtimeGame } from '@repo/multiplayer-hooks';
+import { usePlayroomRoot } from '@repo/multiplayer';
 
-function CursorGame() {
-  const game = useRealtimeGame({
+function App() {
+  const game = usePlayroomRoot({
     host: "https://your-server.workers.dev",
     party: "game-server",
-    room: "cursor-room",
-    autoTrackCursor: true, // Automatically track mouse/touch movement
-    tickRate: 20, // Smooth cursor updates
-    interpolation: false, // Direct cursor positioning
-    onPlayerMoved: (playerId, position) => {
-      console.log(`Player ${playerId} moved to:`, position);
-    }
+    room: "room-id",
   });
 
-  return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      {Object.entries(game.players).map(([id, player]) => {
-        const pos = player.gameState?.position;
-        if (!pos) return null;
-        
-        return (
-          <div
-            key={id}
-            style={{
-              position: 'absolute',
-              left: pos.x,
-              top: pos.y,
-              width: 20,
-              height: 20,
-              borderRadius: '50%',
-              backgroundColor: player.color,
-              transform: 'translate(-50%, -50%)',
-            }}
-          />
-        );
-      })}
-    </div>
-  );
+  if (!game.isConnected) {
+    return <div>Connecting...</div>;
+  }
+
+  return <YourGame />;
 }
 ```
 
-### Turn-Based Game
+### 2. Use Multiplayer State
+
+Share state across all players:
 
 ```tsx
-import { useTurnBasedGame } from '@repo/multiplayer-hooks';
-
-function TicTacToe() {
-  const [board, setBoard] = useState(Array(9).fill(null));
-  
-  const game = useTurnBasedGame({
-    host: "https://your-server.workers.dev",
-    party: "game-server",
-    room: "tictactoe",
-    minPlayers: 2,
-    maxPlayers: 2,
-    onPlayerMove: (playerId, move) => {
-      setBoard(prev => {
-        const newBoard = [...prev];
-        newBoard[move.position] = move.symbol;
-        return newBoard;
-      });
-    }
-  });
-
-  const makeMove = (position: number) => {
-    if (!game.isMyTurn() || board[position]) return;
-    
-    game.makeMove({
-      position,
-      symbol: game.playerId === game.turnOrder[0] ? 'X' : 'O'
-    });
-  };
+function GameComponent() {
+  const [gameScore, setGameScore] = useMultiplayerState("score", 0);
+  const [gamePhase, setGamePhase] = useMultiplayerState("phase", "waiting");
 
   return (
     <div>
-      <div>Turn: {game.currentTurn} | Phase: {game.gamePhase}</div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
-        {board.map((cell, index) => (
-          <button
-            key={index}
-            onClick={() => makeMove(index)}
-            disabled={!game.isMyTurn() || !!cell}
-          >
-            {cell}
-          </button>
-        ))}
-      </div>
-      {game.gamePhase === 'waiting' && (
-        <button onClick={game.startGame}>Start Game</button>
-      )}
+      <div>Score: {gameScore}</div>
+      <button onClick={() => setGameScore(gameScore + 1)}>
+        Add Point
+      </button>
     </div>
   );
 }
 ```
 
-### Real-time Game with Entity Management
+### 3. Manage Player State
+
+Handle individual player data:
 
 ```tsx
-import { useRealtimeGame } from '@repo/multiplayer-hooks';
-
-function EntityGame() {
-  const game = useRealtimeGame({
-    host: "https://your-server.workers.dev",
-    party: "game-server", 
-    room: "realtime-game",
-    tickRate: 60, // High frequency for responsive gameplay
-    interpolation: true, // Smooth entity movement
-    onPlayerAction: (playerId, action, data) => {
-      if (action === 'shoot') {
-        game.createEntity(`bullet-${Date.now()}`, {
-          position: data.position,
-          velocity: data.velocity,
-          data: { type: 'bullet', owner: playerId }
-        });
-      }
-    }
-  });
-
-  const handleClick = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    game.sendAction('shoot', {
-      position: { x, y },
-      velocity: { x: 5, y: 0 }
-    });
-  };
+function PlayerProfile() {
+  const myPlayer = useMyPlayer();
+  const [playerName, setPlayerName] = usePlayerState(myPlayer, "name", "");
+  const [health, setHealth] = usePlayerState(myPlayer, "health", 100);
 
   return (
-    <canvas
-      width={800}
-      height={600}
-      onClick={handleClick}
-      style={{ border: '1px solid black' }}
-    />
+    <div>
+      <input 
+        value={playerName}
+        onChange={(e) => setPlayerName(e.target.value)}
+        placeholder="Your name"
+      />
+      <div>Health: {health}/100</div>
+    </div>
   );
 }
 ```
 
+### 4. Host-Only Controls
+
+Create host-only functionality:
+
+```tsx
+function HostControls() {
+  const isHost = useIsHost();
+  const [gameStarted, setGameStarted] = useMultiplayerState("started", false);
+
+  if (!isHost) return null;
+
+  return (
+    <button onClick={() => setGameStarted(true)}>
+      Start Game (Host Only)
+    </button>
+  );
+}
+```
 
 ## Available Hooks
 
-### `useRealtimeGame` ⭐
-**The main hook** - supports position tracking, entity management, and real-time synchronization for multiplayer games. Configure it for your specific use case:
+### Core Hooks
 
-**Example Configurations:**
+- **`usePlayroomRoot(config)`** - Establish multiplayer connection (use once at root)
+- **`useMultiplayerState(key, defaultValue)`** - Global state shared by all players  
+- **`usePlayerState(player, key, defaultValue)`** - Individual player state
+- **`usePlayersList(triggerOnStateChange?)`** - List of all connected players
+- **`usePlayersState(key)`** - Get specific state for all players
+- **`useIsHost()`** - Check if current player is the host
+- **`useMyPlayer()`** - Get current player object
 
-```typescript
-// Cursor/drawing apps
-const game = useRealtimeGame({
-  autoTrackCursor: true,
-  tickRate: 20,
-  interpolation: false,
-});
+### Utility Functions
 
-// Fast-paced games with entities
-const game = useRealtimeGame({
-  tickRate: 60,
-  interpolation: true,
-  onPlayerAction: (id, action, data) => { /* handle actions */ }
-});
+- **`getPlayer(playerId)`** - Get player by ID
+- **`getMyPlayerId()`** - Get current player ID
+- **`isConnected()`** - Check connection status
+- **`getPlayerCount()`** - Get number of players
 
-// Hybrid games with both features
-const game = useRealtimeGame({
-  autoTrackCursor: true,
-  tickRate: 30,
-  interpolation: true,
-  onPlayerAction: (id, action, data) => { /* handle actions */ },
-  onPlayerMoved: (id, position) => { /* handle movement */ }
-});
-```
+## Complete Example
 
-**Features:**
-- Automatic cursor/touch tracking
-- Entity management with interpolation
-- Position tracking methods
-- Configurable tick rates and throttling
-- Game loop with delta time
+```tsx
+import {
+  usePlayroomRoot,
+  useMultiplayerState,
+  usePlayersList,
+  usePlayerState,
+  useIsHost,
+  useMyPlayer
+} from '@repo/multiplayer';
 
-### `useTurnBasedGame`
-Specialized hook for turn-based games with built-in turn management, player queues, and game phase tracking.
+function MultiplayerCounter() {
+  // Root connection
+  const game = usePlayroomRoot({
+    host: "https://your-server.workers.dev",
+    party: "game-server", 
+    room: "counter-room"
+  });
 
-### `useMultiplayerGame`
-Base hook for all multiplayer functionality. Provides connection management, player synchronization, and custom message handling.
+  // State hooks
+  const [globalCounter, setGlobalCounter] = useMultiplayerState("counter", 0);
+  const players = usePlayersList();
+  const myPlayer = useMyPlayer();
+  const isHost = useIsHost();
+  const [myClicks, setMyClicks] = usePlayerState(myPlayer, "clicks", 0);
 
-## Server Configuration
+  if (!game.isConnected) return <div>Connecting...</div>;
 
-This package works with the PartyServer in `apps/party`. The server automatically handles different game types and message routing.
+  return (
+    <div>
+      <h1>Global Counter: {globalCounter}</h1>
+      <div>Players: {players.length}</div>
+      
+      <button 
+        onClick={() => {
+          setGlobalCounter(globalCounter + 1);
+          setMyClicks(myClicks + 1);
+        }}
+      >
+        Click! (My clicks: {myClicks})
+      </button>
 
-## TypeScript Support
+      {isHost && (
+        <button onClick={() => setGlobalCounter(0)}>
+          Reset (Host Only)
+        </button>
+      )}
 
-All hooks are fully typed with TypeScript for excellent development experience:
-
-```typescript
-import type { Player, GameState, Position } from '@repo/multiplayer-hooks';
+      <div>
+        <h3>Players</h3>
+        {players.map(player => (
+          <div key={player.id}>
+            {player.id.substring(0, 8)}: {(player.state as any)?.clicks || 0} clicks
+            {player.isHost && " (Host)"}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 ```
 
 ## Examples
 
-See `apps/nextjs/src/app/demo/page.tsx` for a complete implementation using `useRealtimeGame` with cursor tracking.
+- **Simple Demo**: `apps/nextjs/src/app/demo/page.tsx` - Ships game with cursor tracking
+- **Advanced Demo**: `apps/nextjs/src/app/playroom-demo/page.tsx` - Full PlayroomKit showcase
+
+## API Documentation
+
+For complete API reference and migration guide, see [PLAYROOM_API.md](./PLAYROOM_API.md).
+
+## Server Configuration
+
+This package works with the PartyServer in `apps/party`. The server automatically handles:
+
+- Host assignment (first player becomes host)
+- Host reassignment when host leaves
+- State synchronization
+- Player management
+
+## TypeScript Support
+
+All hooks are fully typed:
+
+```typescript
+import type { 
+  Player, 
+  PlayroomConfig,
+  PlayerMap, 
+  GameState 
+} from '@repo/multiplayer';
+```
