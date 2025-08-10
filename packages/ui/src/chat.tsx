@@ -293,6 +293,7 @@ const ChatTextarea = ({
         <Typewriter
           as="div"
           className="text-muted-foreground pointer-events-none absolute text-sm"
+          speed="fast"
           onComplete={() =>
             delay(() => setIndex(wrap(0, text.length, index + 1)), 1)
           }
