@@ -61,8 +61,8 @@ catalogs:
       specifier: ^7.1.1
       version: 7.1.1
     zod:
-      specifier: ^4.0.16
-      version: 4.0.16
+      specifier: ^4.0.17
+      version: 4.0.17
 
 importers:
 
@@ -191,7 +191,7 @@ importers:
         version: 2.2.2
       zod:
         specifier: 'catalog:'
-        version: 4.0.16
+        version: 4.0.17
     devDependencies:
       '@kyh/eslint-config':
         specifier: 'catalog:'
@@ -484,7 +484,7 @@ importers:
         version: 0.6.3
       zod:
         specifier: 'catalog:'
-        version: 4.0.16
+        version: 4.0.17
     devDependencies:
       '@kyh/eslint-config':
         specifier: 'catalog:'
@@ -527,7 +527,7 @@ importers:
         version: 19.1.1
       zod:
         specifier: 'catalog:'
-        version: 4.0.16
+        version: 4.0.17
     devDependencies:
       '@faker-js/faker':
         specifier: ^9.9.0
@@ -640,7 +640,7 @@ importers:
         version: 1.1.2(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       zod:
         specifier: 'catalog:'
-        version: 4.0.16
+        version: 4.0.17
     devDependencies:
       '@kyh/eslint-config':
         specifier: 'catalog:'
@@ -5199,8 +5199,8 @@ packages:
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
 
-  zod@4.0.16:
-    resolution: {integrity: sha512-Djo/cM339grjI7/HmN+ixYO2FzEMcWr/On50UlQ/RjrWK1I/hPpWhpC76heCptnRFpH0LMwrEbUY50HDc0V8wg==}
+  zod@4.0.17:
+    resolution: {integrity: sha512-1PHjlYRevNxxdy2JZ8JcNAw7rX8V9P1AKkP+x/xZfxB0K5FYfuV+Ug6P/6NVSR2jHQ+FzDDoDHS04nYUsOIyLQ==}
 
   zustand@4.5.7:
     resolution: {integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw==}
@@ -9729,7 +9729,7 @@ snapshots:
 
   zod@3.22.3: {}
 
-  zod@4.0.16: {}
+  zod@4.0.17: {}
 
   zustand@4.5.7(@types/react@19.1.9)(react@19.1.1):
     dependencies:

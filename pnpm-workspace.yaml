@@ -21,4 +21,4 @@ catalog:
   superjson: ^2.2.2
   typescript: ^5.9.2
   vite: ^7.1.1
-  zod: ^4.0.16
+  zod: ^4.0.17
