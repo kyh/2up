@@ -119,7 +119,7 @@ export const Composer = () => {
           {content}
         </motion.div>
         <motion.div
-          className="bg-muted/60 absolute inset-0 -z-10 shadow-lg backdrop-blur-sm"
+          className="bg-muted/60 absolute inset-0 -z-10 shadow-sm backdrop-blur-sm"
           style={{ borderRadius: 24 }}
           layout
           transition={{
@@ -148,7 +148,7 @@ const IdleView = ({
   setView: Dispatch<SetStateAction<"play" | "idle" | "build">>;
 }) => {
   return (
-    <div className="flex gap-1 p-1">
+    <div className="ring-muted flex items-center gap-1 rounded-3xl p-1 ring-1">
       <Button
         className="text-muted-foreground gap-1 rounded-full"
         variant="ghost"
@@ -162,6 +162,7 @@ const IdleView = ({
       >
         <BlocksIcon width="12" height="12" /> Build
       </Button>
+      <div className="bg-muted h-5 w-[1px]" />
       <Button
         className="text-muted-foreground gap-1 rounded-full"
         variant="ghost"
@@ -193,7 +194,7 @@ const BuildView = ({
   onFocus: () => void;
 }) => {
   return (
-    <div className="p-1.5">
+    <div className="ring-muted rounded-3xl p-1.5 ring-1">
       <ChatTextarea
         className="w-[calc(100dvw-24px)] md:w-lg"
         input={input}
@@ -208,7 +209,7 @@ const BuildView = ({
 
 const PlayView = () => {
   return (
-    <div className="[&::-webkit-scrollbar-thumb]:bg-secondary/80 h-[80dvh] space-y-10 overflow-auto px-6 pt-5 md:grid md:grid-cols-2 md:gap-10 md:space-y-0 md:px-3 md:pb-5 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full">
+    <div className="ring-muted [&::-webkit-scrollbar-thumb]:bg-secondary/80 h-[80dvh] space-y-10 overflow-auto rounded-3xl px-6 pt-5 ring-1 md:grid md:grid-cols-2 md:gap-10 md:space-y-0 md:px-3 md:pb-5 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full">
       {featuredGames.map((data) => {
         return (
           <Link
