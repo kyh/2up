@@ -1011,7 +1011,7 @@ const Pacman: FC = () => {
   }, []);
 
   return (
-    <div className="bg-background text-foreground relative h-dvh w-dvw bg-[url('/bg.png')] bg-[size:10px] font-sans antialiased">
+    <div className="bg-background text-foreground relative h-dvh w-dvw bg-[url('https://zmdrwswxugswzmcokvff.supabase.co/storage/v1/object/public/vibedgames/bg.png')] bg-[size:10px] font-sans antialiased">
       <FaceDetection
         onMouthChange={handleMouthChange}
         onHeadTurnLeft={onHeadTurnLeft}
