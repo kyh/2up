@@ -32,8 +32,8 @@
     "@kyh/prettier-config": "catalog:",
     "dotenv-cli": "^10.0.0",
     "prettier": "catalog:",
-    "tsx": "^4.20.3",
-    "turbo": "^2.5.5",
+    "tsx": "^4.20.4",
+    "turbo": "^2.5.6",
     "typescript": "catalog:"
   },
   "prettier": "@kyh/prettier-config",
