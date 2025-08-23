@@ -1,40 +1,30 @@
-// Main realtime hook (supports both position tracking and entities)
-export { useRealtimeGame } from "./use-realtime-game";
-export type {
-  RealtimeGameConfig,
-  GameEntity,
-  Position,
-} from "./use-realtime-game";
+// PlayroomKit-style hooks - Simple, ergonomic multiplayer API
+export {
+  usePlayroomRoot,
+  useMultiplayerState,
+  usePlayersList,
+  usePlayerState,
+  usePlayersState,
+  useIsHost,
+  useMyPlayer,
+  getPlayer,
+  getMyPlayerId,
+  isConnected,
+  getPlayerCount,
+} from "./use-playroom";
 
-// Specialized hooks
-export { useTurnBasedGame } from "./use-turn-based-game";
-export type {
-  TurnBasedGameState,
-  TurnBasedGameConfig,
-} from "./use-turn-based-game";
+export type { PlayroomConfig } from "./use-playroom";
 
-// Base multiplayer hook
-export { useMultiplayerGame } from "./use-multiplayer-game";
-export type {
-  MultiplayerGameConfig,
-  MultiplayerGameState,
-} from "./use-multiplayer-game";
-
-// Re-export types from types module
+// Core types
 export type {
   Player,
   PlayerMap,
   GameState,
-  GameConfig,
   ClientMessage,
   ServerMessage,
-  MessageType,
   GameMessage,
-  ClientGameMessage,
-  ServerGameMessage,
   PlayerJoinedMessage,
   PlayerLeftMessage,
   PlayerUpdatedMessage,
   GameSyncMessage,
-  GameEventMessage,
 } from "./types";
