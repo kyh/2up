@@ -1,7 +1,6 @@
 @import "tailwindcss" source("../../../../../");
-@import "./animations.css";
 
-@plugin "@tailwindcss/typography";
+@import "tw-animate-css";
 
 :root {
   --background: hsl(240 10% 3.9%);
@@ -65,5 +64,14 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--border, currentColor);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
